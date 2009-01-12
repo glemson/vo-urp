@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="VO-URP/Browser" default="about" basedir=".">
+  
+  <description>
+  	VO-URP/Browser build file :
+    
+    Dec 08 - Notes : 
+      - SQL Drivers are no more included in the war file : they must be in web server libraries (tomcat/lib).
+      - JAXB 2.1 library must be present in the JVM (1.6) or in web server libraries (tomcat/lib)
+  </description>
+  
+  
+  <!-- set global properties for this build -->
+
+  <!-- loads config file -->
+  <property file="build.properties"/>
+  <fail unless="build.war.file" message="bad configuration in build.properties !" />
+
+
+
+
+  <!-- path & files -->
+  <property name="root" location="."/>
+
+  <property name="properties" location="./properties"/>
+ 
+  
+  <property name="sources" location="./src"/>
+  <property name="web-content" location="./web"/>
+
+  <property name="libs" location="./lib"/>
+  
+  <property name="dist" location="./dist"/>
+
+  <property name="javadoc" location="${dist}/doc" />
+  
+  
+  <!-- vo-urp project -->
+  <property name="vo-urp.project" location="${vo-urp.project.path}"/>
+  
+  
+  <!-- build outputs -->
+  <property name="build" location="./build"/>
+  <property name="build.lib" location="${build}/lib"/>
+  <property name="build.src" location="${build}/src"/>
+  
+  
+  <!-- classpath -->
+  <path id="project.class.path">
+
+    <fileset dir="${build.lib}">
+      <include name="*.jar"/>
+    </fileset>
+
+    <!-- J2EE 1.4 specifications : Servlet 2.4 / JSP 2.0 -->
+    <!-- Java API for JavaServer Pages - 2.0.public_draft -->
+    <pathelement location="${libs}/server/jsp-api.jar"/>
+    <!-- Java API for Servlets - 2.4.public_draft -->
+    <pathelement location="${libs}/server/servlet-api.jar"/>
+  </path>
+
+  
+  <!-- checks if build is necessary : java source code & libraries -->
+  <uptodate property="build.notRequired">
+    <srcfiles dir= "${sources}" includes="**/*"/>
+    <srcfiles dir= "${web-content}" includes="**/*"/>
+    <srcfiles dir= "${properties}" includes="**/*"/>
+    <srcfiles dir= "${libs}" includes="**/*.jar"/>
+    <mapper type="merge" to="${dist}/${build.war.file}"/>
+  </uptodate>  
+
+
+  
+  
+  <!-- targets -->
+
+  <!-- target about : -->
+  <target name="about" depends="init" description="show information for public targets">
+    <echo>available ant targets : </echo>
+    <echo>-------------------------------------------------------------------------------</echo>
+    <echo>  - makeAll            : makes all tasks (clean, compile, jar, javadoc) </echo>
+    <echo>  - forceMakeAll       : CLEANS outputs and then make all transformations (makeAll) </echo>
+    <echo>  - makeDoc            : makes javadoc only </echo>
+    <echo>-------------------------------------------------------------------------------</echo>
+  </target>
+  
+  
+  
+  
+  <!-- target init : timestamp -->
+  <target name="init">
+    <tstamp>
+      <format property="build.date" pattern="dd/MM/yyyy HH:mm:ss" />
+    </tstamp>
+    
+    <echo>-------------------------------------------------------------------------------</echo>
+    <echo>  ${vendor}  ::  ${title} - ${version} </echo>
+    <echo>-------------------------------------------------------------------------------</echo>
+    <echo> Build File </echo>
+    <echo>-------------------------------------------------------------------------------</echo>
+    <echo> contacts     : ${build.by}  </echo>
+    <echo> build date   : ${build.date} </echo>
+    <echo></echo>
+    <echo> vo-urp path   : </echo>
+    <echo> ${vo-urp.project} </echo>
+    <echo></echo>
+    <echo> Tomcat Home  : ${tomcat.home}</echo>
+    <echo>-------------------------------------------------------------------------------</echo>
+    
+    <!-- check vo-urp build.xml file -->
+    <available property="vo-urp.check" file="${vo-urp.project}/build.xml" />
+    <fail unless="vo-urp.check" message="vo-urp project does not exist in ${vo-urp.project} !" />
+    
+  </target>
+
+
+
+
+  <!-- target importVO-URP : get libraries and properties from vo-urp project -->
+  <target name="importVO-URP">
+
+    <available property="vo-urp.base.check" file="${vo-urp.project}/dist/${base.library}" />
+    <fail unless="vo-urp.base.check" message="vo-urp project base library is not built !" />
+
+    <!-- use weave archive or standard gen library -->
+    <condition property="gen.library.used" value="${weave.library}">
+      <available file="${vo-urp.project}/dist/${weave.library}" />
+    </condition>
+
+    <condition property="gen.library.used" value="${gen.library}">
+      <available file="${vo-urp.project}/dist/${gen.library}" />
+    </condition>
+
+    <fail unless="gen.library.used" message="vo-urp project gen library is not built !" />
+
+    <echo>-------------------------------------------------------------------------------</echo>
+    <echo> Library used : ${base.library} - ${gen.library.used}</echo>
+    <echo>-------------------------------------------------------------------------------</echo>
+
+    <ant target="importProperties" />
+    <ant target="importLibraries" />
+  </target>
+
+  
+  
+  
+  <!-- target importProperties : get properties from vo-urp project -->
+  <target name="importProperties">
+
+    <echo message="update vo-urp properties from ${vo-urp.project} ..."/>
+    
+    <copy todir="${properties}" preservelastmodified="true" verbose="true">
+      <fileset dir="${vo-urp.project}/properties">
+        <include name="*.properties"/>
+        <!-- keep log4j configuration different for webapp because files are stored in tomcat logs folder -->
+      </fileset>
+    </copy>
+    
+    <echo message="update vo-urp properties : done."/>
+  </target>
+
+
+
+
+  <!-- target importLibraries : get libraries from vo-urp project -->
+  <target name="importLibraries">
+
+    <echo message="update vo-urp libraries from ${vo-urp.project} ..."/>
+    
+    <mkdir dir="${build.lib}"/>
+    
+    <copy todir="${build.lib}" preservelastmodified="true" verbose="true">
+      <fileset dir="${vo-urp.project}/dist">
+        <!-- * is useful to get .classpath file too -->
+        <include name="${base.library}*"/>
+        <include name="${gen.library.used}"/>
+      </fileset>
+    </copy>
+    
+		<ant target="processClasspath">
+			<property name="classpath.file" value="${base.library}.classpath" />
+		</ant>
+
+    <!-- move webapp libraries into build libraries -->
+    <copy todir="${build.lib}" preservelastmodified="true" verbose="true">
+      <fileset dir="${libs}">
+        <include name="*.jar"/>
+      </fileset>
+    </copy>
+    
+    <echo message="update vo-urp libraries : done."/>
+  </target>
+
+
+
+
+  <!-- generic target -->  
+
+	<!-- target checkSource : reads a classpath file and copies libraries into this project -->
+	<target name="processClasspath" description="reads a classpath file and copies libraries into this project">
+		<echo>processClasspath : ${build.lib}/${classpath.file}</echo>
+
+    <property file="${build.lib}/${classpath.file}"/>
+    <echo message="module classpath = ${module.classpath}" />
+    <fail unless="module.classpath" message="bad configuration in ${classpath.file} !" />
+
+    <copy todir="${build.lib}" flatten="true" preservelastmodified="true" verbose="true">
+      <path>
+        <pathelement path="${module.classpath}"/>
+      </path>      
+    </copy>
+    
+    <delete file="${build.lib}/${classpath.file}" />
+    
+		<echo>processClasspath : done.</echo>
+	</target>
+
+
+  
+  
+  <!-- target cleanup : clean imported properties and build -->
+  <target name="cleanup">
+    
+    <echo message="cleaning directory : ${properties} ..." />
+    
+    <delete includeemptydirs="false" verbose="true">
+      <fileset dir="${properties}" includes="*.properties"/>
+    </delete>
+    
+    <echo message="cleaned directory : ${properties} ." />
+
+    <echo message="cleaning directory : ${build} ..." />
+    
+    <delete includeemptydirs="true" verbose="true">
+      <fileset dir="${build.src}" includes="**/*"/>
+      <fileset dir="${build.lib}" includes="**/*"/>
+    </delete>
+    
+    <echo message="cleaned directory : ${build} ." />
+    
+  </target>
+
+
+
+
+  <!-- target clean : clean build files -->
+  <target name="clean" depends="cleanup">
+    
+    <echo message="creating directories ..." />
+    
+    <mkdir dir="${dist}"/>
+    <mkdir dir="${javadoc}"/>
+    
+    <echo message="cleaning directory : ${dist} ..." />
+    
+    <delete includeemptydirs="false" verbose="true">
+      <fileset dir="${dist}" includes="**/*"/>
+    </delete>
+    
+    <echo message="cleaned directory : ${dist} ." />
+    
+  </target>
+  
+  
+  
+  
+  <!-- target makeAll : cleans, compiles, packages -->
+  <target name="makeAll" description="make all transformations">
+    <ant target="makeAllIfNeeded" inheritAll="false" />
+    <echo message="makeAll ${title} : done."/>
+  </target>
+
+  
+  
+  
+  <!-- main target : force to makeAll -->
+  <target name="forceMakeAll" depends="clean" description="make all targets (forced)">
+    <ant target="makeAllIfNeeded" inheritAll="false" />
+    <echo>forceMakeAll ${title} : done.</echo>
+  </target>
+
+  
+  
+  
+  <target name="makeAllIfNeeded" depends="init" unless="build.notRequired">
+    <buildnumber file="build.number"/>    
+
+    <echo>-------------------------------------------------------------------------------</echo>
+    <echo> Build Number : ${build.number}</echo>
+    <echo>-------------------------------------------------------------------------------</echo>
+    
+    <ant target="importVO-URP" />
+
+    <ant target="compile" />
+    <ant target="makeDoc" />
+    <ant target="package" />
+  	<!--
+    <ant target="cleanup" />
+    -->
+    <echo message="makeAllIfNeeded ${title} : done."/>
+  </target>
+
+  
+  
+
+  <!-- target makeDoc : creates javadoc from source code -->
+  <target name="makeDoc">
+    
+    <echo message="making ${title} javadoc ..."/>
+    
+    <javadoc  additionalparam="-notimestamp"
+              destdir="${javadoc}"
+              access="private" 
+              author="true"
+              use="false"
+              windowtitle="${title} ${version}" >
+      
+      <classpath refid="project.class.path"/>
+      
+      <fileset dir="${sources}" includes="**/*.java" defaultexcludes="yes" />
+      
+    </javadoc>
+    
+    <echo message="${title} javadoc : done."/>
+  </target>
+  
+  
+  
+  
+  <!-- Compile java files and jar them -->
+  <target name="compile" depends="init" unless="build.notRequired">
+    
+    <echo message="compile ${title} ..."/>
+    <echo message="compile from : ${sources}"/>
+    <echo message="compile to   : ${build.src}"/>
+    
+    <mkdir dir="${build.src}"/>
+    
+    <javac sourcepath="" srcdir="${sources}" destdir="${build.src}" listfiles="false" 
+           fork="true" verbose="false" encoding="UTF-8"
+           debug="on" deprecation="on" optimize="on" casesensitive="true" 
+           source="1.5" target="1.5">
+      
+      <classpath refid="project.class.path" />
+      
+      <include name="**/*.java"/>
+    </javac>
+    
+    <echo message="compile ${title} : done."/>
+    
+  </target>
+  
+  
+
+
+  <!-- Compile java files and jar them -->
+  <target name="package" depends="init" unless="build.notRequired">
+
+    <!-- move properties with compiled classes -->
+    <copy todir="${build.src}" preservelastmodified="true" verbose="true">
+      <fileset dir="${properties}">
+        <include name="*.*"/>
+      </fileset>
+    </copy>
+    
+    <!-- create a tags folder to put tag files because subversion used 'tags' folders for subversion tags -->
+    <mkdir dir="${web-content}/WEB-INF/tags"/>
+    <copy todir="${web-content}/WEB-INF/tags" preservelastmodified="true" verbose="true">
+      <fileset dir="${web-content}/WEB-INF/tagfiles">
+        <include name="**/*.tag"/>
+      </fileset>
+    </copy>
+
+    <!-- remove libraries which must stay in web server classpath (tomcat/lib) -->
+    <delete dir="${build.lib}">
+      <include name="activation.jar"/>
+      <include name="jaxb*.jar"/>
+      <include name="jsr173*.jar"/>
+    </delete>
+
+    <!-- make web application archive -->
+    <war destfile="${dist}/${build.war.file}" webxml="${web-content}/WEB-INF/web.xml" compress="true" roundup="true">
+      <fileset dir="${web-content}">
+        <include name="META-INF/*.*"/>
+        <include name="WEB-INF/tags/**/*.tag"/>
+        <include name="index.html"/>
+        <include name="*.jsp"/>
+        <include name="list/*.jsp"/>
+        <include name="page/*.jsp"/>
+        <include name="show/*.jsp"/>
+        <include name="manage/*.jsp"/>
+        <include name="query/*.jsp"/>
+        <include name="static/**/*.*"/>
+        <exclude name=".*"/>
+      </fileset>
+      <lib dir="${build.lib}">
+        <include name="*.jar"/>
+      </lib>
+      <classes dir="${build.src}">
+        <include name="**/*.class"/>
+        <include name="**/*.properties"/>
+        <include name="log4j.*"/>
+      </classes>
+    </war>
+
+    <delete dir="${web-content}/WEB-INF/tags"/>
+    
+  </target>
+  
+  
+  
+  
+  <!-- deploys war archive in tomcat -->
+  <target name="deployTomcat" depends="forceMakeAll">
+    
+    <!-- check tomcat home -->
+    <available property="tomcat.check" file="${tomcat.home}/conf/server.xml" />
+    <fail unless="tomcat.check" message="tomcat server does not exist in ${tomcat.home} !" />
+
+    <!-- tomcat webapps folder -->
+    <property name="deploy.to" value="${tomcat.home}/webapps"/>
+    
+    <delete dir="${deploy.to}/${build.war.file}" verbose="true"/>
+    <copy file="${dist}/${build.war.file}" todir="${deploy.to}" verbose="true" />
+  </target>
+
+  
+</project>

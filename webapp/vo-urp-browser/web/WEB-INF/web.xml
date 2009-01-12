@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+  
+  <!-- ========================================================== -->
+  <!-- General -->
+  <!-- ========================================================== -->
+  
+  <description>Simple Web Browser for VO-URP database</description>
+  <display-name>VO-URP/Browser</display-name>
+
+  <!-- ========================================================== -->
+  <!-- Context Parameters -->
+  <!-- ========================================================== -->
+
+<!--
+  <context-param>
+    <description>Log4J config file</description>
+    <param-name>log-init-file</param-name>
+    <param-value>WEB-INF/classes/log4j.xml</param-value>
+  </context-param> 
+-->
+
+  <!-- ========================================================== -->
+  <!-- Listeners -->
+  <!-- ========================================================== -->
+
+  <listener>
+    <listener-class>org.ivoa.service.SessionMonitor</listener-class>
+  </listener>
+
+  <listener>
+    <listener-class>org.ivoa.service.VO_URP_Facade</listener-class>
+  </listener>
+  
+  <listener>
+    <description>RequestListener for managing EntityManager with request scope</description>
+    <listener-class>org.ivoa.web.servlet.JPARequestListener</listener-class>   
+  </listener>
+
+  <!-- ========================================================== -->
+  <!-- Servlets -->
+  <!-- ========================================================== -->
+  
+  <servlet>
+    <servlet-name>FindServlet</servlet-name>
+    <servlet-class>org.ivoa.web.servlet.FindServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>ListServlet</servlet-name>
+    <servlet-class>org.ivoa.web.servlet.ListServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>UploadServlet</servlet-name>
+    <servlet-class>org.ivoa.web.servlet.UploadServlet</servlet-class>
+  </servlet>
+
+  <servlet>
+    <servlet-name>QueryServlet</servlet-name>
+    <servlet-class>org.ivoa.web.servlet.QueryServlet</servlet-class>
+  </servlet>
+  
+  <servlet>
+    <servlet-name>TAPServlet</servlet-name>
+    <servlet-class>org.ivoa.web.servlet.TAPServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>FindServlet</servlet-name>
+    <url-pattern>/Show.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>ListServlet</servlet-name>
+    <url-pattern>/List.do</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>UploadServlet</servlet-name>
+    <url-pattern>/Upload.do</url-pattern>
+  </servlet-mapping>
+
+  
+  <servlet-mapping>
+    <servlet-name>QueryServlet</servlet-name>
+    <url-pattern>/Query.do</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>TAPServlet</servlet-name>
+    <url-pattern>/tap/*</url-pattern>
+  </servlet-mapping>
+
+
+  <session-config>
+    <session-timeout>10</session-timeout>
+  </session-config>
+  
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+  </welcome-file-list>
+
+</web-app>
