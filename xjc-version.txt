@@ -1,0 +1,2 @@
+xjc version "hudson-jaxb-ri-2.1-558" 
+JavaTM Architecture for XML Binding(JAXB) Reference Implementation, (build hudson-jaxb-ri-2.1-558)	
