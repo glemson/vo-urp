@@ -119,6 +119,7 @@
 
 	<!-- instantiate outputs -->
 	<mkdir dir="${output}"/>
+	<mkdir dir="${outputJava}"/>
 	<mkdir dir="${build}"/>
 	<mkdir dir="${dist}"/>
 	
