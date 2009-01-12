@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.ivoa.net/xml/SNAP/v0.1/IVOAValueTypes"
+            xmlns:base="http://www.ivoa.net/xml/dm/base/v0.1"
+            targetNamespace="http://www.ivoa.net/xml/SNAP/v0.1/IVOAValueTypes">
+   <xsd:annotation>
+      <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
+   </xsd:annotation>
+   <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
+               schemaLocation="http://volute.googlecode.com/svn/trunk/projects/theory/snapdm/xsd/base.xsd"/>
+</xsd:schema>
