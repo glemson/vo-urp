@@ -1,0 +1,91 @@
+Laurent Bourges - May 12, 2008
+Gerard Lemson - Jan 2 2009 (updated for VO-URP from SimDB)
+---------------------------------------
+   Package contents
+---------------------------------------
+
+
+@TODO : Update the folder structure with description below : ---
+
+
+
+|-- POLICY
+|-- README
+|-- build                                             build folder (file)
+|-- build.properties                                  ant build config
+|-- build.xml                                         ant build (main)
+|-- build_java.xml                                    ant build (java part)
+|-- doc                                               documents
+|   |-- UML rules.txt
+|   `-- todo.txt
+|-- input                   
+|   |-- IVOA UML Profile v-2.xml                      IVOA UML Profile
+|   |-- aDM.xml 				                      test data model
+|-- libs                                              java libraries
+|   |-- anthack                                       ant saxon hack
+|   |-- ...
+|-- output                                            output folder
+|   |-- SNAP-xmi.xsd                                  SNAP XSD Schema
+|   |-- SNAP-xsd.html                                 SNAP XSD Documentation
+|   |-- SNAP_SimulationDM_types.xsd                   SNAP XSD Schema REFERENCE (Gerard)
+|   |-- SNAP_Simulation_DM_FILTER.xml                 SNAP UML Model filtered (diagrams removed)
+|   |-- SNAP_Simulation_DM_INTERMEDIATE.xml           SNAP Meta Model
+|   |-- java
+|   |   |-- conf                                      future use : configuration files
+|   |   |-- doc/                                      JavaDoc
+|   |   `-- src/                                      Java Generated code
+|   `-- schema                                        SNAP XSD Schemas COMPLETE REFERENCE (Gerard)
+|       |-- ...
+|-- res
+|   |-- intermediate2java.xsl                         XSLT MetaModel to Java code
+|   |-- intermediate2xsd.xsl                          XSLT MetaModel to XSD Schemas
+|   |-- intermediateModel.xsd                         MetaModel definition
+|   |-- xmi2intermediate.xsl                          XSLT UML Model (xmi) to MetaModel
+|   |-- xmi2xsd.xsl                                   XSLT UML Model (xmi) to XSD Schema (old)
+|   |-- xmiCheck.xsl                                  XSLT UML Model (xmi) validator
+|   `-- xmiFilter.xsl                                 XSLT UML Model (xmi) filter (removes diagrams)
+|-- src
+|   |-- log4j.dtd                                     Log4J DTD
+|   |-- log4j.xml                                     Log4J configuration
+|   |-- org                                           
+|   |   `-- ivoa
+|   |       |-- dm
+|   |       |   |-- MetaDataFactory.java              Generated MetaDataElement Factory
+|   |       |   `-- model
+|   |       |       |-- MetaDataElement.java          Base class for all generated java classes
+|   |       |       |-- MetadataDataType.java         Base class for all generated data types 
+|   |       |       `-- MetadataObject.java           Base class for all generated java entities
+|   |       `-- util
+|   |           `-- LogUtil.java                      Log4J Wrapper
+|-- test                                              Test code (future)
+`-- xsd                                               Published XML Schemas (via googleCode)
+    |-- ...
+
+
+
+
+---------------------------------------
+   Build instructions
+---------------------------------------
+
+  Update the build.properties and pipeline.properties files for your data model.
+
+
+  Run "ant" on the command line : tested with Apache ant 1.6.5 and 1.7 versions.
+    see http://ant.apache.org/
+
+
+  Main ant targets :
+   - makeAll       : make all transformations (uml -> metaModel -> others) 
+   - forceMakeAll  : CLEANS outputs and then make all transformations (makeAll) 
+
+
+  Look at output directory for generated documents & java code ...
+
+
+Enjoy.
+
+
+
+
+--- End of file ---
