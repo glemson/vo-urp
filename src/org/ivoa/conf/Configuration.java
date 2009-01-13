@@ -20,18 +20,18 @@ public final class Configuration {
 
   /* constants */
   /** file name for property file */
-  public final static String PROPS = "global.properties";
+  public final static String PROPS = "runtime.properties";
   /** logger */
   protected static final Log log = LogUtil.getLogger();
   /** singleton instance */
   private static volatile Configuration instance = null;
   // property keys :
   /** keyword for application title */
-  public final static String APP_TITLE = "title";
+  public final static String APP_TITLE = "project.title";
   /** keyword for application vendor */
-  public final static String APP_VENDOR = "vendor";
+  public final static String APP_VENDOR = "project.vendor";
   /** keyword for application version */
-  public final static String APP_VERSION = "version";
+  public final static String APP_VERSION = "project.version";
   /** 
    * keyword for service ivo id. The IVO Identifier by which the data access service is registered.
    * Used as prefix for ivo-id-s of all objects.
@@ -267,6 +267,7 @@ public final class Configuration {
    * @return title + ' - ' + version
    */
   public String getTitle() {
+	  
     return getProperty(Configuration.APP_TITLE) + " - " + getProperty(Configuration.APP_VERSION);
   }
 

@@ -21,6 +21,8 @@
   
   <xsl:output name="persistenceInfo" method="xml" encoding="UTF-8" indent="yes"  />
 
+  <xsl:param name="persistence.xml"/>
+
 
   <xsl:key name="element" match="*//*" use="@xmiid"/>
 
@@ -288,7 +290,7 @@
     
     <!-- reading persistence-template.xml file : -->
     
-    <xsl:variable name="jpaConf" select="document('../input/persistence.xml')"/>
+    <xsl:variable name="jpaConf" select="document($persistence.xml)"/>
     
     <!-- open file for global jpa configuration -->
     <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
