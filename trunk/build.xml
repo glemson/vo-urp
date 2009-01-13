@@ -25,21 +25,28 @@
 
 
 	<!-- set global properties for this build -->
-
-	<!-- Get build properties (general) -->
+    <property name="vo-urp.title" value="VO-URP"/>
+    <property name="vo-urp.vendor" value="Gerard Lemson, Laurent Bourges"/>
+    <property name="vo-urp.version" value="0.x"/>
+	
+	<!-- Get build properties (general). 
+	     Should only contain the location of the directory where input properties and data model can be found.
+	     If t
+	-->
 	<property file="build.properties" />
-	<fail unless="build.by" message="bad configuration in build.properties !" />
+	<property name="input" location="./input"/>
+	
 
-
-	<!-- Get pipeline properties (model dependent) -->
-	<property file="pipeline.properties" />
+	
+	<!-- read pipeline configuration properties -->
+	<property file="${input}/project.properties"/>
 	<fail unless="project.name" message="Must define name for project [project.name] !" />
+	<fail unless="project.version" message="Must define project version [project.version] !" />
 	<fail unless="source" message="Must define the source data model file (xmi 2.1) [source] !" />
 	<fail unless="root_package" message="Must define the root package [root_package] !" />
 	<fail unless="model_package" message="Must define the model package [model_package] !" />
-	<fail unless="schemalocation_root" message="Must define the schema location root [schemalocation_root] !" />
 	<fail unless="targetnamespace_root" message="Must define the target namespace root [targetnamespace_root] !" />
-
+	<fail unless="schemalocation_root" message="Must define the schema location root [schemalocation_root] !" />
 
 	<!-- convert target switches to ant conditionnal properties -->
 	<fail unless="target.db.active" message="Must define if db targets should run [target.db.active] !" />
@@ -63,41 +70,44 @@
 	<property name="source_intermediate" value="${project.name}_INTERMEDIATE.xml" />
 
 
-	<!-- paths -->
-	<property name="input" location="./input" />
-	<property name="output" location="./output" />
-	<property name="res" location="./res" />
-
-	<property name="outputJava" location="${output}/java" />
-
-
-	<!-- global java paths -->
+	<!-- vo-urp paths -->
 	<property name="root" location="." />
-	<property name="properties" location="./properties" />
-	<property name="test" location="./test" />
-
-
-	<property name="sources" location="./src" />
-	<property name="sources.gen" location="${outputJava}" />
-	<property name="sources.test" location="${test}/java" />
-
-
+	<property name="res" location="./res" />
+	<property name="templates" location="./templates" />
 	<property name="libs" location="./libs" />
+	<property name="sources" location="./src" />
+	
 
-	<property name="dist" location="./dist" />
-
+	<!-- define and instantiate output directories -->
+	<!-- TBD maybe all the mkdir targets can be moved to place where they are required -->
+	<property name="output" location="${input}/output"/>
+	<mkdir dir="${output}"/> 
+	<property name="build" location="${input}/build"/>
+    <mkdir dir="${build}"/>
+	<property name="dist" location="${input}/dist"/>
+	<mkdir dir="${dist}"/>
+	<property name="properties" location="${input}/properties"/>
+    <mkdir dir="${properties}"/>
+	<property name="test" location="${input}/${sources.test}"/>
+	<mkdir dir="${test}"/>
 	<property name="dist.lib" location="${dist}/lib" />
+	<mkdir dir="${dist.lib}"/>
 	<property name="javadoc" location="${dist}/doc" />
-
-
-	<!-- compile Sources -->
+   	<mkdir dir="${javadoc}"/>
+	<property name="outputJava" location="${output}/java"/>
+	<mkdir dir="${outputJava}"/>
 	<property name="build" location="./build" />
+	<mkdir dir="${build}"/>
 	<property name="build.src" location="${build}/src" />
-
+	<mkdir dir="${build.src}"/>
 	<property name="build.gen" location="${build}/gen" />
+	<mkdir dir="${build.gen}"/>
 	<property name="build.weaving" location="${build}/weaving" />
+	<mkdir dir="${build.weaving}"/>
 	<property name="build.test" location="${build}/test" />
+	<mkdir dir="${build.test}"/>
 
+	<property name="sources.gen" location="${outputJava}" />
 
 
 
@@ -117,11 +127,7 @@
 	<defaultexcludes echo="false" add="**/README.txt" />
 
 
-	<!-- instantiate outputs -->
-	<mkdir dir="${output}"/>
-	<mkdir dir="${outputJava}"/>
-	<mkdir dir="${build}"/>
-	<mkdir dir="${dist}"/>
+
 	
 	<!-- up to date checks -->
 
@@ -171,7 +177,7 @@
 		<srcfiles dir="${res}" includes="common-xsd.xsl" />
 		<srcfiles dir="${res}" includes="jpa.xsl" />
 		<srcfiles dir="${res}" includes="jaxb.xsl" />
-		<srcfiles dir="${input}" includes="persistence.xml.template" />
+		<srcfiles dir="${templates}" includes="persistence.xml.template" />
 
 		<!-- check if src/ java code has changed -->
 		<srcfiles dir="${sources}" includes="**/*" />
@@ -238,6 +244,13 @@
 
 
 
+
+	
+	
+	
+	
+	
+	
 
 	<!-- main target : generates all documents -->
 	<target name="makeAll" depends="init, process" description="make all transformations">
@@ -349,7 +362,9 @@
 
 
 		<!-- builds vo-urp-browser -->
-		<ant antfile="webapp/vo-urp-browser/build.xml" target="deployTomcat" inheritAll="false" />
+		<ant antfile="webapp/vo-urp-browser/build.xml" target="deployTomcat" inheritAll="false">
+			<property name="input" location="${input}"/>
+		</ant>
 
 
 		<ant target="run" />
@@ -357,6 +372,13 @@
 	</target>
 
 
+	<target name="buildWeb">
+		<ant antfile="webapp/vo-urp-browser/build.xml" target="deployTomcat" inheritAll="false">
+			<property name="input" location="${input}"/>
+		</ant>	
+	</target>
+	
+	
 
 
 	<target name="processXMI2Intermediate" unless="intermediate.notRequired">
@@ -582,8 +604,8 @@
 		<echo>run_intermediate2java : starting filter on file ${output}/${source}</echo>
 
 		<mkdir dir="${sources.gen}/" />
-		<copy tofile="${input}/persistence.xml" filtering="true" verbose="true" overwrite="true">
-			<fileset file="${input}/persistence.xml.template" />
+		<copy tofile="${properties}/persistence.xml" filtering="true" verbose="true" overwrite="true">
+			<fileset file="${templates}/persistence.xml.template" />
 			<filterset>
 				<!-- 
 	   Filters for copying runtime.properties 
@@ -597,6 +619,7 @@
 			<param name="root_package" expression="${root_package}" />
 			<param name="model_package" expression="${model_package}" />
 			<param name="targetnamespace_root" expression="${targetnamespace_root}" />
+			<param name="persistence.xml" expression="${properties}/persistence.xml"/>
 		</xslt2>
 
 		<echo>run_intermediate2java : done.</echo>
@@ -612,4 +635,12 @@
   &buildJava; 
 
 
+	
+	<!-- target echo : echos properties -->
+	<target name="echo" depends="init" description="Echo properties">
+	  <echoproperties />
+	</target>
+	
+	
+	
 </project>

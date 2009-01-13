@@ -12,38 +12,37 @@
   
   
   <!-- set global properties for this build -->
-
-  <!-- loads config file -->
+  <fail unless="input" message="Must provide 'input' property, indicating project directory"/>
+	
+  <!-- first load local config file -->
   <property file="build.properties"/>
-  <fail unless="build.war.file" message="bad configuration in build.properties !" />
-
-
-
 
   <!-- path & files -->
   <property name="root" location="."/>
-
   <property name="properties" location="./properties"/>
- 
-  
   <property name="sources" location="./src"/>
   <property name="web-content" location="./web"/>
-
   <property name="libs" location="./lib"/>
   
-  <property name="dist" location="./dist"/>
-
+  <!--  output locations  -->
+  <property name="web" location="${input}/web"/>
+  <mkdir dir="${web}"/>
+  <property name="dist" location="${web}/dist"/>
   <property name="javadoc" location="${dist}/doc" />
-  
-  
-  <!-- vo-urp project -->
-  <property name="vo-urp.project" location="${vo-urp.project.path}"/>
-  
-  
   <!-- build outputs -->
-  <property name="build" location="./build"/>
+  <property name="build" location="${web}/build"/>
   <property name="build.lib" location="${build}/lib"/>
   <property name="build.src" location="${build}/src"/>
+  
+  
+  <!-- properties from vo-urp project -->
+  <property name="vo-urp.project" location="${vo-urp.project.path}"/>
+  <property file="${input}/project.properties"/>  
+  <property name="base.library" value="${build.src.file}"/>
+  <property name="gen.library" value="${build.gen.file}"/>
+  <property name="weave.library" value="${build.gen.weave.file}"/>
+  <property name="build.war.file"  value="${project.name}-browser.war"/>
+
   
   
   <!-- classpath -->
@@ -119,17 +118,16 @@
 
   <!-- target importVO-URP : get libraries and properties from vo-urp project -->
   <target name="importVO-URP">
-
-    <available property="vo-urp.base.check" file="${vo-urp.project}/dist/${base.library}" />
-    <fail unless="vo-urp.base.check" message="vo-urp project base library is not built !" />
+    <available property="vo-urp.base.check" file="${input}/dist/${base.library}" /> 
+  	<fail unless="vo-urp.base.check" message="vo-urp project base library (${input}\dist\${base.library}) is not built !" />
 
     <!-- use weave archive or standard gen library -->
     <condition property="gen.library.used" value="${weave.library}">
-      <available file="${vo-urp.project}/dist/${weave.library}" />
+      <available file="${input}/dist/${weave.library}" />
     </condition>
 
     <condition property="gen.library.used" value="${gen.library}">
-      <available file="${vo-urp.project}/dist/${gen.library}" />
+      <available file="${input}/dist/${gen.library}" />
     </condition>
 
     <fail unless="gen.library.used" message="vo-urp project gen library is not built !" />
@@ -145,13 +143,13 @@
   
   
   
-  <!-- target importProperties : get properties from vo-urp project -->
+  <!-- target importProperties : get properties from ${input} -->
   <target name="importProperties">
 
-    <echo message="update vo-urp properties from ${vo-urp.project} ..."/>
+    <echo message="update vo-urp properties from ${input} ..."/>
     
     <copy todir="${properties}" preservelastmodified="true" verbose="true">
-      <fileset dir="${vo-urp.project}/properties">
+      <fileset dir="${input}/properties">
         <include name="*.properties"/>
         <!-- keep log4j configuration different for webapp because files are stored in tomcat logs folder -->
       </fileset>
@@ -166,12 +164,12 @@
   <!-- target importLibraries : get libraries from vo-urp project -->
   <target name="importLibraries">
 
-    <echo message="update vo-urp libraries from ${vo-urp.project} ..."/>
+    <echo message="update vo-urp libraries from ${input} ..."/>
     
     <mkdir dir="${build.lib}"/>
     
     <copy todir="${build.lib}" preservelastmodified="true" verbose="true">
-      <fileset dir="${vo-urp.project}/dist">
+      <fileset dir="${input}/dist">
         <!-- * is useful to get .classpath file too -->
         <include name="${base.library}*"/>
         <include name="${gen.library.used}"/>
@@ -232,7 +230,7 @@
 
     <echo message="cleaning directory : ${build} ..." />
     
-    <delete includeemptydirs="true" verbose="true">
+    <delete includeemptydirs="true" verbose="true" failonerror="no">
       <fileset dir="${build.src}" includes="**/*"/>
       <fileset dir="${build.lib}" includes="**/*"/>
     </delete>

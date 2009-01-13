@@ -1,15 +1,29 @@
 #
-# This is a template file containing the definitions
+# This file containing the definitions
 # for the runtime properties. 
 # These are given values using the ant @property.value@ mechanism
 # which during the build are set by an ANT filtering mechanism.
 # 
-
+#--------------------------------------------------
+# Properties describing the project itself.
+#--------------------------------------------------
 # short name of the project, used in file names,hence no whitespace etc
 project.name=@project.name@
 
 # long name of the project, used in titles
 project.title=@project.title@
+
+# version of the project
+project.version=@project.version@
+
+# contact email address of the project
+project.contact=@project.contact@
+
+
+# indicates whether the runtime is a test. This causes more logging messages to be written
+mode.test=@mode.test@
+
+
 
 #---------------------------------------------------------------------------------------------
 # Properties related to the runtime use of the intermediate representation of the UML model 
@@ -29,6 +43,8 @@ intermediate.model.xmlns=http://ivoa.org/theory/datamodel/generationmetadata/v0.
 # e.g. http://volute.googlecode.com/svn/trunk/projects/theory/snapdm/xsd/SimDB_root.xsd
 root.schema.url=@root.schema.url@
 
+# The prefix for IVO identifiers assigned to resources in the repository
+service.ivoid = @service.ivoid@ 
 
 #-------------------
 # Java properties
@@ -38,7 +54,7 @@ root.schema.url=@root.schema.url@
 # used in MetaModelFactory  
 # TODO do we need this?
 #base.package=@base.package@
-base.package=org.ivoa.
+base.package=org.ivoa
 
 
 
@@ -54,7 +70,6 @@ jpa.persistence.unit=@jpa.persistence.unit@
 # JAXB properties
 #-------------------
 # JAXB class path, for use in ModelFactory
-# something like: org.ivoa.dm.model:org.ivoa.simdb:org.ivoa.simdb.experiment:org.ivoa.simdb.object:org.ivoa.simdb.dal:org.ivoa.simdb.protocol";
 jaxb.classpath=@jaxb.classpath@
 
 # package where meta model generated from intermediateModel.xsd is generated

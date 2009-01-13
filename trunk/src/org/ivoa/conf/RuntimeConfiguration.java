@@ -102,10 +102,22 @@ public class RuntimeConfiguration {
   {
 	return properties.getProperty("project.name");
   } 
+  public String getProjectContact()
+  {
+	return properties.getProperty("project.contact");
+  } 
+  public String getProjectVersion()
+  {
+	return properties.getProperty("project.version");
+  } 
   public String getProjectTitle()
   {
 	return properties.getProperty("project.title");
   } 
+  public String getTitle()
+  {
+	  return getProjectTitle()+"  -  "+getProjectVersion();
+  }
   public String getBasePackage()
   {
 	return properties.getProperty("base.package");
