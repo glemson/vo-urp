@@ -366,13 +366,19 @@
 			<property name="input" location="${input}"/>
 		</ant>
 
+<!--
+    	<condition property="what.to.run" value="run" else="doNothing">
+				<isset property="sources.test"/>
+			</condition>
 
+		<ant target="${what.to.run}" />
+-->
 		<ant target="run" />
 
 	</target>
 
 
-	<target name="buildWeb">
+	<target name="buildWeb" >
 		<ant antfile="webapp/vo-urp-browser/build.xml" target="deployTomcat" inheritAll="false">
 			<property name="input" location="${input}"/>
 		</ant>	
@@ -641,6 +647,11 @@
 	  <echoproperties />
 	</target>
 	
+
+	<target name="doNothing" >
+	<echo>Doing nothing ......................................</echo>
+	</target>
+
 	
 	
 </project>

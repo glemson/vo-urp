@@ -181,6 +181,7 @@
 	-->
 	<filter token="project.name" value="${project.name}"/> 
 	<filter token="project.title" value="${project.title}"/> 
+	<filter token="project.version" value="${project.version}"/> 
 	<filter token="intermediate.model.file" value="${source_intermediate}"/> 
 	<filter token="base.package" value="${root_package}."/>
 	<filter token="jpa.persistence.unit" value="${jpa.persistence.unit}"/>
@@ -524,6 +525,7 @@ Optional
 
 <!-- Compile Unit Tests -->
 <target name="compileTest" depends="copyLibs">
+
   <echo>compile tests ...</echo>
   <echo>compile from : ${test}</echo>
   <echo>compile to   : ${build.test}</echo>
