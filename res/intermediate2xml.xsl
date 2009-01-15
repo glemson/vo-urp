@@ -331,11 +331,8 @@ but that would imply none of the contained elements could have comments.
   The latter MUST be supported in the (analysis of the) -->
   <xsl:template match="objectType" mode="subsettedProperty">
     <xsl:param name="property"/>
-    <xsl:message>finding property for <xsl:value-of select="name"/> with name <xsl:value-of select="$property"/></xsl:message>
     <xsl:choose>
       <xsl:when test="*[name=$property]">
-    <xsl:message>FOUND property for <xsl:value-of select="name"/> with name <xsl:value-of select="$property"/></xsl:message>
-    <xsl:message>IT IS A <xsl:value-of select="name(*[name=$property])"/></xsl:message>
         <xsl:value-of select="*[name=$property]/@xmiid"/>
       </xsl:when>
       <xsl:otherwise>
