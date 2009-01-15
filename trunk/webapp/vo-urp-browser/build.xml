@@ -42,7 +42,7 @@
   <property name="gen.library" value="${build.gen.file}"/>
   <property name="weave.library" value="${build.gen.weave.file}"/>
   <property name="build.war.file"  value="${project.name}-browser.war"/>
-
+  <property name="log.file" value="${tomcat.home}/logs/${project.name}.log"/>
   
   
   <!-- classpath -->
@@ -155,6 +155,17 @@
       </fileset>
     </copy>
     
+    <property name="log.file" value="${tomcat.home}/logs/${project.name}.log"/>
+    <delete file="${log.file}" />
+    
+    <copy tofile="${properties}/log4j.xml" filtering="true" verbose="true" overwrite="true">
+  	<fileset file="${vo-urp.project.path}/templates/log4j.xml.template" />
+  	<filterset>
+  	  <filter token="log.file" value="${log.file}" />
+  	  <filter token="project.name" value="${project.name}" />
+  	</filterset>
+    </copy>
+  	
     <echo message="update vo-urp properties : done."/>
   </target>
 
