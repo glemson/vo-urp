@@ -209,7 +209,6 @@
     <fileset dir="${properties}" >
       <include name="project.properties"/>
       <include name="runtime.properties"/>
-      <include name="log4j.*"/>
     </fileset>
     <fileset dir="${sources}">
       <include name="**/jaxb.index" />
@@ -344,14 +343,13 @@
     <fileset dir="${properties}">
       <include name="project.properties"/>
       <include name="runtime.properties"/>
-      <include name="log4j.*"/>
     </fileset>
     <fileset dir="${sources}">
       <include name="**/jaxb.index" />
     </fileset>
     
     <manifest>
-      <attribute name="Built-By" value="${build.by}"/>
+      <attribute name="Built-By" value="${project.authors}"/>
       <attribute name="Built-Date" value="${build.date}"/>
       
       <attribute name="Build-Jdk" value="${java.vm.version}"/>
@@ -361,10 +359,10 @@
       
       <section name="Common">
         <attribute name="Specification-Title" value="${base.title}"/>
-        <attribute name="Specification-Version" value="${version}"/>
-        <attribute name="Specification-Vendor" value="${vendor}"/>
+        <attribute name="Specification-Version" value="${project.version}"/>
+        <attribute name="Specification-Vendor" value="${project.vendor}"/>
         <attribute name="Implementation-Title" value="${base.title}"/>
-        <attribute name="Implementation-Version" value="${version} - ${build.date}"/> 
+        <attribute name="Implementation-Version" value="${project.version} - ${build.date}"/> 
       </section>        
     </manifest>
     
@@ -461,7 +459,7 @@ Optional
             encoding="UTF-8"
             source="1.5"
             use="true"
-            windowtitle="${source} : ${gen.title}">
+            windowtitle="${source} : ${project.title}">
     
     <classpath>
       <path refid="project.class.path" />
@@ -586,9 +584,21 @@ Optional
 
 <!-- target run : launches test application  -->
 <target name="run" if="target.run.do">
-  <echo message="running ${gen.title} ..."/>
+  <echo message="running ${project.title} ..."/>
   
-  <delete file="${build}/root.log" />
+  <property name="log.file" value="${project.name}.log"/>
+  <delete file="${log.file}" />
+  
+  <copy tofile="${properties}/log4j.xml" filtering="true" verbose="true" overwrite="true">
+	<fileset file="${templates}/log4j.xml.template" />
+	<filterset>
+	  <filter token="log.file" value="${log.file}" />
+	  <filter token="project.name" value="${project.name}" />
+	</filterset>
+  </copy>
+
+  
+  
   
   <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true">
     <jvmarg value="-Xms64m"/>
@@ -598,7 +608,7 @@ Optional
     <arg value="${jpa.persistence.unit}"/>
    </java>  
 
-  <echo message="run ${gen.title} : terminated."/>
+  <echo message="run ${project.title} : terminated."/>
 </target>
 
 
