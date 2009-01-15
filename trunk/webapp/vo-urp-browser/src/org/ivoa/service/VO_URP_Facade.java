@@ -126,7 +126,13 @@ public class VO_URP_Facade implements ServletContextListener {
 //      log.info("get MetaModelFactory and load model : " + MetaModelFactory.MODEL_FILE);
     }
 
+    try
+    {
     MetaModelFactory.getInstance();
+    }catch(IllegalStateException e){
+    	e.printStackTrace();
+    	throw e;
+    }
 
     if (log.isInfoEnabled()) {
       log.info("DBTests.testJAXB : get MetaModelFactory : OK");
