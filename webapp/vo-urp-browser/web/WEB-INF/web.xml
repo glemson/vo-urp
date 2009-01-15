@@ -89,9 +89,18 @@
 
   <servlet-mapping>
     <servlet-name>TAPServlet</servlet-name>
-    <url-pattern>/tap/*</url-pattern>
+    <url-pattern>/Tap.do/sync</url-pattern>
   </servlet-mapping>
 
+  <servlet-mapping>
+    <servlet-name>TAPServlet</servlet-name>
+    <url-pattern>/Tap.do/async</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>TAPServlet</servlet-name>
+    <url-pattern>/Tap.do/*</url-pattern>
+  </servlet-mapping>
 
   <session-config>
     <session-timeout>10</session-timeout>

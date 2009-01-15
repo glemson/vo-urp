@@ -371,6 +371,9 @@
     </copy>
 
     <!-- remove libraries which must stay in web server classpath (tomcat/lib) -->
+  	<!-- TODO cuased hard-to-track-down problems. 
+  	     Need to make this clear in doc that these jar files should be added to shared lib.
+  	  -->
     <delete dir="${build.lib}">
       <include name="activation.jar"/>
       <include name="jaxb*.jar"/>
@@ -389,6 +392,7 @@
         <include name="show/*.jsp"/>
         <include name="manage/*.jsp"/>
         <include name="query/*.jsp"/>
+        <include name="tap/*.jsp"/>
         <include name="static/**/*.*"/>
         <exclude name=".*"/>
       </fileset>

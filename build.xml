@@ -88,8 +88,6 @@
 	<mkdir dir="${dist}"/>
 	<property name="properties" location="${input}/properties"/>
     <mkdir dir="${properties}"/>
-	<property name="test" location="${input}/${sources.test}"/>
-	<mkdir dir="${test}"/>
 	<property name="dist.lib" location="${dist}/lib" />
 	<mkdir dir="${dist.lib}"/>
 	<property name="javadoc" location="${dist}/doc" />
@@ -104,8 +102,8 @@
 	<mkdir dir="${build.gen}"/>
 	<property name="build.weaving" location="${build}/weaving" />
 	<mkdir dir="${build.weaving}"/>
+	<property name="test" location="${input}/${sources.test}"/>
 	<property name="build.test" location="${build}/test" />
-	<mkdir dir="${build.test}"/>
 
 	<property name="sources.gen" location="${outputJava}" />
 

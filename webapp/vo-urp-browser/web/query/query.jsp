@@ -11,15 +11,15 @@
 <tr>
 <td valign="top">
 <h3>Tables and Views</h3><br/>
-<a href="./tap/sync?REQUEST=getTableMetadata&FORMAT=xml">xml</a>
-&nbsp;&nbsp;<a href="./tap/sync?REQUEST=getTableMetadata&FORMAT=votable">votable</a><br/><br/>
+<a href="./Tap.do/sync?REQUEST=getTableMetadata&FORMAT=xml">xml</a>
+&nbsp;&nbsp;<a href="./Tap.do/sync?REQUEST=getTableMetadata&FORMAT=votable">votable</a><br/><br/>
 <c:forEach var="s" items="${tap}">
 <c:if test="${fn:length(s.schema_name) > 0}">
 <b>${s.schema_name}</b><br/>
 </c:if>
 
 <c:forEach var="t" items="${s.tables}">
-&nbsp;&nbsp;<a href="./tap/sync?REQUEST=adqlquery&FORMAT=xml&QUERY=select+*+from+tap_schema.columns+where+table_name='${t.table_name}'&format=html">${t.table_name}</a><br/>
+&nbsp;&nbsp;<a href="./Tap.do/sync?REQUEST=adqlquery&QUERY=select+*+from+tap_schema.columns+where+table_name='${t.table_name}'&FORMAT=html">${t.table_name}</a><br/>
 </c:forEach>
 </c:forEach>
 </td>

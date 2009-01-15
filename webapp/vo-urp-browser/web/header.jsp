@@ -2,6 +2,7 @@
 <%@page contentType="text/html" session="false" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 
+<%@page import="org.ivoa.conf.RuntimeConfiguration"%>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
   <title>${requestScope.title}</title>
@@ -25,7 +26,7 @@
 <body>
 
 <div id="header">
-  <a name="topPage"></a><h1 class="banner">SimDB Browser</h1>
+  <a name="topPage"></a><h1 class="banner"><%= RuntimeConfiguration.getInstance().getTitle() %> - Browser</h1>
 </div>
 
 <div id="layout">

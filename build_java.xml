@@ -524,7 +524,7 @@ Optional
 
 
 <!-- Compile Unit Tests -->
-<target name="compileTest" depends="copyLibs">
+<target name="compileTest" depends="copyLibs" if="target.run.do">
 
   <echo>compile tests ...</echo>
   <echo>compile from : ${test}</echo>
@@ -584,7 +584,7 @@ Optional
 
 
 
-<!-- target run : launches deployed application on Unix environment (bash used) -->
+<!-- target run : launches test application  -->
 <target name="run" if="target.run.do">
   <echo message="running ${gen.title} ..."/>
   
