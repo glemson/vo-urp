@@ -18,7 +18,7 @@
   
   <!-- root.log -->
   <appender name="fileRoot" class="org.apache.log4j.RollingFileAppender">
-    <param name="File" value="root.log"/>
+    <param name="File" value="SimDB.log"/>
     <param name="MaxFileSize" value="10000KB"/>
     <param name="MaxBackupIndex" value="5"/>
     <layout class="org.apache.log4j.PatternLayout">
@@ -31,21 +31,24 @@
   <!-- Loggers : begin -->
   <logger name="dev">
     <level value="warn"/>
+    <appender-ref ref="fileRoot"/>
   </logger>
 
   <logger name="org.ivoa">
     <level value="warn"/>
+    <appender-ref ref="fileRoot"/>
   </logger>
   
   <logger name="org.eclipse.persistence">
     <level value="warn"/>
+    <appender-ref ref="fileRoot"/>
   </logger>
   
   <!-- Loggers : end -->
 
   <!-- Root logger -->
   <root>
-    <level value="debug"/>
+    <level value="warn"/>
     <appender-ref ref="display"/>
     <appender-ref ref="fileRoot"/>
   </root>
