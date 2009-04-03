@@ -3,8 +3,7 @@
 -->  
 
 <!-- jalopy code formatter configuration -->
-<property name="jalopyConvention" location="${libs}/ant/jalopy-java-laurent.xml" />
-
+<property name="jalopyConvention" location="${libs}/jalopy/jalopy-java-laurent.xml" />
 
 <!-- classpath for base module -->
 <!-- class paths for base classes -->
@@ -74,11 +73,16 @@
 <!-- presets -->
 
 <!-- defines Jalopy task -->
+<!-- 
+NOTE this Jalopy task, with these jar files, does not treat enums properly.
+The enum values loose their descriptions and JAXB annotation.
+When running the web browser from source code this causes problems...
+ -->
 <taskdef name="jalopy"
          classname="de.hunsicker.jalopy.plugin.ant.AntPlugin">
   <classpath>
     <pathelement location="${libs}/ant/jalopy.jar" />
-    <pathelement location="${libs}/ant/jalopy-ant.jar" />
+    <pathelement   location="${libs}/ant/jalopy-ant.jar" />   
     <pathelement location="${libs}/log4j-1.2.15.jar"/>
   </classpath>
 </taskdef>
@@ -503,6 +507,36 @@ Optional
   note : formatting causes problems with annotations for enumerations but allows people to read code ...
   Solution : compile first then formats for read only purposes.
   -->
+    <mkdir dir="${libs}/jalopy/bin"/>
+    <javac sourcepath="" srcdir="${libs}/jalopy/src" destdir="${libs}/jalopy/bin" listfiles="false" 
+         fork="true" verbose="false" encoding="UTF-8"
+         debug="on" deprecation="on" optimize="on" casesensitive="true" 
+         source="1.5" target="1.5">
+    
+    <classpath>
+      <pathelement location="${libs}/jalopy/lib/jalopy-1.5b1.jar"/>
+      <pathelement location="${libs}/log4j-1.2.15.jar" />
+    </classpath>
+    
+    <include name="**/*.java"/>
+  </javac> 
+  
+  <java classname="org.ivoa.jalopy.Formatter" dir="${sources.gen}/src" fork="true" failonerror="true">
+    <jvmarg value="-Xms64m"/>
+    <jvmarg value="-Xmx256m"/>
+    <arg value="${sources.gen}/src"/> 
+<!--      <arg value="${jalopyConvention}"/>   -->  
+    <classpath>
+      <pathelement location="${libs}/jalopy/lib/jalopy-1.5b1.jar"/>
+      <pathelement location="${libs}/jalopy/bin"/>
+      <pathelement location="${libs}/log4j-1.2.15.jar" />
+    </classpath>
+    
+   </java>  
+
+
+
+<!-- 
   
   <jalopy fileformat="unix"
           convention="${jalopyConvention}"
@@ -515,7 +549,10 @@ Optional
     <fileset dir="${sources.gen}/src">
       <include name="**/*.java" />
     </fileset>
+    
   </jalopy>
+ -->
+
 </target>
 
 
