@@ -141,6 +141,9 @@ This folder and sub folders contains java libraries used by ant build file and j
       https://jaxb.dev.java.net/nonav/2.1.6/docs/ReleaseNotes.html
 
 
+* jalopy-1.5b1.jar 
+			Built from Jalopy source code obtained from http://sourceforge.net/projects/jalopy/
+			
 
 
 --- End of file ---
