@@ -525,6 +525,7 @@ Optional
     <jvmarg value="-Xms64m"/>
     <jvmarg value="-Xmx256m"/>
     <arg value="${sources.gen}/src"/> 
+    <!--  The convention file causes problems. -->
 <!--      <arg value="${jalopyConvention}"/>   -->  
     <classpath>
       <pathelement location="${libs}/jalopy/lib/jalopy-1.5b1.jar"/>
