@@ -86,9 +86,12 @@
 <!-- target checkDB : is database server alive ? -->
 <target name="checkDB" depends="initForDB" if="target.db.do">
   <echo>checkDB : ${eclipselink.jdbc.url} ...</echo>
+<!-- 
+<echo>user : ${eclipselink.jdbc.user}</echo>
+<echo>password : ${eclipselink.jdbc.password}</echo>
+-->
+  <doSql onerror="abort" print="true">select 1</doSql>
 
-  <doSql onerror="abort" print="true">select 1;</doSql>
-  
   <echo>checkDB : done.</echo>
 </target>
 
