@@ -521,9 +521,12 @@ Optional
     <include name="**/*.java"/>
   </javac> 
   
-  <java classname="org.ivoa.jalopy.Formatter" dir="${sources.gen}/src" fork="true" failonerror="true">
+  <java classname="org.ivoa.jalopy.Formatter" dir="${sources.gen}/src" 
+         fork="false" failonerror="true">
+<!--    
     <jvmarg value="-Xms64m"/>
     <jvmarg value="-Xmx256m"/>
+-->
     <arg value="${sources.gen}/src"/> 
     <!--  The convention file causes problems. -->
 <!--      <arg value="${jalopyConvention}"/>   -->  

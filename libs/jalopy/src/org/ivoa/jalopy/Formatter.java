@@ -4,6 +4,8 @@ import java.io.FileFilter;
 import java.util.List;
 
 import de.hunsicker.jalopy.Jalopy;
+import de.hunsicker.jalopy.language.JavaNode;
+import de.hunsicker.jalopy.storage.History;
 
 
 /**
@@ -60,10 +62,14 @@ public class Formatter {
       {
           jalopy.setInput(src);
           jalopy.setOutput(src);
-          if(jalopy.format())
-            System.out.println("Formatted "+src.getAbsolutePath());
-          else
-            System.out.println("Failed formatting "+src.getAbsolutePath());
+          jalopy.setHistoryPolicy(History.Policy.DISABLED);
+          jalopy.format();
+          if(jalopy.getState() == Jalopy.State.OK)
+              System.out.println("Formatted "+src.getAbsolutePath());
+          else if(jalopy.getState() == Jalopy.State.WARN)
+              System.out.println("Formatted "+src.getAbsolutePath()+" with warnings");
+          else if(jalopy.getState() == Jalopy.State.ERROR)
+              System.out.println("Failed formatting "+src.getAbsolutePath());
       }
       else if(src.isDirectory())
       {

@@ -360,10 +360,11 @@
 
 
 		<!-- builds vo-urp-browser -->
+<!--
 		<ant antfile="webapp/vo-urp-browser/build.xml" target="deployTomcat" inheritAll="false">
 			<property name="input" location="${input}"/>
 		</ant>
-
+--> 
 <!--
     	<condition property="what.to.run" value="run" else="doNothing">
 				<isset property="sources.test"/>
@@ -371,8 +372,9 @@
 
 		<ant target="${what.to.run}" />
 -->
+		<!--
 		<ant target="run" />
-
+-->
 	</target>
 
 
