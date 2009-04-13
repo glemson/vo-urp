@@ -10,7 +10,9 @@
 <c:if test="${meta.root}">
   <p>
     <b>Data Model serialization : </b>
-    <a href="Show.do?entity=${requestScope.entity.name}&id=${item.id}&view=xml" title="view as XML"><img src="static/xml_small.png"/></a>
+    <a href="Show.do?entity=${requestScope.entity.name}&id=${item.id}&view=xml" title="view as XML"><img src="static/XML_blue.png"/></a>
+    <a href="Show.do?entity=${requestScope.entity.name}&id=${item.id}&view=json" title="view as JSON"><img src="static/JSON_blue.png"/></a>
+    <a href="Show.do?entity=${requestScope.entity.name}&id=${item.id}&view=edit" title="Edit"><img src="static/Edit.png"/></a>
   </p>
 </c:if>
 
