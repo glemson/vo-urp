@@ -44,6 +44,8 @@ public final class EntityConfigFactory {
       
       ec = new EntityConfig(mf.getClass(name), true, true);
       ec.addPage("xml", "DM2XML");
+      ec.addPage("json", "DM2JSON");
+      ec.addPage("edit", "EditMetadataObject");
       addConfig(ec);
     }
   }

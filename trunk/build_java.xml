@@ -271,7 +271,7 @@ When running the web browser from source code this causes problems...
     <replacevalue>
       &lt;m:model xmlns:m="http://ivoa.org/theory/datamodel/generationmetadata/v0.1" 
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-                  xsi:schemaLocation="http://ivoa.org/theory/datamodel/generationmetadata/v0.1 http://volute.googlecode.com/svn/trunk/projects/theory/snapdm/input/intermediateModel.xsd"</replacevalue>
+                  xsi:schemaLocation="http://ivoa.org/theory/datamodel/generationmetadata/v0.1 http://vo-urp.googlecode.com/svn/trunk/projects/theory/snapdm/specification/intermediateModel.xsd"</replacevalue>
   </replace>
   <replace file="${build.gen}/${source_intermediate}" encoding="UTF-8">
     <replacetoken>&lt;/model</replacetoken>
