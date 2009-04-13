@@ -11,6 +11,7 @@ import org.ivoa.dm.model.MetadataObject;
 
 import org.ivoa.jaxb.CustomUnmarshallListener;
 import org.ivoa.jaxb.JAXBFactory;
+import org.ivoa.json.MetadataObject2JSON;
 
 import org.ivoa.metamodel.Collection;
 import org.ivoa.metamodel.Reference;
@@ -535,6 +536,14 @@ public final class ModelFactory {
    */
   public JAXBFactory getJaxbFactory() {
     return jf;
+  }
+  
+  /**
+   * Returns JSON serialisation of object.<br/>
+   */
+  public String toJSON(MetadataObject obj)
+  {
+	  return new MetadataObject2JSON().toJSONString(obj);
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
