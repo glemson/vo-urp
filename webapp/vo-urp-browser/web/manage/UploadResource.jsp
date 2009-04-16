@@ -9,12 +9,13 @@
 <c:set var="result" value="${requestScope.validation}" ></c:set>
 
 <p>
-  This page checks that an uploaded document is valid against the <%= RuntimeConfiguration.getInstance().getProjectName() %> XML Schemas (xsd).
+  This page checks that an uploaded document is valid against the <%= RuntimeConfiguration.getInstance().getProjectName() %> XML Schema under
+  <a href="<%= org.ivoa.dm.DataModelManager.SCHEMA_URL %>" target="_blank"><%= org.ivoa.dm.DataModelManager.SCHEMA_URL %></a>.
 </p>
 
 <form method="POST" action="<%= request.getContextPath() %>/Upload.do" enctype="multipart/form-data">
 <input type="hidden" name="action" value="validate"/>
-<input type="file" name="<%= UploadServlet.INPUT_DOC %>"/>
+<input type="file" name="<%= UploadServlet.INPUT_DOC %>" size="100"/>
 <br/>
 <input type="submit" value="Validate">
 </form>
@@ -42,4 +43,7 @@ Your uploaded document was ${result.valid ? 'valid' : 'not valid'}.<br/><br/>
 </table>
 </c:if>
 </c:if>
+<pre>
+
+</pre>
 <jsp:include page="../footer.jsp" flush="false" />
