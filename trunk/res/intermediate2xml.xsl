@@ -293,7 +293,7 @@ but that would imply none of the contained elements could have comments.
           <xsl:when test="name = 'float'">-1.0</xsl:when>
           <xsl:when test="name = 'real'">-1.0</xsl:when>
           <xsl:when test="name = 'double'">-1.0</xsl:when>
-          <xsl:when test="name = 'datetime'">1970-01-01 00:00:00</xsl:when>
+          <xsl:when test="name = 'datetime'">1970-01-01T00:00:00</xsl:when>
           <xsl:when test="name = 'string'">abcde</xsl:when>
           <xsl:when test="name = 'anyURI'">http://some.uri.somewhere/</xsl:when>
           <xsl:otherwise>abcdefg</xsl:otherwise>
