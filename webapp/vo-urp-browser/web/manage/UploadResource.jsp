@@ -9,7 +9,7 @@
 <c:set var="result" value="${requestScope.validation}" ></c:set>
 
 <p>
-  This page checks that an uploaded document is valid against the <%= RuntimeConfiguration.getInstance().getProjectName() %> XML Schema under
+  This page checks that an uploaded document is valid against the <%= RuntimeConfiguration.getInstance().getProjectName() %> XML Schema under<br/>
   <a href="<%= org.ivoa.dm.DataModelManager.SCHEMA_URL %>" target="_blank"><%= org.ivoa.dm.DataModelManager.SCHEMA_URL %></a>.
 </p>
 

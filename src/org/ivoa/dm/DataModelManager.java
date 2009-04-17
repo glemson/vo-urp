@@ -4,7 +4,11 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import javax.persistence.EntityManager;
 import org.apache.commons.logging.Log;
 import org.ivoa.conf.RuntimeConfiguration;
@@ -58,6 +62,9 @@ public class DataModelManager {
     return ModelFactory.getInstance().unmarshallToObject(filePath);
   }
 
+  private MetadataObject unmarshall(final InputStream stream) {
+    return ModelFactory.getInstance().unmarshallToObject(new InputStreamReader(stream));
+  }
   public boolean validate(final String filePath) {
     if (log.isInfoEnabled()) {
       log.info("DataModelManager.validate : " + filePath);
@@ -99,11 +106,28 @@ public class DataModelManager {
     return result;
   }
   
+  
+  
   public MetadataObject load(final String filePath) {
     if (log.isInfoEnabled()) {
       log.info("DataModelManager.load : " + filePath);
     }
+    InputStream stream = null;
+    try
+    {
+      stream = new FileInputStream(filePath);
+      return load(stream);
+    }
+    catch(IOException e)
+    {
+      log.error("DataModelManager.load : runtime failure : ", e);
+    }
+    return null;  
+  }
     
+    public MetadataObject load(final InputStream stream)
+    {
+      
     final JPAFactory jf = getJPAFactory();
 
     EntityManager em = null;
@@ -116,7 +140,7 @@ public class DataModelManager {
       // sets EntityManager to ReferenceResolver Context :
       ReferenceResolver.initContext(em);
       
-      o = unmarshall(filePath);
+      o = unmarshall(stream);
       
       // starts TX :
       // starts transaction on snap database :
