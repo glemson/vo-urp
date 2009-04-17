@@ -1,22 +1,11 @@
 <%@ tag isELIgnored="false" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
-<%@ attribute name="attribute" type="org.ivoa.metamodel.Attribute" required="true" %>
+<%@ attribute name="collection" type="org.ivoa.metamodel.Collection" required="true" %>
+<%@ attribute name="" type="java.util.Lists" required="true" %>
 <%
-  String type = attribute.getDatatype().getName();
-  String id = attribute.getXmiid();
-  if("boolean".equals(type))
-  {
-%>
-<select id="${attribute.xmiid}">
-  <option selected="true">true</option>
-  <option>false</option>
-</select>
-<%	  
-  } else {
-%>
-<input type="text" id="${attribute.xmiid}"/>
-<%	  
-  }
+  String type = collection.getDatatype().getName();
+  String id = collection.getXmiid();
+
 %>
 
 <jsp:doBody/>
