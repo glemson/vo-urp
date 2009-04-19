@@ -8,7 +8,7 @@
         This document is the first xml sample document for Protocol according to SimDB generated XML schemas (xsd).
 -->
 <s:aClusterFinder xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-              xmlns:s='http://www.ivoa.net/xml/SNAP/v0.1/SimDB'>
+              xmlns:s='http://www.ivoa.net/xml/SimDB/0.5-20090114'>
 
 <!-- ++++++++++++++++++++++++++++++++++++++++++ -->
 <!-- HaloMaker + TreeMaker                      -->

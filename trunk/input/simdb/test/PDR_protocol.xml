@@ -8,7 +8,7 @@
         This document is the first xml sample document for Protocol according to SimDB generated XML schemas (xsd).
 -->
 <s:aSimulator xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-              xmlns:s='http://www.ivoa.net/xml/SimDB/0.5-20090114/SimDB'>
+              xmlns:s='http://www.ivoa.net/xml/SimDB/0.5-20090114'>
                        
   <identity publisherDID="voparis/luth/Pdr/1.0"/>
 
@@ -61,7 +61,8 @@
   
   <parameterGroup>
     <name>gas parameters</name>
-    <description>Parameters controling gas properties</description>
+<!--     <description>Parameters controling gas properties</description>
+ -->
     <member>
       <parameter xmlId="DU_MODPARAM_R.FD_NHINIT" />
     </member>
@@ -77,7 +78,8 @@
 <!-- to be corrected -->
   <parameterGroup>
     <name>grain parameters</name>
-    <description>Parameters controling grain properties</description>
+<!--     <description>Parameters controling grain properties</description>
+ -->
     <member>
       <parameter xmlId="DU_MODPARAM_R.FD_CD" />
     </member>
@@ -91,7 +93,7 @@
 
   <parameterGroup>
     <name>algorithm parameters</name>
-    <description>Parameters related to algorithms</description>
+<!--     <description>Parameters related to algorithms</description>  -->
     <member>
       <parameter xmlId="DU_MODPARAM_R.FD_ITFER" />
     </member>
