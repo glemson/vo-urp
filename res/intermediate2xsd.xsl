@@ -20,6 +20,8 @@
   <!-- xml index on xmlid -->
   <xsl:key name="element" match="*//*" use="@xmiid"/>
   <xsl:key name="package" match="*//package" use="@xmiid"/>
+  <!-- Next is to check wheher package needs handling, or is internal -->
+  <xsl:key name="modelpackage" match="*//package[not(name='IVOAValueTypes')]" use="@xmiid"/>
   
   <!-- Input parameters -->
   <xsl:param name="lastModifiedText"/>
@@ -58,7 +60,7 @@
 -- Generating XSDs for model <xsl:value-of select="name"/>.
 -- last modification date of the UML model <xsl:value-of select="$lastModifiedText"/>
 
-    <xsl:apply-templates select="package"/>
+    <xsl:apply-templates select="package[key('modelpackage',@xmiid)]"/>
     <xsl:apply-templates select="." mode="rootelements"/>
   </xsl:template>  
   
@@ -66,9 +68,8 @@
   
   
   <xsl:template match="model" mode="rootelements">
-    
     <xsl:variable name="targetschema">
-      <xsl:value-of select="concat($targetnamespace_root,'/',name)"/>
+      <xsl:value-of select="$targetnamespace_root"/>
     </xsl:variable>
     
     <!-- 
@@ -87,7 +88,7 @@ Should do a tranformation if the nameis not suite for this (spaces etc).
         <xsl:attribute name="targetNamespace">
           <xsl:value-of select="$targetschema"/>
         </xsl:attribute>
-        <xsl:for-each select=".//package">
+        <xsl:for-each select=".//package[key('modelpackage',@xmiid)]">
           <xsl:call-template name="xmlns">
             <xsl:with-param name="packageid" select="@xmiid"/>
           </xsl:call-template>
@@ -101,7 +102,7 @@ Should do a tranformation if the nameis not suite for this (spaces etc).
           </xsd:documentation>
         </xsd:annotation>
         
-        <xsl:for-each select=".//package">
+        <xsl:for-each select=".//package[key('modelpackage',@xmiid)]">
           <xsl:call-template name="ns-import">
             <xsl:with-param name="packageid" select="@xmiid"/>
           </xsl:call-template>

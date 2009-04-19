@@ -27,6 +27,8 @@
   <xsl:strip-space elements="*" />
   
   <xsl:key name="element" match="*//*" use="@xmiid"/>
+  <!-- Next is to check wheher package needs handling, or is internal -->
+  <xsl:key name="modelpackage" match="*//package[not(name='IVOAValueTypes')]" use="@xmiid"/>
   
   <xsl:param name="lastModified"/>
   <xsl:param name="lastModifiedText"/>
@@ -173,7 +175,7 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
 -- Generating Java code for model <xsl:value-of select="name"/>.
 -- last modification date of the UML model <xsl:value-of select="$lastModifiedText"/>
     
-    <xsl:for-each select="package">
+    <xsl:for-each select="package[key('modelpackage',@xmiid)]">
       <xsl:call-template name="package">
         <xsl:with-param name="dir" select="$root_package_dir"/>
         <xsl:with-param name="path" select="$root_package"/>

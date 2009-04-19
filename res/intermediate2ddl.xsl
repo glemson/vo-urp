@@ -232,6 +232,9 @@ CREATE TABLE TargetObjectType (
 <xsl:apply-templates select="." mode="container"/>
 <xsl:apply-templates select="attribute" />
 <xsl:apply-templates select="reference" />
+
+<xsl:apply-templates select="." mode="users"/>
+
 <xsl:text>);</xsl:text>&cr;
   </xsl:template>
   
@@ -407,6 +410,16 @@ DROP INDEX <xsl:value-of select="$tableName"/>.ix_<xsl:value-of select="$tableNa
     <xsl:if test="container">
       <xsl:text>, containerId </xsl:text><xsl:value-of select="$IDDatatype"/><xsl:text> NOT NULL </xsl:text>&rem;<xsl:value-of select="key('element',container/@xmiidref)/name"/>&cr;
       <xsl:text>, rank INTEGER NOT NULL </xsl:text>&cr;      
+    </xsl:if>
+  </xsl:template>
+  
+  <!-- IF this is a root entity class, add user columnsdetermine whether there is a class that contains this class.
+  If so generate a containerID column.
+  NOTE we should ensure that there is only 1  -->
+  <xsl:template match="objectType" mode="users">
+    <xsl:if test="entity='true' and not(extends)">
+      <xsl:text>, ownerUser VARCHAR(32)</xsl:text>&cr;
+      <xsl:text>, updateUser VARCHAR(32)</xsl:text>&cr;      
     </xsl:if>
   </xsl:template>
   
