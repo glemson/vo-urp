@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:vo-urp="http://vo-urp.googlecode.com/"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.ivoa.net/xml/SimDB/0.5-20090114"
+            xmlns:p5="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb"
+            xmlns:p4="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/experiment"
+            xmlns:p2="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/protocol"
+            xmlns:p7="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/object"
+            xmlns:p6="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/dal"
+            xmlns:p8="http://www.ivoa.net/xml/SimDB/0.5-20090114/model"
+            xmlns:p3="http://www.ivoa.net/xml/SimDB/0.5-20090114/validation"
+            targetNamespace="http://www.ivoa.net/xml/SimDB/0.5-20090114">
+   <xsd:annotation>
+      <xsd:documentation>Root elements for the model. Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.
+              As root elements we choose the concrete types in inheritance hierarchies with no contained types.
+              @@TODO We assume those concrete types should be final. This should be tested. @@
+            </xsd:documentation>
+   </xsd:annotation>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb"
+               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/experiment"
+               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb/experiment.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/protocol"
+               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb/protocol.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/object"
+               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb/object.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/dal"
+               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb/dal.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/model"
+               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/model.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/validation"
+               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/validation.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
+               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/base.xsd"/>
+   <xsd:element name="aProject" type="p5:Project">
+      <xsd:annotation>
+         <xsd:documentation>
+            Root element representing a(n) Project.
+          </xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_2_8e0028f_1191338785390_934381_291</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+   </xsd:element>
+   <xsd:element name="aSimulation" type="p4:Simulation">
+      <xsd:annotation>
+         <xsd:documentation>
+            Root element representing a(n) Simulation.
+          </xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1173260098343_801274_269</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+   </xsd:element>
+   <xsd:element name="aClusterDetection" type="p4:ClusterDetection">
+      <xsd:annotation>
+         <xsd:documentation>
+            Root element representing a(n) ClusterDetection.
+          </xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1175595880687_132606_426</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+   </xsd:element>
+   <xsd:element name="aCompositeExperiment" type="p4:CompositeExperiment">
+      <xsd:annotation>
+         <xsd:documentation>
+            Root element representing a(n) CompositeExperiment.
+          </xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1209037435156_352640_267</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+   </xsd:element>
+   <xsd:element name="aCompositeProtocol" type="p4:CompositeProtocol">
+      <xsd:annotation>
+         <xsd:documentation>
+            Root element representing a(n) CompositeProtocol.
+          </xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1209037627390_53284_333</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+   </xsd:element>
+   <xsd:element name="aSimulator" type="p2:Simulator">
+      <xsd:annotation>
+         <xsd:documentation>
+            Root element representing a(n) Simulator.
+          </xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1173260371343_174540_519</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+   </xsd:element>
+   <xsd:element name="aClusterFinder" type="p2:ClusterFinder">
+      <xsd:annotation>
+         <xsd:documentation>
+            Root element representing a(n) ClusterFinder.
+          </xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_14_0_8e0028f_1202820488812_969868_2587</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+   </xsd:element>
+   <xsd:element name="aWebService" type="p6:WebService">
+      <xsd:annotation>
+         <xsd:documentation>
+            Root element representing a(n) WebService.
+          </xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_1_8e0028f_1178634214328_979805_732</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+   </xsd:element>
+</xsd:schema>
