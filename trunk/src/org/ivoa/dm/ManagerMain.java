@@ -99,7 +99,7 @@ public final class ManagerMain {
       final String fileName = args[2];
       
       DataModelManager dmm = new DataModelManager(jpa_pu);
-      dmm.load(fileName);
+      dmm.load(fileName, "");
       
     } else {
       log.error("Manager : unsupported command : "+cmd);

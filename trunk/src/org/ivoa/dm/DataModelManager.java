@@ -8,12 +8,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.security.Principal;
 
 import javax.persistence.EntityManager;
 import org.apache.commons.logging.Log;
 import org.ivoa.conf.RuntimeConfiguration;
 import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.ReferenceResolver;
+import org.ivoa.dm.model.RootEntityObject;
 import org.ivoa.jpa.JPAFactory;
 import org.ivoa.util.FileUtils;
 import org.ivoa.util.LogUtil;
@@ -37,11 +39,13 @@ public class DataModelManager {
   public final static String SCHEMA_URL = RuntimeConfiguration.getInstance().getRootSchemaURL();
 
   private String jpa_pu;
+  private XMLValidator validator;
   /**
    * Constructor
    */
   public DataModelManager(String jpa_pu) {
 	  this.jpa_pu = jpa_pu;
+	  this.validator = new XMLValidator(SCHEMA_URL);
   }
 
   private JPAFactory getJPAFactory() {
@@ -99,7 +103,6 @@ public class DataModelManager {
   }
   
   public ValidationResult validateStream(final InputStream in) {
-    final XMLValidator validator = new XMLValidator(SCHEMA_URL);
 
     final ValidationResult result = validator.validate(in);
 
@@ -108,7 +111,7 @@ public class DataModelManager {
   
   
   
-  public MetadataObject load(final String filePath) {
+  public MetadataObject load(final String filePath, final String userName) {
     if (log.isInfoEnabled()) {
       log.info("DataModelManager.load : " + filePath);
     }
@@ -116,7 +119,7 @@ public class DataModelManager {
     try
     {
       stream = new FileInputStream(filePath);
-      return load(stream);
+      return load(stream, userName);
     }
     catch(IOException e)
     {
@@ -125,7 +128,7 @@ public class DataModelManager {
     return null;  
   }
     
-    public MetadataObject load(final InputStream stream)
+    public MetadataObject load(final InputStream stream, final String userName)
     {
       
     final JPAFactory jf = getJPAFactory();
@@ -141,11 +144,17 @@ public class DataModelManager {
       ReferenceResolver.initContext(em);
       
       o = unmarshall(stream);
+      if(o instanceof RootEntityObject) // TODO enforce this ...
+      {
+    	  ((RootEntityObject)o).setOwner(userName);
+    	  ((RootEntityObject)o).setUpdateUser(userName);
+      }
       
       // starts TX :
       // starts transaction on snap database :
       log.warn("DataModelManager.load : starting TX ...");
       em.getTransaction().begin();
+      
       
       em.persist(o);
 

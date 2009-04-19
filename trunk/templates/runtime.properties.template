@@ -39,7 +39,7 @@ intermediate.model.xmlns=http://ivoa.org/theory/datamodel/generationmetadata/v0.
 #------------------------------------------------------------------------
 # Properties related to the XML Schema (XSD) generated for the model
 #------------------------------------------------------------------------
-# root schema URL
+# remote root schema URL
 # e.g. http://volute.googlecode.com/svn/trunk/projects/theory/snapdm/xsd/SimDB_root.xsd
 root.schema.url=@root.schema.url@
 

@@ -12,12 +12,16 @@ import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.util.FileUtils;
 
 import org.ivoa.xml.ValidationResult;
+import org.ivoa.xml.XSLTTransformer;
+
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -30,14 +34,16 @@ import javax.servlet.http.HttpSession;
 
 
 /**
- * The servlet class to list Experiment from SNAP database
+ * The servlet class uses XSLT documents to transform from the
+ * domain representation of objects to denormalised views.<br/>
  */
-public final class UploadServlet extends BaseServlet {
-    public static final String INPUT_DOC = "doc";
-    public static final String INPUT_TYPE = "type";
-    public static final String OUTPUT_VALIDATION = "validation";
-    public static final String OUTPUT_INSERT = "insert";
-    public static final String OUTPUT_TEMPLATE = "template";
+public final class XSLTTransformerServlet extends BaseServlet  {
+    public static final String INPUT_DOC = "inputDoc";
+    /** Name of the XSLT sheet (in views/ directory) */
+    public static final String INPUT_XSLT = "xslt";
+    /** The mode, forward or backward */
+    public static final String INPUT_MODE = "mode";
+    public static final String OUTPUT_DOC = "transformedDoc";
     public static final String OUTPUT_STATUS = "status";
     public static final String OUTPUT_ERROR = "error";
 
@@ -45,17 +51,12 @@ public final class UploadServlet extends BaseServlet {
     public static final String INPUT_ACTION = "action";
 
     /** Action parameter value indicating that an uploaded XML doc should be validated against the XML schemas for the current model */
-    public static final String INPUT_ACTION_validate = "validate";
+    public static final String INPUT_ACTION_transform = "transform";
 
-    /** Action parameter value indicating that an uploaded XML doc should be validated against the XML schemas for the current model,
-     * and if valid, inserted.
-     * TODO should only be available for registered users.
-     */
-    public static final String INPUT_ACTION_insert = "insert";
+    /** location where views should be stored */
+    public static final String PATH_VIEWS = "/views/";
+    public static final String PATH_PAGES = "/page/";
 
-    /** Action parameter value indicating that a template/example XML doc should be produced for a specified entity */
-    public static final String INPUT_ACTION_template = "template";
-    public static final String PATH_MANAGE = "manage/";
     private DataModelManager dataModelManager;
 
     /**
@@ -63,7 +64,7 @@ public final class UploadServlet extends BaseServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Upload servlet";
+        return "XSLT Transformer servlet";
     }
 
     /** Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -84,20 +85,9 @@ public final class UploadServlet extends BaseServlet {
         Object result = null;
 
         try {
-            if (INPUT_ACTION_validate.equals(action)) {
-                result = handleValidate(params);
-                request.setAttribute(OUTPUT_VALIDATION, result);
-            } else if (INPUT_ACTION_template.equals(action)) {
-                result = handleTemplate(params);
-                request.setAttribute(OUTPUT_TEMPLATE, result);
-            } else if (INPUT_ACTION_insert.equals(action)) {
-              // check user privileges
-              String user = request.getRemoteUser();
-              if(false)
-              {
-                result = handleInsert(params);
-                request.setAttribute(OUTPUT_INSERT, result);
-              }
+            if (INPUT_ACTION_transform.equals(action)) {
+                result = handleTransform(params);
+                request.setAttribute(OUTPUT_DOC, result);
             }
         } catch (Exception e) {
             error = e.getMessage();
@@ -126,7 +116,7 @@ public final class UploadServlet extends BaseServlet {
 
         start = System.nanoTime();
 
-        String viewPath = PATH_MANAGE + "UploadResource.jsp";
+        String viewPath = PATH_PAGES + "XML2XML.jsp";
         doForward(request, response, viewPath);
 
         time = ((System.nanoTime() - start) / 1000000L);
@@ -137,18 +127,26 @@ public final class UploadServlet extends BaseServlet {
         }
     }
 
-    private ValidationResult handleValidate(Map<String, Object> parameters)
+    private String handleTransform(Map<String, Object> parameters)
         throws Exception {
         InputStream in = null;
 
         try {
             final FileItem infile = (FileItem) parameters.get(INPUT_DOC);
 
+            String sheetFile = PATH_VIEWS+(String)parameters.get(INPUT_XSLT);
+            String mode = (String)parameters.get(INPUT_MODE);
+            if(!"forward".equals(mode))
+            	mode = "inverse";
             in = infile.getInputStream();
 
-            ValidationResult result = dataModelManager.validateStream(in);
+            StringWriter out = new StringWriter();
+            HashMap<String,String> xsltParams = new HashMap<String, String>();
+            xsltParams.put("mode",mode);
 
-            return result;
+            XSLTTransformer.transform(sheetFile, xsltParams, in, out);
+
+            return out.toString();
         } catch (Throwable t) {
             throw new Exception(t);
         } finally {
@@ -156,45 +154,6 @@ public final class UploadServlet extends BaseServlet {
         }
     }
 
-    /**
-     * Insert an uploaded document into the databaase and return the corresponding object.<br/>
-     *
-     * TODO implement the insert part
-     *
-     * @param parameters
-     * @return
-     * @throws Exception
-     */
-    private MetadataObject handleInsert(Map<String, Object> parameters)
-        throws Exception {
-        InputStream in = null;
-
-        try {
-            final FileItem infile = (FileItem) parameters.get(INPUT_DOC);
-
-            in = infile.getInputStream();
-
-            MetadataObject result = dataModelManager.load(in);
-
-            return result;
-        } catch (Throwable t) {
-            throw new Exception(t);
-        } finally {
-            FileUtils.closeStream(in);
-        }
-    }
-
-    /**
-     * Create a template XML document for the datatype specified in parameter INPUT_TYPE.<br/>
-     * @param parameters
-     * @return
-     */
-    private String handleTemplate(Map<String, Object> parameters)
-    {
-      final String type = (String) parameters.get(INPUT_TYPE);
-      
-      return null;
-    }
     
     /**
      * Extract a Map off key value pairs from the request which is assumed to be

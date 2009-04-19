@@ -41,11 +41,11 @@
   @XmlType( name = "<xsl:value-of select="name"/>", namespace = "<xsl:value-of select="$namespace"/>")
     <xsl:choose>
       <xsl:when test="number($isContained) = 0 and not(@abstract = 'true')">
-    @XmlRootElement( name = "a<xsl:value-of select="name"/>", namespace = "<xsl:value-of select="concat($targetnamespace_root,'/',/model/name)"/>")
+    @XmlRootElement( name = "a<xsl:value-of select="name"/>", namespace = "<xsl:value-of select="$targetnamespace_root"/>")
       </xsl:when>
       <xsl:otherwise>
 <!-- always produce a JAXB annotation to be able to marshall fragments -->        
-    @XmlRootElement( name = "<xsl:value-of select="name"/>", namespace = "<xsl:value-of select="concat($targetnamespace_root,'/',/model/name)"/>")
+    @XmlRootElement( name = "<xsl:value-of select="name"/>", namespace = "<xsl:value-of select="$targetnamespace_root"/>")
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
