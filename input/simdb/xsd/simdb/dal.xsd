@@ -10,11 +10,11 @@
       <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
    </xsd:annotation>
    <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/experiment"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb/experiment.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/experiment.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/base.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/base.xsd"/>
    <xsd:complexType name="WebService">
       <xsd:annotation>
          <xsd:documentation>This class represents a web service that can be used to access the results of an Experiment.

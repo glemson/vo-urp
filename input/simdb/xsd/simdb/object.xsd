@@ -9,9 +9,9 @@
       <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
    </xsd:annotation>
    <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/base.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/base.xsd"/>
    <xsd:complexType name="ChildObject">
       <xsd:annotation>
          <xsd:documentation>An associative class representing a child object in a custom object hierarchy.</xsd:documentation>

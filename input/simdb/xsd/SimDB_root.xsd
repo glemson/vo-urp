@@ -17,21 +17,21 @@
             </xsd:documentation>
    </xsd:annotation>
    <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/experiment"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb/experiment.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/experiment.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/protocol"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb/protocol.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/protocol.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/object"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb/object.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/object.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/dal"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb/dal.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/dal.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/model"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/model.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/model.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/validation"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/validation.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/validation.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/base.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/base.xsd"/>
    <xsd:element name="aProject" type="p5:Project">
       <xsd:annotation>
          <xsd:documentation>

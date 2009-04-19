@@ -11,13 +11,13 @@
       <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
    </xsd:annotation>
    <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/protocol"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb/protocol.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/protocol.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/object"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb/object.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/object.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/base.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/base.xsd"/>
    <xsd:complexType name="Simulation">
       <xsd:annotation>
          <xsd:documentation>This class represents the basic simulations from which eventually all SimDB data products are derived. It extends Experiment by adding descriptions of the physical processes that were simulated</xsd:documentation>

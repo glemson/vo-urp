@@ -8,7 +8,7 @@
       <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
    </xsd:annotation>
    <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
-               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/base.xsd"/>
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/base.xsd"/>
    <xsd:complexType name="Resource" abstract="true">
       <xsd:annotation>
          <xsd:documentation>This is a thin copy of the Registry Resource model's Resource that borrowes some of its elements. 
