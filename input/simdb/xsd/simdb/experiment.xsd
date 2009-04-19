@@ -1,0 +1,612 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:vo-urp="http://vo-urp.googlecode.com/"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/experiment"
+            xmlns:base="http://www.ivoa.net/xml/dm/base/v0.1"
+            xmlns:p5="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb"
+            xmlns:p2="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/protocol"
+            xmlns:p7="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/object"
+            targetNamespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/experiment">
+   <xsd:annotation>
+      <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
+   </xsd:annotation>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb"
+               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/protocol"
+               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb/protocol.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/object"
+               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/simdb/object.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
+               schemaLocation="http://code.google.com/p/vo-urp/source/browse/trunk/input/simdb/xsd/base.xsd"/>
+   <xsd:complexType name="Simulation">
+      <xsd:annotation>
+         <xsd:documentation>This class represents the basic simulations from which eventually all SimDB data products are derived. It extends Experiment by adding descriptions of the physical processes that were simulated</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1173260098343_801274_269</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="Experiment">
+            <xsd:sequence>
+               <xsd:element name="executionTime" type="xsd:dateTime" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>The date/time at which the simulation was completed</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1173262402406_325355_1300</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="appliedPhysics" type="AppliedPhysics" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="Characterisation">
+      <xsd:annotation>
+         <xsd:documentation>This class represents the characterisation of a property of an object in a given object collection. It represents both a priori and a posteriori characterisations. With a priori characterisation we indicate possible and/or nominal [?] values the variable may take, it defines the possible range of values of the property. In contrast, an a posteriori characterisation of a property in an object collection provides summarising, likely statistical, information on the values that were actually taken up (observed, simulated) by the objects in the collection.
+The a priori characterisation is most similar, in fact a generalisation of the Characterisation model of the IVOA Data Model working group [3]. 
+ 
+In the current model we stick to simple (numerical) quantities for characterising a collection of objects. For example the equivalent value of a support from [3] is absent, as it is not terribly useful for discovery and querying, even more so of course for concepts equivalent to sensitivity. 
+[TBD How relevant is it for simulations? Examples if we require it for the actual meta data specification, for example for usages  beyond query and discovery.]
+
+TODO currently the characterisation is restricted to numericalobservables, generalisation comes later.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1173261097203_650221_811</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="value" type="p5:Quantity">
+                  <xsd:annotation>
+                     <xsd:documentation>value of a property in a collection of objects</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1173261307734_451647_1091</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="type" type="CharacterisationType">
+                  <xsd:annotation>
+                     <xsd:documentation>This attribute indicates which type if characterisation this object represents. I.e. it indicates how to interpret the value. For a complete understanding one also needs the aPriori attribute. </xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_2_213004e4_1207895986906_98049_390</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="aPriori" type="xsd:boolean" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>If 'true', this attribute indicates that the characterisation is aPriori. That is it indicates that the value says something about what the publisher believes are the possible values the characterised property can assume. An "p priori" characterisation is therefore a summary of the effects that the input configuration (parameters, input data, the  "provenance-actual experiment" therefore) is EXPECTED to have on the final result (represented by the collections of representation objects and their properties).
+
+Alternatively, if the value is "false", it indicates that the charecterisation is a posteriori, i.e. it says something about the actual values that were assumed. This requires in general some level of post processing beyond simply storing the result, but as in general the characterisation types are simple statistical quantities this need not modelled as a separate experiment.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_2_213004e4_1207897770500_675578_405</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="axis" type="base:Reference">
+                  <xsd:annotation>
+                     <xsd:documentation>The property of the object type that is being characterised.
+In the IVOA DM's characterisation model this is represented by specified objects, such as spatialaxis, timeaxis etc. Here we do not know in advance which kind of property is characterised, hence this explicit reference.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1210838650468_163317_201</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="ObjectCollection">
+      <xsd:annotation>
+         <xsd:documentation>We assume that a single Snapshot can consist of collections of objects (ObjectType). For example some simulations can produce both dark matter, stellar and gas particles, together building up the whole target objects. Each of these sets of particles is in general separately characterised and the ObjectCollection class provides an anchor for this. They may also be separately stored</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1173261164953_285409_884</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="numberOfObjects" type="xsd:int">
+                  <xsd:annotation>
+                     <xsd:documentation>Gives the number of objects in this collection</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1175773837250_855594_253</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="characterisation" type="Characterisation" minOccurs="0"
+                            maxOccurs="unbounded"/>
+               <xsd:element name="objectType" type="base:Reference">
+                  <xsd:annotation>
+                     <xsd:documentation>This reference indicates the type of object stored in this collection.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1210838681171_659291_208</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="Experiment" abstract="true">
+      <xsd:annotation>
+         <xsd:documentation>Base class of objects that can be described by, queried by, discovered by the SimDB protocol. 
+It included simulations of spatial systems and their "level-1" derived data products.
+
+The base class for those kinds of experiments that can produce representations of a part of the universe.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1175592662265_484162_263</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="p5:Resource">
+            <xsd:sequence>
+               <xsd:element name="targetObject" type="TargetObjectType" minOccurs="0" maxOccurs="unbounded"/>
+               <xsd:element name="snapshot" type="Snapshot" maxOccurs="unbounded"/>
+               <xsd:element name="targetProcess" type="TargetProcess" minOccurs="0" maxOccurs="unbounded"/>
+               <xsd:element name="parameter" type="ParameterSetting" minOccurs="0" maxOccurs="unbounded"/>
+               <xsd:element name="inputData" type="InputDataset" minOccurs="0" maxOccurs="unbounded"/>
+               <xsd:element name="representationObject" type="ExperimentRepresentationObject"
+                            maxOccurs="unbounded"/>
+               <xsd:element name="appliedAlgorithm" type="AppliedAlgorithm" minOccurs="0"
+                            maxOccurs="unbounded"/>
+               <xsd:element name="protocol" type="base:Reference">
+                  <xsd:annotation>
+                     <xsd:documentation>The protocol according to which this experiment was performed. Will in general be overridden by sub-classes of Experiment to indicate a sub-class of Protocol</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_1_8e0028f_1178627594125_954476_600</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="Snapshot">
+      <xsd:annotation>
+         <xsd:documentation>This class represents a part of the universe at a particular point in time, or possibly a more general sub-volume of space-time, for example a light-cone. We realise this does not represent all possible outputs of simulations. For example some simulations of dense (collisional) stellar systems produce orbits of the individual particles, at individual output times . In general though those results can be used to produce snapshots as well (Peter Teuben, private communication). Hence for the current version of the model we propose the use of Snapshot results of simulations and other experiments as well, the only exception being light-cones through cosmological simulations</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1175592736546_383422_309</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="time" type="p5:Quantity">
+                  <xsd:annotation>
+                     <xsd:documentation>The time in the simulation at which this snapshot is produced. A real value in terms of the timestep units that are being used. [TBD need to find a place for those units, note that we need to support co-moving quantities !]</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_1_8e0028f_1178619229312_527341_114</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="spatialSizePhysical" type="p5:Quantity" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>The typical size of the target system in this snapshot. Left up to the data publisher to give a useful value for this. Is not necessarily equal to the size of the box containing the full simulation (covered by Characterisation). Could be the rough size of the galaxy merger, or cluster, or the size of a box containing 90% of the mass  or whatever</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_1_8e0028f_1178619242156_701727_116</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="objectCollection" type="ObjectCollection" maxOccurs="unbounded"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="ClusterDetection">
+      <xsd:annotation>
+         <xsd:documentation>Represents the creation of a Snapshot consisting of a catalogues of groups of objects extracted form the input Snapshot. Those can be particles, but also grid cells</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1175595880687_132606_426</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="PostProcessing"/>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="PostProcessing" abstract="true">
+      <xsd:annotation>
+         <xsd:documentation>Represents a Experiment that acts on a pre-existing Snapshot to produce another Snapshot. In standard terminology this produces Level 1 data products (this is true whether the original Snapshot was a Level 0 products or already a Level 1 product)</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1175776635250_448091_386</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="Experiment">
+            <xsd:sequence>
+               <xsd:element name="primaryExperiment" type="base:Reference" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>The experiment whose results are being post-processed by this PostProcessing step.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_14_0_8e0028f_1202820572125_383921_2711</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="InputDataset">
+      <xsd:annotation>
+         <xsd:documentation>Associates a snapshot to a Postprocessing experiment. The associated snapshot is assumed to have been the target of the post-processing</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1175776701562_299478_435</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="snapshot" type="base:Reference">
+                  <xsd:annotation>
+                     <xsd:documentation>The snapshot of an other experiment that was used by the current one as input data.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_1_8e0028f_1178789523828_503271_372</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="TargetProcess">
+      <xsd:annotation>
+         <xsd:documentation>This class represents the fact that some simulations are run to investigate physical processes, rather than simulation specific objects or systems. Instances of this class can be used to describe this. For example one may study "turbulence", or "gravitational cluster" or "galaxy formation".</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_2_213004e4_1193927417218_156887_401</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="p7:ObjectType">
+            <xsd:sequence>
+               <xsd:element name="astroJournalSubject" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>A term from the AstroJournalSubjectKeywords ontology.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_2_213004e4_1193927509421_457098_479</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="ParameterSetting" abstract="true">
+      <xsd:annotation>
+         <xsd:documentation>To run an Experiments, one usually needs to assign values to parameters defined on the corresponding Protocol. This class makes the association between the Experiment and the parameters. Parameters can have many different types and so the type of the value can in general not be pre-assigned, as base class Value coiuld be used, but for usability purposes we decided to sub class this class instead to deal with numeric and all other parameters.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_2_213004e4_1195984162343_63311_299</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="inputParameter" type="base:Reference">
+                  <xsd:annotation>
+                     <xsd:documentation>Reference to the actual input parameter whose value is being set.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1213803596859_993272_300</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="AppliedPhysics">
+      <xsd:annotation>
+         <xsd:documentation>Many simulation codes allow one to turn on or off modules corresponding to  different physics. This class is aan association betwene the Simulation and the Physics available on a certaion protocol.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_14_0_8e0028f_1202819493156_452128_1609</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="physics" type="base:Reference">
+                  <xsd:annotation>
+                     <xsd:documentation>Reference to the Simulator's Physcis module that is used in the experiment.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_14_0_8e0028f_1202819514125_954655_1685</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="ExperimentRepresentationObject">
+      <xsd:annotation>
+         <xsd:documentation>Protocols often allow one to choose which representation object types one wants to use in an experiment. For example, SPH codes may have dark matter particles, gass particles, star particles. A given experiment may not require all. This class associates the experiment to the actual representation object types that are used.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1208963843859_164887_244</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="property" type="ExperimentProperty" minOccurs="0" maxOccurs="unbounded"/>
+               <xsd:element name="type" type="base:Reference">
+                  <xsd:annotation>
+                     <xsd:documentation>Reference to the RepresentationObjectType that is associated to the experiment by this association class.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1208963922765_906411_417</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="ExperimentProperty">
+      <xsd:annotation>
+         <xsd:documentation>Apart form allowing a user the freedom to choose between available representation object types, Protocols may also allow one to choose from available properties on the selected object.
+This class represents such a choice.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1208963945515_646605_471</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="property" type="base:Reference">
+                  <xsd:annotation>
+                     <xsd:documentation>Reference to the property that is being chosen by the ExperimentProperty object.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1208963969093_788923_553</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="TargetObjectType">
+      <xsd:annotation>
+         <xsd:documentation>This class represents the actual system that is being simulated. Instances of this object should correspond to physical objects and/or systems. They should be the answer to queries such as, “what does this simulation simulate?”</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1175527967546_211274_169</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="p7:ObjectType">
+            <xsd:sequence>
+               <xsd:element name="multiplicity" type="p5:Cardinality" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Indication on how many objects of this type are being modelled. [TBD This may become an enumerated value, like “one, two, tens, many ...”].</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1175773895625_51712_255</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="identityName" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>If the target object type referes to a real object, this attribute allows one to indicate which object. This is performed by a URI that shold identify the object in the Ontology of SimbadIdentifiedNames
+
+In some cases a real identified object in the universe is being modelled. If that is the case, this attribute allows that object to be identified. We assume a list of such objects may be provided through some means, embodied by the IdentifiedObject data type.
+Ex: Galaxy, Antennae, M31
+
+TBD can this be seen as a SKOS concept ?</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1175790322468_364162_369</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="label" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Ontology based label for this object. Hope is that the IVOA Semantics working group effort on an ontology for astronomical objects will be rich enough to provide the values for this attribute.
+Ex: star, large scale structure, galaxy, jet
+
+maybe, a subject keyword from the astronomical journals list</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1175874156890_481760_321</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="CompositeExperiment">
+      <xsd:annotation>
+         <xsd:documentation>A CompositeExperiment is a group of experiments run together in a kind of workflow or pipeline mode. They have their own protocol, consiting of sub protocols for the child experiments.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1209037435156_352640_267</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="Experiment">
+            <xsd:sequence>
+               <xsd:element name="child" type="ChildExperiment" maxOccurs="unbounded"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="CompositeProtocol">
+      <xsd:annotation>
+         <xsd:documentation>This class embodies a composition of othe rprotocols to work together as a protocol for a single (composite) experiment. It can be seen as embodying a workflow or pipeline, but is not modeled as a graph, only an agggregation of separately described protocols thusfar.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1209037627390_53284_333</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="p2:Protocol">
+            <xsd:sequence>
+               <xsd:element name="child" type="ChildProtocol" maxOccurs="unbounded"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="ChildExperiment">
+      <xsd:annotation>
+         <xsd:documentation>Association class to indictae the experiments making up a composite experiment.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1209038083546_352136_491</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="experiment" type="base:Reference">
+                  <xsd:annotation>
+                     <xsd:documentation>Reference to the (registered) experiment that this association object represents.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1209038091468_426286_576</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="ChildProtocol">
+      <xsd:annotation>
+         <xsd:documentation>Association class representing a protocol that is used by a composite protocol.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1209038149156_959482_630</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="protocol" type="base:Reference">
+                  <xsd:annotation>
+                     <xsd:documentation>Reference to the actual protocol, being associated into a composite protocol by this association object.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1209038165578_263667_715</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="GenericParameterSetting">
+      <xsd:annotation>
+         <xsd:documentation>Represents a parametr setting for non-numeric parameters. The value is therefore a simple string.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1209397657343_412857_223</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="ParameterSetting">
+            <xsd:sequence>
+               <xsd:element name="value" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:documentation>The value for the parameter.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1209397688468_612522_267</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="NumericParameterSetting">
+      <xsd:annotation>
+         <xsd:documentation>Represents the setting of a numerical parameter. We alllow a free unit in the value.
+TODO decide whether we want/require this freedom of unit!</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1209397707921_986976_272</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="ParameterSetting">
+            <xsd:sequence>
+               <xsd:element name="value" type="p5:Quantity">
+                  <xsd:annotation>
+                     <xsd:documentation>The actual value assigned to the parameter.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1209397731203_914397_316</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="AppliedAlgorithm">
+      <xsd:annotation>
+         <xsd:documentation>Represents the application of a particular algorithm in an experiment.
+
+TODO decide whether we need this.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1224862111906_82091_852</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="algorithm" type="base:Reference">
+                  <xsd:annotation>
+                     <xsd:documentation>The actual algorithm that is applied</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1224862123421_661003_925</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:simpleType name="CharacterisationType">
+      <xsd:annotation>
+         <xsd:documentation>This enumeration lists possible ways to characterise a collection of Property-s in a snapshot. The literals in this enumeration in general correspond to the result of a statistical operation on this collection (when a posteriori) or on the corresponding operation on the a priori probability distribtion (assuming this can be defined) of its values.
+
+TBD May need to be turned into an ontology, i.e. the values are not defined in this model, but in an external set of reference data.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_2_213004e4_1207894335531_849311_215</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="nominal">
+            <xsd:annotation>
+               <xsd:documentation>A typical value, as judged by the publisher of the snapshots.
+May not correspond to a predefined statistical operation such as mean or mode.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="min">
+            <xsd:annotation>
+               <xsd:documentation>Represents the minimum  ('possible' if a priori, 'attained' if a osteriori) value for the characterised property.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="max">
+            <xsd:annotation>
+               <xsd:documentation>Represents the maximum  ('possible' if a priori, 'attained' if a osteriori) value for the characterised property.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="mean">
+            <xsd:annotation>
+               <xsd:documentation>Represents the mean  ('expected' if a priori, 'attained' if a posteriori) value for the characterised property.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="stdev">
+            <xsd:annotation>
+               <xsd:documentation>Represents the expected/attained standard deviation for the characterised property.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+      </xsd:restriction>
+   </xsd:simpleType>
+
+</xsd:schema>
