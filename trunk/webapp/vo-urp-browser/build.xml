@@ -16,7 +16,7 @@
 	
   <!-- first load local config file -->
   <property file="build.properties"/>
-
+	
   <!-- path & files -->
   <property name="root" location="."/>
   <property name="properties" location="./properties"/>
@@ -372,7 +372,7 @@
         <include name="*.*"/>
       </fileset>
     </copy>
-    
+  	
     <!-- create a tags folder to put tag files because subversion used 'tags' folders for subversion tags -->
     <mkdir dir="${web-content}/WEB-INF/tags"/>
     <copy todir="${web-content}/WEB-INF/tags" preservelastmodified="true" verbose="true">
@@ -406,6 +406,9 @@
         <include name="tap/*.jsp"/>
         <include name="static/**/*.*"/>
         <exclude name=".*"/>
+      </fileset>
+      <fileset dir="${build}">
+      	<include name="xsd/**/*.xsd"/>
       </fileset>
       <lib dir="${build.lib}">
         <include name="*.jar"/>
