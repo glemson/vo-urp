@@ -69,23 +69,15 @@
   <mapper type="merge" to="${dist}/${build.src.file}"/>
 </uptodate>  
 
+<!-- checks if formatter build is necessary : formatter code & libraries -->
+<uptodate property="build.formatter.notRequired">
+  <srcfiles dir= "${libs}/jalopy/src" includes="**/*.java"/>
+  <srcfiles dir= "${libs}/jalopy/lib" includes="**/*.jar"/>
+  <mapper type="merge" to="${libs}/jalopy/bin"/>
+</uptodate>
+
 
 <!-- presets -->
-
-<!-- defines Jalopy task -->
-<!-- 
-NOTE this Jalopy task, with these jar files, does not treat enums properly.
-The enum values loose their descriptions and JAXB annotation.
-When running the web browser from source code this causes problems...
- -->
-<taskdef name="jalopy"
-         classname="de.hunsicker.jalopy.plugin.ant.AntPlugin">
-  <classpath>
-    <pathelement location="${libs}/ant/jalopy.jar" />
-    <pathelement   location="${libs}/ant/jalopy-ant.jar" />   
-    <pathelement location="${libs}/log4j-1.2.15.jar"/>
-  </classpath>
-</taskdef>
 
 <!-- defines eclipselink static weaving task -->
 <taskdef name="weave" classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeaveAntTask">
@@ -247,7 +239,7 @@ When running the web browser from source code this causes problems...
 
 
 <!-- target makeOutput : compiles generated java code and javadoc : -->
-<target name="makeOutput" depends="compile, compileOutput, format, weaving, compileTest, makeJavaDoc">
+<target name="makeOutput" depends="format, compile, compileOutput, weaving, compileTest, makeJavaDoc">
   <echo>makeOutput : done.</echo>
 </target>
 
@@ -490,7 +482,7 @@ Optional
 
 
 <!-- target format : formats all generated java sources -->
-<target name="format">
+<target name="format" depends="buildFormatter">
   <!-- 
       Invokes Jalopy as follows:
 
@@ -504,61 +496,43 @@ Optional
         Don't forget to setup an include pattern as Jalopy truly expects
         valid Java source files as input!
   -->
-  
+
+  <java classname="org.ivoa.jalopy.Formatter" dir="${sources.gen}/src" 
+        fork="true" failonerror="true">
+    <jvmarg value="-Xms32m"/>
+    <jvmarg value="-Xmx64m"/>
+
+    <arg value="${sources.gen}/src"/>
+    <arg value="${jalopyConvention}"/>
+    
+    <classpath>
+      <pathelement location="${libs}/log4j-1.2.15.jar" />
+      <pathelement location="${libs}/jalopy/bin"/>
+      <pathelement location="${libs}/jalopy/lib/jalopy-1.5b1.jar"/>
+    </classpath>
+    
+   </java>
+
+</target>
+
+<target name="buildFormatter" unless="build.formatter.notRequired">
   <!--
-  note : formatting causes problems with annotations for enumerations but allows people to read code ...
-  Solution : compile first then formats for read only purposes.
+      Note : formatting causes problems with annotations for enumerations but allows people to read code ...
+      Workaround : compile first then formats for read only purposes.
   -->
     <mkdir dir="${libs}/jalopy/bin"/>
-    <javac sourcepath="" srcdir="${libs}/jalopy/src" destdir="${libs}/jalopy/bin" listfiles="false" 
+    <javac sourcepath="" srcdir="${libs}/jalopy/src" destdir="${libs}/jalopy/bin" listfiles="false"
          fork="true" verbose="false" encoding="UTF-8"
-         debug="on" deprecation="on" optimize="on" casesensitive="true" 
+         debug="on" deprecation="on" optimize="on" casesensitive="true"
          source="1.5" target="1.5">
-    
-    <classpath>
-      <pathelement location="${libs}/jalopy/lib/jalopy-1.5b1.jar"/>
-      <pathelement location="${libs}/log4j-1.2.15.jar" />
-    </classpath>
-    
-    <include name="**/*.java"/>
-  </javac> 
-  
-  <java classname="org.ivoa.jalopy.Formatter" dir="${sources.gen}/src" 
-         fork="false" failonerror="true">
-<!--    
-    <jvmarg value="-Xms64m"/>
-    <jvmarg value="-Xmx256m"/>
--->
-    <arg value="${sources.gen}/src"/> 
-    <!--  The convention file causes problems. -->
-<!--      <arg value="${jalopyConvention}"/>   -->  
-    <classpath>
-      <pathelement location="${libs}/jalopy/lib/jalopy-1.5b1.jar"/>
-      <pathelement location="${libs}/jalopy/bin"/>
-      <pathelement location="${libs}/log4j-1.2.15.jar" />
-    </classpath>
-    
-   </java>  
 
+        <classpath>
+          <pathelement location="${libs}/jalopy/lib/jalopy-1.5b1.jar"/>
+          <pathelement location="${libs}/log4j-1.2.15.jar" />
+        </classpath>
 
-
-<!-- 
-  
-  <jalopy fileformat="unix"
-          convention="${jalopyConvention}"
-          encoding="UTF-8"
-          failonerror="false"
-          history="NONE"
-          loglevel="warn"
-          threads="1"
-          classpathref="infrastructure.class.path">
-    <fileset dir="${sources.gen}/src">
-      <include name="**/*.java" />
-    </fileset>
-    
-  </jalopy>
- -->
-
+        <include name="**/*.java"/>
+    </javac>
 </target>
 
 
