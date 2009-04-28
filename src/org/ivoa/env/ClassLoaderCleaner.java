@@ -1,6 +1,5 @@
 package org.ivoa.env;
 
-import org.eclipse.persistence.internal.jpa.deployment.EclipselinkLeakCleaner;
 import org.ivoa.dm.MetaModelFactory;
 import org.ivoa.dm.ModelFactory;
 import org.ivoa.jaxb.JAXBFactory;
@@ -27,8 +26,6 @@ public final class ClassLoaderCleaner {
     
     JAXBFactory.onExit();
     JPAFactory.onExit();
-   
-    EclipselinkLeakCleaner.clean();
     
     LogUtil.onExit();
   }
