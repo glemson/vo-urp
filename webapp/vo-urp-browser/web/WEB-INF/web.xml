@@ -139,7 +139,7 @@
 <auth-method>FORM</auth-method>
 <form-login-config>
 <form-login-page>/login.jsp</form-login-page>
-<form-error-page>/fail_login.html</form-error-page>
+<form-error-page>/fail_login.jsp</form-error-page>
 </form-login-config>
 </login-config>
 
