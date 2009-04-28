@@ -16,6 +16,7 @@ import org.ivoa.conf.RuntimeConfiguration;
 import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.ReferenceResolver;
 import org.ivoa.dm.model.RootEntityObject;
+//import org.ivoa.dm.model.RootEntityObject;
 import org.ivoa.jpa.JPAFactory;
 import org.ivoa.util.FileUtils;
 import org.ivoa.util.LogUtil;
