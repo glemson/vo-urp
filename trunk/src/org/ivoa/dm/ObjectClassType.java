@@ -23,10 +23,8 @@ public final class ObjectClassType extends ClassType {
 
   /** ID Attribute */
   protected static Attribute ID_ATTRIBUTE = null;
-
   /** Identity Attribute */
   protected static Attribute IDENTITY_ATTRIBUTE = null;
-
   /** Identity Identifier */
   protected static final String IDENTITY_NAME = "identity";
 
@@ -34,27 +32,22 @@ public final class ObjectClassType extends ClassType {
 
   /** flag to indicate if that element is a root element */
   private final boolean root;
-
   /** Name of base class */
   private final String baseclass;
-
   /** flag to indicate if that element is contained == belongs to a collection only */
   private boolean contained = false;
-
   /** all objectType references ordered by class hierarchy, keyed by name */
   private final Map<String, Reference> references = new LinkedHashMap<String, Reference>();
-
   /** all objectType collections ordered by class hierarchy, keyed by name */
   private final Map<String, Collection> collections = new LinkedHashMap<String, Collection>();
-
   /** all subclasses of this class, keyed by name */
-  private final LinkedHashMap<String, ObjectClassType> subclasses = new LinkedHashMap<String,ObjectClassType>();
-  
+  private final LinkedHashMap<String, ObjectClassType> subclasses = new LinkedHashMap<String, ObjectClassType>();
   /** all referrer (entity name), keyed by referrer's property name */
-  private final LinkedHashMap<String, String> referrers = new LinkedHashMap<String,String>();
+  private final LinkedHashMap<String, String> referrers = new LinkedHashMap<String, String>();
+
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Constructor
    *
    * @param type wrapped ObjectType
@@ -62,7 +55,7 @@ public final class ObjectClassType extends ClassType {
   public ObjectClassType(final ObjectType type) {
     super(type);
     this.root = type.isEntity();
-    this.baseclass = (type.getExtends() == null) ? null: type.getExtends().getName();
+    this.baseclass = (type.getExtends() == null) ? null : type.getExtends().getName();
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -143,15 +136,15 @@ public final class ObjectClassType extends ClassType {
     }
 
     // set contained flag according to the container TypeRef :
-    if (!isContained() && ot.getContainer() != null) {
+    if (! isContained() && (ot.getContainer() != null)) {
       setContained();
     }
-    
+
     // set referrers (property name & class name) :
-    for (TypeRef ref : ot.getReferrer()) {
+    for (final TypeRef ref : ot.getReferrer()) {
       addReferrer(ref.getName(), ref.getRelation());
     }
-    
+
     String name;
 
     if (ot.getAttribute().size() > 0) {
@@ -194,6 +187,7 @@ public final class ObjectClassType extends ClassType {
     if (log.isInfoEnabled()) {
       log.info("ObjectClassType.setContained : " + this.getType().getName());
     }
+
     this.contained = true;
   }
 
@@ -332,21 +326,22 @@ public final class ObjectClassType extends ClassType {
   public final java.util.Collection<Collection> getCollectionList() {
     return collections.values();
   }
-  
+
   /**
    * Add the specified subclass to this' subclasses collection.<br>
    * Do check though that the subclass's baseclass is this!
+   *
    * @param subclass
    */
   protected void addSubclass(final ObjectClassType subclass) {
-    if(subclass.getObjectType().getExtends() != null
-        &&  getObjectType().getName().equals(subclass.getBaseclass())) {
+    if ((subclass.getObjectType().getExtends() != null) && getObjectType().getName().equals(subclass.getBaseclass())) {
       subclasses.put(subclass.getObjectType().getName(), subclass);
     }
   }
-  
+
   /**
    * Add the specified referrer to this' referrerss collection.<br>
+   *
    * @param referrer the referring object type
    * @param reference the name of the reference to this
    */
@@ -354,30 +349,47 @@ public final class ObjectClassType extends ClassType {
     referrers.put(reference, referrer);
   }
 
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   public boolean isHasReferrers() {
     return referrers.size() > 0;
   }
-  
+
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   public Map<String, String> getReferrers() {
     return referrers;
   }
-  
-  /** 
-   * Return the list of subclasses 
+
+  /**
+   * Return the list of subclasses
+   *
    * @return list of subclasses
    */
   public java.util.Collection<ObjectClassType> getSubclassesList() {
     return subclasses.values();
   }
-  
-  /** 
+
+  /**
    * Return name of base class, null if has no base class
+   *
    * @return base class, null if has no base class
    */
   public String getBaseclass() {
     return baseclass;
   }
 
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   public java.util.Collection<ObjectClassType> getSubclasses() {
     return subclasses.values();
   }

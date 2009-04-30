@@ -22,7 +22,7 @@ public final class HttpClient {
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Creates a new HttpConnector and initialize XML et HTTP Connector
    */
   public HttpClient() {

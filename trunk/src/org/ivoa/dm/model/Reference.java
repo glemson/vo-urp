@@ -32,43 +32,41 @@ public class Reference implements Serializable {
    * modification date of the UML model
    */
   private static final long serialVersionUID = 1L;
-
   /** logger */
   protected static final Log log = LogUtil.getLoggerDev();
 
   //~ Members ----------------------------------------------------------------------------------------------------------
 
-  /** An Identity value representing a local xsd:ID for this object, can be used when registering a DM/Resource that has internal references. */
-
+  /**
+   * An Identity value representing a local xsd:ID for this object, can be used when registering a DM/Resource
+   * that has internal references.
+   */
   @XmlIDREF
   @XmlSchemaType(name = "IDREF")
   @XmlAttribute(name = "xmlId", required = false)
   private Identity xmlIdentity;
-
-  
   /** The URI uniquely specifying the object as it is published in a DM service */
   @XmlSchemaType(name = "anyURI")
   @XmlAttribute(name = "ivoId", required = false)
   private String ivoId;
-
-  /** 
-   * The identifier assigned to the referenced object by the publisher. 
-   * Must also be a URI (see SSA andother similar usages) and unique. 
+  /**
+   * The identifier assigned to the referenced object by the publisher.  Must also be a URI (see SSA andother
+   * similar usages) and unique.
    */
   @XmlSchemaType(name = "anyURI")
   @XmlAttribute(name = "publisherDID", required = false)
   private String publisherDID;
-  
-  /** 
-   * The identifier assigned to the referenced object by the publisher. 
-   * Must also be a URI (see SSA andother similar usages) and unique. 
-   */
-//  @XmlElement(name = "fragment", required = false, type=FragmentReference.class)
-//  private FragmentReference fragment;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/** 
+   * The identifier assigned to the referenced object by the publisher. 
+   * Must also be a URI (see SSA andother similar usages) and unique. 
+   */
+
+  //  @XmlElement(name = "fragment", required = false, type=FragmentReference.class)
+  //  private FragmentReference fragment;
+/**
    * Public No-arg Constructor for JAXB Compliance
    */
   public Reference() {
@@ -100,21 +98,23 @@ public class Reference implements Serializable {
    *
    * @return Identity value representing a local xsd:ID for this object
    */
-/*
-  public Identity getXmlIdentity() {
-    return xmlIdentity;
-  }
-*/
+
+  /*
+     public Identity getXmlIdentity() {
+       return xmlIdentity;
+     }
+   */
   /**
    * Sets an Identity value representing a local xsd:ID for this object
    *
-   * @param xmlIdentity Identity value representing a local xsd:ID for this object
+   * @return value TODO : Value Description
    */
-/*
-  protected void setXmlIdentity(final Identity xmlIdentity) {
-    this.xmlIdentity = xmlIdentity;
-  }
-*/
+
+  /*
+     protected void setXmlIdentity(final Identity xmlIdentity) {
+       this.xmlIdentity = xmlIdentity;
+     }
+   */
   /**
    * Returns a string representation : creates a temporary StringBuilder(STRING_BUFFER_CAPACITY) and calls
    * #toString(java.lang.StringBuilder) method
@@ -150,25 +150,46 @@ public class Reference implements Serializable {
     return sb.append("] ");
   }
 
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   public String getXmlId() {
-    return (xmlIdentity == null?null:xmlIdentity.getXmlId());
+    return ((xmlIdentity == null) ? null : xmlIdentity.getXmlId());
   }
 
-  protected void setXmlId(String xmlId) {
+  /**
+   * TODO : Method Description
+   *
+   * @param xmlId 
+   */
+  protected void setXmlId(final String xmlId) {
     if (xmlId != null) {
       // if xmlIdentity != null then xmlIdentity.xmlId must be not null (used by XMLIDREF) :
-      if(xmlIdentity == null) {
+      if (xmlIdentity == null) {
         xmlIdentity = new Identity();
       }
+
       xmlIdentity.setXmlId(xmlId);
     }
   }
 
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   public String getPublisherDID() {
     return publisherDID;
   }
 
-  public void setPublisherDID(String publisherDID) {
+  /**
+   * TODO : Method Description
+   *
+   * @param publisherDID 
+   */
+  public void setPublisherDID(final String publisherDID) {
     this.publisherDID = publisherDID;
   }
 }

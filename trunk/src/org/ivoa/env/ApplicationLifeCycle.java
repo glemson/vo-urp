@@ -9,18 +9,22 @@ import org.ivoa.conf.Configuration;
  * @author laurent bourges (voparis)
  */
 public final class ApplicationLifeCycle {
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Private Constructor
    */
   private ApplicationLifeCycle() {
   }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
    * Called when application stops
    */
   protected static void doStart() {
     final String title = Configuration.getInstance().getTitle();
+
     System.out.println("-------------------------------------------------------------------------------");
     System.out.println(" " + title + " : start ...");
     System.out.println("-------------------------------------------------------------------------------");
@@ -38,10 +42,11 @@ public final class ApplicationLifeCycle {
    */
   public static void onExit() {
     final String title = Configuration.getInstance().getTitle();
+
     System.out.println("-------------------------------------------------------------------------------");
     System.out.println(" " + title + " : stop ...");
     System.out.println("-------------------------------------------------------------------------------");
-    
+
     ClassLoaderCleaner.clean();
   }
 
@@ -50,8 +55,10 @@ public final class ApplicationLifeCycle {
    */
   protected static void onEnd() {
     final String title = Configuration.getInstance().getTitle();
+
     System.out.println("-------------------------------------------------------------------------------");
     System.out.println(" " + title + " : terminated.");
     System.out.println("-------------------------------------------------------------------------------");
   }
 }
+//~ End of file --------------------------------------------------------------------------------------------------------

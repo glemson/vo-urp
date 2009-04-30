@@ -11,31 +11,24 @@ public final class HttpDocument {
 
   /** url document to load */
   private final String url;
-
   /** parent url document to load */
   private String parentUrl;
-
   /** method Http : clear it absolutely ! */
   private transient HttpMethodBase method;
-
   /** http status code given by loadHeader */
   private int status = -1;
-
   /** contentLength associated with the returned document */
   private int contentLength = -1;
-
   /** the mimeType associated with the returned document */
   private String contentType = null;
-
   /** Last-Modified header */
   private long last = 0L;
-
   /** the byte version of document */
   private byte[] binary = null; // document retrieved by HTTP
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * new Document for that url
    *
    * @param pMethod method Http

@@ -27,19 +27,16 @@ public final class ReferenceResolver {
    * modification date of the UML model
    */
   private static final long serialVersionUID = 1L;
-
   /** logger */
   protected static final Log log = LogUtil.getLoggerDev();
-
   /** Identity / Reference resolver singleton */
   private static final ReferenceResolver resolver = new ReferenceResolver();
-
   /** singleton : thread local contexts */
   private static final ResolverThreadLocal localContext = new ResolverThreadLocal();
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Forbidden constructor
    */
   private ReferenceResolver() {
@@ -96,8 +93,7 @@ public final class ReferenceResolver {
       log.info("ReferenceResolver.resolve : enter : " + reference + " [" + type.getSimpleName() + "]");
     }
 
-//    final Identity ref = reference.getXmlIdentity();
-
+    //    final Identity ref = reference.getXmlIdentity();
     if (! StringUtils.isEmpty(reference.getXmlId())) {
       final MetadataObject res = currentContext().getContext().get(reference.getXmlId());
 
@@ -119,7 +115,6 @@ public final class ReferenceResolver {
 
       // EntityManager must be defined to be able to resolve ivoId references :
       if (em != null) {
-
         final MetadataObject res = JPAHelper.findItemByIvoId(em, type, reference.getIvoId());
 
         if (res == null) {
@@ -169,7 +164,7 @@ public final class ReferenceResolver {
   protected static final class ResolverThreadLocal extends ThreadLocal<ResolverContext> {
     //~ Constructors ---------------------------------------------------------------------------------------------------
 
-    /**
+/**
      * Protected constructor
      */
     protected ResolverThreadLocal() {
@@ -180,7 +175,7 @@ public final class ReferenceResolver {
 
     /**
      * Creates a new ResolverContext for the current thread
-     * 
+     *
      * @return new ResolverContext instance
      */
     @Override
@@ -190,7 +185,7 @@ public final class ReferenceResolver {
 
     /**
      * Returns the current ResolverContext for the current thread (creates a new one if needed)
-     * 
+     *
      * @return ResolverContext instance associated with the current thread
      */
     protected final ResolverContext getContext() {
@@ -199,7 +194,8 @@ public final class ReferenceResolver {
   }
 
   /**
-   * This class holds all unmarshalled metadata objects having an xmlId in order to allow ReferenceResolver to resolve xsd:idref (Reference)
+   * This class holds all unmarshalled metadata objects having an xmlId in order to allow ReferenceResolver to
+   * resolve xsd:idref (Reference)
    */
   protected static final class ResolverContext {
     //~ Constants ------------------------------------------------------------------------------------------------------
@@ -211,13 +207,12 @@ public final class ReferenceResolver {
 
     /** JPA entity manager in use to resolve external references (ivoId) */
     private EntityManager em = null;
-    
     /** Map [xmlId - metadata object] filled by UnmarshallerEventListener to resolve local references (xmlId) */
     private final Map<String, MetadataObject> context = new HashMap<String, MetadataObject>(CAPACITY);
 
     //~ Constructors ---------------------------------------------------------------------------------------------------
 
-    /**
+/**
      * Protected Constructor
      */
     protected ResolverContext() {
@@ -227,6 +222,7 @@ public final class ReferenceResolver {
 
     /**
      * Returns Map [xmlId - metadata object] to resolve local references (xmlId)
+     *
      * @return Map [xmlId - metadata object]
      */
     protected Map<String, MetadataObject> getContext() {
@@ -235,6 +231,7 @@ public final class ReferenceResolver {
 
     /**
      * Returns the JPA entity manager in use to resolve external references
+     *
      * @return JPA entity manager
      */
     protected EntityManager getEm() {
@@ -243,6 +240,7 @@ public final class ReferenceResolver {
 
     /**
      * Sets the JPA entity manager to use to resolve external references
+     *
      * @param em JPA entity manager
      */
     protected void setEm(final EntityManager em) {

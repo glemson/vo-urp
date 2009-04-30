@@ -28,19 +28,16 @@ public abstract class MetadataElement implements Serializable, Cloneable {
    * modification date of the UML model
    */
   private static final long serialVersionUID = 1L;
-
   /** logger */
   protected static final Log log = LogUtil.getLoggerDev();
-
   /** default toString buffer size */
   public static final int STRING_BUFFER_CAPACITY = 2048;
-
   /** present flag for identity Map */
   public static final Object PRESENT = new Object();
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Public No-arg Constructor for JAXB / JPA Compliance
    */
   public MetadataElement() {
@@ -50,13 +47,14 @@ public abstract class MetadataElement implements Serializable, Cloneable {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * Gives the simple name for this UML Element 
+   * Gives the simple name for this UML Element
+   *
    * @return getClass().getSimpleName() so no package prefix
    */
   public final String getClassName() {
     return getClass().getSimpleName();
   }
-  
+
   /**
    * Gives the MetaModelFactory singleton reference
    *

@@ -11,14 +11,12 @@ public class StatusException extends Exception {
 
   //~ Members ----------------------------------------------------------------------------------------------------------
 
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private String statusCode = null;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Creates a new ConnectorException object.
    *
    * @param code
@@ -29,7 +27,7 @@ public class StatusException extends Exception {
     this.statusCode = code;
   }
 
-  /**
+/**
    * Creates a new ConnectorException object.
    *
    * @param code

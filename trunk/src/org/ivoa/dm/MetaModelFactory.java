@@ -9,6 +9,7 @@ import org.ivoa.dm.model.MetadataElement;
 import org.ivoa.dm.model.Reference;
 
 import org.ivoa.jaxb.JAXBFactory;
+
 import org.ivoa.jpa.JPAFactory;
 
 import org.ivoa.metamodel.DataType;
@@ -18,8 +19,9 @@ import org.ivoa.metamodel.Model;
 import org.ivoa.metamodel.ObjectType;
 import org.ivoa.metamodel.PrimitiveType;
 
-import org.ivoa.tap.Tables;
 import org.ivoa.tap.Schemas;
+import org.ivoa.tap.Tables;
+
 import org.ivoa.util.CollectionUtils;
 import org.ivoa.util.FileUtils;
 import org.ivoa.util.LogUtil;
@@ -35,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
@@ -50,44 +53,33 @@ public final class MetaModelFactory {
 
   /** logger */
   private static final Log log = LogUtil.getLoggerDev();
-
   /** configuration test flag */
   public static final boolean isTest = Configuration.getInstance().isTest();
-
   /** singleton pattern */
   private static volatile MetaModelFactory instance = null;
-
-  /** meta model path 
-   * TODO use RuntimeConfiguration
-   */
+  /** meta model path  TODO use RuntimeConfiguration */
   public static final String MODEL_NAMESPACE = "http://ivoa.org/theory/datamodel/generationmetadata/v0.1";
-
-  /** 
-   * model path
-   * TODO do we need this? Elsewhere we already use the path explicitly 
-   */ 
+  /** model path TODO do we need this? Elsewhere we already use the path explicitly */
   public static final String BASE_PACKAGE;
+
   static {
     String bp = RuntimeConfiguration.getInstance().getBasePackage();
-    BASE_PACKAGE= (bp.endsWith(".")?bp:bp+".");
+
+    BASE_PACKAGE = (bp.endsWith(".") ? bp : (bp + "."));
   }
 
   /** Identity Type */
   public static final String IDENTITY_TYPE = "Identity";
-
   /** model path */
   public static final String JAXB_PACKAGE = RuntimeConfiguration.getInstance().getJAXBPackage();
-
   /** model file to load */
   public static final String MODEL_FILE = RuntimeConfiguration.getInstance().getIntermediateModelFile();
-
-  /** 
-   * JPA persistence unit to load 
-   * TODO Should this be a staic variable?
-   *     At some point we may want to manage multiple data models in one application.
+  /**
+   * JPA persistence unit to load  TODO Should this be a staic variable? At some point we may want to manage
+   * multiple data models in one application.
    */
   public static final String JPA_PU = RuntimeConfiguration.getInstance().getJPAPU();
-  
+
   //~ Members ----------------------------------------------------------------------------------------------------------
 
   /** meta model loaded */
@@ -96,32 +88,24 @@ public final class MetaModelFactory {
   // Maybe we should reuse the xmiId property instead of name ?
   /** primitiveTypes in the model */
   private final Map<String, PrimitiveType> primitiveTypes = new HashMap<String, PrimitiveType>();
-
   /** dataTypes in the model */
   private final Map<String, DataType> dataTypes = new HashMap<String, DataType>();
-
   /** enumarations in the model */
   private final Map<String, Enumeration> enumerations = new HashMap<String, Enumeration>();
-
   /** objectTypes in the model */
   private final Map<String, ObjectType> objectTypes = new LinkedHashMap<String, ObjectType>();
-
   /** classTypes in the model */
   private final Map<String, ClassType> classTypes = new HashMap<String, ClassType>();
-
   /** objectClassTypes in the model */
   private final Map<String, ObjectClassType> objectClassTypes = new LinkedHashMap<String, ObjectClassType>();
-
   /** classes in the model */
   private final Map<String, Class<?extends MetadataElement>> classes = new HashMap<String, Class<?extends MetadataElement>>();
-
-  
   /** The TAP-like metadata for the database. */
-  private LinkedHashMap<String, Schemas> tap ;
-  
+  private LinkedHashMap<String, Schemas> tap;
+
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Constructor
    */
   private MetaModelFactory() {
@@ -213,13 +197,16 @@ public final class MetaModelFactory {
     }
 
     initTAP();
-    if(tap == null)
+
+    if (tap == null) {
       throw new IllegalStateException("Unable to load  TAP metadata.");
-      
-    if (log.isInfoEnabled())
+    }
+
+    if (log.isInfoEnabled()) {
       log.info("TAP views and tables : \n" + CollectionUtils.toString(tap.values(), "\n", "", ""));
-    
-    return this.model != null && this.tap != null;
+    }
+
+    return (this.model != null) && (this.tap != null);
   }
 
   /**
@@ -625,38 +612,40 @@ public final class MetaModelFactory {
   public Class<?extends MetadataElement> getClass(final String name) {
     return getClasses().get(name);
   }
-  
+
   /**
    * 
    */
-  private void initTAP()
-  {
+  private void initTAP() {
     try {
-    final JPAFactory jf = JPAFactory.getInstance(JPA_PU);
+      final JPAFactory jf = JPAFactory.getInstance(JPA_PU);
 
-    EntityManager em = jf.getEm();
+      EntityManager    em = jf.getEm();
 
-    List to = em.createQuery("select item from Schemas item order by item.schema_name").getResultList();
+      List             to = em.createQuery("select item from Schemas item order by item.schema_name").getResultList();
 
-    if(tap == null)
-      tap = new LinkedHashMap<String, Schemas>();
-    else
-      tap.clear();
-    
-    for(Object o: to)
-    {
-      Schemas s = (Schemas)o;
-      tap.put(s.getSchema_name(), s);
-    }
-    }
-    catch(Exception e)
-    {
+      if (tap == null) {
+        tap = new LinkedHashMap<String, Schemas>();
+      } else {
+        tap.clear();
+      }
+
+      for (final Object o : to) {
+        Schemas s = (Schemas) o;
+
+        tap.put(s.getSchema_name(), s);
+      }
+    } catch (final Exception e) {
       log.error("initTAP : failure : ", e);
       tap = null;
     }
-    
   }
 
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   public LinkedHashMap<String, Schemas> getTap() {
     return tap;
   }

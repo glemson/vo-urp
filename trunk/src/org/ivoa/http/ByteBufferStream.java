@@ -37,13 +37,12 @@ public final class ByteBufferStream extends OutputStream {
 
   /** The buffer where data is stored. */
   protected byte[] buf;
-
   /** The number of valid bytes in the buffer. */
   protected int count;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Creates a new byte array output stream. The buffer capacity is initially 32 bytes, though its size increases
    * if necessary.
    */
@@ -51,7 +50,7 @@ public final class ByteBufferStream extends OutputStream {
     this(32);
   }
 
-  /**
+/**
    * Creates a new byte array output stream, with a buffer capacity of the specified size, in bytes.
    *
    * @param size the initial size.

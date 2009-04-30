@@ -9,18 +9,36 @@ import java.io.Serializable;
  * @author laurent bourges (voparis)
  */
 public final class ErrorMessage implements Serializable {
+  //~ Constants --------------------------------------------------------------------------------------------------------
 
   /**
    * serial UID for Serializable interface : every concrete class must have its value corresponding to last
    * modification date of the UML model
    */
   private static final long serialVersionUID = 1L;
-  private SEVERITY severity;
-  private int lineNumber;
-  private int columnNumber;
-  private String message;
+
+  //~ Members ----------------------------------------------------------------------------------------------------------
 
   /**
+   * TODO : Field Description
+   */
+  private SEVERITY severity;
+  /**
+   * TODO : Field Description
+   */
+  private int lineNumber;
+  /**
+   * TODO : Field Description
+   */
+  private int columnNumber;
+  /**
+   * TODO : Field Description
+   */
+  private String message;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+/**
    * Constructor
    * @param severity severity of the validation error
    * @param lineNumber line number in the input document
@@ -34,34 +52,59 @@ public final class ErrorMessage implements Serializable {
     this.message = message;
   }
 
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   @Override
   public String toString() {
     return this.severity + " [" + this.lineNumber + " : " + this.columnNumber + "] " + this.message;
   }
 
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   public int getColumnNumber() {
     return columnNumber;
   }
 
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   public int getLineNumber() {
     return lineNumber;
   }
 
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   public String getMessage() {
     return message;
   }
 
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   public SEVERITY getSeverity() {
     return severity;
   }
 
+  //~ Enumerations -----------------------------------------------------------------------------------------------------
 
-  public enum SEVERITY {
+  public enum SEVERITY {//~ Enumeration constant initializers ------------------------------------------------------------------------------
 
-    WARNING,
-    ERROR,
-    FATAL
+    WARNING, ERROR, FATAL;
   }
-
-
 }
+//~ End of file --------------------------------------------------------------------------------------------------------

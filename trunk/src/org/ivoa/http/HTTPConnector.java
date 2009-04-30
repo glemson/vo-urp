@@ -10,13 +10,17 @@ import org.apache.commons.httpclient.HttpMethodRetryHandler;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.NoHttpResponseException;
+
 import org.apache.commons.httpclient.cookie.CookiePolicy;
+
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.HeadMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+
 import org.apache.commons.httpclient.params.HttpClientParams;
 import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
 import org.apache.commons.httpclient.params.HttpMethodParams;
+
 import org.apache.commons.logging.Log;
 
 import org.ivoa.util.LogUtil;
@@ -45,34 +49,24 @@ public final class HTTPConnector {
 
   /** logger */
   public static final Log log = LogUtil.getLoggerDev();
-
   /** traces Http de debuggage */
   private static final boolean DO_HTTP_DEBUG = false;
-
   /** traces Http de monitoring */
   private static final boolean DO_HTTP_MONITOR = true;
-
   /** TODO : Field Description */
   private static final int MONITOR_COUNT = 20;
-
   /** TODO : Field Description */
   private static final int MONITOR_RETAIN_COUNT = 15;
-
   /** TODO : Field Description */
   public static final int RETRY_COUNT = 3;
-
   /** header content type */
   protected static final String HTTP_HEADER_CONTENT_TYPE = "Content-Type";
-
   /** header content length */
   protected static final String HTTP_HEADER_CONTENT_LENGTH = "Content-Length";
-
   /** header last modified */
   protected static final String HTTP_HEADER_LAST_MODIFIED = "Last-Modified";
-
   /** UTF-8 encoding */
   protected static final String HTTP_DEFAULT_ENCODING = "text/xml; charset=UTF-8"; // encoding
-
   /** us calendar for lastModified */
   protected static final Calendar usCalendar;
 
@@ -84,16 +78,12 @@ public final class HTTPConnector {
 
   /** default http timeout */
   protected static final int HTTP_DEFAULT_TIMEOUT = 30; // 10s
-
   /** default buffer file size */
   private static final int IO_BUFFER_SIZE = 16384;
-
   /** big file size for progressive stats */
   private static final int BIG_FILE = IO_BUFFER_SIZE * 4;
-
   /** default buffer file size */
   private static final int DEFAULT_BUFFER_SIZE = 524288; // 512 ko
-
   /** http client singleton */
   protected static volatile HttpClient httpclient = null; // shared HTTP Client library
 
@@ -102,26 +92,22 @@ public final class HTTPConnector {
   // membres :
   /** fixed byte buffer */
   protected byte[] buff = new byte[IO_BUFFER_SIZE];
-
   /** growing buffer */
   protected ByteBufferStream out = null;
-
   /** http timeout */
   protected int HTTP_TIMEOUT = -1;
 
   /* stats */
   /** TODO : Field Description */
   protected List<HttpState> currentOps = null;
-
   /** TODO : Field Description */
   protected List<HttpState> ops = null;
-
   /** TODO : Field Description */
   private AtomicInteger opsId = null;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Creates a new HTTPConnector object avec les timeouts par defaut et gestion du multithreading
    */
   public HTTPConnector() {

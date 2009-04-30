@@ -11,7 +11,7 @@ public class CommunicationException extends StatusException {
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Creates a new CommunicationException object.
    *
    * @param statusCode

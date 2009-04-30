@@ -1,5 +1,23 @@
 package org.ivoa.dm;
 
+import org.apache.commons.logging.Log;
+
+import org.ivoa.conf.RuntimeConfiguration;
+
+import org.ivoa.dm.model.MetadataObject;
+import org.ivoa.dm.model.ReferenceResolver;
+import org.ivoa.dm.model.RootEntityObject;
+
+//import org.ivoa.dm.model.RootEntityObject;
+import org.ivoa.jpa.JPAFactory;
+
+import org.ivoa.util.FileUtils;
+import org.ivoa.util.LogUtil;
+
+import org.ivoa.xml.ErrorMessage;
+import org.ivoa.xml.ValidationResult;
+import org.ivoa.xml.XMLValidator;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,21 +26,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+
 import java.security.Principal;
 
 import javax.persistence.EntityManager;
-import org.apache.commons.logging.Log;
-import org.ivoa.conf.RuntimeConfiguration;
-import org.ivoa.dm.model.MetadataObject;
-import org.ivoa.dm.model.ReferenceResolver;
-import org.ivoa.dm.model.RootEntityObject;
-//import org.ivoa.dm.model.RootEntityObject;
-import org.ivoa.jpa.JPAFactory;
-import org.ivoa.util.FileUtils;
-import org.ivoa.util.LogUtil;
-import org.ivoa.xml.ErrorMessage;
-import org.ivoa.xml.ValidationResult;
-import org.ivoa.xml.XMLValidator;
+
 
 /**
  * Facade Class to manage data model instance (xml documents & database representation)
@@ -30,25 +38,41 @@ import org.ivoa.xml.XMLValidator;
  * @author laurent bourges (voparis)
  */
 public class DataModelManager {
-  
-  /** logger */
-  public final static Log log = LogUtil.getLogger();
-  
-  /**
-   * The URL where the schema can be found.<br>
-   */
-  public final static String SCHEMA_URL = RuntimeConfiguration.getInstance().getRootSchemaURL();
+  //~ Constants --------------------------------------------------------------------------------------------------------
 
-  private String jpa_pu;
-  private XMLValidator validator;
+  /** logger */
+  public static final Log log = LogUtil.getLogger();
+  /** The URL where the schema can be found.<br> */
+  public static final String SCHEMA_URL = RuntimeConfiguration.getInstance().getRootSchemaURL();
+
+  //~ Members ----------------------------------------------------------------------------------------------------------
+
   /**
+   * TODO : Field Description
+   */
+  private String       jpa_pu;
+  /**
+   * TODO : Field Description
+   */
+  private XMLValidator validator;
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+/**
    * Constructor
    */
-  public DataModelManager(String jpa_pu) {
-	  this.jpa_pu = jpa_pu;
-	  this.validator = new XMLValidator(SCHEMA_URL);
+  public DataModelManager(final String jpa_pu) {
+    this.jpa_pu = jpa_pu;
+    this.validator = new XMLValidator(SCHEMA_URL);
   }
 
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   private JPAFactory getJPAFactory() {
     if (log.isInfoEnabled()) {
       log.info("DataModelManager : get JPAFactory : " + jpa_pu + " ...");
@@ -59,113 +83,154 @@ public class DataModelManager {
     if (log.isInfoEnabled()) {
       log.info("DataModelManager : get JPAFactory : " + jpa_pu + " : OK");
     }
-    
+
     return jf;
   }
 
+  /**
+   * TODO : Method Description
+   *
+   * @param filePath 
+   *
+   * @return value TODO : Value Description
+   */
   private MetadataObject unmarshall(final String filePath) {
     return ModelFactory.getInstance().unmarshallToObject(filePath);
   }
 
+  /**
+   * TODO : Method Description
+   *
+   * @param stream 
+   *
+   * @return value TODO : Value Description
+   */
   private MetadataObject unmarshall(final InputStream stream) {
     return ModelFactory.getInstance().unmarshallToObject(new InputStreamReader(stream));
   }
+
+  /**
+   * TODO : Method Description
+   *
+   * @param filePath 
+   *
+   * @return value TODO : Value Description
+   */
   public boolean validate(final String filePath) {
     if (log.isInfoEnabled()) {
       log.info("DataModelManager.validate : " + filePath);
     }
-    boolean res = false;
+
+    boolean    res  = false;
 
     final File file = FileUtils.getFile(filePath);
-    
+
     if (file != null) {
       try {
-        final InputStream in = new BufferedInputStream(new FileInputStream(file));
-        
+        final InputStream      in     = new BufferedInputStream(new FileInputStream(file));
+
         final ValidationResult result = validateStream(in);
-        
+
         res = result.isValid();
 
-        if (!res) {
-          for (ErrorMessage em : result.getMessages()) {
+        if (! res) {
+          for (final ErrorMessage em : result.getMessages()) {
             log.error(em.toString());
           }
         }
-
-      } catch (FileNotFoundException fnfe) {
+      } catch (final FileNotFoundException fnfe) {
         // already checked
       }
     }
-    
+
     if (log.isInfoEnabled()) {
       log.info("DataModelManager.validate : " + res);
     }
+
     return res;
   }
-  
-  public ValidationResult validateStream(final InputStream in) {
 
-    final ValidationResult result = validator.validate(in);
+  /**
+   * TODO : Method Description
+   *
+   * @param in 
+   *
+   * @return value TODO : Value Description
+   */
+  public ValidationResult validateStream(final InputStream in) {
+    final ValidationResult result     = validator.validate(in);
 
     return result;
   }
-  
-  
-  
+
+  /**
+   * TODO : Method Description
+   *
+   * @param filePath 
+   * @param userName 
+   *
+   * @return value TODO : Value Description
+   */
   public MetadataObject load(final String filePath, final String userName) {
     if (log.isInfoEnabled()) {
       log.info("DataModelManager.load : " + filePath);
     }
+
     InputStream stream = null;
-    try
-    {
+
+    try {
       stream = new FileInputStream(filePath);
+
       return load(stream, userName);
-    }
-    catch(IOException e)
-    {
+    } catch (final IOException e) {
       log.error("DataModelManager.load : runtime failure : ", e);
     }
-    return null;  
+
+    return null;
   }
-    
-    public MetadataObject load(final InputStream stream, final String userName)
-    {
-      
+
+  /**
+   * TODO : Method Description
+   *
+   * @param stream 
+   * @param userName 
+   *
+   * @return value TODO : Value Description
+   */
+  public MetadataObject load(final InputStream stream, final String userName) {
     final JPAFactory jf = getJPAFactory();
 
-    EntityManager em = null;
-    MetadataObject o = null;
-    Long          id = null;
+    EntityManager    em = null;
+    MetadataObject   o  = null;
+    Long             id = null;
 
     try {
       em = jf.getEm();
 
       // sets EntityManager to ReferenceResolver Context :
       ReferenceResolver.initContext(em);
-      
+
       o = unmarshall(stream);
-      if(o instanceof RootEntityObject) // TODO enforce this ...
-      {
-    	  ((RootEntityObject)o).setOwner(userName);
-    	  ((RootEntityObject)o).setUpdateUser(userName);
+
+      if (o instanceof RootEntityObject) // TODO enforce this ...
+       {
+        ((RootEntityObject) o).setOwner(userName);
+        ((RootEntityObject) o).setUpdateUser(userName);
       }
-      
+
       // starts TX :
       // starts transaction on snap database :
       log.warn("DataModelManager.load : starting TX ...");
       em.getTransaction().begin();
-      
-      
+
       em.persist(o);
 
       // finally : commits transaction on snap database :
       log.warn("DataModelManager.load : committing TX");
       em.getTransaction().commit();
       log.warn("DataModelManager.load : TX commited.");
-      
+
       id = o.getId();
-      
     } catch (final RuntimeException re) {
       log.error("DataModelManager.load : runtime failure : ", re);
 
@@ -180,15 +245,15 @@ public class DataModelManager {
     } finally {
       // free resolver context (thread local) :
       ReferenceResolver.freeContext();
-      
+
       em.close();
     }
 
     if (log.isWarnEnabled()) {
-      log.warn("DataModelManager.load : exit : "+id);
+      log.warn("DataModelManager.load : exit : " + id);
     }
-    
+
     return o;
   }
-  
 }
+//~ End of file --------------------------------------------------------------------------------------------------------
