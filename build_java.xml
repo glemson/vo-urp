@@ -515,6 +515,30 @@ Optional
 
 </target>
 
+<!-- 
+    target formatBaseCode : formats all java sources (infrastructure) :
+    Only use it with caution (gerard, laurent)
+-->
+<target name="formatBaseCode" depends="buildFormatter">
+
+  <java classname="org.ivoa.jalopy.Formatter" dir="${sources}"
+        fork="true" failonerror="true">
+    <jvmarg value="-Xms32m"/>
+    <jvmarg value="-Xmx64m"/>
+
+    <arg value="${sources}"/>
+    <arg value="${jalopyConvention}"/>
+
+    <classpath>
+      <pathelement location="${libs}/log4j-1.2.15.jar" />
+      <pathelement location="${libs}/jalopy/bin"/>
+      <pathelement location="${libs}/jalopy/lib/jalopy-1.5b1.jar"/>
+    </classpath>
+
+   </java>
+
+</target>
+
 <target name="buildFormatter" unless="build.formatter.notRequired">
   <!--
       Note : formatting causes problems with annotations for enumerations but allows people to read code ...
