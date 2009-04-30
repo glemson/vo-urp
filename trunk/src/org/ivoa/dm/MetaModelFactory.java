@@ -578,7 +578,7 @@ public final class MetaModelFactory {
   /**
    * Returns a classType for the given name
    *
-   * @param name lookup criteria
+   * @param type class lookup criteria
    *
    * @return classType or null if not found
    */

@@ -348,9 +348,9 @@ public final class ModelFactory {
     }
   }  
   /**
-   * Main Method : unmarshall a XML Document from a Reader
+   * Main Method : unmarshall an XML Document from a Reader
    *
-   * @param filePath absolute File path to load
+   * @param r reader (points to an XML document)
    *
    * @return value unmarshalled MetadataObject
    */

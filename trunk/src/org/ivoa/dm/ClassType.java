@@ -118,7 +118,6 @@ public class ClassType {
    * @return string representation
    *
    * @see #toString(java.lang.StringBuilder) method
-   * @see #toString(java.lang.StringBuilder, boolean) method
    */
   @Override
   public final String toString() {
@@ -133,8 +132,6 @@ public class ClassType {
    * @param sb given string buffer to fill
    *
    * @return the given string buffer filled with the string representation
-   *
-   * @see #toString(java.lang.StringBuilder, boolean) method
    */
   public StringBuilder toString(final StringBuilder sb) {
     sb.append("ClassType[");
