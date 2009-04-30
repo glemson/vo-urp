@@ -35,9 +35,6 @@
                 </source-folder>
             </folders>
             <ide-actions>
-                <action name="build">
-                    <target>forceMakeAll</target>
-                </action>
                 <action name="run">
                     <target>forceMakeAll</target>
                 </action>
@@ -66,7 +63,6 @@
                     </source-file>
                 </items>
                 <context-menu>
-                    <ide-action name="build"/>
                     <ide-action name="run"/>
                 </context-menu>
             </view>

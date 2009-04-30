@@ -14,12 +14,20 @@ import org.apache.log4j.PatternLayout;
  */
 public final class Formatter {
 
+    public final static String JAXB_PACKAGE_INFO_JAVA = "package-info.java";
+    public final static String EXT_JAVA = ".java";
+
     // constants :
     /** java file filter */
     private final static FileFilter filter = new FileFilter() {
 
         public boolean accept(final File file) {
-            return file.getName().endsWith(".java");
+            boolean res = false;
+            final String name = file.getName();
+            if (!JAXB_PACKAGE_INFO_JAVA.equals(name) && name.endsWith(EXT_JAVA)) {
+                res = true;
+            }
+            return res;
         }
     };
 
@@ -52,7 +60,7 @@ public final class Formatter {
         Loggers.initialize(
         new ConsoleAppender(
         new PatternLayout("%d %p [%t] - %m%n"), "System.out"));
-*/
+         */
         if (convention != null) {
             Jalopy.setConvention(new File(convention));
         }
