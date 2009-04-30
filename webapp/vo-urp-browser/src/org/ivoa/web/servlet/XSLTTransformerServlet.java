@@ -34,7 +34,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  * The servlet class uses XSLT documents to transform from the
- * domain representation of objects to denormalised views.<br/>
+ * domain representation of objects to denormalised views.<br>
  */
 public final class XSLTTransformerServlet extends BaseServlet {
 

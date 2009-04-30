@@ -25,7 +25,7 @@ import org.ivoa.tap.TAP_v0_31;
 import org.ivoa.util.SQLUtils;
 
 /**
- * Servlet implementing the TAP interface.<br/>
+ * Servlet implementing the TAP interface.<br>
  *
  * Current version is (to be ) based on TAP v0.31
  * The doGet and doPost methods of this servlet interpret the corresponding HTTP requests.
@@ -204,7 +204,7 @@ public class TAPServlet extends BaseServlet implements TAP_v0_31 {
     }
 
     /**
-     * Errors MUST be provided as VOTable documents.<br/>
+     * Errors MUST be provided as VOTable documents.<br>
      *
      * @param request
      * @param response
@@ -231,7 +231,7 @@ public class TAPServlet extends BaseServlet implements TAP_v0_31 {
     }
 
     /**
-     * Retrieves a possible input RunID from the request and returns it.<br/>
+     * Retrieves a possible input RunID from the request and returns it.<br>
      * If none is provided a new RunID is generated, added to the request and returned.
      * @param request
      * @return run id
@@ -246,7 +246,7 @@ public class TAPServlet extends BaseServlet implements TAP_v0_31 {
     }
 
     /**
-     * Generates a random runId for the current request.<br/>
+     * Generates a random runId for the current request.<br>
      *
      * @return RUN-xxx
      */
@@ -255,7 +255,7 @@ public class TAPServlet extends BaseServlet implements TAP_v0_31 {
     }
 
     /**
-     * If an UPLOAD parameter is specified, do something with it ...<br/>
+     * If an UPLOAD parameter is specified, do something with it ...<br>
      * Currently this is not supported.
      *
      * @param request

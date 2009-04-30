@@ -145,7 +145,7 @@ public final class ValidationServlet extends BaseServlet {
     }
 
     /**
-     * Create a template XML document for the datatype specified in parameter INPUT_TYPE.<br/>
+     * Create a template XML document for the datatype specified in parameter INPUT_TYPE.<br>
      * @param parameters
      * @return null ??
      */
