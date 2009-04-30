@@ -35,7 +35,7 @@ public class DataModelManager {
   public final static Log log = LogUtil.getLogger();
   
   /**
-   * The URL where the schema can be found.<br/>
+   * The URL where the schema can be found.<br>
    */
   public final static String SCHEMA_URL = RuntimeConfiguration.getInstance().getRootSchemaURL();
 

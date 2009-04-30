@@ -241,14 +241,14 @@ public abstract class MetadataObject extends MetadataElement {
   }
 
   /**
-   * Return the publisherDID<br/>
+   * Return the publisherDID<br>
    */
   public String getPublisherDID() {
     return getIdentity().getPublisherDID();
   }
 
   /**
-   * Sets the publisherDID field<br/>
+   * Sets the publisherDID field<br>
    *
    * @param publisherDID publisherDID value
    */
@@ -256,7 +256,7 @@ public abstract class MetadataObject extends MetadataElement {
     getIdentity().setPublisherDID(publisherDID);
   }
   /**
-   * Sets the XmlID field on the identity<br/>
+   * Sets the XmlID field on the identity<br>
    */
   public void setXmlId() {
     getIdentity().setXmlId(getXmlId());
@@ -351,7 +351,7 @@ public abstract class MetadataObject extends MetadataElement {
   }
   
   /**
-   * Traversal method in the visitor pattern.<br/>
+   * Traversal method in the visitor pattern.<br>
    * First the preProcess method of the specified visitor is called with this in the argument.
    * Than it is sent on to the contained collections.
    * At the end the postProcess method is called with thihs. 
@@ -388,7 +388,7 @@ public abstract class MetadataObject extends MetadataElement {
     return this.getClass().getSimpleName()+"_"+id;
   }
   /** 
-   * Lazy getter for a Reference object that references this metadata object.<br/>
+   * Lazy getter for a Reference object that references this metadata object.<br>
    * Only to be used hen marshalling.
    */
   public Reference asReference()
@@ -411,12 +411,12 @@ public abstract class MetadataObject extends MetadataElement {
   }
 
   /**
-   * Set all Reference objects to their appropsriate value.<br/> 
+   * Set all Reference objects to their appropsriate value.<br> 
    */
   protected void prepareReferencesForMarshalling() { }
 
   /**
-   * Set all Reference objects to null.<br/> 
+   * Set all Reference objects to null.<br> 
    */
   protected void resetReferencesAfterMarshalling() { }
 

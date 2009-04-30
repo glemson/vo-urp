@@ -15,7 +15,7 @@ import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.metamodel.Collection;
 import org.ivoa.metamodel.Reference;
 /**
- * This class resolves lazy references.<br/>
+ * This class resolves lazy references.<br>
  * For the object to be handled it checks whether any references have been set
  * only "lazily", i.e. using a Reference object
  * 

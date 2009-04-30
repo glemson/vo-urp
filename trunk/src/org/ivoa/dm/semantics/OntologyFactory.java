@@ -29,7 +29,7 @@ import javax.xml.transform.stream.StreamSource;
 import org.w3c.dom.Document;
 
 /**
- * Load ontologies/semantic vocabularies etc to be used by data models.<br/>
+ * Load ontologies/semantic vocabularies etc to be used by data models.<br>
  * 
  * 
  * @author Gerard Lemson

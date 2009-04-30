@@ -16,7 +16,7 @@ public class MarshallObjectPostProcessor implements Visitor {
   }
 
   /**
-   * Instantiate the references of the object.<br/>
+   * Instantiate the references of the object.<br>
    */
   public void preProcess(MetadataObject object) {
     object.get_state().unsetToBeMarshalled();
