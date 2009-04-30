@@ -15,7 +15,7 @@ import org.ivoa.tap.TAP_v0_31;
 import org.ivoa.util.SQLUtils;
 
 /**
- * Servlet implementing the TAP interface.<br/>
+ * Servlet implementing the TAP interface.<br>
  *
  * Current version is (to be ) based on TAP v0.31
  * The doGet and doPost methods of this servlet interpret the corresponding HTTP requests.

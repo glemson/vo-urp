@@ -132,7 +132,7 @@ public final class ManagerServlet extends BaseServlet {
     }
 
     /**
-     * Insert an uploaded document into the databaase and return the corresponding object.<br/>
+     * Insert an uploaded document into the databaase and return the corresponding object.<br>
      *
      * TODO implement the insert part
      *
