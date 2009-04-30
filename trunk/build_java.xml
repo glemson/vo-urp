@@ -4,6 +4,7 @@
 
 <!-- jalopy code formatter configuration -->
 <property name="jalopyConvention" location="${libs}/jalopy/jalopy-java-laurent.xml" />
+<property name="jalopyConvention_1.5c3" location="${libs}/jalopy/jalopy-java-laurent_1.5c3.xml" />
 
 <!-- classpath for base module -->
 <!-- class paths for base classes -->
@@ -508,6 +509,7 @@ Optional
     <classpath>
       <pathelement location="${libs}/log4j-1.2.15.jar" />
       <pathelement location="${libs}/jalopy/bin"/>
+      <!-- use gerard patched 1.5.b1 version (enum problem present) -->
       <pathelement location="${libs}/jalopy/lib/jalopy-1.5b1.jar"/>
     </classpath>
     
@@ -527,12 +529,38 @@ Optional
     <jvmarg value="-Xmx64m"/>
 
     <arg value="${sources}"/>
-    <arg value="${jalopyConvention}"/>
+    <arg value="${jalopyConvention_1.5c3}"/>
 
     <classpath>
       <pathelement location="${libs}/log4j-1.2.15.jar" />
       <pathelement location="${libs}/jalopy/bin"/>
-      <pathelement location="${libs}/jalopy/lib/jalopy-1.5b1.jar"/>
+      <!-- use standard 1.5.c3 version (no enum problem present) -->
+      <pathelement location="${libs}/jalopy/lib/jalopy.jar"/>
+    </classpath>
+
+   </java>
+
+</target>
+
+<!--
+    target formatBaseCode : formats all java sources (infrastructure) :
+    Only use it with caution (gerard, laurent)
+-->
+<target name="formatWebAppCode" depends="buildFormatter">
+
+  <java classname="org.ivoa.jalopy.Formatter" dir="${root}/webapp/vo-urp-browser/"
+        fork="true" failonerror="true">
+    <jvmarg value="-Xms32m"/>
+    <jvmarg value="-Xmx64m"/>
+
+    <arg value="${root}/webapp/vo-urp-browser/src"/>
+    <arg value="${jalopyConvention_1.5c3}"/>
+
+    <classpath>
+      <pathelement location="${libs}/log4j-1.2.15.jar" />
+      <pathelement location="${libs}/jalopy/bin"/>
+      <!-- use standard 1.5.c3 version (no enum problem present) -->
+      <pathelement location="${libs}/jalopy/lib/jalopy.jar"/>
     </classpath>
 
    </java>
