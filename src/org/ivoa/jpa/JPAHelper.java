@@ -29,7 +29,7 @@ public final class JPAHelper {
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Constructor
    */
   private JPAHelper() {
@@ -46,7 +46,8 @@ public final class JPAHelper {
    *
    * @return value TODO : Value Description
    */
-  public static MetadataObject findItemByPublisherDID(final EntityManager em, final Class type, final String publisherDID) {
+  public static MetadataObject findItemByPublisherDID(final EntityManager em, final Class type,
+                                                      final String publisherDID) {
     if (! StringUtils.isEmpty(publisherDID)) {
       return (MetadataObject) JPAHelper.findSingleByNamedQuery(
         em,
@@ -192,8 +193,6 @@ public final class JPAHelper {
     return result.get(0);
   }
 
-  //~ Methods ----------------------------------------------------------------------------------------------------------
-  
   /**
    * TODO : Method Description
    *
@@ -206,16 +205,14 @@ public final class JPAHelper {
   public static MetadataObject findItemByIvoId(final EntityManager em, final Class type, final String ivoId) {
     if (! StringUtils.isEmpty(ivoId)) {
       Long id = Identity.resolveIvoId(ivoId, type);
-      if(id == null)
+
+      if (id == null) {
         return null;
-      
-      return (MetadataObject) JPAHelper.findSingleByNamedQuery(
-        em,
-        type.getSimpleName() + ".findById",
-        "id",
-        id);
+      }
+
+      return (MetadataObject) JPAHelper.findSingleByNamedQuery(em, type.getSimpleName() + ".findById", "id", id);
     }
-  
+
     return null;
   }
 }

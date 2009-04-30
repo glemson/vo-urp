@@ -2,6 +2,7 @@ package org.eclipse.persistence.logging;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
 import org.apache.commons.logging.impl.Log4JLogger;
 
 import org.apache.log4j.Logger;
@@ -32,25 +33,19 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
 
   /** Stores the default session name in case there is the session name is missing. */
   public static final String TOPLINK_NAMESPACE = "org.eclipse.persistence";
-
   /** TODO : Field Description */
   protected static final String LOGGING_LOCALIZATION_STRING = "org.eclipse.persistence.internal.localization.i18n.LoggingLocalizationResource";
-
   /** TODO : Field Description */
   protected static final String TRACE_LOCALIZATION_STRING = "org.eclipse.persistence.internal.localization.i18n.TraceLocalizationResource";
-
   /** TODO : Field Description */
   public static final String DEFAULT_TOPLINK_NAMESPACE = TOPLINK_NAMESPACE + ".default";
-
   /** TODO : Field Description */
   public static final String SESSION_TOPLINK_NAMESPACE = TOPLINK_NAMESPACE + ".session";
-
   /** Stores all the java.util.logging.Levels.  The indexes are TopLink logging levels. */
   private static final Level[] levels = new Level[] {
                                           Level.ALL, Level.FINEST, Level.FINER, Level.FINE, Level.CONFIG, Level.INFO,
                                           Level.WARNING, Level.SEVERE, Level.OFF
                                         };
-
   /** TODO : Field Description */
   public static final int UNDEFINED_LEVEL = -1;
 
@@ -61,19 +56,16 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
    * namespace strings.
    */
   private final Map<String, String> nameSpaceMap = new HashMap<String, String>();
-
   /** Stores the namespace for session, i.e."org.eclipse.persistence.session.$sessionname$". */
   private String sessionNameSpace;
-
   /** Log instances */
   private final Map<String, LogWrapper> categoryloggers = new ConcurrentHashMap<String, LogWrapper>();
-
   /** formats the EclipseLinkLogRecords */
   private final LogFormatter formatter = new LogFormatter();
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * INTERNAL:
    */
   public CommonsLoggingSessionLog() {

@@ -4,83 +4,45 @@ package org.ivoa.http;
  * TODO : Class Description
  *
  * @author Laurent Bourges
-  */
+ */
 public final class HttpState {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final int OP_POST = 1;
-
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final int OP_HEADER = 2;
-
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final int OP_GET = 3;
-
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final int OP_GET_BODY = 4;
-
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final String[] OPS = new String[] { "UNKNOWN", "POST", "HEAD", "GET", "GET BODY" };
 
   //~ Members ----------------------------------------------------------------------------------------------------------
 
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private final int id;
-
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private final int op;
-
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private final String msgIn;
-
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private final long start;
-
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private final long startNanos;
-
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private int clen;
-
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private String msgOut;
-
   /** elapsed */
   private long time;
-
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private float ratio;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Creates a new HttpState object
    *
    * @param id 
@@ -118,7 +80,7 @@ public final class HttpState {
   /**
    * TODO : Method Description
    *
-   * @param msgOut 
+   * @param msgOut
    */
   public void setMsgOut(final String msgOut) {
     this.msgOut = msgOut;
@@ -163,7 +125,7 @@ public final class HttpState {
   /**
    * TODO : Method Description
    *
-   * @param t 
+   * @param t
    */
   public void setTime(final long t) {
     time = t;
@@ -190,7 +152,7 @@ public final class HttpState {
   /**
    * TODO : Method Description
    *
-   * @param ratio 
+   * @param ratio
    */
   public void setRatio(final float ratio) {
     this.ratio = ratio;
@@ -217,7 +179,7 @@ public final class HttpState {
   /**
    * TODO : Method Description
    *
-   * @param clen 
+   * @param clen
    */
   public void setClen(final int clen) {
     this.clen = clen;

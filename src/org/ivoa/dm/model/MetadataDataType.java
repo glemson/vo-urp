@@ -11,7 +11,7 @@ import org.ivoa.metamodel.DataType;
 public abstract class MetadataDataType extends MetadataElement {
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Public No-arg Constructor for JAXB / JPA Compliance
    */
   public MetadataDataType() {
@@ -28,10 +28,9 @@ public abstract class MetadataDataType extends MetadataElement {
   public final DataType getObjectMetaData() {
     return getMetaModelFactory().getDataType(getClassName());
   }
-  
+
   /**
-   * Puts the string representation in the given string buffer : 
-   * field name = field value , ...".
+   * Puts the string representation in the given string buffer :  field name = field value , ...".
    *
    * @param sb given string buffer to fill
    * @param isDeep true means to call toString(sb, true) recursively for all attributes
@@ -40,12 +39,10 @@ public abstract class MetadataDataType extends MetadataElement {
    */
   @Override
   public StringBuilder toString(final StringBuilder sb, final boolean isDeep) {
-
     // dump all attributes for Data Types :
     this.deepToString(sb, true, null);
-    
+
     return sb;
   }
-
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

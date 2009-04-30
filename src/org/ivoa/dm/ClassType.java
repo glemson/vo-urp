@@ -15,8 +15,8 @@ import java.util.Map;
 
 
 /**
- * ClassType represents a java class (in memory) corresponding to the metamodel for an UML DataType.
- * This class is used to find directly all elements inside an inheritance hierarchy
+ * ClassType represents a java class (in memory) corresponding to the metamodel for an UML DataType. This class is
+ * used to find directly all elements inside an inheritance hierarchy
  *
  * @author laurent bourges (voparis)
  */
@@ -25,7 +25,6 @@ public class ClassType {
 
   /** default toString buffer size */
   public static final int STRING_BUFFER_CAPACITY = 2048;
-
   /** logger */
   protected static final Log log = LogUtil.getLoggerDev();
 
@@ -33,13 +32,12 @@ public class ClassType {
 
   /** wrapped type */
   protected final Type type;
-
   /** all DataType attributes ordered by the class hierarchy */
   private Map<String, Attribute> attributes = null;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Constructor for a given type
    *
    * @param type to wrap
@@ -105,7 +103,7 @@ public class ClassType {
         getAttributes().put(name, a);
       }
     }
-    
+
     if (log.isInfoEnabled()) {
       log.info("ClassType.process : exit : " + t.getName());
     }
@@ -179,12 +177,15 @@ public class ClassType {
     return attributes != null;
   }
 
+  /**
+   * TODO : Method Description
+   */
   protected void lazyAttributes() {
     if (getAttributes() == null) {
       this.attributes = new LinkedHashMap<String, Attribute>();
     }
   }
-  
+
   /**
    * TODO : Method Description
    *

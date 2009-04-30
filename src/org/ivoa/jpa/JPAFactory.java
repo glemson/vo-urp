@@ -2,6 +2,9 @@ package org.ivoa.jpa;
 
 import org.apache.commons.logging.Log;
 
+import org.eclipse.persistence.config.PersistenceUnitProperties;
+import org.eclipse.persistence.config.SessionCustomizer;
+
 import org.eclipse.persistence.sessions.Session;
 
 import org.ivoa.util.CollectionUtils;
@@ -21,8 +24,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import org.eclipse.persistence.config.PersistenceUnitProperties;
-import org.eclipse.persistence.config.SessionCustomizer;
 
 
 /**
@@ -35,15 +36,10 @@ public final class JPAFactory {
 
   /** logger */
   private static final Log log = LogUtil.getLogger();
-
   /** all factories */
   private static final ConcurrentHashMap<String, JPAFactory> factories = new ConcurrentHashMap<String, JPAFactory>(4);
-
   /** Default config file */
   public static final String CONFIG_FILE = "jpa-config";
-
-
-
   /** seems not working with postgres JDBC driver */
   public static final boolean USE_INTEGRITY_CHECKER = false;
 
@@ -51,19 +47,16 @@ public final class JPAFactory {
 
   /** persistence Unit Label */
   private final String pu;
-
   /** config file name */
   private final String config;
-
   /** properties */
   private Properties properties = null;
-
   /** JPA factory */
   private EntityManagerFactory emf = null;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Creates a new JPAFactory object
    *
    * @param pu
@@ -72,7 +65,7 @@ public final class JPAFactory {
     this(pu, CONFIG_FILE);
   }
 
-  /**
+/**
    * Creates a new JPAFactory object
    *
    * @param pu
@@ -110,21 +103,23 @@ public final class JPAFactory {
   /**
    * Called on exit (clean up code)
    */
-  public final static void onExit() {
-    if (!factories.isEmpty()) {
+  public static final void onExit() {
+    if (! factories.isEmpty()) {
       // clean up :
       JPAFactory jf;
+
       for (Iterator<JPAFactory> it = factories.values().iterator(); it.hasNext();) {
         jf = it.next();
 
         if (jf != null) {
           jf.stop();
         }
+
         it.remove();
       }
     }
-  }  
-  
+  }
+
   /**
    * Initializes the EntityManagerFactory
    *
@@ -148,11 +143,11 @@ public final class JPAFactory {
 
       // adds integrity checker for postgres only :
       final String targetDB = this.properties.getProperty(PersistenceUnitProperties.TARGET_DATABASE);
-      
+
       if (log.isWarnEnabled()) {
         log.warn("JPAFactory.init : connecting to " + targetDB + " ...");
       }
-      
+
       if (USE_INTEGRITY_CHECKER) {
         props.put(PersistenceUnitProperties.SESSION_CUSTOMIZER, EnableIntegrityChecker.class.getName());
       }
@@ -236,13 +231,14 @@ public final class JPAFactory {
   public void stop() {
     if (getEmf() != null) {
       try {
-      getEmf().close();
-      } catch (Exception e) {
+        getEmf().close();
+      } catch (final Exception e) {
         log.error("JPAFactory.stop : failure : ", e);
       }
-      
+
       this.emf = null;
     }
+
     this.properties.clear();
 
     if (log.isWarnEnabled()) {

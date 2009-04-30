@@ -26,10 +26,8 @@ public final class JAXBFactory {
 
   /** logger */
   private static final Log log = LogUtil.getLogger();
-
   /** all factories */
   private static final ConcurrentHashMap<String, JAXBFactory> factories = new ConcurrentHashMap<String, JAXBFactory>(4);
-
   /** configuration test flag */
   public static final boolean isTest = Configuration.getInstance().isTest();
 
@@ -37,13 +35,12 @@ public final class JAXBFactory {
 
   /** jaxb context path : used to find a factory */
   private final String jaxbPath;
-
   /** JAXB Context for the given jaxb context path */
   private JAXBContext jc = null;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Creates a new JPAFactory object
    *
    * @param jaxbPath jaxb context path

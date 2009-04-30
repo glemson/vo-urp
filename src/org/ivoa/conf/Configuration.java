@@ -1,51 +1,56 @@
 package org.ivoa.conf;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
-import java.util.Properties;
 import org.apache.commons.logging.Log;
+
 import org.ivoa.util.CollectionUtils;
 import org.ivoa.util.FileUtils;
 import org.ivoa.util.LogUtil;
 import org.ivoa.util.StringUtils;
 
+import java.io.IOException;
+import java.io.InputStream;
+
+import java.util.Iterator;
+import java.util.Properties;
+
 
 /**
  * Global Configuration for the application
- * 
+ *
  * @author laurent bourges (voparis)
  */
 public final class Configuration {
+  //~ Constants --------------------------------------------------------------------------------------------------------
 
   /* constants */
   /** file name for property file */
-  public final static String PROPS = "runtime.properties";
+  public static final String PROPS = "runtime.properties";
   /** logger */
   protected static final Log log = LogUtil.getLogger();
   /** singleton instance */
   private static volatile Configuration instance = null;
+
   // property keys :
   /** keyword for application title */
-  public final static String APP_TITLE = "project.title";
+  public static final String APP_TITLE = "project.title";
   /** keyword for application vendor */
-  public final static String APP_VENDOR = "project.vendor";
+  public static final String APP_VENDOR = "project.vendor";
   /** keyword for application version */
-  public final static String APP_VERSION = "project.version";
-  /** 
-   * keyword for service ivo id. The IVO Identifier by which the data access service is registered.
-   * Used as prefix for ivo-id-s of all objects.
-   */
-  public final static String SERVICE_IVOID = "service.ivoid";
+  public static final String APP_VERSION = "project.version";
   /**
-   * As the prefix is needed often, store it explicitly.
+   * keyword for service ivo id. The IVO Identifier by which the data access service is registered. Used as
+   * prefix for ivo-id-s of all objects.
    */
-  private String ivoIdPrefix = "";
-  
+  public static final String SERVICE_IVOID = "service.ivoid";
   /** keyword for java Main Class */
-  public final static String MAIN_CLASS = "main.class";
+  public static final String MAIN_CLASS = "main.class";
   /** keyword for test mode */
-  public final static String MODE_TEST = "mode.test";
+  public static final String MODE_TEST = "mode.test";
+
+  //~ Members ----------------------------------------------------------------------------------------------------------
+
+  /** As the prefix is needed often, store it explicitly. */
+  private String ivoIdPrefix = "";
 
   /* members */
   /** os type */
@@ -53,54 +58,67 @@ public final class Configuration {
   /** properties */
   private Properties properties = null;
 
-  /**
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+/**
    * Constructor (private) : checks OS 
    */
   private Configuration() {
     this.os = checkOsName();
   }
 
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
   /**
    * Get Configuration Instance (singleton)
-   * 
+   *
    * @return Configuration
-   * 
+   *
    * @throws IllegalStateException if init() failed
    */
-  public final static Configuration getInstance() {
+  public static final Configuration getInstance() {
     if (instance == null) {
       final Configuration c = new Configuration();
+
       if (c.init()) {
         instance = c;
       } else {
         throw new IllegalStateException("Unable to create Configuration !");
       }
     }
+
     return instance;
   }
-  
+
   /**
-   * Initialization : dumps Java System Properties and loads configuration file found in the system classpath (removes any empty property value)
-   * 
+   * Initialization : dumps Java System Properties and loads configuration file found in the system classpath
+   * (removes any empty property value)
+   *
    * @return true if well done
    */
   private boolean init() {
     // first dump properties :
-    dumpSystemProps();    
-    
+    dumpSystemProps();
+
     InputStream in = null;
+
     try {
       in = FileUtils.getSystemFileInputStream(PROPS);
 
       this.properties = new Properties();
       this.properties.load(in);
-      this.ivoIdPrefix = this.properties.getProperty(SERVICE_IVOID, "")+"#";
+      this.ivoIdPrefix = this.properties.getProperty(SERVICE_IVOID, "") + "#";
 
       // filter empty strings :
-      String k, s;
+      String k;
+
+      // filter empty strings :
+      String s;
+
       for (final Iterator it = this.properties.keySet().iterator(); it.hasNext();) {
         k = (String) it.next();
         s = this.properties.getProperty(k);
+
         if (StringUtils.isEmpty(s)) {
           it.remove();
         }
@@ -109,10 +127,11 @@ public final class Configuration {
       if (log.isDebugEnabled()) {
         log.debug("properties : " + getProperties());
       }
-      return true;
 
-    } catch (IOException ioe) {
+      return true;
+    } catch (final IOException ioe) {
       log.error("IO Failure : ", ioe);
+
       return false;
     } finally {
       FileUtils.closeStream(in);
@@ -131,7 +150,7 @@ public final class Configuration {
 
   /**
    * Check os type
-   * 
+   *
    * @return OSEnum value
    */
   private static OSEnum checkOsName() {
@@ -150,13 +169,14 @@ public final class Configuration {
     } else if (os.contains("windows")) {
       res = OSEnum.OS_MSWINDOWS;
     }
+
     return res;
   }
 
   // Property utils :
-  
   /**
    * Returns the loaded properties
+   *
    * @return Properties (map)
    */
   protected Properties getProperties() {
@@ -165,9 +185,9 @@ public final class Configuration {
 
   /**
    * Get a String property
-   * 
+   *
    * @param name given key
-   * 
+   *
    * @return string value or null if not found or contains only white spaces
    */
   public final String getProperty(final String name) {
@@ -176,8 +196,9 @@ public final class Configuration {
 
   /**
    * Gets a Boolean from the Property value : valueOf(val)
-   * 
+   *
    * @param name property key
+   *
    * @return boolean value or false if not found
    */
   public boolean getBoolean(final String name) {
@@ -192,25 +213,28 @@ public final class Configuration {
 
   /**
    * Gets an integer value from the Property value : parseInt(val)
-   * 
+   *
    * @param name property key
+   *
    * @return integer value or 0 if not found
    */
   public int getInt(final String name) {
     final String val = getProperty(name);
+
     if (val != null) {
       try {
         return Integer.parseInt(val);
-      } catch (NumberFormatException nfe) {
+      } catch (final NumberFormatException nfe) {
         // ignore value
       }
     }
+
     return 0;
   }
 
   /**
    * Gives the OSEnum value
-   * 
+   *
    * @return OSEnum value
    */
   public OSEnum getOs() {
@@ -219,7 +243,7 @@ public final class Configuration {
 
   /**
    * Is a Mac OS X ?
-   * 
+   *
    * @return true if mac os x
    */
   public boolean isMacOsX() {
@@ -228,7 +252,7 @@ public final class Configuration {
 
   /**
    * Is linux OS ?
-   * 
+   *
    * @return true if linux os
    */
   public boolean isLinux() {
@@ -237,7 +261,7 @@ public final class Configuration {
 
   /**
    * Is Microsoft Windows OS ?
-   * 
+   *
    * @return true if MS Windows os
    */
   public boolean isMSWindows() {
@@ -246,7 +270,7 @@ public final class Configuration {
 
   /**
    * Is an other OS ?
-   * 
+   *
    * @return true if mac os x
    */
   public boolean isOther() {
@@ -255,6 +279,7 @@ public final class Configuration {
 
   /**
    * Returns test mode
+   *
    * @return test mode
    */
   public boolean isTest() {
@@ -263,25 +288,29 @@ public final class Configuration {
 
   /**
    * Gives the application title : title + ' - ' + version
-   * 
+   *
    * @return title + ' - ' + version
    */
   public String getTitle() {
-	  
     return getProperty(Configuration.APP_TITLE) + " - " + getProperty(Configuration.APP_VERSION);
   }
 
   /**
-   * Gives the service IVO Id +"#" as prefix for all 
-   * 
+   * Gives the service IVO Id +"#" as prefix for all
+   *
    * @return title + ' - ' + version
    */
-  public String getIVOIdPrefix()
-  {
+  public String getIVOIdPrefix() {
     return ivoIdPrefix;
   }
 
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   protected String getIvoIdPrefix() {
     return ivoIdPrefix;
   }
 }
+//~ End of file --------------------------------------------------------------------------------------------------------

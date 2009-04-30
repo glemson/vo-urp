@@ -23,7 +23,7 @@ public final class ApplicationAdapter {
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Constructor
    */
   private ApplicationAdapter() {
@@ -88,7 +88,6 @@ public final class ApplicationAdapter {
     }
 
     // nothing to do
-    
     if (log.isDebugEnabled()) {
       log.debug("ApplicationAdapter.setSystemProps : exit");
     }

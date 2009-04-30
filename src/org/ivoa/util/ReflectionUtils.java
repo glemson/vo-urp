@@ -9,38 +9,65 @@ import org.apache.commons.logging.Log;
  * @author laurent bourges (voparis)
  */
 public final class ReflectionUtils {
+  //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** logger */
-  private final static Log log = LogUtil.getLoggerDev();
+  private static final Log log = LogUtil.getLoggerDev();
 
-  /**
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+/**
    * Constructor
    */
   private ReflectionUtils() {
   }
 
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * TODO : Method Description
+   *
+   * @param className 
+   *
+   * @return value TODO : Value Description
+   */
   public static Class findClass(final String className) {
     try {
       return Class.forName(className);
-    } catch (ClassNotFoundException cnfe) {
-      log.error("Unable to find class [" + className + "] in classpath : " + System.getProperty("java.class.path"), cnfe);
+    } catch (final ClassNotFoundException cnfe) {
+      log.error(
+        "Unable to find class [" + className + "] in classpath : " + System.getProperty("java.class.path"),
+        cnfe);
     }
+
     return null;
   }
 
-  public static <T> Class<? extends T> findClass(final String className, final Class<T> type) {
+  /**
+   * TODO : Method Description
+   *
+   * @param <T> 
+   * @param className 
+   * @param type 
+   *
+   * @return value TODO : Value Description
+   */
+  public static <T> Class<?extends T> findClass(final String className, final Class<T> type) {
     try {
       return Class.forName(className).asSubclass(type);
-    } catch (ClassNotFoundException cnfe) {
-      log.error("Unable to find class [" + className + "] in classpath : " + System.getProperty("java.class.path"), cnfe);
+    } catch (final ClassNotFoundException cnfe) {
+      log.error(
+        "Unable to find class [" + className + "] in classpath : " + System.getProperty("java.class.path"),
+        cnfe);
     }
+
     return null;
   }
-  
+
   /**
    * Factory implementation : creates new instance for given class
    *
-   * @param <T> 
+   * @param <T>
    * @param cl class (should not be real implementation class, not an abstract class)
    *
    * @return new instance or null
@@ -55,3 +82,4 @@ public final class ReflectionUtils {
     }
   }
 }
+//~ End of file --------------------------------------------------------------------------------------------------------

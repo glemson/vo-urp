@@ -23,7 +23,7 @@ public final class CustomUnmarshallListener extends Unmarshaller.Listener {
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Constructor
    */
   public CustomUnmarshallListener() {

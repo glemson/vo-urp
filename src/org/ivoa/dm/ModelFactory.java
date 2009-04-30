@@ -3,6 +3,7 @@ package org.ivoa.dm;
 import org.apache.commons.logging.Log;
 
 import org.ivoa.conf.RuntimeConfiguration;
+
 import org.ivoa.dm.model.MarshallObjectPreProcessor;
 import org.ivoa.dm.model.MarshallReferencePostProcessor;
 import org.ivoa.dm.model.MarshallReferencePreProcessor;
@@ -11,6 +12,7 @@ import org.ivoa.dm.model.MetadataObject;
 
 import org.ivoa.jaxb.CustomUnmarshallListener;
 import org.ivoa.jaxb.JAXBFactory;
+
 import org.ivoa.json.MetadataObject2JSON;
 
 import org.ivoa.metamodel.Collection;
@@ -19,6 +21,7 @@ import org.ivoa.metamodel.Reference;
 import org.ivoa.util.FileUtils;
 import org.ivoa.util.LogUtil;
 import org.ivoa.util.ReflectionUtils;
+import org.ivoa.util.StringBuilderWriter;
 
 import java.io.Reader;
 import java.io.Writer;
@@ -29,7 +32,6 @@ import java.util.Map;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import org.ivoa.util.StringBuilderWriter;
 
 
 /**
@@ -41,14 +43,11 @@ public final class ModelFactory {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** JAXB : context path */
-  public static final String JAXB_PATH = RuntimeConfiguration.getInstance().getJAXBContextClasspath(); 
-
+  public static final String JAXB_PATH = RuntimeConfiguration.getInstance().getJAXBContextClasspath();
   /** TODO : Field Description */
   public static final int DEFAULT_IDENTITY_CAPACITY = 128;
-
   /** logger */
   private static final Log log = LogUtil.getLoggerDev();
-
   /** singleton pattern  TODO no good in webapp context once state must be preserved */
   private static volatile ModelFactory instance = null;
 
@@ -59,7 +58,7 @@ public final class ModelFactory {
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Constructor
    */
   private ModelFactory() {
@@ -141,8 +140,10 @@ public final class ModelFactory {
       if (log.isInfoEnabled()) {
         log.info("ModelFactory.marshallObject : empty source !");
       }
+
       return;
     }
+
     if (log.isInfoEnabled()) {
       log.info("ModelFactory.marshallObject : saving : " + filePath);
     }
@@ -155,12 +156,15 @@ public final class ModelFactory {
       // object can not be null here so unmarshall References and set containerId on collections :
       // TODO : NOT working (now) :
       MarshallObjectPreProcessor mop = new MarshallObjectPreProcessor();
+
       source.traverse(mop);
+
       MarshallReferencePreProcessor mprep = new MarshallReferencePreProcessor();
+
       source.traverse(mprep);
 
       //      processExportReferences(source);
-      
+
       // create an Unmarshaller
       final Marshaller m = getJaxbFactory().createMarshaller();
 
@@ -169,9 +173,9 @@ public final class ModelFactory {
       m.marshal(source, w);
 
       MarshallReferencePostProcessor mpostp = new MarshallReferencePostProcessor();
+
       source.traverse(mpostp);
 
-      
       if (log.isDebugEnabled()) {
         log.debug("-------------------------------------------------------------------------------");
         log.debug("ModelFactory.marshallObject : file saved : " + filePath);
@@ -189,6 +193,7 @@ public final class ModelFactory {
    *
    * @param source MetadataObject to marshall as an XML document
    * @param bufferCapacity memory buffer capacity
+   *
    * @return String containing XML document or null
    */
   public String marshallObject(final MetadataObject source, final int bufferCapacity) {
@@ -199,13 +204,16 @@ public final class ModelFactory {
       try {
         // object can not be null here so unmarshall References and set containerId on collections :
         // TODO : NOT working (now) :
-
         MarshallObjectPreProcessor mop = new MarshallObjectPreProcessor();
+
         source.traverse(mop);
+
         MarshallReferencePreProcessor mprep = new MarshallReferencePreProcessor();
+
         source.traverse(mprep);
-//        processIdentities(source);
-//        processExportReferences(source);
+
+        //        processIdentities(source);
+        //        processExportReferences(source);
 
         // create an Unmarshaller
         final Marshaller m = getJaxbFactory().createMarshaller();
@@ -215,17 +223,17 @@ public final class ModelFactory {
         m.marshal(source, out);
 
         MarshallReferencePostProcessor mpostp = new MarshallReferencePostProcessor();
-        source.traverse(mpostp);
-        
-        return out.toString();
 
+        source.traverse(mpostp);
+
+        return out.toString();
       } catch (final JAXBException je) {
         log.error("ModelFactory.marshallObject : JAXB Failure : ", je);
       }
     }
+
     return null;
   }
-
 
   /**
    * Navigate along child axes (references / collection) to define all external references (see Reference)
@@ -273,9 +281,11 @@ public final class ModelFactory {
    */
   @SuppressWarnings("unchecked")
   private final void processExportReferences(final Map<MetadataElement, Object> ids, final MetadataObject object,
-                                                 final ObjectClassType ct) {
+                                             final ObjectClassType ct) {
     if (log.isInfoEnabled()) {
-      log.info("ModelFactory.processExportReferences : enter : " + object + " with type definition : " + ct.getObjectType().getName());
+      log.info(
+        "ModelFactory.processExportReferences : enter : " + object + " with type definition : " +
+        ct.getObjectType().getName());
     }
 
     String                                        propertyName;
@@ -291,13 +301,13 @@ public final class ModelFactory {
 
       if ((value != null) && value instanceof MetadataObject) {
         child = (MetadataObject) value;
-        
+
         // sets Xml Reference :
-        object.setProperty(propertyName +"Ref", child);
+        object.setProperty(propertyName + "Ref", child);
 
         // process References (recursive loop) :
-// do not traverse child references (external items) ?
-//        this.processExportReferences(ids, child);
+        // do not traverse child references (external items) ?
+        //        this.processExportReferences(ids, child);
       }
     }
 
@@ -325,7 +335,6 @@ public final class ModelFactory {
       log.info("ModelFactory.processExportReferences : exit : " + object);
     }
   }
-  
 
   /**
    * Main Method : unmarshall a XML Document from a specified file path
@@ -340,13 +349,16 @@ public final class ModelFactory {
     }
 
     Reader r = null;
+
     r = FileUtils.readFile(filePath);
+
     try {
       return unmarshallToObject(r);
     } finally {
       FileUtils.closeFile(r);
     }
-  }  
+  }
+
   /**
    * Main Method : unmarshall an XML Document from a Reader
    *
@@ -354,11 +366,8 @@ public final class ModelFactory {
    *
    * @return value unmarshalled MetadataObject
    */
-  public MetadataObject unmarshallToObject(Reader r)
-  {
-
-    try
-    {
+  public MetadataObject unmarshallToObject(final Reader r) {
+    try {
       // create an Unmarshaller
       final Unmarshaller u = getJaxbFactory().createUnMarshaller();
 
@@ -380,9 +389,10 @@ public final class ModelFactory {
     } catch (final JAXBException je) {
       log.error("ModelFactory.unmarshallToObject : JAXB Failure : ", je);
     }
+
     return null;
   }
-  
+
   /**
    * Navigate along child axes (references / collection) to resolve all external references (see Identity)  and
    * containement references (parent with collection items)
@@ -432,9 +442,11 @@ public final class ModelFactory {
    */
   @SuppressWarnings("unchecked")
   private final void processImportReferences(final Map<MetadataElement, Object> ids, final MetadataObject object,
-                                                 final ObjectClassType ct) {
+                                             final ObjectClassType ct) {
     if (log.isInfoEnabled()) {
-      log.info("ModelFactory.processImportReferences : enter : " + object + " with type definition : " + ct.getObjectType().getName());
+      log.info(
+        "ModelFactory.processImportReferences : enter : " + object + " with type definition : " +
+        ct.getObjectType().getName());
     }
 
     String                                        propertyName;
@@ -468,6 +480,7 @@ public final class ModelFactory {
 
         if (col.size() > 0) {
           int i = 1;
+
           for (final MetadataObject item : col) {
             // avoid cyclic loops :
             if (item != null) {
@@ -486,11 +499,11 @@ public final class ModelFactory {
 
   /**
    * Sets containement references (parent with collection items). <br>
-   * YOU SUPPORT SOON Collection Ordering base on a rank smallint field 
+   * YOU SUPPORT SOON Collection Ordering base on a rank smallint field
    *
    * @param ids
    * @param object
-   * @param position 
+   * @param position
    * @param parent
    */
   private void checkContainer(final Map<MetadataElement, Object> ids, final MetadataObject object, final int position,
@@ -520,7 +533,7 @@ public final class ModelFactory {
 
       object.setProperty(MetadataObject.PROPERTY_RANK, Integer.valueOf(position));
     }
-    
+
     // then check item : TODO should this be container iso object?
     this.processImportReferences(ids, object);
 
@@ -537,13 +550,16 @@ public final class ModelFactory {
   public JAXBFactory getJaxbFactory() {
     return jf;
   }
-  
+
   /**
    * Returns JSON serialisation of object.<br>
+   *
+   * @param obj
+   *
+   * @return value TODO : Value Description
    */
-  public String toJSON(MetadataObject obj)
-  {
-	  return new MetadataObject2JSON().toJSONString(obj);
+  public String toJSON(final MetadataObject obj) {
+    return new MetadataObject2JSON().toJSONString(obj);
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

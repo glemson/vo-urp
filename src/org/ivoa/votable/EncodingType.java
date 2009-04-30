@@ -1,11 +1,8 @@
-
 package org.ivoa.votable;
 
 import javax.xml.bind.annotation.XmlEnum;
 import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
-
-
 /**
  * <p>Java class for encodingType.
  * 
@@ -25,33 +22,44 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType(name = "encodingType")
 @XmlEnum
-public enum EncodingType {
+public enum EncodingType {GZIP("gzip"), BASE_64("base64"), DYNAMIC("dynamic"), NONE("none");
+  /**
+   * TODO : Field Description
+   */
+  private final String value;
 
-    @XmlEnumValue("gzip")
-    GZIP("gzip"),
-    @XmlEnumValue("base64")
-    BASE_64("base64"),
-    @XmlEnumValue("dynamic")
-    DYNAMIC("dynamic"),
-    @XmlEnumValue("none")
-    NONE("none");
-    private final String value;
+  /**
+   * Creates a new EncodingType object
+   *
+   * @param v 
+   */
+  EncodingType(final String v) {
+    value = v;
+  }
 
-    EncodingType(String v) {
-        value = v;
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
+  public String value() {
+    return value;
+  }
+
+  /**
+   * TODO : Method Description
+   *
+   * @param v 
+   *
+   * @return value TODO : Value Description
+   */
+  public static EncodingType fromValue(final String v) {
+    for (final EncodingType c : EncodingType.values()) {
+      if (c.value.equals(v)) {
+        return c;
+      }
     }
 
-    public String value() {
-        return value;
-    }
-
-    public static EncodingType fromValue(String v) {
-        for (EncodingType c: EncodingType.values()) {
-            if (c.value.equals(v)) {
-                return c;
-            }
-        }
-        throw new IllegalArgumentException(v);
-    }
-
-}
+    throw new IllegalArgumentException(v);
+  }
+}//~ End of file --------------------------------------------------------------------------------------------------------
