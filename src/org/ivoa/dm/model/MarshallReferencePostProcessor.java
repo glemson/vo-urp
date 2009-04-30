@@ -16,7 +16,7 @@ public class MarshallReferencePostProcessor implements Visitor {
   }
 
   /**
-   * Instantiate the references of the object.<br/>
+   * Instantiate the references of the object.<br>
    */
   public void preProcess(MetadataObject object) {
     object.resetReferencesAfterMarshalling();

@@ -34,7 +34,7 @@ import org.xml.sax.SAXException;
 /**
  * Utility class for XML parsing & transforming (XSLT)
  * 
- * <br/><b>Supports XML document & XSLT caches</b>
+ * <br><b>Supports XML document & XSLT caches</b>
  * 
  * @author laurent bourges (voparis)
  */

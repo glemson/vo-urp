@@ -56,7 +56,7 @@ public class MetadataObject2JSON {
     }
 
     /**
-     * Write JSON string using org.json.JSONObject etc.<br/>
+     * Write JSON string using org.json.JSONObject etc.<br>
      * @param obj MetadataObject
      * @return JSONObject or null
      */

@@ -539,7 +539,7 @@ public final class ModelFactory {
   }
   
   /**
-   * Returns JSON serialisation of object.<br/>
+   * Returns JSON serialisation of object.<br>
    */
   public String toJSON(MetadataObject obj)
   {

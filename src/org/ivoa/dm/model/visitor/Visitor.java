@@ -9,7 +9,7 @@ package org.ivoa.dm.model.visitor;
 import org.ivoa.dm.model.MetadataObject;
 
 /**
- * Represents a visitor in the visitor pattern.<br/>
+ * Represents a visitor in the visitor pattern.<br>
  * Can traverse a MetadataObjbect containment tree.
  * 
  * By default traverses only collections.

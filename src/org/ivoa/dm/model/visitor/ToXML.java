@@ -12,7 +12,7 @@ import org.ivoa.metamodel.Reference;
 import org.ivoa.metamodel.Attribute;
 
 /**
- * This test Visitor calculates a simple XML representation of a starting object.<br/>
+ * This test Visitor calculates a simple XML representation of a starting object.<br>
  * 
  * @author Gerard Lemson
  * @since 29 Jun 200829 Jun 2008

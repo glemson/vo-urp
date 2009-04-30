@@ -334,7 +334,7 @@ public final class ObjectClassType extends ClassType {
   }
   
   /**
-   * Add the specified subclass to this' subclasses collection.<br/>
+   * Add the specified subclass to this' subclasses collection.<br>
    * Do check though that the subclass's baseclass is this!
    * @param subclass
    */
@@ -346,7 +346,7 @@ public final class ObjectClassType extends ClassType {
   }
   
   /**
-   * Add the specified referrer to this' referrerss collection.<br/>
+   * Add the specified referrer to this' referrerss collection.<br>
    * @param referrer the referring object type
    * @param reference the name of the reference to this
    */
