@@ -1,6 +1,6 @@
 /*
  * TAPResult.java
- * 
+ *
  * Author lemson
  * Created on Oct 31, 2008
  */
@@ -8,66 +8,139 @@ package org.ivoa.web.model;
 
 import java.io.IOException;
 import java.io.Writer;
+
 import java.util.Map;
 
-public class TAPResult extends BaseResult{
 
-  public static final int IS_STRING=1;
-  public static final int IS_FILE=2;
-  public static final int IS_URL=4;
+/**
+ * TODO : Class Description
+ *
+ * @author $author$
+  */
+public class TAPResult extends BaseResult {
+  //~ Constants --------------------------------------------------------------------------------------------------------
+
+  /**
+   * TODO : Field Description
+   */
+  public static final int IS_STRING = 1;
+  /**
+   * TODO : Field Description
+   */
+  public static final int IS_FILE = 2;
+  /**
+   * TODO : Field Description
+   */
+  public static final int IS_URL = 4;
+
+  //~ Members ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * TODO : Field Description
+   */
   private int resultType = IS_STRING;
+
   // the actual result to be sent back as a String.
-  // how it is to be interpreted is up to the resultType code
+  /**
+   * TODO : Field Description
+   */
   private String result;
-  
+  /**
+   * TODO : Field Description
+   */
   private SQLQuery query = null;
+  /**
+   * TODO : Field Description
+   */
   private Map paramQuery = null;
-  
-  public TAPResult(SQLQuery query)
-  {
+
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Creates a new TAPResult object
+   *
+   * @param query 
+   */
+  public TAPResult(final SQLQuery query) {
     this.query = query;
   }
-  
-  public TAPResult(Map map)
-  {
+
+  /**
+   * Creates a new TAPResult object
+   *
+   * @param map 
+   */
+  public TAPResult(final Map map) {
     this.paramQuery = map;
   }
-  
-  public void writeResult(Writer writer) throws IOException
-  {
-    if(resultType == IS_FILE)// write contents of file to writer
-    {
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * TODO : Method Description
+   *
+   * @param writer 
+   *
+   * @throws IOException 
+   */
+  public void writeResult(final Writer writer) throws IOException {
+    if (resultType == IS_FILE) // write contents of file to writer
+     {
       //writer.write(result);
-    }
-    else if(resultType == IS_URL)// write contents of URL to writer
-    {
-     // writer.write(result);
-    }
-    else // if(resultType == IS_STRING)
+    } else if (resultType == IS_URL) // write contents of URL to writer
+     {
+      // writer.write(result);
+    } else { // if(resultType == IS_STRING)
       writer.write(result);
+    }
   }
-  
-  public void setResultFile(String file)
-  {
+
+  /**
+   * TODO : Method Description
+   *
+   * @param file 
+   */
+  public void setResultFile(final String file) {
     result = file;
     resultType = IS_FILE;
   }
-  public void setResultURL(String url)
-  {
+
+  /**
+   * TODO : Method Description
+   *
+   * @param url 
+   */
+  public void setResultURL(final String url) {
     result = url;
     resultType = IS_URL;
   }
-  public void setResultString(String r)
-  {
+
+  /**
+   * TODO : Method Description
+   *
+   * @param r 
+   */
+  public void setResultString(final String r) {
     result = r;
     resultType = IS_STRING;
   }
 
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   public SQLQuery getQuery() {
     return query;
   }
 
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   public Map<String, String> getParamQuery() {
     return paramQuery;
   }
 }
+//~ End of file --------------------------------------------------------------------------------------------------------

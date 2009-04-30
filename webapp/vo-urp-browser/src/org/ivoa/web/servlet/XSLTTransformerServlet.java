@@ -1,19 +1,21 @@
 package org.ivoa.web.servlet;
 
 import org.apache.commons.fileupload.FileItem;
+
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
 import org.ivoa.conf.RuntimeConfiguration;
 
 import org.ivoa.dm.DataModelManager;
+
 import org.ivoa.dm.model.MetadataObject;
 
 import org.ivoa.util.FileUtils;
 
 import org.ivoa.xml.ValidationResult;
 import org.ivoa.xml.XSLTTransformer;
-
 
 import java.io.File;
 import java.io.IOException;
@@ -32,207 +34,263 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+
 /**
- * The servlet class uses XSLT documents to transform from the
- * domain representation of objects to denormalised views.<br>
+ * The servlet class uses XSLT documents to transform from the domain representation of objects to denormalised
+ * views.<br>
  */
 public final class XSLTTransformerServlet extends BaseServlet {
+  //~ Constants --------------------------------------------------------------------------------------------------------
 
-    /**
-     * serial UID for Serializable interface : every concrete class must have its value corresponding to last
-     * modification date of the UML model
-     */
-    private static final long serialVersionUID = 1L;
-    // constants :
-    public static final String INPUT_DOC = "inputDoc";
-    /** Name of the XSLT sheet (in views/ directory) */
-    public static final String INPUT_XSLT = "xslt";
-    /** The mode, forward or backward */
-    public static final String INPUT_MODE = "mode";
-    public static final String OUTPUT_DOC = "transformedDoc";
-    public static final String OUTPUT_STATUS = "status";
-    public static final String OUTPUT_ERROR = "error";
-    /** Parameter name of the parameter indicating which of the actions available through this servlet should be performed.*/
-    public static final String INPUT_ACTION = "action";
-    /** Action parameter value indicating that an uploaded XML doc should be validated against the XML schemas for the current model */
-    public static final String INPUT_ACTION_transform = "transform";
-    /** location where views should be stored */
-    public static final String PATH_VIEWS = "/views/";
-    public static final String PATH_PAGES = "/page/";
-    private DataModelManager dataModelManager;
+  /**
+   * serial UID for Serializable interface : every concrete class must have its value corresponding to last
+   * modification date of the UML model
+   */
+  private static final long serialVersionUID = 1L;
 
-    /**
-     * Returns a short description of the servlet.
-     */
-    @Override
-    public String getServletInfo() {
-        return "XSLT Transformer servlet";
+  // constants :
+  /**
+   * TODO : Field Description
+   */
+  public static final String INPUT_DOC = "inputDoc";
+  /** Name of the XSLT sheet (in views/ directory) */
+  public static final String INPUT_XSLT = "xslt";
+  /** The mode, forward or backward */
+  public static final String INPUT_MODE = "mode";
+  /**
+   * TODO : Field Description
+   */
+  public static final String OUTPUT_DOC = "transformedDoc";
+  /**
+   * TODO : Field Description
+   */
+  public static final String OUTPUT_STATUS = "status";
+  /**
+   * TODO : Field Description
+   */
+  public static final String OUTPUT_ERROR = "error";
+  /**
+   * Parameter name of the parameter indicating which of the actions available through this servlet should be
+   * performed.
+   */
+  public static final String INPUT_ACTION = "action";
+  /**
+   * Action parameter value indicating that an uploaded XML doc should be validated against the XML schemas for
+   * the current model
+   */
+  public static final String INPUT_ACTION_transform = "transform";
+  /** location where views should be stored */
+  public static final String PATH_VIEWS = "/views/";
+  /**
+   * TODO : Field Description
+   */
+  public static final String PATH_PAGES = "/page/";
+
+  //~ Members ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * TODO : Field Description
+   */
+  private DataModelManager dataModelManager;
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * Returns a short description of the servlet.
+   *
+   * @return value TODO : Value Description
+   */
+  @Override
+  public String getServletInfo() {
+    return "XSLT Transformer servlet";
+  }
+
+  /**
+   * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
+   *
+   * @param request servlet request
+   * @param response servlet response
+   *
+   * @throws ServletException
+   * @throws IOException
+   */
+  @Override
+  protected void processRequest(final HttpServletRequest request, final HttpServletResponse response)
+                         throws ServletException, IOException {
+    long time;
+    long start                         = System.nanoTime();
+
+    Map<String, Object> params = getParameters(request);
+    final String        action = (String) params.get(INPUT_ACTION);
+    String              error  = null;
+    String              status = "OK";
+    Object              result = null;
+
+    try {
+      if (INPUT_ACTION_transform.equals(action)) {
+        result = handleTransform(params);
+        request.setAttribute(OUTPUT_DOC, result);
+      }
+    } catch (final Exception e) {
+      error = e.getMessage();
+      status = "ERROR";
     }
 
-    /** Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
-     * @param request servlet request
-     * @param response servlet response
-     */
-    @Override
-    protected void processRequest(final HttpServletRequest request,
-            final HttpServletResponse response)
-            throws ServletException, IOException {
-        long time;
-        long start = System.nanoTime();
+    final HttpSession session = createSession(request);
 
-        Map<String, Object> params = getParameters(request);
-        final String action = (String) params.get(INPUT_ACTION);
-        String error = null;
-        String status = "OK";
-        Object result = null;
+    // note : this session is unuseful but it should be when user will have login / password.
 
-        try {
-            if (INPUT_ACTION_transform.equals(action)) {
-                result = handleTransform(params);
-                request.setAttribute(OUTPUT_DOC, result);
-            }
-        } catch (Exception e) {
-            error = e.getMessage();
-            status = "ERROR";
-        }
+    // Output parameters : 
+    request.setAttribute(OUTPUT_TITLE, "Upload - " + status);
+    // specific :
+    request.setAttribute(OUTPUT_STATUS, status);
 
-        final HttpSession session = createSession(request);
-
-        // note : this session is unuseful but it should be when user will have login / password.
-
-        // Output parameters : 
-        request.setAttribute(OUTPUT_TITLE, "Upload - " + status);
-        // specific :
-        request.setAttribute(OUTPUT_STATUS, status);
-
-        if (error != null) {
-            request.setAttribute(OUTPUT_ERROR, error);
-        }
-
-        time = ((System.nanoTime() - start) / 1000000L);
-
-        if (log.isInfoEnabled()) {
-            log.info("UploadServlet [" + getSessionNo(request) +
-                    "] : upload succeeded : servlet process : " + time + " ms.");
-        }
-
-        start = System.nanoTime();
-
-        String viewPath = PATH_PAGES + "XML2XML.jsp";
-        doForward(request, response, viewPath);
-
-        time = ((System.nanoTime() - start) / 1000000L);
-
-        if (log.isInfoEnabled()) {
-            log.info("UploadServlet [" + getSessionNo(request) +
-                    "] : upload forwarded:  jsp     process : " + time);
-        }
+    if (error != null) {
+      request.setAttribute(OUTPUT_ERROR, error);
     }
 
-    private String handleTransform(Map<String, Object> parameters)
-            throws Exception {
-        InputStream in = null;
+    time = ((System.nanoTime() - start) / 1000000L);
 
-        try {
-            final FileItem infile = (FileItem) parameters.get(INPUT_DOC);
-
-            String sheetFile = PATH_VIEWS + (String) parameters.get(INPUT_XSLT);
-            String mode = (String) parameters.get(INPUT_MODE);
-            if (!"forward".equals(mode)) {
-                mode = "inverse";
-            }
-            in = infile.getInputStream();
-
-            StringWriter out = new StringWriter();
-            HashMap<String, String> xsltParams = new HashMap<String, String>();
-            xsltParams.put("mode", mode);
-
-            XSLTTransformer.transform(sheetFile, xsltParams, in, out);
-
-            return out.toString();
-        } catch (Throwable t) {
-            throw new Exception(t);
-        } finally {
-            FileUtils.closeStream(in);
-        }
+    if (log.isInfoEnabled()) {
+      log.info("UploadServlet [" + getSessionNo(request) + "] : upload succeeded : servlet process : " + time + " ms.");
     }
 
-    /**
-     * Extract a Map off key value pairs from the request which is assumed to be
-     * POSTed as multipart/form-data.<br>
-     * NOTE the Map is NOT structured as the result of a
-     * ServletRequest::getParameterMap() i.e. with the value a String[], but has
-     * an single String as value.
-     *
-     * @param request
-     * @return parameter map
-     */
-    private Map<String, Object> getParameters(HttpServletRequest request) {
-        Map<String, Object> parameters = new Hashtable<String, Object>();
+    start = System.nanoTime();
 
-        try {
-            // Check that we have a file upload request
-            boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+    String viewPath = PATH_PAGES + "XML2XML.jsp";
 
-            if (!isMultipart) {
-                return request.getParameterMap();
-            }
+    doForward(request, response, viewPath);
 
-            // Create a factory for disk-based file items
-            DiskFileItemFactory factory = new DiskFileItemFactory();
+    time = ((System.nanoTime() - start) / 1000000L);
 
-            // Set factory constraints
-            int yourMaxMemorySize = 1000000;
+    if (log.isInfoEnabled()) {
+      log.info("UploadServlet [" + getSessionNo(request) + "] : upload forwarded:  jsp     process : " + time);
+    }
+  }
 
-            //File yourTempDirectory = new File("c:/temp/upload/");
-            int yourMaxRequestSize = 1000000;
+  /**
+   * TODO : Method Description
+   *
+   * @param parameters 
+   *
+   * @return value TODO : Value Description
+   *
+   * @throws Exception 
+   */
+  private String handleTransform(final Map<String, Object> parameters)
+                          throws Exception {
+    InputStream in = null;
 
-            factory.setSizeThreshold(yourMaxMemorySize);
+    try {
+      final FileItem infile = (FileItem) parameters.get(INPUT_DOC);
 
-            //factory.setRepository(yourTempDirectory);
+      String         sheetFile = PATH_VIEWS + (String) parameters.get(INPUT_XSLT);
+      String         mode      = (String) parameters.get(INPUT_MODE);
 
-            // Create a new file upload handler
-            ServletFileUpload upload = new ServletFileUpload(factory);
+      if (! "forward".equals(mode)) {
+        mode = "inverse";
+      }
 
-            // Set overall request size constraint
-            upload.setSizeMax(yourMaxRequestSize);
+      in = infile.getInputStream();
 
-            // Parse the request
-            List fileItems = upload.parseRequest(request);
+      StringWriter            out        = new StringWriter();
+      HashMap<String, String> xsltParams = new HashMap<String, String>();
 
-            // Get the image stream
-            for (int i = 0; i < fileItems.size(); i++) {
-                FileItem fi = (FileItem) fileItems.get(i);
-                String name = fi.getFieldName();
-                Object value = null;
+      xsltParams.put("mode", mode);
 
-                if (fi.isFormField()) {
-                    value = fi.getString();
-                } else {
-                    value = fi;
-                }
+      XSLTTransformer.transform(sheetFile, xsltParams, in, out);
 
-                parameters.put(name, value);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+      return out.toString();
+    } catch (final Throwable t) {
+      throw new Exception(t);
+    } finally {
+      FileUtils.closeStream(in);
+    }
+  }
+
+  /**
+   * Extract a Map off key value pairs from the request which is assumed to be POSTed as multipart/form-data.<br>
+   * NOTE the Map is NOT structured as the result of a ServletRequest::getParameterMap() i.e. with the value a
+   * String[], but has an single String as value.
+   *
+   * @param request
+   *
+   * @return parameter map
+   */
+  private Map<String, Object> getParameters(final HttpServletRequest request) {
+    Map<String, Object> parameters = new Hashtable<String, Object>();
+
+    try {
+      // Check that we have a file upload request
+      boolean isMultipart = ServletFileUpload.isMultipartContent(request);
+
+      if (! isMultipart) {
+        return request.getParameterMap();
+      }
+
+      // Create a factory for disk-based file items
+      DiskFileItemFactory factory = new DiskFileItemFactory();
+
+      // Set factory constraints
+      int yourMaxMemorySize = 1000000;
+
+      //File yourTempDirectory = new File("c:/temp/upload/");
+      int yourMaxRequestSize = 1000000;
+
+      factory.setSizeThreshold(yourMaxMemorySize);
+
+      //factory.setRepository(yourTempDirectory);
+
+      // Create a new file upload handler
+      ServletFileUpload upload = new ServletFileUpload(factory);
+
+      // Set overall request size constraint
+      upload.setSizeMax(yourMaxRequestSize);
+
+      // Parse the request
+      List fileItems = upload.parseRequest(request);
+
+      // Get the image stream
+      for (int i = 0; i < fileItems.size(); i++) {
+        FileItem fi    = (FileItem) fileItems.get(i);
+        String   name  = fi.getFieldName();
+        Object   value = null;
+
+        if (fi.isFormField()) {
+          value = fi.getString();
+        } else {
+          value = fi;
         }
 
-        return parameters;
+        parameters.put(name, value);
+      }
+    } catch (final Exception e) {
+      e.printStackTrace();
     }
 
-    @Override
-    public void init(ServletConfig sc) throws ServletException {
-        // TODO Auto-generated method stub
-        super.init(sc);
+    return parameters;
+  }
 
-        try {
-            dataModelManager = new DataModelManager(RuntimeConfiguration.getInstance().getJPAPU());
-        } catch (Exception e) {
-            log.error(
-                    "Unable to initiate DataModelManager for UploadServlet using JPA persistence unit " +
-                    RuntimeConfiguration.getInstance().getJPAPU());
-            dataModelManager = null; // TODO should we throw an exception or simply make uploads not possible?
-        }
+  /**
+   * TODO : Method Description
+   *
+   * @param sc 
+   *
+   * @throws ServletException 
+   */
+  @Override
+  public void init(final ServletConfig sc) throws ServletException {
+    // TODO Auto-generated method stub
+    super.init(sc);
+
+    try {
+      dataModelManager = new DataModelManager(RuntimeConfiguration.getInstance().getJPAPU());
+    } catch (final Exception e) {
+      log.error(
+        "Unable to initiate DataModelManager for UploadServlet using JPA persistence unit " +
+        RuntimeConfiguration.getInstance().getJPAPU());
+      dataModelManager = null; // TODO should we throw an exception or simply make uploads not possible?
     }
+  }
 }
+//~ End of file --------------------------------------------------------------------------------------------------------
