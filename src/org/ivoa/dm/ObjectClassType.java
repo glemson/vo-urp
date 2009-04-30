@@ -204,8 +204,6 @@ public final class ObjectClassType extends ClassType {
    * @param sb given string buffer to fill
    *
    * @return the given string buffer filled with the string representation
-   *
-   * @see #toString(java.lang.StringBuilder, boolean) method
    */
   @Override
   public final StringBuilder toString(final StringBuilder sb) {

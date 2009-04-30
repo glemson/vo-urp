@@ -28,25 +28,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 /**
  * The servlet class to list Experiment from SNAP database
  */
 public final class ValidationServlet extends BaseServlet {
+
+    /**
+     * serial UID for Serializable interface : every concrete class must have its value corresponding to last
+     * modification date of the UML model
+     */
+    private static final long serialVersionUID = 1L;
+    // constants :
     public static final String INPUT_DOC = "doc";
     public static final String INPUT_TYPE = "type";
     public static final String OUTPUT_VALIDATION = "validation";
     public static final String OUTPUT_TEMPLATE = "template";
     public static final String OUTPUT_STATUS = "status";
     public static final String OUTPUT_ERROR = "error";
-
     /** Parameter name of the parameter indicating which of the actions available through this servlet should be performed.*/
     public static final String INPUT_ACTION = "action";
-
     /** Action parameter value indicating that an uploaded XML doc should be validated against the XML schemas for the current model */
     public static final String INPUT_ACTION_validate = "validate";
-
-
     /** Action parameter value indicating that a template/example XML doc should be produced for a specified entity */
     public static final String INPUT_ACTION_template = "template";
     public static final String PATH_MANAGE = "manage/";
@@ -66,8 +68,8 @@ public final class ValidationServlet extends BaseServlet {
      */
     @Override
     protected void processRequest(final HttpServletRequest request,
-        final HttpServletResponse response)
-        throws ServletException, IOException {
+            final HttpServletResponse response)
+            throws ServletException, IOException {
         long time;
         long start = System.nanoTime();
 
@@ -107,7 +109,7 @@ public final class ValidationServlet extends BaseServlet {
 
         if (log.isInfoEnabled()) {
             log.info("UploadServlet [" + getSessionNo(request) +
-                "] : upload succeeded : servlet process : " + time + " ms.");
+                    "] : upload succeeded : servlet process : " + time + " ms.");
         }
 
         start = System.nanoTime();
@@ -119,12 +121,12 @@ public final class ValidationServlet extends BaseServlet {
 
         if (log.isInfoEnabled()) {
             log.info("UploadServlet [" + getSessionNo(request) +
-                "] : upload forwarded:  jsp     process : " + time);
+                    "] : upload forwarded:  jsp     process : " + time);
         }
     }
 
     private ValidationResult handleValidate(Map<String, Object> parameters)
-        throws Exception {
+            throws Exception {
         InputStream in = null;
 
         try {
@@ -145,15 +147,14 @@ public final class ValidationServlet extends BaseServlet {
     /**
      * Create a template XML document for the datatype specified in parameter INPUT_TYPE.<br/>
      * @param parameters
-     * @return
+     * @return null ??
      */
-    private String handleTemplate(Map<String, Object> parameters)
-    {
-      final String type = (String) parameters.get(INPUT_TYPE);
-      
-      return null;
+    private String handleTemplate(Map<String, Object> parameters) {
+        final String type = (String) parameters.get(INPUT_TYPE);
+
+        return null;
     }
-    
+
     /**
      * Extract a Map off key value pairs from the request which is assumed to be
      * POSTed as multipart/form-data.<br>
@@ -162,7 +163,7 @@ public final class ValidationServlet extends BaseServlet {
      * an single String as value.
      *
      * @param request
-     * @return
+     * @return parameter map
      */
     private Map<String, Object> getParameters(HttpServletRequest request) {
         Map<String, Object> parameters = new Hashtable<String, Object>();
@@ -224,12 +225,11 @@ public final class ValidationServlet extends BaseServlet {
         super.init(sc);
 
         try {
-            dataModelManager = new DataModelManager(RuntimeConfiguration.getInstance()
-                                                                        .getJPAPU());
+            dataModelManager = new DataModelManager(RuntimeConfiguration.getInstance().getJPAPU());
         } catch (Exception e) {
             log.error(
-                "Unable to initiate DataModelManager for UploadServlet using JPA persistence unit " +
-                RuntimeConfiguration.getInstance().getJPAPU());
+                    "Unable to initiate DataModelManager for UploadServlet using JPA persistence unit " +
+                    RuntimeConfiguration.getInstance().getJPAPU());
             dataModelManager = null; // TODO should we throw an exception or simply make uploads not possible?
         }
     }

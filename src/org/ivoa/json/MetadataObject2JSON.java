@@ -57,12 +57,13 @@ public class MetadataObject2JSON {
 
     /**
      * Write JSON string using org.json.JSONObject etc.<br/>
-     * @param obj
-     * @return
+     * @param obj MetadataObject
+     * @return JSONObject or null
      */
     public JSONObject toJSON(MetadataObject obj) {
-    	if(obj == null)
+    	if(obj == null) {
     		return null;
+        }
         JSONObject json = new JSONObject();
         String s = null;
 
@@ -90,8 +91,9 @@ public class MetadataObject2JSON {
         ObjectClassType md = obj.getClassMetaData();
         Map<String, Object> map = new HashMap<String, Object>();
 
-        for (Attribute a : md.getAttributeList())
+        for (Attribute a : md.getAttributeList()) {
             map.put(a.getName(), obj.getProperty(a.getName()));
+        }
 
         json.put(attributes, map);
     }
@@ -108,8 +110,9 @@ public class MetadataObject2JSON {
 
             List<MetadataObject> col = (List<MetadataObject>) obj.getProperty(c.getName());
 
-            for (MetadataObject child : col)
+            for (MetadataObject child : col) {
                 a.put(toJSON(child));
+            }
         }
     }
 

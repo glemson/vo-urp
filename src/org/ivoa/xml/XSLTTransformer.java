@@ -33,7 +33,7 @@ import net.sf.saxon.s9api.XsltTransformer;
 public class XSLTTransformer {
 
   /**
-   * @param sheet file name of XSLT style sheet, could be a URL
+   * @param sheetFile file name of XSLT style sheet, could be a URL
    * @param parameters assumes simple parameters
    * @param in the input stream containing the document to be transformed
    * @param out the output stream to which the result should be written 
@@ -101,7 +101,7 @@ public class XSLTTransformer {
 
 
 /**
-   * @param sheet file name of XSLT style sheet, could be a URL
+   * @param sheetFile file name of XSLT style sheet, could be a URL
    * @param parameters assumes simple parameters
    * @param in the input stream containing the document to be transformed
    * @param out the output stream to which the result should be written 
@@ -136,13 +136,13 @@ public class XSLTTransformer {
   }
   
   /**
-   * @param sheet file name of XSLT style sheet, could be a URL
+   * @param sheetFile file name of XSLT style sheet, could be a URL
    * @param parameters assumes simple parameters
-   * @param in the input stream containing the document to be transformed
+   * @param xmldoc_url the file URL containing the document to be transformed
    * @throws Exception 
    */
-  public static String transform2string(String sheetFile, java.util.Map<String, String> parameters
-      , String xmldoc_url)
+  public static String transform2string(String sheetFile, java.util.Map<String, String> parameters,
+          final String xmldoc_url)
     throws Exception
   {
 	  StringWriter out = new StringWriter();

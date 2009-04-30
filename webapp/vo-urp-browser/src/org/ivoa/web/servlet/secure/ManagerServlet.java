@@ -35,6 +35,13 @@ import javax.servlet.http.HttpSession;
  * The servlet class to list Experiment from SNAP database
  */
 public final class ManagerServlet extends BaseServlet {
+
+    /**
+     * serial UID for Serializable interface : every concrete class must have its value corresponding to last
+     * modification date of the UML model
+     */
+    private static final long serialVersionUID = 1L;
+    // constants :
     public static final String INPUT_DOC = "doc";
     public static final String INPUT_TYPE = "type";
     public static final String OUTPUT_INSERT = "insert";
@@ -130,7 +137,7 @@ public final class ManagerServlet extends BaseServlet {
      * TODO implement the insert part
      *
      * @param parameters
-     * @return
+     * @return MetadataObject
      * @throws Exception
      */
     private MetadataObject handleInsert(Map<String, Object> parameters, String user)
@@ -161,7 +168,7 @@ public final class ManagerServlet extends BaseServlet {
      * an single String as value.
      *
      * @param request
-     * @return
+     * @return parameter map
      */
     private Map<String, Object> getParameters(HttpServletRequest request) {
         Map<String, Object> parameters = new Hashtable<String, Object>();

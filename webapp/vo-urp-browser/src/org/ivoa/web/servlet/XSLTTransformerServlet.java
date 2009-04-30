@@ -32,12 +32,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
 /**
  * The servlet class uses XSLT documents to transform from the
  * domain representation of objects to denormalised views.<br/>
  */
-public final class XSLTTransformerServlet extends BaseServlet  {
+public final class XSLTTransformerServlet extends BaseServlet {
+
+    /**
+     * serial UID for Serializable interface : every concrete class must have its value corresponding to last
+     * modification date of the UML model
+     */
+    private static final long serialVersionUID = 1L;
+    // constants :
     public static final String INPUT_DOC = "inputDoc";
     /** Name of the XSLT sheet (in views/ directory) */
     public static final String INPUT_XSLT = "xslt";
@@ -46,17 +52,13 @@ public final class XSLTTransformerServlet extends BaseServlet  {
     public static final String OUTPUT_DOC = "transformedDoc";
     public static final String OUTPUT_STATUS = "status";
     public static final String OUTPUT_ERROR = "error";
-
     /** Parameter name of the parameter indicating which of the actions available through this servlet should be performed.*/
     public static final String INPUT_ACTION = "action";
-
     /** Action parameter value indicating that an uploaded XML doc should be validated against the XML schemas for the current model */
     public static final String INPUT_ACTION_transform = "transform";
-
     /** location where views should be stored */
     public static final String PATH_VIEWS = "/views/";
     public static final String PATH_PAGES = "/page/";
-
     private DataModelManager dataModelManager;
 
     /**
@@ -73,8 +75,8 @@ public final class XSLTTransformerServlet extends BaseServlet  {
      */
     @Override
     protected void processRequest(final HttpServletRequest request,
-        final HttpServletResponse response)
-        throws ServletException, IOException {
+            final HttpServletResponse response)
+            throws ServletException, IOException {
         long time;
         long start = System.nanoTime();
 
@@ -111,7 +113,7 @@ public final class XSLTTransformerServlet extends BaseServlet  {
 
         if (log.isInfoEnabled()) {
             log.info("UploadServlet [" + getSessionNo(request) +
-                "] : upload succeeded : servlet process : " + time + " ms.");
+                    "] : upload succeeded : servlet process : " + time + " ms.");
         }
 
         start = System.nanoTime();
@@ -123,26 +125,27 @@ public final class XSLTTransformerServlet extends BaseServlet  {
 
         if (log.isInfoEnabled()) {
             log.info("UploadServlet [" + getSessionNo(request) +
-                "] : upload forwarded:  jsp     process : " + time);
+                    "] : upload forwarded:  jsp     process : " + time);
         }
     }
 
     private String handleTransform(Map<String, Object> parameters)
-        throws Exception {
+            throws Exception {
         InputStream in = null;
 
         try {
             final FileItem infile = (FileItem) parameters.get(INPUT_DOC);
 
-            String sheetFile = PATH_VIEWS+(String)parameters.get(INPUT_XSLT);
-            String mode = (String)parameters.get(INPUT_MODE);
-            if(!"forward".equals(mode))
-            	mode = "inverse";
+            String sheetFile = PATH_VIEWS + (String) parameters.get(INPUT_XSLT);
+            String mode = (String) parameters.get(INPUT_MODE);
+            if (!"forward".equals(mode)) {
+                mode = "inverse";
+            }
             in = infile.getInputStream();
 
             StringWriter out = new StringWriter();
-            HashMap<String,String> xsltParams = new HashMap<String, String>();
-            xsltParams.put("mode",mode);
+            HashMap<String, String> xsltParams = new HashMap<String, String>();
+            xsltParams.put("mode", mode);
 
             XSLTTransformer.transform(sheetFile, xsltParams, in, out);
 
@@ -154,7 +157,6 @@ public final class XSLTTransformerServlet extends BaseServlet  {
         }
     }
 
-    
     /**
      * Extract a Map off key value pairs from the request which is assumed to be
      * POSTed as multipart/form-data.<br>
@@ -163,7 +165,7 @@ public final class XSLTTransformerServlet extends BaseServlet  {
      * an single String as value.
      *
      * @param request
-     * @return
+     * @return parameter map
      */
     private Map<String, Object> getParameters(HttpServletRequest request) {
         Map<String, Object> parameters = new Hashtable<String, Object>();
@@ -225,12 +227,11 @@ public final class XSLTTransformerServlet extends BaseServlet  {
         super.init(sc);
 
         try {
-            dataModelManager = new DataModelManager(RuntimeConfiguration.getInstance()
-                                                                        .getJPAPU());
+            dataModelManager = new DataModelManager(RuntimeConfiguration.getInstance().getJPAPU());
         } catch (Exception e) {
             log.error(
-                "Unable to initiate DataModelManager for UploadServlet using JPA persistence unit " +
-                RuntimeConfiguration.getInstance().getJPAPU());
+                    "Unable to initiate DataModelManager for UploadServlet using JPA persistence unit " +
+                    RuntimeConfiguration.getInstance().getJPAPU());
             dataModelManager = null; // TODO should we throw an exception or simply make uploads not possible?
         }
     }

@@ -250,15 +250,13 @@ public abstract class MetadataObject extends MetadataElement {
   /**
    * Sets the publisherDID field<br/>
    *
-   * @param pIdentity pIdentity instance
+   * @param publisherDID publisherDID value
    */
   public void setPublisherDID(final String publisherDID) {
     getIdentity().setPublisherDID(publisherDID);
   }
   /**
-   * Sets the XmlID field on the identitys<br/>
-   *
-   * @param pIdentity pIdentity instance
+   * Sets the XmlID field on the identity<br/>
    */
   public void setXmlId() {
     getIdentity().setXmlId(getXmlId());
