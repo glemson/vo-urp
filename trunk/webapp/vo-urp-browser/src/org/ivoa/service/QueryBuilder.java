@@ -6,38 +6,73 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package org.ivoa.service;
 
 import org.ivoa.web.model.EntityConfig;
 
 
 /**
+ * 
+DOCUMENT ME!
  *
  * @author laurent
  */
 public class QueryBuilder {
+  //~ Constants --------------------------------------------------------------------------------------------------------
 
-  // distinct item
-  public static final String SELECT_ITEM = "SELECT item FROM ";
+  /**
+   * TODO : Field Description
+   */
+  public static final String SELECT_ITEM  = "SELECT item FROM ";
+  /**
+   * TODO : Field Description
+   */
   public static final String SELECT_COUNT = "SELECT COUNT(item) FROM ";
+  /**
+   * TODO : Field Description
+   */
   public static final String ITEM = " item ";
-
+  /**
+   * TODO : Field Description
+   */
   public static final String ORDER_BY = " ORDER BY ";
 
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
+  /**
+   * Creates a new QueryBuilder object
+   */
   private QueryBuilder() {
   }
 
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * TODO : Method Description
+   *
+   * @param ec 
+   *
+   * @return value TODO : Value Description
+   */
   public static String computeFindAll(final EntityConfig ec) {
-    String query = SELECT_ITEM + ec.getName() + ITEM;
+    String query                          = SELECT_ITEM + ec.getName() + ITEM;
+
     if (ec.getOrderBy() != null) {
-      query += ORDER_BY + ec.getOrderBy() + " ";
+      query += (ORDER_BY + ec.getOrderBy() + " ");
     }
+
     return query;
   }
 
+  /**
+   * TODO : Method Description
+   *
+   * @param ec 
+   *
+   * @return value TODO : Value Description
+   */
   public static String computeCountAll(final EntityConfig ec) {
     return SELECT_COUNT + ec.getName() + ITEM;
   }
 }
+//~ End of file --------------------------------------------------------------------------------------------------------

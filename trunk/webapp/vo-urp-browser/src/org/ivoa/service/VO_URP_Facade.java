@@ -3,7 +3,10 @@ package org.ivoa.service;
 import org.apache.commons.logging.Log;
 
 import org.ivoa.conf.RuntimeConfiguration;
+
 import org.ivoa.dm.MetaModelFactory;
+
+import org.ivoa.env.ClassLoaderCleaner;
 
 import org.ivoa.jpa.JPAFactory;
 
@@ -20,64 +23,46 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
-
 import javax.persistence.Query;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import org.ivoa.env.ClassLoaderCleaner;
 
 
 /**
- * 
-DOCUMENT ME!
+ * DOCUMENT ME!
  *
  * @author laurent
  */
 public class VO_URP_Facade implements ServletContextListener {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**
-   * TODO : Field Description
-   */
-  public static final String CTX_KEY       = "VO_URP_Facade";
-
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
+  public static final String CTX_KEY = "VO_URP_Facade";
+  /** TODO : Field Description */
   public static final int DEF_PAGE_SIZE = 10;
-
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private static VO_URP_Facade instance = null;
-
   /** Logger for this class and subclasses */
   protected static final Log log = LogUtil.getLogger();
 
   //~ Members ----------------------------------------------------------------------------------------------------------
 
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private EntityConfigFactory ecf;
-
   /** EntityManager factory */
   private EntityManagerFactory emf;
-  
   /** EntityManager Thread Local (lazy weaving) */
   private ThreadLocal<EntityManager> threadLocal;
 
-
   // global Cache (thread safe) :
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private Map globalCache = new ConcurrentHashMap();
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Constructor
    */
   public VO_URP_Facade() {
@@ -99,7 +84,7 @@ public class VO_URP_Facade implements ServletContextListener {
   /**
    * TODO : Method Description
    *
-   * @param sce 
+   * @param sce
    */
   public void contextInitialized(final ServletContextEvent sce) {
     if (log != null) {
@@ -123,15 +108,14 @@ public class VO_URP_Facade implements ServletContextListener {
    */
   private void prepare() {
     if (log.isInfoEnabled()) {
-//      log.info("get MetaModelFactory and load model : " + MetaModelFactory.MODEL_FILE);
+      //      log.info("get MetaModelFactory and load model : " + MetaModelFactory.MODEL_FILE);
     }
 
-    try
-    {
-    MetaModelFactory.getInstance();
-    }catch(IllegalStateException e){
-    	e.printStackTrace();
-    	throw e;
+    try {
+      MetaModelFactory.getInstance();
+    } catch (final IllegalStateException e) {
+      e.printStackTrace();
+      throw e;
     }
 
     if (log.isInfoEnabled()) {
@@ -139,16 +123,17 @@ public class VO_URP_Facade implements ServletContextListener {
     }
 
     this.ecf = EntityConfigFactory.getInstance();
+
     String jpa_pu = RuntimeConfiguration.getInstance().getJPAPU();
 
     if (log.isInfoEnabled()) {
-      log.info("get JPAFactory for persistence unit "+jpa_pu);
+      log.info("get JPAFactory for persistence unit " + jpa_pu);
     }
 
     final JPAFactory jf = JPAFactory.getInstance(jpa_pu);
 
     if (log.isInfoEnabled()) {
-      log.info("get JPAFactory for persistence unit "+jpa_pu+" : OK");
+      log.info("get JPAFactory for persistence unit " + jpa_pu + " : OK");
     }
 
     EntityManager em = null;
@@ -157,6 +142,7 @@ public class VO_URP_Facade implements ServletContextListener {
       if (log.isInfoEnabled()) {
         log.info("get EntityManager ...");
       }
+
       em = jf.getEm();
 
       if (log.isInfoEnabled()) {
@@ -179,62 +165,82 @@ public class VO_URP_Facade implements ServletContextListener {
   /**
    * TODO : Method Description
    *
-   * @param sce 
+   * @param sce
    */
   public void contextDestroyed(final ServletContextEvent sce) {
     log.info("VO_URP_Facade.contextDestroyed : enter");
+
     if (log != null) {
       log.warn("Application is stopping ...");
     }
 
     sce.getServletContext().removeAttribute(CTX_KEY);
-    
+
     instance = null;
-    
+
     // free Session stats Thread :
     SessionMonitor.onExit();
-    
+
     EntityConfigFactory.clean();
-    
+
     if (log != null) {
       log.warn("Application is unavailable.");
     }
+
     log.info("VO_URP_Facade.contextDestroyed : exit");
-    
+
     // last one (clear logging) :
     ClassLoaderCleaner.clean();
   }
 
   // Utilities --------------
-  
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   public EntityManager createEntityManager() {
     EntityManager em = threadLocal.get();
+
     if (em == null) {
       em = doCreateEntityManager();
     }
+
     return em;
   }
 
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
   private EntityManager doCreateEntityManager() {
-
     final EntityManager em = emf.createEntityManager();
+
     threadLocal.set(em);
 
     if (log.isInfoEnabled()) {
       log.info("doCreateEntityManager : instance created : " + em);
     }
+
     return em;
   }
 
+  /**
+   * TODO : Method Description
+   */
   public void closeEntityManager() {
     EntityManager em = threadLocal.get();
+
     if (em != null) {
       // free thread-local first
       threadLocal.set(null);
+
       if (em.isOpen()) {
         if (log.isInfoEnabled()) {
           log.info("doCreateEntityManager : instance closed : " + em);
         }
+
         em.close();
       } else {
         if (log.isInfoEnabled()) {
@@ -243,10 +249,9 @@ public class VO_URP_Facade implements ServletContextListener {
       }
     }
   }
-  
+
   /**
-   * Find an entity given its identifier and its class.
-   * Used by FindServlet
+   * Find an entity given its identifier and its class. Used by FindServlet
    *
    * @param id identifier
    * @param c class of the entity
@@ -263,14 +268,14 @@ public class VO_URP_Facade implements ServletContextListener {
   /**
    * TODO : Method Description
    *
-   * @param query 
+   * @param query
    *
    * @return value TODO : Value Description
    */
   public Integer getCount(final String query) {
     final EntityManager em = createEntityManager();
 
-    final Long c = (Long) em.createQuery(query).getSingleResult();
+    final Long          c  = (Long) em.createQuery(query).getSingleResult();
 
     return Integer.valueOf(c.intValue());
     // close is defered in JPARequestListener
@@ -279,13 +284,13 @@ public class VO_URP_Facade implements ServletContextListener {
   /**
    * TODO : Method Description
    *
-   * @param cq 
+   * @param cq
    */
   private void refreshCursorResults(final CursorQuery cq) {
-    List results = null;
+    List                results = null;
 
-    final EntityManager em = createEntityManager();
-    final Query q = em.createQuery(cq.getQuery());
+    final EntityManager em      = createEntityManager();
+    final Query         q       = em.createQuery(cq.getQuery());
 
     if (cq.isDoPaging()) {
       if (log.isDebugEnabled()) {
@@ -295,16 +300,17 @@ public class VO_URP_Facade implements ServletContextListener {
       if (cq.getStartPos() >= 0) {
         q.setFirstResult(cq.getStartPos());
       }
+
       if (cq.getPageSize() > 0) {
         q.setMaxResults(cq.getPageSize());
       }
-
     } else {
       if (log.isDebugEnabled()) {
         log.debug("refreshCursor : getall");
       }
     }
-      results = q.getResultList();
+
+    results = q.getResultList();
 
     if (log.isDebugEnabled()) {
       log.debug("refreshCursor : size : " + results.size());
@@ -318,7 +324,7 @@ public class VO_URP_Facade implements ServletContextListener {
   /**
    * TODO : Method Description
    *
-   * @param ec 
+   * @param ec
    *
    * @return value TODO : Value Description
    */
@@ -333,8 +339,8 @@ public class VO_URP_Facade implements ServletContextListener {
         log.debug("getCount : count : " + c);
       }
 
-// disable global cache :      
-//      getGlobalCache().put(ec.getGlobalCountKey(), c);
+      // disable global cache :      
+      //      getGlobalCache().put(ec.getGlobalCountKey(), c);
     }
 
     return c;
@@ -343,7 +349,7 @@ public class VO_URP_Facade implements ServletContextListener {
   /**
    * TODO : Method Description
    *
-   * @param ec 
+   * @param ec
    *
    * @return value TODO : Value Description
    */
@@ -368,13 +374,14 @@ public class VO_URP_Facade implements ServletContextListener {
   /**
    * TODO : Method Description
    *
-   * @param ec 
-   * @param cq 
+   * @param ec
+   * @param cq
    */
   public void refreshCursor(final EntityConfig ec, final CursorQuery cq) {
     if (cq.isRefreshCount()) {
       // refresh count :
       String query = ec.getCountAll();
+
       if (cq.getQueryClause() != null) {
         query += cq.getQueryClause();
       }
@@ -387,9 +394,11 @@ public class VO_URP_Facade implements ServletContextListener {
 
       // update Query :
       query = ec.getFindAll();
+
       if (cq.getQueryClause() != null) {
         query += cq.getQueryClause();
-      }      
+      }
+
       cq.setQuery(query);
     }
 
