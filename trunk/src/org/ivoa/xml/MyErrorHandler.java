@@ -14,7 +14,7 @@ import org.xml.sax.SAXParseException;
 /**
  * TODO : Class Description
  *
- * @author $author$
+ * @author laurent bourges (voparis) / Gerard Lemson (mpe)
   */
 public class MyErrorHandler implements ErrorHandler {
   //~ Members ----------------------------------------------------------------------------------------------------------

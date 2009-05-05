@@ -18,7 +18,7 @@ import java.util.Set;
 /**
  * TODO : Class Description
  *
- * @author $author$
+ * @author laurent bourges (voparis) / Gerard Lemson (mpe)
   */
 public final class TypeWrapper {
   //~ Constants --------------------------------------------------------------------------------------------------------

@@ -37,7 +37,7 @@ import javax.xml.transform.stream.StreamSource;
 /**
  * TODO : Class Description
  *
- * @author $author$
+ * @author laurent bourges (voparis) / Gerard Lemson (mpe)
   */
 public class XSLTTransformer {
   //~ Methods ----------------------------------------------------------------------------------------------------------

@@ -22,7 +22,7 @@ import java.util.Map;
 /**
  * TODO : Class Description
  *
- * @author $author$
+ * @author laurent bourges (voparis) / Gerard Lemson (mpe)
   */
 public class MetadataObject2JSON {
   //~ Constants --------------------------------------------------------------------------------------------------------

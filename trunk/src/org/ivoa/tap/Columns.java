@@ -19,7 +19,7 @@ import javax.persistence.Table;
 /**
  * TODO : Class Description
  *
- * @author $author$
+ * @author laurent bourges (voparis) / Gerard Lemson (mpe)
   */
 @Entity
 @Table(name = "TAP_SCHEMA.columns")
