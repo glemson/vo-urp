@@ -85,10 +85,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
      * Stores the namespace for session, i.e."org.eclipse.persistence.session.<sessionname>".
      */
   private String sessionNameSpace;
-    /**
-     * Stores the Logger for session namespace, i.e. "org.eclipse.persistence.session.<sessionname>".
-     */
-    private Logger sessionLogger;
+
   /** Log instances */
   private final Map<String, LogWrapper> categoryloggers = new ConcurrentHashMap<String, LogWrapper>();
   /** formats the EclipseLinkLogRecords */
@@ -177,7 +174,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
     if (FORCE_INTERNAL_DEBUG) { System.out.println("CommonsLoggingSessionLog.setLevel : category : " + category + " to level : " + level); }
     final LogWrapper lw = getLogWrapper(category);
 
-        AccessController.doPrivileged(new PrivilegedAction() {
+        AccessController.doPrivileged(new PrivilegedAction<Object>() {
             public Object run() {
     lw.setLevel(level);
 
@@ -309,9 +306,20 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
         sessionNameSpace = DEFAULT_ECLIPSELINK_NAMESPACE;
       }
 
+      if (FORCE_INTERNAL_DEBUG) { System.out.println("CommonsLoggingSessionLog.setSession : sessionNameSpace : " + sessionNameSpace); }
       //Initialize loggers eagerly
       addLogger(sessionNameSpace, sessionNameSpace);
 
+      addDefaultLoggers(sessionNameSpace);
+    }
+  }
+
+  /**
+   * Adds default loggers for the given name space
+   * @param namespace name space
+   */
+  private void addDefaultLoggers(final String namespace) {
+      if (FORCE_INTERNAL_DEBUG) { System.out.println("CommonsLoggingSessionLog.addDefaultLoggers : nameSpace : " + namespace); }
       String loggerCategory;
       String loggerNameSpace;
 
@@ -319,12 +327,12 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
 
       for (int i = 0, size = categories.length; i < size; i++) {
         loggerCategory = categories[i];
-        loggerNameSpace = sessionNameSpace + "." + loggerCategory;
+        loggerNameSpace = namespace + "." + loggerCategory;
 
         nameSpaceMap.put(loggerCategory, loggerNameSpace);
         addLogger(loggerCategory, loggerNameSpace);
       }
-    }
+
   }
 
   /**
@@ -349,7 +357,6 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
    */
   @Override
   public boolean shouldLog(final int level, final String category) {
-    if (FORCE_INTERNAL_DEBUG) { System.out.println("CommonsLoggingSessionLog.shouldLog : category : " + category + " to level : " + level); }
     if (level == OFF) {
       return false;
     }
@@ -369,6 +376,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
     }
 
     if (lw == null) {
+        if (FORCE_INTERNAL_DEBUG) { System.out.println("CommonsLoggingSessionLog.shouldLog : category : " + category + " - NO LOGGER FOUND"); }
       return false;
     }
 
