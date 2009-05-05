@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * TODO : Class Description
  *
- * @author $author$
+ * @author laurent bourges (voparis) / Gerard Lemson (mpe)
   */
 public class TAPResult extends BaseResult {
   //~ Constants --------------------------------------------------------------------------------------------------------

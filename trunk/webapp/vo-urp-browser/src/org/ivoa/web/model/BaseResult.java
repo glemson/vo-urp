@@ -9,7 +9,7 @@ package org.ivoa.web.model;
 /**
  * TODO : Class Description
  *
- * @author $author$
+ * @author laurent bourges (voparis) / Gerard Lemson (mpe)
   */
 public class BaseResult {
   //~ Members ----------------------------------------------------------------------------------------------------------
