@@ -12,8 +12,8 @@ import org.ivoa.dm.model.visitor.Visitor;
 /**
  * TODO : Class Description
  *
- * @author $author$
-  */
+ * @author laurent bourges (voparis) / Gerard Lemson (mpe)
+ */
 public class MarshallObjectPostProcessor implements Visitor {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 

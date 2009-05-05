@@ -18,7 +18,7 @@ import javax.xml.bind.Unmarshaller;
 /**
  * TODO : Class Description
  *
- * @author $author$
+ * @author laurent bourges (voparis) / Gerard Lemson (mpe)
   */
 public class VOTableTest {
   //~ Methods ----------------------------------------------------------------------------------------------------------

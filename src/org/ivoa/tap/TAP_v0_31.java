@@ -9,7 +9,7 @@ package org.ivoa.tap;
 /**
  * TODO : Interface Description
  *
- * @author $author$
+ * @author laurent bourges (voparis) / Gerard Lemson (mpe)
   */
 public interface TAP_v0_31 {
   //~ Constants --------------------------------------------------------------------------------------------------------
