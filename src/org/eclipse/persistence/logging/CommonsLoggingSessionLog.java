@@ -13,19 +13,18 @@ import java.io.OutputStream;
 
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 
+
 /**
- * PUBLIC:
- * This is a wrapper class for org.apache.commons.logging.Log.  It is used when messages need to be
- * logged through apache commons logging 1.1.
- * 
- * 
- * History :
- * 05/05/2009 : Updated API to EclipseLink 1.1 version + Javadoc fixes
- * 
+ * PUBLIC: This is a wrapper class for org.apache.commons.logging.Log.   It is used when messages need to be logged
+ * through apache commons logging 1.1.   History : 05/05/2009 : Updated API to EclipseLink 1.1 version + Javadoc fixes
+ * TODO : Use Enum instead of int values for Levels (OO Design)
  *
  * @author laurent bourges (voparis)
  *
@@ -35,573 +34,714 @@ import java.util.logging.Level;
  * @see Session
  */
 public final class CommonsLoggingSessionLog extends AbstractSessionLog {
+  //~ Constants --------------------------------------------------------------------------------------------------------
 
-    //~ Constants --------------------------------------------------------------------------------------------------------
-    /** internal debugger FLAG */
-    private static final boolean FORCE_INTERNAL_DEBUG = false;
-    /** value corresponding to an undefined Level */
-    public static final int UNDEFINED_LEVEL = -1;
-    /**
-     * Stores the default session name in case there is the session name is missing.
-     * org.eclipse.persistence package used by Log4J configuration
-     */
-    public static final String ECLIPSELINK_NAMESPACE = "org.eclipse.persistence";
-    /** org.eclipse.persistence.default used by Log4J configuration */
-    public static final String DEFAULT_ECLIPSELINK_NAMESPACE = ECLIPSELINK_NAMESPACE + ".default";
-    /** org.eclipse.persistence.session used by Log4J configuration */
-    public static final String SESSION_ECLIPSELINK_NAMESPACE = ECLIPSELINK_NAMESPACE + ".session";
-    /**
-     * Copied from JavaLog for compatibility issues
-     */
-    public static final String TOPLINK_NAMESPACE = "org.eclipse.persistence";
-    /**
-     * Copied from JavaLog for compatibility issues
-     */
-    protected static final String LOGGING_LOCALIZATION_STRING = "org.eclipse.persistence.internal.localization.i18n.LoggingLocalizationResource";
-    /**
-     * Copied from JavaLog for compatibility issues
-     */
-    protected static final String TRACE_LOCALIZATION_STRING = "org.eclipse.persistence.internal.localization.i18n.TraceLocalizationResource";
-    /**
-     * Stores all the java.util.logging.Levels.  The indexes are TopLink logging levels.
-     */
-    private static final Level[] levels = new Level[]{Level.ALL, Level.FINEST, Level.FINER, Level.FINE, Level.CONFIG, Level.INFO, Level.WARNING, Level.SEVERE, Level.OFF};
+  /** internal debugger FLAG : use System.out */
+  private static final boolean FORCE_INTERNAL_DEBUG = false;
+  /** internal cache FLAG for LogWrapper's levels */
+  private static final boolean USE_INTERNAL_CACHE = true;
+  /** value corresponding to an undefined Level */
+  public static final int UNDEFINED_LEVEL = -1;
+  /**
+   * Stores the default session name in case there is the session name is missing. org.eclipse.persistence
+   * package used by Log4J configuration
+   */
+  public static final String ECLIPSELINK_NAMESPACE = "org.eclipse.persistence";
+  /** org.eclipse.persistence.default used by Log4J configuration */
+  public static final String DEFAULT_ECLIPSELINK_NAMESPACE = ECLIPSELINK_NAMESPACE + ".default";
+  /** org.eclipse.persistence.session used by Log4J configuration */
+  public static final String SESSION_ECLIPSELINK_NAMESPACE = ECLIPSELINK_NAMESPACE + ".session";
+  /** Copied from JavaLog for compatibility issues */
+  public static final String TOPLINK_NAMESPACE = "org.eclipse.persistence";
+  /** Copied from JavaLog for compatibility issues */
+  public static final String LOGGING_LOCALIZATION_STRING = "org.eclipse.persistence.internal.localization.i18n.LoggingLocalizationResource";
+  /** Copied from JavaLog for compatibility issues */
+  public static final String TRACE_LOCALIZATION_STRING = "org.eclipse.persistence.internal.localization.i18n.TraceLocalizationResource";
+  /** Stores all the java.util.logging.Levels.  The indexes are TopLink logging levels. */
+  public static final Level[] JAVA_LEVELS = new Level[] {
+                                              Level.ALL, Level.FINEST, Level.FINER, Level.FINE, Level.CONFIG, Level.INFO,
+                                              Level.WARNING, Level.SEVERE, Level.OFF
+                                            };
 
-    //~ Members ----------------------------------------------------------------------------------------------------------
-    /**
-     * Represents the HashMap that stores all the name space strings.
-     * The keys are category names.  The values are namespace strings.
-     */
-    private final Map<String, String> nameSpaceMap = new ConcurrentHashMap<String, String>();
-    /**
-     * Stores the namespace for session, i.e."org.eclipse.persistence.session.<sessionname>".
-     */
-    private String sessionNameSpace;
-    /** Log instances */
-    private final Map<String, LogWrapper> categoryloggers = new ConcurrentHashMap<String, LogWrapper>();
-    /** formats the EclipseLinkLogRecords */
-    private final LogFormatter formatter = new LogFormatter();
+  //~ Members ----------------------------------------------------------------------------------------------------------
 
-    //~ Constructors -----------------------------------------------------------------------------------------------------
-    /**
-     * INTERNAL:
-     * CommonsLoggingSessionLog Constructor. This adds a root logger for DEFAULT_ECLIPSELINK_NAMESPACE.
-     */
-    public CommonsLoggingSessionLog() {
-        super();
-        addLogger(DEFAULT_ECLIPSELINK_NAMESPACE, DEFAULT_ECLIPSELINK_NAMESPACE);
+  /** formats the EclipseLinkLogRecords. Acts as a static variable but not declared static to avoid classLoader leaks */
+  private final LogFormatter LOG_FORMATTER = new LogFormatter();
+  /**
+   * Represents the HashMap that stores all the name space strings. The keys are category names.  The values are
+   * namespace strings. Acts as a static variable but not declared static to avoid classLoader leaks
+   */
+  private final Map<String, String> NAMESPACE_MAP = new ConcurrentHashMap<String, String>();
+  /** LogWrapper instances. Acts as a static variable but not declared static to avoid classLoader leaks */
+  private final Map<String, LogWrapper> CATEGORY_LOGGERS = new ConcurrentHashMap<String, LogWrapper>();
+  /** Stores the namespace for session, i.e."org.eclipse.persistence.session.#sessionname#". */
+  private String sessionNameSpace;
 
-        setShouldPrintSession(false);
-        setShouldPrintDate(false);
-    }
+  //~ Constructors -----------------------------------------------------------------------------------------------------
 
-    //~ Methods ----------------------------------------------------------------------------------------------------------
-    /**
-     * INTERNAL:
-     * Add Logger to the catagoryloggers.
-     *
-     * @param loggerCategory category
-     * @param loggerNameSpace name space
-     */
-    protected void addLogger(final String loggerCategory, final String loggerNameSpace) {
-        if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.addLogger : category : " + loggerCategory + " in name space : " + loggerNameSpace);
-        }
-        categoryloggers.put(loggerCategory, new LogWrapper(LogFactory.getLog(loggerNameSpace)));
-    }
-
-    /**
-     * INTERNAL:
-     * Return catagoryloggers
-     */
-    public Map getCategoryLoggers() {
-        return categoryloggers;
-    }
-
-    /**
+/**
      * PUBLIC:
-     * 
-     * Return the effective log level for the name space extracted from session and category.
-     * If a Logger's level is set to be null then the Logger will use an effective Level that will
-     * be obtained by walking up the parent tree and using the first non-null Level.
-     * 
      *
-     * @param category category
-     *
-     * @return the effective level according to the java.util.logging.Levels
-     * 
+     * CommonsLoggingSessionLog Constructor.
+     * This adds a root logger for DEFAULT_ECLIPSELINK_NAMESPACE.
      */
-    @Override
-    public int getLevel(final String category) {
-        LogWrapper lw = getLogWrapper(category);
+  public CommonsLoggingSessionLog() {
+    super();
 
-        LogWrapper pw;
+    if (FORCE_INTERNAL_DEBUG) {
+      System.out.println("CommonsLoggingSessionLog.new : instance : " + this);
+    }
 
-        while (lw != null && lw.getLevel() == UNDEFINED_LEVEL) {
-            pw = getLogWrapper(lw.getParentName());
-            lw = (pw != lw) ? pw : null;
-        }
+    addLogger(DEFAULT_ECLIPSELINK_NAMESPACE, DEFAULT_ECLIPSELINK_NAMESPACE);
 
-        if (lw == null) {
+    //        setShouldPrintSession(false);
+    // date is always given by log4J :
+    setShouldPrintDate(false);
+  }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * PUBLIC:  Return the effective log level for the name space extracted from session and category. If a
+   * Logger's level is set to be null then the Logger will use an effective Level that will be obtained by walking up
+   * the parent tree and using the first non-null Level.
+   *
+   * @param category category
+   *
+   * @return the effective level according to the java.util.logging.Levels
+   */
+  @Override
+  public final int getLevel(final String category) {
+    final LogWrapper lw = getLogWrapper(category);
+
+    int              l = OFF;
+
+    if (lw != null) {
+      l = lw.getLevel();
+    }
+
+    if (FORCE_INTERNAL_DEBUG) {
+      System.out.println("CommonsLoggingSessionLog.getLevel : category : " + category + " : level : " + l);
+    }
+
+    return l;
+  }
+
+  /**
+   * PUBLIC:  Set the log level to a logger with name space extracted from the given category.
+   *
+   * @param level value according to the java.util.logging.Levels
+   * @param category category
+   */
+  @Override
+  public final void setLevel(final int level, final String category) {
+    AccessController.doPrivileged(
+      new PrivilegedAction<Object>() {
+          public Object run() {
             if (FORCE_INTERNAL_DEBUG) {
-                System.out.println("CommonsLoggingSessionLog.getLevel : category : " + category + " : OFF");
+              System.out.println(
+                "CommonsLoggingSessionLog.setLevel : IN : category : " + category + " to level : " + level);
             }
-            return OFF;
-        }
 
-        if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.getLevel : category : " + category + " : level : " + lw.getLevel());
-        }
-        return lw.getLevel();
-    }
+            final LogWrapper lw = getLogWrapper(category);
 
-    /**
-     * PUBLIC:
-     * 
-     * Set the log level to a logger with name space extracted from the given category.
-     * 
-     *
-     * @param level value according to the java.util.logging.Levels
-     * @param category category
-     */
-    @Override
-    public void setLevel(final int level, final String category) {
-        if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.setLevel : category : " + category + " to level : " + level);
-        }
-        final LogWrapper lw = getLogWrapper(category);
+            if (lw == null) {
+              System.err.println("CommonsLoggingSessionLog.setLevel : category not found : " + category);
+            } else {
+              lw.setLevel(level);
 
-        AccessController.doPrivileged(new PrivilegedAction<Object>() {
+              Logger l = getLog4JLogger(lw.getLog());
 
-            public Object run() {
-                lw.setLevel(level);
-
-                Logger l = getLog4JLogger(lw.getLog());
-
+              if (l == null) {
+                System.err.println(
+                  "CommonsLoggingSessionLog.setLevel : Logger not found : " + category + " : " + lw.getLog());
+              } else {
                 switch (level) {
-                    case SEVERE:
-                        l.setLevel(org.apache.log4j.Level.ERROR);
+                  case SEVERE:
+                    l.setLevel(org.apache.log4j.Level.ERROR);
 
-                        break;
+                    break;
 
-                    case WARNING:
-                        l.setLevel(org.apache.log4j.Level.WARN);
+                  case WARNING:
+                    l.setLevel(org.apache.log4j.Level.WARN);
 
-                        break;
+                    break;
 
-                    case INFO:
-                    case CONFIG:
-                        l.setLevel(org.apache.log4j.Level.INFO);
+                  case INFO:
+                  case CONFIG:
+                    l.setLevel(org.apache.log4j.Level.INFO);
 
-                        break;
+                    break;
 
-                    case FINE:
-                    case FINER:
-                    case FINEST:
-                        l.setLevel(org.apache.log4j.Level.DEBUG);
+                  case FINE:
+                  case FINER:
+                  case FINEST:
+                    l.setLevel(org.apache.log4j.Level.DEBUG);
 
-                        break;
+                    break;
 
-                    default:
-                        l.setLevel(org.apache.log4j.Level.OFF);
-                        System.err.println("CommonsLoggingSessionLog.setLevel : unknown level : " + level);
+                  default:
+                    l.setLevel(org.apache.log4j.Level.OFF);
+                    System.err.println(
+                      "CommonsLoggingSessionLog.setLevel : unknown level : " + level + " : level set to OFF");
+
+                    break;
                 }
 
-                l.error("logger Level set to : " + l.getLevel());
+                if (l.isEnabledFor(org.apache.log4j.Level.WARN)) {
+                  l.warn("logger Level set to : " + l.getLevel());
+                }
 
                 if (FORCE_INTERNAL_DEBUG) {
-                    System.out.println("CommonsLoggingSessionLog.setLevel : category : " + category + " to level : " + l.getLevel());
+                  System.out.println(
+                    "CommonsLoggingSessionLog.setLevel : OUT : category : " + category + " to level : " + l.getLevel());
                 }
-                return null; // nothing to return
+              }
             }
+
+            // nothing to return :
+            return null;
+          }
         });
+  }
 
+  /**
+   * PUBLIC:  Set the output stream that will receive the formatted log entries. DO nothing as Log4J manages the
+   * appenders (console or files) via Log4J configuration
+   *
+   * @param fileOutputStream the file output stream will receive the formatted log entries.
+   */
+  @Override
+  public final void setWriter(final OutputStream fileOutputStream) {
+    if (FORCE_INTERNAL_DEBUG) {
+      System.out.println("CommonsLoggingSessionLog.setWriter : stream : " + fileOutputStream);
     }
 
-    /**
-     * PUBLIC:
-     * 
-     * Set the output stream  that will receive the formatted log entries.
-     * 
-     *
-     * DO nothing as Log4J manages the appenders (console or files) via Log4J configuration
-     *
-     * @param fileOutputStream the file output stream will receive the formatted log entries.
-     * 
-     */
-    @Override
-    public void setWriter(final OutputStream fileOutputStream) {
-        // do nothing
+    // do nothing
+  }
+
+  /**
+   * PUBLIC: Set the session and session namespace.
+   *
+   * @param pSession an eclipselink Session
+   */
+  @Override
+  public final void setSession(final Session pSession) {
+    super.setSession(pSession);
+
+    if (pSession != null) {
+      final String sessionName = pSession.getName();
+
+      if ((sessionName != null) && (sessionName.length() != 0)) {
+        this.sessionNameSpace = SESSION_ECLIPSELINK_NAMESPACE + "." + sessionName;
+      } else {
+        this.sessionNameSpace = DEFAULT_ECLIPSELINK_NAMESPACE;
+      }
+
+      if (FORCE_INTERNAL_DEBUG) {
+        System.out.println("CommonsLoggingSessionLog.setSession : sessionNameSpace : " + this.sessionNameSpace);
+      }
+
+      //Initialize loggers eagerly
+      addLogger(this.sessionNameSpace, this.sessionNameSpace);
+
+      addDefaultLoggers(this.sessionNameSpace);
+    }
+  }
+
+  /**
+   * PUBLIC: Check if a message of the given lev would actually be logged by the logger with name space built
+   * from the given session and category. Return the shouldLog for the given category
+   *
+   * @param level value according to the java.util.logging.Levels
+   * @param category category
+   *
+   * @return true if the given message will be logged
+   */
+  @Override
+  public final boolean shouldLog(final int level, final String category) {
+    if (FORCE_INTERNAL_DEBUG) {
+      System.out.println("CommonsLoggingSessionLog.shouldLog : IN : category : " + category + " : " + level);
     }
 
-    /**
-     * INTERNAL: Return the name space for the given category from the map.
-     *
-     * @param category category
-     *
-     * @return name space for the given category
-     */
-    protected String getNameSpaceString(final String category) {
-        if (session == null) {
-            return DEFAULT_ECLIPSELINK_NAMESPACE;
-        } else if (category == null || category.length() == 0) {
-            return sessionNameSpace;
-        } else {
-            return nameSpaceMap.get(category);
-        }
+    boolean res = false;
+
+    if (level == OFF) {
+      res = false;
+    } else if (level == ALL) {
+      res = true;
+    } else {
+      final LogWrapper lw = getLogWrapper(category);
+
+      if (lw == null) {
+        System.err.println("CommonsLoggingSessionLog.shouldLog : category : " + category + " - NO LOGGER FOUND");
+        res = false;
+      } else {
+        res = level >= lw.getLevel();
+      }
     }
 
-    /**
-     * INTERNAL: Return the LogWrapper instance for the given category
-     *
-     * @param category category
-     *
-     * @return LogWrapper instance or null if not found
-     */
-    private LogWrapper getLogWrapper(final String category) {
-        LogWrapper lw = null;
-
-        if (session == null) {
-            lw = categoryloggers.get(DEFAULT_ECLIPSELINK_NAMESPACE);
-        } else if (category == null || category.length() == 0) {
-            lw = categoryloggers.get(sessionNameSpace);
-        } else {
-            lw = categoryloggers.get(category);
-
-            // If session != null, categoryloggers should have an entry for this category
-            assert lw != null;
-        }
-
-        return lw;
+    if (FORCE_INTERNAL_DEBUG) {
+      System.out.println("CommonsLoggingSessionLog.shouldLog : OUT : category : " + category + " : " + res);
     }
 
-    /**
-     * INTERNAL: Return the Logger instance for the given category
-     *
-     * @param category category
-     *
-     * @return value Logger instance or null if not found
-     */
-    protected Log getLogger(final String category) {
-        final LogWrapper lw = getLogWrapper(category);
+    return res;
+  }
 
-        return (lw != null) ? lw.getLog() : null;
+  /**
+   * PUBLIC: Log a SessionLogEntry
+   *
+   * @param entry SessionLogEntry that holds all the information for a EclipseLink logging event
+   */
+  public final void log(final SessionLogEntry entry) {
+    if (shouldLog(entry.getLevel(), entry.getNameSpace())) {
+      if (FORCE_INTERNAL_DEBUG) {
+        System.out.println("CommonsLoggingSessionLog.log : message : " + entry.getMessage());
+      }
+
+      final Log   log       = getLogger(entry.getNameSpace());
+      final Level javaLevel = getJavaLevel(entry.getLevel());
+
+      internalLog(entry, javaLevel, log);
+    }
+  }
+
+  /**
+   * PUBLIC: Log a throwable.
+   *
+   * @param throwable a throwable
+   */
+  @Override
+  public final void throwing(final Throwable throwable) {
+    final Log log = getLogger(null);
+
+    if (log != null) {
+      log.error(null, throwable);
+    }
+  }
+
+  /**
+   * INTERNAL: Each session owns its own session log because session is stored in the session log
+   *
+   * @return value TODO : Value Description
+   */
+  @Override
+  public final Object clone() {
+    // There is no special treatment required for cloning here
+    // The state of this object is described  by member variables sessionLogger and categoryLoggers.
+    // This state depends on session.
+    // If session for the clone is going to be the same as session for this there is no
+    // need to do "deep" cloning.
+    // If not, the session being cloned should call setSession() on its JavaLog object to initialize it correctly.
+    final CommonsLoggingSessionLog cloneLog = (CommonsLoggingSessionLog) super.clone();
+
+    if (FORCE_INTERNAL_DEBUG) {
+      System.out.println("CommonsLoggingSessionLog.clone : cloned instance : " + cloneLog);
+      // to inspect the initialization process :
+      new Throwable().printStackTrace(System.out);
     }
 
-    /**
-     * PUBLIC:Set the session and session namespace.
-     *
-     * @param session an eclipselink Session
-     */
-    @Override
-    public void setSession(final Session session) {
-        super.setSession(session);
+    return cloneLog;
+  }
 
-        if (session != null) {
-            final String sessionName = session.getName();
-
-            if (sessionName != null && sessionName.length() != 0) {
-                sessionNameSpace = SESSION_ECLIPSELINK_NAMESPACE + "." + sessionName;
-            } else {
-                sessionNameSpace = DEFAULT_ECLIPSELINK_NAMESPACE;
-            }
-
-            if (FORCE_INTERNAL_DEBUG) {
-                System.out.println("CommonsLoggingSessionLog.setSession : sessionNameSpace : " + sessionNameSpace);
-            }
-            //Initialize loggers eagerly
-            addLogger(sessionNameSpace, sessionNameSpace);
-
-            addDefaultLoggers(sessionNameSpace);
-        }
+  /**
+   * INTERNAL: Add Logger to the categoryloggers.
+   *
+   * @param loggerCategory category
+   * @param loggerNameSpace name space
+   */
+  private final void addLogger(final String loggerCategory, final String loggerNameSpace) {
+    if (FORCE_INTERNAL_DEBUG) {
+      System.out.println(
+        "CommonsLoggingSessionLog.addLogger : category : " + loggerCategory + " in name space : " + loggerNameSpace);
     }
 
-    /**
-     * Adds default loggers for the given name space
-     * @param namespace name space
-     */
-    private void addDefaultLoggers(final String namespace) {
-        if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.addDefaultLoggers : nameSpace : " + namespace);
-        }
-        String loggerCategory;
-        String loggerNameSpace;
+    this.CATEGORY_LOGGERS.put(loggerCategory, new LogWrapper(this, loggerCategory, LogFactory.getLog(loggerNameSpace)));
+  }
 
-        final String[] categories = SessionLog.loggerCatagories;
+  /**
+   * INTERNAL: Return the name space for the given category from the map.
+   *
+   * @param category category
+   *
+   * @return name space for the given category
+   */
+  private final String getNameSpaceString(final String category) {
+    if (getSession() == null) {
+      return DEFAULT_ECLIPSELINK_NAMESPACE;
+    } else if ((category == null) || (category.length() == 0)) {
+      return this.sessionNameSpace;
+    } else {
+      return this.NAMESPACE_MAP.get(category);
+    }
+  }
 
-        final int size = categories.length;
-        for (int i = 0; i < size; i++) {
-            loggerCategory = categories[i];
-            loggerNameSpace = namespace + "." + loggerCategory;
+  /**
+   * INTERNAL: Return the LogWrapper instance for the given category
+   *
+   * @param category category
+   *
+   * @return LogWrapper instance or null if not found
+   */
+  private final LogWrapper getLogWrapper(final String category) {
+    LogWrapper lw = null;
 
-            nameSpaceMap.put(loggerCategory, loggerNameSpace);
-            addLogger(loggerCategory, loggerNameSpace);
-        }
-
+    if (getSession() == null) {
+      lw = this.CATEGORY_LOGGERS.get(DEFAULT_ECLIPSELINK_NAMESPACE);
+    } else if ((category == null) || (category.length() == 0)) {
+      lw = this.CATEGORY_LOGGERS.get(this.sessionNameSpace);
+    } else {
+      lw = this.CATEGORY_LOGGERS.get(category);
     }
 
-    /**
-     * INTERNAL: Return the corresponding org.apache.commons.logging.Level for a given eclipselink level.
-     *
-     * @param level according to eclipselink level
-     *
-     * @return value according to the java.util.logging.Levels
-     */
-    protected final static Level getJavaLevel(final int level) {
-        return levels[level];
+    if (FORCE_INTERNAL_DEBUG) {
+      System.out.println("CommonsLoggingSessionLog.getLogWrapper : " + category + " = " + lw);
     }
 
-    /**
-     * PUBLIC:Check if a message of the given lev would actually be logged by the logger with name space built
-     * from the given session and category. Return the shouldLog for the given category from</p>
-     *
-     * @param level value according to the java.util.logging.Levels
-     * @param category category
-     *
-     * @return true if the given message will be logged
-     */
-    @Override
-    public boolean shouldLog(final int level, final String category) {
-        if (level == OFF) {
-            return false;
-        }
+    return lw;
+  }
 
-        if (level == ALL) {
-            // Level.ALL
-            return true;
-        }
+  /**
+   * INTERNAL: Return the Logger instance for the given category
+   *
+   * @param category category
+   *
+   * @return value Logger instance or null if not found
+   */
+  private final Log getLogger(final String category) {
+    final LogWrapper lw = getLogWrapper(category);
 
-        LogWrapper lw = getLogWrapper(category);
+    Log              log = null;
 
-        LogWrapper pw;
-
-        while (lw != null && lw.getLevel() == UNDEFINED_LEVEL) {
-            pw = getLogWrapper(lw.getParentName());
-            lw = (pw != lw) ? pw : null;
-        }
-
-        if (lw == null) {
-            if (FORCE_INTERNAL_DEBUG) {
-                System.out.println("CommonsLoggingSessionLog.shouldLog : category : " + category + " - NO LOGGER FOUND");
-            }
-            return false;
-        }
-
-        final boolean res = level >= lw.getLevel();
-        if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.shouldLog : category : " + category + " : " + res);
-        }
-        return res;
+    if (lw != null) {
+      log = lw.getLog();
     }
 
-    /**
-     * PUBLIC:Log a SessionLogEntry</p>
-     *
-     * @param entry SessionLogEntry that holds all the information for a EclipseLink logging event
-     */
-    public void log(final SessionLogEntry entry) {
-        if (!shouldLog(entry.getLevel(), entry.getNameSpace())) {
-            return;
-        }
-        if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.log : message : " + entry.getMessage());
-        }
-
-        final Log log = getLogger(entry.getNameSpace());
-        final Level javaLevel = getJavaLevel(entry.getLevel());
-
-        internalLog(entry, javaLevel, log);
+    if (FORCE_INTERNAL_DEBUG) {
+      System.out.println("CommonsLoggingSessionLog.getLogger : log : " + log);
     }
 
-    /**
-     * INTERNAL:
-     * 
-     * Build a LogRecord
-     * 
-     * @param entry SessionLogEntry that holds all the information for a EclipseLink logging event
-     * @param level according to eclipselink level
-     * @param log commons-logging 1.1 wrapper
-     * 
-     */
-    protected void internalLog(final SessionLogEntry entry, final Level level, final Log log) {
-        if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.internalLog : " + computeMessage(entry, level));
-        }
-        final int lev = entry.getLevel();
+    return log;
+  }
 
-        if (lev == ALL) {
-            log.trace(computeMessage(entry, level));
-        } else {
-            switch (lev) {
-                case SEVERE:
-                    if (log.isErrorEnabled()) {
-                        log.error(computeMessage(entry, level));
-                    }
-
-                    return;
-
-                case WARNING:
-                    if (log.isWarnEnabled()) {
-                        log.warn(computeMessage(entry, level));
-                    }
-
-                    return;
-
-                case INFO:
-                case CONFIG:
-                    if (log.isInfoEnabled()) {
-                        log.info(computeMessage(entry, level));
-                    }
-
-                    return;
-
-                case FINE:
-                case FINER:
-                case FINEST:
-
-                    if (log.isDebugEnabled()) {
-                        log.debug(computeMessage(entry, level));
-                    }
-
-                    return;
-
-                default:
-                    System.err.println("CommonsLoggingSessionLog.internalLog : unknown level : " + lev);
-            }
-        }
+  /**
+   * INTERNAL: Adds default loggers for the given name space
+   *
+   * @param namespace name space
+   */
+  private final void addDefaultLoggers(final String namespace) {
+    if (FORCE_INTERNAL_DEBUG) {
+      System.out.println("CommonsLoggingSessionLog.addDefaultLoggers : nameSpace : " + namespace);
     }
 
-    /**
-     * INTERNAL:Computes the log message</p>
-     *
-     * @param entry SessionLogEntry that holds all the information for a EclipseLink logging event
-     * @param level according to eclipselink level
-     */
-    protected final String computeMessage(final SessionLogEntry entry, final Level level) {
-        // Format message so that we do not depend on the bundle
-        final EclipseLinkLogRecord lr = new EclipseLinkLogRecord(level, formatMessage(entry));
+    String loggerCategory;
+    String loggerNameSpace;
 
-        lr.setSourceClassName(null);
-        lr.setSourceMethodName(null);
-        lr.setLoggerName(getNameSpaceString(entry.getNameSpace()));
+    final String[] categories = SessionLog.loggerCatagories;
 
-        if (shouldPrintSession()) {
-            lr.setSessionString(getSessionString(entry.getSession()));
-        }
+    final int size = categories.length;
 
-        if (shouldPrintConnection()) {
-            lr.setConnection(entry.getConnection());
-        }
+    for (int i = 0; i < size; i++) {
+      loggerCategory = categories[i];
+      loggerNameSpace = namespace + "." + loggerCategory;
 
-        lr.setThrown(entry.getException());
-        lr.setShouldLogExceptionStackTrace(shouldLogExceptionStackTrace());
-        lr.setShouldPrintDate(shouldPrintDate());
-        lr.setShouldPrintThread(shouldPrintThread());
+      this.NAMESPACE_MAP.put(loggerCategory, loggerNameSpace);
+      addLogger(loggerCategory, loggerNameSpace);
+    }
+  }
 
-        return formatter.format(lr);
+  /**
+   * INTERNAL:  Build a LogRecord
+   *
+   * @param entry SessionLogEntry that holds all the information for a EclipseLink logging event
+   * @param level according to eclipselink level
+   * @param log commons-logging 1.1 wrapper
+   */
+  private final void internalLog(final SessionLogEntry entry, final Level level, final Log log) {
+    if (FORCE_INTERNAL_DEBUG) {
+      System.out.println("CommonsLoggingSessionLog.internalLog : " + computeMessage(entry, level));
     }
 
-    /**
-     * PUBLIC:Log a throwable.
-     *
-     * @param throwable a throwable
-     */
-    @Override
-    public void throwing(final Throwable throwable) {
-        getLogger(null).error(null, throwable);
+    final int lev = entry.getLevel();
+
+    if (lev == ALL) {
+      log.trace(computeMessage(entry, level));
+    } else {
+      switch (lev) {
+        case SEVERE:
+
+          if (log.isErrorEnabled()) {
+            log.error(computeMessage(entry, level));
+          }
+
+          break;
+
+        case WARNING:
+
+          if (log.isWarnEnabled()) {
+            log.warn(computeMessage(entry, level));
+          }
+
+          break;
+
+        case INFO:
+        case CONFIG:
+
+          if (log.isInfoEnabled()) {
+            log.info(computeMessage(entry, level));
+          }
+
+          break;
+
+        case FINE:
+        case FINER:
+        case FINEST:
+
+          if (log.isDebugEnabled()) {
+            log.debug(computeMessage(entry, level));
+          }
+
+          break;
+
+        default:
+          System.err.println("CommonsLoggingSessionLog.internalLog : unknown level : " + lev);
+
+          break;
+      }
+    }
+  }
+
+  /**
+   * INTERNAL: Computes the log message
+   *
+   * @param entry SessionLogEntry that holds all the information for a EclipseLink logging event
+   * @param level according to eclipselink level
+   *
+   * @return value TODO : Value Description
+   */
+  private final String computeMessage(final SessionLogEntry entry, final Level level) {
+    // Format message so that we do not depend on the bundle
+    final EclipseLinkLogRecord lr = new EclipseLinkLogRecord(level, formatMessage(entry));
+
+    lr.setSourceClassName(null);
+    lr.setSourceMethodName(null);
+    lr.setLoggerName(getNameSpaceString(entry.getNameSpace()));
+
+    if (shouldPrintSession()) {
+      lr.setSessionString(getSessionString(entry.getSession()));
     }
 
-    /**
-     * INTERNAL:
-     * Each session owns its own session log because session is stored in the session log
-     */
-    @Override
-    public Object clone() {
-        // There is no special treatment required for cloning here
-        // The state of this object is described  by member variables sessionLogger and categoryLoggers.
-        // This state depends on session.
-        // If session for the clone is going to be the same as session for this there is no
-        // need to do "deep" cloning.
-        // If not, the session being cloned should call setSession() on its JavaLog object to initialize it correctly.
-        CommonsLoggingSessionLog cloneLog = (CommonsLoggingSessionLog) super.clone();
-        return cloneLog;
+    if (shouldPrintConnection()) {
+      lr.setConnection(entry.getConnection());
     }
 
-    /**
-     * Returns Log4JLogger instance
-     *
-     * @param log commons-logging 1.1 wrapper
-     *
-     * @return Log4JLogger instance
-     */
-    private static Logger getLog4JLogger(final Log log) {
-        if (log instanceof Log4JLogger) {
-            return ((Log4JLogger) log).getLogger();
-        }
+    lr.setThrown(entry.getException());
+    lr.setShouldLogExceptionStackTrace(shouldLogExceptionStackTrace());
+    lr.setShouldPrintDate(shouldPrintDate());
+    lr.setShouldPrintThread(shouldPrintThread());
 
-        return null;
+    return this.LOG_FORMATTER.format(lr);
+  }
+
+  /**
+   * INTERNAL: Return the corresponding java.util.logging.Level for a given eclipselink level.
+   *
+   * @param level according to eclipselink level
+   *
+   * @return value according to the java.util.logging.Levels
+   */
+  private static final Level getJavaLevel(final int level) {
+    return JAVA_LEVELS[level];
+  }
+
+  /**
+   * INTERNAL: Returns Log4JLogger instance
+   *
+   * @param log commons-logging 1.1 wrapper
+   *
+   * @return Log4JLogger instance
+   */
+  private static final Logger getLog4JLogger(final Log log) {
+    Logger l = null;
+
+    if (log instanceof Log4JLogger) {
+      l = ((Log4JLogger) log).getLogger();
     }
 
-    //~ Inner Classes ----------------------------------------------------------------------------------------------------
-    /**
-     * LogWrapper class wraps the real apache commons logging Log instance
-     */
-    private static final class LogWrapper {
-        //~ Members --------------------------------------------------------------------------------------------------------
+    if (FORCE_INTERNAL_DEBUG) {
+      System.out.println("CommonsLoggingSessionLog.getLog4JLogger : " + l);
+    }
 
-        /** apache commons logging Log instance */
-        private final Log log;
-        /** parent name */
-        private final String parentName;
-        /** level as defined by java.util.logging.Levels. Can be changed at runtime */
-        private int level = UNDEFINED_LEVEL;
+    return l;
+  }
 
-        //~ Constructors ---------------------------------------------------------------------------------------------------
-        /**
+  //~ Inner Classes ----------------------------------------------------------------------------------------------------
+
+  /**
+   * INTERNAL: LogWrapper class wraps the real apache commons logging Log instance
+   */
+  private static final class LogWrapper {
+    //~ Members --------------------------------------------------------------------------------------------------------
+
+    /** parent CommonsLoggingSessionLog instance */
+    private final CommonsLoggingSessionLog sessionLog;
+    /** category for debug mode */
+    private final String category;
+    /** apache commons logging Log instance */
+    private final Log log;
+    /** parent LogWrapper */
+    private final LogWrapper parent;
+    /** child LogWrapper instances */
+    private final List<LogWrapper> children = new ArrayList<LogWrapper>();
+    /** level as defined by java.util.logging.Levels. Can be changed at runtime */
+    private int level = UNDEFINED_LEVEL;
+    /** cached level as defined by java.util.logging.Levels. Extracted from parent LogWrapper instances */
+    private int cachedLevel = UNDEFINED_LEVEL;
+
+    //~ Constructors ---------------------------------------------------------------------------------------------------
+
+/**
+         * INTERNAL:
+         *
          * Constructor
+         * 
          * @param log apache commons logging Log instance
          */
-        protected LogWrapper(final Log log) {
-            this.log = log;
+    protected LogWrapper(final CommonsLoggingSessionLog sessionLog, final String category, final Log log) {
+      this.sessionLog = sessionLog;
+      this.category = category;
+      this.log = log;
 
-            final Logger c = CommonsLoggingSessionLog.getLog4JLogger(log);
-            final String name = (c != null) ? c.getParent().getName() : null;
+      final Logger l = CommonsLoggingSessionLog.getLog4JLogger(log);
 
-            this.parentName = (name != null && !"null".equals(name)) ? name : null;
+      String       parentName = null;
+
+      if (l != null) {
+        parentName = l.getParent().getName();
+      }
+
+      if ((parentName != null) && ! "null".equals(parentName)) {
+        this.parent = this.sessionLog.getLogWrapper(parentName);
+
+        if (this.parent != null) {
+          this.parent.addChild(this);
         }
-
-        //~ Methods --------------------------------------------------------------------------------------------------------
-        /**
-         * Returns the apache commons logging Log instance
-         * @return apache commons logging Log instance
-         */
-        public Log getLog() {
-            return log;
-        }
-
-        /**
-         * Returns the level according to the java.util.logging.Levels
-         * @return level
-         */
-        public int getLevel() {
-            return level;
-        }
-
-        /**
-         * Defines the level according to the java.util.logging.Levels
-         * @param level value according to the java.util.logging.Levels
-         */
-        public void setLevel(final int level) {
-            this.level = level;
-        }
-
-        /**
-         * Returns the parent name
-         * @return parent name
-         */
-        public String getParentName() {
-            return parentName;
-        }
+      } else {
+        this.parent = null;
+      }
     }
+
+    //~ Methods --------------------------------------------------------------------------------------------------------
+
+    /**
+     * INTERNAL: Returns the apache commons logging Log instance
+     *
+     * @return apache commons logging Log instance
+     */
+    protected final Log getLog() {
+      return this.log;
+    }
+
+    /**
+     * INTERNAL: Returns the level according to the java.util.logging.Levels
+     *
+     * @return level
+     */
+    protected final int getLevel() {
+      int res = this.level;
+
+      // if this level is undefined : compute it from parents :
+      if (res == UNDEFINED_LEVEL) {
+        if (this.cachedLevel == UNDEFINED_LEVEL) {
+          res = computeLevel(this.level);
+
+          if (USE_INTERNAL_CACHE) {
+            this.cachedLevel = res;
+          }
+        } else {
+          res = this.cachedLevel;
+        }
+      }
+
+      return res;
+    }
+
+    /**
+     * INTERNAL: Defines the level according to the java.util.logging.Levels
+     *
+     * @param level value according to the java.util.logging.Levels
+     */
+    protected final void setLevel(final int level) {
+      this.level = level;
+
+      if (USE_INTERNAL_CACHE) {
+        // reset cachedLevel for all children :
+        for (final LogWrapper cw : children) {
+          if (FORCE_INTERNAL_DEBUG) {
+            System.out.println("CommonsLoggingSessionLog.LogWrapper.setLevel : reset cachedLevel for : " + cw.category);
+          }
+
+          cw.cachedLevel = UNDEFINED_LEVEL;
+        }
+      }
+    }
+
+    /**
+     * INTERNAL: Adds a child LogWrapper
+     *
+     * @param lw
+     */
+    protected final void addChild(final LogWrapper lw) {
+      this.children.add(lw);
+
+      if (FORCE_INTERNAL_DEBUG) {
+        System.out.println(
+          "CommonsLoggingSessionLog.LogWrapper.addChild : IN : this : " + this.category + " : child : " + lw.category);
+      }
+    }
+
+    /**
+     * INTERNAL: Computes the cached Level
+     *
+     * @param localLevel this.level copy
+     *
+     * @return level
+     */
+    private final int computeLevel(final int localLevel) {
+      LogWrapper pw;
+      LogWrapper lw = this;
+
+      if (FORCE_INTERNAL_DEBUG) {
+        System.out.println(
+          "CommonsLoggingSessionLog.LogWrapper.computeLevel : IN : " + this.category + " : level : " + localLevel);
+      }
+
+      while ((lw != null) &&
+               (((lw == this) && (localLevel == UNDEFINED_LEVEL)) ||
+                 ((lw != this) && (lw.getLevel() == UNDEFINED_LEVEL)))) {
+        pw = lw.parent;
+
+        if (pw != lw) {
+          lw = pw;
+        } else {
+          // exit from loop :
+          lw = null;
+        }
+      }
+
+      int l = OFF;
+
+      if (lw != null) {
+        l = lw.getLevel();
+      }
+
+      if (FORCE_INTERNAL_DEBUG) {
+        System.out.println(
+          "CommonsLoggingSessionLog.LogWrapper.computeLevel : OUT : " + this.category + " : level : " + l);
+      }
+
+      return l;
+    }
+  }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
