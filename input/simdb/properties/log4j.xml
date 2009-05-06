@@ -39,34 +39,9 @@
     <appender-ref ref="fileRoot"/>
   </logger>
   
-  <!-- eclipseLink loggers -->
   <logger name="org.eclipse.persistence">
-    <level value="warn"/>
-    <appender-ref ref="fileRoot"/>
-  </logger>
-  <logger name="org.eclipse.persistence.cache">
-    <level value="warn"/>
-  </logger>
-  <logger name="org.eclipse.persistence.connection">
-    <level value="warn"/>
-  </logger>
-  <logger name="org.eclipse.persistence.ejb_or_metadata">
-    <level value="warn"/>
-  </logger>
-  <logger name="org.eclipse.persistence.properties">
-    <level value="warn"/>
-  </logger>
-  <logger name="org.eclipse.persistence.query">
-    <level value="warn"/>
-  </logger>
-  <logger name="org.eclipse.persistence.sequencing">
-    <level value="warn"/>
-  </logger>
-  <logger name="org.eclipse.persistence.sql">
     <level value="debug"/>
-  </logger>
-  <logger name="org.eclipse.persistence.transaction">
-    <level value="warn"/>
+    <appender-ref ref="fileRoot"/>
   </logger>
   
   <!-- Loggers : end -->
