@@ -38,12 +38,12 @@
     <level value="warn"/>
     <appender-ref ref="fileRoot"/>
   </logger>
-  
+
   <logger name="org.eclipse.persistence">
-    <level value="warn"/>
+    <level value="debug"/>
     <appender-ref ref="fileRoot"/>
   </logger>
-  
+
   <!-- Loggers : end -->
 
   <!-- Root logger -->
@@ -52,5 +52,5 @@
     <appender-ref ref="display"/>
     <appender-ref ref="fileRoot"/>
   </root>
-  
+
 </log4j:configuration>
