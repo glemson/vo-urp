@@ -10,7 +10,6 @@ import org.ivoa.dm.model.ReferenceResolver;
 import org.ivoa.env.ApplicationMain;
 
 import org.ivoa.jpa.JPAFactory;
-import org.ivoa.jpa.JPAHelper;
 
 import org.ivoa.simdb.Quantity;
 import org.ivoa.simdb.experiment.Simulation;
@@ -56,6 +55,9 @@ import org.vo.urp.test.jaxb.XMLTests;
  */
 public class DBTests implements ApplicationMain {
   //~ Members ----------------------------------------------------------------------------------------------------------
+
+    /** testLOAD_WRITE iteration */
+    private final static int WRITE_ITERATION = 1;
 
   /** XMLTests */
   private XMLTests xmlTest = new XMLTests();
@@ -592,66 +594,69 @@ public class DBTests implements ApplicationMain {
     EntityManager em = null;
     Long          id = null;
 
-    try {
-      em = jf.getEm();
-      // starts TX :
-      // starts transaction on snap database :
-      log.warn("DBTests.testLOAD_WRITE : starting TX ...");
-      em.getTransaction().begin();
+    for (int i = 0; i < WRITE_ITERATION; i++) {
 
-      ReferenceResolver.initContext(em);
+        try {
+          em = jf.getEm();
+          // starts TX :
+          // starts transaction on snap database :
+          log.warn("DBTests.testLOAD_WRITE : starting TX ...");
+          em.getTransaction().begin();
 
-      final MetadataObject simulator = xmlTest.testUnMashall(xmlDocumentPath);
+          ReferenceResolver.initContext(em);
 
-      log.error("DBTests.testLOAD_WRITE : Simulator after unmarshall : " + simulator.deepToString());
+          final MetadataObject simulator = xmlTest.testUnMashall(xmlDocumentPath);
 
-      em.persist(simulator);
+          log.error("DBTests.testLOAD_WRITE : Simulator after unmarshall : " + simulator.deepToString());
 
-      log.error("DBTests.testLOAD_WRITE : Simulator after persist : " + simulator.deepToString());
+          em.persist(simulator);
 
-      // force transaction to be flushed in database :
-      log.warn("DBTests.testLOAD_WRITE : flushing TX");
-      em.flush();
-      log.warn("DBTests.testLOAD_WRITE : TX flushed.");
+          log.error("DBTests.testLOAD_WRITE : Simulator after persist : " + simulator.deepToString());
 
-      log.error("DBTests.testLOAD_WRITE : Simulator after flush : " + simulator.deepToString());
+          // force transaction to be flushed in database :
+          log.warn("DBTests.testLOAD_WRITE : flushing TX");
+          em.flush();
+          log.warn("DBTests.testLOAD_WRITE : TX flushed.");
 
-      // finally : commits transaction on snap database :
-      log.warn("DBTests.testLOAD_WRITE : committing TX");
-      em.getTransaction().commit();
-      log.warn("DBTests.testLOAD_WRITE : TX commited.");
-      
-      id = simulator.getId();
+          log.error("DBTests.testLOAD_WRITE : Simulator after flush : " + simulator.deepToString());
 
-      log.error("DBTests.testLOAD_WRITE : test JAXB MARSHALLING : PROTOCOL : ");
-      xmlTest.testMarshall(simulator);
+          // finally : commits transaction on snap database :
+          log.warn("DBTests.testLOAD_WRITE : committing TX");
+          em.getTransaction().commit();
+          log.warn("DBTests.testLOAD_WRITE : TX commited.");
 
-      xmlTest.saveMarshall(simulator, xmlDocumentPath.replace(XMLTests.XML_EXT, "-out" + XMLTests.XML_EXT));
+          id = simulator.getId();
 
-      inspectorTest.test(simulator);
-    } catch (final RuntimeException re) {
-      log.error("DBTests.testLOAD_WRITE : runtime failure : ", re);
+          log.error("DBTests.testLOAD_WRITE : test JAXB MARSHALLING : PROTOCOL : ");
+          xmlTest.testMarshall(simulator);
 
-      // if connection failure => em is null :
-      if (em.getTransaction().isActive()) {
-        log.warn("DBTests.testLOAD_WRITE : rollbacking TX ...");
-        em.getTransaction().rollback();
-        log.warn("DBTests.testLOAD_WRITE : TX rollbacked.");
-      }
+          xmlTest.saveMarshall(simulator, xmlDocumentPath.replace(XMLTests.XML_EXT, "-out" + XMLTests.XML_EXT));
 
-      throw re;
-    } finally {
-      // free resolver context (thread local) :
-      ReferenceResolver.freeContext();
+          inspectorTest.test(simulator);
+        } catch (final RuntimeException re) {
+          log.error("DBTests.testLOAD_WRITE : runtime failure : ", re);
 
-      em.close();
-    }
+          // if connection failure => em is null :
+          if (em.getTransaction().isActive()) {
+            log.warn("DBTests.testLOAD_WRITE : rollbacking TX ...");
+            em.getTransaction().rollback();
+            log.warn("DBTests.testLOAD_WRITE : TX rollbacked.");
+          }
 
-    log.info("DBTests.testLOAD_WRITE : exit : " + id);
+          throw re;
+        } finally {
+          // free resolver context (thread local) :
+          ReferenceResolver.freeContext();
 
-    if (id != null) {
-      final Protocol loadedObject = (Protocol)testREAD(jf, Protocol.class, id);
-      xmlTest.saveMarshall(loadedObject, xmlDocumentPath.replace(XMLTests.XML_EXT, "-out-afterLoad" + XMLTests.XML_EXT));
+          em.close();
+        }
+
+        log.info("DBTests.testLOAD_WRITE : exit : " + id);
+
+        if (id != null) {
+          final Protocol loadedObject = (Protocol)testREAD(jf, Protocol.class, id);
+          xmlTest.saveMarshall(loadedObject, xmlDocumentPath.replace(XMLTests.XML_EXT, "-out-afterLoad" + XMLTests.XML_EXT));
+        }
     }
   }
   
