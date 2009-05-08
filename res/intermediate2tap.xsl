@@ -30,7 +30,11 @@ the public contents of the database for the UML data model.
                 extension-element-prefixes="exsl"
                 xmlns:xsd="http://www.w3.org/2001/XMLSchema"
                 xmlns:vot="http://www.ivoa.net/xml/VOTable/v1.1"
-                xmlns:tab="urn:astrogrid:schema:TableMetadata"
+                xmlns:ri="http://www.ivoa.net/xml/RegistryInterface/v1.0" 
+                xmlns:vr="http://www.ivoa.net/xml/VOResource/v1.0" 
+                xmlns:vs="http://www.ivoa.net/xml/VODataService/v1.1" 
+                xmlns:stc="http://www.ivoa.net/xml/STC/stc-v1.30.xsd" 
+                xmlns:xlink="http://www.w3.org/1999/xlink" 
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   
 
@@ -44,7 +48,8 @@ the public contents of the database for the UML data model.
   
   <xsl:key name="element" match="*" use="@xmiid"/>
   
-  <xsl:param name="mode" select='vodataservice'/> <!-- tap_schema, tap_table_set vodataservice -->
+  <xsl:param name="mode" select='vodataservice'/> <!-- tap_schema, votable, tableset vodataservice -->
+
   <xsl:param name="vendor" select="sql92"/> <!--  -->
   <xsl:param name="target_database"/> <!-- name of schema into which the tables are created -->
   <xsl:param name="target_schema" /> <!-- name of schema into which the tables are created -->
@@ -53,6 +58,7 @@ the public contents of the database for the UML data model.
 
   <xsl:variable name="tap_tableset_file" select="concat($project_name,'_tap_tableset.xml')"/>
   <xsl:variable name="tap_vodataservice_file" select="concat($project_name,'_tap_vodataservice.xml')"/>
+  <xsl:variable name="tap_votable_file" select="concat($project_name,'_votable.xml')"/>
 
 
 
@@ -62,7 +68,7 @@ the public contents of the database for the UML data model.
   </xsl:variable>
   <xsl:variable name="target_schema_prefix">
     <xsl:value-of select="normalize-space($target_schema)"/><xsl:if test="string-length(normalize-space($target_schema)) > 0">&dot;</xsl:if>
-  </xsl:variable>
+  </xsl:variable>     
   <xsl:variable name="target_database_schema_prefix">
     <xsl:choose>
       <xsl:when test="string-length(normalize-space($target_database)) > 0">
@@ -112,6 +118,9 @@ the public contents of the database for the UML data model.
       <xsl:when test="$mode = 'tap_schema'">
         <xsl:apply-templates select="model" mode="tap_schema"/>
       </xsl:when>
+      <xsl:when test="$mode = 'votable'">
+        <xsl:apply-templates select="model" mode="votable"/>
+      </xsl:when>
       <xsl:when test="$mode = 'vodataservice'">
         <xsl:apply-templates select="model" mode="vodataservice"/>
       </xsl:when>
@@ -129,7 +138,7 @@ the public contents of the database for the UML data model.
    
   <!-- 
   This template assumes that the public database schema is described as a collection
-  of <TABLE>-s, with the <FIELD>-s describing the columns and no <DATA> element.
+  of empty <TABLE>-s, with the <FIELD>-s describing the columns and no <DATA> element.
   -->
   <xsl:template match="model" mode="tableset">
     <xsl:message>Model = <xsl:value-of select="name"></xsl:value-of></xsl:message>
@@ -176,12 +185,6 @@ the public contents of the database for the UML data model.
 
 
 
-
-
-  <!-- 
-  This template assumes that the public database schema is described as a collection
-  of <TABLE>-s, with the <FIELD>-s describing the columns and no <DATA> element.
-  -->
 
   <xsl:template match="objectType" mode="tableset">
     <xsl:variable name="utype">
@@ -304,6 +307,349 @@ the public contents of the database for the UML data model.
 
 
 
+<!-- mode = VOTable  -->
+<!-- 
+In a single VOTable document, represents the TAP_SCHEMA tables with as content the actual tables.
+
+-->
+  <xsl:template match="model" mode="votable">
+    <xsl:message>Model = <xsl:value-of select="name"></xsl:value-of></xsl:message>
+-- Generating TAP-tableset metadata-like VOTables for model <xsl:value-of select="name"/> and DB vendor <xsl:value-of select="$vendor"/>.
+<xsl:value-of select="$header"/>
+    
+<!-- CREATE TAP-type 1 votable -->
+    <xsl:variable name="file" select="concat($project_name,'_votable.xml')"/>
+    <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
+    <xsl:result-document href="{$file}">
+
+    <xsl:element name="VOTABLE">
+      <xsl:attribute name="xlmns" select="$votablenamespace"/>
+      <xsl:attribute name="version" select="'1.1'"/>
+      <xsl:element name="RESOURCE">
+        <xsl:attribute name="name" select="name"/>
+        <xsl:element name="DESCRIPTION">
+          <xsl:value-of select="description"/>
+        </xsl:element>
+        <xsl:apply-templates select="." mode="votable.schemas"/>
+        <xsl:apply-templates select="." mode="votable.tables"/>
+        <xsl:apply-templates select="." mode="votable.columns"/>
+      </xsl:element>
+    </xsl:element>
+    </xsl:result-document>
+  </xsl:template>  
+      
+  <xsl:template match="model" mode="votable.schemas">
+  <xsl:element name="TABLE">
+    <xsl:attribute name="name" select="'TAP_SCHEMA.schemas'"/>
+    <xsl:element name="FIELD">
+    <xsl:attribute name="name" select="'schema_name'"/>
+    <xsl:attribute name="datatype" select="'char'"/>
+    <xsl:attribute name="arraysize" select="'*'"/>
+    </xsl:element>
+    <xsl:element name="FIELD">
+    <xsl:attribute name="name" select="'description'"/>
+    <xsl:attribute name="datatype" select="'char'"/>
+    <xsl:attribute name="arraysize" select="'*'"/>
+    </xsl:element>
+    <xsl:element name="FIELD">
+    <xsl:attribute name="name" select="'utype'"/>
+    <xsl:attribute name="datatype" select="'char'"/>
+    <xsl:attribute name="arraysize" select="'*'"/>
+    </xsl:element>
+    <xsl:element name="DATA">
+      <xsl:element name="TABLEDATA">
+      	<xsl:element name="TR">
+      		<xsl:element name="TD">TAP_SCHEMA</xsl:element>
+      		<xsl:element name="TD">The schema containing the TAP metadata tables.</xsl:element>
+      		<xsl:element name="TD"/>
+      	</xsl:element>
+      </xsl:element>
+    </xsl:element>
+  </xsl:element>
+  </xsl:template>
+
+
+
+
+
+  <xsl:template match="model" mode="votable.tables">
+  <xsl:element name="TABLE">
+    <xsl:attribute name="name" select="'TAP_SCHEMA.tables'"/>
+    <xsl:element name="FIELD">
+    	<xsl:attribute name="name" select="'schema_name'"/>
+    	<xsl:attribute name="datatype" select="'char'"/>
+    	<xsl:attribute name="arraysize" select="'*'"/>
+    </xsl:element>
+    <xsl:element name="FIELD">
+    	<xsl:attribute name="name" select="'table_name'"/>
+    	<xsl:attribute name="datatype" select="'char'"/>
+    	<xsl:attribute name="arraysize" select="'*'"/>
+    </xsl:element>
+    <xsl:element name="FIELD">
+    	<xsl:attribute name="name" select="'table_type'"/>
+    	<xsl:attribute name="datatype" select="'char'"/>
+    	<xsl:attribute name="arraysize" select="'*'"/>
+    </xsl:element>
+    <xsl:element name="FIELD">
+    	<xsl:attribute name="name" select="'description'"/>
+    	<xsl:attribute name="datatype" select="'char'"/>
+    	<xsl:attribute name="arraysize" select="'*'"/>
+    </xsl:element>
+    <xsl:element name="FIELD">
+    	<xsl:attribute name="name" select="'utype'"/>
+    	<xsl:attribute name="datatype" select="'char'"/>
+    	<xsl:attribute name="arraysize" select="'*'"/>
+    </xsl:element>
+    <xsl:element name="DATA">
+      <xsl:element name="TABLEDATA">
+      	<xsl:element name="TR">
+      		<xsl:element name="TD">TAP_SCHEMA</xsl:element>
+      		<xsl:element name="TD">TAP_SCHEMA.schemas</xsl:element>
+      		<xsl:element name="TD">BASE_TABLE</xsl:element>
+      		<xsl:element name="TD">The TAP metadata table containing all schemas.</xsl:element>
+      		<xsl:element name="TD"></xsl:element>
+        </xsl:element>
+      	<xsl:element name="TR">
+      		<xsl:element name="TD">TAP_SCHEMA</xsl:element>
+      		<xsl:element name="TD">TAP_SCHEMA.tables</xsl:element>
+      		<xsl:element name="TD">BASE_TABLE</xsl:element>
+      		<xsl:element name="TD">The TAP metadata table containing all tables.</xsl:element>
+      		<xsl:element name="TD"></xsl:element>
+      	</xsl:element>
+      	<xsl:element name="TR">
+      		<xsl:element name="TD">TAP_SCHEMA</xsl:element>
+      		<xsl:element name="TD">TAP_SCHEMA.columns</xsl:element>
+      		<xsl:element name="TD">BASE_TABLE</xsl:element>
+      		<xsl:element name="TD">The TAP metadata table containing all columns.</xsl:element>
+      		<xsl:element name="TD"></xsl:element>
+      	</xsl:element>
+        <xsl:apply-templates select="//objectType" mode="votable.tables"/>
+      </xsl:element>
+    </xsl:element>
+  </xsl:element>
+  </xsl:template>
+
+
+
+
+  <xsl:template match="model" mode="votable.columns">
+  <xsl:element name="TABLE">
+    <xsl:attribute name="name" select="'TAP_SCHEMA.columns'"/>
+    <xsl:element name="FIELD">
+    <xsl:attribute name="name" select="'column_name'"/>
+    <xsl:attribute name="datatype" select="'char'"/>
+    <xsl:attribute name="arraysize" select="'*'"/>
+    </xsl:element>
+    <xsl:element name="FIELD">
+    <xsl:attribute name="name" select="'table_name'"/>
+    <xsl:attribute name="datatype" select="'char'"/>
+    <xsl:attribute name="arraysize" select="'*'"/>
+    </xsl:element>
+    <xsl:element name="FIELD">
+    <xsl:attribute name="name" select="'description'"/>
+    <xsl:attribute name="datatype" select="'char'"/>
+    <xsl:attribute name="arraysize" select="'*'"/>
+    </xsl:element>
+    <xsl:element name="FIELD">
+    <xsl:attribute name="name" select="'unit'"/>
+    <xsl:attribute name="datatype" select="'char'"/>
+    <xsl:attribute name="arraysize" select="'*'"/>
+    </xsl:element>
+    <xsl:element name="FIELD">
+    <xsl:attribute name="name" select="'ucd'"/>
+    <xsl:attribute name="datatype" select="'char'"/>
+    <xsl:attribute name="arraysize" select="'*'"/>
+    </xsl:element>
+    <xsl:element name="FIELD">
+    <xsl:attribute name="name" select="'utype'"/>
+    <xsl:attribute name="datatype" select="'char'"/>
+    <xsl:attribute name="arraysize" select="'*'"/>
+    </xsl:element>
+    <xsl:element name="FIELD">
+    <xsl:attribute name="name" select="'datatype'"/>
+    <xsl:attribute name="datatype" select="'char'"/>
+    <xsl:attribute name="arraysize" select="'*'"/>
+    </xsl:element>
+    <xsl:element name="FIELD">
+    <xsl:attribute name="name" select="'primary'"/>
+    <xsl:attribute name="datatype" select="'boolean'"/>
+    </xsl:element>
+    <xsl:element name="FIELD">
+    <xsl:attribute name="name" select="'indexed'"/>
+    <xsl:attribute name="datatype" select="'boolean'"/>
+    </xsl:element>
+    <xsl:element name="FIELD">
+    <xsl:attribute name="name" select="'std'"/>
+    <xsl:attribute name="datatype" select="'boolean'"/>
+    </xsl:element>
+    <xsl:element name="DATA">
+      <xsl:element name="TABLEDATA">
+      <xsl:apply-templates select="//objectType" mode="votable.columns"/>
+      </xsl:element>
+    </xsl:element>
+  </xsl:element>
+  </xsl:template>
+
+
+
+  <xsl:template match="objectType" mode="votable.tables">
+    <xsl:variable name="table_name">
+      <xsl:apply-templates select="." mode="viewName"/>
+    </xsl:variable>
+    <xsl:variable name="utype">
+      <xsl:apply-templates select="." mode="utype"/>
+    </xsl:variable>
+  <xsl:element name="TR">
+<xsl:element name="TD"><xsl:value-of select="$target_schema"/></xsl:element>
+<xsl:element name="TD"><xsl:value-of select="$target_database_schema_prefix"/><xsl:value-of select="$table_name"/></xsl:element>
+<xsl:element name="TD"><xsl:value-of select="replace(description,&quot;'&quot;,&quot;''&quot;)"/></xsl:element>
+<xsl:element name="TD"><xsl:value-of select="'VIEW'"/></xsl:element>
+<xsl:element name="TD"><xsl:value-of select="$utype"/></xsl:element>
+</xsl:element> 
+  </xsl:template>
+
+
+
+
+  <xsl:template match="objectType" mode="votable.columns">
+    <xsl:variable name="tableName">
+      <xsl:apply-templates select="." mode="viewName"/>
+    </xsl:variable>
+    <xsl:variable name="utype">
+      <xsl:apply-templates select="." mode="utype"/>
+    </xsl:variable>
+  
+    <xsl:choose>
+      <xsl:when test="extends">
+        <xsl:apply-templates select="key('element',extends/@xmiidref)" mode="votable.columns">
+          <xsl:with-param name="tableName" select="$tableName"/>
+        </xsl:apply-templates>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:call-template name="votable.column">
+          <xsl:with-param name="column_name"><xsl:value-of select="$primaryKeyColumnName"/></xsl:with-param>
+          <xsl:with-param name="table_name"><xsl:value-of select="$tableName"/></xsl:with-param>
+          <xsl:with-param name="description"><xsl:text>The unique, primary key column on this table.</xsl:text></xsl:with-param>
+          <xsl:with-param name="ucd"><xsl:text>TBD</xsl:text></xsl:with-param>
+          <xsl:with-param name="utype"><xsl:value-of select="concat($utype,'.',$primaryKeyColumnName)"/></xsl:with-param>
+          <xsl:with-param name="datatype"><xsl:text>BIGINT</xsl:text></xsl:with-param>
+        </xsl:call-template>
+        <xsl:call-template name="votable.column">
+          <xsl:with-param name="column_name"><xsl:value-of select="$discriminatorColumnName"/></xsl:with-param>
+          <xsl:with-param name="table_name"><xsl:value-of select="$tableName"/></xsl:with-param>
+          <xsl:with-param name="description"><xsl:text>This column stores the name of the object type from the data model stored in the row.</xsl:text></xsl:with-param>
+          <xsl:with-param name="ucd"><xsl:text>TBD</xsl:text></xsl:with-param>
+          <xsl:with-param name="utype"><xsl:text>TBD</xsl:text></xsl:with-param>
+          <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
+          <xsl:with-param name="arraysize"><xsl:value-of select="$discriminatorColumnLength"/></xsl:with-param>
+        </xsl:call-template>
+      </xsl:otherwise>
+    </xsl:choose>
+    
+    <xsl:if test="container">
+      <xsl:call-template name="votable.column">
+        <xsl:with-param name="column_name"><xsl:value-of select="$containerColumnName"/></xsl:with-param>
+        <xsl:with-param name="table_name"><xsl:value-of select="$tableName"/></xsl:with-param>
+        <xsl:with-param name="description"><xsl:text>This column is a foreign key pointing to the containing object in </xsl:text>
+          <xsl:apply-templates select="key('element',container/@xmiidref)" mode="viewName"/>
+        </xsl:with-param>
+        <xsl:with-param name="ucd"><xsl:text>TBD</xsl:text></xsl:with-param>
+        <xsl:with-param name="utype"><xsl:value-of select="concat($utype,'.CONTAINER')"/></xsl:with-param>
+        <xsl:with-param name="datatype"><xsl:text>BIGINT</xsl:text></xsl:with-param>
+      </xsl:call-template>
+    </xsl:if>        
+
+    <xsl:for-each select="attribute">
+      <xsl:variable name="columns">
+        <xsl:apply-templates select="." mode="columns">
+          <xsl:with-param name="utypeprefix" select="$utype"/>
+        </xsl:apply-templates>
+      </xsl:variable> 
+      <xsl:for-each select="exsl:node-set($columns)/column">
+        <xsl:variable name="adqltype">
+          <xsl:call-template name="adqltype">
+            <xsl:with-param name="type" select="type"/>
+          </xsl:call-template>
+        </xsl:variable>
+      
+        <xsl:call-template name="votable.column">
+          <xsl:with-param name="column_name"><xsl:value-of select="name"/></xsl:with-param>
+          <xsl:with-param name="table_name"><xsl:value-of select="$tableName"/></xsl:with-param>
+          <xsl:with-param name="description"><xsl:value-of select="description"/></xsl:with-param>
+          <xsl:with-param name="ucd"><xsl:text>TBD</xsl:text></xsl:with-param>
+          <xsl:with-param name="utype"><xsl:value-of select="utype"/></xsl:with-param>
+          <xsl:with-param name="datatype"><xsl:value-of select="$adqltype"/></xsl:with-param>
+          <xsl:with-param name="arraysize" >
+            <xsl:choose>
+              <xsl:when test="$adqltype = 'VARCHAR'">
+                <xsl:variable name ="length">
+                  <xsl:call-template name="stringlength">
+                    <xsl:with-param name="constraints" select="constraints"/>
+                  </xsl:call-template>
+                </xsl:variable>
+                <xsl:choose>
+                  <xsl:when test="number($length) &lt;= 0"><xsl:text>*</xsl:text></xsl:when>
+                  <xsl:otherwise><xsl:value-of select="$length"/></xsl:otherwise>
+                </xsl:choose>
+              </xsl:when>
+              <xsl:otherwise><xsl:text>1</xsl:text></xsl:otherwise>
+            </xsl:choose>
+          </xsl:with-param>
+        </xsl:call-template>
+      </xsl:for-each>
+    </xsl:for-each>
+    <xsl:for-each select="reference[not(subsets)]">
+      <xsl:call-template name="votable.column">
+        <xsl:with-param name="column_name"><xsl:apply-templates select="." mode="columnName"/></xsl:with-param>
+        <xsl:with-param name="table_name"><xsl:value-of select="$tableName"/></xsl:with-param>
+        <xsl:with-param name="description"><xsl:value-of select="description"/>&cr;
+        <xsl:text>[This column is a foreign key pointing to the referenced object in </xsl:text>
+        <xsl:apply-templates select="key('element',datatype/@xmiidref)" mode="viewName"/><xsl:text>].
+        </xsl:text></xsl:with-param>
+        <xsl:with-param name="ucd"><xsl:text>TBD</xsl:text></xsl:with-param>
+        <xsl:with-param name="utype"><xsl:text>TBD</xsl:text></xsl:with-param>
+        <xsl:with-param name="datatype"><xsl:text>long</xsl:text></xsl:with-param>
+      </xsl:call-template>
+    </xsl:for-each>        
+  
+  </xsl:template>
+
+
+
+  <xsl:template name="votable.column">
+    <xsl:param name="column_name"/>
+    <xsl:param name="table_name"/>
+    <xsl:param name="description"/>
+    <xsl:param name="unit" select="''"/>
+    <xsl:param name="ucd" select="''"/>
+    <xsl:param name="utype" select="''"/>
+    <xsl:param name="datatype"/>
+    <xsl:param name="arraysize" select="'1'"/>
+    <xsl:param name="primary" select="'T'"/>
+    <xsl:param name="indexed" select="'T'"/>
+    <xsl:param name="std" select="'T'"/>
+  <!-- TODO this can be simplieified, the INSERT INTO ... does not have to be repeated, 
+  only comma-separated list of values (within () ) is required. More efficient as well. -->
+<xsl:element name="TR">
+<xsl:element name="TD"><xsl:value-of select="$column_name"/></xsl:element>
+<xsl:element name="TD"><xsl:value-of select="$target_database_schema_prefix"/><xsl:value-of select="$table_name"/></xsl:element>
+<xsl:element name="TD"><xsl:value-of select="replace($description,&quot;'&quot;,&quot;''&quot;)"/></xsl:element>
+<xsl:element name="TD"><xsl:value-of select="$unit"/></xsl:element>
+<xsl:element name="TD"><xsl:value-of select="$ucd"/></xsl:element>
+<xsl:element name="TD"><xsl:value-of select="$utype"/></xsl:element>
+<xsl:element name="TD"><xsl:value-of select="$datatype"/></xsl:element>
+<xsl:element name="TD"><xsl:value-of select="$arraysize"/></xsl:element>
+<xsl:element name="TD"><xsl:value-of select="$primary"/></xsl:element>
+<xsl:element name="TD"><xsl:value-of select="$indexed"/></xsl:element>
+<xsl:element name="TD"><xsl:value-of select="$std"/></xsl:element>
+</xsl:element> 
+</xsl:template>
+
+
+
+
+
+<!-- ========================================================================================== -->
   <!--  TAP_SCHEMA stype -->
 
 <!-- 
@@ -452,7 +798,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
           <xsl:with-param name="description"><xsl:text>The unique, primary key column on this table.</xsl:text></xsl:with-param>
           <xsl:with-param name="ucd"><xsl:text>TBD</xsl:text></xsl:with-param>
           <xsl:with-param name="utype"><xsl:value-of select="concat($utype,'.',$primaryKeyColumnName)"/></xsl:with-param>
-          <xsl:with-param name="datatype"><xsl:text>long</xsl:text></xsl:with-param>
+          <xsl:with-param name="datatype"><xsl:text>BIGINT</xsl:text></xsl:with-param>
         </xsl:call-template>
         <xsl:call-template name="insertcolumn">
           <xsl:with-param name="column_name"><xsl:value-of select="$discriminatorColumnName"/></xsl:with-param>
@@ -460,7 +806,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
           <xsl:with-param name="description"><xsl:text>This column stores the name of the object type from the data model stored in the row.</xsl:text></xsl:with-param>
           <xsl:with-param name="ucd"><xsl:text>TBD</xsl:text></xsl:with-param>
           <xsl:with-param name="utype"><xsl:text>TBD</xsl:text></xsl:with-param>
-          <xsl:with-param name="datatype"><xsl:text>char</xsl:text></xsl:with-param>
+          <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
           <xsl:with-param name="arraysize"><xsl:value-of select="$discriminatorColumnLength"/></xsl:with-param>
         </xsl:call-template>
       </xsl:otherwise>
@@ -475,7 +821,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
         </xsl:with-param>
         <xsl:with-param name="ucd"><xsl:text>TBD</xsl:text></xsl:with-param>
         <xsl:with-param name="utype"><xsl:value-of select="concat($utype,'.CONTAINER')"/></xsl:with-param>
-        <xsl:with-param name="datatype"><xsl:text>long</xsl:text></xsl:with-param>
+        <xsl:with-param name="datatype"><xsl:text>BIGINT</xsl:text></xsl:with-param>
       </xsl:call-template>
     </xsl:if>        
 
@@ -486,8 +832,8 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
         </xsl:apply-templates>
       </xsl:variable> 
       <xsl:for-each select="exsl:node-set($columns)/column">
-        <xsl:variable name="votabletype">
-          <xsl:call-template name="votabletype">
+        <xsl:variable name="adqltype">
+          <xsl:call-template name="adqltype">
             <xsl:with-param name="type" select="type"/>
           </xsl:call-template>
         </xsl:variable>
@@ -498,10 +844,10 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
           <xsl:with-param name="description"><xsl:value-of select="description"/></xsl:with-param>
           <xsl:with-param name="ucd"><xsl:text>TBD</xsl:text></xsl:with-param>
           <xsl:with-param name="utype"><xsl:value-of select="utype"/></xsl:with-param>
-          <xsl:with-param name="datatype"><xsl:value-of select="$votabletype"/></xsl:with-param>
+          <xsl:with-param name="datatype"><xsl:value-of select="$adqltype"/></xsl:with-param>
           <xsl:with-param name="arraysize" >
             <xsl:choose>
-              <xsl:when test="$votabletype = 'char'">
+              <xsl:when test="$adqltype = 'VARCHAR'">
                 <xsl:variable name ="length">
                   <xsl:call-template name="stringlength">
                     <xsl:with-param name="constraints" select="constraints"/>
@@ -583,24 +929,70 @@ as suggested in http://www.ivoa.net/internal/IVOA/TableAccess/TAP-QL-0.1.pdf
     
     <xsl:result-document href="{$file}">
 
-    <xsl:element name="tab:tables">
+    <xsl:element name="ri:Resource">
+      <xsl:namespace name="ri">http://www.ivoa.net/xml/RegistryInterface/v1.0</xsl:namespace>
       <xsl:namespace name="vr">http://www.ivoa.net/xml/VOResource/v1.0</xsl:namespace>
-      <xsl:namespace name="vs">http://www.ivoa.net/xml/VODataService/v1.0</xsl:namespace>
-      <xsl:namespace name="tab">urn:astrogrid:schema:TableMetadata</xsl:namespace>
+      <xsl:namespace name="vs">http://www.ivoa.net/xml/VODataService/v1.1</xsl:namespace>
       <xsl:namespace name="xsi">http://www.w3.org/2001/XMLSchema-instance</xsl:namespace>
       <xsl:attribute name="xsi:schemaLocation">
-<xsl:text>http://www.ivoa.net/xml/VOResource/v1.0 http://software.astrogrid.org/schema/vo-resource-types/VOResource/v1.0/VOResource.xsd http://www.ivoa.net/xml/VODataService/v1.0 http://software.astrogrid.org/schema/vo-resource-types/VODataService/v1.0/VODataService.xsd urn:astrogrid:schema:TableMetadata http://wfaudata.roe.ac.uk/ukidssWorld-dsa/schema/Tables.xsd</xsl:text>
+<xsl:text>http://www.ivoa.net/xml/VOResource/v1.0 http://www.ivoa.net/xml/VOResource/v1.0 http://www.ivoa.net/xml/VODataService/v1.1 http://www.ivoa.net/xml/VODataService/v1.1 http://www.ivoa.net/xml/STC/stc-v1.30.xsd http://www.ivoa.net/xml/STC/stc-v1.30.xsd</xsl:text>
       </xsl:attribute>
+      <xsl:attribute name="xsi:type" select="'vs:CatalogService'"/>
       
 <!--
   xsi:schemaLocation="http://www.ivoa.net/xml/VOResource/v1.0 http://software.astrogrid.org/schema/vo-resource-types/VOResource/v1.0/VOResource.xsd http://www.ivoa.net/xml/VODataService/v1.0 http://software.astrogrid.org/schema/vo-resource-types/VODataService/v1.0/VODataService.xsd urn:astrogrid:schema:TableMetadata http://wfaudata.roe.ac.uk/ukidssWorld-dsa/schema/Tables.xsd
  -->
+     <xsl:apply-templates select="." mode="vodataservice.resource"/>
+     <xsl:element name="tableset">
+     <xsl:element name="schema">
+     <xsl:element name="name"/>
       <xsl:apply-templates select="//objectType" mode="vodataservice">
         <xsl:sort select="name"/>
       </xsl:apply-templates>
+      </xsl:element>
+    </xsl:element>
     </xsl:element>
     </xsl:result-document>
   </xsl:template>  
+
+
+
+  <xsl:template match="model" mode="vodataservice.resource">
+  <xsl:element name="title">
+  <xsl:value-of select="title"/>
+  </xsl:element>
+  <xsl:element name="shortName">
+  <xsl:value-of select="name"/>
+  </xsl:element>
+  <xsl:element name="identifier"><xsl:comment>TBD</xsl:comment></xsl:element>
+  <xsl:element name="curation">
+    <xsl:element name="publisher"><xsl:comment>TBD</xsl:comment></xsl:element>
+    <xsl:element name="contact">
+      <xsl:element name="name"><xsl:comment>TBD</xsl:comment></xsl:element>
+      <xsl:element name="email"><xsl:comment>TBD</xsl:comment></xsl:element>
+    </xsl:element>
+  </xsl:element>
+  <xsl:element name="content">
+    <xsl:for-each select="subject">
+      <xsl:element name="subject"><xsl:value-of select="."/></xsl:element>
+    </xsl:for-each>
+    <xsl:element name="description"><xsl:value-of select="description"/></xsl:element>
+    <xsl:element name="referenceURL"><xsl:comment>TBD</xsl:comment></xsl:element>
+    <xsl:element name="type"><xsl:comment>TBD</xsl:comment></xsl:element>
+    <xsl:element name="contentLevel"><xsl:comment>TBD</xsl:comment></xsl:element>
+  </xsl:element>  
+  <xsl:apply-templates select="." mode="vodataservice.capability"/>
+  </xsl:template>
+
+
+
+
+  <xsl:template match="model" mode="vodataservice.capability">
+  <xsl:element name="capability">
+  <xsl:comment>TBD</xsl:comment>
+  </xsl:element>
+  </xsl:template>
+
 
 
 
@@ -610,28 +1002,34 @@ as suggested in http://www.ivoa.net/internal/IVOA/TableAccess/TAP-QL-0.1.pdf
   -->
 
   <xsl:template match="objectType" mode="vodataservice">
-    <xsl:variable name="utype">
-      <xsl:apply-templates select="." mode="utype"/>
-    </xsl:variable>
     
     <xsl:element name="table">
+      <xsl:attribute name="type" select="'view'"/>
       <xsl:element name="name">
+        <xsl:apply-templates select="." mode="viewName"/>
+      </xsl:element>
+      <xsl:element name="title">
         <xsl:apply-templates select="." mode="viewName"/>
       </xsl:element>
       <xsl:element name="description">
         <xsl:value-of select="description"/>
       </xsl:element>
-      <xsl:apply-templates select="." mode="vodataservice_columns"/>
+      <xsl:element name="utype">
+      <xsl:apply-templates select="." mode="utype"/>
+      </xsl:element>
+      
+      <xsl:apply-templates select="." mode="vodataservice.columns"/>
+      <xsl:apply-templates select="." mode="vodataservice.foreignkeys"/>
     </xsl:element>
   </xsl:template>
 
-  <xsl:template match="objectType" mode="vodataservice_columns">
+  <xsl:template match="objectType" mode="vodataservice.columns">
     <xsl:variable name="utype">
       <xsl:apply-templates select="." mode="utype"/>
     </xsl:variable>
     <xsl:choose>
     <xsl:when test="extends">
-      <xsl:apply-templates select="key('element',extends/@xmiidref)" mode="vodataservice_columns"/>
+      <xsl:apply-templates select="key('element',extends/@xmiidref)" mode="vodataservice.columns"/>
     </xsl:when>
     <xsl:otherwise>
       <xsl:call-template name="vodataservice_column">
@@ -639,9 +1037,11 @@ as suggested in http://www.ivoa.net/internal/IVOA/TableAccess/TAP-QL-0.1.pdf
         <xsl:with-param name="description">
           <xsl:text>The unique, primary key column on this table.</xsl:text>
         </xsl:with-param>
-        <xsl:with-param name="datatype" select="'long'"/>
+        <xsl:with-param name="datatype" select="'BIGINT'"/>
         <xsl:with-param name="ucd" select="'TBD'"/>
         <xsl:with-param name="utype" select="concat($utype,'.',$primaryKeyColumnName)"/>
+        <xsl:with-param name="flag" select="'primary'"/>
+        
       </xsl:call-template>
       
       <xsl:call-template name="vodataservice_column">
@@ -649,8 +1049,7 @@ as suggested in http://www.ivoa.net/internal/IVOA/TableAccess/TAP-QL-0.1.pdf
         <xsl:with-param name="description">
           <xsl:text>This column stores the name of the object type from the data model stored in the row.</xsl:text>
         </xsl:with-param>
-        <xsl:with-param name="datatype" select="'char'"/>
-        <xsl:with-param name="width" select="$discriminatorColumnLength"/>
+        <xsl:with-param name="datatype" select="'VARCHAR'"/>
         <xsl:with-param name="ucd" select="'TBD'"/>
         <xsl:with-param name="utype" select="concat($utype,'.CONTAINER')"/>
       </xsl:call-template>
@@ -660,12 +1059,12 @@ as suggested in http://www.ivoa.net/internal/IVOA/TableAccess/TAP-QL-0.1.pdf
 
     <xsl:if test="container">
       <xsl:call-template name="vodataservice_column">
-        <xsl:with-param name="name" select="'containerId'"/>
+        <xsl:with-param name="name" select="'containerId'"/> <!-- TODO make this a shared variable somewhere -->
         <xsl:with-param name="description">
           <xsl:text>This column is a foreign key pointing to the containing object in </xsl:text>
           <xsl:apply-templates select="key('element',container/@xmiidref)" mode="viewName"/>
         </xsl:with-param>
-        <xsl:with-param name="datatype" select="'long'"/>
+        <xsl:with-param name="datatype" select="'BIGINT'"/>
         <xsl:with-param name="ucd" select="'TBD'"/>
         <xsl:with-param name="utype" select="concat($utype,'.CONTAINER')"/>
       </xsl:call-template>
@@ -677,8 +1076,8 @@ as suggested in http://www.ivoa.net/internal/IVOA/TableAccess/TAP-QL-0.1.pdf
         </xsl:apply-templates>
       </xsl:variable> 
       <xsl:for-each select="exsl:node-set($columns)/column">
-        <xsl:variable name="votabletype">
-          <xsl:call-template name="votabletype">
+        <xsl:variable name="adqltype">
+          <xsl:call-template name="adqltype">
             <xsl:with-param name="type" select="type"/>
           </xsl:call-template>
         </xsl:variable>
@@ -686,7 +1085,7 @@ as suggested in http://www.ivoa.net/internal/IVOA/TableAccess/TAP-QL-0.1.pdf
         <xsl:call-template name="vodataservice_column">
           <xsl:with-param name="name" select="name"/>
           <xsl:with-param name="description" select="description"/>
-          <xsl:with-param name="datatype" select="$votabletype"/>
+          <xsl:with-param name="datatype" select="$adqltype"/>
           <xsl:with-param name="ucd" select="'TBD'"/>
           <xsl:with-param name="utype" select="utype"/>
         </xsl:call-template>
@@ -707,6 +1106,36 @@ as suggested in http://www.ivoa.net/internal/IVOA/TableAccess/TAP-QL-0.1.pdf
   </xsl:template>
 
 
+  <xsl:template match="objectType" mode="vodataservice.foreignkeys">
+    <xsl:if test="container">
+      <xsl:element name="foreignKey">
+        <xsl:element name="targetTable">
+          <xsl:apply-templates select="key('element',container/@xmiidref)" mode="viewName"/>
+        </xsl:element>
+        <xsl:element name="fkColumn">
+          <xsl:element name="fromColumn">containerId</xsl:element>
+          <xsl:element name="targetColumn"><xsl:value-of select="$primaryKeyColumnName"/></xsl:element>
+        </xsl:element>
+      </xsl:element>
+    </xsl:if>        
+  
+    <xsl:for-each select="reference[not(subsets)]">
+      <xsl:element name="foreignKey">
+        <xsl:element name="targetTable">
+          <xsl:apply-templates select="key('element',datatype/@xmiidref)" mode="viewName"/>
+        </xsl:element>
+        <xsl:element name="fkColumn">
+          <xsl:element name="fromColumn">
+             <xsl:apply-templates select="." mode="columnName"/>
+          </xsl:element>
+          <xsl:element name="targetColumn"><xsl:value-of select="$primaryKeyColumnName"/></xsl:element>
+        </xsl:element>
+      </xsl:element>
+      </xsl:for-each>
+  </xsl:template>
+
+
+
 
   <xsl:template name="vodataservice_column">
     <xsl:param name="name"/>
@@ -716,16 +1145,18 @@ as suggested in http://www.ivoa.net/internal/IVOA/TableAccess/TAP-QL-0.1.pdf
     <xsl:param name="ucd"/>
     <xsl:param name="utype"/>
     <xsl:param name="datatype"/>
-    <xsl:param name="width"/>
+    <xsl:param name="flag"/>
+    <xsl:param name="std" select="'true'"/>
 
     <xsl:element name="column">
+      <xsl:attribute name="std" select="$std"/>
       <xsl:element name="name"><xsl:value-of select="$name"/></xsl:element>
       <xsl:element name="description"><xsl:value-of select="$description"/></xsl:element>
       <xsl:if test="$unit"><xsl:element name="unit"><xsl:value-of select="$unit"/></xsl:element></xsl:if>
       <xsl:if test="$ucd"><xsl:element name="ucd"><xsl:value-of select="$ucd"/></xsl:element></xsl:if>
-      <xsl:if test="$utype"><xsl:element name="utype"><xsl:value-of select="$utype"/></xsl:element></xsl:if>
+      <xsl:if test="$utype"><xsl:element name="utype"><xsl:value-of select="$utype"/></xsl:element></xsl:if> 
       <xsl:element name="dataType"><xsl:value-of select="$datatype"/></xsl:element>
-      <xsl:if test="$width"><xsl:element name="width"><xsl:value-of select="$width"/></xsl:element></xsl:if>
+      <xsl:if test="$flag"><xsl:element name="flag"><xsl:value-of select="$flag"/></xsl:element></xsl:if>
     </xsl:element>
   </xsl:template>
 
@@ -734,8 +1165,49 @@ as suggested in http://www.ivoa.net/internal/IVOA/TableAccess/TAP-QL-0.1.pdf
 
 <!-- UTIL -->
 
+  <xsl:template name="adqltype">
+    <xsl:param name="type"/>
+    <!--
+    Primitive types :
+        boolean
+        short
+        int
+        long
+        float
+        double
+
+    Date type :
+        datetime
+
+    Characters type :
+        string
+        
+    Unsupported type (later) => string :
+        complex
+        rational
+-->
+    <xsl:choose>
+      <xsl:when test="$type = 'boolean'">BOOLEAN</xsl:when>
+<!--       <xsl:when test="$type = 'complex'">NOT SUPPORTED</xsl:when>   -->
+      <xsl:when test="$type = 'short'">SMALLINT</xsl:when>
+      <xsl:when test="$type = 'integer'">INTEGER</xsl:when>
+      <xsl:when test="$type = 'long'">BIGINT</xsl:when>
+      <xsl:when test="$type = 'float'">REAL</xsl:when>
+      <xsl:when test="$type = 'real'">DOUBLE</xsl:when>
+      <xsl:when test="$type = 'double'">DOUBLE</xsl:when>
+      <xsl:when test="$type = 'datetime'">TIMESTAMP</xsl:when>
+      <xsl:otherwise>VARCHAR</xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  
+
   <xsl:template name="votabletype">
     <xsl:param name="type"/>
+    <xsl:variable name="adqltype">
+      <xsl:call-template name="adqltype">
+        <xsl:with-param name="type" select="$type"/>
+      </xsl:call-template>
+    </xsl:variable>
     
     <!--
     Primitive types :
@@ -757,20 +1229,17 @@ as suggested in http://www.ivoa.net/internal/IVOA/TableAccess/TAP-QL-0.1.pdf
         rational
 -->
     <xsl:choose>
-      <xsl:when test="$type = 'boolean'">boolean</xsl:when>
-      <xsl:when test="$type = 'complex'">complex</xsl:when>
-      <xsl:when test="$type = 'short'">short</xsl:when>
-      <xsl:when test="$type = 'integer'">integer</xsl:when>
-      <xsl:when test="$type = 'long'">long</xsl:when>
-      <xsl:when test="$type = 'float'">float</xsl:when>
-      <xsl:when test="$type = 'real'">double</xsl:when>
-      <xsl:when test="$type = 'double'">double</xsl:when>
-      <xsl:when test="$type = 'datetime'">datetime</xsl:when>
+      <xsl:when test="$adqltype = 'BOOLEAN'">boolean</xsl:when>
+      <xsl:when test="$adqltype = 'SMALLINT'">short</xsl:when>
+      <xsl:when test="$adqltype = 'INTEGER'">integer</xsl:when>
+      <xsl:when test="$adqltype = 'BIGINT'">long</xsl:when>
+      <xsl:when test="$adqltype = 'REAL'">float</xsl:when>
+      <xsl:when test="$adqltype = 'FLOAT'">double</xsl:when>
+      <xsl:when test="$adqltype = 'DOUBLE'">double</xsl:when>
+      <xsl:when test="$adqltype = 'TIMESTAMP'">datetime</xsl:when>
       <xsl:otherwise>char</xsl:otherwise>
     </xsl:choose>
   </xsl:template>
   
-
-
 
 </xsl:stylesheet>
