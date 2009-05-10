@@ -6,7 +6,6 @@ import org.ivoa.conf.Configuration;
 import org.ivoa.conf.RuntimeConfiguration;
 
 import org.ivoa.dm.model.MetadataElement;
-import org.ivoa.dm.model.Reference;
 
 import org.ivoa.jaxb.JAXBFactory;
 
@@ -20,7 +19,6 @@ import org.ivoa.metamodel.ObjectType;
 import org.ivoa.metamodel.PrimitiveType;
 
 import org.ivoa.tap.Schemas;
-import org.ivoa.tap.Tables;
 
 import org.ivoa.util.CollectionUtils;
 import org.ivoa.util.FileUtils;
@@ -135,14 +133,21 @@ public final class MetaModelFactory {
     if (instance == null) {
       final MetaModelFactory f = new MetaModelFactory();
 
-      if (f.init()) {
-        // now f is ready, so changes instance volatile reference :
-        instance = f;
+      try {
+          if (f.init()) {
+            // now f is ready, so changes instance volatile reference :
+            instance = f;
 
-        // post initialization : creates ClassTypes for all ObjectTypes
-        instance.postInit();
-      } else {
-        throw new IllegalStateException("Unable to create MetaDataFactory !");
+            // post initialization : creates ClassTypes for all ObjectTypes & loads TAP model :
+            if (!instance.postInit()) {
+                throw new IllegalStateException("Unable to create MetaDataFactory (postInit failure) !");
+            }
+          } else {
+            throw new IllegalStateException("Unable to create MetaDataFactory (init failure) !");
+          }
+      } catch (RuntimeException re) {
+          onExit();
+          throw re;
       }
     }
 
@@ -175,7 +180,7 @@ public final class MetaModelFactory {
    *
    * @return true if well done
    *
-   * @throws IllegalStateException
+   * @throws IllegalStateException if loadModel failed
    */
   private boolean init() {
     this.model = loadModel(MODEL_FILE);
@@ -196,23 +201,17 @@ public final class MetaModelFactory {
       log.info("classes : \n" + CollectionUtils.toString(getClasses(), "\n", "", ""));
     }
 
-    initTAP();
-
-    if (tap == null) {
-      throw new IllegalStateException("Unable to load  TAP metadata.");
-    }
-
-    if (log.isInfoEnabled()) {
-      log.info("TAP views and tables : \n" + CollectionUtils.toString(tap.values(), "\n", "", ""));
-    }
-
-    return (this.model != null) && (this.tap != null);
+    return (this.model != null);
   }
 
   /**
    * Post Initialization pattern called by getInstance() method after singleton is defined
+   *
+   * @return true if well done
+   *
+   * @throws IllegalStateException if load tap Model failed
    */
-  private void postInit() {
+  private boolean postInit() {
     ClassType ct;
 
     // ClassType needs dataTypes collection to be defined to resolve inheritance hierarchy :
@@ -260,6 +259,20 @@ public final class MetaModelFactory {
         base.addSubclass(c);
       }
     }
+
+
+    // loads the TAP model :
+    initTAP();
+
+    if (tap == null) {
+      throw new IllegalStateException("Unable to load TAP metadata.");
+    }
+
+    if (log.isInfoEnabled()) {
+      log.info("TAP views and tables : \n" + CollectionUtils.toString(tap.values(), "\n", "", ""));
+    }
+
+    return (this.tap != null);
   }
 
   /**
@@ -617,12 +630,13 @@ public final class MetaModelFactory {
    * 
    */
   private void initTAP() {
+    EntityManager em = null;
     try {
       final JPAFactory jf = JPAFactory.getInstance(JPA_PU);
 
-      EntityManager    em = jf.getEm();
+      em = jf.getEm();
 
-      List             to = em.createQuery("select item from Schemas item order by item.schema_name").getResultList();
+      final List to = em.createQuery("select item from Schemas item order by item.schema_name").getResultList();
 
       if (tap == null) {
         tap = new LinkedHashMap<String, Schemas>();
@@ -638,6 +652,10 @@ public final class MetaModelFactory {
     } catch (final Exception e) {
       log.error("initTAP : failure : ", e);
       tap = null;
+    } finally {
+      if (em != null) {
+        em.close();
+      }
     }
   }
 
