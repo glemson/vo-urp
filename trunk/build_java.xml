@@ -24,7 +24,7 @@
 </path>
 
 <path id="project.class.path2">
-  <pathelement location="${libs}/commons-logging-1.1.jar" />
+  <pathelement location="${libs}/commons-logging-1.1.1.jar" />
   <pathelement location="${libs}/log4j-1.2.15.jar" />
   <pathelement location="${libs}/commons-httpclient-3.1.jar" />
   <pathelement location="${libs}/commons-fileupload-1.2.1.jar" />
