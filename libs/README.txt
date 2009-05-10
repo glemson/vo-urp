@@ -45,8 +45,8 @@ This folder and sub folders contains java libraries used by ant build file and j
       http://commons.apache.org/dbutils/
 
 
-    - Jakarta Commons Logging 1.1 :
-      - commons-logging-1.1.jar
+    - Jakarta Commons Logging 1.1.1 :
+      - commons-logging-1.1.1.jar
 
       "The Logging Component
 
