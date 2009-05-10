@@ -77,7 +77,9 @@ public class SQLUtils { //extends BaseService {
 
       return executeQuery(em, sql, maxRows, timeout);
     } finally {
-      em.close();
+      if (em != null) {
+        em.close();
+      }
     }
   }
 

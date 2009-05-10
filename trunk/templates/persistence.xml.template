@@ -50,7 +50,7 @@
       <property name="eclipselink.flush-clear.cache" value="DropInvalidate"/>
 
       <!-- logging system generic properties -->
-      <property name="eclipselink.logging.timestamp" value="true"/>
+      <property name="eclipselink.logging.timestamp" value="false"/>
       <property name="eclipselink.logging.thread" value="true"/>
       <property name="eclipselink.logging.session" value="true"/>
       
