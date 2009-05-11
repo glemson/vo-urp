@@ -21,8 +21,9 @@ import java.util.Map;
 import java.util.logging.Level;
 
 /**
- * PUBLIC: This is a wrapper class for org.apache.commons.logging.Log.   It is used when messages need to be logged
- * through apache commons logging 1.1.
+ * PUBLIC: 
+ * This is a wrapper class for org.apache.commons.logging.Log.
+ * It is used when messages need to be logged through apache commons logging 1.1.
  *
  * History :
  * 
@@ -31,24 +32,39 @@ import java.util.logging.Level;
  * 
  * TODO : Use Enum instead of int values for Levels (OO Design)
  *
+ * Requires :
+ * - Jakarta Commons Logging 1.1 : http://commons.apache.org/logging/
+ *     - commons-logging-1.1.1.jar
+ *
+ * - Log4j 1.2 : http://logging.apache.org/log4j/
+ *     - log4j-1.2.15.jar
  *
  *
- * @author laurent bourges (voparis)
+ * @author laurent bourges (voparis) : bourges.laurent@gmail.com
  *
  * @see AbstractSessionLog
  * @see JavaLog
- * @see SessionLogEntry
  * @see SessionLogEntry
  */
 public final class CommonsLoggingSessionLog extends AbstractSessionLog {
     //~ Constants --------------------------------------------------------------------------------------------------------
 
-    /** internal debugger FLAG : use System.out */
+    /** 
+     * internal debugger FLAG : use System.out
+     */
     public static final boolean FORCE_INTERNAL_DEBUG = false;
-    /** internal apache commons Logging diagnostic FLAG : use System.out */
-    public static final boolean FORCE_APACHE_COMMONS_LOGGING_DIAGNOSTICS = false;
-    /** internal cache FLAG for LogWrapper's levels */
+    /** 
+     * internal debugger FLAG : use a stack trace to find caller class
+     */
+    public static final boolean FORCE_INTERNAL_DEBUG_STACK = false;
+    /** 
+     * internal cache FLAG for LogWrapper's levels
+     */
     public static final boolean USE_INTERNAL_CACHE = true;
+    /** 
+     * internal apache commons Logging diagnostic FLAG : use System.out
+     */
+    public static final boolean FORCE_APACHE_COMMONS_LOGGING_DIAGNOSTICS = false;
     /** 
      * value -1 corresponds to an undefined Level
      */
@@ -58,15 +74,25 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
      * package used by Log4J configuration
      */
     public static final String ECLIPSELINK_NAMESPACE = "org.eclipse.persistence";
-    /** org.eclipse.persistence.default used by Log4J configuration */
+    /** 
+     * org.eclipse.persistence.default used by Log4J configuration
+     */
     public static final String DEFAULT_ECLIPSELINK_NAMESPACE = ECLIPSELINK_NAMESPACE + ".default";
-    /** org.eclipse.persistence.session used by Log4J configuration */
+    /** 
+     * org.eclipse.persistence.session used by Log4J configuration
+     */
     public static final String SESSION_ECLIPSELINK_NAMESPACE = ECLIPSELINK_NAMESPACE + ".session";
-    /** Copied from JavaLog for compatibility issues */
+    /** 
+     * Copied from JavaLog for compatibility issues
+     */
     public static final String LOGGING_LOCALIZATION_STRING = "org.eclipse.persistence.internal.localization.i18n.LoggingLocalizationResource";
-    /** Copied from JavaLog for compatibility issues */
+    /** 
+     * Copied from JavaLog for compatibility issues
+     */
     public static final String TRACE_LOCALIZATION_STRING = "org.eclipse.persistence.internal.localization.i18n.TraceLocalizationResource";
-    /** Stores all the java.util.logging.Levels.  The indexes are EclipseLink logging levels. */
+    /** 
+     * Stores all the java.util.logging.Levels.  The indexes are EclipseLink logging levels.
+     */
     public static final Level[] JAVA_LEVELS = new Level[]{
         Level.ALL, Level.FINEST, Level.FINER, Level.FINE, Level.CONFIG, Level.INFO,
         Level.WARNING, Level.SEVERE, Level.OFF
@@ -83,7 +109,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
      * formats the EclipseLinkLogRecords. Acts as a static variable but not declared static to avoid classLoader
      * leaks  (clone does not deep clone this instance)
      */
-    private final LogFormatter LOG_FORMATTER = new LogFormatter();
+    private final FastLogFormatter LOG_FORMATTER = new FastLogFormatter();
     /**
      * Represents the HashMap that stores all the name space strings. The keys are category names.  The values are
      * namespace strings. Acts as a static variable but not declared static to avoid classLoader leaks (clone does not
@@ -105,15 +131,18 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
      * PUBLIC:
      *
      * CommonsLoggingSessionLog Constructor.
+     * 
+     * Used by :
+     * org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl.updateLoggers :
+     * creates an instance for singletonLog and sessionLog
+     *
      * This adds a root logger for DEFAULT_ECLIPSELINK_NAMESPACE.
      */
     public CommonsLoggingSessionLog() {
         super();
 
         if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.new : instance : " + this);
-            // to inspect the calling stack :
-            new Throwable().printStackTrace(System.out);
+            debug("CommonsLoggingSessionLog.new : instance : " + this, true);
         }
 
         addLogger(DEFAULT_ECLIPSELINK_NAMESPACE, DEFAULT_ECLIPSELINK_NAMESPACE);
@@ -159,10 +188,6 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
     public static final void onExit() {
         // Classloader unload problem with commons-logging :
         LogFactory.release(Thread.currentThread().getContextClassLoader());
-
-    /*
-     * Use releaseAll() instead of release(ClassLoader) ??
-     */
     }
 
     /**
@@ -177,7 +202,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
     @Override
     public final int getLevel(final String category) {
         if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.getLevel : IN : category : " + category);
+            debug("CommonsLoggingSessionLog.getLevel : IN : category : " + category);
         }
 
         final LogWrapper lw = getLogWrapper(category);
@@ -189,8 +214,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
         }
 
         if (FORCE_INTERNAL_DEBUG) {
-            System.out.println(
-                    "CommonsLoggingSessionLog.getLevel : OUT : category : " + category + " : level : " + getLevelString(l));
+            debug("CommonsLoggingSessionLog.getLevel : OUT : category : " + category + " : level : " + getLevelString(l));
         }
 
         return l;
@@ -209,21 +233,19 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
 
                     public Object run() {
                         if (FORCE_INTERNAL_DEBUG) {
-                            System.out.println(
-                                    "CommonsLoggingSessionLog.setLevel : IN : category : " + category + " to level : " +
-                                    getLevelString(level));
+                            debug("CommonsLoggingSessionLog.setLevel : IN : category : " + category + " to level : " +
+                                    getLevelString(level), true);
                         }
 
                         final LogWrapper lw = getLogWrapper(category);
 
                         if (lw == null) {
-                            System.err.println("CommonsLoggingSessionLog.setLevel : category not found : " + category);
+                            error("CommonsLoggingSessionLog.setLevel : category not found : " + category);
                         } else {
                             final Logger logger = getLog4JLogger(lw.getLog());
 
                             if (logger == null) {
-                                System.err.println(
-                                        "CommonsLoggingSessionLog.setLevel : Logger not found : " + category + " : " + lw.getLog());
+                                error("CommonsLoggingSessionLog.setLevel : Logger not found : " + category + " : " + lw.getLog());
                             } else {
 
                                 final org.apache.log4j.Level realLevel = getLevelFor(level);
@@ -231,8 +253,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
                                 if (realLevel == org.apache.log4j.Level.OFF) {
                                     // force level to OFF :
                                     lw.setLevel(OFF);
-                                    System.err.println(
-                                            "CommonsLoggingSessionLog.setLevel : unknown level : " + getLevelString(level) + " : level set to OFF");
+                                    error("CommonsLoggingSessionLog.setLevel : unknown level : " + getLevelString(level) + " : level set to OFF");
                                 } else {
                                     lw.setLevel(level);
                                 }
@@ -243,8 +264,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
                                 }
 
                                 if (FORCE_INTERNAL_DEBUG) {
-                                    System.out.println(
-                                            "CommonsLoggingSessionLog.setLevel : OUT : category : " + category + " to level : " +
+                                    debug("CommonsLoggingSessionLog.setLevel : OUT : category : " + category + " to level : " +
                                             logger.getLevel());
                                 }
                             }
@@ -265,7 +285,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
     @Override
     public final void setWriter(final OutputStream fileOutputStream) {
         if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.setWriter : stream : " + fileOutputStream);
+            debug("CommonsLoggingSessionLog.setWriter : stream : " + fileOutputStream);
         }
 
     // do nothing
@@ -290,7 +310,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
             }
 
             if (FORCE_INTERNAL_DEBUG) {
-                System.out.println("CommonsLoggingSessionLog.setSession : sessionNameSpace : " + this.sessionNameSpace);
+                debug("CommonsLoggingSessionLog.setSession : sessionNameSpace : " + this.sessionNameSpace);
             }
 
             //Initialize loggers eagerly
@@ -313,8 +333,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
     @Override
     public final boolean shouldLog(final int level, final String category) {
         if (FORCE_INTERNAL_DEBUG) {
-            System.out.println(
-                    "CommonsLoggingSessionLog.shouldLog : IN : category : " + category + " : " + getLevelString(level));
+            debug("CommonsLoggingSessionLog.shouldLog : IN : category : " + category + " : " + getLevelString(level));
         }
 
         boolean res = false;
@@ -335,7 +354,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
                 final LogWrapper lw = getLogWrapper(category);
 
                 if (lw == null) {
-                    System.err.println("CommonsLoggingSessionLog.shouldLog : category : " + category + " - NO LOGGER FOUND");
+                    error("CommonsLoggingSessionLog.shouldLog : category : " + category + " - NO LOGGER FOUND");
                     res = false;
                 } else {
                     res = level >= lw.getLevel();
@@ -343,7 +362,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
         }
 
         if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.shouldLog : OUT : category : " + category + " : " + res);
+            debug("CommonsLoggingSessionLog.shouldLog : OUT : category : " + category + " : " + res);
         }
 
         return res;
@@ -357,14 +376,13 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
     public final void log(final SessionLogEntry entry) {
         if (shouldLog(entry.getLevel(), entry.getNameSpace())) {
             if (FORCE_INTERNAL_DEBUG) {
-                System.out.println(
-                        "CommonsLoggingSessionLog.log : namespace : " + entry.getNameSpace() + " message : " + entry.getMessage());
+                debug("CommonsLoggingSessionLog.log : namespace : " + entry.getNameSpace() + " message : " + entry.getMessage());
             }
 
             final Log log = getLog(entry.getNameSpace());
 
             if (log == null) {
-                System.err.println("CommonsLoggingSessionLog.log : no Log found for : " + entry.getNameSpace());
+                error("CommonsLoggingSessionLog.log : no Log found for : " + entry.getNameSpace());
             } else {
                 final Level javaLevel = getJavaLevel(entry.getLevel());
 
@@ -403,9 +421,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
         final CommonsLoggingSessionLog cloneLog = (CommonsLoggingSessionLog) super.clone();
 
         if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.clone : cloned instance : " + cloneLog);
-            // to inspect the calling stack :
-            new Throwable().printStackTrace(System.out);
+            debug("CommonsLoggingSessionLog.clone : cloned instance : " + cloneLog, true);
         }
 
         return cloneLog;
@@ -419,8 +435,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
      */
     private final void addLogger(final String loggerCategory, final String loggerNameSpace) {
         if (FORCE_INTERNAL_DEBUG) {
-            System.out.println(
-                    "CommonsLoggingSessionLog.addLogger : category : " + loggerCategory + " in name space : " + loggerNameSpace);
+            debug("CommonsLoggingSessionLog.addLogger : category : " + loggerCategory + " in name space : " + loggerNameSpace);
         }
 
         this.CATEGORY_LOGGERS.put(loggerCategory, new LogWrapper(this, loggerCategory, LogFactory.getLog(loggerNameSpace)));
@@ -456,7 +471,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
 
         if (getSession() == null) {
             if (FORCE_INTERNAL_DEBUG) {
-                System.out.println("CommonsLoggingSessionLog.getLogWrapper : " + category + " : SESSION NULL");
+                debug("CommonsLoggingSessionLog.getLogWrapper : " + category + " : SESSION NULL");
             }
 
             lw = this.CATEGORY_LOGGERS.get(DEFAULT_ECLIPSELINK_NAMESPACE);
@@ -465,7 +480,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
 
             if (lw == null) {
                 if (FORCE_INTERNAL_DEBUG) {
-                    System.out.println("CommonsLoggingSessionLog.getLogWrapper : " + category + " : CATEGORY IS NULL ?");
+                    debug("CommonsLoggingSessionLog.getLogWrapper : " + category + " : CATEGORY IS NULL ?");
                 }
 
                 // really few cases :
@@ -476,7 +491,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
         }
 
         if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.getLogWrapper : " + category + " = " + lw);
+            debug("CommonsLoggingSessionLog.getLogWrapper : " + category + " = " + lw);
         }
 
         return lw;
@@ -491,7 +506,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
      */
     private final Log getLog(final String category) {
         if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.getLogger : IN : category : " + category);
+            debug("CommonsLoggingSessionLog.getLogger : IN : category : " + category);
         }
 
         final LogWrapper lw = getLogWrapper(category);
@@ -503,7 +518,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
         }
 
         if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.getLogger : OUT : log : " + log);
+            debug("CommonsLoggingSessionLog.getLogger : OUT : log : " + log);
         }
 
         return log;
@@ -516,7 +531,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
      */
     private final void addDefaultLoggers(final String namespace) {
         if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.addDefaultLoggers : nameSpace : " + namespace);
+            debug("CommonsLoggingSessionLog.addDefaultLoggers : nameSpace : " + namespace);
         }
 
         String loggerCategory;
@@ -535,8 +550,8 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
         }
 
         if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.addDefaultLoggers : NAMESPACE_MAP : " + this.NAMESPACE_MAP);
-            System.out.println("CommonsLoggingSessionLog.addDefaultLoggers : CATEGORY_LOGGERS : " + this.CATEGORY_LOGGERS);
+            debug("CommonsLoggingSessionLog.addDefaultLoggers : NAMESPACE_MAP : " + this.NAMESPACE_MAP);
+            debug("CommonsLoggingSessionLog.addDefaultLoggers : CATEGORY_LOGGERS : " + this.CATEGORY_LOGGERS);
         }
     }
 
@@ -549,7 +564,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
      */
     private final void internalLog(final SessionLogEntry entry, final Level level, final Log log) {
         if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.internalLog : " + computeMessage(entry, level));
+            debug("CommonsLoggingSessionLog.internalLog : " + computeMessage(entry, level));
         }
 
         final int entryLevel = entry.getLevel();
@@ -587,7 +602,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
                 break;
 
             default:
-                System.err.println("CommonsLoggingSessionLog.internalLog : unknown level : " + entryLevel);
+                error("CommonsLoggingSessionLog.internalLog : unknown level : " + entryLevel);
 
                 break;
         }
@@ -652,7 +667,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
         }
 
         if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.getLog4JLogger : " + l);
+            debug("CommonsLoggingSessionLog.getLog4JLogger : " + l);
         }
 
         return l;
@@ -729,7 +744,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
                 break;
 
             case ALL:
-                realLevel = org.apache.log4j.Level.DEBUG;
+                realLevel = org.apache.log4j.Level.ALL;
 
                 break;
 
@@ -740,19 +755,55 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
 
             default:
                 realLevel = org.apache.log4j.Level.OFF;
-                System.err.println(
-                        "CommonsLoggingSessionLog.getLevelFor : unknown level : " + getLevelString(level) + " = OFF");
+                error("CommonsLoggingSessionLog.getLevelFor : unknown level : " + getLevelString(level) + " = OFF");
 
                 break;
         }
         if (FORCE_INTERNAL_DEBUG) {
-            System.out.println("CommonsLoggingSessionLog.getLevelFor : level : " + getLevelString(level) + " = " + realLevel);
+            debug("CommonsLoggingSessionLog.getLevelFor : level : " + getLevelString(level) + " = " + realLevel);
         }
         return realLevel;
 
     }
 
-    //~ Inner Classes ----------------------------------------------------------------------------------------------------
+    /**
+     * Prints the message in Std out
+     * @param message message to print
+     */
+    protected final static void debug(final String message) {
+        debug(message, false);
+    }
+
+    /**
+     * Prints the message in Std out
+     * @param message message to print
+     * @param printStack adds a stack trace to find caller class
+     */
+    protected final static void debug(final String message, final boolean printStack) {
+        System.out.println(message);
+        if (printStack && FORCE_INTERNAL_DEBUG_STACK) {
+            // to inspect the calling stack :
+            new Throwable().printStackTrace(System.out);
+        }
+    }
+
+    /**
+     * Prints the message in Std err
+     * @param message message to print
+     */
+    protected final static void error(final String message) {
+        System.err.println(message);
+    }
+
+    /**
+     * Prints the message in Std err
+     * @param message message to print
+     */
+    protected final static void error(final Throwable th) {
+        th.printStackTrace(System.err);
+    }
+
+//~ Inner Classes ----------------------------------------------------------------------------------------------------
     /**
      * INTERNAL: LogWrapper class wraps the real apache commons logging Log instance
      */
@@ -779,7 +830,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
          * INTERNAL:
          *
          * Constructor
-         * 
+         *
          * @param log apache commons logging Log instance
          */
         protected LogWrapper(final CommonsLoggingSessionLog sessionLog, final String category, final Log log) {
@@ -797,7 +848,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
 
             if ((parentName != null) && !"null".equals(parentName)) {
                 if (FORCE_INTERNAL_DEBUG) {
-                    System.out.println("CommonsLoggingSessionLog.LogWrapper.new : parent : " + parentName);
+                    debug("CommonsLoggingSessionLog.LogWrapper.new : parent : " + parentName);
                 }
 
                 this.parent = this.sessionLog.getLogWrapper(parentName);
@@ -827,7 +878,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
             this.cachedLevel = UNDEFINED_LEVEL;
 
             if (FORCE_INTERNAL_DEBUG) {
-                System.out.println("CommonsLoggingSessionLog.LogWrapper.setLevel : reset cachedLevel for : " + getCategory());
+                debug("CommonsLoggingSessionLog.LogWrapper.setLevel : reset cachedLevel for : " + getCategory());
             }
         }
 
@@ -843,7 +894,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
         /**
          * INTERNAL: Returns the level according to the java.util.logging.Levels
          *
-         * @return level
+         * @return level computed from cachedLevel and internal level
          */
         protected final int getLevel() {
             int res = this.cachedLevel;
@@ -948,8 +999,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
                 final Logger logger = getLog4JLogger(lw.getLog());
 
                 if (logger == null) {
-                    System.err.println(
-                            "CommonsLoggingSessionLog.computeLevel : Logger not found : " + lw.getCategory() + " : " + lw.getLog());
+                    error("CommonsLoggingSessionLog.computeLevel : Logger not found : " + lw.getCategory() + " : " + lw.getLog());
                 } else {
 
                     final org.apache.log4j.Level realLevel = getLevelFor(computedLevel);
