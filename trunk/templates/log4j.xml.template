@@ -40,7 +40,7 @@
   </logger>
 
   <logger name="org.eclipse.persistence">
-    <level value="debug"/>
+    <level value="warn"/>
     <appender-ref ref="fileRoot"/>
   </logger>
 
@@ -50,7 +50,6 @@
   <root>
     <level value="warn"/>
     <appender-ref ref="display"/>
-    <appender-ref ref="fileRoot"/>
   </root>
 
 </log4j:configuration>
