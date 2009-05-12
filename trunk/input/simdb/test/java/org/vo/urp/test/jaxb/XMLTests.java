@@ -14,7 +14,7 @@ import org.ivoa.simdb.protocol.Simulator;
 /**
  * TODO : Class Description
  *
- * @author $author$
+ * @author laurent bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class XMLTests implements ApplicationMain {
   //~ Constants --------------------------------------------------------------------------------------------------------
