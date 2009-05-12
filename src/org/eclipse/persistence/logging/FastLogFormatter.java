@@ -33,9 +33,13 @@ public final class FastLogFormatter extends SimpleFormatter {
 
     //~ Constants --------------------------------------------------------------------------------------------------------
     /**
-     * initial buffer size = 600 chars
+     * undefined capacity
      */
-    private final static int INITIAL_BUFFER_SIZE = 600;
+    private final static int UNDEFINED_CAPACITY = -1;
+    /**
+     * initial buffer capacity = 256 chars
+     */
+    private final static int INITIAL_BUFFER_CAPACITY = 256;
     /**
      * date format
      */
@@ -59,6 +63,10 @@ public final class FastLogFormatter extends SimpleFormatter {
     private final static String LINE_SEPARATOR = PrivilegedAccessHelper.getLineSeparator();
 
     //~ Members ----------------------------------------------------------------------------------------------------------
+    /**
+     * computed buffer capacity
+     */
+    private int adaptedBufferCapacity = UNDEFINED_CAPACITY;
     /**
      * date formatter
      */
@@ -88,10 +96,16 @@ public final class FastLogFormatter extends SimpleFormatter {
         } else {
             final EclipseLinkLogRecord record = (EclipseLinkLogRecord) pRecord;
 
+            final String message = formatMessage(record);
+
+            final int capacity = (adaptedBufferCapacity == UNDEFINED_CAPACITY) ? INITIAL_BUFFER_CAPACITY : adaptedBufferCapacity + message.length();
             /*
-             * Unsynchronized 512 character buffer to avoid too much array resize operations :
+             * Unsynchronized & sized character buffer to avoid too much array resize operations :
              */
-            final StringBuilder sb = new StringBuilder(INITIAL_BUFFER_SIZE);
+            final StringBuilder sb = new StringBuilder(capacity);
+
+            // local variable for performance :
+            final char space = SPACE_CHAR;
 
             if (record.shouldPrintDate()) {
                 synchronized (dateInstance) {
@@ -106,7 +120,7 @@ public final class FastLogFormatter extends SimpleFormatter {
                     // reset dateBuffer content :
                     dateBuffer.setLength(0);
                 }
-                sb.append(SPACE_CHAR);
+                sb.append(space);
             }
 
             if (record.getSourceClassName() != null) {
@@ -116,40 +130,50 @@ public final class FastLogFormatter extends SimpleFormatter {
             }
 
             if (record.getSourceMethodName() != null) {
-                sb.append(SPACE_CHAR);
+                sb.append(space);
                 sb.append(record.getSourceMethodName());
             }
 
             if (record.getSessionString() != null) {
-                sb.append(SPACE_CHAR);
+                sb.append(space);
                 sb.append(record.getSessionString());
             }
 
             if (record.getConnection() != null) {
-                sb.append(SPACE_CHAR);
+                sb.append(space);
                 sb.append(AbstractSessionLog.CONNECTION_STRING).append(PAR_OPEN_CHAR);
                 sb.append(String.valueOf(System.identityHashCode(record.getConnection()))).append(PAR_CLOSE_CHAR);
             }
 
             if (record.shouldPrintThread()) {
-                sb.append(SPACE_CHAR);
+                sb.append(space);
                 sb.append(AbstractSessionLog.THREAD_STRING).append(PAR_OPEN_CHAR);
                 sb.append(String.valueOf(record.getThreadID())).append(PAR_CLOSE_CHAR);
             }
 
             sb.append(LINE_SEPARATOR);
 
-            final String message = formatMessage(record);
             sb.append(record.getLevel().getLocalizedName());
             sb.append(": ");
             sb.append(message);
+
+            // first time, compute initial capacity :
+            if (adaptedBufferCapacity == UNDEFINED_CAPACITY) {
+                adaptedBufferCapacity = sb.length() + 4 - message.length();
+
+                if (CommonsLoggingSessionLog.FORCE_INTERNAL_DEBUG) {
+                    sb.append(LINE_SEPARATOR);
+                    sb.append("adaptedBufferCapacity : ");
+                    sb.append(adaptedBufferCapacity);
+                }
+            }
 
             /*
              * Log4J : not necessary :
              * sb.append(LINE_SEPARATOR);
              */
             if (record.getThrown() != null) {
-                final StringWriter sw = new StringWriter(512);
+                final StringWriter sw = new StringWriter(INITIAL_BUFFER_CAPACITY);
                 final PrintWriter pw = new PrintWriter(sw);
                 try {
                     if (record.getLevel().intValue() == Level.SEVERE.intValue()) {
@@ -159,10 +183,10 @@ public final class FastLogFormatter extends SimpleFormatter {
                             record.getThrown().printStackTrace(pw);
                         } else {
                             pw.write(record.getThrown().toString());
-                            /*
-                             * Log4J : not necessary :
-                             * pw.write(LINE_SEPARATOR);
-                             */
+                        /*
+                         * Log4J : not necessary :
+                         * pw.write(LINE_SEPARATOR);
+                         */
                         }
                     }
                 } catch (Exception e) {
@@ -174,13 +198,19 @@ public final class FastLogFormatter extends SimpleFormatter {
             }
 
             if (CommonsLoggingSessionLog.FORCE_INTERNAL_DEBUG) {
+                final int len = sb.length();
+                final int cap = sb.capacity();
                 sb.append(LINE_SEPARATOR);
                 sb.append("sb-Length : ");
-                sb.append(sb.length());
+                sb.append(len);
+                sb.append(" - initial capacity : ");
+                sb.append(capacity);
                 sb.append(" - capacity : ");
-                sb.append(sb.capacity());
+                sb.append(cap);
                 sb.append(" - resized : ");
-                sb.append(sb.capacity() > INITIAL_BUFFER_SIZE);
+                sb.append(cap > capacity);
+                sb.append(" - overhead : ");
+                sb.append(cap - len);
             }
 
             return sb.toString();
