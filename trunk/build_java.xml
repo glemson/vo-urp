@@ -665,13 +665,17 @@ Optional
 	  <filter token="project.name" value="${project.name}" />
 	</filterset>
   </copy>
-
-  
-  
   
   <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true">
-    <jvmarg value="-Xms64m"/>
-    <jvmarg value="-Xmx256m"/>
+    <jvmarg value="-XX:+UseParallelGC"/>
+    <jvmarg value="-XX:NewRatio=2"/>
+    <jvmarg value="-Xms384m"/>
+    <jvmarg value="-Xmx384m"/>
+<!--
+    <jvmarg value="-verbose:gc"/>
+    <jvmarg value="-XX:+PrintGCDetails"/>
+    <jvmarg value="-XX:+PrintGCTimeStamps"/>
+-->
     <!-- eclipse weaving support -->
 <!--    <jvmarg value="-javaagent:../libs/eclipselink.jar"/> -->
     <arg value="${jpa.persistence.unit}"/>
