@@ -45,6 +45,8 @@
       </xsl:when>
       <xsl:otherwise>
 <!-- always produce a JAXB annotation to be able to marshall fragments -->        
+<!-- GL 2009-05-12: do we really want this? Note that also DataType-s get this root element now.
+Ofcourse if we always use the schemas to validate XML documents this will still be prevented, but ... -->
     @XmlRootElement( name = "<xsl:value-of select="name"/>", namespace = "<xsl:value-of select="$targetnamespace_root"/>")
       </xsl:otherwise>
     </xsl:choose>
