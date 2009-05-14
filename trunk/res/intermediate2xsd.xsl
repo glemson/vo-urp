@@ -21,7 +21,8 @@
   <xsl:key name="element" match="*//*" use="@xmiid"/>
   <xsl:key name="package" match="*//package" use="@xmiid"/>
   <!-- Next is to check wheher package needs handling, or is internal -->
-  <xsl:key name="modelpackage" match="*//package[not(name='IVOAValueTypes')]" use="@xmiid"/>
+  <xsl:key name="modelpackage" match="*//package[not(name='IVOAValueTypes')]" use="@xmiid"/> 
+<!--  <xsl:key name="modelpackage" match="*//package" use="@xmiid"/>  -->
   
   <!-- Input parameters -->
   <xsl:param name="lastModifiedText"/>
