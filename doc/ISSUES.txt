@@ -1,11 +1,12 @@
 --==============================
 - [2009-05-13, GL] checkDB hangs
 --==============================
-during forceMakeAll, ant hangs at checkDB.
+on my laptop, during forceMakeAll, ant hangs at checkDB.
 doing a makeAll afterwards, it passes
 had this problem before, don't remember how I fixed it
 
-TODO: ask Laurent ...
+I run ANT from within eclipse, the plugin version is 1.7.0v200706080842.
+
 note, this started after updating log4j, build-java
 
 (morning after)
@@ -13,4 +14,4 @@ Think it had something to do with (not) making other java calls in the same proc
 as ANT. using fork="true" or so? Seems as if all fork-s are set to true.
 
 Maybe something to do with http://ant.apache.org/faq.html#input-makes-exec-hang ?
-SO I added inputstring="" in all <java tasks and that seems to fix it!
+So I added inputstring="" in all <java tasks and that seems to fix it!
