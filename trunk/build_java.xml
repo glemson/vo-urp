@@ -499,7 +499,7 @@ Optional
   -->
 
   <java classname="org.ivoa.jalopy.Formatter" dir="${sources.gen}/src" 
-        fork="true" failonerror="true">
+        fork="true" failonerror="true" inputstring="">
     <jvmarg value="-Xms32m"/>
     <jvmarg value="-Xmx64m"/>
 
@@ -524,7 +524,7 @@ Optional
 <target name="formatBaseCode" depends="buildFormatter">
 
   <java classname="org.ivoa.jalopy.Formatter" dir="${sources}"
-        fork="true" failonerror="true">
+        fork="true" failonerror="true"  inputstring="">
     <jvmarg value="-Xms32m"/>
     <jvmarg value="-Xmx64m"/>
 
@@ -549,7 +549,7 @@ Optional
 <target name="formatWebAppCode" depends="buildFormatter">
 
   <java classname="org.ivoa.jalopy.Formatter" dir="${root}/webapp/vo-urp-browser/"
-        fork="true" failonerror="true">
+        fork="true" failonerror="true"  inputstring="">
     <jvmarg value="-Xms32m"/>
     <jvmarg value="-Xmx64m"/>
 
@@ -666,7 +666,7 @@ Optional
 	</filterset>
   </copy>
   
-  <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true">
+  <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true"  inputstring="">
     <jvmarg value="-XX:+UseParallelGC"/>
     <jvmarg value="-XX:NewRatio=2"/>
     <jvmarg value="-Xms384m"/>
