@@ -12,7 +12,7 @@ transforms it into a valid RDF/XML document.
 We use here the following mapping between our metadata model and that of RDF [TBD is this a meaningful statement?]
 
 Intermediate		|	RDF
--------------------------
+=====================
 objectType			|   
 valueType				|
 attribute				|
@@ -24,7 +24,9 @@ datatype				|
  -->
 
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-                xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+                xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+                xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                xmlns:dc="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
   
   <xsl:import href="common.xsl"/>
   
@@ -99,13 +101,14 @@ datatype				|
       
    <rdf:RDF>
         <xsl:namespace name="rdf">
-          <xsl:value-of select="http://www.w3.org/1999/02/22-rdf-syntax-ns#"/>
+          <xsl:value-of select="'http://www.w3.org/1999/02/22-rdf-syntax-ns#'"/>
         </xsl:namespace>
-        <xsd:annotation>
-          <xsd:documentation>
+        <xsl:namespace name="dc">
+          <xsl:value-of select="'http://purl.org/dc/elements/1.1/'"/>
+        </xsl:namespace>
+        <xsl:comment>
             <xsl:text>Generated from UML->XMI->intermediate->RDF.</xsl:text>
-          </xsd:documentation>
-        </xsd:annotation>
+        </xsl:comment>
 <!--         
         <xsl:if test="../name() = 'package'">
           <xsl:apply-templates select=".." mode="ns-import"/>
