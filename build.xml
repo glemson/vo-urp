@@ -528,7 +528,15 @@
 
 		<echo>run_intermediate2html : done.</echo>
 	</target>
+	<target name="run_intermediate2rdf" >
+		<echo>run_intermediate2rdf : starting generate RDF from file ${output}/${source_intermediate}</echo>
 
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/rdf/{project.name}.rdf" style="${res}/intermediate2rdf.xsl">
+		</xslt2>
+
+		<echo>run_intermediate2rdf : done.</echo>
+	</target>
+	
 	<target name="run_intermediate2gvd">
 		<echo>run_intermediate2gvd : starting generate GraphViz from file ${output}/${source_intermediate}</echo>
 
