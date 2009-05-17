@@ -85,7 +85,7 @@ This folder and sub folders contains java libraries used by ant build file and j
 * Eclipselink - 1.1 :
     License agreement : see ./eclipselink_license.html
 
-      - eclipselink.jar (1.1)
+      - eclipselink.jar (1.1.1)
       - javax.persistence_1.0.0.jar
 
       "The  Eclipse Persistence Services Project (EclipseLink)  project's goal is to provide a complete persistence framework 
