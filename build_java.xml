@@ -52,7 +52,12 @@
 <!-- class paths for runtime -->
 <path id="runtime.class.path">
   <pathelement location="${dist}/${build.src.file}" />
-  <pathelement location="${dist}/${build.gen.file}" />
+
+  <!-- standard classes -->
+<!--  <pathelement location="${dist}/${build.gen.file}" /> -->
+
+  <!-- weaved classes (faster) -->
+  <pathelement location="${dist}/${build.gen.weave.file}" />
   <!-- sql driver -->
   <path refid="jdbc-drivers.class.path" />
   <!-- properties at last to add / because it is a directory -->
@@ -85,7 +90,6 @@
   <classpath>
     <pathelement location="${libs}/eclipselink.jar" />
     <pathelement location="${libs}/javax.persistence_1.0.0.jar" />
-    <pathelement location="${dist}/${build.src.file}" />
   </classpath>
 </taskdef>
 
@@ -289,6 +293,7 @@
       <!-- include JPA annotated classes -->
       <include name="org/ivoa/dm/model/Identity*" />
       <include name="org/ivoa/dm/model/MetadataObject*" />
+      <include name="org/ivoa/dm/model/RootEntityObject*" />
       <include name="org/ivoa/tap/**" />
     </fileset>
     <fileset dir="${outputJava}">
@@ -337,6 +342,7 @@
       <!-- exclude JPA annotated classes -->
       <exclude name="org/ivoa/dm/model/Identity*" />
       <exclude name="org/ivoa/dm/model/MetadataObject*" />
+      <exclude name="org/ivoa/dm/model/RootEntityObject*" />
       <exclude name="org/ivoa/tap/**" />
     </fileset>
     <fileset dir="${properties}">
@@ -423,12 +429,17 @@ Optional
     <fileset dir="${build.weaving}"/>
   </delete>
 
+  <echo>weaving jpa classes ...</echo>
+  <echo>from      : ${dist}/${build.gen.file}</echo>
+  <echo>to        : ${dist}/${build.gen.weave.file}</echo>
+  <echo>classpath : ${dist}/${build.src.file}</echo>
+
   <weave source="${dist}/${build.gen.file}" 
          target="${build.weaving}"
-         loglevel="WARNING">
+         loglevel="INFO">
     <classpath>
+      <pathelement location="${dist}/${build.src.file}" />
       <path refid="project.class.path" />
-      <path refid="infrastructure.class.path" />      
     </classpath>
   </weave>         
   
