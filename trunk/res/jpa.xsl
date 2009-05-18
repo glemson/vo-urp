@@ -313,8 +313,18 @@
       <xsl:when test="name() = 'properties'">
 &cr;
 &cr;
-<xsl:comment>generated JPA entities</xsl:comment>
+<xsl:comment>base JPA entities</xsl:comment>
 &cr;
+&cr;
+    <xsl:element name="class" namespace="http://java.sun.com/xml/ns/persistence">
+      <xsl:text>org.ivoa.dm.model.Identity</xsl:text>
+    </xsl:element>
+    <xsl:element name="class" namespace="http://java.sun.com/xml/ns/persistence">
+      <xsl:text>org.ivoa.dm.model.MetadataObject</xsl:text>
+    </xsl:element>
+    <xsl:element name="class" namespace="http://java.sun.com/xml/ns/persistence">
+      <xsl:text>org.ivoa.dm.model.RootEntityObject</xsl:text>
+    </xsl:element>
 &cr;
     <xsl:element name="class" namespace="http://java.sun.com/xml/ns/persistence">
       <xsl:text>org.ivoa.tap.Schemas</xsl:text>
@@ -325,6 +335,11 @@
     <xsl:element name="class" namespace="http://java.sun.com/xml/ns/persistence">
       <xsl:text>org.ivoa.tap.Columns</xsl:text>
     </xsl:element>
+&cr;
+&cr;
+<xsl:comment>generated JPA entities</xsl:comment>
+&cr;
+&cr;
 
 <xsl:for-each select="$model/package">
   <xsl:call-template name="packageJpaConfig">
