@@ -17,7 +17,7 @@
      
     Authors : laurent.bourges@obspm.fr, gerard.lemson@mpe.mpg.de
     
-    This Version : 2008-01-02 
+    This Version : 2009-05-19
     Previous Version (SimDB) : 16/06/2008
   	</description>
 
@@ -29,13 +29,12 @@
     <property name="vo-urp.vendor" value="Gerard Lemson, Laurent Bourges"/>
     <property name="vo-urp.version" value="0.x"/>
 	
-	<!-- Get build properties (general). 
-	     Should only contain the location of the directory where input properties and data model can be found.
-	     If t
+	<!--
+      Get build properties (general).
+	  Should only contain the location of the directory where input properties and data model can be found.
 	-->
 	<property file="build.properties" />
 	<property name="input" location="./input"/>
-	
 
 	
 	<!-- read pipeline configuration properties -->
@@ -79,46 +78,32 @@
 	
 
 	<!-- define and instantiate output directories -->
-	<!-- TBD maybe all the mkdir targets can be moved to place where they are required -->
 	<property name="output" location="${input}/output"/>
-	<mkdir dir="${output}"/> 
 	<property name="build" location="${input}/build"/>
-    <mkdir dir="${build}"/>
 	<property name="dist" location="${input}/dist"/>
-	<mkdir dir="${dist}"/>
 	<property name="properties" location="${input}/properties"/>
-    <mkdir dir="${properties}"/>
 	<property name="dist.lib" location="${dist}/lib" />
-	<mkdir dir="${dist.lib}"/>
 	<property name="javadoc" location="${dist}/doc" />
-   	<mkdir dir="${javadoc}"/>
 	<property name="outputJava" location="${output}/java"/>
-	<mkdir dir="${outputJava}"/>
+	<property name="sources.gen" location="${outputJava}" />
 	<property name="build" location="./build" />
-	<mkdir dir="${build}"/>
 	<property name="build.src" location="${build}/src" />
-	<mkdir dir="${build.src}"/>
 	<property name="build.gen" location="${build}/gen" />
-	<mkdir dir="${build.gen}"/>
 	<property name="build.weaving" location="${build}/weaving" />
-	<mkdir dir="${build.weaving}"/>
 	<property name="test" location="${input}/${sources.test}"/>
 	<property name="build.test" location="${build}/test" />
 
-	<property name="sources.gen" location="${outputJava}" />
-
-
-
-
-
-	<tstamp>
-		<format property="build.date" pattern="dd/MM/yyyy HH:mm:ss" />
-	</tstamp>
+    <!-- JDBC drivers -->
+    <fileset id="jdbcfiles" dir="${libs}/jdbc">
+      <!-- postgres 8.x driver -->
+      <include name="postgresql-8.3-603.jdbc3.jar"/>
+      <!-- sql server 2005 driver -->
+      <include name="sqljdbc-2005-1.2.jar"/>
+    </fileset>
 
 	<!-- class path for JDBC drivers -->
 	<path id="jdbc-drivers.class.path">
-		<pathelement location="${libs}/jdbc/postgresql-8.3-603.jdbc3.jar" />
-		<pathelement location="${libs}/jdbc/sqljdbc-2005-1.2.jar" />
+        <fileset refid="jdbcfiles"/>
 	</path>
 
 	<!-- adds README.txt to default excludes -->
@@ -204,6 +189,24 @@
 
 	<!-- target init : timestamp -->
 	<target name="init">
+        
+        <!-- define and instantiate output directories -->
+        <mkdir dir="${output}"/>
+        <mkdir dir="${build}"/>
+        <mkdir dir="${dist}"/>
+        <mkdir dir="${properties}"/>
+        <mkdir dir="${dist.lib}"/>
+        <mkdir dir="${javadoc}"/>
+        <mkdir dir="${outputJava}"/>
+        <mkdir dir="${build}"/>
+        <mkdir dir="${build.src}"/>
+        <mkdir dir="${build.gen}"/>
+        <mkdir dir="${build.weaving}"/>
+
+        <tstamp>
+            <format property="build.date" pattern="dd/MM/yyyy HH:mm:ss" />
+        </tstamp>
+
 		<echo>-------------------------------------------------------------------------------</echo>
 		<echo>  ${project.vendor} </echo>
 		<echo>  ${project.title} - ${project.version} </echo>
@@ -228,9 +231,6 @@
 
 	
 	
-	
-	
-
 	<!-- target about : -->
 	<target name="about" depends="init" description="show information for public targets">
 		<echo>available ant targets : </echo>
@@ -239,13 +239,6 @@
 		<echo>  - forceMakeAll  : CLEANS outputs and then make all transformations (makeAll) </echo>
 		<echo>-------------------------------------------------------------------------------</echo>
 	</target>
-
-
-
-
-	
-	
-	
 	
 	
 	
@@ -267,8 +260,7 @@
 
 
 
-
-	<!-- target cleanOutput : clean output files (ddl, java, schema ...) -->
+	<!-- target cleanOutput : clean all output files (ddl, java, schema ...) -->
 	<target name="cleanOutput">
 
 		<echo>cleaning directory : ${output} ...</echo>
@@ -302,20 +294,8 @@
 
 
 
-	<!-- generate all resources -->
-	<target name="generateAll">
-		<ant target="run_xmi2intermediate" inheritAll="true" />
-		<ant target="run_intermediate2html" inheritAll="true" />
-		<ant target="run_intermediate2ddl" inheritAll="true" />
-		<ant target="run_intermediate2tap" inheritAll="true" />
-		<ant target="run_intermediate2xsd" inheritAll="true" />
-		<ant target="run_intermediate2java" inheritAll="true" />
-	</target>
-
-
-
-
-	<target name="process">
+	<!-- target process : xslt pipeline + DB + test cases -->
+    <target name="process">
 		<property name="source" value="${source}" />
 		<property name="source_filtered" value="${source_filtered}" />
 
@@ -354,15 +334,15 @@
 			</propertyset>
 		</ant>
 
+        <!-- update DB if needed -->
 		<ant target="checkDB" />
 
 		<ant target="createDB" />
 
 
-		<!-- builds vo-urp-browser -->
-		<ant antfile="webapp/vo-urp-browser/build.xml" target="deployTomcat" inheritAll="false">
-			<property name="input" location="${input}"/>
-		</ant>
+        <!-- build web app -->
+		<ant target="buildWeb" />
+
 <!--
     	<condition property="what.to.run" value="run" else="doNothing">
 				<isset property="sources.test"/>
@@ -371,11 +351,15 @@
 		<ant target="${what.to.run}" />
 -->
 
+        <!-- run test cases if needed -->
 		<ant target="run" />
 	</target>
 
 
-	<target name="buildWeb" >
+
+
+	<!-- target buildWeb : makes the vo-urp browser web application -->
+	<target name="buildWeb">
 		<ant antfile="webapp/vo-urp-browser/build.xml" target="deployTomcat" inheritAll="false">
 			<property name="input" location="${input}"/>
 		</ant>	
@@ -384,6 +368,7 @@
 	
 
 
+	<!-- target processXMI2Intermediate : check the XMI model, filter it and generate the intermediate model -->
 	<target name="processXMI2Intermediate" unless="intermediate.notRequired">
 		<ant target="checkSource">
 			<property name="source_checked" value="${source_checked}" />
@@ -395,25 +380,33 @@
 
 
 
+	<!-- target processIntermediate2XSD : generates XML Schemas, XML samples and HTML documentation -->
 	<target name="processIntermediate2XSD" unless="xsd.notRequired">
 		<ant target="run_intermediate2xsd" />
 		<ant target="run_intermediate2html" />
+		<ant target="run_intermediate2xml" />
 	</target>
 
 
 
 
+	<!-- target processIntermediate2DDL : generates DDL scripts -->
 	<target name="processIntermediate2DDL" unless="ddl.notRequired">
 		<ant target="run_intermediate2ddl" />
 	</target>
 
 
+
+
+	<!-- target processIntermediate2TAP : generates TAP model -->
 	<target name="processIntermediate2TAP" unless="tap.notRequired">
 		<ant target="run_intermediate2tap" />
 	</target>
 
 
 
+
+	<!-- target processIntermediate2Java : clean java outputs, generates java code from intermediate model and compiles java codes -->
 	<target name="processIntermediate2Java" unless="java.notRequired">
 		<ant target="cleanJavaOutput" />
 		<ant target="run_intermediate2java" />
@@ -449,12 +442,12 @@
 
 
 
+	<!-- target run_xmi2intermediate : transform the source model (xmi) to the intermediate model -->
 	<target name="run_xmi2intermediate">
 		<ant target="xmi2intermediate">
 			<property name="source" value="${input}/${source}" />
 			<property name="source_filtered" value="${source_intermediate}" />
 		</ant>
-
 	</target>
 
 
@@ -493,28 +486,32 @@
 		<echo>run_intermediate2xsd : done.</echo>
 	</target>
 
+
+
+
 	<!-- generate template XML docs for each of the root elements -->
-	<target name="run_intermediate2xml" depends="init">
+	<target name="run_intermediate2xml">
 		<echo>run_intermediate2xml : starting generate XML sample documents from file ${output}/${source_intermediate}</echo>
-		<xslt2 in="${output}/${source_intermediate}" out="${output}/xml-samples/xml-gen.log" style="${res}/intermediate2xml.xsl">
+
+        <xslt2 in="${output}/${source_intermediate}" out="${output}/xml-samples/xml-gen.log" style="${res}/intermediate2xml.xsl">
 			<param name="targetnamespace_root" expression="${targetnamespace_root}" />
 		</xslt2>
 
-	</target>
+		<echo>run_intermediate2xml : done.</echo>
+    </target>
 
 
 
 
 	<!-- target run_readSKOS : generates SKOS vocabularie and trasforms them -->
+    <!-- note : this target not included in the standard pipeline : run it manually -->
 	<target name="run_readSKOS">
 		<echo>run_intermediateSKOS2simpleSKOS : starting generate Simple SKOS files from SKOS URIs in ${output}/${source_intermediate}</echo>
 
-		<xslt2 in="${output}/${source_intermediate}" out="${output}/skos/skos-gen.log" style="${res}/readSKOS.xsl">
-		</xslt2>
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/skos/skos-gen.log" style="${res}/readSKOS.xsl"/>
 
 		<echo>run_intermediate2xsd : done.</echo>
 	</target>
-
 
 
 
@@ -523,35 +520,45 @@
 	<target name="run_intermediate2html">
 		<echo>run_intermediate2html : starting generate HTML from file ${output}/${source_intermediate}</echo>
 
-		<xslt2 in="${output}/${source_intermediate}" out="${output}/html/${project.name}.html" style="${res}/intermediate2html.xsl">
-		</xslt2>
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/html/${project.name}.html" style="${res}/intermediate2html.xsl"/>
 
 		<echo>run_intermediate2html : done.</echo>
 	</target>
-	<target name="run_intermediate2rdf" >
+
+
+
+
+	<!-- target run_intermediate2rdf : generates a RDF instance from intermediate model -->
+    <target name="run_intermediate2rdf" >
 		<echo>run_intermediate2rdf : starting generate RDF from file ${output}/${source_intermediate}</echo>
 
-		<xslt2 in="${output}/${source_intermediate}" out="${output}/rdf/{project.name}.rdf" style="${res}/intermediate2rdf.xsl">
-		</xslt2>
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/rdf/{project.name}.rdf" style="${res}/intermediate2rdf.xsl"/>
 
 		<echo>run_intermediate2rdf : done.</echo>
 	</target>
-	
+
+
+
+
+	<!-- target run_intermediate2gvd : generates Object Graphs (graphviz tool) from intermediate model -->
+    <!-- note : this target not included in the standard pipeline : run it manually -->
 	<target name="run_intermediate2gvd">
 		<echo>run_intermediate2gvd : starting generate GraphViz from file ${output}/${source_intermediate}</echo>
 
-		<xslt2 in="${output}/${source_intermediate}" out="${output}/html/${project.name}.gvd" style="${res}/intermediate2gvd.xsl">
-		</xslt2>
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/html/${project.name}.gvd" style="${res}/intermediate2gvd.xsl" />
 
-		<exec executable="${graphviz.path}" dir="${output}/html">
+		<exec executable="${graphviz.path}" dir="${output}/html" inputstring="">
 			<arg value="-Timap" />
 			<arg value="-o${project.name}.imap" />
 			<arg value="-Tpng" />
 			<arg value="-o${project.name}.png" />
 			<arg value="${project.name}.gvd" />
 		</exec>
+
 		<echo>run_intermediate2gvd : done.</echo>
 	</target>
+
+
 
 
 	<!-- target run_intermediate2ddl : generates DDL script from intermediate model -->
@@ -570,6 +577,8 @@
 
 		<echo>run_intermediate2ddl : done.</echo>
 	</target>
+
+
 
 
 	<!-- target run_intermediate2tap : generates TAP metadata VOTables from intermediate model -->
@@ -602,7 +611,6 @@
 			<param name="project_name" expression="${project.name}" />
 		</xslt2>
 
-
 		<xslt2 in="${output}/${source_intermediate}" out="${output}/tap/tap-gen.log" style="${res}/intermediate2tap.xsl">
 			<param name="mode" expression="votable" />
 			<param name="project_name" expression="${project.name}" />
@@ -622,7 +630,7 @@
 		<copy tofile="${properties}/persistence.xml" filtering="true" verbose="true" overwrite="true">
 			<fileset file="${templates}/persistence.xml.template" />
 			<filterset>
-				<!-- 
+	<!-- 
 	   Filters for copying runtime.properties 
 	   Check that file for the full list of required properties
 	-->
@@ -649,17 +657,17 @@
   &buildJava; 
 
 
-	
-	<!-- target echo : echos properties -->
-	<target name="echo" depends="init" description="Echo properties">
-	  <echoproperties />
-	</target>
-	
 
-	<target name="doNothing" >
-	<echo>Doing nothing ......................................</echo>
-	</target>
 
+    <!-- target echo : echos properties -->
+    <target name="echo" depends="init" description="Echo properties">
+      <echoproperties />
+    </target>
+
+
+    <target name="doNothing" >
+      <echo>Doing nothing ......................................</echo>
+    </target>
 	
 	
 </project>

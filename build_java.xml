@@ -6,42 +6,36 @@
 <property name="jalopyConvention" location="${libs}/jalopy/jalopy-java-laurent.xml" />
 <property name="jalopyConvention_1.5c3" location="${libs}/jalopy/jalopy-java-laurent_1.5c3.xml" />
 
-<!-- classpath for base module -->
-<!-- class paths for base classes -->
-<!-- apache logging + Log4J -->
-<!-- eclipselink JPA 1.0 reference implementation -->
-<!-- JAXB 2.1.6 reference implementation -->
-
+<!-- libraries for base module -->
 <fileset id="jarfiles" dir="${libs}">
-  <include name="*.jar"/>
-</fileset>
-<fileset id="jdbcfiles" dir="${libs}/jdbc">
-  <include name="*.jar"/>
+  <!-- apache logging + Log4J -->
+  <include name="commons-logging-1.1.1.jar"/>
+  <include name="log4j-1.2.15.jar"/>
+
+  <!-- apache http client -->
+  <include name="commons-httpclient-3.1.jar" />
+
+  <!-- JAXB 2.1.6 reference implementation -->
+  <include name="jaxb-api-2.1.jar" />
+  <include name="jaxb-impl-2.1.6.jar" />
+  <include name="jaxb-xjc-2.1.6.jar" />
+  <!-- JAXB 2.1.6 RI dependencies -->
+  <include name="activation.jar" />
+  <include name="jsr173_1.0_api.jar" />
+
+  <!-- eclipselink (1.1) JPA 1.0 reference implementation -->
+  <include name="eclipselink.jar" />
+  <include name="javax.persistence_1.0.0.jar" />
+
+  <!-- saxon9 for runtime XSLT processing -->
+  <include name="saxon9.jar" />
+  <include name="saxon9-s9api.jar" />
 </fileset>
 
+
+<!-- classpath for base module -->
 <path id="project.class.path">
   <fileset refid="jarfiles"/>
-</path>
-
-<path id="project.class.path2">
-  <pathelement location="${libs}/commons-logging-1.1.1.jar" />
-  <pathelement location="${libs}/log4j-1.2.15.jar" />
-  <pathelement location="${libs}/commons-httpclient-3.1.jar" />
-  <pathelement location="${libs}/commons-fileupload-1.2.1.jar" />
-  <pathelement location="${libs}/commons-io-1.3.2.jar" />
-  <!-- jaxb 2.1.6 RI -->
-  <pathelement location="${libs}/jaxb-api-2.1.jar" />
-  <pathelement location="${libs}/jaxb-impl-2.1.6.jar" />
-  <pathelement location="${libs}/jaxb-xjc-2.1.6.jar" />
-  <!-- jaxb 2.1.6 RI dependencies -->
-  <pathelement location="${libs}/activation.jar" />
-  <pathelement location="${libs}/jsr173_1.0_api.jar" />
-  <!-- eclipselink 1.0M8 -->
-  <pathelement location="${libs}/eclipselink.jar" />
-  <pathelement location="${libs}/javax.persistence_1.0.0.jar" />
-  <!-- saxon9 for runtime XSLT processing -->
-  <pathelement location="${libs}/saxon9.jar" />
-  <pathelement location="${libs}/saxon9-s9api.jar" />
 </path>
 
 <!-- class paths for generated classes -->
@@ -54,12 +48,14 @@
   <pathelement location="${dist}/${build.src.file}" />
 
   <!-- standard classes -->
-<!--  <pathelement location="${dist}/${build.gen.file}" /> -->
+  <!--  <pathelement location="${dist}/${build.gen.file}" /> -->
 
   <!-- weaved classes (faster) -->
   <pathelement location="${dist}/${build.gen.weave.file}" />
-  <!-- sql driver -->
+
+  <!-- JDBC driver -->
   <path refid="jdbc-drivers.class.path" />
+
   <!-- properties at last to add / because it is a directory -->
   <pathelement path="${properties}" />
 </path>
@@ -95,6 +91,7 @@
 
 
 
+
 <!-- targets -->
 
 <!-- target cleanJava : clean build files -->
@@ -127,6 +124,9 @@
 </target>
 
 
+
+
+<!-- target copyLibs : copy base & jdbc libraries to dist folder -->
 <target name="copyLibs">
   <copy todir="${dist}/lib">
     <fileset refid="jarfiles"/>
@@ -172,7 +172,6 @@
   <echo file="${dist}/${build.src.file}.classpath">module.classpath=${jar.classpath.flat}</echo>
   <echo >module.classpath=${jar.classpath.flat}</echo>
   
-
   <copy tofile="${properties}/runtime.properties" filtering="true" verbose="true" overwrite="true">
 	<fileset file="${templates}/runtime.properties.template"/>
 	<filterset>
@@ -201,13 +200,12 @@
 
 	</filterset>
   </copy>
+
   <concat destfile="${properties}/runtime.properties" append="true">
     <filelist dir="${output}/java" files="jaxb.context.classpath"/>
   </concat>
-
   
-  
-  <jar jarfile="${dist}/${build.src.file}" compress="true" roundup="true" >
+  <jar jarfile="${dist}/${build.src.file}" compress="true" roundup="true">
     <fileset dir="${build.src}" />
     <fileset dir="${properties}" >
       <include name="project.properties"/>
@@ -322,7 +320,6 @@
   </jar>
 
   <!-- remove JPA annotated classes in base Jar -->
-
   <pathconvert pathsep=" " property="jar.classpath">
     <path refid="project.class.path"/>
     <map from="${libs}" to="lib"/>
@@ -379,6 +376,7 @@
   
   <echo>compile ${project.name} generated classes : done.</echo>
 </target>
+
 
 
 
@@ -528,6 +526,9 @@ Optional
 
 </target>
 
+
+
+
 <!-- 
     target formatBaseCode : formats all java sources (infrastructure) :
     Only use it with caution (gerard, laurent)
@@ -535,7 +536,7 @@ Optional
 <target name="formatBaseCode" depends="buildFormatter">
 
   <java classname="org.ivoa.jalopy.Formatter" dir="${sources}"
-        fork="true" failonerror="true"  inputstring="">
+        fork="true" failonerror="true" inputstring="">
     <jvmarg value="-Xms32m"/>
     <jvmarg value="-Xmx64m"/>
 
@@ -553,14 +554,17 @@ Optional
 
 </target>
 
+
+
+
 <!--
-    target formatBaseCode : formats all java sources (infrastructure) :
+    target formatWebAppCode : formats all java sources (web app) :
     Only use it with caution (gerard, laurent)
 -->
 <target name="formatWebAppCode" depends="buildFormatter">
 
   <java classname="org.ivoa.jalopy.Formatter" dir="${root}/webapp/vo-urp-browser/"
-        fork="true" failonerror="true"  inputstring="">
+        fork="true" failonerror="true" inputstring="">
     <jvmarg value="-Xms32m"/>
     <jvmarg value="-Xmx64m"/>
 
@@ -577,6 +581,9 @@ Optional
    </java>
 
 </target>
+
+
+
 
 <target name="buildFormatter" unless="build.formatter.notRequired">
   <!--
@@ -687,8 +694,6 @@ Optional
     <jvmarg value="-XX:+PrintGCDetails"/>
     <jvmarg value="-XX:+PrintGCTimeStamps"/>
 -->
-    <!-- eclipse weaving support -->
-<!--    <jvmarg value="-javaagent:../libs/eclipselink.jar"/> -->
     <arg value="${jpa.persistence.unit}"/>
    </java>  
 
