@@ -19,7 +19,7 @@ import java.util.Set;
  * TODO : Class Description
  *
  * @author laurent bourges (voparis) / Gerard Lemson (mpe)
-  */
+ */
 public final class TypeWrapper {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
@@ -48,8 +48,6 @@ public final class TypeWrapper {
    * @param val long date value
    *
    * @return String formatted
-   *
-   * @see System.currentTimeMillis() )
    */
   public static final String getDefaultFormat(final long val) {
     synchronized (SDF) {
@@ -63,8 +61,6 @@ public final class TypeWrapper {
    * @param val long date value
    *
    * @return String formatted
-   *
-   * @see System.currentTimeMillis() )
    */
   public static final String getInternationalFormat(final long val) {
     synchronized (US_INT_SDF) {
@@ -105,13 +101,13 @@ public final class TypeWrapper {
   }
 
   /**
-   * Time Format for date long value (
+   * Time Format for date long value
    *
    * @param val long date value
    *
    * @return String formatted
    *
-   * @see System.currentTimeMillis() )
+   * @see System#currentTimeMillis()
    */
   public static final String getTimeFormat(final long val) {
     synchronized (HSDF) {
@@ -157,8 +153,8 @@ public final class TypeWrapper {
   /**
    * TODO : Method Description
    *
-   * @param o 
-   * @param def 
+   * @param o
+   * @param def
    *
    * @return value TODO : Value Description
    */
@@ -181,8 +177,8 @@ public final class TypeWrapper {
   /**
    * TODO : Method Description
    *
-   * @param o 
-   * @param def 
+   * @param o
+   * @param def
    *
    * @return value TODO : Value Description
    */
@@ -205,8 +201,8 @@ public final class TypeWrapper {
   /**
    * TODO : Method Description
    *
-   * @param o 
-   * @param def 
+   * @param o
+   * @param def
    *
    * @return value TODO : Value Description
    */
@@ -229,8 +225,8 @@ public final class TypeWrapper {
   /**
    * TODO : Method Description
    *
-   * @param o 
-   * @param def 
+   * @param o
+   * @param def
    *
    * @return value TODO : Value Description
    */
@@ -253,8 +249,8 @@ public final class TypeWrapper {
   /**
    * TODO : Method Description
    *
-   * @param o 
-   * @param def 
+   * @param o
+   * @param def
    *
    * @return value TODO : Value Description
    */
@@ -277,7 +273,7 @@ public final class TypeWrapper {
   /**
    * TODO : Method Description
    *
-   * @param capacity 
+   * @param capacity
    *
    * @return value TODO : Value Description
    */
@@ -288,7 +284,7 @@ public final class TypeWrapper {
   /**
    * TODO : Method Description
    *
-   * @param capacity 
+   * @param capacity
    *
    * @return value TODO : Value Description
    */
@@ -303,7 +299,7 @@ public final class TypeWrapper {
   /**
    * TODO : Method Description
    *
-   * @param capacity 
+   * @param capacity
    *
    * @return value TODO : Value Description
    */
