@@ -101,11 +101,14 @@
 <!-- target cleanDB : drops views then tables -->
 <target name="cleanDB" depends="initForDB" if="target.db.do">
   <echo>cleanDB : drop views then tables ...</echo>
-<echo>Executing ${ddl.directory}/${project.name}_dropViews.sql</echo>
+
+  <echo>Executing ${ddl.directory}/${project.name}_dropViews.sql</echo>
   <doSql autocommit="true" onerror="continue" src="${ddl.directory}/${project.name}_dropViews.sql" />
-<echo>Executing ${ddl.directory}/${project.name}_dropTables.sql</echo>
+
+  <echo>Executing ${ddl.directory}/${project.name}_dropTables.sql</echo>
   <doSql autocommit="true" onerror="continue" src="${ddl.directory}/${project.name}_dropTables.sql" />
-<echo>Executing ${tap.ddl.directory}/${project.name}_drop_tap_schema.sql</echo>
+
+  <echo>Executing ${tap.ddl.directory}/${project.name}_drop_tap_schema.sql</echo>
   <doSql autocommit="true" onerror="continue" src="${tap.ddl.directory}/${project.name}_drop_tap_schema.sql" delimiter="${create.view.sep}"/>
   
   <echo>cleanDB : done.</echo>
@@ -121,7 +124,6 @@
   <doSql onerror="abort" src="${ddl.directory}/${project.name}_createTables.sql" />
   <doSql onerror="abort" src="${ddl.directory}/${project.name}_createViews.sql" delimiter="${create.view.sep}"/>
   <doSql onerror="abort" src="${tap.ddl.directory}/${project.name}_create_tap_schema.sql" delimiter="${create.view.sep}"/>
-  
   
   <echo>createDB : done.</echo>
 </target>
