@@ -797,7 +797,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
 
     /**
      * Prints the message in Std err
-     * @param message message to print
+     * @param th exception to print
      */
     protected final static void error(final Throwable th) {
         th.printStackTrace(System.err);
