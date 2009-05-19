@@ -46,7 +46,7 @@
                 <publicStatic>[a-z][\w]+</publicStatic>
                 <publicStaticFinal>[a-z][\w]+</publicStaticFinal>
             </methods>
-<!--            <packages>[a-z]+(?:\.[a-z]+)*</packages> -->
+            <packages>[a-z]+(?:\.[a-z]+)*</packages>
             <parameters>
                 <default>[a-z][\w]+</default>
                 <final>[a-z][\w]+</final>
@@ -101,14 +101,12 @@
                         <braceLeft>0</braceLeft>
                         <class>1</class>
                         <declaration>1</declaration>
-                        <footer>1
-                            <keys>End of file</keys>
+                        <footer>1<keys>End of file</keys>
                             <smartMode>0</smartMode>
                             <text>//~ End of file --------------------------------------------------------------------------------------------------------</text>
                             <use>true</use>
                         </footer>
-                        <header>0
-                            <keys/>
+                        <header>0<keys/>
                             <smartMode>0</smartMode>
                             <use>false</use>
                         </header>
