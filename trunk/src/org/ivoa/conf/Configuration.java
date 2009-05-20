@@ -60,8 +60,8 @@ public final class Configuration {
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-/**
-   * Constructor (private) : checks OS 
+  /**
+   * Constructor (private) : checks OS
    */
   private Configuration() {
     this.os = checkOsName();
@@ -296,18 +296,18 @@ public final class Configuration {
   }
 
   /**
-   * Gives the service IVO Id +"#" as prefix for all
+   * Gives the service IVO Id + "#" as prefix for all
    *
-   * @return title + ' - ' + version
+   * @return service IVO Id + "#"
    */
   public String getIVOIdPrefix() {
     return ivoIdPrefix;
   }
 
   /**
-   * TODO : Method Description
+   * Gives the service IVO Id + "#" as prefix for all
    *
-   * @return value TODO : Value Description
+   * @return service IVO Id + "#"
    */
   protected String getIvoIdPrefix() {
     return ivoIdPrefix;
