@@ -5,6 +5,7 @@
 <!-- jalopy code formatter configuration -->
 <property name="jalopyConvention" location="${libs}/jalopy/jalopy-java-laurent.xml" />
 <property name="jalopyConvention_1.5c3" location="${libs}/jalopy/jalopy-java-laurent_1.5c3.xml" />
+<property name="jalopyConvention_1.5c3_skipJavaDoc" location="${libs}/jalopy/jalopy-java-laurent_1.5c3_skipJavaDoc.xml" />
 
 <!-- libraries for base module -->
 <fileset id="jarfiles" dir="${libs}">
@@ -558,6 +559,34 @@ Optional
 
 
 <!--
+    target formatBaseCodeSkipJavaDoc : formats all java sources (infrastructure) :
+    Only use it with caution (gerard, laurent) but do not parse JavaDoc
+-->
+<target name="formatBaseCodeSkipJavaDoc" depends="buildFormatter">
+
+  <java classname="org.ivoa.jalopy.Formatter" dir="${sources}"
+        fork="true" failonerror="true" inputstring="">
+    <jvmarg value="-Xms32m"/>
+    <jvmarg value="-Xmx64m"/>
+
+    <arg value="${sources}"/>
+    <arg value="${jalopyConvention_1.5c3_skipJavaDoc}"/>
+
+    <classpath>
+      <pathelement location="${libs}/log4j-1.2.15.jar" />
+      <pathelement location="${libs}/jalopy/bin"/>
+      <!-- use standard 1.5.c3 version (no enum problem present) -->
+      <pathelement location="${libs}/jalopy/lib/jalopy.jar"/>
+    </classpath>
+
+   </java>
+
+</target>
+
+
+
+
+<!--
     target formatWebAppCode : formats all java sources (web app) :
     Only use it with caution (gerard, laurent)
 -->
@@ -603,6 +632,27 @@ Optional
 
         <include name="**/*.java"/>
     </javac>
+</target>
+
+
+
+
+<!-- target jalopyPreferences : launches jalopy preferences application  -->
+<target name="jalopyPrefs">
+
+  <java classname="Preferences" dir="${libs}/jalopy"
+        fork="true" failonerror="true" inputstring="">
+    <jvmarg value="-Xms32m"/>
+    <jvmarg value="-Xmx64m"/>
+
+    <classpath>
+      <pathelement location="${libs}/log4j-1.2.15.jar" />
+      <!-- use standard 1.5.c3 version (no enum problem present) -->
+      <pathelement location="${libs}/jalopy/lib/jalopy.jar"/>
+    </classpath>
+
+   </java>
+
 </target>
 
 
