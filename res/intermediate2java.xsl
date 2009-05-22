@@ -40,7 +40,6 @@
   <xsl:param name="targetnamespace_root"/> 
   <xsl:param name="persistence.xml"/>
   
-  
   <!-- next could be parameters -->
   <xsl:variable name="root_package_dir" select="replace($root_package,'[.]','/')"/>
   

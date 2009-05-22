@@ -7,6 +7,11 @@
 <!ENTITY dotsep "<xsl:text>.</xsl:text>">
 <!ENTITY colonsep "<xsl:text>:</xsl:text>">
 <!ENTITY slashsep "<xsl:text>/</xsl:text>">
+<!ENTITY modelsep "<xsl:text>:</xsl:text>"> <!-- separatot between model and child -->
+<!ENTITY ppsep "<xsl:text>/</xsl:text>"> <!-- separatot between packages -->
+<!ENTITY pcsep "<xsl:text>/</xsl:text>"> <!-- separatot between package and class -->
+<!ENTITY casep "<xsl:text>.</xsl:text>"> <!-- separatot between class and attribute -->
+<!ENTITY aasep "<xsl:text>.</xsl:text>"> <!-- separatot between attributes -->
 ]>
 
 <xsl:stylesheet version="2.0" 
@@ -21,52 +26,12 @@
   
   
   
-<!-- DEPRECATED was used only by old objectType's utype template-->
-  <xsl:template match="model" mode="utype">
-    <xsl:value-of select="name"/>
-  </xsl:template>
-  
-
-
-<!-- DEPRECATED was used only by old objectType's utype template-->
-  <xsl:template match="package" mode="utype">
-    <xsl:param name="prefix"/>
-    <xsl:choose>
-      <xsl:when test="prefix">
-        <xsl:value-of select="$prefix"/><xsl:value-of select="name"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:variable name="sep">
-          <xsl:choose>
-            <xsl:when test="../name() = 'package'">&slashsep;</xsl:when>
-            <xsl:otherwise>&colonsep;</xsl:otherwise>
-          </xsl:choose>
-        </xsl:variable>
-        <xsl:apply-templates select=".." mode="utype"/><xsl:value-of select="$sep"/><xsl:value-of select="name"/>
-      </xsl:otherwise>
-    </xsl:choose>  </xsl:template>
-
-  
-<!-- DEPRECATED now use UTYPE generated for intermediate representation -->
-  <xsl:template match="objectType" mode="utype_DEPRECATED">
-    <xsl:param name="prefix"/>
-    <xsl:choose>
-      <xsl:when test="prefix">
-        <xsl:value-of select="$prefix"/><xsl:value-of select="name"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select=".." mode="utype"/>&slashsep;<xsl:value-of select="name"/>
-      </xsl:otherwise>
-    </xsl:choose>
+  <xsl:template match="model|package|objectType" mode="utype">
+    <xsl:value-of select="utype"/>
   </xsl:template>
 
 
-  <xsl:template match="objectType" mode="utype">
-     <xsl:value-of select="utype"/>
-  </xsl:template>
-
-
-  <xsl:template match="dataType" mode="utype">
+  <xsl:template match="dataType|enumeration" mode="utype">
     <xsl:text/>
   </xsl:template>
 
@@ -76,25 +41,12 @@
   This breaks howevere for a node-set. Need an alternative solution there. -->
   <xsl:template match="attribute" mode="utype">
     <xsl:param name="prefix"/>
-    
-    <xsl:variable name="utype">
-      <xsl:value-of select="$prefix"/>&dotsep;<xsl:value-of select="name"/>
-    </xsl:variable>
-
-    <xsl:variable name="type" select="key('element',datatype/@xmiidref)"/>
     <xsl:choose>
-      <xsl:when test="$type/name() = 'primitiveType' or $type/name() = 'enumeration'">
-        <xsl:value-of select="$utype"/>
+      <xsl:when test="../name() = 'dataType' and $prefix">
+        <xsl:value-of select="$prefix"/>&aasep;<xsl:value-of select="utype"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:value-of select="$utype"/><br/>
-        <xsl:for-each select="$type/attribute">
-          <xsl:apply-templates select="." mode="utype">
-            <xsl:with-param name="prefix">
-              <xsl:value-of select="$utype"/>
-            </xsl:with-param> 
-          </xsl:apply-templates><br/>
-        </xsl:for-each>
+        <xsl:value-of select="utype"/>
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -102,15 +54,10 @@
   
   
   
-  <xsl:template match="collection" mode="utype">
-    <xsl:apply-templates select=".." mode="utype"/>.<xsl:value-of select="name"/>
+  <xsl:template match="collection|reference" mode="utype">
+    <xsl:value-of select="utype"/>
   </xsl:template>
 
-
-
-  <xsl:template match="reference" mode="utype">
-    <xsl:apply-templates select=".." mode="utype"/>.<xsl:value-of select="name"/>
-  </xsl:template>
 
 
 <!--  UTYPE templates for xmi2intermediate -->
@@ -124,21 +71,73 @@
 
     <xsl:choose>
       <xsl:when test="$member/name() = 'uml:Model'">
-        <xsl:value-of select="concat($member/@name,':')"/>
+        <xsl:value-of select="$member/@name"/>
       </xsl:when>
-      <xsl:when test="$member/@xmi:type='uml:Package' or $member/@xmi:type='uml:Class'">
+      <xsl:when test="$member/@xmi:type='uml:DataType'">
+        <xsl:value-of select="''"/>
+      </xsl:when>
+      <xsl:otherwise> <!--  test="$member/@xmi:type='uml:Package' or $member/@xmi:type='uml:Class'">   -->
         <xsl:variable name="prefix">
           <xsl:call-template name="intermediate_utype">
             <xsl:with-param name="member" select="$member/.."/>  
           </xsl:call-template>
         </xsl:variable>
-        <xsl:value-of select="concat($prefix,$member/@name)"/><xsl:if test="$member/@xmi:type='uml:Package'"><xsl:text>/</xsl:text></xsl:if>
-      </xsl:when>
+        <xsl:variable name="sep">
+          <xsl:choose>
+            <xsl:when test="$member/../name()='uml:Model'">&modelsep;</xsl:when>
+            <xsl:when test="$member/../@xmi:type='uml:Package' and $member/@xmi:type='uml:Package'">&ppsep;</xsl:when>
+            <xsl:when test="$member/../@xmi:type='uml:Package' and ($member/@xmi:type='uml:Class' or $member/@xmi:type='uml:DataType')">&pcsep;</xsl:when>
+            <xsl:when test="$member/../@xmi:type='uml:Class'">&casep;</xsl:when>
+            <xsl:when test="$member/../@xmi:type='uml:Property'">&casep;</xsl:when>
+            <xsl:otherwise></xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <xsl:value-of select="concat($prefix,$sep,$member/@name)"/>
+      </xsl:otherwise>
     </xsl:choose>
 
   </xsl:template>
 
 
+
+  <xsl:template match="objectType" name="table_ID_utype">
+    <xsl:value-of select="utype"/>&casep;<xsl:text>ID</xsl:text>
+  </xsl:template>
+
+
+
+
+
+
+  <xsl:template name="intermediate_container_utype">
+    <xsl:param name="prefix"/>
+    <xsl:value-of select="$prefix"/>&casep;<xsl:text>CONTAINER</xsl:text>
+  </xsl:template>
+
+
+
+  <xsl:template match="uml:Model" mode="intermediate_utype">
+        <xsl:value-of select="@name"/>
+  </xsl:template>
+
+
+  <xsl:template match="*[@xmi:type='uml:Package']" mode="intermediate_utype">
+   <xsl:param name="prefix"/>
+    <xsl:choose>
+      <xsl:when test="prefix">
+        <xsl:value-of select="$prefix"/><xsl:value-of select="name"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:variable name="sep">
+          <xsl:choose>
+            <xsl:when test="../name() = 'package'">&ppsep;</xsl:when>
+            <xsl:otherwise>&modelsep;</xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <xsl:apply-templates select=".." mode="utype"/><xsl:value-of select="$sep"/><xsl:value-of select="name"/>
+      </xsl:otherwise>
+    </xsl:choose> 
+  </xsl:template>
 
 
 
