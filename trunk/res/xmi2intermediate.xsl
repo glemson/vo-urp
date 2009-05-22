@@ -13,7 +13,7 @@ That representation follows the schema in intermediateModel.xsd.
                 xmlns:xmi="http://schema.omg.org/spec/XMI/2.1"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:uml="http://schema.omg.org/spec/UML/2.0"
-                xmlns:IVOA_Profile_Def2='http://www.magicdraw.com/schemas/IVOA_Profile_Def2.xmi'>
+                xmlns:IVOA_Profile='http://www.magicdraw.com/schemas/IVOA_Profile.xmi'>
   
   <xsl:import href="common.xsl"/>
   <xsl:import href="utype.xsl"/>
@@ -61,7 +61,8 @@ That representation follows the schema in intermediateModel.xsd.
       <xsl:with-param name="ownedComment" select="./ownedComment"/>
     </xsl:call-template>
     <xsl:element name="lastModifiedDate"><xsl:value-of select="$lastModified"/></xsl:element>
-      <xsl:apply-templates select="." mode="authors"/>
+      <xsl:apply-templates select="." mode="model.tags"/>
+      <xsl:apply-templates select="./*[@xmi:type='uml:Profile' and @name='IVOA_Profile']"/>
       <xsl:apply-templates select="./*[@xmi:type='uml:Package']"/>
     </xsl:element>
   </xsl:template>
@@ -69,10 +70,42 @@ That representation follows the schema in intermediateModel.xsd.
   
   
   
-  <xsl:template match="uml:Model" mode="authors">
+  <xsl:template match="uml:Model" mode="model.tags">
+    <xsl:variable name="xmiid" select="@xmi:id"/>
+
+    <xsl:variable name="modeltags" select="/xmi:XMI/IVOA_Profile:model[@base_Model = $xmiid]"/>
+
+    <xsl:if test="$modeltags">
+      <xsl:for-each select="$modeltags/author">
+      <xsl:element name="author">
+          <xsl:value-of select="."/>
+      </xsl:element>
+      </xsl:for-each>
+      <xsl:element name="title">
+      <xsl:value-of select="$modeltags/@title"/>
+      </xsl:element>
+    </xsl:if>
     
   </xsl:template>
   
+  
+  
+  
+
+  <xsl:template match="*[@xmi:type='uml:Profile']">
+    <xsl:element name="profile">
+      <xsl:attribute name="xmiid" select="@xmi:id"/>
+      <xsl:element name="name"><xsl:value-of select="@name"/></xsl:element>
+      <xsl:call-template name="description">
+        <xsl:with-param name="ownedComment" select="./ownedComment"/>
+      </xsl:call-template>
+      <xsl:apply-templates select="./*[@xmi:type='uml:Package']"/>
+    </xsl:element>    
+  </xsl:template>
+
+
+
+
   
   
   
@@ -92,6 +125,11 @@ That representation follows the schema in intermediateModel.xsd.
       <xsl:with-param name="ownedComment" select="ownedComment"/>
     </xsl:call-template>
     &cr;
+        <xsl:element name="utype">
+          <xsl:call-template name="intermediate_utype">
+            <xsl:with-param name="member" select="."/>
+          </xsl:call-template>
+        </xsl:element>
         
         <xsl:if test="count(./*[@xmi:type='uml:Dependency']) > 0">
           &cr;
@@ -186,10 +224,13 @@ That representation follows the schema in intermediateModel.xsd.
       <xsl:if test="*[@xmi:type='uml:Generalization']">
         <xsl:apply-templates select="*[@xmi:type='uml:Generalization']"/>
       </xsl:if>
-        <xsl:element name="utype">
+      <xsl:variable name="utype">
           <xsl:call-template name="intermediate_utype">
             <xsl:with-param name="member" select="."/>
           </xsl:call-template>
+      </xsl:variable>
+      <xsl:element name="utype">
+        <xsl:value-of select="$utype"/>
         </xsl:element>
       <xsl:if test="//ownedMember/ownedAttribute[@xmi:type='uml:Property' and @association and @aggregation='composite' and @type = $xmiid]">
         <xsl:variable name="idref" select="//ownedMember/ownedAttribute[@xmi:type='uml:Property' and @association and @aggregation='composite' and @type = $xmiid]/../@xmi:id"/>
@@ -198,6 +239,11 @@ That representation follows the schema in intermediateModel.xsd.
           <xsl:attribute name="name" select="key('classid',$idref)/@name"/>
           <xsl:attribute name="xmiidref" select="$idref"/>
           <xsl:attribute name="relation" select="$relation"/>
+          <xsl:element name="utype">
+            <xsl:call-template name="intermediate_container_utype">
+              <xsl:with-param name="prefix" select="$utype"/>
+            </xsl:call-template>
+          </xsl:element>
         </xsl:element>
       </xsl:if>
 
@@ -372,6 +418,11 @@ That representation follows the schema in intermediateModel.xsd.
     <xsl:call-template name="description">
       <xsl:with-param name="ownedComment" select="ownedComment"/>
     </xsl:call-template>
+    <xsl:element name="utype">
+      <xsl:call-template name="intermediate_utype">
+        <xsl:with-param name="member" select="."/>
+      </xsl:call-template>
+    </xsl:element>
     <xsl:call-template name="get-class-from-id">
       <xsl:with-param name="id" select="@type"/>
     </xsl:call-template> 
@@ -387,7 +438,7 @@ That representation follows the schema in intermediateModel.xsd.
   
   <xsl:template name="attributestereotype">
     <xsl:param name="xmiid"/>
-    <xsl:variable name="attribute" select="/xmi:XMI/IVOA_Profile_Def2:attribute[@base_Property = $xmiid]"/>
+    <xsl:variable name="attribute" select="/xmi:XMI/IVOA_Profile:attribute[@base_Property = $xmiid]"/>
     <xsl:if test="$attribute">
       <xsl:element name="constraints">
         <xsl:if test="$attribute/@maxLength">
@@ -408,7 +459,7 @@ That representation follows the schema in intermediateModel.xsd.
 
   <xsl:template name="ontologytermstereotype">
     <xsl:param name="xmiid"/>
-    <xsl:variable name="attribute" select="/xmi:XMI/IVOA_Profile_Def2:ontologyterm[@base_Property = $xmiid]"/>
+    <xsl:variable name="attribute" select="/xmi:XMI/IVOA_Profile:ontologyterm[@base_Property = $xmiid]"/>
     <xsl:if test="$attribute">
       <xsl:element name="ontologyterm">
         <xsl:if test="$attribute/@ontologyURI">

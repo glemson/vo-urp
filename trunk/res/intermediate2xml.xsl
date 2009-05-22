@@ -81,7 +81,7 @@ Generates a template XML document conforming to the XML schema.
 
 <xsl:variable name="theXMLDoc">
     <xsl:comment>
-This is a sample XML document holding on to a(n) <xsl:apply-templates select="." mode="utype"/>.
+This is a sample XML document holding on to a(n) <xsl:value-of select="utype"/>.
 sample values are given for each attribute, contained class and reference.
 The multiplicity of each element is indicated in a comment.
 in all cases 1 instance is created, except where due to polymorphism

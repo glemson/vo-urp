@@ -188,7 +188,7 @@ the public contents of the database for the UML data model.
 
   <xsl:template match="objectType" mode="tableset">
     <xsl:variable name="utype">
-      <xsl:apply-templates select="." mode="utype"/>
+      <xsl:value-of select="utype"/>
     </xsl:variable>
     
     <xsl:element name="TABLE">
@@ -207,7 +207,7 @@ the public contents of the database for the UML data model.
   <xsl:template match="objectType" mode="tap_fields">
   
     <xsl:variable name="utype">
-      <xsl:apply-templates select="." mode="utype"/>
+      <xsl:value-of select="utype"/>
     </xsl:variable>
     <xsl:choose>
       <xsl:when test="extends">
@@ -218,7 +218,9 @@ the public contents of the database for the UML data model.
             <xsl:attribute name="name" select="$primaryKeyColumnName"/>
             <xsl:attribute name="datatype" select="'long'"/>
             <xsl:attribute name="ucd" select="'TBD'"/>
-            <xsl:attribute name="utype" select="concat($utype,'.',$primaryKeyColumnName)"/>
+            <xsl:attribute name="utype">
+              <xsl:apply-templates select="." mode="table_ID_utype"/>
+            </xsl:attribute>
             <xsl:element name="DESCRIPTION">
               <xsl:text>The unique, primary key column on this table.</xsl:text>
             </xsl:element>
@@ -497,7 +499,7 @@ In a single VOTable document, represents the TAP_SCHEMA tables with as content t
       <xsl:apply-templates select="." mode="viewName"/>
     </xsl:variable>
     <xsl:variable name="utype">
-      <xsl:apply-templates select="." mode="utype"/>
+      <xsl:value-of select="utype"/>
     </xsl:variable>
   <xsl:element name="TR">
 <xsl:element name="TD"><xsl:value-of select="$target_schema"/></xsl:element>
@@ -516,7 +518,7 @@ In a single VOTable document, represents the TAP_SCHEMA tables with as content t
       <xsl:apply-templates select="." mode="viewName"/>
     </xsl:variable>
     <xsl:variable name="utype">
-      <xsl:apply-templates select="." mode="utype"/>
+      <xsl:value-of select="utype"/>
     </xsl:variable>
   
     <xsl:choose>
@@ -761,7 +763,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
       <xsl:apply-templates select="." mode="viewName"/>
     </xsl:variable>
     <xsl:variable name="utype">
-      <xsl:apply-templates select="." mode="utype"/>
+      <xsl:value-of select="utype"/>
     </xsl:variable>
     
 <xsl:text>INSERT INTO TAP_SCHEMA.tables(schema_name, table_name,table_type,description,utype) values(</xsl:text>
@@ -782,7 +784,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
   <xsl:template match="objectType" mode="tap_schema_columns">
     <xsl:param name="tableName"/>
     <xsl:variable name="utype">
-      <xsl:apply-templates select="." mode="utype"/>
+      <xsl:value-of select="utype"/>
     </xsl:variable>
     
     <xsl:choose>
@@ -1015,7 +1017,7 @@ as suggested in http://www.ivoa.net/internal/IVOA/TableAccess/TAP-QL-0.1.pdf
         <xsl:value-of select="description"/>
       </xsl:element>
       <xsl:element name="utype">
-      <xsl:apply-templates select="." mode="utype"/>
+      <xsl:value-of select="utype"/>
       </xsl:element>
       
       <xsl:apply-templates select="." mode="vodataservice.columns"/>
@@ -1025,7 +1027,7 @@ as suggested in http://www.ivoa.net/internal/IVOA/TableAccess/TAP-QL-0.1.pdf
 
   <xsl:template match="objectType" mode="vodataservice.columns">
     <xsl:variable name="utype">
-      <xsl:apply-templates select="." mode="utype"/>
+      <xsl:value-of select="utype"/>
     </xsl:variable>
     <xsl:choose>
     <xsl:when test="extends">

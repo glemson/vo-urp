@@ -80,7 +80,7 @@ CREATE TABLE TargetObjectType (
     <xsl:variable name="processed" select="$nodes|$finished"/>
 
     <xsl:for-each select="$nodes">
-      <node><xsl:copy-of select="."/><utype><xsl:apply-templates select="." mode="utype"/></utype></node>
+      <node><xsl:copy-of select="."/><utype><xsl:value-of select="utype"/></utype></node>
     </xsl:for-each>
     
     <xsl:if test="count(//objectType)>count($processed)">

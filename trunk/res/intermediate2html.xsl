@@ -7,7 +7,7 @@
 ]>
 
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-				xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+				>
   
   <xsl:import href="utype.xsl"/>
   
@@ -22,9 +22,14 @@
  <!-- Input parameters -->
   <xsl:param name="lastModifiedID"/>
   <xsl:param name="lastModifiedText"/>
+  <xsl:param name="root.url" select="'http://volute.googlecode.com/svn/trunk/projects/theory/snapdm/specification/'"/>
+
+  <xsl:param name="project_name"/>
+
   
-  <xsl:param name="graphviz.exe"/>
-  
+  <!-- IF Graphviz png and map are available use these  -->
+  <xsl:param name="graphviz_png"/>
+  <xsl:param name="graphviz_map"/>
   
   
   <xsl:template match="/">
@@ -43,7 +48,7 @@
 <xsl:value-of select="name"/>
 </title>
   <link rel="stylesheet" href="http://ivoa.net/misc/ivoa_wg.css" type="text/css" /> 	
-  <link rel="stylesheet" href="http://volute.googlecode.com/svn/trunk/projects/theory/snapdm/css/xmi.css" type="text/css" /> 	
+  <link rel="stylesheet" href="{$root.url}html/xmi.css" type="text/css" /> 	
 </head>
 <body>
 <div class="head">
@@ -96,7 +101,7 @@ A list of <a href="http://www.ivoa.net/Documents/">current IVOA Recommendations 
 <p>This document was automatically generated from a UML data model serialised to 
 <a href="http://www.omg.org/technology/documents/formal/xmi.htm">XMI</a>  and is meant to accompany an IVOA document describing the project
 within which this model was created. The XSLT scripts implementing this transformation were created by Gerard Lemson and Laurent Bourges
-can be found <a href="http://volute.googlecode.com/svn/trunk/projects/theory/snapdm/res/">here</a>. 
+can be found <a href="{$root.url}/xslt">here</a>. 
 For acknowledgments concerning the contents of the current model we refer the reader to the project document. 
 </p>
 <h2><a id="contents" name="contents">Contents</a></h2>
@@ -113,14 +118,25 @@ For acknowledgments concerning the contents of the current model we refer the re
     <xsl:sort select="name"/>
   </xsl:apply-templates>
   </ul></li>
+<xsl:if test="profile">
+  <xsl:apply-templates select="profile" mode="TOC">
+    <xsl:sort select="name"/>
+  </xsl:apply-templates>
+</xsl:if>
 </ul>
 </div>
   <xsl:apply-templates select="." mode="section"/>
   
-  <xsl:apply-templates select="//package" mode="contents">
+  <xsl:apply-templates select="./package" mode="contents">
     <xsl:sort select="name"/>
   </xsl:apply-templates>
-  
+<xsl:if test="profile">
+<h1>Profiles</h1>
+<hr/>
+  <xsl:apply-templates select="profile" mode="contents">
+    <xsl:sort select="name"/>
+  </xsl:apply-templates>
+</xsl:if>  
 </body>    
 </html>
   </xsl:template>  
@@ -145,10 +161,26 @@ For acknowledgments concerning the contents of the current model we refer the re
 
 
 
+  <xsl:template match="profile" mode="TOC">
+  <li>Profile: <a><xsl:attribute name="href" select="concat('#',@xmiid)"/><xsl:value-of select="name"/></a> 
+  <xsl:if test="package">
+  <ul>
+    <xsl:apply-templates select="package" mode="TOC">
+    <xsl:sort select="name"/>
+  </xsl:apply-templates>
+  </ul>
+  </xsl:if>
+  </li>
+  </xsl:template>
+
+
+
+
   
   <xsl:template match="model" mode="section">
   <h2><a name="model">Model: <xsl:value-of select="name"/></a></h2>
     <p><xsl:value-of select="description"/></p>
+    <xsl:call-template name="graphviz"/>
     <xsl:apply-templates select="." mode="packages"/> 
     
   </xsl:template>
@@ -296,7 +328,22 @@ For acknowledgments concerning the contents of the current model we refer the re
   </xsl:template>
 
 
+
   
+  <xsl:template match="profile" mode="contents">
+    <h2><a><xsl:attribute name="name" select="@xmiid"/></a><xsl:value-of select="name"></xsl:value-of></h2>
+    <xsl:value-of select="description"/>
+    <xsl:if test="package">
+    <br/><br/>
+    <xsl:apply-templates select="package"/>
+    <xsl:apply-templates select="package" mode="contents"/>
+    </xsl:if>
+  </xsl:template>
+
+
+
+
+
 
   <xsl:template match="package" mode="contents">
     <xsl:variable name="xmiid" select="@xmiid"/>
@@ -316,6 +363,8 @@ For acknowledgments concerning the contents of the current model we refer the re
     </xsl:apply-templates>
 <hr/>
     </xsl:if>
+    
+    <xsl:apply-templates select="package" mode="contents"/>
   
   </xsl:template>
 
@@ -587,7 +636,7 @@ For acknowledgments concerning the contents of the current model we refer the re
         <br/>
         <xsl:apply-templates select="." mode="utype">
           <xsl:with-param name="prefix">
-            <xsl:apply-templates select="..[name() = 'objectType']" mode="utype"/>
+            <xsl:value-of select="../utype"/>
           </xsl:with-param>
         </xsl:apply-templates>
         </td>
@@ -624,7 +673,7 @@ For acknowledgments concerning the contents of the current model we refer the re
         <td class="feature-detail">
         <xsl:apply-templates select="." mode="utype">
           <xsl:with-param name="prefix">
-            <xsl:apply-templates select="..[name() = 'objectType']" mode="utype"/>
+            <xsl:value-of select="../utype"/>
           </xsl:with-param>
         </xsl:apply-templates>
         </td>
@@ -690,6 +739,34 @@ For acknowledgments concerning the contents of the current model we refer the re
     </xsl:choose>
   </xsl:template>
  
+
+
+
+
+  <xsl:template name="graphviz">
+    <xsl:if test="$graphviz_png">
+      <xsl:element name="hr"></xsl:element>
+      <xsl:element name="img">
+        <xsl:attribute name="src">
+          <xsl:value-of select="$graphviz_png"/>
+        </xsl:attribute>
+        <xsl:if test="$graphviz_map">
+          <xsl:attribute name="usemap" select="concat('#',$project_name)"/>
+        </xsl:if>
+      </xsl:element>
+      <xsl:if test="$graphviz_map">
+        <xsl:value-of select="$graphviz_map"/>
+      </xsl:if>
+    </xsl:if>
+  </xsl:template>
+
+
+
+
+
+
+
+
   
   
 </xsl:stylesheet>
