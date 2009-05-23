@@ -182,6 +182,13 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
       </xsl:call-template>
     </xsl:for-each>
     
+    <xsl:for-each select="profile/package[key('modelpackage',@xmiid)]">
+      <xsl:call-template name="package">
+        <xsl:with-param name="dir" select="$root_package_dir"/>
+        <xsl:with-param name="path" select="$root_package"/>
+      </xsl:call-template>
+    </xsl:for-each>
+
     <xsl:apply-templates select="." mode="modelVersion" />
     
     <xsl:apply-templates select="." mode="jpaConfig" />

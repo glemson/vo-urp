@@ -218,12 +218,9 @@ That representation follows the schema in intermediateModel.xsd.
       <xsl:element name="name">
         <xsl:value-of select="@name"/>
       </xsl:element>
-    <xsl:call-template name="description">
-      <xsl:with-param name="ownedComment" select="ownedComment"/>
-    </xsl:call-template>
-      <xsl:if test="*[@xmi:type='uml:Generalization']">
-        <xsl:apply-templates select="*[@xmi:type='uml:Generalization']"/>
-      </xsl:if>
+      <xsl:call-template name="description">
+        <xsl:with-param name="ownedComment" select="ownedComment"/>
+      </xsl:call-template>
       <xsl:variable name="utype">
           <xsl:call-template name="intermediate_utype">
             <xsl:with-param name="member" select="."/>
@@ -232,6 +229,9 @@ That representation follows the schema in intermediateModel.xsd.
       <xsl:element name="utype">
         <xsl:value-of select="$utype"/>
         </xsl:element>
+      <xsl:if test="*[@xmi:type='uml:Generalization']">
+        <xsl:apply-templates select="*[@xmi:type='uml:Generalization']"/>
+      </xsl:if>
       <xsl:if test="//ownedMember/ownedAttribute[@xmi:type='uml:Property' and @association and @aggregation='composite' and @type = $xmiid]">
         <xsl:variable name="idref" select="//ownedMember/ownedAttribute[@xmi:type='uml:Property' and @association and @aggregation='composite' and @type = $xmiid]/../@xmi:id"/>
         <xsl:variable name="relation" select="//ownedMember/ownedAttribute[@xmi:type='uml:Property' and @association and @aggregation='composite' and @type = $xmiid]/@name"/>
