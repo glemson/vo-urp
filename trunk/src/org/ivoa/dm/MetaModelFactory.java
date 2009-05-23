@@ -189,6 +189,10 @@ public final class MetaModelFactory {
       throw new IllegalStateException("Unable to load meta model : " + MODEL_FILE);
     }
 
+    // TODO check whether next is sufficient to add Identity to datatypes
+    for (final org.ivoa.metamodel.Profile prof : this.model.getProfile()) {
+      processProfile(prof, BASE_PACKAGE);
+    }
     for (final org.ivoa.metamodel.Package p : this.model.getPackage()) {
       processPackage(p, BASE_PACKAGE);
     }
@@ -275,6 +279,19 @@ public final class MetaModelFactory {
     return (this.tap != null);
   }
 
+  /**
+   * Process the profile.
+   * Pay particular attention to the Identity type, which is to be mapped to the predefined class org.ivoa.dm.model
+   * @param p
+   * @param parentPath
+   */
+  private void processProfile(final org.ivoa.metamodel.Profile prof, final String parentPath) {
+    for (final org.ivoa.metamodel.Package p : prof.getPackage()) {
+      processPackage(p, BASE_PACKAGE);
+    }
+  }
+  
+  
   /**
    * Recursive method to fill collections (primitive types, data types, enumeration & object types)
    *
