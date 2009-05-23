@@ -123,6 +123,9 @@
 
 
 <xsd:complexType name="TypeRef">
+  <xsd:sequence>
+    <xsd:element name="utype" type="xsd:string" minOccurs="0"/>
+  </xsd:sequence>
   <xsd:attribute name="name" type="xsd:string"/>
   <xsd:attribute name="xmiidref" type="xsd:IDREF"/>
   <xsd:attribute name="relation" type="xsd:string" use="optional"/>
