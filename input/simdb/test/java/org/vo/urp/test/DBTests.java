@@ -725,7 +725,8 @@ public class DBTests implements ApplicationMain {
 
             log.warn("DBTests.testLOAD_THREADS_WRITE : waits for job termination ...");
 
-            executor.awaitTermination(30, TimeUnit.MINUTES);
+            executor.awaitTermination(30, TimeUnit.SECONDS);
+            
 
         } catch (InterruptedException ie) {
             log.error("DBTests.testLOAD_THREADS_WRITE : runtime failure : ", ie);
