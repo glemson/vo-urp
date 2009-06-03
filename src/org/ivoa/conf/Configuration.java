@@ -1,17 +1,6 @@
 package org.ivoa.conf;
 
-import org.apache.commons.logging.Log;
-
 import org.ivoa.util.CollectionUtils;
-import org.ivoa.util.FileUtils;
-import org.ivoa.util.LogUtil;
-import org.ivoa.util.StringUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-
-import java.util.Iterator;
-import java.util.Properties;
 
 
 /**
@@ -19,18 +8,17 @@ import java.util.Properties;
  *
  * @author laurent bourges (voparis)
  */
-public final class Configuration {
+public final class Configuration extends PropertyHolder {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /* constants */
+  /** serial UID for Serializable interface */
+  private static final long serialVersionUID = 1L;
   /** file name for property file */
   public static final String PROPS = "runtime.properties";
-  /** logger */
-  protected static final Log log = LogUtil.getLogger();
   /** singleton instance */
   private static volatile Configuration instance = null;
 
-  // property keys :
+  /* property keys */
   /** keyword for application title */
   public static final String APP_TITLE = "project.title";
   /** keyword for application vendor */
@@ -51,19 +39,16 @@ public final class Configuration {
 
   /** As the prefix is needed often, store it explicitly. */
   private String ivoIdPrefix = "";
-
-  /* members */
   /** os type */
   private final OSEnum os;
-  /** properties */
-  private Properties properties = null;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Constructor (private) : checks OS
    */
   private Configuration() {
+    super();
     this.os = checkOsName();
   }
 
@@ -80,7 +65,7 @@ public final class Configuration {
     if (instance == null) {
       final Configuration c = new Configuration();
 
-      if (c.init()) {
+      if (c.init(PROPS)) {
         instance = c;
       } else {
         throw new IllegalStateException("Unable to create Configuration !");
@@ -91,51 +76,24 @@ public final class Configuration {
   }
 
   /**
-   * Initialization : dumps Java System Properties and loads configuration file found in the system classpath
-   * (removes any empty property value)
+   * Pre Init event (can be overridden in child classes)
+   */
+  @Override
+  protected void preInit() {
+    // first dump properties :
+    dumpSystemProps();
+  }
+
+  /**
+   * Post Init event (can be overridden in child classes)
    *
    * @return true if well done
    */
-  private boolean init() {
-    // first dump properties :
-    dumpSystemProps();
+  @Override
+  protected boolean postInit() {
+    this.ivoIdPrefix = getProperty(SERVICE_IVOID, "") + "#";
 
-    InputStream in = null;
-
-    try {
-      in = FileUtils.getSystemFileInputStream(PROPS);
-
-      this.properties = new Properties();
-      this.properties.load(in);
-      this.ivoIdPrefix = this.properties.getProperty(SERVICE_IVOID, "") + "#";
-
-      // filter empty strings :
-      String k;
-
-      // filter empty strings :
-      String s;
-
-      for (final Iterator it = this.properties.keySet().iterator(); it.hasNext();) {
-        k = (String) it.next();
-        s = this.properties.getProperty(k);
-
-        if (StringUtils.isEmpty(s)) {
-          it.remove();
-        }
-      }
-
-      if (log.isDebugEnabled()) {
-        log.debug("properties : " + getProperties());
-      }
-
-      return true;
-    } catch (final IOException ioe) {
-      log.error("IO Failure : ", ioe);
-
-      return false;
-    } finally {
-      FileUtils.closeStream(in);
-    }
+    return true;
   }
 
   /**
@@ -171,65 +129,6 @@ public final class Configuration {
     }
 
     return res;
-  }
-
-  // Property utils :
-  /**
-   * Returns the loaded properties
-   *
-   * @return Properties (map)
-   */
-  protected Properties getProperties() {
-    return this.properties;
-  }
-
-  /**
-   * Get a String property
-   *
-   * @param name given key
-   *
-   * @return string value or null if not found or contains only white spaces
-   */
-  public final String getProperty(final String name) {
-    return getProperties().getProperty(name);
-  }
-
-  /**
-   * Gets a Boolean from the Property value : valueOf(val)
-   *
-   * @param name property key
-   *
-   * @return boolean value or false if not found
-   */
-  public boolean getBoolean(final String name) {
-    final String val = getProperty(name);
-
-    if (val == null) {
-      return false;
-    }
-
-    return Boolean.valueOf(val).booleanValue();
-  }
-
-  /**
-   * Gets an integer value from the Property value : parseInt(val)
-   *
-   * @param name property key
-   *
-   * @return integer value or 0 if not found
-   */
-  public int getInt(final String name) {
-    final String val = getProperty(name);
-
-    if (val != null) {
-      try {
-        return Integer.parseInt(val);
-      } catch (final NumberFormatException nfe) {
-        // ignore value
-      }
-    }
-
-    return 0;
   }
 
   /**
