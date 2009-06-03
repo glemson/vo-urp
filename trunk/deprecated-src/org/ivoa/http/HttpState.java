@@ -45,9 +45,9 @@ public final class HttpState {
 /**
    * Creates a new HttpState object
    *
-   * @param id 
-   * @param o 
-   * @param msg 
+   * @param id
+   * @param o
+   * @param msg
    */
   public HttpState(final int id, final int o, final String msg) {
     this.id = id;
