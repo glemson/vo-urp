@@ -4,7 +4,6 @@ import org.apache.commons.logging.Log;
 
 import org.ivoa.dm.model.Identity;
 import org.ivoa.dm.model.MetadataObject;
-import org.ivoa.dm.model.ReferenceResolver;
 
 import org.ivoa.util.LogUtil;
 import org.ivoa.util.StringUtils;
