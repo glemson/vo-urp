@@ -64,6 +64,8 @@ public class DBTests implements ApplicationMain {
     private final static int WRITE_JOBS = 10;
     /** testLOAD_THREADS_WRITE number of threads */
     private final static int POOL_THREADS = 5;
+    /** testLOAD_BATCH_WRITE jobs wait */
+    private final static int WRITE_WAIT_SECONDS = 120;
     /** XMLTests */
     private XMLTests xmlTest = new XMLTests();
     /** InspectorTests */
@@ -725,8 +727,12 @@ public class DBTests implements ApplicationMain {
 
             log.warn("DBTests.testLOAD_THREADS_WRITE : waits for job termination ...");
 
-            executor.awaitTermination(30, TimeUnit.SECONDS);
-            
+            final boolean ok = executor.awaitTermination(WRITE_WAIT_SECONDS, TimeUnit.SECONDS);
+
+            if (!ok) {
+                log.warn("DBTests.testLOAD_THREADS_WRITE : stop jobs ...");
+                executor.shutdownNow();
+            }
 
         } catch (InterruptedException ie) {
             log.error("DBTests.testLOAD_THREADS_WRITE : runtime failure : ", ie);
