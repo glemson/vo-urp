@@ -7,13 +7,10 @@ import org.eclipse.persistence.config.SessionCustomizer;
 
 import org.eclipse.persistence.sessions.Session;
 
-import org.ivoa.util.CollectionUtils;
-import org.ivoa.util.FileUtils;
-import org.ivoa.util.LogUtil;
-import org.ivoa.util.StringUtils;
+import org.ivoa.conf.PropertyHolder;
 
-import java.io.IOException;
-import java.io.InputStream;
+import org.ivoa.util.CollectionUtils;
+import org.ivoa.util.LogUtil;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,14 +31,14 @@ import javax.persistence.Persistence;
 public final class JPAFactory {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
+  /** Table definition checker : seems not working with postgres JDBC driver */
+  public static final boolean USE_INTEGRITY_CHECKER = false;
+  /** Default config file */
+  public static final String CONFIG_FILE = "jpa-config.properties";
   /** logger */
   private static final Log log = LogUtil.getLogger();
   /** all factories */
   private static final ConcurrentHashMap<String, JPAFactory> factories = new ConcurrentHashMap<String, JPAFactory>(4);
-  /** Default config file */
-  public static final String CONFIG_FILE = "jpa-config";
-  /** seems not working with postgres JDBC driver */
-  public static final boolean USE_INTEGRITY_CHECKER = false;
 
   //~ Members ----------------------------------------------------------------------------------------------------------
 
@@ -49,8 +46,6 @@ public final class JPAFactory {
   private final String pu;
   /** config file name */
   private final String config;
-  /** properties */
-  private Properties properties = null;
   /** JPA factory */
   private EntityManagerFactory emf = null;
 
@@ -91,6 +86,10 @@ public final class JPAFactory {
     JPAFactory jf = factories.get(pu);
 
     if (jf == null) {
+      if (log.isWarnEnabled()) {
+        log.warn("JPAFactory.getInstance : creating new instance for : " + pu);
+      }
+
       jf = new JPAFactory(pu);
       factories.putIfAbsent(pu, jf);
       // to be sure to return the singleton :
@@ -122,27 +121,23 @@ public final class JPAFactory {
 
   /**
    * Initializes the EntityManagerFactory
-   *
-   * @throws IllegalStateException
    */
   private void init() {
     if (log.isDebugEnabled()) {
       log.debug("JPAFactory.init : enter : " + this.pu + " with configuration file : " + this.config);
     }
 
-    if (! loadConfigFile()) {
-      throw new IllegalStateException("Unable to load Configuration " + this.config + " !");
-    }
+    final Properties properties = new PropertyHolder(this.config).getProperties();
 
     try {
-      final Map<Object, Object> props = new HashMap<Object, Object>(this.properties);
+      final Map<Object, Object> props = new HashMap<Object, Object>(properties);
 
       if (log.isInfoEnabled()) {
         log.info("JPAFactory.init : properties : " + CollectionUtils.toString(props));
       }
 
       // adds integrity checker for postgres only :
-      final String targetDB = this.properties.getProperty(PersistenceUnitProperties.TARGET_DATABASE);
+      final String targetDB = properties.getProperty(PersistenceUnitProperties.TARGET_DATABASE);
 
       if (log.isWarnEnabled()) {
         log.warn("JPAFactory.init : connecting to " + targetDB + " ...");
@@ -187,48 +182,9 @@ public final class JPAFactory {
   }
 
   /**
-   * Load PU config file
-   *
-   * @return true if properties loaded correctly
-   */
-  private boolean loadConfigFile() {
-    InputStream in = null;
-
-    try {
-      in = FileUtils.getSystemFileInputStream(this.config + ".properties");
-
-      this.properties = new Properties();
-      this.properties.load(in);
-
-      // filter empty strings :
-      String k;
-
-      // filter empty strings :
-      String s;
-
-      for (final Iterator it = this.properties.keySet().iterator(); it.hasNext();) {
-        k = (String) it.next();
-        s = this.properties.getProperty(k);
-
-        if (StringUtils.isEmpty(s)) {
-          it.remove();
-        }
-      }
-
-      return true;
-    } catch (final IOException ioe) {
-      log.error("IO Failure : ", ioe);
-
-      return false;
-    } finally {
-      FileUtils.closeStream(in);
-    }
-  }
-
-  /**
    * Stop pattern : closes the EntityManagerFactory
    */
-  public void stop() {
+  protected void stop() {
     if (getEmf() != null) {
       try {
         getEmf().close();
@@ -238,8 +194,6 @@ public final class JPAFactory {
 
       this.emf = null;
     }
-
-    this.properties.clear();
 
     if (log.isWarnEnabled()) {
       log.warn("JPAFactory : closed.");
