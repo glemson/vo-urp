@@ -1,12 +1,12 @@
 package org.ivoa.http;
 
 /**
- * <br> Description : Exception in communication process. It wraps exceptions such as MalformedURLException... <br>
+ * ADOC_COMME
  */
 public class CommunicationException extends StatusException {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**  */
+  /** ADOC_COMME */
   private static final long serialVersionUID = 1L;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
