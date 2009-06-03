@@ -40,6 +40,15 @@ public final class RuntimeConfiguration extends PropertyHolder {
   }
 
   /**
+   * Gives the title : ProjectTitle - ProjectVersion
+   *
+   * @return ProjectTitle - ProjectVersion
+   */
+  public String getTitle() {
+    return getProjectTitle() + "  -  " + getProjectVersion();
+  }
+
+  /**
    * Gives the property value for the key [intermediate.model.file]
    *
    * @return property value for the key [intermediate.model.file] or null if not found or contains only white spaces
