@@ -351,7 +351,8 @@ For acknowledgments concerning the contents of the current model we refer the re
 <hr/>
   <h1><a><xsl:attribute name="href" select="concat('#',$xmiid)"/>
   <xsl:attribute name="name" select="concat($xmiid,'_contents')"/>
-  <xsl:value-of select="name"/> : package contents</a></h1>
+  <xsl:value-of select="name"/></a> [<xsl:value-of select="utype"/>]</h1>
+  <xsl:value-of select="description"/><br/><br/>
     <xsl:apply-templates select="objectType">
       <xsl:sort select="name"/>
     </xsl:apply-templates>
@@ -384,7 +385,7 @@ For acknowledgments concerning the contents of the current model we refer the re
       <tr>
         <td class="objecttype-title" width="20%"><xsl:value-of select="$title"/></td>
         <td class="objecttype-name">
-          <a name="{$xmiid}"><xsl:value-of select="name"/></a>
+          <a name="{$xmiid}"><xsl:value-of select="name"/></a> [<xsl:value-of select="utype"/>]
         </td>
       </tr>
     <tr>
@@ -521,7 +522,7 @@ For acknowledgments concerning the contents of the current model we refer the re
         <tr>
             <td width="20%" class="info-title">Container</td>
             <td colspan="3" class="feature-detail">
-<a><xsl:attribute name="href" select="concat('#',$container/@xmiid)"/><xsl:value-of select="$container/name"/></a>
+<a><xsl:attribute name="href" select="concat('#',$container/@xmiid)"/><xsl:value-of select="$container/name"/></a> [<xsl:value-of select="container/utype"/>]
             </td>
             </tr>
   </xsl:template>

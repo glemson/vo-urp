@@ -27,7 +27,6 @@
   <xsl:key name="element" match="*//*" use="@xmiid"/>
 
   
-  
   <xsl:template match="objectType" mode="JPAAnnotation">
     <xsl:variable name="className" select="name" />
     <xsl:variable name="xmiid" select="@xmiid" />
@@ -168,6 +167,7 @@
     } )
       </xsl:when>
       <xsl:otherwise>
+      <xsl:message> ++++++++  ERROR  +++++++  <xsl:value-of select="name($type)"/> is not supported</xsl:message>
     [NOT_SUPPORTED_ATTRIBUTE]
       </xsl:otherwise>
     </xsl:choose>
@@ -313,7 +313,7 @@
       <xsl:when test="name() = 'properties'">
 &cr;
 &cr;
-<xsl:comment>base JPA entities</xsl:comment>
+<xsl:comment>generated JPA entities</xsl:comment>
 &cr;
 &cr;
     <xsl:element name="class" namespace="http://java.sun.com/xml/ns/persistence">

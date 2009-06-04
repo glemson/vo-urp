@@ -23,7 +23,9 @@ That representation follows the schema in intermediateModel.xsd.
   <xsl:param name="lastModified"/>
   
   <!-- xml index on xml:id -->
-  <xsl:key name="classid" match="*" use="@xmi:id"/>
+  <!--  problem with match="*" is that MagicDraw creates a <proxy> for Resource (for example) when it uses a stereotype 
+  and Resource shows then up twice with the same xmi:id. -->
+  <xsl:key name="classid" match="*/uml:Model//*" use="@xmi:id"/>
 
   <xsl:variable name="dmmd_namespace" select="'http://ivoa.org/theory/datamodel/generationmetadata/v0.1'"/>
   <xsl:variable name="xmi_namespace" select="'http://schema.omg.org/spec/XMI/2.1'"/>
@@ -227,6 +229,9 @@ That representation follows the schema in intermediateModel.xsd.
           </xsl:call-template>
       </xsl:variable>
       <xsl:element name="utype">
+        <xsl:call-template name="otherutype">
+          <xsl:with-param name="xmiid" select="@xmi:id"/>
+        </xsl:call-template>
         <xsl:value-of select="$utype"/>
         </xsl:element>
       <xsl:if test="*[@xmi:type='uml:Generalization']">
