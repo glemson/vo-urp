@@ -18,7 +18,8 @@
                 xmlns:xmi="http://schema.omg.org/spec/XMI/2.1"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                 xmlns:uml="http://schema.omg.org/spec/UML/2.0"
-               	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+               	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+               	xmlns:IVOA_Profile='http://www.magicdraw.com/schemas/IVOA_Profile.xmi'>
   
   <!--
     Templates used by XSLT scripts to derive UTYPE-s for attributes, references and collections
@@ -41,8 +42,8 @@
   This breaks howevere for a node-set. Need an alternative solution there. -->
   <xsl:template match="attribute" mode="utype">
     <xsl:param name="prefix"/>
-    <xsl:choose>
-      <xsl:when test="../name() = 'dataType' and $prefix">
+    <xsl:choose> <!-- if we want to start assigning separate utype-s for "attributes of attributes" we may need to use the prefix, otherwise keep the "false" -->
+      <xsl:when test="../name() = 'dataType' and $prefix and false">
         <xsl:value-of select="$prefix"/>&aasep;<xsl:value-of select="utype"/>
       </xsl:when>
       <xsl:otherwise>
@@ -106,6 +107,17 @@
 
 
 
+
+
+
+  <xsl:template name="otherutype">
+    <xsl:param name="xmiid"/>
+    <xsl:variable name="modelelement" select="/xmi:XMI/IVOA_Profile:modelelement[@base_Element = $xmiid]"/>
+    <xsl:if test="$modelelement/@utype">
+      <xsl:attribute name="otherutype" select="$modelelement/@utype"/>
+    </xsl:if>
+  </xsl:template>
+  
 
 
 

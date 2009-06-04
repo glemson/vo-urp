@@ -227,7 +227,7 @@ CREATE TABLE TargetObjectType (
   <xsl:text>, xmlId VARCHAR(32)</xsl:text>&cr;  
   <xsl:text>, ivoId VARCHAR(255)</xsl:text>&cr;  
  -->
-  <xsl:text>, publisherDID VARCHAR(255)</xsl:text>&cr;  
+  <xsl:text>, </xsl:text><xsl:value-of select="$publisherDIDColumnName"/> <xsl:text> VARCHAR(</xsl:text><xsl:value-of select="$publisherDIDColumnLength"/>)&cr;  
 </xsl:if>
 <xsl:apply-templates select="." mode="container"/>
 <xsl:apply-templates select="attribute" />
@@ -287,6 +287,7 @@ CREATE TABLE TargetObjectType (
       </xsl:when>
       <xsl:otherwise>
 <xsl:text>  SELECT </xsl:text><xsl:value-of select="$primaryKeyColumnName"/>&cr;
+          <xsl:text>  ,      </xsl:text><xsl:value-of select="$publisherDIDColumnName"/>&cr;
           <xsl:text>  ,      </xsl:text><xsl:value-of select="$discriminatorColumnName"/>&cr;
         <xsl:if test="container">
           <xsl:text>  ,      containerId</xsl:text>&cr;
