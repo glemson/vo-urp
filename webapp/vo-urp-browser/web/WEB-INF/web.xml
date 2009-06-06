@@ -131,7 +131,7 @@
 </web-resource-collection>
 <auth-constraint>
 <description>These are the roles who have access</description>
-<role-name>SimDB-member</role-name>
+<role-name>@project.name@-member</role-name>
 </auth-constraint>
 </security-constraint>
 
