@@ -1,0 +1,19 @@
+#summary This page presents the developer point of view about the VO-URP developments
+
+= Introduction =
+
+Under construction
+
+# Functionalities to add / change
+
+# Priorities
+
+# Issues to fix asap
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
