@@ -14,7 +14,7 @@ import org.ivoa.dm.model.MetadataObject;
 
 import org.ivoa.util.FileUtils;
 
-import org.ivoa.xml.ValidationResult;
+import org.ivoa.xml.validator.ValidationResult;
 import org.ivoa.xml.XSLTTransformer;
 
 import java.io.File;
