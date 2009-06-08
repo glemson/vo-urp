@@ -1,5 +1,6 @@
 package org.ivoa.dm.model;
 
+import java.sql.Timestamp;
 import java.util.Map;
 
 import javax.persistence.Basic;
@@ -25,6 +26,21 @@ public abstract class RootEntityObject extends MetadataObject {
     @Column(name = "updateUser", nullable = true)
 	private String updateUser;
 
+    /**
+     * The timestamp when this record was added to the database.
+     */
+    @Basic(optional = true)
+    @Column(name = "createTimestamp", nullable = true)
+    private Timestamp createTimestamp;
+
+    /**
+     * The timestamp when this record was last updated in the database.
+     */
+    @Basic(optional = true)
+    @Column(name = "updateTimestamp", nullable = true)
+    private Timestamp updateTimestamp;
+    
+    
     public String getOwner() {
 		return owner;
 	}
@@ -53,4 +69,20 @@ public abstract class RootEntityObject extends MetadataObject {
 	                                       final Map<MetadataElement, Object> ids) {
 	    return null;
 	  }
+
+    public Timestamp getCreateTimestamp() {
+      return createTimestamp;
+    }
+
+    public void setCreateTimestamp(Timestamp createTimestamp) {
+      this.createTimestamp = createTimestamp;
+    }
+
+    public Timestamp getUpdateTimestamp() {
+      return updateTimestamp;
+    }
+
+    public void setUpdateTimestamp(Timestamp updateTimestamp) {
+      this.updateTimestamp = updateTimestamp;
+    }
 }
