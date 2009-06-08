@@ -8,26 +8,24 @@ import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.ReferenceResolver;
 import org.ivoa.dm.model.RootEntityObject;
 
+
 //import org.ivoa.dm.model.RootEntityObject;
 import org.ivoa.jpa.JPAFactory;
 
 import org.ivoa.util.FileUtils;
 import org.ivoa.util.LogUtil;
 
-import org.ivoa.xml.ErrorMessage;
-import org.ivoa.xml.ValidationResult;
-import org.ivoa.xml.XMLValidator;
+import org.ivoa.xml.validator.ErrorMessage;
+import org.ivoa.xml.validator.ValidationResult;
+import org.ivoa.xml.validator.XMLValidator;
 
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
-import java.security.Principal;
 
 import javax.persistence.EntityManager;
 
@@ -47,13 +45,9 @@ public class DataModelManager {
 
   //~ Members ----------------------------------------------------------------------------------------------------------
 
-  /**
-   * TODO : Field Description
-   */
-  private String       jpa_pu;
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
+  private String jpa_pu;
+  /** TODO : Field Description */
   private XMLValidator validator;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
@@ -90,7 +84,7 @@ public class DataModelManager {
   /**
    * TODO : Method Description
    *
-   * @param filePath 
+   * @param filePath
    *
    * @return value TODO : Value Description
    */
@@ -101,7 +95,7 @@ public class DataModelManager {
   /**
    * TODO : Method Description
    *
-   * @param stream 
+   * @param stream
    *
    * @return value TODO : Value Description
    */
@@ -112,7 +106,7 @@ public class DataModelManager {
   /**
    * TODO : Method Description
    *
-   * @param filePath 
+   * @param filePath
    *
    * @return value TODO : Value Description
    */
@@ -121,13 +115,13 @@ public class DataModelManager {
       log.info("DataModelManager.validate : " + filePath);
     }
 
-    boolean    res  = false;
+    boolean res = false;
 
     final File file = FileUtils.getFile(filePath);
 
     if (file != null) {
       try {
-        final InputStream      in     = new BufferedInputStream(new FileInputStream(file));
+        final InputStream in = new BufferedInputStream(new FileInputStream(file));
 
         final ValidationResult result = validateStream(in);
 
@@ -153,12 +147,12 @@ public class DataModelManager {
   /**
    * TODO : Method Description
    *
-   * @param in 
+   * @param in
    *
    * @return value TODO : Value Description
    */
   public ValidationResult validateStream(final InputStream in) {
-    final ValidationResult result     = validator.validate(in);
+    final ValidationResult result = validator.validate(in);
 
     return result;
   }
@@ -166,8 +160,8 @@ public class DataModelManager {
   /**
    * TODO : Method Description
    *
-   * @param filePath 
-   * @param userName 
+   * @param filePath
+   * @param userName
    *
    * @return value TODO : Value Description
    */
@@ -192,8 +186,8 @@ public class DataModelManager {
   /**
    * TODO : Method Description
    *
-   * @param stream 
-   * @param userName 
+   * @param stream
+   * @param userName
    *
    * @return value TODO : Value Description
    */
@@ -246,7 +240,9 @@ public class DataModelManager {
       // free resolver context (thread local) :
       ReferenceResolver.freeContext();
 
-      em.close();
+      if (em != null) {
+        em.close();
+      }
     }
 
     if (log.isWarnEnabled()) {
