@@ -16,7 +16,7 @@ import org.ivoa.util.FileUtils;
 
 import org.ivoa.web.servlet.BaseServlet;
 
-import org.ivoa.xml.ValidationResult;
+import org.ivoa.xml.validator.ValidationResult;
 
 import java.io.File;
 import java.io.IOException;
