@@ -9,7 +9,6 @@ import org.ivoa.dm.model.ReferenceResolver;
 import org.ivoa.dm.model.RootEntityObject;
 
 
-//import org.ivoa.dm.model.RootEntityObject;
 import org.ivoa.jpa.JPAFactory;
 
 import org.ivoa.util.FileUtils;
@@ -79,17 +78,6 @@ public class DataModelManager {
     }
 
     return jf;
-  }
-
-  /**
-   * TODO : Method Description
-   *
-   * @param filePath
-   *
-   * @return value TODO : Value Description
-   */
-  private MetadataObject unmarshall(final String filePath) {
-    return ModelFactory.getInstance().unmarshallToObject(filePath);
   }
 
   /**
