@@ -4,9 +4,7 @@
  * Author lemson
  * Created on Dec 23, 2008
  */
-package org.ivoa.votable.test;
-
-import org.ivoa.votable.*;
+package org.ivoa.votable;
 
 import java.io.File;
 
