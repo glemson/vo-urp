@@ -11,6 +11,21 @@
 
 # Functionalities to add / change
 
+    XML Schemas : the XSD may be different and I think we should have two options :
+      - use official googleCode XSD release : add a version 0.5 / 0.6 ...
+      - use the last generated XSD (internal - dev) for our tests / developments
+
+      The first one will be useful for STD compliance (research users); 
+      the second one for dev compliance (you, rick, me & benjamin ...)
+
+      3 tasks :
+        - manage manually the folder : http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/
+        - propose in the validator to choose between STD (+version) or DEV to use the internal schemas (local URL = simple FileServlet mapping in the web.xml)
+
+        - Download the schemas : create a simple web page to list these files (FileServlet + directory listing) in tomcat or apache ?
+
+
+
 # Priorities
 
 # Issues to fix asap
