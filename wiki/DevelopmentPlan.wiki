@@ -2,7 +2,12 @@
 
 = Introduction =
 
-Under construction
+- Laurent : 
+    vo-urp = javadoc + refactoring + dead / test code refactoring + memory leak tests to add
+
+
+- Gerard : 
+    volute = *SimDB DM + note : important*
 
 # Functionalities to add / change
 
