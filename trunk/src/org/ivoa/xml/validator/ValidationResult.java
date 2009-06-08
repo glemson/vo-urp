@@ -1,4 +1,4 @@
-package org.ivoa.xml;
+package org.ivoa.xml.validator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,13 +12,9 @@ import java.util.List;
 public class ValidationResult {
   //~ Members ----------------------------------------------------------------------------------------------------------
 
-  /**
-   * TODO : Field Description
-   */
-  private boolean            valid    = false;
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
+  private boolean valid = false;
+  /** TODO : Field Description */
   private List<ErrorMessage> messages = new ArrayList<ErrorMessage>();
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
@@ -52,7 +48,7 @@ public class ValidationResult {
   /**
    * TODO : Method Description
    *
-   * @param valid 
+   * @param valid
    */
   protected void setValid(final boolean valid) {
     this.valid = valid;

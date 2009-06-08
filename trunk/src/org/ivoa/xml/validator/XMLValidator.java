@@ -1,4 +1,4 @@
-package org.ivoa.xml;
+package org.ivoa.xml.validator;
 
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
@@ -25,9 +25,7 @@ import javax.xml.validation.Validator;
 public class XMLValidator {
   //~ Members ----------------------------------------------------------------------------------------------------------
 
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private Schema schema;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
@@ -45,9 +43,11 @@ public class XMLValidator {
   /**
    * TODO : Method Description
    *
-   * @param schemaURL 
+   * @param schemaURL
    *
    * @return value TODO : Value Description
+   *
+   * @throws IllegalStateException
    */
   public static Schema getSchema(final String schemaURL) {
     // 1. Lookup a factory for the W3C XML Schema language
@@ -68,7 +68,7 @@ public class XMLValidator {
   /**
    * TODO : Method Description
    *
-   * @param document 
+   * @param document
    *
    * @return value TODO : Value Description
    */
@@ -79,8 +79,8 @@ public class XMLValidator {
   /**
    * TODO : Method Description
    *
-   * @param document 
-   * @param result 
+   * @param document
+   * @param result
    *
    * @return value TODO : Value Description
    */
