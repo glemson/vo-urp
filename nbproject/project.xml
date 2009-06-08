@@ -45,12 +45,33 @@
                     <location>webapp/vo-urp-browser/src</location>
                     <encoding>UTF-8</encoding>
                 </source-folder>
+                <source-folder>
+                    <label>deprecated-src</label>
+                    <type>java</type>
+                    <location>deprecated-src</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
+                    <label>test</label>
+                    <type>java</type>
+                    <location>test</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
             </folders>
             <ide-actions>
                 <action name="run">
+                    <target>makeOutput</target>
+                    <target>run</target>
+                </action>
+                <action name="build">
                     <target>forceMakeAll</target>
                 </action>
             </ide-actions>
+            <export>
+                <type>folder</type>
+                <location>libs/jalopy/bin</location>
+                <build-target>forceMakeAll</build-target>
+            </export>
             <view>
                 <items>
                     <source-folder style="packages">
@@ -73,23 +94,34 @@
                         <label>webapp\vo-urp-browser\src</label>
                         <location>webapp/vo-urp-browser/src</location>
                     </source-folder>
+                    <source-folder style="packages">
+                        <label>deprecated-src</label>
+                        <location>deprecated-src</location>
+                    </source-folder>
+                    <source-folder style="packages">
+                        <label>test</label>
+                        <location>test</location>
+                    </source-folder>
                     <source-file>
                         <location>build.xml</location>
                     </source-file>
                 </items>
                 <context-menu>
+                    <ide-action name="build"/>
                     <ide-action name="run"/>
                 </context-menu>
             </view>
             <subprojects/>
         </general-data>
-        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/1">
+        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/2">
             <compilation-unit>
                 <package-root>src</package-root>
                 <package-root>libs/jalopy/src</package-root>
                 <package-root>input/simdb/output/java/src</package-root>
                 <package-root>input/simdb/test/java</package-root>
                 <package-root>webapp/vo-urp-browser/src</package-root>
+                <package-root>deprecated-src</package-root>
+                <package-root>test</package-root>
                 <classpath mode="compile">libs/commons-logging-1.1.1.jar;libs/activation.jar;libs/log4j-1.2.15.jar;libs/commons-dbutils-1.1.jar;libs/commons-fileupload-1.2.1.jar;libs/commons-httpclient-3.1.jar;libs/commons-io-1.3.2.jar;libs/eclipselink.jar;libs/javax.persistence_1.0.0.jar;libs/jaxb-api-2.1.jar;libs/jaxb-impl-2.1.6.jar;libs/jaxb-xjc-2.1.6.jar;libs/jsr173_1.0_api.jar;libs/saxon9-s9api.jar;libs/saxon9.jar;libs/jalopy/lib/jalopy-1.5b1.jar;webapp/vo-urp-browser/lib/commons-fileupload-1.2.1.jar;webapp/vo-urp-browser/lib/commons-io-1.3.2.jar;webapp/vo-urp-browser/lib/jstl.jar;webapp/vo-urp-browser/lib/standard.jar;webapp/vo-urp-browser/lib/server/jsp-api.jar;webapp/vo-urp-browser/lib/server/servlet-api.jar</classpath>
                 <built-to>libs/jalopy/bin</built-to>
                 <source-level>1.5</source-level>
