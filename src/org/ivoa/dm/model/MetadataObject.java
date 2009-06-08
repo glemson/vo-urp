@@ -65,7 +65,7 @@ public abstract class MetadataObject extends MetadataElement {
   @Embedded
   @XmlElement(name = "identity", required = false, type = Identity.class)
   protected Identity identity = null;
-  /** A reference to this class, lazily instantiated */
+  /** A reference to this object, lazily instantiated */
   @Transient
   @XmlTransient
   protected Reference reference = null;
