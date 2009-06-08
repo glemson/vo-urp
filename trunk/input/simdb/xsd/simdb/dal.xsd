@@ -1,30 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:vo-urp="http://vo-urp.googlecode.com/"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/dal"
+            xmlns="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/dal"
             xmlns:base="http://www.ivoa.net/xml/dm/base/v0.1"
-            xmlns:p5="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb"
-            xmlns:p4="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/experiment"
-            targetNamespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/dal">
+            xmlns:p4="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
+            xmlns:p3="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/experiment"
+            targetNamespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/dal">
    <xsd:annotation>
       <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
    </xsd:annotation>
-   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb"
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb.xsd"/>
-   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/experiment"
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/experiment"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/experiment.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/base.xsd"/>
    <xsd:complexType name="WebService">
       <xsd:annotation>
-         <xsd:documentation>This class represents a web service that can be used to access the results of an Experiment.
+         <xsd:documentation>This class represents a web service that can be used to access resources.
+The precise way this is done is not specified in detail. 
+This may be more general than simply giving access to results of a single experiment. It may be a web service that can handle results of any experiment performed by a particular Protocol, or give access to all resources in a Project.
+
 The web service is represented by a base URL and a service type. The type may be a standard to be developed by the SimDAP specification, or a simple custom service. In the latter case the base URL should point to a web page that presents further details.</xsd:documentation>
          <xsd:appinfo>
             <vo-urp:identifier>_12_1_1_8e0028f_1178634214328_979805_732</vo-urp:identifier>
          </xsd:appinfo>
       </xsd:annotation>
       <xsd:complexContent>
-         <xsd:extension base="p5:Resource">
+         <xsd:extension base="p4:Resource">
             <xsd:sequence>
                <xsd:element name="baseURL" type="xsd:string">
                   <xsd:annotation>
@@ -51,16 +54,15 @@ In case the web service has a special, SimDAP type, parameters may be added to t
                      </xsd:appinfo>
                   </xsd:annotation>
                </xsd:element>
-               <xsd:element name="experiment" type="AccessibleExperiment" minOccurs="0"
-                            maxOccurs="unbounded"/>
+               <xsd:element name="resource" type="AccessibleResource" minOccurs="0" maxOccurs="unbounded"/>
             </xsd:sequence>
          </xsd:extension>
       </xsd:complexContent>
    </xsd:complexType>
 
-   <xsd:complexType name="AccessibleExperiment">
+   <xsd:complexType name="AccessibleResource">
       <xsd:annotation>
-         <xsd:documentation>Class representing an association between the containing WebService and the Experiments that are being made accessible by it.</xsd:documentation>
+         <xsd:documentation>Class representing an association between the containing WebService and the Resources that are being made accessible by it.</xsd:documentation>
          <xsd:appinfo>
             <vo-urp:identifier>_12_1_8e0028f_1224854880765_748997_568</vo-urp:identifier>
          </xsd:appinfo>
@@ -68,11 +70,19 @@ In case the web service has a special, SimDAP type, parameters may be added to t
       <xsd:complexContent>
          <xsd:extension base="base:MetadataObject">
             <xsd:sequence>
-               <xsd:element name="experiment" type="base:Reference">
+               <xsd:element name="description" type="xsd:string" minOccurs="0">
                   <xsd:annotation>
-                     <xsd:documentation>Indicates the experiment that the AccessibleExperiment class associates to the WebService</xsd:documentation>
+                     <xsd:documentation>Description of how the resource is made available by the web service.</xsd:documentation>
                      <xsd:appinfo>
-                        <vo-urp:identifier>_12_1_8e0028f_1224854890953_617640_641</vo-urp:identifier>
+                        <vo-urp:identifier>_12_1_8e0028f_1240400082078_785740_1077</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="resource" type="base:Reference">
+                  <xsd:annotation>
+                     <xsd:documentation>Indicates the Resource that the AccessibleResource class associates to the WebService</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1240400012437_227403_1070</vo-urp:identifier>
                      </xsd:appinfo>
                   </xsd:annotation>
                </xsd:element>

@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:vo-urp="http://vo-urp.googlecode.com/"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/protocol"
+            xmlns="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/protocol"
             xmlns:base="http://www.ivoa.net/xml/dm/base/v0.1"
-            xmlns:p5="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb"
-            xmlns:p7="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/object"
-            targetNamespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/protocol">
+            xmlns:p4="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
+            xmlns:p6="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/object"
+            targetNamespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/protocol">
    <xsd:annotation>
       <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
    </xsd:annotation>
-   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb"
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb.xsd"/>
-   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/object"
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/object"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/object.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/base.xsd"/>
@@ -94,7 +94,7 @@ TODO one might argue we need a separate collection of numerical algorithms that 
          </xsd:appinfo>
       </xsd:annotation>
       <xsd:complexContent>
-         <xsd:extension base="p5:Resource">
+         <xsd:extension base="p4:Resource">
             <xsd:sequence>
                <xsd:element name="code" type="xsd:string">
                   <xsd:annotation>
@@ -124,9 +124,9 @@ web page where documentation of this simulator can be obtained</xsd:documentatio
       </xsd:complexContent>
    </xsd:complexType>
 
-   <xsd:complexType name="ClusterFinder">
+   <xsd:complexType name="PostProcessor">
       <xsd:annotation>
-         <xsd:documentation>A cluster finder protocol.</xsd:documentation>
+         <xsd:documentation>This concrete subclass of Protocol represents protocols that deal with post-processing results of earlier experiments. We do not specify this much further in this version of the model.</xsd:documentation>
          <xsd:appinfo>
             <vo-urp:identifier>_14_0_8e0028f_1202820488812_969868_2587</vo-urp:identifier>
          </xsd:appinfo>
@@ -201,7 +201,7 @@ for browsing purposes for example. As browsing is likely an important mode of ac
          </xsd:appinfo>
       </xsd:annotation>
       <xsd:complexContent>
-         <xsd:extension base="p7:ObjectType">
+         <xsd:extension base="p6:ObjectType">
             <xsd:sequence>
                <xsd:element name="type" type="RepresentationObject">
                   <xsd:annotation>
@@ -235,7 +235,7 @@ For now we use the </xsd:documentation>
          </xsd:appinfo>
       </xsd:annotation>
       <xsd:complexContent>
-         <xsd:extension base="p7:Field">
+         <xsd:extension base="p6:Field">
             <xsd:sequence>
                <xsd:element name="label" type="xsd:string" minOccurs="0">
                   <xsd:annotation>
