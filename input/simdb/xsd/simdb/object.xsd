@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:vo-urp="http://vo-urp.googlecode.com/"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/object"
+            xmlns="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/object"
             xmlns:base="http://www.ivoa.net/xml/dm/base/v0.1"
-            xmlns:p5="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb"
-            targetNamespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/object">
+            xmlns:p4="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
+            targetNamespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/object">
    <xsd:annotation>
       <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
    </xsd:annotation>
-   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb"
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/base.xsd"/>
@@ -30,7 +30,7 @@
                      </xsd:appinfo>
                   </xsd:annotation>
                </xsd:element>
-               <xsd:element name="cardinality" type="p5:Cardinality" minOccurs="0">
+               <xsd:element name="cardinality" type="p4:Cardinality" minOccurs="0">
                   <xsd:annotation>
                      <xsd:documentation>The cardinality/multiplicity of the child object in the containing object.</xsd:documentation>
                      <xsd:appinfo>
@@ -185,7 +185,7 @@ Ex: omegaLambda, particleMass, linking length
                      </xsd:appinfo>
                   </xsd:annotation>
                </xsd:element>
-               <xsd:element name="datatype" type="p5:DataType">
+               <xsd:element name="datatype" type="p4:DataType">
                   <xsd:annotation>
                      <xsd:documentation>the data type of this parameter or property</xsd:documentation>
                      <xsd:appinfo>
@@ -193,7 +193,7 @@ Ex: omegaLambda, particleMass, linking length
                      </xsd:appinfo>
                   </xsd:annotation>
                </xsd:element>
-               <xsd:element name="cardinality" type="p5:Cardinality" minOccurs="0">
+               <xsd:element name="cardinality" type="p4:Cardinality" minOccurs="0">
                   <xsd:annotation>
                      <xsd:documentation>The cardinality of this parameter or property</xsd:documentation>
                      <xsd:appinfo>

@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema xmlns:vo-urp="http://vo-urp.googlecode.com/"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-            xmlns="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/experiment"
+            xmlns="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/experiment"
             xmlns:base="http://www.ivoa.net/xml/dm/base/v0.1"
-            xmlns:p5="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb"
-            xmlns:p2="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/protocol"
-            xmlns:p7="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/object"
-            targetNamespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/experiment">
+            xmlns:p4="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
+            xmlns:p2="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/protocol"
+            xmlns:p6="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/object"
+            targetNamespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/experiment">
    <xsd:annotation>
       <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
    </xsd:annotation>
-   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb"
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb.xsd"/>
-   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/protocol"
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/protocol"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/protocol.xsd"/>
-   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/object"
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/object"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/object.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/base.xsd"/>
@@ -58,7 +58,7 @@ TODO currently the characterisation is restricted to numericalobservables, gener
       <xsd:complexContent>
          <xsd:extension base="base:MetadataObject">
             <xsd:sequence>
-               <xsd:element name="value" type="p5:Quantity">
+               <xsd:element name="value" type="p4:Quantity">
                   <xsd:annotation>
                      <xsd:documentation>value of a property in a collection of objects</xsd:documentation>
                      <xsd:appinfo>
@@ -142,7 +142,7 @@ The base class for those kinds of experiments that can produce representations o
          </xsd:appinfo>
       </xsd:annotation>
       <xsd:complexContent>
-         <xsd:extension base="p5:Resource">
+         <xsd:extension base="p4:Resource">
             <xsd:sequence>
                <xsd:element name="targetObject" type="TargetObjectType" minOccurs="0" maxOccurs="unbounded"/>
                <xsd:element name="snapshot" type="Snapshot" maxOccurs="unbounded"/>
@@ -176,7 +176,7 @@ The base class for those kinds of experiments that can produce representations o
       <xsd:complexContent>
          <xsd:extension base="base:MetadataObject">
             <xsd:sequence>
-               <xsd:element name="time" type="p5:Quantity">
+               <xsd:element name="time" type="p4:Quantity">
                   <xsd:annotation>
                      <xsd:documentation>The time in the simulation at which this snapshot is produced. A real value in terms of the timestep units that are being used. [TBD need to find a place for those units, note that we need to support co-moving quantities !]</xsd:documentation>
                      <xsd:appinfo>
@@ -184,7 +184,7 @@ The base class for those kinds of experiments that can produce representations o
                      </xsd:appinfo>
                   </xsd:annotation>
                </xsd:element>
-               <xsd:element name="spatialSizePhysical" type="p5:Quantity" minOccurs="0">
+               <xsd:element name="spatialSizePhysical" type="p4:Quantity" minOccurs="0">
                   <xsd:annotation>
                      <xsd:documentation>The typical size of the target system in this snapshot. Left up to the data publisher to give a useful value for this. Is not necessarily equal to the size of the box containing the full simulation (covered by Characterisation). Could be the rough size of the galaxy merger, or cluster, or the size of a box containing 90% of the mass  or whatever</xsd:documentation>
                      <xsd:appinfo>
@@ -198,19 +198,7 @@ The base class for those kinds of experiments that can produce representations o
       </xsd:complexContent>
    </xsd:complexType>
 
-   <xsd:complexType name="ClusterDetection">
-      <xsd:annotation>
-         <xsd:documentation>Represents the creation of a Snapshot consisting of a catalogues of groups of objects extracted form the input Snapshot. Those can be particles, but also grid cells</xsd:documentation>
-         <xsd:appinfo>
-            <vo-urp:identifier>_12_1_8e0028f_1175595880687_132606_426</vo-urp:identifier>
-         </xsd:appinfo>
-      </xsd:annotation>
-      <xsd:complexContent>
-         <xsd:extension base="PostProcessing"/>
-      </xsd:complexContent>
-   </xsd:complexType>
-
-   <xsd:complexType name="PostProcessing" abstract="true">
+   <xsd:complexType name="PostProcessing">
       <xsd:annotation>
          <xsd:documentation>Represents a Experiment that acts on a pre-existing Snapshot to produce another Snapshot. In standard terminology this produces Level 1 data products (this is true whether the original Snapshot was a Level 0 products or already a Level 1 product)</xsd:documentation>
          <xsd:appinfo>
@@ -222,7 +210,9 @@ The base class for those kinds of experiments that can produce representations o
             <xsd:sequence>
                <xsd:element name="primaryExperiment" type="base:Reference" minOccurs="0">
                   <xsd:annotation>
-                     <xsd:documentation>The experiment whose results are being post-processed by this PostProcessing step.</xsd:documentation>
+                     <xsd:documentation>The experiment whose results are being post-processed by this PostProcessing step.
+
+TBD This is a very simple(simplistic) view of post-processing, that the results of a single experiment are manipulated only. </xsd:documentation>
                      <xsd:appinfo>
                         <vo-urp:identifier>_14_0_8e0028f_1202820572125_383921_2711</vo-urp:identifier>
                      </xsd:appinfo>
@@ -243,6 +233,14 @@ The base class for those kinds of experiments that can produce representations o
       <xsd:complexContent>
          <xsd:extension base="base:MetadataObject">
             <xsd:sequence>
+               <xsd:element name="description" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Describes the role that the input data set plays in the experiment.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1240401334281_915121_1083</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
                <xsd:element name="snapshot" type="base:Reference">
                   <xsd:annotation>
                      <xsd:documentation>The snapshot of an other experiment that was used by the current one as input data.</xsd:documentation>
@@ -264,7 +262,7 @@ The base class for those kinds of experiments that can produce representations o
          </xsd:appinfo>
       </xsd:annotation>
       <xsd:complexContent>
-         <xsd:extension base="p7:ObjectType">
+         <xsd:extension base="p6:ObjectType">
             <xsd:sequence>
                <xsd:element name="astroJournalSubject" type="xsd:string" minOccurs="0">
                   <xsd:annotation>
@@ -281,7 +279,9 @@ The base class for those kinds of experiments that can produce representations o
 
    <xsd:complexType name="ParameterSetting" abstract="true">
       <xsd:annotation>
-         <xsd:documentation>To run an Experiments, one usually needs to assign values to parameters defined on the corresponding Protocol. This class makes the association between the Experiment and the parameters. Parameters can have many different types and so the type of the value can in general not be pre-assigned, as base class Value coiuld be used, but for usability purposes we decided to sub class this class instead to deal with numeric and all other parameters.</xsd:documentation>
+         <xsd:documentation>To run an Experiments, one usually needs to assign values to parameters defined on the corresponding Protocol. This class makes the association between the Experiment and the parameters. 
+TBD
+Parameters can have many different types and so the type of the value can in general not be pre-assigned. One might consider using Value as type, but for usability purposes we decided to sub class this class instead to deal with numeric and all other parameters. Alternatively one could use a string.</xsd:documentation>
          <xsd:appinfo>
             <vo-urp:identifier>_12_1_2_213004e4_1195984162343_63311_299</vo-urp:identifier>
          </xsd:appinfo>
@@ -381,9 +381,9 @@ This class represents such a choice.</xsd:documentation>
          </xsd:appinfo>
       </xsd:annotation>
       <xsd:complexContent>
-         <xsd:extension base="p7:ObjectType">
+         <xsd:extension base="p6:ObjectType">
             <xsd:sequence>
-               <xsd:element name="multiplicity" type="p5:Cardinality" minOccurs="0">
+               <xsd:element name="multiplicity" type="p4:Cardinality" minOccurs="0">
                   <xsd:annotation>
                      <xsd:documentation>Indication on how many objects of this type are being modelled. [TBD This may become an enumerated value, like “one, two, tens, many ...”].</xsd:documentation>
                      <xsd:appinfo>
@@ -412,84 +412,6 @@ Ex: star, large scale structure, galaxy, jet
 maybe, a subject keyword from the astronomical journals list</xsd:documentation>
                      <xsd:appinfo>
                         <vo-urp:identifier>_12_1_8e0028f_1175874156890_481760_321</vo-urp:identifier>
-                     </xsd:appinfo>
-                  </xsd:annotation>
-               </xsd:element>
-            </xsd:sequence>
-         </xsd:extension>
-      </xsd:complexContent>
-   </xsd:complexType>
-
-   <xsd:complexType name="CompositeExperiment">
-      <xsd:annotation>
-         <xsd:documentation>A CompositeExperiment is a group of experiments run together in a kind of workflow or pipeline mode. They have their own protocol, consiting of sub protocols for the child experiments.</xsd:documentation>
-         <xsd:appinfo>
-            <vo-urp:identifier>_12_1_8e0028f_1209037435156_352640_267</vo-urp:identifier>
-         </xsd:appinfo>
-      </xsd:annotation>
-      <xsd:complexContent>
-         <xsd:extension base="Experiment">
-            <xsd:sequence>
-               <xsd:element name="child" type="ChildExperiment" maxOccurs="unbounded"/>
-            </xsd:sequence>
-         </xsd:extension>
-      </xsd:complexContent>
-   </xsd:complexType>
-
-   <xsd:complexType name="CompositeProtocol">
-      <xsd:annotation>
-         <xsd:documentation>This class embodies a composition of othe rprotocols to work together as a protocol for a single (composite) experiment. It can be seen as embodying a workflow or pipeline, but is not modeled as a graph, only an agggregation of separately described protocols thusfar.</xsd:documentation>
-         <xsd:appinfo>
-            <vo-urp:identifier>_12_1_8e0028f_1209037627390_53284_333</vo-urp:identifier>
-         </xsd:appinfo>
-      </xsd:annotation>
-      <xsd:complexContent>
-         <xsd:extension base="p2:Protocol">
-            <xsd:sequence>
-               <xsd:element name="child" type="ChildProtocol" maxOccurs="unbounded"/>
-            </xsd:sequence>
-         </xsd:extension>
-      </xsd:complexContent>
-   </xsd:complexType>
-
-   <xsd:complexType name="ChildExperiment">
-      <xsd:annotation>
-         <xsd:documentation>Association class to indictae the experiments making up a composite experiment.</xsd:documentation>
-         <xsd:appinfo>
-            <vo-urp:identifier>_12_1_8e0028f_1209038083546_352136_491</vo-urp:identifier>
-         </xsd:appinfo>
-      </xsd:annotation>
-      <xsd:complexContent>
-         <xsd:extension base="base:MetadataObject">
-            <xsd:sequence>
-               <xsd:element name="experiment" type="base:Reference">
-                  <xsd:annotation>
-                     <xsd:documentation>Reference to the (registered) experiment that this association object represents.</xsd:documentation>
-                     <xsd:appinfo>
-                        <vo-urp:identifier>_12_1_8e0028f_1209038091468_426286_576</vo-urp:identifier>
-                     </xsd:appinfo>
-                  </xsd:annotation>
-               </xsd:element>
-            </xsd:sequence>
-         </xsd:extension>
-      </xsd:complexContent>
-   </xsd:complexType>
-
-   <xsd:complexType name="ChildProtocol">
-      <xsd:annotation>
-         <xsd:documentation>Association class representing a protocol that is used by a composite protocol.</xsd:documentation>
-         <xsd:appinfo>
-            <vo-urp:identifier>_12_1_8e0028f_1209038149156_959482_630</vo-urp:identifier>
-         </xsd:appinfo>
-      </xsd:annotation>
-      <xsd:complexContent>
-         <xsd:extension base="base:MetadataObject">
-            <xsd:sequence>
-               <xsd:element name="protocol" type="base:Reference">
-                  <xsd:annotation>
-                     <xsd:documentation>Reference to the actual protocol, being associated into a composite protocol by this association object.</xsd:documentation>
-                     <xsd:appinfo>
-                        <vo-urp:identifier>_12_1_8e0028f_1209038165578_263667_715</vo-urp:identifier>
                      </xsd:appinfo>
                   </xsd:annotation>
                </xsd:element>
@@ -532,7 +454,7 @@ TODO decide whether we want/require this freedom of unit!</xsd:documentation>
       <xsd:complexContent>
          <xsd:extension base="ParameterSetting">
             <xsd:sequence>
-               <xsd:element name="value" type="p5:Quantity">
+               <xsd:element name="value" type="p4:Quantity">
                   <xsd:annotation>
                      <xsd:documentation>The actual value assigned to the parameter.</xsd:documentation>
                      <xsd:appinfo>
