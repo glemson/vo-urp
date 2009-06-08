@@ -1,4 +1,4 @@
-package org.ivoa.xml;
+package org.ivoa.xml.validator;
 
 import java.io.Serializable;
 
@@ -19,21 +19,13 @@ public final class ErrorMessage implements Serializable {
 
   //~ Members ----------------------------------------------------------------------------------------------------------
 
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private SEVERITY severity;
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private int lineNumber;
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private int columnNumber;
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private String message;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
@@ -102,8 +94,8 @@ public final class ErrorMessage implements Serializable {
 
   //~ Enumerations -----------------------------------------------------------------------------------------------------
 
-  public enum SEVERITY {//~ Enumeration constant initializers ------------------------------------------------------------------------------
-
+  public enum SEVERITY {
+      //~ Enumeration constant initializers ----------------------------------------------------------------------------
     WARNING, ERROR, FATAL;
   }
 }

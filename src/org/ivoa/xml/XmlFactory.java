@@ -38,6 +38,10 @@ import javax.xml.transform.stream.StreamSource;
 /**
  * Utility class for XML parsing & transforming (XSLT)  <br><b>Supports XML document & XSLT caches</b>
  *
+ * <p>
+ * Unused : 08/06/2009 but may be useful for dev tests.
+ * </p>
+ *
  * @author laurent bourges (voparis)
  */
 public final class XmlFactory {
@@ -62,7 +66,7 @@ public final class XmlFactory {
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Creates a new XmlFactory object
    */
   private XmlFactory() {
@@ -71,9 +75,9 @@ public final class XmlFactory {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * TODO : Method Description
+   * Returns a DocumentBuilderFactory (JAXB)
    *
-   * @return value TODO : Value Description
+   * @return DocumentBuilderFactory (JAXB)
    */
   public static final DocumentBuilderFactory getFactory() {
     if (factory == null) {
@@ -84,9 +88,9 @@ public final class XmlFactory {
   }
 
   /**
-   * TODO : Method Description
+   * Returns a TransformerFactory (JAXB)
    *
-   * @return value TODO : Value Description
+   * @return TransformerFactory (JAXB)
    */
   protected static final TransformerFactory getTransformerFactory() {
     if (tFactory == null) {
@@ -101,7 +105,7 @@ public final class XmlFactory {
   }
 
   /**
-   * Returns Identity transformer
+   * Returns an Identity transformer (identity xslt)
    *
    * @return identity transformer
    */
@@ -116,11 +120,11 @@ public final class XmlFactory {
   }
 
   /**
-   * TODO : Method Description
+   * Returns a transformer for the given xslt source
    *
-   * @param source 
+   * @param source stream source for xslt script
    *
-   * @return value TODO : Value Description
+   * @return transformer for the given xslt source
    */
   protected static final Transformer newTransformer(final StreamSource source) {
     try {
@@ -133,11 +137,11 @@ public final class XmlFactory {
   }
 
   /**
-   * TODO : Method Description
+   * Returns a transformer for the given xslt template (precompiled xslt script)
    *
-   * @param tmp 
+   * @param tmp xslt template (precompiled xslt script)
    *
-   * @return value TODO : Value Description
+   * @return transformer for the given xslt template
    */
   protected static final Transformer newTransformer(final Templates tmp) {
     try {
@@ -150,11 +154,11 @@ public final class XmlFactory {
   }
 
   /**
-   * TODO : Method Description
+   * Returns a new xslt template (precompiled xslt script) for the given xslt source
    *
-   * @param source 
+   * @param source stream source for xslt script
    *
-   * @return value TODO : Value Description
+   * @return new xslt template
    */
   protected static final Templates newTemplate(final StreamSource source) {
     try {
@@ -167,11 +171,11 @@ public final class XmlFactory {
   }
 
   /**
-   * TODO : Method Description
+   * Sets the encoding and indetation parameters for the given transformer
    *
-   * @param tf 
+   * @param tf transformer
    *
-   * @return value TODO : Value Description
+   * @return tf transformer
    */
   private static final Transformer getOutTransformer(final Transformer tf) {
     tf.setOutputProperty(OutputKeys.ENCODING, ENCODING);
@@ -181,11 +185,11 @@ public final class XmlFactory {
   }
 
   /**
-   * TODO : Method Description
+   * Parses a local xml file with JAXB
    *
-   * @param f 
+   * @param f local file
    *
-   * @return value TODO : Value Description
+   * @return Document (DOM)
    */
   public static final Document parse(final File f) {
     String uri = "file:" + f.getAbsolutePath();
@@ -198,11 +202,11 @@ public final class XmlFactory {
   }
 
   /**
-   * TODO : Method Description
+   * Parses an xml stream with JAXB
    *
-   * @param is 
+   * @param is input stream
    *
-   * @return value TODO : Value Description
+   * @return Document (DOM)
    */
   public static final Document parse(final InputStream is) {
     final InputSource in = new InputSource(is);
@@ -211,12 +215,12 @@ public final class XmlFactory {
   }
 
   /**
-   * TODO : Method Description
+   * Parses an xml stream with JAXB
    *
-   * @param is 
-   * @param systemId 
+   * @param is input stream
+   * @param systemId absolute file or URL reference used to resolve other xml document references
    *
-   * @return value TODO : Value Description
+   * @return Document (DOM)
    */
   public static final Document parse(final InputStream is, final String systemId) {
     final InputSource in = new InputSource(is);
@@ -227,11 +231,11 @@ public final class XmlFactory {
   }
 
   /**
-   * TODO : Method Description
+   * Parses an xml stream with JAXB
    *
-   * @param input 
+   * @param input xml input source
    *
-   * @return value TODO : Value Description
+   * @return Document (DOM)
    */
   public static final Document parse(final InputSource input) {
     if (log.isDebugEnabled()) {

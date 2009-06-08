@@ -1,20 +1,11 @@
-/*
- * XSLTTransformer.java
- *
- * Author Gerard Lemson
- * Created on 24 Dec 2008
- */
 package org.ivoa.xml;
 
-import net.sf.saxon.om.Item;
 
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.Serializer;
 import net.sf.saxon.s9api.XdmAtomicValue;
-import net.sf.saxon.s9api.XdmItem;
 import net.sf.saxon.s9api.XdmNode;
-import net.sf.saxon.s9api.XdmValue;
 import net.sf.saxon.s9api.XsltCompiler;
 import net.sf.saxon.s9api.XsltExecutable;
 import net.sf.saxon.s9api.XsltTransformer;
@@ -23,7 +14,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
@@ -35,39 +25,38 @@ import javax.xml.transform.stream.StreamSource;
 
 
 /**
- * TODO : Class Description
+ * XSLT transformer with Saxon 9 API (xslt 2 engine)
  *
  * @author laurent bourges (voparis) / Gerard Lemson (mpe)
-  */
-public class XSLTTransformer {
+ */
+public final class XSLTTransformer {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * 
-  DOCUMENT ME!
+   * Transforms the xml stream with the given xslt script
    *
    * @param sheetFile file name of XSLT style sheet, could be a URL
    * @param parameters assumes simple parameters
    * @param in the input stream containing the document to be transformed
    * @param out the output stream to which the result should be written
    *
-   * @throws Exception
+   * @throws Exception if failure
    */
   public static void transform(final String sheetFile, final java.util.Map<String, String> parameters,
                                final InputStream in, final OutputStream out)
                         throws Exception {
     // use Saxon's s9api.
     // Could use Saxon's JAXP implementation, interfaces compatible with other XSLT processors such as Xalan. 
-    Processor    proc = new Processor(false);
-    XsltCompiler comp = proc.newXsltCompiler();
+    final Processor    proc = new Processor(false);
+    final XsltCompiler comp = proc.newXsltCompiler();
 
     // next could be passed in if precompiled, or exists as singleton for the style sheet
-    XsltExecutable exp = comp.compile(new StreamSource(new File(sheetFile)));
+    final XsltExecutable exp = comp.compile(new StreamSource(new File(sheetFile)));
 
     // doc should probably be passed in as stream.
-    XdmNode source = proc.newDocumentBuilder().build(new StreamSource(in));
+    final XdmNode source = proc.newDocumentBuilder().build(new StreamSource(in));
 
-    XsltTransformer trans = exp.load();
+    final XsltTransformer trans = exp.load();
 
     trans.setInitialContextNode(source);
 
@@ -75,7 +64,7 @@ public class XSLTTransformer {
       trans.setParameter(new QName(key), new XdmAtomicValue(parameters.get(key)));
     }
 
-    Serializer ser = new Serializer();
+    final Serializer ser = new Serializer();
 
     ser.setOutputProperty(Serializer.Property.METHOD, "xml");
     ser.setOutputProperty(Serializer.Property.INDENT, "yes");
@@ -86,65 +75,30 @@ public class XSLTTransformer {
   }
 
   /**
-   * TODO : Method Description
-   *
-   * @param args 
-   */
-  public static void main(final String[] args) {
-    /*
-       mimic:
-           <xslt2 in="C:/workspaces/eclipse3.2.2/SimDB/xslt/test/views/normalised_experiment.xml"
-                   out="C:/workspaces/eclipse3.2.2/SimDB/xslt/test/views/denormalised_experiment.xml"
-                 style="C:/workspaces/eclipse3.2.2/SimDB/xslt/transform_simdb.xsl">
-               <param name="resolverURL" expression="${xslt.document.resolverURL}" />
-               <param name="debug_protocol" expression="C:/workspaces/eclipse3.2.2/SimDB/xslt/test/views/theProtocol.xml" />
-               <param name="mode" expression="forward"/>
-           </xslt2>
-    
-     */
-    try {
-      String infile             = "C:/workspaces/eclipse3.2.2/SimDB/xslt/test/views/normalised_experiment.xml";
-      String sheetFile          = "C:/workspaces/eclipse3.2.2/SimDB/xslt/transform_experiment.xsl";
-
-      sheetFile = "C:/workspaces/eclipse_vo-urp/vo-urp.googlecode.com/input/simdb/views/dn/ExpToFromExp_dn.xslt";
-
-      HashMap<String, String> p = new HashMap<String, String>();
-
-      p.put("mode", "forward");
-      p.put("debug_protocol", "C:/workspaces/eclipse3.2.2/SimDB/xslt/test/views/theProtocol.xml");
-
-      transform(sheetFile, p, new FileInputStream(infile), System.out);
-    } catch (final Throwable t) {
-      t.printStackTrace();
-    }
-  }
-
-  /**
-   * 
-  DOCUMENT ME!
+   * Transforms the xml stream with the given xslt script
    *
    * @param sheetFile file name of XSLT style sheet, could be a URL
    * @param parameters assumes simple parameters
    * @param in the input stream containing the document to be transformed
    * @param out the output stream to which the result should be written
    *
-   * @throws Exception
+   * @throws Exception if failure
    */
   public static void transform(final String sheetFile, final java.util.Map<String, String> parameters,
                                final InputStream in, final Writer out)
                         throws Exception {
     // use Saxon's s9api.
     // Could use Saxon's JAXP implementation, interfaces compatible with other XSLT processors such as Xalan. 
-    Processor    proc = new Processor(false);
-    XsltCompiler comp = proc.newXsltCompiler();
+    final Processor    proc = new Processor(false);
+    final XsltCompiler comp = proc.newXsltCompiler();
 
     // next could be passed in if precompiled, or exists as singleton for the style sheet
-    XsltExecutable exp = comp.compile(new StreamSource(new File(sheetFile)));
+    final XsltExecutable exp = comp.compile(new StreamSource(new File(sheetFile)));
 
     // doc should probably be passed in as stream.
-    XdmNode source = proc.newDocumentBuilder().build(new StreamSource(in));
+    final XdmNode source = proc.newDocumentBuilder().build(new StreamSource(in));
 
-    XsltTransformer trans = exp.load();
+    final XsltTransformer trans = exp.load();
 
     trans.setInitialContextNode(source);
 
@@ -152,7 +106,7 @@ public class XSLTTransformer {
       trans.setParameter(new QName(key), new XdmAtomicValue(parameters.get(key)));
     }
 
-    Serializer ser = new Serializer();
+    final Serializer ser = new Serializer();
 
     ser.setOutputProperty(Serializer.Property.METHOD, "xml");
     ser.setOutputProperty(Serializer.Property.INDENT, "yes");
@@ -163,28 +117,31 @@ public class XSLTTransformer {
   }
 
   /**
-   * 
-  DOCUMENT ME!
+   * Transforms the xml stream with the given xslt script to a string
    *
    * @param sheetFile file name of XSLT style sheet, could be a URL
    * @param parameters assumes simple parameters
    * @param xmldoc_url the file URL containing the document to be transformed
    *
-   * @return value TODO : Value Description
+   * @return String value
    *
-   * @throws Exception
+   * @throws Exception if failure
    */
   public static String transform2string(final String sheetFile, final java.util.Map<String, String> parameters,
                                         final String xmldoc_url)
                                  throws Exception {
-    StringWriter out    = new StringWriter();
-    URL          xmldoc = new URL(xmldoc_url);
-    InputStream  in     = xmldoc.openStream();
+    final StringWriter out    = new StringWriter();
+    final URL          xmldoc = new URL(xmldoc_url);
+    final InputStream  in     = xmldoc.openStream();
 
-    transform(sheetFile, parameters, in, out);
-    in.close();
+    try {
+        transform(sheetFile, parameters, in, out);
+    } finally {
+        in.close();
+    }
 
     return out.toString();
   }
+
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
