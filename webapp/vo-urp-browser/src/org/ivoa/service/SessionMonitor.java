@@ -73,7 +73,9 @@ public final class SessionMonitor implements HttpSessionListener {
    * TODO : Method Description
    */
   protected static void onExit() {
-    log.info("SessionMonitor.onExit : enter");
+      if (log.isWarnEnabled()) {
+        log.warn("SessionMonitor.onExit : enter");
+      }
 
     if (pollTh != null) {
       // stop polling thread :
@@ -82,7 +84,9 @@ public final class SessionMonitor implements HttpSessionListener {
       pollTh = null;
     }
 
-    log.info("SessionMonitor.onExit : exit");
+      if (log.isWarnEnabled()) {
+        log.warn("SessionMonitor.onExit : exit");
+      }
   }
 
   /**

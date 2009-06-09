@@ -5,6 +5,8 @@ import org.ivoa.dm.ObjectClassType;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.logging.Log;
+import org.ivoa.util.LogUtil;
 
 
 /**
@@ -15,6 +17,8 @@ DOCUMENT ME!
  */
 public final class EntityConfigFactory {
   //~ Constants --------------------------------------------------------------------------------------------------------
+  /** logger */
+  protected static final Log log = LogUtil.getLoggerDev();
 
   /**
    * TODO : Field Description
@@ -25,7 +29,7 @@ public final class EntityConfigFactory {
 
   // members :
   /** EntityConfig Classes mapped by alias */
-  private Map<String, EntityConfig> configs = new HashMap<String, EntityConfig>();
+  private final Map<String, EntityConfig> configs = new HashMap<String, EntityConfig>();
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
@@ -51,7 +55,18 @@ public final class EntityConfigFactory {
    * TODO : Method Description
    */
   public static void clean() {
+    if (log.isWarnEnabled()) {
+        log.warn("EntityConfigFactory.clean : enter");
+    }
+    if (instance != null) {
+        instance.getConfigs().clear();
+    }
+    // force GC :
     instance = null;
+    
+    if (log.isWarnEnabled()) {
+        log.warn("EntityConfigFactory.clean : exit");
+    }
   }
 
   /**
