@@ -103,6 +103,9 @@ public final class JPAFactory {
    * Called on exit (clean up code)
    */
   public static final void onExit() {
+    if (log.isWarnEnabled()) {
+        log.warn("JPAFactory.onExit : enter");
+    }
     if (! factories.isEmpty()) {
       // clean up :
       JPAFactory jf;
@@ -116,6 +119,9 @@ public final class JPAFactory {
 
         it.remove();
       }
+    }
+    if (log.isWarnEnabled()) {
+        log.warn("JPAFactory.onExit : exit");
     }
   }
 
@@ -185,6 +191,9 @@ public final class JPAFactory {
    * Stop pattern : closes the EntityManagerFactory
    */
   protected void stop() {
+    if (log.isWarnEnabled()) {
+      log.warn("JPAFactory.stop : enter : " + this.pu);
+    }
     if (getEmf() != null) {
       try {
         getEmf().close();
@@ -196,7 +205,7 @@ public final class JPAFactory {
     }
 
     if (log.isWarnEnabled()) {
-      log.warn("JPAFactory : closed.");
+      log.warn("JPAFactory.stop : exit : " + this.pu);
     }
   }
 

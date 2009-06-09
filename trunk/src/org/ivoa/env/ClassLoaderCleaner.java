@@ -1,5 +1,6 @@
 package org.ivoa.env;
 
+import org.apache.commons.logging.Log;
 import org.ivoa.dm.MetaModelFactory;
 import org.ivoa.dm.ModelFactory;
 
@@ -30,12 +31,22 @@ public final class ClassLoaderCleaner {
    * TODO : Method Description
    */
   public static void clean() {
+    final Log log = LogUtil.getLogger();
+
+    if (log.isWarnEnabled()) {
+        log.warn("ClassLoaderCleaner.clean : enter");
+    }
+
     // hard coded Factory calls to onExit() :
     MetaModelFactory.onExit();
     ModelFactory.onExit();
 
     JAXBFactory.onExit();
     JPAFactory.onExit();
+
+    if (log.isWarnEnabled()) {
+        log.warn("ClassLoaderCleaner.clean : exit");
+    }
 
     LogUtil.onExit();
   }

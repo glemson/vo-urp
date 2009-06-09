@@ -1,5 +1,6 @@
 package org.ivoa.jaxb;
 
+import java.util.Iterator;
 import org.apache.commons.logging.Log;
 
 import org.ivoa.conf.Configuration;
@@ -77,9 +78,25 @@ public final class JAXBFactory {
    * Called on exit (clean up code)
    */
   public static final void onExit() {
+    if (log.isWarnEnabled()) {
+        log.warn("JAXBFactory.onExit : enter");
+    }
     if (! factories.isEmpty()) {
       // clean up :
-      factories.clear();
+      JAXBFactory jf;
+
+      for (Iterator<JAXBFactory> it = factories.values().iterator(); it.hasNext();) {
+        jf = it.next();
+
+        if (jf != null) {
+          jf.stop();
+        }
+
+        it.remove();
+      }
+    }
+    if (log.isWarnEnabled()) {
+        log.warn("JAXBFactory.onExit : exit");
     }
   }
 
@@ -104,6 +121,21 @@ public final class JAXBFactory {
 
     if (log.isWarnEnabled()) {
       log.warn("JAXBFactory.init : exit : OK");
+    }
+  }
+
+  /**
+   * Ends the JAXB Context
+   */
+  private void stop() {
+    if (log.isWarnEnabled()) {
+      log.warn("JAXBFactory.close : enter : " + this.jaxbPath);
+    }
+    // force GC :
+    this.jc = null;
+
+    if (log.isWarnEnabled()) {
+      log.warn("JAXBFactory.close : exit : " + this.jaxbPath);
     }
   }
 
