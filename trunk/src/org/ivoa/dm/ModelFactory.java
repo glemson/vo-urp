@@ -81,7 +81,7 @@ public final class ModelFactory {
         // now factory is ok, so changes instance volatile reference :
         instance = f;
       } else {
-        throw new IllegalStateException("Unable to create MetaDataFactory !");
+        throw new IllegalStateException("Unable to create ModelFactory !");
       }
     }
 
@@ -92,10 +92,16 @@ public final class ModelFactory {
    * Called on exit (clean up code)
    */
   public static final void onExit() {
+    if (log.isWarnEnabled()) {
+        log.warn("ModelFactory.onExit : enter");
+    }
     if (instance != null) {
       // clean up :
       instance.jf = null;
       instance = null;
+    }
+    if (log.isWarnEnabled()) {
+        log.warn("ModelFactory.onExit : exit");
     }
   }
 
