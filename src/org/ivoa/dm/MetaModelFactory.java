@@ -126,28 +126,26 @@ public final class MetaModelFactory {
    * Returns singleton instance
    *
    * @return MetaModelFactory singleton instance
-   *
-   * @throws IllegalStateException if init() returns false
    */
   public static MetaModelFactory getInstance() {
     if (instance == null) {
       final MetaModelFactory f = new MetaModelFactory();
 
       try {
-          if (f.init()) {
-            // now f is ready, so changes instance volatile reference :
-            instance = f;
+        if (f.init()) {
+          // now f is ready, so changes instance volatile reference :
+          instance = f;
 
-            // post initialization : creates ClassTypes for all ObjectTypes & loads TAP model :
-            if (!instance.postInit()) {
-                throw new IllegalStateException("Unable to create MetaDataFactory (postInit failure) !");
-            }
-          } else {
-            throw new IllegalStateException("Unable to create MetaDataFactory (init failure) !");
+          // post initialization : creates ClassTypes for all ObjectTypes & loads TAP model :
+          if (! instance.postInit()) {
+            throw new IllegalStateException("Unable to create MetaDataFactory (postInit failure) !");
           }
-      } catch (RuntimeException re) {
-          onExit();
-          throw re;
+        } else {
+          throw new IllegalStateException("Unable to create MetaDataFactory (init failure) !");
+        }
+      } catch (final RuntimeException re) {
+        onExit();
+        throw re;
       }
     }
 
@@ -158,6 +156,10 @@ public final class MetaModelFactory {
    * Called on exit (clean up code)
    */
   public static final void onExit() {
+    if (log.isWarnEnabled()) {
+        log.warn("MetaModelFactory.onExit : enter");
+    }
+
     if (instance != null) {
       instance.model = null;
 
@@ -169,9 +171,13 @@ public final class MetaModelFactory {
       instance.getObjectClassTypes().clear();
 
       instance.getClasses().clear();
+      instance.getTap().clear();
 
       // clean up :
       instance = null;
+    }
+    if (log.isWarnEnabled()) {
+        log.warn("MetaModelFactory.onExit : exit");
     }
   }
 
@@ -193,6 +199,7 @@ public final class MetaModelFactory {
     for (final org.ivoa.metamodel.Profile prof : this.model.getProfile()) {
       processProfile(prof, BASE_PACKAGE);
     }
+
     for (final org.ivoa.metamodel.Package p : this.model.getPackage()) {
       processPackage(p, BASE_PACKAGE);
     }
@@ -264,7 +271,6 @@ public final class MetaModelFactory {
       }
     }
 
-
     // loads the TAP model :
     initTAP();
 
@@ -280,9 +286,10 @@ public final class MetaModelFactory {
   }
 
   /**
-   * Process the profile.
-   * Pay particular attention to the Identity type, which is to be mapped to the predefined class org.ivoa.dm.model
-   * @param p
+   * Process the profile. Pay particular attention to the Identity type, which is to be mapped to the predefined
+   * class org.ivoa.dm.model
+   *
+   * @param prof
    * @param parentPath
    */
   private void processProfile(final org.ivoa.metamodel.Profile prof, final String parentPath) {
@@ -290,8 +297,7 @@ public final class MetaModelFactory {
       processPackage(p, BASE_PACKAGE);
     }
   }
-  
-  
+
   /**
    * Recursive method to fill collections (primitive types, data types, enumeration & object types)
    *
@@ -648,6 +654,7 @@ public final class MetaModelFactory {
    */
   private void initTAP() {
     EntityManager em = null;
+
     try {
       final JPAFactory jf = JPAFactory.getInstance(JPA_PU);
 
