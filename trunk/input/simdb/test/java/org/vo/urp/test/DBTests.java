@@ -59,9 +59,9 @@ public class DBTests implements ApplicationMain {
     //~ Members ----------------------------------------------------------------------------------------------------------
 
     /** testLOAD_BATCH_WRITE iteration */
-    private final static int WRITE_ITERATION = 10;
+    private final static int WRITE_ITERATION = 2;
     /** testLOAD_THREADS_WRITE jobs */
-    private final static int WRITE_JOBS = 10;
+    private final static int WRITE_JOBS = 2;
     /** testLOAD_THREADS_WRITE number of threads */
     private final static int POOL_THREADS = 5;
     /** testLOAD_BATCH_WRITE jobs wait */
@@ -70,6 +70,10 @@ public class DBTests implements ApplicationMain {
     private XMLTests xmlTest = new XMLTests();
     /** InspectorTests */
     private InspectorTests inspectorTest = new InspectorTests();
+    /**
+     * test Gadget2 protocol file
+     */
+    public static final String PROTOCOL_FILE_GADGET2 = XMLTests.TEST_PATH + "Gadget2" + XMLTests.XML_EXT;
     /**
      * test HaloMaker protocol file
      */
@@ -152,6 +156,7 @@ public class DBTests implements ApplicationMain {
         // Gerard : load XML -> JPA -> database test case :
 
         // Loads & write an xml instance :
+        testLOAD_WRITE(jf, PROTOCOL_FILE_GADGET2);
         testLOAD_WRITE(jf, PROTOCOL_FILE_PDR);
         testLOAD_WRITE(jf, PROTOCOL_FILE_HALOMAKER);
 
@@ -195,7 +200,7 @@ public class DBTests implements ApplicationMain {
             final Simulator simulator = new Simulator();
 
             // Identity attributes :
-            simulator.setPublisherDID("ivo://www.mpa-garching.mpg.de/gadget2");
+            simulator.setPublisherDID("ivo://dummy/gadget2");
 
             // Resource attributes :
             simulator.setName("Gadget");
