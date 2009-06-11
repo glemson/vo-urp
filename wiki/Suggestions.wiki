@@ -5,7 +5,13 @@
 Here we list suggestions for VO-URP.
 
 [GL 2009-06-09]: 
+
 For attributes declared uniqueInCollection, create a namedQuery
 or a simple method for a lookup. For example for the SimDB:Protocol.parameter collection create a simple method based on the SimDB:InputParameter.name attribute.
 
 For unique attributes, create a named query.
+
+
+[GL 2009-06-11]:
+
+Show objects of type nayURI as hyperlinks (if they start with http, ftp, file).
