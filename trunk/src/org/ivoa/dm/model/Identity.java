@@ -179,13 +179,18 @@ public class Identity implements Serializable {
   protected final StringBuilder toString(final StringBuilder sb) {
     sb.append("[").append((getId() != null) ? getId() : "N/A");
 
-    if (getXmlId() != null) {
-      sb.append(" - xmlId: ").append(getXmlId());
+//    if (getXmlId() != null) {
+//      sb.append(" - xmlId: ").append(getXmlId());
+//    }
+
+    if (getPublisherDID() != null) {
+      sb.append(" - publisherDID: ").append(getPublisherDID());
     }
 
     if (getIvoId() != null) {
       sb.append(" - ivoId: ").append(getIvoId());
-    }
+    } // TODO create IvoId if not exists
+      
 
     return sb.append("] ");
   }
