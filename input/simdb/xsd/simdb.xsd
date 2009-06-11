@@ -222,6 +222,25 @@ Complete international dialing codes should be given, e.g. "+1-410-338-1234".</x
       </xsd:sequence>
    </xsd:complexType>
 
+   <xsd:complexType name="StringLiteral">
+      <xsd:annotation>
+         <xsd:documentation>TODO : Missing description : please, update your UML model asap.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1244650023265_482835_424</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:sequence>
+         <xsd:element name="value" type="xsd:string">
+            <xsd:annotation>
+               <xsd:documentation>TODO : Missing description : please, update your UML model asap.</xsd:documentation>
+               <xsd:appinfo>
+                  <vo-urp:identifier>_12_1_8e0028f_1244650039250_637608_466</vo-urp:identifier>
+               </xsd:appinfo>
+            </xsd:annotation>
+         </xsd:element>
+      </xsd:sequence>
+   </xsd:complexType>
+
    <xsd:simpleType name="DataType">
       <xsd:annotation>
          <xsd:documentation>The values of this type are to be used in the definition of metadata fields such as Property and InputParameter. These data types correspond to actual types used in computation and data representation and are slightly different from the more abstract types in the domain model in [2].

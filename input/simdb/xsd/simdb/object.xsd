@@ -249,7 +249,7 @@ Ex: omegaLambda, particleMass, linking length
                      </xsd:appinfo>
                   </xsd:annotation>
                </xsd:element>
-               <xsd:element name="label" type="xsd:string">
+               <xsd:element name="label" type="xsd:string" minOccurs="0">
                   <xsd:annotation>
                      <xsd:documentation>Short name / alias for this value (useful in GUI)</xsd:documentation>
                      <xsd:appinfo>
