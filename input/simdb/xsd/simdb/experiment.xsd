@@ -145,11 +145,11 @@ The base class for those kinds of experiments that can produce representations o
          <xsd:extension base="p4:Resource">
             <xsd:sequence>
                <xsd:element name="targetObject" type="TargetObjectType" minOccurs="0" maxOccurs="unbounded"/>
-               <xsd:element name="snapshot" type="Snapshot" maxOccurs="unbounded"/>
+               <xsd:element name="snapshot" type="Snapshot" minOccurs="0" maxOccurs="unbounded"/>
                <xsd:element name="targetProcess" type="TargetProcess" minOccurs="0" maxOccurs="unbounded"/>
                <xsd:element name="parameter" type="ParameterSetting" minOccurs="0" maxOccurs="unbounded"/>
                <xsd:element name="inputData" type="InputDataset" minOccurs="0" maxOccurs="unbounded"/>
-               <xsd:element name="representationObject" type="ExperimentRepresentationObject"
+               <xsd:element name="representationObject" type="ExperimentRepresentationObject" minOccurs="0"
                             maxOccurs="unbounded"/>
                <xsd:element name="appliedAlgorithm" type="AppliedAlgorithm" minOccurs="0"
                             maxOccurs="unbounded"/>
@@ -192,7 +192,8 @@ The base class for those kinds of experiments that can produce representations o
                      </xsd:appinfo>
                   </xsd:annotation>
                </xsd:element>
-               <xsd:element name="objectCollection" type="ObjectCollection" maxOccurs="unbounded"/>
+               <xsd:element name="objectCollection" type="ObjectCollection" minOccurs="0"
+                            maxOccurs="unbounded"/>
             </xsd:sequence>
          </xsd:extension>
       </xsd:complexContent>
