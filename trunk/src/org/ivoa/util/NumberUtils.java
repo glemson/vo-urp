@@ -67,7 +67,7 @@ public final class NumberUtils {
    * @return value TODO : Value Description
    */
   public static String format(final Integer value) {
-    return Integer.toString(value, 10);
+    return value.toString();
   }
 
   /**

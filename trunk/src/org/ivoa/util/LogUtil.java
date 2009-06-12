@@ -21,11 +21,11 @@ public final class LogUtil {
     /** developper logger : dev */
     public static final String LOGGER_DEV = "org.ivoa.dev";
 
-    /** shutdown flag to avoid singleton to be defined */
-    private static boolean isShutdown = false;
     /** singleton instance */
     private static volatile LogUtil instance = null;
 
+  /** shutdown flag to avoid singleton to be defined */
+  private static boolean isShutdown = false;
 
     static {
         /* static Initializer to call onInit method */
@@ -47,6 +47,7 @@ public final class LogUtil {
      * Private Constructor : use getInstance() method
      */
     private LogUtil() {
+    // Empty block
     }
 
     //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -127,7 +128,7 @@ public final class LogUtil {
     }
 
     /**
-     * Returns developper logger
+   * Returns developer logger
      *
      * @return Log
      */
@@ -235,7 +236,7 @@ public final class LogUtil {
     }
 
     /**
-     * Returns developper logger
+   * Returns developer logger
      *
      * @return Log
      */

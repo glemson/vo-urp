@@ -33,11 +33,11 @@ public final class StringBuilderWriter extends Writer {
 /**
    * Create a new string writer
    * 
-   * @param sb wrapped buffer
+   * @param buffer wrapped buffer
    */
-  public StringBuilderWriter(final StringBuilder sb) {
-    this.sb = sb;
-    lock = sb;
+  public StringBuilderWriter(final StringBuilder buffer) {
+    this.sb = buffer;
+    lock = buffer;
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -61,6 +61,7 @@ public final class StringBuilderWriter extends Writer {
    *
    * @throws IndexOutOfBoundsException
    */
+  @Override
   public void write(final char[] cbuf, final int off, final int len) {
     if ((off < 0) || (off > cbuf.length) || (len < 0) || ((off + len) > cbuf.length) || ((off + len) < 0)) {
       throw new IndexOutOfBoundsException();
@@ -184,7 +185,9 @@ public final class StringBuilderWriter extends Writer {
   /**
    * Flush the stream.
    */
+  @Override
   public void flush() {
+    // Empty block
   }
 
   /**
@@ -193,7 +196,9 @@ public final class StringBuilderWriter extends Writer {
    *
    * @throws IOException
    */
+  @Override
   public void close() throws IOException {
+    // Empty block
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
