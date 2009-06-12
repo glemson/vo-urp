@@ -41,6 +41,7 @@ public final class FileUtils {
    * Creates a new FileUtils object
    */
   private FileUtils() {
+    // empty block
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -111,7 +112,7 @@ public final class FileUtils {
    * @return value TODO : Value Description
    */
   private static File getExistingFile(final String path) {
-    if (! StringUtils.isEmpty(path)) {
+    if (! JavaUtils.isEmpty(path)) {
       final File file = new File(path);
 
       if (file.exists()) {
@@ -177,7 +178,7 @@ public final class FileUtils {
    * @return value TODO : Value Description
    */
   public static Writer openFile(final String absoluteFilePath, final int bufferSize) {
-    if (! StringUtils.isEmpty(absoluteFilePath)) {
+    if (! JavaUtils.isEmpty(absoluteFilePath)) {
       return openFile(new File(absoluteFilePath), bufferSize);
     }
 

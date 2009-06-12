@@ -17,6 +17,7 @@ public final class StringUtils {
    * Forbidden Constructor
    */
   private StringUtils() {
+    // Empty block
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -28,8 +29,9 @@ public final class StringUtils {
    *
    * @return true if value is empty (null or no chars)
    */
+  @Deprecated
   public static boolean isEmpty(final String value) {
-    return (value == null) || (value.length() == 0);
+    return JavaUtils.isEmpty(value);
   }
 
   /**
@@ -71,9 +73,9 @@ public final class StringUtils {
    * @return value TODO : Value Description
    */
   public static String getMessage(final String title, final String msg) {
-    if (! isEmpty(msg)) {
-      ssb.append("<html><body><center><b>").append(title).append(" :</b><br><br>").append(msg).append(
-        "</center></body></html>");
+    if (!JavaUtils.isEmpty(msg)) {
+      ssb.append("<html><body><center><b>").append(title).append(" :</b><br><br>").append(msg)
+          .append("</center></body></html>");
 
       return extract(ssb);
     }
@@ -89,7 +91,7 @@ public final class StringUtils {
    * @return value TODO : Value Description
    */
   public static String getTooltipText(final String msg) {
-    if (! isEmpty(msg)) {
+    if (!JavaUtils.isEmpty(msg)) {
       ssb.append("<html><body><center>").append(msg).append("</center></body></html>");
 
       return extract(ssb);
@@ -107,8 +109,8 @@ public final class StringUtils {
    * @return value TODO : Value Description
    */
   public static String getTooltipText(final String msg, final String msg2) {
-    final boolean v1 = ! isEmpty(msg);
-    final boolean v2 = ! isEmpty(msg2);
+    final boolean v1 = !JavaUtils.isEmpty(msg);
+    final boolean v2 = !JavaUtils.isEmpty(msg2);
 
     if (v1 || v2) {
       ssb.append("<html><body><center>");

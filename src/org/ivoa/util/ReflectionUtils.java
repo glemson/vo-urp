@@ -20,6 +20,7 @@ public final class ReflectionUtils {
    * Constructor
    */
   private ReflectionUtils() {
+    // Empty block
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
