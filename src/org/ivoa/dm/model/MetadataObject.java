@@ -394,7 +394,10 @@ public abstract class MetadataObject extends MetadataElement {
    * @return value TODO : Value Description
    */
   public String getIvoId() {
-    return Configuration.getInstance().getIVOIdPrefix() + getUtype() + "/" + id;
+    if(id == null)
+      return null;
+    else
+      return Configuration.getInstance().getIVOIdPrefix() + getUtype() + "/" + id;
   }
 
   /**

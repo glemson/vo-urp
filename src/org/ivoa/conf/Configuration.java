@@ -91,7 +91,7 @@ public final class Configuration extends PropertyHolder {
    */
   @Override
   protected boolean postInit() {
-    this.ivoIdPrefix = getProperty(SERVICE_IVOID, "") + "#";
+    this.ivoIdPrefix = getProperty(SERVICE_IVOID, "").trim() + "#";
 
     return true;
   }
