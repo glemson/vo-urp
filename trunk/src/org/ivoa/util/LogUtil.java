@@ -13,13 +13,16 @@ import java.util.Map;
  */
 public final class LogUtil {
     //~ Constants --------------------------------------------------------------------------------------------------------
+
     /** internal apache commons Logging diagnostic FLAG : use System.out */
     public static final boolean FORCE_APACHE_COMMONS_LOGGING_DIAGNOSTICS = false;
-
     /** main logger : main */
     public static final String LOGGER_MAIN = "org.ivoa";
     /** developper logger : dev */
     public static final String LOGGER_DEV = "org.ivoa.dev";
+
+    /** shutdown flag to avoid singleton to be defined */
+    private static boolean isShutdown = false;
     /** singleton instance */
     private static volatile LogUtil instance = null;
 
@@ -55,20 +58,21 @@ public final class LogUtil {
     public static LogUtil getInstance() {
         if (instance == null) {
             final LogUtil l = new LogUtil();
-
             l.init();
+            if (isShutdown) {
+                l.log.error("LogUtil.getInstance : shutdown detected : ", new Throwable());
+                return l;
+            }
             instance = l;
         }
 
         return instance;
     }
+
     /**
-     * PUBLIC:
-     *
-     * OnInit method : define system properties for org.apache.commons.logging
+     * PUBLIC: OnInit method : define system properties for org.apache.commons.logging
      */
     public static final void onInit() {
-
         if (FORCE_APACHE_COMMONS_LOGGING_DIAGNOSTICS) {
             /**
              * The name (<code>org.apache.commons.logging.diagnostics.dest</code>)
@@ -90,17 +94,27 @@ public final class LogUtil {
     }
 
     /**
-     * PUBLIC:
-     *
-     * onExit method : release all ClassLoader references due to apache commons logging LogFactory
-     *
-     * NOTE : <b>This method must be called in the context of a web application via ServletContextListener.contextDestroyed(ServletContextEvent)</b>
+     * PUBLIC: onExit method : release all ClassLoader references due to apache commons logging LogFactory NOTE :
+     * <b>This method must be called in the context of a web application via
+     * ServletContextListener.contextDestroyed(ServletContextEvent)</b>
      *
      * @see org.apache.commons.logging.LogFactory#release(ClassLoader)
      */
     public static final void onExit() {
-        // Classloader unload problem with commons-logging :
-        LogFactory.release(Thread.currentThread().getContextClassLoader());
+        isShutdown = true;
+        if (instance != null) {
+            // force GC :
+            instance.log = null;
+            instance.logDev = null;
+            instance.logs.clear();
+
+            // free singleton :
+            instance = null;
+
+            // Classloader unload problem with commons-logging :
+            LogFactory.release(Thread.currentThread().getContextClassLoader());
+
+        }
     }
 
     /**
@@ -138,7 +152,6 @@ public final class LogUtil {
      * @throws IllegalStateException
      */
     private void init() {
-
         this.log = getLog(LOGGER_MAIN);
 
         if (!(this.log instanceof org.apache.commons.logging.impl.Log4JLogger)) {
