@@ -11,11 +11,13 @@ public final class ThresholdTimer {
   /**
    * TODO : Field Description
    */
-  private Timer        low       = new Timer();
+  private final Timer low = new Timer();
+
   /**
    * TODO : Field Description
    */
-  private Timer high = new Timer();
+  private final Timer high = new Timer();
+
   /**
    * TODO : Field Description
    */

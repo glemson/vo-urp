@@ -31,6 +31,7 @@ public final class TimerFactory {
    * Forbidden Constructor
    */
   private TimerFactory() {
+    // empty block
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -72,7 +73,7 @@ public final class TimerFactory {
    *
    * @return value TODO : Value Description
    */
-  public static final Map getTimers() {
+  public static final Map<String, ThresholdTimer> getTimers() {
     return timers;
   }
 
