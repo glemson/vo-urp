@@ -218,14 +218,14 @@
     <parameterGroup>
         <description>The code distinguishes between different particle types. Each type may have a different gravitational
 softening. As far as gravity is concerned, all the types are treated equivalently by the
-code, the names ‘Gas’, ‘Halo’, ‘Disk’, ‘Bulge’, ‘Stars’, and ‘Bndry’, are just arbitrary tags,
-still reflecting GADGET-2’s origin as a tool to study colliding galaxies. However, the particles
-of the first type (‘Gas’) are indeed treated as SPH particles, i.e. they receive an additional hydrodynamic
+code, the names Gas, Halo, Disk, Bulge, Stars, Bndry, are just arbitrary tags,
+still reflecting GADGET-2’'s origin as a tool to study colliding galaxies. However, the particles
+of the first type (Gas) are indeed treated as SPH particles, i.e. they receive an additional hydrodynamic
 acceleration, and their internal entropy per unit mass is evolved as independent
 thermodynamic variable.
 Gravity is softened with a spline, as outlined in the code paper. The softenings quoted here
-all refer to ², the roughly equivalent Plummer softening length. Note that for the spline that is
-actually used, the force will be exactly Newtonian beyond h = 2:8². The softening lengths are
+all refer to espsilon, the roughly equivalent Plummer softening length. Note that for the spline that is
+actually used, the force will be exactly Newtonian beyond h = 2.8 espsilon. The softening lengths are
 in internal length units. For comoving integration, the softening refers to the one employed in
 comoving coordinates, which usually stays fixed during the simulation. However, employing
 the *MaxPhys parameters described below the code can also be asked to switch to a fixed
@@ -324,13 +324,6 @@ enabled for ComovingIntegrationOn=1, otherwise the *MaxPhys values are ignored.<
             <datatype>float</datatype>
             <cardinality>1</cardinality>
             <description>Y component of velocity.</description>
-        </property>
-        <property>
-            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/VZ"  xmlId="Gas_VZ"/>
-            <name>vz</name>
-            <datatype>float</datatype>
-            <cardinality>1</cardinality>
-            <description>Z component of velocity.</description>
         </property>
         <property>
             <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/VZ"  xmlId="Gas_VZ"/>
@@ -462,6 +455,740 @@ enabled for ComovingIntegrationOn=1, otherwise the *MaxPhys values are ignored.<
         <type>SPH particle</type>
         <label></label>
     </representation>
+    <representation>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo" />
+        <name>Halo</name>
+        <description>Dark matter particle</description>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/X" xmlId="Halo_X"/>
+            <name>x</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.x</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/Y" xmlId="Halo_Y"/>
+            <name>y</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.y</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/Z"  xmlId="Halo_Z"/>
+            <name>z</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.z</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/VX" xmlId="Halo_VX"/>
+            <name>vx</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/VY" xmlId="Halo_VY"/>
+            <name>vy</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/VZ"  xmlId="Halo_VZ"/>
+            <name>vz</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/ID"  xmlId="Halo_ID"/>
+            <name>id</name>
+            <datatype>int</datatype>
+            <cardinality>1</cardinality>
+            <description>Identifier of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/Mass"  xmlId="Halo_Mass"/>
+            <name>mass</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Mass of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/Pot"  xmlId="Halo_POT"/>
+            <name>pot</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Gravitational potential of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/AccX" xmlId="Halo_AccX"/>
+            <name>accx</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>X component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/AccY"  xmlId="Halo_AccY"/>
+            <name>accy</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Y component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/AccZ"  xmlId="Halo_AccZ"/>
+            <name>accz</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Z component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/dt"  xmlId="Halo_dt"/>
+            <name>dt</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Individual timesteps of particle.</description>
+        </property>
+
+        <propertyGroup>
+            <identity />
+            <name>Position</name>
+            <description>X-Y-Z Coordinates</description>
+            <member>
+                <property xmlId="Halo_X"/>
+            </member>
+            <member>
+                <property xmlId="Halo_Y"/>
+            </member>
+            <member>
+                <property xmlId="Halo_Z"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Velocity</name>
+            <description>X-Y-Z components of velocity</description>
+            <member>
+                <property xmlId="Halo_VX"/>
+            </member>
+            <member>
+                <property xmlId="Halo_VY"/>
+            </member>
+            <member>
+                <property xmlId="Halo_VZ"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Acceleration</name>
+            <description>X-Y-Z components of acceleration</description>
+            <member>
+                <property xmlId="Halo_AccX"/>
+            </member>
+            <member>
+                <property xmlId="Halo_AccY"/>
+            </member>
+            <member>
+                <property xmlId="Halo_AccZ"/>
+            </member>
+        </propertyGroup>
+        <type>point particle</type>
+        <label></label>
+    </representation>
+    
+    
+    
+    <representation>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk" />
+        <name>Disk</name>
+        <description>A dark matter particle.</description>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/X" xmlId="Disk_X"/>
+            <name>x</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.x</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/Y" xmlId="Disk_Y"/>
+            <name>y</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.y</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/Z"  xmlId="Disk_Z"/>
+            <name>z</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.z</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/VX" xmlId="Disk_VX"/>
+            <name>vx</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/VY" xmlId="Disk_VY"/>
+            <name>vy</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/VZ"  xmlId="Disk_VZ"/>
+            <name>vz</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/ID"  xmlId="Disk_ID"/>
+            <name>id</name>
+            <datatype>int</datatype>
+            <cardinality>1</cardinality>
+            <description>Identifier of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/Mass"  xmlId="Disk_Mass"/>
+            <name>mass</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Mass of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/Pot"  xmlId="Disk_POT"/>
+            <name>pot</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Gravitational potential of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/AccX" xmlId="Disk_AccX"/>
+            <name>accx</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>X component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/AccY"  xmlId="Disk_AccY"/>
+            <name>accy</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Y component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/AccZ"  xmlId="Disk_AccZ"/>
+            <name>accz</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Z component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/dt"  xmlId="Disk_dt"/>
+            <name>dt</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Individual timesteps of particle.</description>
+        </property>
+
+        <propertyGroup>
+            <identity />
+            <name>Position</name>
+            <description>X-Y-Z Coordinates</description>
+            <member>
+                <property xmlId="Disk_X"/>
+            </member>
+            <member>
+                <property xmlId="Disk_Y"/>
+            </member>
+            <member>
+                <property xmlId="Disk_Z"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Velocity</name>
+            <description>X-Y-Z components of velocity</description>
+            <member>
+                <property xmlId="Disk_VX"/>
+            </member>
+            <member>
+                <property xmlId="Disk_VY"/>
+            </member>
+            <member>
+                <property xmlId="Disk_VZ"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Acceleration</name>
+            <description>X-Y-Z components of acceleration</description>
+            <member>
+                <property xmlId="Disk_AccX"/>
+            </member>
+            <member>
+                <property xmlId="Disk_AccY"/>
+            </member>
+            <member>
+                <property xmlId="Disk_AccZ"/>
+            </member>
+        </propertyGroup>
+        <type>point particle</type>
+        <label></label>
+    </representation>
+    
+
+    <representation>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge" />
+        <name>Bulge</name>
+        <description>A dark matter particle.</description>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/X" xmlId="Bulge_X"/>
+            <name>x</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.x</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/Y" xmlId="Bulge_Y"/>
+            <name>y</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.y</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/Z"  xmlId="Bulge_Z"/>
+            <name>z</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.z</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/VX" xmlId="Bulge_VX"/>
+            <name>vx</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/VY" xmlId="Bulge_VY"/>
+            <name>vy</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/VZ"  xmlId="Bulge_VZ"/>
+            <name>vz</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/ID"  xmlId="Bulge_ID"/>
+            <name>id</name>
+            <datatype>int</datatype>
+            <cardinality>1</cardinality>
+            <description>Identifier of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/Mass"  xmlId="Bulge_Mass"/>
+            <name>mass</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Mass of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/Pot"  xmlId="Bulge_POT"/>
+            <name>pot</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Gravitational potential of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/AccX" xmlId="Bulge_AccX"/>
+            <name>accx</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>X component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/AccY"  xmlId="Bulge_AccY"/>
+            <name>accy</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Y component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/AccZ"  xmlId="Bulge_AccZ"/>
+            <name>accz</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Z component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/dt"  xmlId="Bulge_dt"/>
+            <name>dt</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Individual timesteps of particle.</description>
+        </property>
+
+        <propertyGroup>
+            <identity />
+            <name>Position</name>
+            <description>X-Y-Z Coordinates</description>
+            <member>
+                <property xmlId="Bulge_X"/>
+            </member>
+            <member>
+                <property xmlId="Bulge_Y"/>
+            </member>
+            <member>
+                <property xmlId="Bulge_Z"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Velocity</name>
+            <description>X-Y-Z components of velocity</description>
+            <member>
+                <property xmlId="Bulge_VX"/>
+            </member>
+            <member>
+                <property xmlId="Bulge_VY"/>
+            </member>
+            <member>
+                <property xmlId="Bulge_VZ"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Acceleration</name>
+            <description>X-Y-Z components of acceleration</description>
+            <member>
+                <property xmlId="Bulge_AccX"/>
+            </member>
+            <member>
+                <property xmlId="Bulge_AccY"/>
+            </member>
+            <member>
+                <property xmlId="Bulge_AccZ"/>
+            </member>
+        </propertyGroup>
+        <type>point particle</type>
+        <label></label>
+    </representation>
+
+    <representation>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars" />
+        <name>Stars</name>
+        <description>A dark matter particle.</description>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/X" xmlId="Stars_X"/>
+            <name>x</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.x</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/Y" xmlId="Stars_Y"/>
+            <name>y</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.y</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/Z"  xmlId="Stars_Z"/>
+            <name>z</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.z</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/VX" xmlId="Stars_VX"/>
+            <name>vx</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/VY" xmlId="Stars_VY"/>
+            <name>vy</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/VZ"  xmlId="Stars_VZ"/>
+            <name>vz</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/ID"  xmlId="Stars_ID"/>
+            <name>id</name>
+            <datatype>int</datatype>
+            <cardinality>1</cardinality>
+            <description>Identifier of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/Mass"  xmlId="Stars_Mass"/>
+            <name>mass</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Mass of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/Pot"  xmlId="Stars_POT"/>
+            <name>pot</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Gravitational potential of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/AccX" xmlId="Stars_AccX"/>
+            <name>accx</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>X component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/AccY"  xmlId="Stars_AccY"/>
+            <name>accy</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Y component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/AccZ"  xmlId="Stars_AccZ"/>
+            <name>accz</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Z component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/dt"  xmlId="Stars_dt"/>
+            <name>dt</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Individual timesteps of particle.</description>
+        </property>
+
+        <propertyGroup>
+            <identity />
+            <name>Position</name>
+            <description>X-Y-Z Coordinates</description>
+            <member>
+                <property xmlId="Stars_X"/>
+            </member>
+            <member>
+                <property xmlId="Stars_Y"/>
+            </member>
+            <member>
+                <property xmlId="Stars_Z"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Velocity</name>
+            <description>X-Y-Z components of velocity</description>
+            <member>
+                <property xmlId="Stars_VX"/>
+            </member>
+            <member>
+                <property xmlId="Stars_VY"/>
+            </member>
+            <member>
+                <property xmlId="Stars_VZ"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Acceleration</name>
+            <description>X-Y-Z components of acceleration</description>
+            <member>
+                <property xmlId="Stars_AccX"/>
+            </member>
+            <member>
+                <property xmlId="Stars_AccY"/>
+            </member>
+            <member>
+                <property xmlId="Stars_AccZ"/>
+            </member>
+        </propertyGroup>
+        <type>point particle</type>
+        <label></label>
+    </representation>
+
+
+    <representation>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry" />
+        <name>Bndry</name>
+        <description>A "boundary" dark matter particle.</description>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/X" xmlId="Bndry_X"/>
+            <name>x</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.x</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/Y" xmlId="Bndry_Y"/>
+            <name>y</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.y</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/Z"  xmlId="Bndry_Z"/>
+            <name>z</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.z</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/VX" xmlId="Bndry_VX"/>
+            <name>vx</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/VY" xmlId="Bndry_VY"/>
+            <name>vy</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/VZ"  xmlId="Bndry_VZ"/>
+            <name>vz</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/ID"  xmlId="Bndry_ID"/>
+            <name>id</name>
+            <datatype>int</datatype>
+            <cardinality>1</cardinality>
+            <description>Identifier of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/Mass"  xmlId="Bndry_Mass"/>
+            <name>mass</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Mass of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/Pot"  xmlId="Bndry_POT"/>
+            <name>pot</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Gravitational potential of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/AccX" xmlId="Bndry_AccX"/>
+            <name>accx</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>X component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/AccY"  xmlId="Bndry_AccY"/>
+            <name>accy</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Y component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/AccZ"  xmlId="Bndry_AccZ"/>
+            <name>accz</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Z component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/dt"  xmlId="Bndry_dt"/>
+            <name>dt</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Individual timesteps of particle.</description>
+        </property>
+
+        <propertyGroup>
+            <identity />
+            <name>Position</name>
+            <description>X-Y-Z Coordinates</description>
+            <member>
+                <property xmlId="Bndry_X"/>
+            </member>
+            <member>
+                <property xmlId="Bndry_Y"/>
+            </member>
+            <member>
+                <property xmlId="Bndry_Z"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Velocity</name>
+            <description>X-Y-Z components of velocity</description>
+            <member>
+                <property xmlId="Bndry_VX"/>
+            </member>
+            <member>
+                <property xmlId="Bndry_VY"/>
+            </member>
+            <member>
+                <property xmlId="Bndry_VZ"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Acceleration</name>
+            <description>X-Y-Z components of acceleration</description>
+            <member>
+                <property xmlId="Bndry_AccX"/>
+            </member>
+            <member>
+                <property xmlId="Bndry_AccY"/>
+            </member>
+            <member>
+                <property xmlId="Bndry_AccZ"/>
+            </member>
+        </propertyGroup>
+        <type>point particle</type>
+        <label></label>
+    </representation>
+
+
+
+
+    
+    <!--  InputParameter -->
     <parameter>
         <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/OutputDir" xmlId="PAR_OutputDir"/>
         <name>OutputDir</name>
