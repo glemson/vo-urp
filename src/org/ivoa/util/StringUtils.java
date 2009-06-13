@@ -23,18 +23,6 @@ public final class StringUtils {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * Test if value is empty (null or no chars)
-   *
-   * @param value string value
-   *
-   * @return true if value is empty (null or no chars)
-   */
-  @Deprecated
-  public static boolean isEmpty(final String value) {
-    return JavaUtils.isEmpty(value);
-  }
-
-  /**
    * Extract buffer content & reset buffer
    *
    * @param sb StringBuilder
@@ -67,8 +55,8 @@ public final class StringUtils {
   /**
    * TODO : Method Description
    *
-   * @param title 
-   * @param msg 
+   * @param title
+   * @param msg
    *
    * @return value TODO : Value Description
    */
@@ -86,7 +74,7 @@ public final class StringUtils {
   /**
    * TODO : Method Description
    *
-   * @param msg 
+   * @param msg
    *
    * @return value TODO : Value Description
    */
@@ -103,8 +91,8 @@ public final class StringUtils {
   /**
    * TODO : Method Description
    *
-   * @param msg 
-   * @param msg2 
+   * @param msg
+   * @param msg2
    *
    * @return value TODO : Value Description
    */
@@ -138,7 +126,7 @@ public final class StringUtils {
   /**
    * TODO : Method Description
    *
-   * @param source 
+   * @param source
    *
    * @return value TODO : Value Description
    */

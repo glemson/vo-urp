@@ -8,26 +8,18 @@ package org.ivoa.util.timer;
 public final class Timer {
   //~ Members ----------------------------------------------------------------------------------------------------------
 
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private double acc = 0d;
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private int n = 0;
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private double min = Double.MAX_VALUE;
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private double max = Double.MIN_VALUE;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Creates a new Timer object
    */
   public Timer() {
@@ -39,7 +31,7 @@ public final class Timer {
   /**
    * TODO : Method Description
    *
-   * @param time 
+   * @param time
    */
   public void add(final double time) {
     // linux bug :

@@ -1,6 +1,5 @@
 package org.ivoa.util;
 
-import org.apache.commons.logging.Log;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -14,6 +13,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 import java.net.URL;
+import org.ivoa.bean.LogSupport;
 
 
 /**
@@ -21,24 +21,18 @@ import java.net.URL;
  *
  * @author laurent bourges (voparis)
  */
-public final class FileUtils {
+public final class FileUtils extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**
-   * TODO : Field Description
-   */
-  private static final int DEFAULT_READ_BUFFER_SIZE  = 16 * 1024;
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
+  private static final int DEFAULT_READ_BUFFER_SIZE = 16 * 1024;
+  /** TODO : Field Description */
   private static final int DEFAULT_WRITE_BUFFER_SIZE = 64 * 1024;
-  /** logger */
-  protected static final Log log = LogUtil.getLoggerDev();
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
-   * Creates a new FileUtils object
+/**
+   * Forbidden FileUtils constructor
    */
   private FileUtils() {
     // empty block
@@ -49,9 +43,11 @@ public final class FileUtils {
   /**
    * TODO : Method Description
    *
-   * @param fileName 
+   * @param fileName
    *
    * @return value TODO : Value Description
+   *
+   * @throws RuntimeException
    */
   public static final InputStream getSystemFileInputStream(final String fileName) {
     // Find properties in the classpath
@@ -76,7 +72,7 @@ public final class FileUtils {
   /**
    * TODO : Method Description
    *
-   * @param in 
+   * @param in
    */
   public static void closeStream(final InputStream in) {
     if (in != null) {
@@ -91,7 +87,7 @@ public final class FileUtils {
   /**
    * TODO : Method Description
    *
-   * @param out 
+   * @param out
    */
   public static void closeStream(final OutputStream out) {
     if (out != null) {
@@ -107,7 +103,7 @@ public final class FileUtils {
   /**
    * TODO : Method Description
    *
-   * @param path 
+   * @param path
    *
    * @return value TODO : Value Description
    */
@@ -126,7 +122,7 @@ public final class FileUtils {
   /**
    * TODO : Method Description
    *
-   * @param path 
+   * @param path
    *
    * @return value TODO : Value Description
    */
@@ -143,7 +139,7 @@ public final class FileUtils {
   /**
    * TODO : Method Description
    *
-   * @param path 
+   * @param path
    *
    * @return value TODO : Value Description
    */
@@ -161,7 +157,7 @@ public final class FileUtils {
   /**
    * TODO : Method Description
    *
-   * @param absoluteFilePath 
+   * @param absoluteFilePath
    *
    * @return value TODO : Value Description
    */
@@ -172,8 +168,8 @@ public final class FileUtils {
   /**
    * TODO : Method Description
    *
-   * @param absoluteFilePath 
-   * @param bufferSize 
+   * @param absoluteFilePath
+   * @param bufferSize
    *
    * @return value TODO : Value Description
    */
@@ -188,7 +184,7 @@ public final class FileUtils {
   /**
    * TODO : Method Description
    *
-   * @param file 
+   * @param file
    *
    * @return value TODO : Value Description
    */
@@ -199,8 +195,8 @@ public final class FileUtils {
   /**
    * TODO : Method Description
    *
-   * @param file 
-   * @param bufferSize 
+   * @param file
+   * @param bufferSize
    *
    * @return value TODO : Value Description
    */
@@ -217,7 +213,7 @@ public final class FileUtils {
   /**
    * TODO : Method Description
    *
-   * @param w 
+   * @param w
    *
    * @return value TODO : Value Description
    */
@@ -237,7 +233,7 @@ public final class FileUtils {
   /**
    * TODO : Method Description
    *
-   * @param absoluteFilePath 
+   * @param absoluteFilePath
    *
    * @return value TODO : Value Description
    */
@@ -248,8 +244,8 @@ public final class FileUtils {
   /**
    * TODO : Method Description
    *
-   * @param absoluteFilePath 
-   * @param bufferSize 
+   * @param absoluteFilePath
+   * @param bufferSize
    *
    * @return value TODO : Value Description
    */
@@ -260,7 +256,7 @@ public final class FileUtils {
   /**
    * TODO : Method Description
    *
-   * @param file 
+   * @param file
    *
    * @return value TODO : Value Description
    */
@@ -271,8 +267,8 @@ public final class FileUtils {
   /**
    * TODO : Method Description
    *
-   * @param file 
-   * @param bufferSize 
+   * @param file
+   * @param bufferSize
    *
    * @return value TODO : Value Description
    */
@@ -289,7 +285,7 @@ public final class FileUtils {
   /**
    * TODO : Method Description
    *
-   * @param r 
+   * @param r
    *
    * @return value TODO : Value Description
    */

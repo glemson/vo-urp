@@ -9,8 +9,7 @@ import java.util.Map;
 /**
  * Main Java utility methods : isEmpty / asList
  * 
- * @author RNZM3281
- * @version G4R2
+ * @author laurent bourges
  */
 public final class JavaUtils {
 
@@ -47,7 +46,7 @@ public final class JavaUtils {
   /**
    * Is the given collection null or empty ?
    * 
-   * @param array collection to test
+   * @param col collection to test
    * @return true if the collection is null or empty
    */
   public final static boolean isEmpty(final Collection<Object> col) {
@@ -57,7 +56,7 @@ public final class JavaUtils {
   /**
    * Is the given map null or empty ?
    * 
-   * @param array map to test
+   * @param map map to test
    * @return true if the map is null or empty
    */
   public final static boolean isEmpty(final Map<Object, Object> map) {
@@ -69,7 +68,7 @@ public final class JavaUtils {
    * 
    * @param array array to convert
    * @return list (Collections.EMPTY_LIST if the array is empty)
-   * @see java.util.Arrays.asList(Object[])
+   * @see java.util.Arrays#asList(Object[])
    */
   public final static List<Object> asList(final Object[] array) {
     List<Object> res;
@@ -84,7 +83,6 @@ public final class JavaUtils {
   /**
    * Get short name for the given class
    * 
-   * @see java.beans.NameGenerator#unqualifiedClassName(Class)
    * @param type class
    * @return short name
    */

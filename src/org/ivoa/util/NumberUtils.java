@@ -15,13 +15,9 @@ import java.util.Map;
 public final class NumberUtils {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private static final String EXPONENT = "E00";
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private static final int EXP_SIGN = EXPONENT.length();
   /** Format used when <code>isMoreDecimal</code> is set to <code>true</code> */
   public static final String MORE_PRECISION = "0.000000000000000" + EXPONENT;
@@ -39,7 +35,7 @@ public final class NumberUtils {
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-  /**
+/**
    * Creates a new NumberUtils object
    */
   private NumberUtils() {
@@ -51,7 +47,7 @@ public final class NumberUtils {
   /**
    * TODO : Method Description
    *
-   * @param value 
+   * @param value
    *
    * @return value TODO : Value Description
    */
@@ -62,7 +58,7 @@ public final class NumberUtils {
   /**
    * TODO : Method Description
    *
-   * @param value 
+   * @param value
    *
    * @return value TODO : Value Description
    */
@@ -73,7 +69,7 @@ public final class NumberUtils {
   /**
    * TODO : Method Description
    *
-   * @param isMoreDecimal 
+   * @param isMoreDecimal
    *
    * @return value TODO : Value Description
    */
@@ -84,12 +80,14 @@ public final class NumberUtils {
   /**
    * TODO : Method Description
    *
-   * @param precision 
+   * @param precision
    *
    * @return value TODO : Value Description
+   *
+   * @throws IllegalStateException
    */
   public static DecimalFormat getFormatter(final String precision) {
-    final DecimalFormat df             = cache.get(precision);
+    final DecimalFormat df = cache.get(precision);
 
     if (df == null) {
       throw new IllegalStateException("NumberUtil : precision not allowed : " + precision);
@@ -101,8 +99,8 @@ public final class NumberUtils {
   /**
    * TODO : Method Description
    *
-   * @param value 
-   * @param precision 
+   * @param value
+   * @param precision
    *
    * @return value TODO : Value Description
    */
@@ -113,9 +111,9 @@ public final class NumberUtils {
   /**
    * TODO : Method Description
    *
-   * @param value 
-   * @param precision 
-   * @param sb 
+   * @param value
+   * @param precision
+   * @param sb
    *
    * @return value TODO : Value Description
    */
@@ -126,8 +124,8 @@ public final class NumberUtils {
   /**
    * TODO : Method Description
    *
-   * @param value 
-   * @param precision 
+   * @param value
+   * @param precision
    *
    * @return value TODO : Value Description
    */
@@ -138,9 +136,9 @@ public final class NumberUtils {
   /**
    * TODO : Method Description
    *
-   * @param value 
-   * @param precision 
-   * @param sb 
+   * @param value
+   * @param precision
+   * @param sb
    *
    * @return value TODO : Value Description
    */
