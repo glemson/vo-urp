@@ -1,6 +1,5 @@
 package org.ivoa.util;
 
-import org.apache.commons.logging.Log;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,6 +12,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import org.ivoa.bean.LogSupport;
 
 
 /**
@@ -20,11 +20,9 @@ import java.util.Set;
  *
  * @author laurent bourges (voparis) / Gerard Lemson (mpe)
  */
-public final class TypeWrapper {
+public final class TypeWrapper extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /** logger */
-  protected static final Log log = LogUtil.getLoggerDev();
   /** date format : HH:MM:SS.MS */
   public static final SimpleDateFormat HSDF = new SimpleDateFormat("hh:mm:ss.ms");
   /** data format : DD/MM/YYYY HH:MM:SS */

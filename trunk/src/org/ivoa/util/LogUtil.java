@@ -9,10 +9,15 @@ import java.util.Map;
 /**
  * Commons-logging & Log4J Utility class :
  *
+ * TODO : use log4j-contrib to use the LoggerRepositorySelector in order to manage properly the classLoader
+ *
  * @author laurent bourges (voparis)
  */
 public final class LogUtil {
     //~ Constants --------------------------------------------------------------------------------------------------------
+
+    /** internal diagnostic FLAG : use System.out */
+    public static final boolean LOGGING_DIAGNOSTICS = false;
 
     /** internal apache commons Logging diagnostic FLAG : use System.out */
     public static final boolean FORCE_APACHE_COMMONS_LOGGING_DIAGNOSTICS = false;
@@ -56,15 +61,20 @@ public final class LogUtil {
      *
      * @return LogUtil singleton instance
      */
-    public static LogUtil getInstance() {
+    private static LogUtil getInstance() {
         if (instance == null) {
             final LogUtil l = new LogUtil();
             l.init();
             if (isShutdown) {
-                l.log.error("LogUtil.getInstance : shutdown detected : ", new Throwable());
+                // should not be possible :
+                if (l.log.isErrorEnabled()) {
+                    l.log.error("LogUtil.getInstance : shutdown detected : ", new Throwable());
+                }
                 return l;
             }
             instance = l;
+
+            instance.log.error("LogUtil.getInstance : new : " + instance);
         }
 
         return instance;
@@ -104,6 +114,9 @@ public final class LogUtil {
     public static final void onExit() {
         isShutdown = true;
         if (instance != null) {
+
+            instance.log.error("LogUtil.onExit : clearing : " + instance);
+
             // force GC :
             instance.log = null;
             instance.logDev = null;
@@ -114,37 +127,81 @@ public final class LogUtil {
 
             // Classloader unload problem with commons-logging :
             LogFactory.release(Thread.currentThread().getContextClassLoader());
-
         }
     }
 
     /**
-     * Returns main logger
+     * Returns true if shutdown flag is not set
+     * @return true if shutdown flag is not set
+     */
+    private static final boolean isRunning() {
+/*
+LogUtil.isRunning : shutdown detected :
+java.lang.Throwable
+        at org.ivoa.util.LogUtil.isRunning(LogUtil.java:151)
+        at org.ivoa.util.LogUtil.getLoggerDev(LogUtil.java:177)
+        at org.ivoa.web.servlet.BaseServlet.<clinit>(BaseServlet.java:69)
+        at sun.misc.Unsafe.ensureClassInitialized(Native Method)
+        at sun.reflect.UnsafeFieldAccessorFactory.newFieldAccessor(UnsafeFieldAccessorFactory.java:25)
+        at sun.reflect.ReflectionFactory.newFieldAccessor(ReflectionFactory.java:122)
+        at java.lang.reflect.Field.acquireFieldAccessor(Field.java:918)
+        at java.lang.reflect.Field.getFieldAccessor(Field.java:899)
+        at java.lang.reflect.Field.set(Field.java:657)
+        at org.apache.catalina.loader.WebappClassLoader.clearReferences(WebappClassLoader.java:1644)
+        at org.apache.catalina.loader.WebappClassLoader.stop(WebappClassLoader.java:1524)
+        at org.apache.catalina.loader.WebappLoader.stop(WebappLoader.java:707)
+        at org.apache.catalina.core.StandardContext.stop(StandardContext.java:4557)
+        at org.apache.catalina.manager.ManagerServlet.stop(ManagerServlet.java:1298)
+        at org.apache.catalina.manager.HTMLManagerServlet.stop(HTMLManagerServlet.java:622)
+        at org.apache.catalina.manager.HTMLManagerServlet.doGet(HTMLManagerServlet.java:131)
+ */
+        if (LOGGING_DIAGNOSTICS && isShutdown) {
+            System.out.println("LogUtil.isRunning : shutdown detected : ");
+            new Throwable().printStackTrace(System.out);
+        }
+
+        return !isShutdown;
+    }
+
+    /**
+     * Returns main logger : @see LOGGER_MAIN
      *
-     * @return Log
+     * @return Log instance or null if shutdown flag is set
      */
     public static Log getLogger() {
-        return getInstance().getLog();
+        Log l = null;
+        if (isRunning()) {
+            l = getInstance().getLog();
+        }
+        return l;
     }
 
     /**
-   * Returns developer logger
+     * Returns the developer logger : @see LOGGER_DEV
      *
-     * @return Log
+     * @return Log instance or null if shutdown flag is set
      */
     public static Log getLoggerDev() {
-        return getInstance().getLogDev();
+        Log l = null;
+        if (isRunning()) {
+            l = getInstance().getLogDev();
+        }
+        return l;
     }
 
     /**
-     * Returns logger by key
+     * Returns a logger for the given key (category)
      *
-     * @param key logger name in Log4J.xml
+     * @param key logger name defined in Log4J.xml
      *
-     * @return Log
+     * @return Log instance or null if shutdown flag is set
      */
     public static Log getLogger(final String key) {
-        return getInstance().getLog(key);
+        Log l = null;
+        if (isRunning()) {
+            l = getInstance().getLog(key);
+        }
+        return l;
     }
 
     /**

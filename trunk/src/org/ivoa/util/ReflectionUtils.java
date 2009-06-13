@@ -1,6 +1,6 @@
 package org.ivoa.util;
 
-import org.apache.commons.logging.Log;
+import org.ivoa.bean.LogSupport;
 
 
 /**
@@ -8,11 +8,7 @@ import org.apache.commons.logging.Log;
  *
  * @author laurent bourges (voparis)
  */
-public final class ReflectionUtils {
-  //~ Constants --------------------------------------------------------------------------------------------------------
-
-  /** logger */
-  private static final Log log = LogUtil.getLoggerDev();
+public final class ReflectionUtils extends LogSupport {
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
@@ -28,7 +24,7 @@ public final class ReflectionUtils {
   /**
    * TODO : Method Description
    *
-   * @param className 
+   * @param className
    *
    * @return value TODO : Value Description
    */
@@ -47,9 +43,9 @@ public final class ReflectionUtils {
   /**
    * TODO : Method Description
    *
-   * @param <T> 
-   * @param className 
-   * @param type 
+   * @param <T>
+   * @param className
+   * @param type
    *
    * @return value TODO : Value Description
    */
