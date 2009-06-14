@@ -16,10 +16,6 @@ import javax.xml.bind.Unmarshaller;
  * @author laurent bourges (voparis)
  */
 public final class CustomUnmarshallListener extends Unmarshaller.Listener {
-  //~ Constants --------------------------------------------------------------------------------------------------------
-
-  /** logger */
-  protected static final Log log = LogUtil.getLoggerDev();
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
@@ -43,6 +39,7 @@ public final class CustomUnmarshallListener extends Unmarshaller.Listener {
     if (target instanceof MetadataObject) {
       final MetadataObject object = (MetadataObject) target;
 
+      final Log log = LogUtil.getLoggerDev();
       if (log.isDebugEnabled()) {
         log.debug("CustomUnmarshallListener.afterUnmarshal : " + object);
       }

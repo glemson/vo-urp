@@ -1,19 +1,16 @@
 package org.ivoa.jpa;
 
-import org.apache.commons.logging.Log;
 
 import org.ivoa.dm.model.Identity;
 import org.ivoa.dm.model.MetadataObject;
-
-import org.ivoa.util.JavaUtils;
-import org.ivoa.util.LogUtil;
-import org.ivoa.util.StringUtils;
 
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import org.ivoa.bean.LogSupport;
+import org.ivoa.util.JavaUtils;
 
 
 /**
@@ -21,11 +18,7 @@ import javax.persistence.Query;
  *
  * @author laurent bourges (voparis)
  */
-public final class JPAHelper {
-  //~ Constants --------------------------------------------------------------------------------------------------------
-
-  /** logger */
-  public static final Log log = LogUtil.getLogger();
+public final class JPAHelper extends LogSupport {
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 

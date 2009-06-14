@@ -1,13 +1,11 @@
 package org.ivoa.env;
 
-import org.apache.commons.logging.Log;
 
 import org.ivoa.conf.Configuration;
 
-import org.ivoa.util.CollectionUtils;
-import org.ivoa.util.LogUtil;
 
 import java.util.Locale;
+import org.ivoa.bean.LogSupport;
 
 
 /**
@@ -15,11 +13,7 @@ import java.util.Locale;
  *
  * @author laurent bourges (voparis)
  */
-public final class ApplicationAdapter {
-  //~ Constants --------------------------------------------------------------------------------------------------------
-
-  /** logger */
-  private static final Log log = LogUtil.getLogger();
+public final class ApplicationAdapter extends LogSupport {
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 

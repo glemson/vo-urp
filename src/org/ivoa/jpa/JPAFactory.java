@@ -1,6 +1,5 @@
 package org.ivoa.jpa;
 
-import org.apache.commons.logging.Log;
 
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.eclipse.persistence.config.SessionCustomizer;
@@ -10,7 +9,6 @@ import org.eclipse.persistence.sessions.Session;
 import org.ivoa.conf.PropertyHolder;
 
 import org.ivoa.util.CollectionUtils;
-import org.ivoa.util.LogUtil;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,6 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import org.ivoa.bean.LogSupport;
 
 
 /**
@@ -28,15 +27,13 @@ import javax.persistence.Persistence;
  *
  * @author laurent bourges (voparis)
  */
-public final class JPAFactory {
+public final class JPAFactory extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** Table definition checker : seems not working with postgres JDBC driver */
   public static final boolean USE_INTEGRITY_CHECKER = false;
   /** Default config file */
   public static final String CONFIG_FILE = "jpa-config.properties";
-  /** logger */
-  private static final Log log = LogUtil.getLogger();
   /** all factories */
   private static final ConcurrentHashMap<String, JPAFactory> factories = new ConcurrentHashMap<String, JPAFactory>(4);
 
