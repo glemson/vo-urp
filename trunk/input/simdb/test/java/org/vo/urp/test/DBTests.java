@@ -27,6 +27,7 @@ import org.eclipse.persistence.jpa.JpaEntityManager;
 import org.eclipse.persistence.jpa.JpaHelper;
 import org.eclipse.persistence.queries.SQLCall;
 import org.eclipse.persistence.sessions.Session;
+import org.ivoa.bean.LogSupport;
 import org.ivoa.simdb.Cardinality;
 import org.ivoa.simdb.Contact;
 import org.ivoa.simdb.ContactRole;
@@ -55,7 +56,7 @@ import org.vo.urp.test.jaxb.XMLTests;
  *
  * @author laurent bourges (voparis)
  */
-public class DBTests implements ApplicationMain {
+public class DBTests extends LogSupport implements ApplicationMain {
     //~ Members ----------------------------------------------------------------------------------------------------------
 
     /** testLOAD_BATCH_WRITE iteration */
@@ -807,11 +808,11 @@ public class DBTests implements ApplicationMain {
         }
 
         public void run() {
-            ApplicationMain.log.warn("WriteJob : run : IN : " + i);
+            log.warn("WriteJob : run : IN : " + i);
 
             test.testLOAD_BATCH_WRITE(jf, xmlDocumentPath);
 
-            ApplicationMain.log.warn("WriteJob : run : OUT : " + i);
+            log.warn("WriteJob : run : OUT : " + i);
         }
     }
 }
