@@ -1,10 +1,8 @@
 package org.ivoa.dm.model;
 
-import org.apache.commons.logging.Log;
 
 import org.ivoa.dm.MetaModelFactory;
 
-import org.ivoa.util.LogUtil;
 
 import java.io.Serializable;
 
@@ -12,6 +10,7 @@ import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
+import org.ivoa.bean.LogSupport;
 
 
 /**
@@ -20,7 +19,7 @@ import java.util.Map;
  *
  * @author Gerard Lemson, Laurent Bourges
  */
-public abstract class MetadataElement implements Serializable, Cloneable {
+public abstract class MetadataElement extends LogSupport implements Serializable, Cloneable {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /**
@@ -28,8 +27,7 @@ public abstract class MetadataElement implements Serializable, Cloneable {
    * modification date of the UML model
    */
   private static final long serialVersionUID = 1L;
-  /** logger */
-  protected static final Log log = LogUtil.getLoggerDev();
+
   /** default toString buffer size */
   public static final int STRING_BUFFER_CAPACITY = 2048;
   /** present flag for identity Map */
