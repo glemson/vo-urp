@@ -1,7 +1,7 @@
 package org.vo.urp.test.jaxb;
 
+import org.ivoa.bean.LogSupport;
 import org.ivoa.dm.ModelFactory;
-import org.ivoa.dm.model.MetadataElement;
 import org.ivoa.dm.model.MetadataObject;
 
 import org.ivoa.env.ApplicationMain;
@@ -16,7 +16,7 @@ import org.ivoa.simdb.protocol.Simulator;
  *
  * @author laurent bourges (voparis) / Gerard Lemson (mpe)
  */
-public final class XMLTests implements ApplicationMain {
+public final class XMLTests extends LogSupport implements ApplicationMain {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /**

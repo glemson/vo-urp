@@ -1,5 +1,6 @@
 package org.vo.urp.test;
 
+import org.ivoa.bean.LogSupport;
 import org.ivoa.dm.ObjectClassType;
 import org.ivoa.dm.model.MetadataObject;
 
@@ -18,7 +19,7 @@ import org.ivoa.util.CollectionUtils;
  *
  * @author laurent bourges (voparis)
  */
-public final class InspectorTests implements ApplicationMain {
+public final class InspectorTests extends LogSupport implements ApplicationMain {
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
   /**
