@@ -260,7 +260,7 @@ public final class ManagerServlet extends BaseServlet {
         parameters.put(name, value);
       }
     } catch (final Exception e) {
-      e.printStackTrace();
+        log.error("ManagerServlet.getParameters : failure : ", e);
     }
 
     return parameters;
