@@ -1,11 +1,3 @@
-/*
- * CursorQuery.java
- *
- * Created on 22 août 2007, 17:22:27
- *
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivoa.web.model;
 
 import java.io.Serializable;
@@ -14,8 +6,9 @@ import java.util.List;
 
 
 /**
- * 
-DOCUMENT ME!
+ * CursorQuery.java
+ *
+ * Created on 22 août 2007, 17:22:27
  *
  * @author laurent
  */

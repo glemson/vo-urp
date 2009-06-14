@@ -1,11 +1,3 @@
-/*
- * JPARequestListener.java
- *
- * Created on 12 sept. 2007, 15:44:15
- *
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivoa.web.servlet;
 
 import org.ivoa.service.VO_URP_Facade;
@@ -15,8 +7,9 @@ import javax.servlet.ServletRequestListener;
 
 
 /**
- * 
-DOCUMENT ME!
+ * JPARequestListener.java
+ *
+ * Created on 12 sept. 2007, 15:44:15
  *
  * @author laurent
  */
