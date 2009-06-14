@@ -13,25 +13,15 @@ import org.ivoa.env.ApplicationAdapter;
 public final class ManagerMain {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final String COMMAND_VALIDATE = "validate";
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final String COMMAND_LOAD = "load";
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final String COMMAND_DELETE = "delete";
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final String COMMAND_GET = "get";
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   private static Log log = null;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
@@ -70,7 +60,7 @@ public final class ManagerMain {
    * @return Log instance
    */
   private static Log initLogs() {
-    Log l                                     = null;
+    Log l = null;
 
     try {
       l = org.ivoa.util.LogUtil.getLogger();
@@ -85,7 +75,7 @@ public final class ManagerMain {
   /**
    * TODO : Method Description
    *
-   * @param args 
+   * @param args
    */
   private static void process(final String[] args) {
     if ((args == null) || (args.length <= 1)) {
@@ -111,9 +101,9 @@ public final class ManagerMain {
         return;
       }
 
-      final String     fileName = args[2];
+      final String fileName = args[2];
 
-      DataModelManager dmm      = new DataModelManager(jpa_pu);
+      DataModelManager dmm = new DataModelManager(jpa_pu);
 
       dmm.validate(fileName);
     } else if (COMMAND_LOAD.equals(cmd)) {
@@ -124,9 +114,9 @@ public final class ManagerMain {
         return;
       }
 
-      final String     fileName = args[2];
+      final String fileName = args[2];
 
-      DataModelManager dmm      = new DataModelManager(jpa_pu);
+      DataModelManager dmm = new DataModelManager(jpa_pu);
 
       dmm.load(fileName, "");
     } else {

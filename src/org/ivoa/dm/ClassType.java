@@ -1,17 +1,16 @@
 package org.ivoa.dm;
 
-import org.apache.commons.logging.Log;
 
 import org.ivoa.metamodel.Attribute;
 import org.ivoa.metamodel.DataType;
 import org.ivoa.metamodel.Type;
 import org.ivoa.metamodel.TypeRef;
 
-import org.ivoa.util.LogUtil;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import org.ivoa.bean.LogSupport;
 
 
 /**
@@ -20,13 +19,11 @@ import java.util.Map;
  *
  * @author laurent bourges (voparis)
  */
-public class ClassType {
+public class ClassType extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** default toString buffer size */
   public static final int STRING_BUFFER_CAPACITY = 2048;
-  /** logger */
-  protected static final Log log = LogUtil.getLoggerDev();
 
   //~ Members ----------------------------------------------------------------------------------------------------------
 

@@ -1,6 +1,5 @@
 package org.ivoa.dm;
 
-import org.apache.commons.logging.Log;
 
 import org.ivoa.conf.RuntimeConfiguration;
 
@@ -12,7 +11,6 @@ import org.ivoa.dm.model.RootEntityObject;
 import org.ivoa.jpa.JPAFactory;
 
 import org.ivoa.util.FileUtils;
-import org.ivoa.util.LogUtil;
 
 import org.ivoa.xml.validator.ErrorMessage;
 import org.ivoa.xml.validator.ValidationResult;
@@ -27,6 +25,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import javax.persistence.EntityManager;
+import org.ivoa.bean.LogSupport;
 
 
 /**
@@ -34,11 +33,9 @@ import javax.persistence.EntityManager;
  *
  * @author laurent bourges (voparis)
  */
-public class DataModelManager {
+public class DataModelManager extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /** logger */
-  public static final Log log = LogUtil.getLogger();
   /** The URL where the schema can be found.<br> */
   public static final String SCHEMA_URL = RuntimeConfiguration.getInstance().getRootSchemaURL();
 
