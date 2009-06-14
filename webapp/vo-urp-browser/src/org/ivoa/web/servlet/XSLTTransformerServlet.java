@@ -265,7 +265,7 @@ public final class XSLTTransformerServlet extends BaseServlet {
         parameters.put(name, value);
       }
     } catch (final Exception e) {
-      e.printStackTrace();
+        log.error("XSLTTransformerServlet.getParameters : failure : ", e);
     }
 
     return parameters;

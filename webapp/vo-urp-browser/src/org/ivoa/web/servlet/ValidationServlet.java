@@ -269,7 +269,7 @@ public final class ValidationServlet extends BaseServlet {
         parameters.put(name, value);
       }
     } catch (final Exception e) {
-      e.printStackTrace();
+        log.error("ValidationServlet.getParameters : failure : ", e);
     }
 
     return parameters;
