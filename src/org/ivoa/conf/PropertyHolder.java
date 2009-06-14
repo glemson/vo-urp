@@ -1,11 +1,6 @@
 package org.ivoa.conf;
 
-import org.apache.commons.logging.Log;
-
 import org.ivoa.util.FileUtils;
-import org.ivoa.util.JavaUtils;
-import org.ivoa.util.LogUtil;
-import org.ivoa.util.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +8,8 @@ import java.io.Serializable;
 
 import java.util.Iterator;
 import java.util.Properties;
+import org.ivoa.bean.LogSupport;
+import org.ivoa.util.JavaUtils;
 
 
 /**
@@ -20,13 +17,11 @@ import java.util.Properties;
  *
  * @author laurent
  */
-public class PropertyHolder implements Serializable {
+public class PropertyHolder extends LogSupport implements Serializable {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** serial UID for Serializable interface */
   private static final long serialVersionUID = 1L;
-  /** logger */
-  protected static final Log log = LogUtil.getLogger();
 
   //~ Members ----------------------------------------------------------------------------------------------------------
 
@@ -84,7 +79,7 @@ public class PropertyHolder implements Serializable {
         k = (String) it.next();
         s = this.properties.getProperty(k);
 
-        if (JavaUtils.isEmpty(s)) {
+        if (JavaUtils.isTrimmedEmpty(s)) {
           it.remove();
         }
       }

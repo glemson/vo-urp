@@ -1,18 +1,16 @@
 package org.ivoa.dm.model;
 
-import org.apache.commons.logging.Log;
 
-import org.ivoa.util.LogUtil;
 
 import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import org.ivoa.bean.LogSupport;
 
 
 /**
@@ -24,7 +22,7 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "Reference", namespace = "http://www.ivoa.net/xml/dm/base/v0.1")
-public class Reference implements Serializable {
+public class Reference extends LogSupport implements Serializable {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /**
@@ -32,8 +30,6 @@ public class Reference implements Serializable {
    * modification date of the UML model
    */
   private static final long serialVersionUID = 1L;
-  /** logger */
-  protected static final Log log = LogUtil.getLoggerDev();
 
   //~ Members ----------------------------------------------------------------------------------------------------------
 
@@ -59,9 +55,9 @@ public class Reference implements Serializable {
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-/** 
-   * The identifier assigned to the referenced object by the publisher. 
-   * Must also be a URI (see SSA andother similar usages) and unique. 
+/**
+   * The identifier assigned to the referenced object by the publisher.
+   * Must also be a URI (see SSA andother similar usages) and unique.
    */
 
   //  @XmlElement(name = "fragment", required = false, type=FragmentReference.class)
@@ -162,7 +158,7 @@ public class Reference implements Serializable {
   /**
    * TODO : Method Description
    *
-   * @param xmlId 
+   * @param xmlId
    */
   protected void setXmlId(final String xmlId) {
     if (xmlId != null) {
@@ -187,7 +183,7 @@ public class Reference implements Serializable {
   /**
    * TODO : Method Description
    *
-   * @param publisherDID 
+   * @param publisherDID
    */
   public void setPublisherDID(final String publisherDID) {
     this.publisherDID = publisherDID;

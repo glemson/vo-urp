@@ -1,6 +1,5 @@
 package org.ivoa.dm;
 
-import org.apache.commons.logging.Log;
 
 import org.ivoa.conf.RuntimeConfiguration;
 
@@ -19,7 +18,6 @@ import org.ivoa.metamodel.Collection;
 import org.ivoa.metamodel.Reference;
 
 import org.ivoa.util.FileUtils;
-import org.ivoa.util.LogUtil;
 import org.ivoa.util.ReflectionUtils;
 import org.ivoa.util.StringBuilderWriter;
 
@@ -32,6 +30,7 @@ import java.util.Map;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import org.ivoa.bean.LogSupport;
 
 
 /**
@@ -39,15 +38,13 @@ import javax.xml.bind.Unmarshaller;
  *
  * @author laurent bourges (voparis)
  */
-public final class ModelFactory {
+public final class ModelFactory extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** JAXB : context path */
   public static final String JAXB_PATH = RuntimeConfiguration.getInstance().getJAXBContextClasspath();
   /** TODO : Field Description */
   public static final int DEFAULT_IDENTITY_CAPACITY = 128;
-  /** logger */
-  private static final Log log = LogUtil.getLoggerDev();
   /** singleton pattern  TODO no good in webapp context once state must be preserved */
   private static volatile ModelFactory instance = null;
 
@@ -97,7 +94,9 @@ public final class ModelFactory {
     }
     if (instance != null) {
       // clean up :
+/*
       instance.jf = null;
+ */
       instance = null;
     }
     if (log.isWarnEnabled()) {

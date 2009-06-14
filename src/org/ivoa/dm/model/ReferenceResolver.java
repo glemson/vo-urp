@@ -1,13 +1,11 @@
 package org.ivoa.dm.model;
 
-import org.apache.commons.logging.Log;
 
+import org.ivoa.bean.LogSupport;
 import org.ivoa.conf.Configuration;
 import org.ivoa.jpa.JPAHelper;
 
 import org.ivoa.util.JavaUtils;
-import org.ivoa.util.LogUtil;
-import org.ivoa.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +19,7 @@ import javax.persistence.EntityManager;
  *
  * @author laurent bourges (voparis)
  */
-public final class ReferenceResolver {
+public final class ReferenceResolver extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /**
@@ -29,8 +27,6 @@ public final class ReferenceResolver {
    * modification date of the UML model
    */
   private static final long serialVersionUID = 1L;
-  /** logger */
-  protected static final Log log = LogUtil.getLoggerDev();
   /** Identity / Reference resolver singleton */
   private static final ReferenceResolver resolver = new ReferenceResolver();
   /** singleton : thread local contexts */
@@ -116,8 +112,9 @@ public final class ReferenceResolver {
       final EntityManager em = currentContext().getEm();
 
       String ivoId = reference.getIvoId();
-      if(ivoId.startsWith(Configuration.getInstance().getIVOIdPrefix()))
+      if(ivoId.startsWith(Configuration.getInstance().getIVOIdPrefix())) {
         ivoId = ivoId.substring(Configuration.getInstance().getIVOIdPrefix().length());
+      }
       // EntityManager must be defined to be able to resolve ivoId references :
       if (em != null) {
         final MetadataObject res = JPAHelper.findItemByIvoId(em, type, ivoId);
