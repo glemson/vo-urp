@@ -1,8 +1,6 @@
 package org.ivoa.xml;
 
-import org.apache.commons.logging.Log;
 
-import org.ivoa.util.LogUtil;
 import org.ivoa.util.StringBuilderWriter;
 
 import org.w3c.dom.Document;
@@ -33,6 +31,7 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+import org.ivoa.bean.LogSupport;
 
 
 /**
@@ -44,7 +43,7 @@ import javax.xml.transform.stream.StreamSource;
  *
  * @author laurent bourges (voparis)
  */
-public final class XmlFactory {
+public final class XmlFactory extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** encoding used for XML and XSL documents */
@@ -52,9 +51,6 @@ public final class XmlFactory {
   /** default buffer size (4 ko) for XSLT result document */
   public static final int DEFAULT_BUFFER_SIZE = 2048;
 
-  // constants :
-  /** logger */
-  private static final Log log = LogUtil.getLoggerDev();
   /** inner factory */
   private static DocumentBuilderFactory factory = null;
   /** inner xslt factory */

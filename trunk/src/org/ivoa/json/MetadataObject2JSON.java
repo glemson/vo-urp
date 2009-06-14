@@ -1,19 +1,16 @@
 package org.ivoa.json;
 
 import org.ivoa.dm.MetaModelFactory;
-import org.ivoa.dm.ModelFactory;
 import org.ivoa.dm.ObjectClassType;
 
 import org.ivoa.dm.model.MetadataObject;
 
 import org.ivoa.metamodel.Attribute;
-import org.ivoa.metamodel.Reference;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,72 +20,42 @@ import java.util.Map;
  * TODO : Class Description
  *
  * @author laurent bourges (voparis) / Gerard Lemson (mpe)
-  */
+ */
 public class MetadataObject2JSON {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**
-   * TODO : Field Description
-   */
-  public static final String nl          = "\n";
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
+  public static final String nl = "\n";
+  /** TODO : Field Description */
   public static final String colon = " : ";
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final String comma = ",";
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final String baseindent = "\t";
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final String lb = "{";
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final String rb = "}";
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final String type = "type";
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final String attributes = "attributes";
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final String collections = "collections";
-  /**
-   * TODO : Field Description
-   */
+  /** TODO : Field Description */
   public static final String references = "references";
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * 
-  DOCUMENT ME!
-   *
-   * @param args
-   */
-  public static void main(final String[] args) {
-    // TODO Auto-generated method stub
-  }
-
-  /**
    * TODO : Method Description
    *
-   * @param obj 
+   * @param obj
    *
    * @return value TODO : Value Description
    */
   public String toJSONString(final MetadataObject obj) {
-    String s                             = null;
+    String s = null;
 
     try {
       JSONObject json = toJSON(obj);
@@ -118,7 +85,6 @@ public class MetadataObject2JSON {
     }
 
     JSONObject json = new JSONObject();
-    String     s    = null;
 
     try {
       typeMetadata2JSON(json, obj);
@@ -136,10 +102,10 @@ public class MetadataObject2JSON {
   /**
    * TODO : Method Description
    *
-   * @param json 
-   * @param obj 
+   * @param json
+   * @param obj
    *
-   * @throws JSONException 
+   * @throws JSONException
    */
   private void typeMetadata2JSON(final JSONObject json, final MetadataObject obj)
                           throws JSONException {
@@ -151,10 +117,10 @@ public class MetadataObject2JSON {
   /**
    * TODO : Method Description
    *
-   * @param json 
-   * @param obj 
+   * @param json
+   * @param obj
    *
-   * @throws JSONException 
+   * @throws JSONException
    */
   private void attributes2JSON(final JSONObject json, final MetadataObject obj)
                         throws JSONException {
@@ -171,11 +137,12 @@ public class MetadataObject2JSON {
   /**
    * TODO : Method Description
    *
-   * @param json 
-   * @param obj 
+   * @param json
+   * @param obj
    *
-   * @throws JSONException 
+   * @throws JSONException
    */
+  @SuppressWarnings("unchecked")
   private void collections2JSON(final JSONObject json, final MetadataObject obj)
                          throws JSONException {
     ObjectClassType     md  = obj.getClassMetaData();
@@ -199,13 +166,13 @@ public class MetadataObject2JSON {
   /**
    * TODO : Method Description
    *
-   * @param jsonString 
+   * @param jsonString
    *
    * @return value TODO : Value Description
    *
-   * @throws JSONException 
-   * @throws InstantiationException 
-   * @throws IllegalAccessException 
+   * @throws JSONException
+   * @throws InstantiationException
+   * @throws IllegalAccessException
    */
   public MetadataObject toMetadataObject(final String jsonString)
                                   throws JSONException, InstantiationException, IllegalAccessException {

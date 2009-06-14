@@ -1,11 +1,9 @@
 package org.ivoa.jaxb;
 
 import java.util.Iterator;
-import org.apache.commons.logging.Log;
 
 import org.ivoa.conf.Configuration;
 
-import org.ivoa.util.LogUtil;
 import org.ivoa.util.StringBuilderWriter;
 
 import java.util.concurrent.ConcurrentHashMap;
@@ -15,6 +13,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.helpers.DefaultValidationEventHandler;
+import org.ivoa.bean.LogSupport;
 
 
 /**
@@ -22,11 +21,8 @@ import javax.xml.bind.helpers.DefaultValidationEventHandler;
  *
  * @author laurent bourges (voparis)
  */
-public final class JAXBFactory {
+public final class JAXBFactory extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
-
-  /** logger */
-  private static final Log log = LogUtil.getLogger();
   /** all factories */
   private static final ConcurrentHashMap<String, JAXBFactory> factories = new ConcurrentHashMap<String, JAXBFactory>(4);
   /** configuration test flag */
@@ -112,7 +108,7 @@ public final class JAXBFactory {
       this.jc = getContext(jaxbPath);
 
       if (log.isWarnEnabled()) {
-        log.warn("JAXBFactory.init : done.");
+        log.warn("JAXBFactory.init : done : " + jaxbPath);
       }
     } catch (final RuntimeException re) {
       log.error("JAXBFactory.init : JAXB failure : ", re);
@@ -158,10 +154,10 @@ public final class JAXBFactory {
 
       if (isTest) {
         // This shows all the classes JAXBContext recognizes
-        if (log.isWarnEnabled()) {
-          log.warn("====== Dump JAXBContext START =====");
-          log.warn(c.toString());
-          log.warn("====== Dump JAXBContext END   =====");
+        if (log.isInfoEnabled()) {
+          log.info("====== Dump JAXBContext START =====");
+          log.info(c.toString());
+          log.info("====== Dump JAXBContext END   =====");
         }
       }
     } catch (final JAXBException je) {
