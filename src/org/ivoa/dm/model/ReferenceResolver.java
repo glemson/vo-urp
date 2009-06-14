@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 
 import org.ivoa.jpa.JPAHelper;
 
+import org.ivoa.util.JavaUtils;
 import org.ivoa.util.LogUtil;
 import org.ivoa.util.StringUtils;
 
@@ -94,7 +95,7 @@ public final class ReferenceResolver {
     }
 
     //    final Identity ref = reference.getXmlIdentity();
-    if (! StringUtils.isEmpty(reference.getXmlId())) {
+    if (! JavaUtils.isEmpty(reference.getXmlId())) {
       final MetadataObject res = currentContext().getContext().get(reference.getXmlId());
 
       if (res == null) {
@@ -110,7 +111,7 @@ public final class ReferenceResolver {
       return res;
     }
 
-    if (! StringUtils.isEmpty(reference.getIvoId())) {
+    if (! JavaUtils.isEmpty(reference.getIvoId())) {
       final EntityManager em = currentContext().getEm();
 
       // EntityManager must be defined to be able to resolve ivoId references :
@@ -146,7 +147,7 @@ public final class ReferenceResolver {
       // means at least xmlId or ivoId are not null :
       final String xmlId = old.getXmlId();
 
-      if (! StringUtils.isEmpty(xmlId)) {
+      if (! JavaUtils.isEmpty(xmlId)) {
         if (log.isInfoEnabled()) {
           log.info("ReferenceResolver.addInContext : " + xmlId + " <=> " + object);
         }
