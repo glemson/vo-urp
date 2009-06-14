@@ -41,7 +41,10 @@
   <property name="base.library" value="${build.src.file}"/>
   <property name="gen.library" value="${build.gen.file}"/>
   <property name="weave.library" value="${build.gen.weave.file}"/>
-  <property name="build.war.file"  value="${project.name}-browser.war"/>
+
+  <property name="webapp.name"  value="${project.name}-browser"/>
+  <property name="build.war.file"  value="${webapp.name}.war"/>
+
   <property name="log.file" value="${tomcat.home}/logs/${project.name}.log"/>
   
   
@@ -386,6 +389,17 @@
   	     Need to make this clear in doc that these jar files should be added to shared lib.
   	  -->
     <delete dir="${build.lib}">
+      <!-- logging -->
+<!--
+      <include name="commons-logging*.jar"/>
+      <include name="log4j*.jar"/>
+-->
+
+      <!-- logging -->
+      <include name="eclipselink.jar"/>
+      <include name="javax.persistence*.jar"/>
+
+      <!-- jaxb -->
       <include name="activation.jar"/>
       <include name="jaxb*.jar"/>
       <include name="jsr173*.jar"/>
@@ -436,8 +450,10 @@
 
     <!-- tomcat webapps folder -->
     <property name="deploy.to" value="${tomcat.home}/webapps"/>
-    
-    <delete dir="${deploy.to}/${build.war.file}" verbose="true"/>
+
+    <!-- removes previously deployed web application -->
+    <delete dir="${deploy.to}/${webapp.name}" verbose="true"/>
+
     <copy file="${dist}/${build.war.file}" todir="${deploy.to}" verbose="true" />
   </target>
 
