@@ -223,18 +223,38 @@ public class Identity implements Serializable {
    * @return value TODO : Value Description
    */
   public static Long resolveIvoId(final String ivoId, final Class type) {
+    if(ivoId == null) 
+        return null;
     ObjectClassType md    = MetaModelFactory.getInstance().getObjectClassType(type);
+    return resolveIvoId(ivoId, md);
+  }
+  /**
+   * resolve incoming ivoId for the given ObjectClassType. <br/>
+   * Method is recrsive, if id is not resolved for specfied class, subclasses are searched.
+   * @param ivoId
+   * @param ObjectClassType md
+   * @return
+   */
+  public static Long resolveIvoId(final String ivoId, final ObjectClassType md) {
+    if(ivoId == null) 
+      return null;
     String          utype = md.getObjectType().getUtype();
 
     if (utype.charAt(utype.length() - 1) != '/') { // this test should not be necessary, but is safe
       utype = utype + "/";
     }
 
-    if ((ivoId == null) || ! ivoId.startsWith(utype)) {
+    if (! ivoId.startsWith(utype)) {
+      for(ObjectClassType subclass : md.getSubclasses())
+      {
+        Long id = resolveIvoId(ivoId, subclass);
+        if(id != null)
+          return id;
+      }
       return null;
     }
-
-    return Long.valueOf(ivoId.substring(utype.length()));
+    else
+      return Long.valueOf(ivoId.substring(utype.length()));
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

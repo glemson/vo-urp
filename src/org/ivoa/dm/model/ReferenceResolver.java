@@ -2,6 +2,7 @@ package org.ivoa.dm.model;
 
 import org.apache.commons.logging.Log;
 
+import org.ivoa.conf.Configuration;
 import org.ivoa.jpa.JPAHelper;
 
 import org.ivoa.util.JavaUtils;
@@ -114,9 +115,12 @@ public final class ReferenceResolver {
     if (! JavaUtils.isEmpty(reference.getIvoId())) {
       final EntityManager em = currentContext().getEm();
 
+      String ivoId = reference.getIvoId();
+      if(ivoId.startsWith(Configuration.getInstance().getIVOIdPrefix()))
+        ivoId = ivoId.substring(Configuration.getInstance().getIVOIdPrefix().length());
       // EntityManager must be defined to be able to resolve ivoId references :
       if (em != null) {
-        final MetadataObject res = JPAHelper.findItemByIvoId(em, type, reference.getIvoId());
+        final MetadataObject res = JPAHelper.findItemByIvoId(em, type, ivoId);
 
         if (res == null) {
           throw new IllegalStateException(
@@ -132,6 +136,26 @@ public final class ReferenceResolver {
       }
     }
 
+    if (! JavaUtils.isEmpty(reference.getPublisherDID())) {
+      final EntityManager em = currentContext().getEm();
+
+      // EntityManager must be defined to be able to resolve ivoId references :
+      if (em != null) {
+        final MetadataObject res = JPAHelper.findItemByPublisherDID(em, type, reference.getPublisherDID());
+
+        if (res == null) {
+          throw new IllegalStateException(
+            "unable to resolve reference : " + reference.toString() + " in the database",
+            new Throwable());
+        }
+
+        if (log.isInfoEnabled()) {
+          log.info("ReferenceResolver.resolve : exit : " + reference + " <=> " + res);
+        }
+
+        return res;
+      }
+    }
     return null;
   }
 
