@@ -429,6 +429,9 @@ public abstract class MetadataObject extends MetadataElement {
         reference.setIvoId(getIvoId()); // reference to object NOT in the XMl document. Should add possible publisherDID.
         reference.setXmlId(null);
       }
+      // In all cases add the publisherDID if it exists.
+      if(getPublisherDID() != null)
+        reference.setPublisherDID(getPublisherDID()); 
     }
 
     return reference;
