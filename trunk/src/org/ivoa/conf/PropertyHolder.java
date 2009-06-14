@@ -3,6 +3,7 @@ package org.ivoa.conf;
 import org.apache.commons.logging.Log;
 
 import org.ivoa.util.FileUtils;
+import org.ivoa.util.JavaUtils;
 import org.ivoa.util.LogUtil;
 import org.ivoa.util.StringUtils;
 
@@ -83,7 +84,7 @@ public class PropertyHolder implements Serializable {
         k = (String) it.next();
         s = this.properties.getProperty(k);
 
-        if (StringUtils.isEmpty(s)) {
+        if (JavaUtils.isEmpty(s)) {
           it.remove();
         }
       }

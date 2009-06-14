@@ -5,6 +5,7 @@ import org.apache.commons.logging.Log;
 import org.ivoa.dm.model.Identity;
 import org.ivoa.dm.model.MetadataObject;
 
+import org.ivoa.util.JavaUtils;
 import org.ivoa.util.LogUtil;
 import org.ivoa.util.StringUtils;
 
@@ -47,7 +48,7 @@ public final class JPAHelper {
    */
   public static MetadataObject findItemByPublisherDID(final EntityManager em, final Class type,
                                                       final String publisherDID) {
-    if (! StringUtils.isEmpty(publisherDID)) {
+    if (! JavaUtils.isEmpty(publisherDID)) {
       return (MetadataObject) JPAHelper.findSingleByNamedQuery(
         em,
         type.getSimpleName() + ".findByPublisherDID",
@@ -202,7 +203,7 @@ public final class JPAHelper {
    * @return value TODO : Value Description
    */
   public static MetadataObject findItemByIvoId(final EntityManager em, final Class type, final String ivoId) {
-    if (! StringUtils.isEmpty(ivoId)) {
+    if (! JavaUtils.isEmpty(ivoId)) {
       Long id = Identity.resolveIvoId(ivoId, type);
 
       if (id == null) {
