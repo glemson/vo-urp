@@ -1,19 +1,12 @@
-/*
- * WebUtils.java
- *
- * Created on 20 sept. 2007, 18:19:21
- *
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivoa.util;
 
 import javax.servlet.http.HttpServletRequest;
 
 
 /**
- * 
-DOCUMENT ME!
+ * WebUtils.java
+ *
+ * Created on 20 sept. 2007, 18:19:21
  *
  * @author laurent
  */
