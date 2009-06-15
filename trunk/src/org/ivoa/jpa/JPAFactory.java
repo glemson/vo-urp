@@ -32,7 +32,7 @@ public final class JPAFactory extends LogSupport {
   /** Default config file */
   public static final String CONFIG_FILE = "jpa-config.properties";
   /** all factories */
-  private static final ConcurrentHashMap<String, JPAFactory> factories = new ConcurrentHashMap<String, JPAFactory>(4);
+  private static ConcurrentHashMap<String, JPAFactory> factories = new ConcurrentHashMap<String, JPAFactory>(4);
 
   //~ Members ----------------------------------------------------------------------------------------------------------
 
@@ -114,6 +114,7 @@ public final class JPAFactory extends LogSupport {
         it.remove();
       }
     }
+    factories = null;
     if (log.isWarnEnabled()) {
         log.warn("JPAFactory.onExit : exit");
     }

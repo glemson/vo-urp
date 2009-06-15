@@ -25,7 +25,7 @@ public final class NumberUtils {
   /** formatter cache */
   private static Map<String, DecimalFormat> cache = new HashMap<String, DecimalFormat>(4);
   /** field position */
-  private static final FieldPosition FAKE_POSITION = new FieldPosition(0);
+  private static FieldPosition FAKE_POSITION = new FieldPosition(0);
 
   static {
     cache.put(LESS_PRECISION, new DecimalFormat(LESS_PRECISION));

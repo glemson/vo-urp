@@ -24,11 +24,11 @@ public final class TypeWrapper extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** date format : HH:MM:SS.MS */
-  public static final SimpleDateFormat HSDF = new SimpleDateFormat("hh:mm:ss.ms");
+  public static SimpleDateFormat HSDF = new SimpleDateFormat("hh:mm:ss.ms");
   /** data format : DD/MM/YYYY HH:MM:SS */
-  public static final SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss");
+  public static SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy  HH:mm:ss");
   /** standard us date parser */
-  public static final SimpleDateFormat US_INT_SDF = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss z", Locale.US);
+  public static SimpleDateFormat US_INT_SDF = new SimpleDateFormat("EEE, dd MMM yyyy hh:mm:ss z", Locale.US);
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 

@@ -22,7 +22,7 @@ import org.ivoa.util.StringBuilderWriter;
 public final class JAXBFactory extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
   /** all factories */
-  private static final ConcurrentHashMap<String, JAXBFactory> factories = new ConcurrentHashMap<String, JAXBFactory>(4);
+  private static ConcurrentHashMap<String, JAXBFactory> factories = new ConcurrentHashMap<String, JAXBFactory>(4);
   /** configuration test flag */
   public static final boolean isTest = Configuration.getInstance().isTest();
 
@@ -89,6 +89,7 @@ public final class JAXBFactory extends LogSupport {
         it.remove();
       }
     }
+    factories = null;
     if (log.isWarnEnabled()) {
         log.warn("JAXBFactory.onExit : exit");
     }

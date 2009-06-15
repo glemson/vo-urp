@@ -53,9 +53,9 @@ public final class XmlFactory extends LogSupport {
   /** inner xslt factory */
   private static TransformerFactory tFactory = null;
   /** cache for Dom instances */
-  private static final Map<String, Document> m_oCacheDOM = new HashMap<String, Document>(32);
+  private static Map<String, Document> m_oCacheDOM = new HashMap<String, Document>(32);
   /** cache for Xsl templates */
-  private static final Map<String, Templates> m_oCacheXSL = new HashMap<String, Templates>(32);
+  private static Map<String, Templates> m_oCacheXSL = new HashMap<String, Templates>(32);
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 

@@ -9,7 +9,7 @@ public final class StringUtils {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** swing string builder : mono thread => no synchronization */
-  private static final StringBuilder ssb = new StringBuilder(512);
+  private static StringBuilder ssb = new StringBuilder(512);
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 

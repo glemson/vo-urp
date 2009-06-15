@@ -17,7 +17,7 @@ public final class TimerFactory extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** TODO : Field Description */
-  protected static final Map<String, ThresholdTimer> timers = new LinkedHashMap<String, ThresholdTimer>();
+  protected static Map<String, ThresholdTimer> timers = new LinkedHashMap<String, ThresholdTimer>();
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
