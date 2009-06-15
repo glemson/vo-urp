@@ -47,6 +47,8 @@
 
   <property name="log.file" value="${tomcat.home}/logs/${project.name}.log"/>
   
+	<filter token="project.name" value="${project.name}"/>
+
   
   <!-- classpath -->
   <path id="project.class.path">
@@ -406,8 +408,12 @@
       <include name="jsr173*.jar"/>
     </delete>
 
+  	<!-- Copy web.xml to ${dist} so that the @project.name@ can be replaced -->
+  	<echo message="copying web.xml"/> 
+  	<copy todir="${dist}" file="${web-content}/WEB-INF/web.xml" filtering="true"/>
+  	
     <!-- make web application archive -->
-    <war destfile="${dist}/${build.war.file}" webxml="${web-content}/WEB-INF/web.xml" compress="true" roundup="true">
+    <war destfile="${dist}/${build.war.file}" webxml="${dist}/web.xml" compress="true" roundup="true">
       <fileset dir="${web-content}">
         <include name="META-INF/*.*"/>
         <include name="WEB-INF/tags/**/*.tag"/>
@@ -415,6 +421,7 @@
         <include name="*.jsp"/>
         <include name="list/*.jsp"/>
         <include name="page/*.jsp"/>
+        <include name="secure/*.jsp"/>
         <include name="show/*.jsp"/>
         <include name="manage/*.jsp"/>
         <include name="query/*.jsp"/>
