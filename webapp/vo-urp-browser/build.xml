@@ -389,16 +389,17 @@
   	     Need to make this clear in doc that these jar files should be added to shared lib.
   	  -->
     <delete dir="${build.lib}">
-      <!-- logging -->
+<!-- logging -->
 <!--
       <include name="commons-logging*.jar"/>
       <include name="log4j*.jar"/>
 -->
 
-      <!-- logging -->
+<!-- eclipseLink 1.1.1 -->
+<!--
       <include name="eclipselink.jar"/>
       <include name="javax.persistence*.jar"/>
-
+-->
       <!-- jaxb -->
       <include name="activation.jar"/>
       <include name="jaxb*.jar"/>
