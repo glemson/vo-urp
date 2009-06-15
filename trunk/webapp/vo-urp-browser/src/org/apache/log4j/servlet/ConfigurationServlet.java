@@ -103,7 +103,7 @@ public class ConfigurationServlet extends HttpServlet implements SingleThreadMod
     /**
      * All the log levels.
      */
-    private static final String[] LEVELS = new String[]{
+    private static String[] LEVELS = new String[]{
         Level.OFF.toString(),
         Level.FATAL.toString(),
         Level.ERROR.toString(),
