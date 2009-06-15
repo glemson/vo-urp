@@ -19,6 +19,7 @@ import org.ivoa.dm.model.MetadataElement;
 import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.jaxb.CustomUnmarshallListener;
 import org.ivoa.jaxb.JAXBFactory;
+import org.ivoa.jaxb.XmlBindException;
 import org.ivoa.json.MetadataObject2JSON;
 import org.ivoa.metamodel.Collection;
 import org.ivoa.metamodel.Reference;
@@ -287,9 +288,10 @@ public final class ModelFactory extends LogSupport {
       return m;
     } catch (final JAXBException je) {
       log.error("ModelFactory.unmarshallToObject : JAXB Failure : ", je);
+      throw new XmlBindException(je);
     }
 
-    return null;
+//    return null;
   }
 
   /**
