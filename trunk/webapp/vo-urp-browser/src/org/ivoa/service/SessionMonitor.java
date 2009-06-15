@@ -70,16 +70,16 @@ public final class SessionMonitor extends LogSupport implements HttpSessionListe
         if (pollTh != null) {
             // stop polling thread :
             pollTh.stopAndWait();
-
+/*
             try {
                 // to be sure the thread died (exit run() method)
-                Thread.sleep(100L);
+                Thread.sleep(10L);
             } catch (InterruptedException ie) {
                 if (logD.isErrorEnabled()) {
                     logD.error("SessionMonitor.onExit : interrupted : ", ie);
                 }
             }
-
+*/
             // force GC :
             pollTh = null;
         }

@@ -55,11 +55,12 @@ public class ApplicationManager implements ServletContextListener {
         a full server shutdown.
          */
         InitShutdownController.shutdownLog4j(ctx);
-
+/*
         try {
             Thread.sleep(100);
         } catch (final InterruptedException ie) {
             ie.printStackTrace(System.err);
         }
+ */
     }
 }
