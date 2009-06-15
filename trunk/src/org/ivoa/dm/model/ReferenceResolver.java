@@ -27,9 +27,9 @@ public final class ReferenceResolver extends LogSupport {
    */
   private static final long serialVersionUID = 1L;
   /** Identity / Reference resolver singleton */
-  private static final ReferenceResolver resolver = new ReferenceResolver();
+  private static ReferenceResolver resolver = new ReferenceResolver();
   /** singleton : thread local contexts */
-  private static final ResolverThreadLocal localContext = new ResolverThreadLocal();
+  private static ResolverThreadLocal localContext = new ResolverThreadLocal();
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
