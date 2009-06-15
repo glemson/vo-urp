@@ -1,12 +1,7 @@
 package org.ivoa.xml.validator;
 
-import org.xml.sax.ErrorHandler;
-import org.xml.sax.SAXException;
-import org.xml.sax.SAXParseException;
-
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -15,6 +10,10 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+
+import org.xml.sax.ErrorHandler;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 
 /**
@@ -120,8 +119,8 @@ public class XMLValidator {
 
     //~ Constructors ---------------------------------------------------------------------------------------------------
 
-    public CustomErrorHandler(final ValidationResult result) {
-      this.result = result;
+    public CustomErrorHandler(final ValidationResult pResult) {
+      this.result = pResult;
     }
 
     //~ Methods --------------------------------------------------------------------------------------------------------

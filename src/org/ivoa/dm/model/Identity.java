@@ -1,15 +1,11 @@
 package org.ivoa.dm.model;
 
-import org.ivoa.dm.MetaModelFactory;
-import org.ivoa.dm.ObjectClassType;
-
 import java.io.Serializable;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.Transient;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -17,6 +13,9 @@ import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
+import org.ivoa.dm.MetaModelFactory;
+import org.ivoa.dm.ObjectClassType;
 
 /**
  * This class contains all flavor for objectType identifiers :  <br>
@@ -109,10 +108,10 @@ public class Identity implements Serializable {
     /**
      * Sets the primary key when the metadata object is persisted or loaded (PostPersist & PostLoad JPA events)
      *
-     * @param id primary key value
+     * @param pId primary key value
      */
-    protected void setId(final Long id) {
-        this.id = id;
+    protected void setId(final Long pId) {
+        this.id = pId;
     }
 
     /**
@@ -127,10 +126,10 @@ public class Identity implements Serializable {
     /**
      * Sets the external identifier (URI)
      *
-     * @param ivoId external identifier (URI)
+     * @param pIvoId external identifier (URI)
      */
-    protected void setIvoId(final String ivoId) {
-        this.ivoId = ivoId;
+    protected void setIvoId(final String pIvoId) {
+        this.ivoId = pIvoId;
     }
 
     /**
@@ -145,10 +144,10 @@ public class Identity implements Serializable {
     /**
      * Sets the local xsd:ID for this object
      *
-     * @param xmlId local xsd:ID for this object
+     * @param pXmlId local xsd:ID for this object
      */
-    protected void setXmlId(final String xmlId) {
-        this.xmlId = xmlId;
+    protected void setXmlId(final String pXmlId) {
+        this.xmlId = pXmlId;
     }
 
     /**
@@ -203,10 +202,10 @@ public class Identity implements Serializable {
     /**
      * TODO : Method Description
      *
-     * @param publisherDID
+     * @param pPublisherDID publisherDID
      */
-    public void setPublisherDID(final String publisherDID) {
-        this.publisherDID = publisherDID;
+    public void setPublisherDID(final String pPublisherDID) {
+        this.publisherDID = pPublisherDID;
     }
 
     /**
@@ -218,7 +217,7 @@ public class Identity implements Serializable {
      *
      * @return value TODO : Value Description
      */
-    public static Long resolveIvoId(final String ivoId, final Class type) {
+    public static Long resolveIvoId(final String ivoId, final Class<?> type) {
         if (ivoId == null) {
             return null;
         }
@@ -252,9 +251,8 @@ public class Identity implements Serializable {
                 }
             }
             return null;
-        } else {
-            return Long.valueOf(ivoId.substring(utype.length()));
         }
+        return Long.valueOf(ivoId.substring(utype.length()));
     }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

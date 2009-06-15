@@ -1,11 +1,6 @@
 package org.ivoa.jaxb;
 
 import java.util.Iterator;
-
-import org.ivoa.conf.Configuration;
-
-import org.ivoa.util.StringBuilderWriter;
-
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.bind.JAXBContext;
@@ -13,7 +8,10 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.helpers.DefaultValidationEventHandler;
+
 import org.ivoa.bean.LogSupport;
+import org.ivoa.conf.Configuration;
+import org.ivoa.util.StringBuilderWriter;
 
 
 /**
@@ -40,10 +38,10 @@ public final class JAXBFactory extends LogSupport {
 /**
    * Creates a new JPAFactory object
    *
-   * @param jaxbPath jaxb context path
+   * @param pJaxbPath jaxb context path
    */
-  private JAXBFactory(final String jaxbPath) {
-    this.jaxbPath = jaxbPath;
+  private JAXBFactory(final String pJaxbPath) {
+    this.jaxbPath = pJaxbPath;
 
     init();
   }

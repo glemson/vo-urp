@@ -3,7 +3,6 @@ package org.ivoa.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,6 +11,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+
 import org.ivoa.bean.LogSupport;
 
 
@@ -36,6 +36,7 @@ public final class TypeWrapper extends LogSupport {
    * Constructor
    */
   private TypeWrapper() {
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -275,8 +276,8 @@ public final class TypeWrapper extends LogSupport {
    *
    * @return value TODO : Value Description
    */
-  public static final List newList(final int capacity) {
-    return new ArrayList(capacity);
+  public static final List<Object> newList(final int capacity) {
+    return new ArrayList<Object>(capacity);
   }
 
   /**
@@ -286,6 +287,7 @@ public final class TypeWrapper extends LogSupport {
    *
    * @return value TODO : Value Description
    */
+  @SuppressWarnings("unchecked")
   public static final Map newMap(final int capacity) {
     if (capacity <= 0) {
       return new HashMap();
@@ -301,6 +303,7 @@ public final class TypeWrapper extends LogSupport {
    *
    * @return value TODO : Value Description
    */
+  @SuppressWarnings("unchecked")
   public static final Set newSet(final int capacity) {
     return new HashSet(capacity);
   }

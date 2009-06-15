@@ -124,7 +124,7 @@ public class HTTP {
    * @throws JSONException if the object does not contain enough information.
    */
   public static String toString(final JSONObject o) throws JSONException {
-    Iterator     keys = o.keys();
+    Iterator<?>     keys = o.keys();
     String       s;
     StringBuffer sb   = new StringBuffer();
 

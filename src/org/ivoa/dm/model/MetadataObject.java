@@ -1,13 +1,5 @@
 package org.ivoa.dm.model;
 
-import org.ivoa.conf.Configuration;
-
-import org.ivoa.dm.ObjectClassType;
-
-import org.ivoa.dm.model.visitor.Visitor;
-
-import org.ivoa.metamodel.Collection;
-
 import java.util.List;
 
 import javax.persistence.Column;
@@ -19,12 +11,16 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.PostLoad;
 import javax.persistence.PostPersist;
 import javax.persistence.Transient;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
+import org.ivoa.conf.Configuration;
+import org.ivoa.dm.ObjectClassType;
+import org.ivoa.dm.model.visitor.Visitor;
+import org.ivoa.metamodel.Collection;
 
 
 /**
@@ -37,6 +33,12 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "MetadataObject", namespace = "http://www.ivoa.net/xml/dm/base/v0.1")
 public abstract class MetadataObject extends MetadataElement {
   //~ Constants --------------------------------------------------------------------------------------------------------
+
+  /**
+   * serial UID for Serializable interface : every concrete class must have its value corresponding to last
+   * modification date of the UML model
+   */
+  private static final long serialVersionUID = 1L;
 
   /** id field name */
   public static final String PROPERTY_ID = "id";
@@ -205,7 +207,7 @@ public abstract class MetadataObject extends MetadataElement {
    *
    * @return the current for this instance
    */
-  private final Identity lazyIdentity() {
+  protected final Identity lazyIdentity() {
     final Identity old = getIdentityField();
 
     if (old == null) {
@@ -268,13 +270,13 @@ public abstract class MetadataObject extends MetadataElement {
    * Tries to resolve the supplied reference to the corresponding MetadataObject of the specified type. <br>
    * Tests whether the object retrieved has the correct type, throws an ...Exception if not.
    *
-   * @param reference to resolve
+   * @param pReference to resolve
    * @param type
    *
    * @return resolved metadata object or null if not found
    */
-  protected MetadataObject resolve(final Reference reference, final Class<?extends MetadataObject> type) {
-    return ReferenceResolver.resolve(reference, type);
+  protected MetadataObject resolve(final Reference pReference, final Class<?extends MetadataObject> type) {
+    return ReferenceResolver.resolve(pReference, type);
   }
 
   /**
@@ -360,6 +362,7 @@ public abstract class MetadataObject extends MetadataElement {
    *
    * @param visitor
    */
+  @SuppressWarnings("unchecked")
   public void traverse(final Visitor visitor) {
     visitor.preProcess(this);
 
@@ -394,10 +397,10 @@ public abstract class MetadataObject extends MetadataElement {
    * @return value TODO : Value Description
    */
   public String getIvoId() {
-    if(id == null)
+    if(id == null) {
       return null;
-    else
-      return Configuration.getInstance().getIVOIdPrefix() + getUtype() + "/" + id;
+    }
+    return Configuration.getInstance().getIVOIdPrefix() + getUtype() + "/" + id;
   }
 
   /**
@@ -438,15 +441,17 @@ public abstract class MetadataObject extends MetadataElement {
   }
 
   /**
-   * Set all Reference objects to their appropsriate value.<br>
+   * Set all Reference objects to their appropriate value.<br>
    */
   protected void prepareReferencesForMarshalling() {
+    /* no-op */
   }
 
   /**
    * Set all Reference objects to null.<br>
    */
   protected void resetReferencesAfterMarshalling() {
+    /* no-op */
   }
 
   /**

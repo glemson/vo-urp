@@ -11,8 +11,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
-
 import java.net.URL;
+
 import org.ivoa.bean.LogSupport;
 
 
@@ -24,10 +24,15 @@ import org.ivoa.bean.LogSupport;
 public final class FileUtils extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /** TODO : Field Description */
+  /**
+   * default read buffer capacity : DEFAULT_READ_BUFFER_SIZE = 16K
+   */
   private static final int DEFAULT_READ_BUFFER_SIZE = 16 * 1024;
-  /** TODO : Field Description */
-  private static final int DEFAULT_WRITE_BUFFER_SIZE = 64 * 1024;
+
+  /**
+   * default write buffer capacity : DEFAULT_WRITE_BUFFER_SIZE = 16K
+   */
+  private static final int DEFAULT_WRITE_BUFFER_SIZE = 16 * 1024;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
@@ -35,7 +40,7 @@ public final class FileUtils extends LogSupport {
    * Forbidden FileUtils constructor
    */
   private FileUtils() {
-    // empty block
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------

@@ -6,11 +6,18 @@
  */
 package org.ivoa.tap;
 
-import org.ivoa.dm.model.MetadataObject;
-
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
 
 
 /**
@@ -80,10 +87,10 @@ public class Tables {
   /**
    * TODO : Method Description
    *
-   * @param schema 
+   * @param pSchema schema 
    */
-  public void setSchema(final Schemas schema) {
-    this.schema = schema;
+  public void setSchema(final Schemas pSchema) {
+    this.schema = pSchema;
   }
 
   /**
@@ -98,10 +105,10 @@ public class Tables {
   /**
    * TODO : Method Description
    *
-   * @param table_name 
+   * @param pTableName table_name 
    */
-  public void setTable_name(final String table_name) {
-    this.table_name = table_name;
+  public void setTable_name(final String pTableName) {
+    this.table_name = pTableName;
   }
 
   /**
@@ -116,10 +123,10 @@ public class Tables {
   /**
    * TODO : Method Description
    *
-   * @param table_type 
+   * @param pTableType table_type 
    */
-  public void setTable_type(final String table_type) {
-    this.table_type = table_type;
+  public void setTable_type(final String pTableType) {
+    this.table_type = pTableType;
   }
 
   /**
@@ -134,10 +141,10 @@ public class Tables {
   /**
    * TODO : Method Description
    *
-   * @param description 
+   * @param pDescription description 
    */
-  public void setDescription(final String description) {
-    this.description = description;
+  public void setDescription(final String pDescription) {
+    this.description = pDescription;
   }
 
   /**
@@ -152,10 +159,10 @@ public class Tables {
   /**
    * TODO : Method Description
    *
-   * @param utype 
+   * @param pUtype utype 
    */
-  public void setUtype(final String utype) {
-    this.utype = utype;
+  public void setUtype(final String pUtype) {
+    this.utype = pUtype;
   }
 
   /**
@@ -170,10 +177,10 @@ public class Tables {
   /**
    * TODO : Method Description
    *
-   * @param columns 
+   * @param pColumns columns 
    */
-  public void setColumns(final List<Columns> columns) {
-    this.columns = columns;
+  public void setColumns(final List<Columns> pColumns) {
+    this.columns = pColumns;
   }
 
   /**
@@ -181,6 +188,7 @@ public class Tables {
    *
    * @return value TODO : Value Description
    */
+  @Override
   public String toString() {
     return table_name + " [" + table_type + "]";
   }

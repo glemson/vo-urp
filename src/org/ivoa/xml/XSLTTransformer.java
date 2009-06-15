@@ -1,6 +1,15 @@
 package org.ivoa.xml;
 
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.io.Writer;
+import java.net.URL;
+
+import javax.xml.transform.stream.StreamSource;
+
 import net.sf.saxon.s9api.Processor;
 import net.sf.saxon.s9api.QName;
 import net.sf.saxon.s9api.Serializer;
@@ -9,19 +18,6 @@ import net.sf.saxon.s9api.XdmNode;
 import net.sf.saxon.s9api.XsltCompiler;
 import net.sf.saxon.s9api.XsltExecutable;
 import net.sf.saxon.s9api.XsltTransformer;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.io.Writer;
-
-import java.net.URL;
-
-import java.util.HashMap;
-
-import javax.xml.transform.stream.StreamSource;
 
 
 /**

@@ -1,14 +1,14 @@
 package org.ivoa.dm;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.ivoa.metamodel.Attribute;
 import org.ivoa.metamodel.Collection;
 import org.ivoa.metamodel.DataType;
 import org.ivoa.metamodel.ObjectType;
 import org.ivoa.metamodel.Reference;
 import org.ivoa.metamodel.TypeRef;
-
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 
 /**
@@ -50,12 +50,12 @@ public final class ObjectClassType extends ClassType {
 /**
    * Constructor
    *
-   * @param type wrapped ObjectType
+   * @param pType wrapped ObjectType
    */
-  public ObjectClassType(final ObjectType type) {
-    super(type);
-    this.root = type.isEntity();
-    this.baseclass = (type.getExtends() == null) ? null : type.getExtends().getName();
+  public ObjectClassType(final ObjectType pType) {
+    super(pType);
+    this.root = pType.isEntity();
+    this.baseclass = (pType.getExtends() == null) ? null : pType.getExtends().getName();
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------

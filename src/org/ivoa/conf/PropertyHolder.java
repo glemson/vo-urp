@@ -1,14 +1,14 @@
 package org.ivoa.conf;
 
-import org.ivoa.util.FileUtils;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
-
 import java.util.Iterator;
 import java.util.Properties;
+
 import org.ivoa.bean.LogSupport;
+import org.ivoa.util.CollectionUtils;
+import org.ivoa.util.FileUtils;
 import org.ivoa.util.JavaUtils;
 
 
@@ -34,6 +34,7 @@ public class PropertyHolder extends LogSupport implements Serializable {
    * Constructor (protected)
    */
   protected PropertyHolder() {
+    /* no-op */
   }
 
 /**
@@ -75,7 +76,7 @@ public class PropertyHolder extends LogSupport implements Serializable {
       // filter empty strings :
       String s;
 
-      for (final Iterator it = this.properties.keySet().iterator(); it.hasNext();) {
+      for (final Iterator<Object> it = this.properties.keySet().iterator(); it.hasNext();) {
         k = (String) it.next();
         s = this.properties.getProperty(k);
 
@@ -85,7 +86,7 @@ public class PropertyHolder extends LogSupport implements Serializable {
       }
 
       if (log.isDebugEnabled()) {
-        log.debug("properties : " + getProperties());
+        log.debug("properties [" + propertyFile + "] : " + CollectionUtils.toString(getProperties()));
       }
 
       // postInit event :
@@ -103,6 +104,7 @@ public class PropertyHolder extends LogSupport implements Serializable {
    * Pre Init event (can be overridden in child classes)
    */
   protected void preInit() {
+    /* no-op */
   }
 
   /**

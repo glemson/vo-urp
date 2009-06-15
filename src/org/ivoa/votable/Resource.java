@@ -1,7 +1,5 @@
 package org.ivoa.votable;
 
-import org.w3c.dom.Element;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +18,8 @@ import javax.xml.bind.annotation.XmlType;
 import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import javax.xml.namespace.QName;
+
+import org.w3c.dom.Element;
 
 
 /**
@@ -225,9 +225,8 @@ public class Resource {
   public String getType() {
     if (type == null) {
       return "results";
-    } else {
-      return type;
     }
+    return type;
   }
 
   /**

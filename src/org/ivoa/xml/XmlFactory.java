@@ -1,20 +1,11 @@
 package org.ivoa.xml;
 
 
-import org.ivoa.util.StringBuilderWriter;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.Writer;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,7 +22,13 @@ import javax.xml.transform.TransformerFactoryConfigurationError;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
 import org.ivoa.bean.LogSupport;
+import org.ivoa.util.StringBuilderWriter;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -66,6 +63,7 @@ public final class XmlFactory extends LogSupport {
    * Creates a new XmlFactory object
    */
   private XmlFactory() {
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------

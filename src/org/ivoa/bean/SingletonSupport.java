@@ -11,6 +11,7 @@ public abstract class SingletonSupport extends LogSupport {
      * Private empty Constructor
      */
     protected SingletonSupport() {
+      /* no-op */
     }
 
 //~ Methods ----------------------------------------------------------------------------------------------------------

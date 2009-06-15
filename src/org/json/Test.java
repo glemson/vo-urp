@@ -1,7 +1,6 @@
 package org.json;
 
 import java.io.StringWriter;
-
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
@@ -19,7 +18,7 @@ public class Test {
    * @param args
    */
   public static void main(final String[] args) {
-    Iterator     it;
+    Iterator<?>     it;
     JSONArray    a;
     JSONObject   j;
     JSONStringer jj;
@@ -64,6 +63,7 @@ public class Test {
         return "{" + JSONObject.quote(this.aString) + ":" + JSONObject.doubleToString(this.aNumber) + "}";
       }
 
+      @Override
       public String toString() {
         return this.getString() + " " + this.getNumber() + " " + this.isBoolean() + "." + this.getBENT() + " " +
                this.getX();
@@ -444,8 +444,8 @@ public class Test {
       System.out.println(a.toString(4));
       System.out.println(JSONML.toString(a));
 
-      Collection c = null;
-      Map        m = null;
+      Collection<?> c = null;
+      Map<?, ?>     m = null;
 
       j = new JSONObject(m);
       a = new JSONArray(c);

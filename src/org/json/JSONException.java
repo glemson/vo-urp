@@ -7,6 +7,14 @@ package org.json;
  * @version 2008-09-18
  */
 public class JSONException extends Exception {
+  //~ Constants --------------------------------------------------------------------------------------------------------
+
+  /**
+   * serial UID for Serializable interface : every concrete class must have its value corresponding to last
+   * modification date of the UML model
+   */
+  private static final long serialVersionUID = 1L;
+  
   //~ Members ----------------------------------------------------------------------------------------------------------
 
   /**
@@ -41,6 +49,7 @@ public class JSONException extends Exception {
    *
    * @return value TODO : Value Description
    */
+  @Override
   public Throwable getCause() {
     return this.cause;
   }

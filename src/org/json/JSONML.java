@@ -197,9 +197,8 @@ public class JSONML {
             if (ja == null) {
               if (arrayForm) {
                 return newja;
-              } else {
-                return newjo;
               }
+              return newjo;
             }
 
             // Content, between <...> and </...>
@@ -224,9 +223,8 @@ public class JSONML {
               if (ja == null) {
                 if (arrayForm) {
                   return newja;
-                } else {
-                  return newjo;
                 }
+                return newjo;
               }
             }
           }
@@ -325,7 +323,7 @@ public class JSONML {
     int          i;
     JSONObject   jo;
     String       k;
-    Iterator     keys;
+    Iterator<?>     keys;
     int          length;
     StringBuffer sb      = new StringBuffer();
     String       tagName;
@@ -415,7 +413,7 @@ public class JSONML {
     int          i;
     JSONArray    ja;
     String       k;
-    Iterator     keys;
+    Iterator<?>     keys;
     int          len;
     String       tagName;
     String       v;

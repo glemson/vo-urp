@@ -17,7 +17,7 @@ public final class StringUtils {
    * Forbidden Constructor
    */
   private StringUtils() {
-    // Empty block
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------

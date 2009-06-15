@@ -15,6 +15,7 @@ public final class ApplicationLifeCycle {
    * Private Constructor
    */
   private ApplicationLifeCycle() {
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------

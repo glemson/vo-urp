@@ -3,6 +3,7 @@ package org.ivoa.metamodel;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -204,9 +205,8 @@ public class ObjectType
     public boolean isEntity() {
         if (entity == null) {
             return false;
-        } else {
-            return entity;
         }
+        return entity.booleanValue();
     }
 
     /**
