@@ -34,6 +34,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.bind.JAXBException;
 
 
 /**
@@ -60,7 +61,7 @@ public final class ManagerServlet extends BaseServlet {
   /**
    * TODO : Field Description
    */
-  public static final String OUTPUT_INSERT = "insert";
+  public static final String OUTPUT_NEWENTITY = "newEntity";
   /**
    * TODO : Field Description
    */
@@ -134,7 +135,8 @@ public final class ManagerServlet extends BaseServlet {
 
       if (INPUT_ACTION_insert.equals(action)) {
         result = handleInsert(params, user.getName());
-        request.setAttribute(OUTPUT_INSERT, result);
+        if(result instanceof MetadataObject)
+          request.setAttribute(OUTPUT_NEWENTITY, (MetadataObject)result);
       }
     } catch (final Exception e) {
       error = e.getMessage();
