@@ -1,6 +1,5 @@
 package org.ivoa.dm;
 
-import org.apache.commons.logging.Log;
 
 import org.ivoa.conf.Configuration;
 import org.ivoa.conf.RuntimeConfiguration;
@@ -22,7 +21,6 @@ import org.ivoa.tap.Schemas;
 
 import org.ivoa.util.CollectionUtils;
 import org.ivoa.util.FileUtils;
-import org.ivoa.util.LogUtil;
 import org.ivoa.util.ReflectionUtils;
 import org.ivoa.util.StringUtils;
 
@@ -38,6 +36,7 @@ import javax.persistence.EntityManager;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+import org.ivoa.bean.LogSupport;
 
 
 /**
@@ -46,11 +45,11 @@ import javax.xml.bind.Unmarshaller;
  *
  * @author laurent bourges (voparis)
  */
-public final class MetaModelFactory {
+public final class MetaModelFactory extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
+  /** Preload TAP schemas */
+  public static final boolean LOAD_TAP = true;
 
-  /** logger */
-  private static final Log log = LogUtil.getLoggerDev();
   /** configuration test flag */
   public static final boolean isTest = Configuration.getInstance().isTest();
   /** singleton pattern */
@@ -99,7 +98,7 @@ public final class MetaModelFactory {
   /** classes in the model */
   private final Map<String, Class<?extends MetadataElement>> classes = new HashMap<String, Class<?extends MetadataElement>>();
   /** The TAP-like metadata for the database. */
-  private LinkedHashMap<String, Schemas> tap;
+  private LinkedHashMap<String, Schemas> tap = new LinkedHashMap<String, Schemas>();
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
@@ -132,6 +131,10 @@ public final class MetaModelFactory {
       final MetaModelFactory f = new MetaModelFactory();
 
       try {
+        if (log.isWarnEnabled()) {
+            log.warn("MetaModelFactory.getInstance : creating instance ...");
+        }
+
         if (f.init()) {
           // now f is ready, so changes instance volatile reference :
           instance = f;
@@ -161,6 +164,7 @@ public final class MetaModelFactory {
     }
 
     if (instance != null) {
+/*
       instance.model = null;
 
       instance.getPrimitiveTypes().clear();
@@ -172,7 +176,7 @@ public final class MetaModelFactory {
 
       instance.getClasses().clear();
       instance.getTap().clear();
-
+*/
       // clean up :
       instance = null;
     }
@@ -189,6 +193,10 @@ public final class MetaModelFactory {
    * @throws IllegalStateException if loadModel failed
    */
   private boolean init() {
+    if (log.isWarnEnabled()) {
+        log.warn("MetaModelFactory.init ...");
+    }
+
     this.model = loadModel(MODEL_FILE);
 
     if (this.model == null) {
@@ -271,18 +279,23 @@ public final class MetaModelFactory {
       }
     }
 
+    boolean res = true;
     // loads the TAP model :
-    initTAP();
+    if (LOAD_TAP) {
+        initTAP();
 
-    if (tap == null) {
-      throw new IllegalStateException("Unable to load TAP metadata.");
+        if (tap == null) {
+          throw new IllegalStateException("Unable to load TAP metadata.");
+        }
+
+        if (log.isInfoEnabled()) {
+          log.info("TAP views and tables : \n" + CollectionUtils.toString(tap.values(), "\n", "", ""));
+        }
+
+        res = (this.tap != null);
     }
 
-    if (log.isInfoEnabled()) {
-      log.info("TAP views and tables : \n" + CollectionUtils.toString(tap.values(), "\n", "", ""));
-    }
-
-    return (this.tap != null);
+    return res;
   }
 
   /**
@@ -662,9 +675,7 @@ public final class MetaModelFactory {
 
       final List to = em.createQuery("select item from Schemas item order by item.schema_name").getResultList();
 
-      if (tap == null) {
-        tap = new LinkedHashMap<String, Schemas>();
-      } else {
+      if (tap != null) {
         tap.clear();
       }
 
