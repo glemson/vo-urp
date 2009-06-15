@@ -112,64 +112,6 @@
 
 
 	
-	<!-- up to date checks -->
-
-	<!-- checks if input & xslt are modified compare to intermediate document -->
-	<uptodate property="intermediate.notRequired">
-		<srcfiles dir="${input}" includes="${source}" />
-		<srcfiles dir="${res}" includes="xmiCheck.xsl" />
-		<srcfiles dir="${res}" includes="xmiFilter.xsl" />
-		<srcfiles dir="${res}" includes="xmi2intermediate.xsl" />
-		<mapper type="merge" to="${output}/${source_intermediate}" />
-	</uptodate>
-
-	<!-- checks if intermediate & xslt documents are modified compare to xsd-gen.log -->
-	<uptodate property="xsd.notRequired">
-		<srcfiles dir="${output}" includes="${source_intermediate}" />
-		<srcfiles dir="${res}" includes="intermediate2xsd.xsl" />
-		<srcfiles dir="${res}" includes="common.xsl" />
-		<srcfiles dir="${res}" includes="common-xsd.xsl" />
-		<mapper type="merge" to="${output}/schema/xsd-gen.log" />
-	</uptodate>
-
-	<!-- checks if intermediate & xslt documents are modified compare to ddl-gen.log -->
-	<uptodate property="ddl.notRequired">
-		<srcfiles dir="${output}" includes="${source_intermediate}" />
-		<srcfiles dir="${res}" includes="intermediate2ddl.xsl" />
-		<srcfiles dir="${res}" includes="common-ddl.xsl" />
-		<srcfiles dir="${res}" includes="utype.xsl" />
-		<mapper type="merge" to="${output}/ddl/ddl-gen.log" />
-	</uptodate>
-
-	<!-- checks if intermediate & xslt documents are modified compare to tap-gen.log -->
-	<uptodate property="tap.notRequired">
-		<srcfiles dir="${output}" includes="${source_intermediate}" />
-		<srcfiles dir="${res}" includes="intermediate2tap.xsl" />
-		<srcfiles dir="${res}" includes="intermediate2ddl.xsl" />
-		<srcfiles dir="${res}" includes="common-ddl.xsl" />
-		<srcfiles dir="${res}" includes="utype.xsl" />
-		<mapper type="merge" to="${output}/tap/tap-gen.log" />
-	</uptodate>
-
-	<!-- checks if intermediate & xslt documents are modified compare to  java-gen.log -->
-	<uptodate property="java.notRequired">
-		<srcfiles dir="${output}" includes="${source_intermediate}" />
-		<srcfiles dir="${res}" includes="intermediate2java.xsl" />
-		<srcfiles dir="${res}" includes="common.xsl" />
-		<srcfiles dir="${res}" includes="common-ddl.xsl" />
-		<srcfiles dir="${res}" includes="common-xsd.xsl" />
-		<srcfiles dir="${res}" includes="jpa.xsl" />
-		<srcfiles dir="${res}" includes="jaxb.xsl" />
-		<srcfiles dir="${templates}" includes="persistence.xml.template" />
-
-		<!-- check if src/ java code has changed -->
-		<srcfiles dir="${sources}" includes="**/*" />
-
-		<srcfiles dir="${output}" includes="${source_intermediate}" />
-		<mapper type="merge" to="${sources.gen}/java-gen.log" />
-	</uptodate>
-
-
 	<!-- presets -->
 
 	<!-- Performs an XSL translation of an XML file using the Saxon processor. -->
@@ -202,6 +144,8 @@
         <mkdir dir="${build.src}"/>
         <mkdir dir="${build.gen}"/>
         <mkdir dir="${build.weaving}"/>
+	  
+	      <mkdir dir="${libs}/jalopy/bin"/>
 
         <tstamp>
             <format property="build.date" pattern="dd/MM/yyyy HH:mm:ss" />
@@ -226,6 +170,63 @@
 
 		<echo> target.run.active    : ${target.run.active} </echo>
 		<echo>-------------------------------------------------------------------------------</echo>
+	  
+	  <!-- up to date checks -->
+
+	  <!-- checks if input & xslt are modified compare to intermediate document -->
+	  <uptodate property="intermediate.notRequired">
+	    <srcfiles dir="${input}" includes="${source}" />
+	    <srcfiles dir="${res}" includes="xmiCheck.xsl" />
+	    <srcfiles dir="${res}" includes="xmiFilter.xsl" />
+	    <srcfiles dir="${res}" includes="xmi2intermediate.xsl" />
+	    <mapper type="merge" to="${output}/${source_intermediate}" />
+	  </uptodate>
+
+	  <!-- checks if intermediate & xslt documents are modified compare to xsd-gen.log -->
+	  <uptodate property="xsd.notRequired">
+	    <srcfiles dir="${output}" includes="${source_intermediate}" />
+	    <srcfiles dir="${res}" includes="intermediate2xsd.xsl" />
+	    <srcfiles dir="${res}" includes="common.xsl" />
+	    <srcfiles dir="${res}" includes="common-xsd.xsl" />
+	    <mapper type="merge" to="${output}/schema/xsd-gen.log" />
+	  </uptodate>
+
+	  <!-- checks if intermediate & xslt documents are modified compare to ddl-gen.log -->
+	  <uptodate property="ddl.notRequired">
+	    <srcfiles dir="${output}" includes="${source_intermediate}" />
+	    <srcfiles dir="${res}" includes="intermediate2ddl.xsl" />
+	    <srcfiles dir="${res}" includes="common-ddl.xsl" />
+	    <srcfiles dir="${res}" includes="utype.xsl" />
+	    <mapper type="merge" to="${output}/ddl/ddl-gen.log" />
+	  </uptodate>
+
+	  <!-- checks if intermediate & xslt documents are modified compare to tap-gen.log -->
+	  <uptodate property="tap.notRequired">
+	    <srcfiles dir="${output}" includes="${source_intermediate}" />
+	    <srcfiles dir="${res}" includes="intermediate2tap.xsl" />
+	    <srcfiles dir="${res}" includes="intermediate2ddl.xsl" />
+	    <srcfiles dir="${res}" includes="common-ddl.xsl" />
+	    <srcfiles dir="${res}" includes="utype.xsl" />
+	    <mapper type="merge" to="${output}/tap/tap-gen.log" />
+	  </uptodate>
+
+	  <!-- checks if intermediate & xslt documents are modified compare to  java-gen.log -->
+	  <uptodate property="java.notRequired">
+	    <srcfiles dir="${output}" includes="${source_intermediate}" />
+	    <srcfiles dir="${res}" includes="intermediate2java.xsl" />
+	    <srcfiles dir="${res}" includes="common.xsl" />
+	    <srcfiles dir="${res}" includes="common-ddl.xsl" />
+	    <srcfiles dir="${res}" includes="common-xsd.xsl" />
+	    <srcfiles dir="${res}" includes="jpa.xsl" />
+	    <srcfiles dir="${res}" includes="jaxb.xsl" />
+	    <srcfiles dir="${templates}" includes="persistence.xml.template" />
+
+	    <!-- check if src/ java code has changed -->
+	    <srcfiles dir="${sources}" includes="**/*" />
+
+	    <srcfiles dir="${output}" includes="${source_intermediate}" />
+	    <mapper type="merge" to="${sources.gen}/java-gen.log" />
+	  </uptodate>	  
 	</target>
 
 
@@ -252,7 +253,7 @@
 
 
 	<!-- main target : force to generate all documents -->
-	<target name="forceMakeAll"  depends="cleanOutput, cleanJava" description="make all transformations (forced)">
+	<target name="forceMakeAll"  depends="init, cleanOutput, cleanJava" description="make all transformations (forced)">
 		<ant target="makeAll" inheritAll="false" />
 		<echo>forceMakeAll : done.</echo>
 	</target>
