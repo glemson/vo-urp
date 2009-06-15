@@ -116,6 +116,15 @@ Instead we try an approach based on views/representations of the model -->
         </xsd:documentation>
       </xsd:annotation>
     </xsd:attribute>
+    <xsd:attribute name="publisherDID" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>
+          Represents the ID of the object in the IVO context.
+          Should be globally unique.
+          Maybe type should be IVOIdentifier.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
     <xsd:attribute name="xmlId" type="xsd:IDREF">
       <xsd:annotation>
         <xsd:documentation>
