@@ -10,7 +10,7 @@
 <!-- libraries for base module -->
 <fileset id="jarfiles" dir="${libs}">
   <!-- apache logging + Log4J -->
-  <include name="commons-logging-1.0.4.jar"/>
+  <include name="commons-logging-1.1.1.jar"/>
   <include name="log4j-1.2.15.jar"/>
 
   <!-- apache http client (unused) -->
@@ -50,11 +50,11 @@
 <path id="runtime.class.path">
   <pathelement location="${dist}/${build.src.file}" />
 
-  <!-- standard classes -->
-  <!--  <pathelement location="${dist}/${build.gen.file}" /> -->
-
   <!-- weaved classes (faster) -->
   <pathelement location="${dist}/${build.gen.weave.file}" />
+
+  <!-- standard classes -->
+  <pathelement location="${dist}/${build.gen.file}" />
 
   <!-- JDBC driver -->
   <path refid="jdbc-drivers.class.path" />
