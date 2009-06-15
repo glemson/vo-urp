@@ -100,7 +100,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
   /**
    * Stores all the java.util.logging.Levels.  The indexes are EclipseLink logging levels.
    */
-  public static final Level[] JAVA_LEVELS = new Level[] {
+  public static Level[] JAVA_LEVELS = new Level[] {
                                               Level.ALL, Level.FINEST, Level.FINER, Level.FINE, Level.CONFIG, Level.INFO,
                                               Level.WARNING, Level.SEVERE, Level.OFF
                                             };
