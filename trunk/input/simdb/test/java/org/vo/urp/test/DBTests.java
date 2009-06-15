@@ -12,6 +12,7 @@ import org.ivoa.dm.model.ReferenceResolver;
 
 import org.ivoa.env.ApplicationMain;
 
+import org.ivoa.jaxb.XmlBindException;
 import org.ivoa.jpa.JPAFactory;
 
 import org.ivoa.simdb.Quantity;
@@ -21,6 +22,8 @@ import org.ivoa.simdb.protocol.Simulator;
 
 
 import javax.persistence.EntityManager;
+import javax.xml.bind.JAXBException;
+
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
 import org.eclipse.persistence.jpa.JpaEntityManager;
@@ -636,6 +639,10 @@ public class DBTests extends LogSupport implements ApplicationMain {
             xmlTest.saveMarshall(simulator, xmlDocumentPath.replace(XMLTests.XML_EXT, "-out" + XMLTests.XML_EXT));
 
             inspectorTest.test(simulator);
+        } catch(XmlBindException je)
+        {
+          log.error("DBTests.testLOAD_WRITE: error parsing XML document : \n" + je.getMessage());
+          throw je;
         } catch (final RuntimeException re) {
             log.error("DBTests.testLOAD_WRITE : runtime failure : ", re);
 
@@ -690,6 +697,10 @@ public class DBTests extends LogSupport implements ApplicationMain {
                 em.getTransaction().commit();
                 log.warn("DBTests.testLOAD_BATCH_WRITE : TX commited : " + i);
 
+            } catch(XmlBindException je)
+            {
+              log.error("DBTests.testLOAD_BATCH_WRITE: error parsing XML document : \n" + je.getMessage());
+              throw je;
             } catch (final RuntimeException re) {
                 log.error("DBTests.testLOAD_BATCH_WRITE : runtime failure : ", re);
 
