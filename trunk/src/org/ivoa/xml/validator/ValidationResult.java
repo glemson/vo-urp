@@ -23,6 +23,7 @@ public class ValidationResult {
    * Constructor
    */
   public ValidationResult() {
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -48,10 +49,10 @@ public class ValidationResult {
   /**
    * TODO : Method Description
    *
-   * @param valid
+   * @param pValid valid
    */
-  protected void setValid(final boolean valid) {
-    this.valid = valid;
+  protected void setValid(final boolean pValid) {
+    this.valid = pValid;
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

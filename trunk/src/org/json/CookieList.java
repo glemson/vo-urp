@@ -73,7 +73,7 @@ public class CookieList {
    */
   public static String toString(final JSONObject o) throws JSONException {
     boolean      b    = false;
-    Iterator     keys = o.keys();
+    Iterator<?>     keys = o.keys();
     String       s;
     StringBuffer sb   = new StringBuffer();
 

@@ -5,7 +5,8 @@ import java.io.Writer;
 
 
 /**
- * Unsynchronized StringBuilder writer for performance
+ * Unsynchronized StringBuilder writer for performance A character stream that collects its output
+ * in a string builder, which can then be used to construct a string.
  *
  * @author laurent bourges (voparis)  A character stream that collects its output in a string builder, which can then
  *         be used to construct a string. <p>
@@ -187,7 +188,7 @@ public final class StringBuilderWriter extends Writer {
    */
   @Override
   public void flush() {
-    // Empty block
+    /* no-op */
   }
 
   /**
@@ -198,7 +199,7 @@ public final class StringBuilderWriter extends Writer {
    */
   @Override
   public void close() throws IOException {
-    // Empty block
+    /* no-op */
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

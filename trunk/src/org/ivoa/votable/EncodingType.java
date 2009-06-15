@@ -1,7 +1,6 @@
 package org.ivoa.votable;
 
 import javax.xml.bind.annotation.XmlEnum;
-import javax.xml.bind.annotation.XmlEnumValue;
 import javax.xml.bind.annotation.XmlType;
 /**
  * <p>Java class for encodingType.

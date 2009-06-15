@@ -1,13 +1,11 @@
 package org.ivoa.jaxb;
 
-import org.apache.commons.logging.Log;
+import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.logging.Log;
 import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.ReferenceResolver;
-
 import org.ivoa.util.LogUtil;
-
-import javax.xml.bind.Unmarshaller;
 
 
 /**
@@ -23,6 +21,7 @@ public final class CustomUnmarshallListener extends Unmarshaller.Listener {
    * Constructor
    */
   public CustomUnmarshallListener() {
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------

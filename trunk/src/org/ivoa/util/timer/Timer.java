@@ -23,7 +23,7 @@ public final class Timer {
    * Creates a new Timer object
    */
   public Timer() {
-    // empty block
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------

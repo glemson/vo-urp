@@ -1,15 +1,6 @@
 package org.ivoa.jpa;
 
 
-import org.eclipse.persistence.config.PersistenceUnitProperties;
-import org.eclipse.persistence.config.SessionCustomizer;
-
-import org.eclipse.persistence.sessions.Session;
-
-import org.ivoa.conf.PropertyHolder;
-
-import org.ivoa.util.CollectionUtils;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -19,7 +10,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+
+import org.eclipse.persistence.config.PersistenceUnitProperties;
+import org.eclipse.persistence.config.SessionCustomizer;
+import org.eclipse.persistence.sessions.Session;
 import org.ivoa.bean.LogSupport;
+import org.ivoa.conf.PropertyHolder;
+import org.ivoa.util.CollectionUtils;
 
 
 /**
@@ -51,20 +48,20 @@ public final class JPAFactory extends LogSupport {
 /**
    * Creates a new JPAFactory object
    *
-   * @param pu
+   * @param pPU persistence unit name
    */
-  private JPAFactory(final String pu) {
-    this(pu, CONFIG_FILE);
+  private JPAFactory(final String pPU) {
+    this(pPU, CONFIG_FILE);
   }
 
 /**
    * Creates a new JPAFactory object
    *
-   * @param pu
+   * @param pPU persistence unit name
    * @param fileName config file name
    */
-  private JPAFactory(final String pu, final String fileName) {
-    this.pu = pu;
+  private JPAFactory(final String pPU, final String fileName) {
+    this.pu = pPU;
     this.config = fileName;
 
     init();
@@ -241,6 +238,10 @@ public final class JPAFactory extends LogSupport {
   public static final class EnableIntegrityChecker implements SessionCustomizer {
     //~ Methods --------------------------------------------------------------------------------------------------------
 
+    /**
+     * Customize the session to add the IntegrityChecker component
+     * @param session eclipselink session
+     */
     public final void customize(final Session session) {
       session.getIntegrityChecker().checkDatabase();
       session.getIntegrityChecker().setShouldCatchExceptions(true);

@@ -5,84 +5,138 @@ import java.util.Map;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.xml.bind.annotation.XmlElement;
 
+/**
+ * Root Entity Object is a base type corresponding to a full XML document
+ * 
+ * @author laurent bourges / gerard lemson
+ */
 public abstract class RootEntityObject extends MetadataObject {
+  // ~ Constants
+  // --------------------------------------------------------------------------------------------------------
 
-	/**
-	 * Username of owner of this root entity class.<br/>
-	 */
-    @Basic(optional = true)
-    @Column(name = "ownerUser", nullable = true)
-	private String owner;
+  /**
+   * serial UID for Serializable interface : every concrete class must have its value corresponding
+   * to last modification date of the UML model
+   */
+  private static final long serialVersionUID = 1L;
 
-	/**
-	 * Username of owner of this root entity class.<br/>
-	 */
-    /**
+  // ~ Members
+  // ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * Username of owner of this root entity class.<br/>
+   */
+  @Basic(optional = true)
+  @Column(name = "ownerUser", nullable = true)
+  private String owner;
+
+  /**
+   * Username of owner of this root entity class.<br/>
+   */
+  /**
      * 
      */
-    @Basic(optional = true)
-    @Column(name = "updateUser", nullable = true)
-	private String updateUser;
+  @Basic(optional = true)
+  @Column(name = "updateUser", nullable = true)
+  private String updateUser;
 
-    /**
-     * The timestamp when this record was added to the database.
-     */
-    @Basic(optional = true)
-    @Column(name = "createTimestamp", nullable = true)
-    private Timestamp createTimestamp;
+  /**
+   * The timestamp when this record was added to the database.
+   */
+  @Basic(optional = true)
+  @Column(name = "createTimestamp", nullable = true)
+  private Timestamp createTimestamp;
 
-    /**
-     * The timestamp when this record was last updated in the database.
-     */
-    @Basic(optional = true)
-    @Column(name = "updateTimestamp", nullable = true)
-    private Timestamp updateTimestamp;
-    
-    
-    public String getOwner() {
-		return owner;
-	}
+  /**
+   * The timestamp when this record was last updated in the database.
+   */
+  @Basic(optional = true)
+  @Column(name = "updateTimestamp", nullable = true)
+  private Timestamp updateTimestamp;
 
-	public void setOwner(String owner) {
-		this.owner = owner;
-	}
+  // ~ Constructors
+  // -----------------------------------------------------------------------------------------------------
 
-	public String getUpdateUser() {
-		return updateUser;
-	}
+  /**
+   * Public constructor
+   */
+  public RootEntityObject() {
+    super();
+  }
 
-	public void setUpdateUser(String updateUser) {
-		this.updateUser = updateUser;
-	}
-	  /**
-	   * TODO : Method Description
-	   *
-	   * @param sb 
-	   * @param isDeep 
-	   * @param ids 
-	   *
-	   * @return value TODO : Value Description
-	   */
-	  protected StringBuilder deepToString(final StringBuilder sb, final boolean isDeep,
-	                                       final Map<MetadataElement, Object> ids) {
-	    return null;
-	  }
+  // ~ Methods
+  // ----------------------------------------------------------------------------------------------------------
 
-    public Timestamp getCreateTimestamp() {
-      return createTimestamp;
-    }
+  /**
+   * @return owner
+   */
+  public String getOwner() {
+    return owner;
+  }
 
-    public void setCreateTimestamp(Timestamp createTimestamp) {
-      this.createTimestamp = createTimestamp;
-    }
+  /**
+   * @param pOwner owner
+   */
+  public void setOwner(final String pOwner) {
+    this.owner = pOwner;
+  }
 
-    public Timestamp getUpdateTimestamp() {
-      return updateTimestamp;
-    }
+  /**
+   * @return updateUser
+   */
+  public String getUpdateUser() {
+    return updateUser;
+  }
 
-    public void setUpdateTimestamp(Timestamp updateTimestamp) {
-      this.updateTimestamp = updateTimestamp;
-    }
+  /**
+   * @param pUpdateUser updateUser
+   */
+  public void setUpdateUser(final String pUpdateUser) {
+    this.updateUser = pUpdateUser;
+  }
+
+  /**
+   * TODO : Method Description
+   * 
+   * @param sb
+   * @param isDeep
+   * @param ids
+   * @return value TODO : Value Description
+   */
+  @Override
+  protected StringBuilder deepToString(final StringBuilder sb, final boolean isDeep,
+      final Map<MetadataElement, Object> ids) {
+    return null;
+  }
+
+  /**
+   * @return createTimestamp
+   */
+  public Timestamp getCreateTimestamp() {
+    return createTimestamp;
+  }
+
+  /**
+   * @param pCreateTimestamp createTimestamp
+   */
+  public void setCreateTimestamp(final Timestamp pCreateTimestamp) {
+    this.createTimestamp = pCreateTimestamp;
+  }
+
+  /**
+   * @return updateTimestamp
+   */
+  public Timestamp getUpdateTimestamp() {
+    return updateTimestamp;
+  }
+
+  /**
+   * @param pUpdateTimestamp updateTimestamp
+   */
+  public void setUpdateTimestamp(final Timestamp pUpdateTimestamp) {
+    this.updateTimestamp = pUpdateTimestamp;
+  }
 }
+// ~ End of file
+// --------------------------------------------------------------------------------------------------------

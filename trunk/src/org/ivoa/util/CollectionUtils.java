@@ -24,7 +24,7 @@ public final class CollectionUtils {
    * Creates a new CollectionUtils object
    */
   private CollectionUtils() {
-    // empty block
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------

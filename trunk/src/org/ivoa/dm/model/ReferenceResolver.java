@@ -1,16 +1,15 @@
 package org.ivoa.dm.model;
 
 
-import org.ivoa.bean.LogSupport;
-import org.ivoa.conf.Configuration;
-import org.ivoa.jpa.JPAHelper;
-
-import org.ivoa.util.JavaUtils;
-
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+
+import org.ivoa.bean.LogSupport;
+import org.ivoa.conf.Configuration;
+import org.ivoa.jpa.JPAHelper;
+import org.ivoa.util.JavaUtils;
 
 
 /**
@@ -38,6 +37,7 @@ public final class ReferenceResolver extends LogSupport {
    * Forbidden constructor
    */
   private ReferenceResolver() {
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -238,6 +238,7 @@ public final class ReferenceResolver extends LogSupport {
      * Protected Constructor
      */
     protected ResolverContext() {
+      /* no-op */
     }
 
     //~ Methods --------------------------------------------------------------------------------------------------------
@@ -263,10 +264,10 @@ public final class ReferenceResolver extends LogSupport {
     /**
      * Sets the JPA entity manager to use to resolve external references
      *
-     * @param em JPA entity manager
+     * @param pEm JPA entity manager
      */
-    protected void setEm(final EntityManager em) {
-      this.em = em;
+    protected void setEm(final EntityManager pEm) {
+      this.em = pEm;
     }
   }
 }

@@ -12,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 
@@ -31,7 +30,7 @@ public class Columns {
    */
   @Id
   @Column(name = "id", nullable = false)
-  private long                                          id;
+  private long id;
   /**
    * TODO : Field Description
    */
@@ -58,6 +57,17 @@ public class Columns {
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
+
+  /**
+   * Returns the id
+   * @return id
+   */
+  public long getId() {
+    return id;
+  }
+  
+  
+  
   /**
    * TODO : Method Description
    *
@@ -70,10 +80,10 @@ public class Columns {
   /**
    * TODO : Method Description
    *
-   * @param column_name 
+   * @param pColumnName column_name 
    */
-  public void setColumn_name(final String column_name) {
-    this.column_name = column_name;
+  public void setColumn_name(final String pColumnName) {
+    this.column_name = pColumnName;
   }
 
   /**
@@ -88,10 +98,10 @@ public class Columns {
   /**
    * TODO : Method Description
    *
-   * @param datatype 
+   * @param pDatatype datatype 
    */
-  public void setDatatype(final String datatype) {
-    this.datatype = datatype;
+  public void setDatatype(final String pDatatype) {
+    this.datatype = pDatatype;
   }
 
   /**
@@ -106,10 +116,10 @@ public class Columns {
   /**
    * TODO : Method Description
    *
-   * @param rank 
+   * @param pRank rank 
    */
-  public void setRank(final int rank) {
-    this.rank = rank;
+  public void setRank(final int pRank) {
+    this.rank = pRank;
   }
 
   /**
@@ -124,10 +134,10 @@ public class Columns {
   /**
    * TODO : Method Description
    *
-   * @param table 
+   * @param pTable table 
    */
-  public void setTable(final Tables table) {
-    this.table = table;
+  public void setTable(final Tables pTable) {
+    this.table = pTable;
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

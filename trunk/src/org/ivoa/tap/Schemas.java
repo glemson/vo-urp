@@ -5,10 +5,6 @@
  * Created on Oct 29, 2008
  */
 package org.ivoa.tap;
-
-import org.ivoa.dm.model.MetadataObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -68,10 +64,10 @@ public class Schemas {
   /**
    * TODO : Method Description
    *
-   * @param schema_name 
+   * @param pSchemaName schema_name 
    */
-  public void setSchema_name(final String schema_name) {
-    this.schema_name = schema_name;
+  public void setSchema_name(final String pSchemaName) {
+    this.schema_name = pSchemaName;
   }
 
   /**
@@ -86,10 +82,10 @@ public class Schemas {
   /**
    * TODO : Method Description
    *
-   * @param descriptioon 
+   * @param pDescription description 
    */
-  public void setDescriptioon(final String descriptioon) {
-    this.descriptioon = descriptioon;
+  public void setDescriptioon(final String pDescription) {
+    this.descriptioon = pDescription;
   }
 
   /**
@@ -104,10 +100,10 @@ public class Schemas {
   /**
    * TODO : Method Description
    *
-   * @param utype 
+   * @param pUtype utype 
    */
-  public void setUtype(final String utype) {
-    this.utype = utype;
+  public void setUtype(final String pUtype) {
+    this.utype = pUtype;
   }
 
   /**
@@ -122,10 +118,10 @@ public class Schemas {
   /**
    * TODO : Method Description
    *
-   * @param tables 
+   * @param pTables tables 
    */
-  public void setTables(final List<Tables> tables) {
-    this.tables = tables;
+  public void setTables(final List<Tables> pTables) {
+    this.tables = pTables;
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

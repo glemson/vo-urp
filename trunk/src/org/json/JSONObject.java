@@ -27,8 +27,8 @@ SOFTWARE.
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -86,6 +86,7 @@ import java.util.TreeSet;
  * @author JSON.org
  * @version 2009-03-06
  */
+@SuppressWarnings("unchecked")
 public class JSONObject {
 
     /**
@@ -93,13 +94,14 @@ public class JSONObject {
      * whilst Java's null is equivalent to the value that JavaScript calls
      * undefined.
      */
-     private static final class Null {
+     protected static final class Null {
 
         /**
          * There is only intended to be a single instance of the NULL object,
          * so the clone method returns itself.
          * @return     NULL.
          */
+       @Override
         protected final Object clone() {
             return this;
         }
@@ -111,6 +113,7 @@ public class JSONObject {
          * @return true if the object parameter is the JSONObject.NULL object
          *  or null.
          */
+       @Override
         public boolean equals(Object object) {
             return object == null || object == this;
         }
@@ -120,6 +123,7 @@ public class JSONObject {
          * Get the "null" string value.
          * @return The string "null".
          */
+        @Override
         public String toString() {
             return "null";
         }
@@ -232,8 +236,8 @@ public class JSONObject {
      * @param map A map object that can be used to initialize the contents of
      *  the JSONObject.
      */
-    public JSONObject(Map map) {
-        this.map = (map == null) ? new HashMap() : map;
+    public JSONObject(Map pMap) {
+        this.map = (pMap == null) ? new HashMap() : pMap;
     }
 
 
@@ -245,10 +249,10 @@ public class JSONObject {
      * @param map - A map with Key-Bean data.
      * @param includeSuperClass - Tell whether to include the super class properties.
      */
-    public JSONObject(Map map, boolean includeSuperClass) {
+    public JSONObject(Map pMap, boolean includeSuperClass) {
         this.map = new HashMap();
-        if (map != null) {
-            Iterator i = map.entrySet().iterator();
+        if (pMap != null) {
+            Iterator i = pMap.entrySet().iterator();
             while (i.hasNext()) {
                 Map.Entry e = (Map.Entry)i.next();
                 if (isStandardProperty(e.getValue().getClass())) {
@@ -308,11 +312,11 @@ public class JSONObject {
         populateInternalMap(bean, includeSuperClass);
     }
 
-    private void populateInternalMap(Object bean, boolean includeSuperClass){
-        Class klass = bean.getClass();
+    private void populateInternalMap(Object bean, boolean pIncludeSuperClass){
+        Class<?> klass = bean.getClass();
 
         /* If klass.getSuperClass is System class then force includeSuperClass to false. */
-
+        boolean includeSuperClass = pIncludeSuperClass;
         if (klass.getClassLoader() == null) {
             includeSuperClass = false;
         }
@@ -368,7 +372,12 @@ public class JSONObject {
     }
 
 
-    static boolean isStandardProperty(Class clazz) {
+    /**
+     * Returns true if clazz is a standard property type
+     * @param clazz class to test
+     * @return true if clazz is a standard property type
+     */
+    static boolean isStandardProperty(Class<?> clazz) {
         return clazz.isPrimitive()                  ||
             clazz.isAssignableFrom(Byte.class)      ||
             clazz.isAssignableFrom(Short.class)     ||
@@ -395,7 +404,7 @@ public class JSONObject {
      */
     public JSONObject(Object object, String names[]) {
         this();
-        Class c = object.getClass();
+        Class<?> c = object.getClass();
         for (int i = 0; i < names.length; i += 1) {
             String name = names[i];
             try {
@@ -662,7 +671,7 @@ public class JSONObject {
         if (object == null) {
             return null;
         }
-        Class klass = object.getClass();
+        Class<?> klass = object.getClass();
         Field[] fields = klass.getFields();
         int length = fields.length;
         if (length == 0) {
@@ -822,7 +831,7 @@ public class JSONObject {
      * @return      this.
      * @throws JSONException
      */
-    public JSONObject put(String key, Collection value) throws JSONException {
+    public JSONObject put(String key, Collection<?> value) throws JSONException {
         put(key, new JSONArray(value));
         return this;
     }
@@ -1252,14 +1261,12 @@ public class JSONObject {
             try {
                 if (s.indexOf('.') > -1 || s.indexOf('e') > -1 || s.indexOf('E') > -1) {
                     return Double.valueOf(s);
-                } else {
-                    Long myLong = new Long(s);
-                    if (myLong.longValue() == myLong.intValue()) {
-                        return new Integer(myLong.intValue());
-                    } else {
-                        return myLong;
-                    }
                 }
+                Long myLong = new Long(s);
+                if (myLong.longValue() == myLong.intValue()) {
+                    return new Integer(myLong.intValue());
+                }
+                return myLong;
             }  catch (Exception f) {
                 /* Ignore the error */
             }
@@ -1321,6 +1328,7 @@ public class JSONObject {
      *  with <code>{</code>&nbsp;<small>(left brace)</small> and ending
      *  with <code>}</code>&nbsp;<small>(right brace)</small>.
      */
+    @Override
     public String toString() {
         try {
             Iterator     keys = keys();
@@ -1488,7 +1496,7 @@ public class JSONObject {
      *  with <code>}</code>&nbsp;<small>(right brace)</small>.
      * @throws JSONException If the object contains an invalid number.
      */
-     static String valueToString(Object value, int indentFactor, int indent)
+    static String valueToString(Object value, int indentFactor, int indent)
             throws JSONException {
         if (value == null || value.equals(null)) {
             return "null";

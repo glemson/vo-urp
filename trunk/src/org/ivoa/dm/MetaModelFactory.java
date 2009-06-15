@@ -1,31 +1,7 @@
 package org.ivoa.dm;
 
 
-import org.ivoa.conf.Configuration;
-import org.ivoa.conf.RuntimeConfiguration;
-
-import org.ivoa.dm.model.MetadataElement;
-
-import org.ivoa.jaxb.JAXBFactory;
-
-import org.ivoa.jpa.JPAFactory;
-
-import org.ivoa.metamodel.DataType;
-import org.ivoa.metamodel.Element;
-import org.ivoa.metamodel.Enumeration;
-import org.ivoa.metamodel.Model;
-import org.ivoa.metamodel.ObjectType;
-import org.ivoa.metamodel.PrimitiveType;
-
-import org.ivoa.tap.Schemas;
-
-import org.ivoa.util.CollectionUtils;
-import org.ivoa.util.FileUtils;
-import org.ivoa.util.ReflectionUtils;
-import org.ivoa.util.StringUtils;
-
 import java.io.InputStream;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -33,10 +9,26 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
-
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+
 import org.ivoa.bean.LogSupport;
+import org.ivoa.conf.Configuration;
+import org.ivoa.conf.RuntimeConfiguration;
+import org.ivoa.dm.model.MetadataElement;
+import org.ivoa.jaxb.JAXBFactory;
+import org.ivoa.jpa.JPAFactory;
+import org.ivoa.metamodel.DataType;
+import org.ivoa.metamodel.Element;
+import org.ivoa.metamodel.Enumeration;
+import org.ivoa.metamodel.Model;
+import org.ivoa.metamodel.ObjectType;
+import org.ivoa.metamodel.PrimitiveType;
+import org.ivoa.tap.Schemas;
+import org.ivoa.util.CollectionUtils;
+import org.ivoa.util.FileUtils;
+import org.ivoa.util.ReflectionUtils;
+import org.ivoa.util.StringUtils;
 
 
 /**
@@ -205,7 +197,7 @@ public final class MetaModelFactory extends LogSupport {
 
     // TODO check whether next is sufficient to add Identity to datatypes
     for (final org.ivoa.metamodel.Profile prof : this.model.getProfile()) {
-      processProfile(prof, BASE_PACKAGE);
+      processProfile(prof);
     }
 
     for (final org.ivoa.metamodel.Package p : this.model.getPackage()) {
@@ -302,10 +294,9 @@ public final class MetaModelFactory extends LogSupport {
    * Process the profile. Pay particular attention to the Identity type, which is to be mapped to the predefined
    * class org.ivoa.dm.model
    *
-   * @param prof
-   * @param parentPath
+   * @param prof uml profile
    */
-  private void processProfile(final org.ivoa.metamodel.Profile prof, final String parentPath) {
+  private void processProfile(final org.ivoa.metamodel.Profile prof) {
     for (final org.ivoa.metamodel.Package p : prof.getPackage()) {
       processPackage(p, BASE_PACKAGE);
     }
@@ -618,7 +609,7 @@ public final class MetaModelFactory extends LogSupport {
    *
    * @return classType or null if not found
    */
-  public ObjectClassType getObjectClassType(final Class type) {
+  public ObjectClassType getObjectClassType(final Class<?> type) {
     return getObjectClassTypes().get(type.getSimpleName());
   }
 
@@ -665,6 +656,7 @@ public final class MetaModelFactory extends LogSupport {
   /**
    * 
    */
+  @SuppressWarnings("unchecked")
   private void initTAP() {
     EntityManager em = null;
 
@@ -673,7 +665,7 @@ public final class MetaModelFactory extends LogSupport {
 
       em = jf.getEm();
 
-      final List to = em.createQuery("select item from Schemas item order by item.schema_name").getResultList();
+      final List<Schemas> to = em.createQuery("select item from Schemas item order by item.schema_name").getResultList();
 
       if (tap != null) {
         tap.clear();

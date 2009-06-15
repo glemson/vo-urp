@@ -1,21 +1,6 @@
 package org.ivoa.dm;
 
 
-import org.ivoa.conf.RuntimeConfiguration;
-
-import org.ivoa.dm.model.MetadataObject;
-import org.ivoa.dm.model.ReferenceResolver;
-import org.ivoa.dm.model.RootEntityObject;
-
-
-import org.ivoa.jpa.JPAFactory;
-
-import org.ivoa.util.FileUtils;
-
-import org.ivoa.xml.validator.ErrorMessage;
-import org.ivoa.xml.validator.ValidationResult;
-import org.ivoa.xml.validator.XMLValidator;
-
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,7 +10,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import javax.persistence.EntityManager;
+
 import org.ivoa.bean.LogSupport;
+import org.ivoa.conf.RuntimeConfiguration;
+import org.ivoa.dm.model.MetadataObject;
+import org.ivoa.dm.model.ReferenceResolver;
+import org.ivoa.dm.model.RootEntityObject;
+import org.ivoa.jpa.JPAFactory;
+import org.ivoa.util.FileUtils;
+import org.ivoa.xml.validator.ErrorMessage;
+import org.ivoa.xml.validator.ValidationResult;
+import org.ivoa.xml.validator.XMLValidator;
 
 
 /**
@@ -50,9 +45,11 @@ public class DataModelManager extends LogSupport {
 
 /**
    * Constructor
+   * 
+   * @param jpaPU jpa persistence unit to use
    */
-  public DataModelManager(final String jpa_pu) {
-    this.jpa_pu = jpa_pu;
+  public DataModelManager(final String jpaPU) {
+    this.jpa_pu = jpaPU;
     this.validator = new XMLValidator(SCHEMA_URL);
   }
 
@@ -214,7 +211,7 @@ public class DataModelManager extends LogSupport {
       log.error("DataModelManager.load : runtime failure : ", re);
 
       // if connection failure => em is null :
-      if (em.getTransaction().isActive()) {
+      if (em != null && em.getTransaction().isActive()) {
         log.warn("DataModelManager.load : rollbacking TX ...");
         em.getTransaction().rollback();
         log.warn("DataModelManager.load : TX rollbacked.");

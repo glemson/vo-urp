@@ -16,7 +16,7 @@ public final class ReflectionUtils extends LogSupport {
    * Constructor
    */
   private ReflectionUtils() {
-    // Empty block
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -28,6 +28,7 @@ public final class ReflectionUtils extends LogSupport {
    *
    * @return value TODO : Value Description
    */
+  @SuppressWarnings("unchecked")
   public static Class findClass(final String className) {
     try {
       return Class.forName(className);

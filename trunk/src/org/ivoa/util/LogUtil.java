@@ -1,10 +1,10 @@
 package org.ivoa.util;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Commons-logging & Log4J Utility class :
@@ -23,7 +23,7 @@ public final class LogUtil {
     public static final boolean FORCE_APACHE_COMMONS_LOGGING_DIAGNOSTICS = false;
     /** main logger : main */
     public static final String LOGGER_MAIN = "org.ivoa";
-    /** developper logger : dev */
+    /** developer logger : dev */
     public static final String LOGGER_DEV = "org.ivoa.dev";
 
     /** singleton instance */
@@ -42,7 +42,7 @@ public final class LogUtil {
     // members :
     /** main logger : main */
     private Log log;
-    /** developper logger : dev */
+  /** developer logger : dev */
     private Log logDev;
     /** all loggers */
     private final Map<String, Log> logs = new HashMap<String, Log>();
@@ -52,7 +52,7 @@ public final class LogUtil {
      * Private Constructor : use getInstance() method
      */
     private LogUtil() {
-    // Empty block
+    /* no-op */
     }
 
     //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -255,10 +255,10 @@ java.lang.Throwable
      * Adds Log into logs map
      *
      * @param key alias
-     * @param log Log
+   * @param logger Log to add
      */
-    private void addLog(final String key, final Log log) {
-        this.logs.put(key, log);
+  private void addLog(final String key, final Log logger) {
+    this.logs.put(key, logger);
     }
 
     /**

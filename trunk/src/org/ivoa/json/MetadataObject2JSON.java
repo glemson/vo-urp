@@ -1,19 +1,16 @@
 package org.ivoa.json;
 
-import org.ivoa.dm.MetaModelFactory;
-import org.ivoa.dm.ObjectClassType;
-
-import org.ivoa.dm.model.MetadataObject;
-
-import org.ivoa.metamodel.Attribute;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.ivoa.dm.MetaModelFactory;
+import org.ivoa.dm.ObjectClassType;
+import org.ivoa.dm.model.MetadataObject;
+import org.ivoa.metamodel.Attribute;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 /**
@@ -178,7 +175,7 @@ public class MetadataObject2JSON {
                                   throws JSONException, InstantiationException, IllegalAccessException {
     JSONObject     json = new JSONObject(jsonString);
     String         t    = json.getString(type);
-    Class          cl   = MetaModelFactory.getInstance().getClass(t);
+    Class<?>          cl   = MetaModelFactory.getInstance().getClass(t);
     MetadataObject o    = (MetadataObject) cl.newInstance();
 
     return o;

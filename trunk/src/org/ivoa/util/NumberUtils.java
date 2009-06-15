@@ -2,7 +2,6 @@ package org.ivoa.util;
 
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
-
 import java.util.HashMap;
 import java.util.Map;
 

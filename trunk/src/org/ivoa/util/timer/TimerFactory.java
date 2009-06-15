@@ -4,6 +4,7 @@ package org.ivoa.util.timer;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 import org.ivoa.bean.LogSupport;
 
 
@@ -24,7 +25,7 @@ public final class TimerFactory extends LogSupport {
    * Forbidden Constructor
    */
   private TimerFactory() {
-    // empty block
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------

@@ -35,6 +35,7 @@ public class ObjectFactory {
      * 
      */
     public ObjectFactory() {
+      /* no-op */
     }
 
     /**

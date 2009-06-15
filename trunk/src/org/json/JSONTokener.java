@@ -59,8 +59,8 @@ public class JSONTokener {
      *
      * @param reader     A reader.
      */
-  public JSONTokener(final Reader reader) {
-    this.reader = reader.markSupported() ? reader : new BufferedReader(reader);
+  public JSONTokener(final Reader pReader) {
+    this.reader = pReader.markSupported() ? pReader : new BufferedReader(pReader);
     this.useLastChar = false;
     this.index = 0;
   }
@@ -495,6 +495,7 @@ public class JSONTokener {
    *
    * @return " at character [this.index]"
    */
+  @Override
   public String toString() {
     return " at character " + index;
   }

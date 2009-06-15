@@ -32,16 +32,16 @@ public final class ErrorMessage implements Serializable {
 
 /**
    * Constructor
-   * @param severity severity of the validation error
-   * @param lineNumber line number in the input document
-   * @param columnNumber column number in the input document
-   * @param message error message
+   * @param pSeverity severity of the validation error
+   * @param pLineNumber line number in the input document
+   * @param pColumnNumber column number in the input document
+   * @param pMessage error message
    */
-  public ErrorMessage(final SEVERITY severity, final int lineNumber, final int columnNumber, final String message) {
-    this.severity = severity;
-    this.lineNumber = lineNumber;
-    this.columnNumber = columnNumber;
-    this.message = message;
+  public ErrorMessage(final SEVERITY pSeverity, final int pLineNumber, final int pColumnNumber, final String pMessage) {
+    this.severity = pSeverity;
+    this.lineNumber = pLineNumber;
+    this.columnNumber = pColumnNumber;
+    this.message = pMessage;
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------

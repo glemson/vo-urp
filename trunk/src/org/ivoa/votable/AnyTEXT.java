@@ -1,7 +1,5 @@
 package org.ivoa.votable;
 
-import org.w3c.dom.Element;
-
 import java.util.ArrayList;
 import java.util.List;
 

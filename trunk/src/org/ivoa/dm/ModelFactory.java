@@ -1,36 +1,30 @@
 package org.ivoa.dm;
 
 
-import org.ivoa.conf.RuntimeConfiguration;
-
-import org.ivoa.dm.model.MarshallObjectPreProcessor;
-import org.ivoa.dm.model.MarshallReferencePostProcessor;
-import org.ivoa.dm.model.MarshallReferencePreProcessor;
-import org.ivoa.dm.model.MetadataElement;
-import org.ivoa.dm.model.MetadataObject;
-
-import org.ivoa.jaxb.CustomUnmarshallListener;
-import org.ivoa.jaxb.JAXBFactory;
-
-import org.ivoa.json.MetadataObject2JSON;
-
-import org.ivoa.metamodel.Collection;
-import org.ivoa.metamodel.Reference;
-
-import org.ivoa.util.FileUtils;
-import org.ivoa.util.ReflectionUtils;
-import org.ivoa.util.StringBuilderWriter;
-
 import java.io.Reader;
 import java.io.Writer;
-
 import java.util.IdentityHashMap;
 import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+
 import org.ivoa.bean.LogSupport;
+import org.ivoa.conf.RuntimeConfiguration;
+import org.ivoa.dm.model.MarshallObjectPreProcessor;
+import org.ivoa.dm.model.MarshallReferencePostProcessor;
+import org.ivoa.dm.model.MarshallReferencePreProcessor;
+import org.ivoa.dm.model.MetadataElement;
+import org.ivoa.dm.model.MetadataObject;
+import org.ivoa.jaxb.CustomUnmarshallListener;
+import org.ivoa.jaxb.JAXBFactory;
+import org.ivoa.json.MetadataObject2JSON;
+import org.ivoa.metamodel.Collection;
+import org.ivoa.metamodel.Reference;
+import org.ivoa.util.FileUtils;
+import org.ivoa.util.ReflectionUtils;
+import org.ivoa.util.StringBuilderWriter;
 
 
 /**
@@ -59,6 +53,7 @@ public final class ModelFactory extends LogSupport {
    * Constructor
    */
   private ModelFactory() {
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -238,107 +233,6 @@ public final class ModelFactory extends LogSupport {
     }
 
     return null;
-  }
-
-  /**
-   * Navigate along child axes (references / collection) to define all external references (see Reference)
-   *
-   * @param object element to process (must not be null)
-   */
-  private void processExportReferences(final MetadataObject object) {
-    final Map<MetadataElement, Object> ids = new IdentityHashMap<MetadataElement, Object>(DEFAULT_IDENTITY_CAPACITY);
-
-    processExportReferences(ids, object);
-
-    // clears identity map to force gc asap :
-    ids.clear();
-  }
-
-  /**
-   * Navigate along child axes (references / collection) to define all external references (see Reference) <br>
-   * <b> Recursive method </b>
-   *
-   * @param ids identity map to avoid cyclic loops
-   * @param object object to process (must not be null)
-   */
-  private final void processExportReferences(final Map<MetadataElement, Object> ids, final MetadataObject object) {
-    if (log.isInfoEnabled()) {
-      log.info("ModelFactory.processExportReferences : enter : " + object);
-    }
-
-    // avoid cyclic loops :
-    if (! MetadataElement.exists(object, ids)) {
-      this.processExportReferences(ids, object, object.getClassMetaData());
-    }
-
-    if (log.isInfoEnabled()) {
-      log.info("ModelFactory.processExportReferences : exit : " + object);
-    }
-  }
-
-  /**
-   * Navigate along child axes (references / collection) to define all external references (see Reference) <br>
-   * <b> Recursive method </b>
-   *
-   * @param ids
-   * @param object
-   * @param ct
-   */
-  @SuppressWarnings("unchecked")
-  private final void processExportReferences(final Map<MetadataElement, Object> ids, final MetadataObject object,
-                                             final ObjectClassType ct) {
-    if (log.isInfoEnabled()) {
-      log.info(
-        "ModelFactory.processExportReferences : enter : " + object + " with type definition : " +
-        ct.getObjectType().getName());
-    }
-
-    String                                        propertyName;
-    Object                                        value;
-    MetadataObject                                child;
-    java.util.Collection<?extends MetadataObject> col;
-
-    // navigate through references :
-    // implies that lazy references will be resolved by ReferenceResolver :
-    for (final Reference r : ct.getReferences().values()) {
-      propertyName = r.getName();
-      value = object.getProperty(propertyName);
-
-      if ((value != null) && value instanceof MetadataObject) {
-        child = (MetadataObject) value;
-
-        // sets Xml Reference :
-        object.setProperty(propertyName + "Ref", child);
-
-        // process References (recursive loop) :
-        // do not traverse child references (external items) ?
-        //        this.processExportReferences(ids, child);
-      }
-    }
-
-    // navigate through collections :
-    for (final Collection c : ct.getCollections().values()) {
-      propertyName = c.getName();
-      value = object.getProperty(propertyName);
-
-      if (value != null) {
-        col = (java.util.Collection<?extends MetadataObject>) value;
-
-        if (col.size() > 0) {
-          for (final MetadataObject i : col) {
-            // avoid cyclic loops :
-            if (i != null) {
-              // process References (recursive loop) :
-              this.processExportReferences(ids, i);
-            }
-          }
-        }
-      }
-    }
-
-    if (log.isInfoEnabled()) {
-      log.info("ModelFactory.processExportReferences : exit : " + object);
-    }
   }
 
   /**

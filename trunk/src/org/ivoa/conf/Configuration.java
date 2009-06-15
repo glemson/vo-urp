@@ -101,8 +101,7 @@ public final class Configuration extends PropertyHolder {
    */
   private void dumpSystemProps() {
     if (log.isInfoEnabled()) {
-      log.info("System.properties : ");
-      log.info(CollectionUtils.toString(System.getProperties()));
+      log.info("System.properties : " + CollectionUtils.toString(System.getProperties()));
     }
   }
 

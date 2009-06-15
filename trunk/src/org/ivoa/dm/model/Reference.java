@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+
 import org.ivoa.bean.LogSupport;
 
 
@@ -83,10 +84,10 @@ public class Reference extends LogSupport implements Serializable {
   /**
    * Sets the external identifier (URI)
    *
-   * @param ivoId external identifier (URI)
+   * @param pIvoId external identifier (URI)
    */
-  protected void setIvoId(final String ivoId) {
-    this.ivoId = ivoId;
+  protected void setIvoId(final String pIvoId) {
+    this.ivoId = pIvoId;
   }
 
   /**
@@ -183,10 +184,10 @@ public class Reference extends LogSupport implements Serializable {
   /**
    * TODO : Method Description
    *
-   * @param publisherDID
+   * @param pPublisherDID publisherDID
    */
-  public void setPublisherDID(final String publisherDID) {
-    this.publisherDID = publisherDID;
+  public void setPublisherDID(final String pPublisherDID) {
+    this.publisherDID = pPublisherDID;
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

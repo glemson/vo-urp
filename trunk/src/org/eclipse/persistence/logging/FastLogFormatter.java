@@ -12,17 +12,15 @@
  ******************************************************************************/
 package org.eclipse.persistence.logging;
 
-import org.eclipse.persistence.internal.security.PrivilegedAccessHelper;
-
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
 import java.text.MessageFormat;
-
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.SimpleFormatter;
+
+import org.eclipse.persistence.internal.security.PrivilegedAccessHelper;
 
 
 /**
@@ -78,136 +76,135 @@ public final class FastLogFormatter extends SimpleFormatter {
   public String format(final LogRecord pRecord) {
     if (! (pRecord instanceof EclipseLinkLogRecord)) {
       return super.format(pRecord);
+    }
+    final EclipseLinkLogRecord record = (EclipseLinkLogRecord) pRecord;
+
+    final String               message = formatMessage(record);
+
+    final int capacity = (adaptedBufferCapacity == UNDEFINED_CAPACITY) ? INITIAL_BUFFER_CAPACITY
+                                                                       : (adaptedBufferCapacity + message.length());
+
+    /*
+     * Unsynchronized & sized character buffer to avoid too much array resize operations :
+     */
+    final StringBuilder sb = new StringBuilder(capacity);
+
+    // local variable for performance :
+    final char space = SPACE_CHAR;
+
+    if (record.shouldPrintDate()) {
+      synchronized (dateInstance) {
+        // Minimize memory allocations here.
+        dateInstance.setTime(record.getMillis());
+        dateFormatterArgs[0] = dateInstance;
+
+        if (dateFormatter == null) {
+          dateFormatter = new MessageFormat(format);
+        }
+
+        dateFormatter.format(dateFormatterArgs, dateBuffer, null);
+        sb.append(dateBuffer);
+        // reset dateBuffer content :
+        dateBuffer.setLength(0);
+      }
+
+      sb.append(space);
+    }
+
+    if (record.getSourceClassName() != null) {
+      sb.append(record.getSourceClassName());
     } else {
-      final EclipseLinkLogRecord record = (EclipseLinkLogRecord) pRecord;
+      sb.append(record.getLoggerName());
+    }
 
-      final String               message = formatMessage(record);
+    if (record.getSourceMethodName() != null) {
+      sb.append(space);
+      sb.append(record.getSourceMethodName());
+    }
 
-      final int capacity = (adaptedBufferCapacity == UNDEFINED_CAPACITY) ? INITIAL_BUFFER_CAPACITY
-                                                                         : (adaptedBufferCapacity + message.length());
+    if (record.getSessionString() != null) {
+      sb.append(space);
+      sb.append(record.getSessionString());
+    }
 
-      /*
-       * Unsynchronized & sized character buffer to avoid too much array resize operations :
-       */
-      final StringBuilder sb = new StringBuilder(capacity);
+    if (record.getConnection() != null) {
+      sb.append(space);
+      sb.append(AbstractSessionLog.CONNECTION_STRING).append(PAR_OPEN_CHAR);
+      sb.append(String.valueOf(System.identityHashCode(record.getConnection()))).append(PAR_CLOSE_CHAR);
+    }
 
-      // local variable for performance :
-      final char space = SPACE_CHAR;
+    if (record.shouldPrintThread()) {
+      sb.append(space);
+      sb.append(AbstractSessionLog.THREAD_STRING).append(PAR_OPEN_CHAR);
+      sb.append(String.valueOf(record.getThreadID())).append(PAR_CLOSE_CHAR);
+    }
 
-      if (record.shouldPrintDate()) {
-        synchronized (dateInstance) {
-          // Minimize memory allocations here.
-          dateInstance.setTime(record.getMillis());
-          dateFormatterArgs[0] = dateInstance;
+    sb.append(LINE_SEPARATOR);
 
-          if (dateFormatter == null) {
-            dateFormatter = new MessageFormat(format);
-          }
+    sb.append(record.getLevel().getLocalizedName());
+    sb.append(": ");
+    sb.append(message);
 
-          dateFormatter.format(dateFormatterArgs, dateBuffer, null);
-          sb.append(dateBuffer);
-          // reset dateBuffer content :
-          dateBuffer.setLength(0);
-        }
-
-        sb.append(space);
-      }
-
-      if (record.getSourceClassName() != null) {
-        sb.append(record.getSourceClassName());
-      } else {
-        sb.append(record.getLoggerName());
-      }
-
-      if (record.getSourceMethodName() != null) {
-        sb.append(space);
-        sb.append(record.getSourceMethodName());
-      }
-
-      if (record.getSessionString() != null) {
-        sb.append(space);
-        sb.append(record.getSessionString());
-      }
-
-      if (record.getConnection() != null) {
-        sb.append(space);
-        sb.append(AbstractSessionLog.CONNECTION_STRING).append(PAR_OPEN_CHAR);
-        sb.append(String.valueOf(System.identityHashCode(record.getConnection()))).append(PAR_CLOSE_CHAR);
-      }
-
-      if (record.shouldPrintThread()) {
-        sb.append(space);
-        sb.append(AbstractSessionLog.THREAD_STRING).append(PAR_OPEN_CHAR);
-        sb.append(String.valueOf(record.getThreadID())).append(PAR_CLOSE_CHAR);
-      }
-
-      sb.append(LINE_SEPARATOR);
-
-      sb.append(record.getLevel().getLocalizedName());
-      sb.append(": ");
-      sb.append(message);
-
-      // first time, compute initial capacity :
-      if (adaptedBufferCapacity == UNDEFINED_CAPACITY) {
-        adaptedBufferCapacity = (sb.length() + 4) - message.length();
-
-        if (CommonsLoggingSessionLog.FORCE_INTERNAL_DEBUG) {
-          sb.append(LINE_SEPARATOR);
-          sb.append("adaptedBufferCapacity : ");
-          sb.append(adaptedBufferCapacity);
-        }
-      }
-
-      /*
-       * Log4J : not necessary :
-       * sb.append(LINE_SEPARATOR);
-       */
-      if (record.getThrown() != null) {
-        final StringWriter sw = new StringWriter(INITIAL_BUFFER_CAPACITY);
-        final PrintWriter  pw = new PrintWriter(sw);
-
-        try {
-          if (record.getLevel().intValue() == Level.SEVERE.intValue()) {
-            record.getThrown().printStackTrace(pw);
-          } else if (record.getLevel().intValue() <= Level.WARNING.intValue()) {
-            if (record.shouldLogExceptionStackTrace()) {
-              record.getThrown().printStackTrace(pw);
-            } else {
-              pw.write(record.getThrown().toString());
-
-              /*
-               * Log4J : not necessary :
-               * pw.write(LINE_SEPARATOR);
-               */
-            }
-          }
-        } catch (final Exception e) {
-          CommonsLoggingSessionLog.error(e);
-        } finally {
-          pw.close();
-          sb.append(sw.toString());
-        }
-      }
+    // first time, compute initial capacity :
+    if (adaptedBufferCapacity == UNDEFINED_CAPACITY) {
+      adaptedBufferCapacity = (sb.length() + 4) - message.length();
 
       if (CommonsLoggingSessionLog.FORCE_INTERNAL_DEBUG) {
-        final int len = sb.length();
-        final int cap = sb.capacity();
-
         sb.append(LINE_SEPARATOR);
-        sb.append("sb-Length : ");
-        sb.append(len);
-        sb.append(" - initial capacity : ");
-        sb.append(capacity);
-        sb.append(" - capacity : ");
-        sb.append(cap);
-        sb.append(" - resized : ");
-        sb.append(cap > capacity);
-        sb.append(" - overhead : ");
-        sb.append(cap - len);
+        sb.append("adaptedBufferCapacity : ");
+        sb.append(adaptedBufferCapacity);
       }
-
-      return sb.toString();
     }
+
+    /*
+     * Log4J : not necessary :
+     * sb.append(LINE_SEPARATOR);
+     */
+    if (record.getThrown() != null) {
+      final StringWriter sw = new StringWriter(INITIAL_BUFFER_CAPACITY);
+      final PrintWriter  pw = new PrintWriter(sw);
+
+      try {
+        if (record.getLevel().intValue() == Level.SEVERE.intValue()) {
+          record.getThrown().printStackTrace(pw);
+        } else if (record.getLevel().intValue() <= Level.WARNING.intValue()) {
+          if (record.shouldLogExceptionStackTrace()) {
+            record.getThrown().printStackTrace(pw);
+          } else {
+            pw.write(record.getThrown().toString());
+
+            /*
+             * Log4J : not necessary :
+             * pw.write(LINE_SEPARATOR);
+             */
+          }
+        }
+      } catch (final Exception e) {
+        CommonsLoggingSessionLog.error(e);
+      } finally {
+        pw.close();
+        sb.append(sw.toString());
+      }
+    }
+
+    if (CommonsLoggingSessionLog.FORCE_INTERNAL_DEBUG) {
+      final int len = sb.length();
+      final int cap = sb.capacity();
+
+      sb.append(LINE_SEPARATOR);
+      sb.append("sb-Length : ");
+      sb.append(len);
+      sb.append(" - initial capacity : ");
+      sb.append(capacity);
+      sb.append(" - capacity : ");
+      sb.append(cap);
+      sb.append(" - resized : ");
+      sb.append(cap > capacity);
+      sb.append(" - overhead : ");
+      sb.append(cap - len);
+    }
+
+    return sb.toString();
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

@@ -1,16 +1,14 @@
 package org.ivoa.dm.model;
 
 
-import org.ivoa.dm.MetaModelFactory;
-
-
 import java.io.Serializable;
-
 import java.util.Collection;
 import java.util.IdentityHashMap;
 import java.util.Iterator;
 import java.util.Map;
+
 import org.ivoa.bean.LogSupport;
+import org.ivoa.dm.MetaModelFactory;
 
 
 /**
@@ -79,7 +77,7 @@ public abstract class MetadataElement extends LogSupport implements Serializable
    *
    * @return System.identityHashCode(this)
    *
-   * @see Object#hashCode().
+   * @see Object#hashCode()
    */
   @Override
   public int hashCode() {
@@ -280,7 +278,7 @@ public abstract class MetadataElement extends LogSupport implements Serializable
           e.deepToString(sb, isDeep, ids);
         }
       } else if (o instanceof Collection) {
-        final Collection c = (Collection) o;
+        final Collection<?> c = (Collection<?>) o;
 
         if (c.size() > 0) {
           toString(sb.append("\n"), isDeep, ids, c);
@@ -307,7 +305,7 @@ public abstract class MetadataElement extends LogSupport implements Serializable
    * @return the given string buffer filled with the string representation
    */
   private static String toString(final StringBuilder sb, final boolean isDeep, final Map<MetadataElement, Object> ids,
-                                 final Collection c) {
+                                 final Collection<?> c) {
     return toString(sb, isDeep, ids, c, System.getProperty("line.separator"), "{", "}");
   }
 
@@ -326,8 +324,8 @@ public abstract class MetadataElement extends LogSupport implements Serializable
    * @return the given string buffer filled with the string representation
    */
   private static String toString(final StringBuilder sb, final boolean isDeep, final Map<MetadataElement, Object> ids,
-                                 final Collection c, final String sep, final String startSep, final String endSep) {
-    final Iterator it = c.iterator();
+                                 final Collection<?> c, final String sep, final String startSep, final String endSep) {
+    final Iterator<?> it = c.iterator();
 
     sb.append(startSep);
 

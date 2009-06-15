@@ -1,11 +1,10 @@
 package org.ivoa.env;
 
 
-import org.ivoa.conf.Configuration;
-
-
 import java.util.Locale;
+
 import org.ivoa.bean.LogSupport;
+import org.ivoa.conf.Configuration;
 
 
 /**
@@ -21,6 +20,7 @@ public final class ApplicationAdapter extends LogSupport {
    * Constructor
    */
   private ApplicationAdapter() {
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------

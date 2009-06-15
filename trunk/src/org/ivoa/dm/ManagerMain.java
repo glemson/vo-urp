@@ -1,7 +1,6 @@
 package org.ivoa.dm;
 
 import org.apache.commons.logging.Log;
-
 import org.ivoa.env.ApplicationAdapter;
 
 
@@ -30,6 +29,7 @@ public final class ManagerMain {
    * Forbidden Constructor
    */
   private ManagerMain() {
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------

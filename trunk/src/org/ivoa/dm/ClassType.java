@@ -1,16 +1,15 @@
 package org.ivoa.dm;
 
 
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.ivoa.bean.LogSupport;
 import org.ivoa.metamodel.Attribute;
 import org.ivoa.metamodel.DataType;
 import org.ivoa.metamodel.Type;
 import org.ivoa.metamodel.TypeRef;
-
-
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import org.ivoa.bean.LogSupport;
 
 
 /**
@@ -37,10 +36,10 @@ public class ClassType extends LogSupport {
 /**
    * Constructor for a given type
    *
-   * @param type to wrap
+   * @param pType to wrap
    */
-  public ClassType(final Type type) {
-    this.type = type;
+  public ClassType(final Type pType) {
+    this.type = pType;
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
