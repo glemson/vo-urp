@@ -1,34 +1,37 @@
 @echo off
 
 REM del web apps :
-REM del /S /Q C:\dev\apache-tomcat-6.0.18\logs\*
+REM del /S /Q C:\dev\apache-tomcat-6.0.20\logs\*
 
 
 
-REM To turn on the most logging for GC issues use the following parameters:
-
-REM -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails -XX:MaxTenuringThreshold=1 -XX:+PrintTenuringDistribution -XX:+PrintHeapAtGC
+set JAVA_HOME=C:\Java\Jdk6_14
 
 
 
-set JAVA_HOME=C:\Java\jdk1.6.0_06
+set JAVA_OPTS=-XX:+HeapDumpOnOutOfMemoryError -XX:+PerfBypassFileSystemCheck -XX:+AggressiveOpts
 
-REM -Xrunhprof:file=dump.hprof,format=b 
+set JAVA_OPTS=%JAVA_OPTS% -XX:+UseConcMarkSweepGC -XX:+ClassUnloading 
+
+set JAVA_OPTS=%JAVA_OPTS% -XX:+UseParNewGC -XX:+CMSClassUnloadingEnabled -XX:+ExplicitGCInvokesConcurrentAndUnloadsClasses
+
+set JAVA_OPTS=%JAVA_OPTS% -XX:+CMSPrecleaningEnabled -XX:+CMSPermGenPrecleaningEnabled -XX:+CMSPermGenSweepingEnabled
 
 
-set JAVA_OPTS=-XX:+HeapDumpOnOutOfMemoryError -XX:+PerfBypassFileSystemCheck
-
-set JAVA_OPTS=%JAVA_OPTS% -XX:+UseConcMarkSweepGC -XX:+CMSPermGenSweepingEnabled -XX:+CMSClassUnloadingEnabled
+REM set JAVA_OPTS=%JAVA_OPTS% -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC 
 
 
 REM -XX:+UseParallelGC
 
-set JAVA_OPTS=%JAVA_OPTS% -XX:NewRatio=2 -Xms32m -Xmx64m -XX:PermSize=32m -XX:MaxPermSize=32m
-set JAVA_OPTS=%JAVA_OPTS% -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
+
+set JAVA_OPTS=%JAVA_OPTS% -XX:NewRatio=3 -Xms512m -Xmx512m -XX:PermSize=128m -XX:MaxPermSize=128m
+
+REM set JAVA_OPTS=%JAVA_OPTS% -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+TraceClassUnloading 
+
+
+
 
 set CATALINA_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=7777"
-
-REM  -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.authenticate=false    
 
 	
 
