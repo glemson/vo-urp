@@ -1,4 +1,16 @@
 @echo off
+
+REM del web apps :
+REM del /S /Q C:\dev\apache-tomcat-6.0.18\logs\*
+
+
+
+REM To turn on the most logging for GC issues use the following parameters:
+
+REM -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails -XX:MaxTenuringThreshold=1 -XX:+PrintTenuringDistribution -XX:+PrintHeapAtGC
+
+
+
 set JAVA_HOME=C:\Java\jdk1.6.0_06
 
 REM -Xrunhprof:file=dump.hprof,format=b 
@@ -6,9 +18,12 @@ REM -Xrunhprof:file=dump.hprof,format=b
 
 set JAVA_OPTS=-XX:+HeapDumpOnOutOfMemoryError -XX:+PerfBypassFileSystemCheck
 
+set JAVA_OPTS=%JAVA_OPTS% -XX:+UseConcMarkSweepGC -XX:+CMSPermGenSweepingEnabled -XX:+CMSClassUnloadingEnabled
+
+
 REM -XX:+UseParallelGC
 
-set JAVA_OPTS=%JAVA_OPTS% -XX:NewRatio=2 -Xms128m -Xmx128m
+set JAVA_OPTS=%JAVA_OPTS% -XX:NewRatio=2 -Xms32m -Xmx64m -XX:PermSize=32m -XX:MaxPermSize=32m
 set JAVA_OPTS=%JAVA_OPTS% -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
 
 set CATALINA_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=7777"
