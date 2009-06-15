@@ -1,19 +1,12 @@
-/*
- * QueryBuilder.java
- *
- * Created on 29 août 2007, 15:41:22
- *
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.ivoa.service;
 
 import org.ivoa.web.model.EntityConfig;
 
 
 /**
- * 
-DOCUMENT ME!
+ * QueryBuilder.java
+ *
+ * Created on 29 août 2007, 15:41:22
  *
  * @author laurent
  */

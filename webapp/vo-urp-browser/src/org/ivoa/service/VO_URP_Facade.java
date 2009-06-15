@@ -1,7 +1,5 @@
 package org.ivoa.service;
 
-import org.apache.commons.logging.Log;
-
 import org.ivoa.conf.RuntimeConfiguration;
 
 import org.ivoa.dm.MetaModelFactory;
@@ -11,7 +9,6 @@ import org.ivoa.env.ClassLoaderCleaner;
 import org.ivoa.jpa.JPAFactory;
 
 import org.ivoa.util.CollectionUtils;
-import org.ivoa.util.LogUtil;
 
 import org.ivoa.web.model.CursorQuery;
 import org.ivoa.web.model.EntityConfig;
@@ -26,16 +23,15 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import org.ivoa.bean.LogSupport;
 import org.ivoa.conf.Configuration;
 
 /**
- * DOCUMENT ME!
+ * Facade pattern for the web application
  *
  * @author laurent
  */
-public class VO_URP_Facade implements ServletContextListener {
+public class VO_URP_Facade extends LogSupport {
     //~ Constants --------------------------------------------------------------------------------------------------------
 
     /** TODO : Field Description */
@@ -44,9 +40,6 @@ public class VO_URP_Facade implements ServletContextListener {
     public static final int DEF_PAGE_SIZE = 10;
     /** TODO : Field Description */
     private static VO_URP_Facade instance = null;
-    /** Logger for this class and subclasses */
-    protected static final Log log = LogUtil.getLogger();
-
     //~ Members ----------------------------------------------------------------------------------------------------------
     /** TODO : Field Description */
     private EntityConfigFactory ecf;
@@ -63,7 +56,7 @@ public class VO_URP_Facade implements ServletContextListener {
     /**
      * Constructor
      */
-    public VO_URP_Facade() {
+    private VO_URP_Facade() {
     }
 
     //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -76,43 +69,49 @@ public class VO_URP_Facade implements ServletContextListener {
         return instance;
     }
 
-    // Init :
     /**
-     * TODO : Method Description
+     * Creates the facade :
+     * Used by ApplicationManager
      *
-     * @param sce
+     * @param ctx application context
      */
-    public void contextInitialized(final ServletContextEvent sce) {
+    protected static void createInstance(final ServletContext ctx) {
         if (log != null && log.isWarnEnabled()) {
             log.warn("Application is starting ...");
         }
 
-        instance = this;
-
-        prepare();
+        final VO_URP_Facade facade = new VO_URP_Facade();
+        
+        // defines the singleton before initialization :
+        // check if really necessary :
+        instance = facade;
+        
+        facade.prepare();
 
         // finally add this component to the application context :
-        final ServletContext ctx = sce.getServletContext();
-        ctx.setAttribute(CTX_KEY, this);
+        ctx.setAttribute(CTX_KEY, instance);
     }
 
     /**
-     * TODO : Method Description
+     * Release the facade :
+     * Used by ApplicationManager
      *
-     * @param sce
+     * @param ctx application context
      */
-    public void contextDestroyed(final ServletContextEvent sce) {
+    protected static void freeInstance(final ServletContext ctx) {
         if (log != null && log.isWarnEnabled()) {
             log.warn("Application is stopping ...");
         }
 
         // first remove this component from the application context :
-        sce.getServletContext().removeAttribute(CTX_KEY);
+        ctx.removeAttribute(CTX_KEY);
+
+        if (instance != null) {
+            instance.exit();
+        }
 
         // force GC :
         instance = null;
-
-        exit();
 
         if (log != null && log.isWarnEnabled()) {
             log.warn("Application is unavailable.");
@@ -122,16 +121,10 @@ public class VO_URP_Facade implements ServletContextListener {
         ClassLoaderCleaner.clean();
     }
 
-
     /**
      * TODO : Method Description
      */
     private void prepare() {
-        if (log.isWarnEnabled()) {
-            log.warn("System.properties : ");
-            log.warn(CollectionUtils.toString(System.getProperties()));
-        }
-
         if (log.isInfoEnabled()) {
             log.info("loading configuration ...");
         }
@@ -144,9 +137,9 @@ public class VO_URP_Facade implements ServletContextListener {
                 log.info("get MetaModelFactory and load model : " + MetaModelFactory.MODEL_FILE);
             }
             MetaModelFactory.getInstance();
-        } catch (final IllegalStateException e) {
-            e.printStackTrace();
-            throw e;
+        } catch (final IllegalStateException ise) {
+            log.error("VO_URP_Facade.prepare : failure : ", ise);
+            throw ise;
         }
 
         if (log.isInfoEnabled()) {
@@ -186,7 +179,7 @@ public class VO_URP_Facade implements ServletContextListener {
         }
 
         this.emf = jf.getEmf();
-
+ 
         this.threadLocal = new ThreadLocal<EntityManager>();
 
         if (log != null) {
@@ -206,11 +199,13 @@ public class VO_URP_Facade implements ServletContextListener {
         // force GC :
         this.globalCache.clear();
         this.threadLocal = null;
+        this.ecf = null;
+        this.emf = null;
 
         // free Session stats Thread :
         SessionMonitor.onExit();
 
-        EntityConfigFactory.clean();
+        EntityConfigFactory.onExit();
 
         if (log.isInfoEnabled()) {
             log.info("VO_URP_Facade.exit : exit");
@@ -224,7 +219,7 @@ public class VO_URP_Facade implements ServletContextListener {
      * @return value TODO : Value Description
      */
     public EntityManager createEntityManager() {
-        EntityManager em = threadLocal.get();
+        EntityManager em = this.threadLocal.get();
 
         if (em == null) {
             em = doCreateEntityManager();
@@ -258,21 +253,23 @@ public class VO_URP_Facade implements ServletContextListener {
      * JPARequestListener.requestDestroyed()
      */
     public void closeEntityManager() {
-        final EntityManager em = threadLocal.get();
+        if (this.threadLocal != null) {
+            final EntityManager em = threadLocal.get();
 
-        if (em != null) {
-            // free thread-local first
-            threadLocal.set(null);
+            if (em != null) {
+                // free thread-local first
+                threadLocal.remove();
 
-            if (em.isOpen()) {
-                if (log.isInfoEnabled()) {
-                    log.info("doCreateEntityManager : instance closed : " + em);
-                }
+                if (em.isOpen()) {
+                    if (log.isInfoEnabled()) {
+                        log.info("doCreateEntityManager : instance closed : " + em);
+                    }
 
-                em.close();
-            } else {
-                if (log.isInfoEnabled()) {
-                    log.info("doCreateEntityManager : instance already closed : " + em);
+                    em.close();
+                } else {
+                    if (log.isInfoEnabled()) {
+                        log.info("doCreateEntityManager : instance already closed : " + em);
+                    }
                 }
             }
         }
@@ -291,7 +288,7 @@ public class VO_URP_Facade implements ServletContextListener {
         final EntityManager em = createEntityManager();
 
         return em.find(c, id);
-        // close is defered in JPARequestListener
+    // close is defered in JPARequestListener
     }
 
     /**

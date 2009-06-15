@@ -16,9 +16,13 @@ public abstract class PollingThread extends Thread {
     /** DEBUG mode */
     private static final boolean DEBUG = false;
 
+    /* LogSupport code */
+    /** Logger for this class and subclasses : @see org.ivoa.bean.LogSupport */
+    protected static Log log = LogUtil.getLogger();
+    /** Dev Logger for this class and subclasses : @see org.ivoa.bean.LogSupport */
+    protected static Log logD = LogUtil.getLoggerDev();
+
     //~ Members ----------------------------------------------------------------------------------------------------------
-    /** Logger for this class and subclasses */
-    protected Log log = LogUtil.getLoggerDev();
     /** wait time in milliseconds. */
     private long wait;
     /** active flag : volatile is needed by multi threading */
@@ -78,12 +82,12 @@ public abstract class PollingThread extends Thread {
             }
         } // while active
 
+        this.stopLatch.countDown();
+
         // thread will stop now :
         if (DEBUG && log.isInfoEnabled()) {
             log.info("PollingThread[" + getName() + "].run() : exit");
         }
-
-        this.stopLatch.countDown();
     }
 
     /**
@@ -121,15 +125,13 @@ public abstract class PollingThread extends Thread {
             this.interrupt();
             this.stopLatch.await();
         } catch (final InterruptedException ie) {
-            if (log.isDebugEnabled()) {
-                log.debug("PollingThread[" + getName() + "].stopAndWait : interrupted.", ie);
+            if (log.isWarnEnabled()) {
+                log.warn("PollingThread[" + getName() + "].stopAndWait : interrupted.", ie);
             }
         }
         if (log.isWarnEnabled()) {
             log.warn("PollingThread[" + getName() + "].stopAndWait : exit");
         }
-        // force GC :
-        this.log = null;
     }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
