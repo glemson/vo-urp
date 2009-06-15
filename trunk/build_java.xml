@@ -78,7 +78,7 @@
 <uptodate property="build.formatter.notRequired">
   <srcfiles dir= "${libs}/jalopy/src" includes="**/*.java"/>
   <srcfiles dir= "${libs}/jalopy/lib" includes="**/*.jar"/>
-  <mapper type="merge" to="${libs}/jalopy/bin"/>
+  <mapper type="merge" to="${libs}/jalopy/bin/org/ivoa/jalopy/**/*.class"/>
 </uptodate>
 
 
@@ -510,7 +510,7 @@ Optional
         valid Java source files as input!
   -->
 
-  <java classname="org.ivoa.jalopy.Formatter" dir="${sources.gen}/src" 
+  <java classname="org.ivoa.jalopy.Formatter" dir="${libs}/jalopy/bin" 
         fork="true" failonerror="true" inputstring="">
     <jvmarg value="-Xms32m"/>
     <jvmarg value="-Xmx64m"/>
