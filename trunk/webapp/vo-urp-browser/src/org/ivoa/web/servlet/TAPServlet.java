@@ -1,21 +1,14 @@
 package org.ivoa.web.servlet;
 
-import org.ivoa.dm.MetaModelFactory;
-
-import org.ivoa.service.VO_URP_Facade;
-
 import org.ivoa.tap.TAP_v0_31;
 
 import org.ivoa.util.SQLUtils;
 
-import org.ivoa.votable.AnyTEXT;
 import org.ivoa.votable.Info;
 import org.ivoa.votable.Resource;
 import org.ivoa.votable.VOTABLE;
-import org.ivoa.votable.Values;
 
 import org.ivoa.web.model.SQLQuery;
-import org.ivoa.web.model.TAPResult;
 
 import java.io.IOException;
 
@@ -25,7 +18,6 @@ import java.util.Random;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
