@@ -364,7 +364,11 @@ Should do a tranformation if the nameis not suite for this (spaces etc).
   
   
   
-  
+  <!--   !!!! IMPORTANT !!!!
+ The order of the elements MUST be the same as the order in which the properties appear in the jaxb.xsl propOrder.
+ This order is {attribute,collection[not(subsets)],reference[not(subsets)]}.
+ NB Might we prefer attribute,referemce, collection???
+ -->
   <xsl:template match="objectType" mode="content">
     <xsl:variable name="numprops" select="count(attribute|reference[not(subsets)]|collection)"/>
     <xsl:if test="number($numprops) > 0">
