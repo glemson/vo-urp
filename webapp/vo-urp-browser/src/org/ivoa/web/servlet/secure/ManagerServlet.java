@@ -18,8 +18,10 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.ivoa.conf.RuntimeConfiguration;
 import org.ivoa.dm.DataModelManager;
 import org.ivoa.dm.model.MetadataObject;
+import org.ivoa.jaxb.XmlBindException;
 import org.ivoa.util.FileUtils;
 import org.ivoa.web.servlet.BaseServlet;
+import org.ivoa.xml.validator.ValidationResult;
 
 
 /**
