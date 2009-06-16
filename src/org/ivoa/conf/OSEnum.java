@@ -5,5 +5,16 @@ package org.ivoa.conf;
  *
  * @author laurent bourges (voparis)
  */
-public enum OSEnum {OS_OTHER, OS_MSWINDOWS, OS_MAC_OS_X, OS_LINUX;
-}//~ End of file --------------------------------------------------------------------------------------------------------
+public enum OSEnum {
+
+  /** other OS */
+  OS_OTHER,
+  /** Windows */
+  OS_MSWINDOWS,
+  /** Mac OS X */
+  OS_MAC_OS_X,
+  /** Linux */
+  OS_LINUX
+
+}
+//~ End of file --------------------------------------------------------------------------------------------------------

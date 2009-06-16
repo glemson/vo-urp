@@ -12,10 +12,13 @@ import java.util.Map;
  */
 public final class CollectionUtils {
 
+  /** Line separator string */
   public final static String LINE_SEPARATOR = System.getProperty("line.separator");
 
+  /** begin separator = \n{\n */
   public final static String BEGIN_SEPARATOR = LINE_SEPARATOR + "{" + LINE_SEPARATOR;
 
+  /** end separator = \n} */
   public final static String END_SEPARATOR = LINE_SEPARATOR + "}";
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
@@ -29,55 +32,69 @@ public final class CollectionUtils {
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
  /**
-   * TODO : Method Description
+   * toString method for a Collection instance Format : <code><br/>
+   * {<br/>
+   * value<br/>
+   * ...<br/>
+   * }
+   * </code>
    * 
-   * @param c
-   * @return value TODO : Value Description
+   * @param c collection
+   * @return string
    */
   public static String toString(final Collection<?> c) {
     return toString(c, LINE_SEPARATOR, BEGIN_SEPARATOR, END_SEPARATOR);
   }
 
   /**
-   * TODO : Method Description
+   * toString method for a Map instance Format : <code><br/>
+   * {<br/>
+   * key = value<br/>
+   * ...<br/>
+   * }
+   * </code>
    * 
-   * @param m
-   * @return value TODO : Value Description
+   * @param m map
+   * @return string
    */
   public static String toString(final Map<?, ?> m) {
     return toString(m, LINE_SEPARATOR, BEGIN_SEPARATOR, END_SEPARATOR);
   }
 
   /**
-   * TODO : Method Description
+   * toString method for a Collection instance with the given line separator Format : <code>
+   * value lineSep ...
+   * </code>
    * 
-   * @param c
-   * @param lineSep
-   * @return value TODO : Value Description
+   * @param c collection
+   * @param lineSep line separator
+   * @return string
    */
   public static String toString(final Collection<?> c, final String lineSep) {
     return toString(c, lineSep, "", "");
   }
 
   /**
-   * TODO : Method Description
+   * toString method for a Map instance with the given line separator Format : <code>
+   * key = value lineSep ...
+   * </code>
    * 
-   * @param m
-   * @param lineSep
-   * @return value TODO : Value Description
+   * @param m map
+   * @param lineSep line separator
+   * @return string
    */
   public static String toString(final Map<?, ?> m, final String lineSep) {
     return toString(m, lineSep, "", "");
   }
 
   /**
-   * TODO : Method Description
+   * toString method for a Map instance with the given start, line and end separators
    * 
-   * @param m
-   * @param lineSep
-   * @param startSep
-   * @param endSep
-   * @return value TODO : Value Description
+   * @param m map
+   * @param lineSep line separator
+   * @param startSep start separator
+   * @param endSep end separator
+   * @return string
    */
   @SuppressWarnings("unchecked")
   public static String toString(final Map<?, ?> m, final String lineSep,
@@ -108,15 +125,15 @@ public final class CollectionUtils {
   }
 
   /**
-   * TODO : Method Description
+   * toString method for a Collection instance with the given start, line and end separators
    * 
-   * @param c
-   * @param sep
-   * @param startSep
-   * @param endSep
-   * @return value TODO : Value Description
+   * @param c collection
+   * @param lineSep line separator
+   * @param startSep start separator
+   * @param endSep end separator
+   * @return string
    */
-  public static String toString(final Collection<?> c, final String sep,
+  public static String toString(final Collection<?> c, final String lineSep,
       final String startSep, final String endSep) {
     final StringBuffer sb = new StringBuffer(256);
     final Iterator<?> it = c.iterator();
@@ -127,7 +144,7 @@ public final class CollectionUtils {
       sb.append(it.next());
 
       if (i < max) {
-        sb.append(sep);
+        sb.append(lineSep);
       }
     }
 

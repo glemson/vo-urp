@@ -31,14 +31,15 @@ public class PropertyHolder extends LogSupport implements Serializable {
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
 /**
-   * Constructor (protected)
+   * public Constructor used for Introspection.
    */
-  protected PropertyHolder() {
+  public PropertyHolder() {
     /* no-op */
   }
 
 /**
    * Constructor (protected)
+   * 
    * @param propertyFile property file name
    */
   public PropertyHolder(final String propertyFile) {
@@ -59,7 +60,7 @@ public class PropertyHolder extends LogSupport implements Serializable {
    */
   protected final boolean init(final String propertyFile) {
     // preInit event :
-    preInit();
+    this.preInit();
 
     boolean     res = false;
     InputStream in  = null;
@@ -90,7 +91,7 @@ public class PropertyHolder extends LogSupport implements Serializable {
       }
 
       // postInit event :
-      res = postInit();
+      res = this.postInit();
     } catch (final IOException ioe) {
       log.error("IO Failure : ", ioe);
     } finally {
@@ -133,7 +134,24 @@ public class PropertyHolder extends LogSupport implements Serializable {
    * @return string value or null if not found or contains only white spaces
    */
   public final String getProperty(final String name) {
-    return getProperties().getProperty(name);
+    return this.getProperties().getProperty(name);
+  }
+
+  /**
+   * Get a required String property
+   * 
+   * @param name given key
+   * @return string value
+   * @throws IllegalStateException if the value is empty
+   */
+  public final String getRequiredProperty(final String name) {
+    final String value = this.getProperties().getProperty(name);
+
+    if (JavaUtils.isTrimmedEmpty(value)) {
+      throw new IllegalStateException("undefined property [" + name
+          + "] in the configuration file = " + Configurable.CONFIGURATION_FILE + " !");
+    }
+    return value;
   }
 
   /**
@@ -145,7 +163,7 @@ public class PropertyHolder extends LogSupport implements Serializable {
    * @return string value or null if not found or contains only white spaces
    */
   public final String getProperty(final String name, final String def) {
-    return getProperties().getProperty(name, def);
+    return this.getProperties().getProperty(name, def);
   }
 
   /**
@@ -156,7 +174,7 @@ public class PropertyHolder extends LogSupport implements Serializable {
    * @return boolean value or false if not found
    */
   public final boolean getBoolean(final String name) {
-    final String val = getProperty(name);
+    final String val = this.getProperty(name);
 
     if (val == null) {
       return false;
@@ -173,7 +191,7 @@ public class PropertyHolder extends LogSupport implements Serializable {
    * @return integer value or 0 if not found
    */
   public final int getInt(final String name) {
-    final String val = getProperty(name);
+    final String val = this.getProperty(name);
 
     if (val != null) {
       try {
@@ -184,6 +202,42 @@ public class PropertyHolder extends LogSupport implements Serializable {
     }
 
     return 0;
+  }
+
+  /**
+   * Gets a long value from the Property value : parseLong(val)
+   * 
+   * @param name property key
+   * @return long value or 0l if not found
+   */
+  public long getLong(final String name) {
+    final String val = this.getProperty(name);
+    if (val != null) {
+      try {
+        return Long.parseLong(val);
+      } catch (final NumberFormatException nfe) {
+        // ignore value
+      }
+    }
+    return 0L;
+  }
+
+  /**
+   * Gets a double value from the Property value : parseDouble(val)
+   * 
+   * @param name property key
+   * @return double value or 0d if not found
+   */
+  public double getDouble(final String name) {
+    final String val = this.getProperty(name);
+    if (val != null) {
+      try {
+        return Double.parseDouble(val);
+      } catch (final NumberFormatException nfe) {
+        // ignore value
+      }
+    }
+    return 0d;
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

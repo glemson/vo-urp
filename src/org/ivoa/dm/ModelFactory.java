@@ -37,7 +37,7 @@ public final class ModelFactory extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** JAXB : context path */
-  public static final String JAXB_PATH = RuntimeConfiguration.getInstance().getJAXBContextClasspath();
+  public static final String JAXB_PATH = RuntimeConfiguration.get().getJAXBContextClasspath();
   /** TODO : Field Description */
   public static final int DEFAULT_IDENTITY_CAPACITY = 128;
   /** singleton pattern  TODO no good in webapp context once state must be preserved */

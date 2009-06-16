@@ -13,7 +13,7 @@ public final class ReflectionUtils extends LogSupport {
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
 /**
-   * Constructor
+   * Forbidden Constructor
    */
   private ReflectionUtils() {
     /* no-op */
@@ -22,11 +22,10 @@ public final class ReflectionUtils extends LogSupport {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * TODO : Method Description
+   * Return a class object for the given full class name (with package)
    *
-   * @param className
-   *
-   * @return value TODO : Value Description
+   * @param className full class name (with package)
+   * @return class or null if not found
    */
   @SuppressWarnings("unchecked")
   public static Class findClass(final String className) {
@@ -42,13 +41,12 @@ public final class ReflectionUtils extends LogSupport {
   }
 
   /**
-   * TODO : Method Description
+   * Return a class object for the given full class name (with package).
    *
-   * @param <T>
-   * @param className
-   * @param type
-   *
-   * @return value TODO : Value Description
+   * @param <T> super Class Type
+   * @param className full class name (with package)
+   * @param type super type for that class
+   * @return class or null if not found
    */
   public static <T> Class<?extends T> findClass(final String className, final Class<T> type) {
     try {
@@ -65,12 +63,10 @@ public final class ReflectionUtils extends LogSupport {
   /**
    * Factory implementation : creates new instance for given class
    *
-   * @param <T>
+   * @param <T> super Class Type
    * @param cl class (should not be real implementation class, not an abstract class)
-   *
-   * @return new instance or null
-   *
-   * @throws IllegalStateException
+   * @return new instance
+   * @throws IllegalStateException if it is not possible to create an instance
    */
   public static <T> T newInstance(final Class<T> cl) {
     try {

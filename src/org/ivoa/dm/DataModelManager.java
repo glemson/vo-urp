@@ -32,7 +32,7 @@ public class DataModelManager extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** The URL where the schema can be found.<br> */
-  public static final String SCHEMA_URL = RuntimeConfiguration.getInstance().getRootSchemaURL();
+  public static final String SCHEMA_URL = RuntimeConfiguration.get().getRootSchemaURL();
 
   //~ Members ----------------------------------------------------------------------------------------------------------
 

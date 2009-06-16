@@ -15,7 +15,7 @@ public final class StringBuilderWriter extends Writer {
   //~ Members ----------------------------------------------------------------------------------------------------------
 
   /**
-   * TODO : Field Description
+   * Internal StringBuilder to act as a writer
    */
   private final StringBuilder sb;
 
@@ -28,7 +28,7 @@ public final class StringBuilderWriter extends Writer {
    */
   public StringBuilderWriter(final int capacity) {
     this.sb = new StringBuilder(capacity);
-    lock = sb;
+    this.lock = this.sb;
   }
 
 /**
@@ -38,7 +38,7 @@ public final class StringBuilderWriter extends Writer {
    */
   public StringBuilderWriter(final StringBuilder buffer) {
     this.sb = buffer;
-    lock = buffer;
+    this.lock = buffer;
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -50,7 +50,7 @@ public final class StringBuilderWriter extends Writer {
    */
   @Override
   public void write(final int c) {
-    sb.append((char) c);
+    this.sb.append((char) c);
   }
 
   /**
@@ -59,8 +59,7 @@ public final class StringBuilderWriter extends Writer {
    * @param cbuf Array of characters
    * @param off Offset from which to start writing characters
    * @param len Number of characters to write
-   *
-   * @throws IndexOutOfBoundsException
+   * @throws IndexOutOfBoundsException if offset or length exceed the buffer
    */
   @Override
   public void write(final char[] cbuf, final int off, final int len) {
@@ -70,7 +69,7 @@ public final class StringBuilderWriter extends Writer {
       return;
     }
 
-    sb.append(cbuf, off, len);
+    this.sb.append(cbuf, off, len);
   }
 
   /**
@@ -80,7 +79,7 @@ public final class StringBuilderWriter extends Writer {
    */
   @Override
   public void write(final String str) {
-    sb.append(str);
+    this.sb.append(str);
   }
 
   /**
@@ -92,7 +91,7 @@ public final class StringBuilderWriter extends Writer {
    */
   @Override
   public void write(final String str, final int off, final int len) {
-    sb.append(str.substring(off, off + len));
+    this.sb.append(str.substring(off, off + len));
   }
 
   /**
@@ -114,9 +113,9 @@ public final class StringBuilderWriter extends Writer {
   @Override
   public Writer append(final CharSequence csq) {
     if (csq == null) {
-      write("null");
+      this.write("null");
     } else {
-      write(csq.toString());
+      this.write(csq.toString());
     }
 
     return this;
@@ -141,7 +140,7 @@ public final class StringBuilderWriter extends Writer {
   public Writer append(final CharSequence csq, final int start, final int end) {
     final CharSequence cs = ((csq == null) ? "null" : csq);
 
-    write(cs.subSequence(start, end).toString());
+    this.write(cs.subSequence(start, end).toString());
 
     return this;
   }
@@ -159,7 +158,7 @@ public final class StringBuilderWriter extends Writer {
    */
   @Override
   public Writer append(final char c) {
-    write(c);
+    this.write(c);
 
     return this;
   }
@@ -167,11 +166,11 @@ public final class StringBuilderWriter extends Writer {
   /**
    * Return the buffer's current value as a string.
    *
-   * @return value TODO : Value Description
+   * @return buffer's current value as a string
    */
   @Override
   public String toString() {
-    return sb.toString();
+    return this.sb.toString();
   }
 
   /**
@@ -180,7 +179,7 @@ public final class StringBuilderWriter extends Writer {
    * @return StringBuffer holding the current buffer value.
    */
   public StringBuilder getBuffer() {
-    return sb;
+    return this.sb;
   }
 
   /**
@@ -192,10 +191,10 @@ public final class StringBuilderWriter extends Writer {
   }
 
   /**
-   * Closing a <tt>StringWriter</tt> has no effect. The methods in this class can be called after the stream has
-   * been closed without generating an <tt>IOException</tt>.
+   * Closing a <tt>StringWriter</tt> has no effect. The methods in this class can be called after
+   * the stream has been closed without generating an <tt>IOException</tt>.
    *
-   * @throws IOException
+   * @throws IOException impossible
    */
   @Override
   public void close() throws IOException {

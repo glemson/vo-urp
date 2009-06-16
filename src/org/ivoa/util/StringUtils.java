@@ -8,6 +8,12 @@ package org.ivoa.util;
 public final class StringUtils {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
+  /** Html break line */
+  public final static String HTML_BR = "<br>";
+
+  /** Html tags regexp matcher */
+  private final static String REGEXP_HTML = "\\<.*?\\>";
+
   /** swing string builder : mono thread => no synchronization */
   private static StringBuilder ssb = new StringBuilder(512);
 
@@ -23,10 +29,18 @@ public final class StringUtils {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
+   * Return the shared string buffer (unsynchronized)
+   * 
+   * @return shared string buffer
+   */
+  public static StringBuilder getSharedBuffer() {
+    return ssb;
+  }
+
+  /**
    * Extract buffer content & reset buffer
    *
    * @param sb StringBuilder
-   *
    * @return String value
    */
   public static String extract(final StringBuilder sb) {
@@ -41,7 +55,6 @@ public final class StringUtils {
    * Extract buffer content & reset buffer
    *
    * @param sb StringBuilder
-   *
    * @return String value
    */
   public static String extract(final StringBuffer sb) {
@@ -53,17 +66,16 @@ public final class StringUtils {
   }
 
   /**
-   * TODO : Method Description
+   * Returns an html fragment with the given title and message (center)
    *
-   * @param title
-   * @param msg
-   *
-   * @return value TODO : Value Description
+   * @param title title of the message
+   * @param msg message content
+   * @return html string
    */
   public static String getMessage(final String title, final String msg) {
     if (!JavaUtils.isEmpty(msg)) {
-      ssb.append("<html><body><center><b>").append(title).append(" :</b><br><br>").append(msg)
-          .append("</center></body></html>");
+      ssb.append("<html><body><center><b>").append(title).append(" :</b>").append(HTML_BR).append(
+          HTML_BR).append(msg).append("</center></body></html>");
 
       return extract(ssb);
     }
@@ -72,11 +84,10 @@ public final class StringUtils {
   }
 
   /**
-   * TODO : Method Description
+   * Returns an html fragment with the given message (center)
    *
-   * @param msg
-   *
-   * @return value TODO : Value Description
+   * @param msg message content
+   * @return html string
    */
   public static String getTooltipText(final String msg) {
     if (!JavaUtils.isEmpty(msg)) {
@@ -89,12 +100,11 @@ public final class StringUtils {
   }
 
   /**
-   * TODO : Method Description
+   * Returns an html fragment with the given messages (center)
    *
-   * @param msg
-   * @param msg2
-   *
-   * @return value TODO : Value Description
+   * @param msg message content
+   * @param msg2 message content
+   * @return html string
    */
   public static String getTooltipText(final String msg, final String msg2) {
     final boolean v1 = !JavaUtils.isEmpty(msg);
@@ -109,7 +119,7 @@ public final class StringUtils {
 
       if (v2) {
         if (v1) {
-          ssb.append("<br>");
+          ssb.append(HTML_BR);
         }
 
         ssb.append(msg2);
@@ -124,14 +134,33 @@ public final class StringUtils {
   }
 
   /**
-   * TODO : Method Description
+   * Return an encoded string : < > characters replaced by html entities
    *
-   * @param source
-   *
-   * @return value TODO : Value Description
+   * @param source input string
+   * @return encoded string
    */
   public static final String escapeXml(final String source) {
     return source.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+  }
+
+  /**
+   * Return an unencoded string : < > html entities characters replaced by < >
+   * 
+   * @param source input string
+   * @return unencoded string
+   */
+  public static final String unescapeXml(final String source) {
+    return source.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+  }
+
+  /**
+   * Return a string without any tag in it
+   * 
+   * @param source input string
+   * @return string
+   */
+  public static final String removeHtml(final String source) {
+    return source.replaceAll(REGEXP_HTML, "");
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

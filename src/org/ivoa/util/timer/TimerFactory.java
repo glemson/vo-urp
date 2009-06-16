@@ -9,14 +9,15 @@ import org.ivoa.bean.LogSupport;
 
 
 /**
- * Timer factory
+ * The Timer factory contains a map[key - Timer] to associate time metrics statistics to several
+ * categories of operations
  *
  * @author laurent bourges (voparis)
  */
 public final class TimerFactory extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /** TODO : Field Description */
+  /** Map[key - timer] */
   protected static Map<String, ThresholdTimer> timers = new LinkedHashMap<String, ThresholdTimer>();
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
@@ -31,25 +32,22 @@ public final class TimerFactory extends LogSupport {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * Returns elapsed time between 2 values get from
-   *
-   * @param start t0
-   * @param now t1
-   *
-   * @return (t1 - t0) in milliseconds
+   * Returns elapsed time between 2 time values get from System.nanoTime().
    *
    * @see System#nanoTime()
+   * @param start t0
+   * @param now t1
+   * @return (t1 - t0) in milliseconds
    */
   public static final long elapsed(final long start, final long now) {
     return (now - start) / 1000000L;
   }
 
   /**
-   * TODO : Method Description
+   * Return an existing or a new Timer for that category (lazy)
    *
-   * @param category
-   *
-   * @return value TODO : Value Description
+   * @param category a string representing the kind of operation
+   * @return timer instance
    */
   public static final ThresholdTimer getTimer(final String category) {
     ThresholdTimer timer = timers.get(category);
@@ -63,18 +61,18 @@ public final class TimerFactory extends LogSupport {
   }
 
   /**
-   * TODO : Method Description
+   * Return the map of timer instances
    *
-   * @return value TODO : Value Description
+   * @return map of timer instances
    */
   public static final Map<String, ThresholdTimer> getTimers() {
     return timers;
   }
 
   /**
-   * TODO : Method Description
+   * Return a string representation for all timer instances present in the timers map
    *
-   * @return value TODO : Value Description
+   * @return string representation for all timer instances
    */
   public static final String dumpTimers() {
     final StringBuilder sb = new StringBuilder(4096);
@@ -87,7 +85,7 @@ public final class TimerFactory extends LogSupport {
   }
 
   /**
-   * TODO : Method Description
+   * Reset all timer instances
    */
   public static final void resetTimers() {
     timers.clear();

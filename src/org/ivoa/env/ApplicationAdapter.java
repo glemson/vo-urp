@@ -8,7 +8,8 @@ import org.ivoa.conf.Configuration;
 
 
 /**
- * This class contains tools to initialize properly the running Environment  Mainly used by Main classes
+ * This class defines a way to initialize properly the running Environment and indicate that an
+ * implementation interacts with the application life cycle Mainly used by Main classes
  *
  * @author laurent bourges (voparis)
  */
@@ -38,9 +39,7 @@ public final class ApplicationAdapter extends LogSupport {
       Locale.setDefault(new Locale("en"));
 
       // Initialize Configuration :
-      final Configuration conf = Configuration.getInstance();
-
-      setSystemProps(conf);
+      Configuration.getInstance();
 
       ApplicationLifeCycle.doStart();
     } catch (final Throwable th) {
@@ -68,22 +67,6 @@ public final class ApplicationAdapter extends LogSupport {
 
     if (log.isDebugEnabled()) {
       log.debug("ApplicationAdapter.stop : exit");
-    }
-  }
-
-  /**
-   * A first step, defines in code some System.properties to force aatext, mac features ...
-   *
-   * @param conf Configuration
-   */
-  private static void setSystemProps(final Configuration conf) {
-    if (log.isDebugEnabled()) {
-      log.debug("ApplicationAdapter.setSystemProps : enter");
-    }
-
-    // nothing to do
-    if (log.isDebugEnabled()) {
-      log.debug("ApplicationAdapter.setSystemProps : exit");
     }
   }
 }

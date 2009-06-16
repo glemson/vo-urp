@@ -17,7 +17,8 @@ import org.ivoa.bean.LogSupport;
 
 
 /**
- * File Utils : finds a file in classpath (jar)
+ * File Utils : Several utility methods : finds a file in classpath (jar), open files for read or
+ * write operation and close file
  *
  * @author laurent bourges (voparis)
  */
@@ -46,19 +47,16 @@ public final class FileUtils extends LogSupport {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * TODO : Method Description
+   * Find a file in the current classloader (application class Loader)
    *
-   * @param fileName
-   *
-   * @return value TODO : Value Description
-   *
-   * @throws RuntimeException
+   * @param fileName file name only no path included
+   * @return InputStream or RuntimeException if not found
+   * @throws RuntimeException if not found
    */
   public static final InputStream getSystemFileInputStream(final String fileName) {
     // Find properties in the classpath
     final URL url = FileUtils.class.getClassLoader().getResource(fileName);
 
-    //ClassLoader.getSystemClassLoader().getSystemResource(fileName);
     if (url == null) {
       throw new RuntimeException("Unable to find file in classpath : " + fileName);
     }
@@ -75,9 +73,9 @@ public final class FileUtils extends LogSupport {
   }
 
   /**
-   * TODO : Method Description
+   * Close an inputStream
    *
-   * @param in
+   * @param in inputStream to close
    */
   public static void closeStream(final InputStream in) {
     if (in != null) {
@@ -90,9 +88,9 @@ public final class FileUtils extends LogSupport {
   }
 
   /**
-   * TODO : Method Description
+   * Close an outputStream
    *
-   * @param out
+   * @param out outputStream to close
    */
   public static void closeStream(final OutputStream out) {
     if (out != null) {
@@ -104,13 +102,11 @@ public final class FileUtils extends LogSupport {
     }
   }
 
-  // File methods :
   /**
-   * TODO : Method Description
+   * Returns an exisiting File for the given path
    *
-   * @param path
-   *
-   * @return value TODO : Value Description
+   * @param path file path
+   * @return File or null
    */
   private static File getExistingFile(final String path) {
     if (! JavaUtils.isEmpty(path)) {
@@ -125,11 +121,10 @@ public final class FileUtils extends LogSupport {
   }
 
   /**
-   * TODO : Method Description
+   * Returns an existing directory for the given path
    *
-   * @param path
-   *
-   * @return value TODO : Value Description
+   * @param path directory path
+   * @return directory or null
    */
   public static File getDirectory(final String path) {
     final File dir = getExistingFile(path);
@@ -142,11 +137,10 @@ public final class FileUtils extends LogSupport {
   }
 
   /**
-   * TODO : Method Description
+   * Returns an exisiting File for the given path
    *
-   * @param path
-   *
-   * @return value TODO : Value Description
+   * @param path file path
+   * @return File or null
    */
   public static File getFile(final String path) {
     final File file = getExistingFile(path);
@@ -160,23 +154,21 @@ public final class FileUtils extends LogSupport {
 
   // writers :  
   /**
-   * TODO : Method Description
+   * Returns a Writer for the given file path and use the default writer buffer capacity
    *
-   * @param absoluteFilePath
-   *
-   * @return value TODO : Value Description
+   * @param absoluteFilePath absolute file path
+   * @return Writer (buffered) or null
    */
   public static Writer openFile(final String absoluteFilePath) {
     return openFile(absoluteFilePath, DEFAULT_WRITE_BUFFER_SIZE);
   }
 
   /**
-   * TODO : Method Description
+   * Returns a Writer for the given file path and use the given buffer capacity
    *
-   * @param absoluteFilePath
-   * @param bufferSize
-   *
-   * @return value TODO : Value Description
+   * @param absoluteFilePath absolute file path
+   * @param bufferSize write buffer capacity
+   * @return Writer (buffered) or null
    */
   public static Writer openFile(final String absoluteFilePath, final int bufferSize) {
     if (! JavaUtils.isEmpty(absoluteFilePath)) {
@@ -187,23 +179,21 @@ public final class FileUtils extends LogSupport {
   }
 
   /**
-   * TODO : Method Description
+   * Returns a Writer for the given file and use the default writer buffer capacity
    *
-   * @param file
-   *
-   * @return value TODO : Value Description
+   * @param file file to write
+   * @return Writer (buffered) or null
    */
   public static Writer openFile(final File file) {
     return openFile(file, DEFAULT_WRITE_BUFFER_SIZE);
   }
 
   /**
-   * TODO : Method Description
+   * Returns a Writer for the given file and use the given buffer capacity
    *
-   * @param file
-   * @param bufferSize
-   *
-   * @return value TODO : Value Description
+   * @param file file to write
+   * @param bufferSize write buffer capacity
+   * @return Writer (buffered) or null
    */
   public static Writer openFile(final File file, final int bufferSize) {
     try {
@@ -216,11 +206,10 @@ public final class FileUtils extends LogSupport {
   }
 
   /**
-   * TODO : Method Description
+   * Close the given writer
    *
-   * @param w
-   *
-   * @return value TODO : Value Description
+   * @param w writer to close
+   * @return null
    */
   public static Writer closeFile(final Writer w) {
     if (w != null) {
@@ -236,46 +225,42 @@ public final class FileUtils extends LogSupport {
 
   // readers :  
   /**
-   * TODO : Method Description
+   * Returns a reader for the given file path and use the default read buffer capacity
    *
-   * @param absoluteFilePath
-   *
-   * @return value TODO : Value Description
+   * @param absoluteFilePath absolute file path
+   * @return Reader (buffered) or null
    */
   public static Reader readFile(final String absoluteFilePath) {
     return readFile(absoluteFilePath, DEFAULT_READ_BUFFER_SIZE);
   }
 
   /**
-   * TODO : Method Description
+   * Returns a reader for the given file path and use the given read buffer capacity
    *
-   * @param absoluteFilePath
-   * @param bufferSize
-   *
-   * @return value TODO : Value Description
+   * @param absoluteFilePath absolute file path
+   * @param bufferSize write buffer capacity
+   * @return Reader (buffered) or null
    */
   public static Reader readFile(final String absoluteFilePath, final int bufferSize) {
     return readFile(getFile(absoluteFilePath), bufferSize);
   }
 
   /**
-   * TODO : Method Description
+   * Returns a reader for the given file and use the default read buffer capacity
    *
-   * @param file
-   *
-   * @return value TODO : Value Description
+   * @param file file to read
+   * @return Reader (buffered) or null
    */
   public static Reader readFile(final File file) {
     return readFile(file, DEFAULT_READ_BUFFER_SIZE);
   }
 
   /**
-   * TODO : Method Description
+   * Returns a reader for the given file and use the given read buffer capacity
    *
-   * @param file
-   * @param bufferSize
-   *
-   * @return value TODO : Value Description
+   * @param file file to read
+   * @param bufferSize write buffer capacity
+   * @return Reader (buffered) or null
    */
   public static Reader readFile(final File file, final int bufferSize) {
     try {
@@ -288,11 +273,10 @@ public final class FileUtils extends LogSupport {
   }
 
   /**
-   * TODO : Method Description
+   * Close the given reader
    *
-   * @param r
-   *
-   * @return value TODO : Value Description
+   * @param r reader to close
+   * @return null
    */
   public static Reader closeFile(final Reader r) {
     if (r != null) {
