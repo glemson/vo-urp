@@ -177,6 +177,13 @@ public final class ManagerServlet extends BaseServlet {
 
       in = infile.getInputStream();
 
+      ValidationResult valid = dataModelManager.validateStream(in);
+      if(!valid.isValid())
+        throw new XmlBindException("Input XML document is not valid.", valid);
+
+      FileUtils.closeStream(in);
+      
+      in = infile.getInputStream();
       MetadataObject result = dataModelManager.load(in, user);
 
       return result;
