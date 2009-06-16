@@ -1,0 +1,2 @@
+svn update .
+echo done
