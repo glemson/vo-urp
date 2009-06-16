@@ -23,7 +23,7 @@ import javax.persistence.EntityManager;
  *
  * @author laurent bourges (voparis)
  */
-public class SQLUtils { //extends BaseService {
+public class SQLUtils {
 
   //~ Constants --------------------------------------------------------------------------------------------------------
 
@@ -41,7 +41,8 @@ public class SQLUtils { //extends BaseService {
 /**
    * Constructor
    */
-  public SQLUtils() {
+  private SQLUtils() {
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -54,7 +55,7 @@ public class SQLUtils { //extends BaseService {
    *
    * @return value TODO : Value Description
    */
-  public static List executeQuery(final EntityManager em, final String sql) {
+  public static List<?> executeQuery(final EntityManager em, final String sql) {
     return executeQuery(em, sql, MAX_ROWS_UNLIMITED, QUERY_NO_TIMEOUT);
   }
 
@@ -67,11 +68,11 @@ public class SQLUtils { //extends BaseService {
    *
    * @return value TODO : Value Description
    */
-  public static List executeQuery(final String sql, final int maxRows, final int timeout) {
+  public static List<?> executeQuery(final String sql, final int maxRows, final int timeout) {
     EntityManager em                         = null;
 
     try {
-      final JPAFactory jf = JPAFactory.getInstance(RuntimeConfiguration.getInstance().getJPAPU());
+      final JPAFactory jf = JPAFactory.getInstance(RuntimeConfiguration.get().getJPAPU());
 
       em = jf.getEm();
 
@@ -93,8 +94,8 @@ public class SQLUtils { //extends BaseService {
    *
    * @return value TODO : Value Description
    */
-  public static List executeQuery(final EntityManager em, final String sql, final int maxRows, final int timeout) {
-    List rows = null;
+  public static List<?> executeQuery(final EntityManager em, final String sql, final int maxRows, final int timeout) {
+    List<?> rows = null;
 
     final JpaEntityManager eem = JpaHelper.getEntityManager(em);
 

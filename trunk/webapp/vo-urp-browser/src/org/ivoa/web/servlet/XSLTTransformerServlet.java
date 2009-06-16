@@ -280,15 +280,14 @@ public final class XSLTTransformerServlet extends BaseServlet {
    */
   @Override
   public void init(final ServletConfig sc) throws ServletException {
-    // TODO Auto-generated method stub
     super.init(sc);
 
     try {
-      dataModelManager = new DataModelManager(RuntimeConfiguration.getInstance().getJPAPU());
+      dataModelManager = new DataModelManager(RuntimeConfiguration.get().getJPAPU());
     } catch (final Exception e) {
       log.error(
         "Unable to initiate DataModelManager for UploadServlet using JPA persistence unit " +
-        RuntimeConfiguration.getInstance().getJPAPU());
+        RuntimeConfiguration.get().getJPAPU());
       dataModelManager = null; // TODO should we throw an exception or simply make uploads not possible?
     }
   }

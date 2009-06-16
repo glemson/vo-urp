@@ -34,10 +34,10 @@ public abstract class PollingThread extends Thread {
     /**
      * Creates a new PollingThread object
      *
-     * @param wait
+     * @param pWait time to sleep
      */
-    public PollingThread(final long wait) {
-        this.wait = wait;
+    public PollingThread(final long pWait) {
+        this.wait = pWait;
 
         // This thread will die as JVM stops.
         this.setDaemon(false);
@@ -96,21 +96,21 @@ public abstract class PollingThread extends Thread {
     public abstract void handle();
 
     /**
-     * TODO : Method Description
+     * Return the active flag
      *
-     * @return value TODO : Value Description
+     * @return active flag
      */
     public final boolean isActive() {
         return this.active;
     }
 
     /**
-     * TODO : Method Description
+     * Set the active flag
      *
-     * @param active
+     * @param pActive active flag
      */
-    public final void setActive(final boolean active) {
-        this.active = active;
+    public final void setActive(final boolean pActive) {
+        this.active = pActive;
     }
 
     /**

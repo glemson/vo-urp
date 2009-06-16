@@ -36,6 +36,7 @@ public class QueryBuilder {
    * Creates a new QueryBuilder object
    */
   private QueryBuilder() {
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------

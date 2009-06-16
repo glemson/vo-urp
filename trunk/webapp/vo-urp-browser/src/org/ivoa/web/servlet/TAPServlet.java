@@ -312,7 +312,6 @@ public class TAPServlet extends BaseServlet implements TAP_v0_31 {
    */
   @Override
   public void init() throws ServletException {
-    // TODO Auto-generated method stub
     super.init();
   }
 

@@ -17,6 +17,7 @@ public class WebUtils {
    * Creates a new WebUtils object
    */
   private WebUtils() {
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------

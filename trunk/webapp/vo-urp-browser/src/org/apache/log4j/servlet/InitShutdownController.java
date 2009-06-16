@@ -32,12 +32,10 @@ import javax.servlet.ServletContext;
 
 /**
  * Used to initialize and cleanup Log4j in a servlet environment.
- * <p>See {@link InitContextListener} for web.xml configuration instructions.</p>
- * <p>Besides basic webapp lifecycle control when used with InitContextListener
- * and {@link InitServlet}, this class can be used by any class at runtime to
+ * <p>This class can be used by any class at runtime to
  * control initialization and shutdown of Log4j loggers and appenders.</p>
  *
- * @see http://nagoya.apache.org/wiki/apachewiki.cgi?Log4JProjectPages/AppContainerLogging
+ * @see "http://nagoya.apache.org/wiki/apachewiki.cgi?Log4JProjectPages/AppContainerLogging"
  * @author <a href="mailto:hoju@visi.com">Jacob Kjome</a>
  * @author Andreas Werner
  * @since  1.3
@@ -223,7 +221,6 @@ public class InitShutdownController {
             log4jURL = context.getResource("/" + configPath);
         } catch (MalformedURLException murle) {
             //ignore...we check for null later
-            ;
         }
 
         //Now let's check if the given configPath actually exists.
@@ -262,7 +259,7 @@ public class InitShutdownController {
     /**
      * Configures log4j from a File
      *
-     * @param systemConfigPath the fully qualified system path location of the
+     * @param configPath the fully qualified system path location of the
      *        log4j configuration file
      * @param context the current servlet context
      */
@@ -315,6 +312,7 @@ public class InitShutdownController {
      * Retrieves the timer interval from the servlet context.
      *
      * @param context the current servlet context
+     * @return timer interval
      */
     private static long getTimerIntervalFromContext(
             final ServletContext context) {
@@ -327,7 +325,6 @@ public class InitShutdownController {
                 timerIntervalVal = Integer.valueOf(timerInterval).longValue();
             } catch (NumberFormatException nfe) {
                 //ignore...we just won't use configureAndWatch if there is no valid int
-                ;
             }
         }
 
@@ -395,7 +392,7 @@ public class InitShutdownController {
             contextPath = path.substring(0, path.lastIndexOf("/"));
             contextPath = contextPath.substring(contextPath.lastIndexOf("/") + 1);
         } catch (Exception e) {
-            ;
+            /* no-op */
         }
 
         return contextPath;
@@ -425,7 +422,7 @@ public class InitShutdownController {
         try {
             Object guard = new Object();
 
-            Class clazz =
+            Class<?> clazz =
                     Class.forName(
                     selector, true, Thread.currentThread().getContextClassLoader());
             LogManager.setRepositorySelector(
