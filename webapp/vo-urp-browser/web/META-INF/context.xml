@@ -1,2 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/simDB-browser"/>
+<Context path="/simDB-browser">
+
+<!-- Uncomment this to disable session persistence across Tomcat restarts -->
+<Manager pathname="" />
+
+<!--
+<Realm className="org.apache.catalina.realm.JDBCRealm" debug="99"
+      driverName="org.postgresql.Driver"
+      connectionURL="jdbc:postgresql://localhost/pdrdb"
+      connectionName="pdrdb_super"
+      connectionPassword="super"
+      userTable="web_users" userNameCol="user_name" userCredCol="user_pass"
+      userRoleTable="web_user_roles" roleNameCol="role_name" />
+-->
+
+</Context>
