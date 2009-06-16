@@ -15,15 +15,16 @@
  */
 package org.apache.log4j.selector;
 
+
+import java.util.Collections;
+import java.util.Map;
+import java.util.WeakHashMap;
+
 import org.apache.log4j.Hierarchy;
 import org.apache.log4j.Level;
 import org.apache.log4j.spi.LoggerRepository;
 import org.apache.log4j.spi.RepositorySelector;
 import org.apache.log4j.spi.RootCategory;
-
-import java.util.Collections;
-import java.util.Map;
-import java.util.WeakHashMap;
 
 /**
  * Log4j Contextual ClassLoader Selector
@@ -57,19 +58,20 @@ import java.util.WeakHashMap;
  * @author <a href="mailto:hoju@visi.com">Jacob Kjome</a>
  * @since  1.3
  */
+@SuppressWarnings("deprecation")
 public class ContextClassLoaderSelector implements RepositorySelector {
 
     /**
      * key: current thread's ContextClassLoader,
      * value: Hierarchy instance
      */
-    private final Map hierMap;
+    private final Map<ClassLoader, Hierarchy> hierMap;
 
     /**
      * public no-args constructor
      */
     public ContextClassLoaderSelector() {
-        hierMap = Collections.synchronizedMap(new WeakHashMap());
+        hierMap = Collections.synchronizedMap(new WeakHashMap<ClassLoader, Hierarchy>());
     }
 
     /**
@@ -80,10 +82,10 @@ public class ContextClassLoaderSelector implements RepositorySelector {
      */
     public LoggerRepository getLoggerRepository() {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
-        Hierarchy hierarchy = (Hierarchy) hierMap.get(cl);
+        Hierarchy hierarchy = hierMap.get(cl);
 
         if (hierarchy == null) {
-            hierarchy = new Hierarchy(new RootCategory((Level) Level.DEBUG));
+            hierarchy = new Hierarchy(new RootCategory(Level.DEBUG));
             hierMap.put(cl, hierarchy);
         }
 

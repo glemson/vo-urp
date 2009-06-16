@@ -43,13 +43,13 @@ public final class SessionMonitor extends LogSupport implements HttpSessionListe
 
     /* membres */
     /** live session count */
-    private final AtomicInteger sessionCount = new AtomicInteger(0);
+    protected final AtomicInteger sessionCount = new AtomicInteger(0);
     /** total session count */
-    private final AtomicInteger sessionTotal = new AtomicInteger(0);
+    protected final AtomicInteger sessionTotal = new AtomicInteger(0);
     /** last total logged */
-    private int lastTotal = -1;
+    protected int lastTotal = -1;
     /** last live logged */
-    private int lastLive = -1;
+    protected int lastLive = -1;
 
     //~ Constructors -----------------------------------------------------------------------------------------------------
     /**
@@ -92,6 +92,7 @@ public final class SessionMonitor extends LogSupport implements HttpSessionListe
             // create a looping thread with a lapse of time :
             pollTh = new PollingThread(LAPSE) {
 
+                @Override
                 public final void handle() {
                     final int live = sessionCount.get();
                     final int total = sessionTotal.get();

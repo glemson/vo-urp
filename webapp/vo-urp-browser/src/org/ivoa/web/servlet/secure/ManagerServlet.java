@@ -1,30 +1,8 @@
 package org.ivoa.web.servlet.secure;
 
-import org.apache.commons.fileupload.FileItem;
-
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
-import org.ivoa.conf.RuntimeConfiguration;
-
-import org.ivoa.dm.DataModelManager;
-
-import org.ivoa.dm.model.MetadataObject;
-
-import org.ivoa.util.FileUtils;
-
-import org.ivoa.web.servlet.BaseServlet;
-
-import org.ivoa.xml.validator.ValidationResult;
-
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-
 import java.security.Principal;
-
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +11,15 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.xml.bind.JAXBException;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.ivoa.conf.RuntimeConfiguration;
+import org.ivoa.dm.DataModelManager;
+import org.ivoa.dm.model.MetadataObject;
+import org.ivoa.util.FileUtils;
+import org.ivoa.web.servlet.BaseServlet;
 
 
 /**
@@ -136,14 +121,12 @@ public final class ManagerServlet extends BaseServlet {
       if (INPUT_ACTION_insert.equals(action)) {
         result = handleInsert(params, user.getName());
         if(result instanceof MetadataObject)
-          request.setAttribute(OUTPUT_NEWENTITY, (MetadataObject)result);
+          request.setAttribute(OUTPUT_NEWENTITY, result);
       }
     } catch (final Exception e) {
       error = e.getMessage();
       status = "ERROR";
     }
-
-    final HttpSession session = createSession(request);
 
     // note : this session is unuseful but it should be when user will have login / password.
 
@@ -214,6 +197,7 @@ public final class ManagerServlet extends BaseServlet {
    *
    * @return parameter map
    */
+  @SuppressWarnings("unchecked")
   private Map<String, Object> getParameters(final HttpServletRequest request) {
     Map<String, Object> parameters = new Hashtable<String, Object>();
 
@@ -277,15 +261,14 @@ public final class ManagerServlet extends BaseServlet {
    */
   @Override
   public void init(final ServletConfig sc) throws ServletException {
-    // TODO Auto-generated method stub
     super.init(sc);
 
     try {
-      dataModelManager = new DataModelManager(RuntimeConfiguration.getInstance().getJPAPU());
+      dataModelManager = new DataModelManager(RuntimeConfiguration.get().getJPAPU());
     } catch (final Exception e) {
       log.error(
         "Unable to initiate DataModelManager for UploadServlet using JPA persistence unit " +
-        RuntimeConfiguration.getInstance().getJPAPU());
+        RuntimeConfiguration.get().getJPAPU());
       dataModelManager = null; // TODO should we throw an exception or simply make uploads not possible?
     }
   }

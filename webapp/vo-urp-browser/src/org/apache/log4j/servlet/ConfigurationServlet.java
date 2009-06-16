@@ -26,7 +26,6 @@ import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.SingleThreadModel;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -74,8 +73,15 @@ import org.apache.log4j.Logger;
  * @since 1.3
  * @version $Revision: 1.2 $ ($Author: root $)
  */
-public class ConfigurationServlet extends HttpServlet implements SingleThreadModel {
+public class ConfigurationServlet extends HttpServlet {
 
+  //~ Constants --------------------------------------------------------------------------------------------------------
+
+  /**
+   * serial UID for Serializable interface : every concrete class must have its value corresponding to last
+   * modification date of the UML model
+   */
+  private static final long serialVersionUID = 1L;
     /**
      * The response content type: text/html
      */
@@ -123,12 +129,15 @@ public class ConfigurationServlet extends HttpServlet implements SingleThreadMod
      * @exception ServletException if an error occurs
      * @exception IOException if an error occurs
      */
+    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String sortByLevelParam = request.getParameter(PARAM_SORTBYLEVEL);
         boolean sortByLevel = ("true".equalsIgnoreCase(sortByLevelParam) || "yes".equalsIgnoreCase(sortByLevelParam));
 
-        List loggers = getSortedLoggers(sortByLevel);
+        synchronized(this) {
+        
+        List<Logger> loggers = getSortedLoggers(sortByLevel);
         int loggerNum = 0;
 
         PrintWriter out = response.getWriter();
@@ -161,10 +170,10 @@ public class ConfigurationServlet extends HttpServlet implements SingleThreadMod
         displayLogger(out, Logger.getRootLogger(), loggerNum++, request);
 
         // print the rest of the loggers
-        Iterator iterator = loggers.iterator();
+        Iterator<Logger> iterator = loggers.iterator();
 
         while (iterator.hasNext()) {
-            displayLogger(out, (Logger) iterator.next(), loggerNum++, request);
+            displayLogger(out, iterator.next(), loggerNum++, request);
         }
 
         out.println("</tbody>");
@@ -176,6 +185,7 @@ public class ConfigurationServlet extends HttpServlet implements SingleThreadMod
             out.flush();
             out.close();
         }
+        }
     }
 
     /**
@@ -185,15 +195,19 @@ public class ConfigurationServlet extends HttpServlet implements SingleThreadMod
      * @exception ServletException if an error occurs
      * @exception IOException if an error occurs
      */
+    @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String className = request.getParameter(PARAM_CLASS);
         String level = request.getParameter(PARAM_LEVEL);
 
+        synchronized(this) {
+        
         if (className != null) {
             setClass(className, level);
         }
 
         doGet(request, response);
+        }
     }
 
     /**
@@ -247,12 +261,12 @@ public class ConfigurationServlet extends HttpServlet implements SingleThreadMod
         try {
             logger = (ROOT.equalsIgnoreCase(className) ? Logger.getRootLogger() : Logger.getLogger(className));
             logger.setLevel(Level.toLevel(level));
+            return "Message Set For " + (logger.getName().equals("") ? ROOT : logger.getName());
         } catch (Throwable e) {
             System // permetti system.out
                     .out.println("ERROR Setting LOG4J Logger:" + e);
         }
-
-        return "Message Set For " + (logger.getName().equals("") ? ROOT : logger.getName());
+        return "";
     }
 
     /**
@@ -260,10 +274,11 @@ public class ConfigurationServlet extends HttpServlet implements SingleThreadMod
      * @param sortByLevel if <code>true</code> sort loggers by level instead of name.
      * @return List the list of sorted loggers.
      */
-    private List getSortedLoggers(boolean sortByLevel) {
-        Enumeration e = LogManager.getCurrentLoggers();
-        Comparator comp = new LoggerComparator(sortByLevel);
-        List list = new ArrayList();
+    private List<Logger> getSortedLoggers(boolean sortByLevel) {
+        @SuppressWarnings("unchecked")
+        Enumeration<Logger> e = LogManager.getCurrentLoggers();
+        Comparator<Logger> comp = new LoggerComparator(sortByLevel);
+        List<Logger> list = new ArrayList<Logger>();
 
         // Add all current loggers to the list
         while (e.hasMoreElements()) {
@@ -324,7 +339,7 @@ public class ConfigurationServlet extends HttpServlet implements SingleThreadMod
     /**
      * Compare the names of two <code>Logger</code>s. Used for sorting.
      */
-    private class LoggerComparator implements Comparator {
+    private final class LoggerComparator implements Comparator<Logger> {
 
         /**
          * Sort by level? (default is sort by class name)
@@ -333,22 +348,19 @@ public class ConfigurationServlet extends HttpServlet implements SingleThreadMod
 
         /**
          * instantiate a new LoggerComparator
-         * @param sortByLevel if <code>true</code> sort loggers by level instead of name.
+         * @param pSortByLevel if <code>true</code> sort loggers by level instead of name.
          */
-        public LoggerComparator(boolean sortByLevel) {
-            this.sortByLevel = sortByLevel;
+        public LoggerComparator(boolean pSortByLevel) {
+            this.sortByLevel = pSortByLevel;
         }
 
         /**
          * Compare the names of two <code>Logger</code>s.
-         * @param object1 an <code>Object</code> value
-         * @param object2 an <code>Object</code> value
+         * @param logger1 an <code>Object</code> value
+         * @param logger2 an <code>Object</code> value
          * @return an <code>int</code> value
          */
-        public int compare(Object object1, Object object2) {
-            Logger logger1 = (Logger) object1;
-            Logger logger2 = (Logger) object2;
-
+        public int compare(final Logger logger1, final Logger logger2) {
             if (!sortByLevel) {
                 return logger1.getName().compareTo(logger2.getName());
             }
@@ -360,7 +372,8 @@ public class ConfigurationServlet extends HttpServlet implements SingleThreadMod
          * @param object an <code>Object</code> value
          * @return a <code>boolean</code> value
          */
-        public boolean equals(Object object) {
+        @Override
+        public boolean equals(final Object object) {
             if (!(object instanceof LoggerComparator)) {
                 return false;
             }
@@ -370,6 +383,7 @@ public class ConfigurationServlet extends HttpServlet implements SingleThreadMod
         /**
          * @see java.lang.Object#hashCode()
          */
+        @Override
         public int hashCode() {
             return super.hashCode();
         }
@@ -378,6 +392,7 @@ public class ConfigurationServlet extends HttpServlet implements SingleThreadMod
     /**
      * @see javax.servlet.Servlet#init(javax.servlet.ServletConfig)
      */
+    @Override
     public void init(ServletConfig config) throws ServletException {
         String fragmentParam = config.getInitParameter(CONFIG_FRAGMENT);
         isFragment = ("true".equalsIgnoreCase(fragmentParam) || "yes".equalsIgnoreCase(fragmentParam));

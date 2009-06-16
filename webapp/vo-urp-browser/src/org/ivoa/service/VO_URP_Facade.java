@@ -1,19 +1,5 @@
 package org.ivoa.service;
 
-import org.ivoa.conf.RuntimeConfiguration;
-
-import org.ivoa.dm.MetaModelFactory;
-
-import org.ivoa.env.ClassLoaderCleaner;
-
-import org.ivoa.jpa.JPAFactory;
-
-import org.ivoa.util.CollectionUtils;
-
-import org.ivoa.web.model.CursorQuery;
-import org.ivoa.web.model.EntityConfig;
-import org.ivoa.web.model.EntityConfigFactory;
-
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -21,10 +7,17 @@ import java.util.concurrent.ConcurrentHashMap;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
-
 import javax.servlet.ServletContext;
+
 import org.ivoa.bean.LogSupport;
 import org.ivoa.conf.Configuration;
+import org.ivoa.conf.RuntimeConfiguration;
+import org.ivoa.dm.MetaModelFactory;
+import org.ivoa.env.ClassLoaderCleaner;
+import org.ivoa.jpa.JPAFactory;
+import org.ivoa.web.model.CursorQuery;
+import org.ivoa.web.model.EntityConfig;
+import org.ivoa.web.model.EntityConfigFactory;
 
 /**
  * Facade pattern for the web application
@@ -48,8 +41,8 @@ public class VO_URP_Facade extends LogSupport {
     /** EntityManager Thread Local (lazy weaving) */
     private ThreadLocal<EntityManager> threadLocal;
 
-    // global Cache (thread safe) :
-    /** TODO : Field Description */
+    /** global Cache (thread safe) */
+    @SuppressWarnings("unchecked")
     private Map globalCache = new ConcurrentHashMap();
 
     //~ Constructors -----------------------------------------------------------------------------------------------------
@@ -57,6 +50,7 @@ public class VO_URP_Facade extends LogSupport {
      * Constructor
      */
     private VO_URP_Facade() {
+      /* no-op */
     }
 
     //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -130,7 +124,6 @@ public class VO_URP_Facade extends LogSupport {
         }
 
         Configuration.getInstance();
-        RuntimeConfiguration.getInstance();
 
         try {
             if (log.isInfoEnabled()) {
@@ -148,7 +141,7 @@ public class VO_URP_Facade extends LogSupport {
 
         this.ecf = EntityConfigFactory.getInstance();
 
-        String jpa_pu = RuntimeConfiguration.getInstance().getJPAPU();
+        String jpa_pu = RuntimeConfiguration.get().getJPAPU();
 
         if (log.isInfoEnabled()) {
             log.info("get JPAFactory for persistence unit " + jpa_pu);
@@ -313,7 +306,7 @@ public class VO_URP_Facade extends LogSupport {
      * @param cq
      */
     private void refreshCursorResults(final CursorQuery cq) {
-        List results = null;
+        List<?> results = null;
 
         final EntityManager em = createEntityManager();
         final Query q = em.createQuery(cq.getQuery());
@@ -416,7 +409,7 @@ public class VO_URP_Facade extends LogSupport {
                 log.debug("countQuery : " + query);
             }
 
-            cq.setMaxPos(getCount(query));
+            cq.setMaxPos(getCount(query).intValue());
 
             // update Query :
             query = ec.getFindAll();
@@ -437,6 +430,7 @@ public class VO_URP_Facade extends LogSupport {
      *
      * @return value TODO : Value Description
      */
+    @SuppressWarnings("unchecked")
     public Map getGlobalCache() {
         return globalCache;
     }
