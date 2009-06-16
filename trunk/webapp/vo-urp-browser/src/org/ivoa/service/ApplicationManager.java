@@ -10,13 +10,19 @@ import org.apache.log4j.servlet.InitShutdownController;
  * @author laurent
  */
 public class ApplicationManager implements ServletContextListener {
+    //~ Constants --------------------------------------------------------------------------------------------------------
+
+    /** diagnostics flag */
+    public final static boolean ENABLE_DIAGNOSTICS = false;
 
     //~ Constructors -----------------------------------------------------------------------------------------------------
     /**
      * Constructor
      */
     public ApplicationManager() {
-      System.out.println("ApplicationManager new");
+        if (ENABLE_DIAGNOSTICS) {
+            System.out.println("ApplicationManager new");
+        }
     }
 
     //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -26,7 +32,9 @@ public class ApplicationManager implements ServletContextListener {
      * @param sce
      */
     public void contextInitialized(final ServletContextEvent sce) {
-      System.out.println("ApplicationManager contextInitialized");
+        if (ENABLE_DIAGNOSTICS) {
+            System.out.println("ApplicationManager contextInitialized");
+        }
         final ServletContext ctx = sce.getServletContext();
         // initialize Log4J with this Class Loader :
         InitShutdownController.initializeLog4j(ctx);
@@ -40,6 +48,9 @@ public class ApplicationManager implements ServletContextListener {
      * @param sce
      */
     public void contextDestroyed(final ServletContextEvent sce) {
+        if (ENABLE_DIAGNOSTICS) {
+            System.out.println("ApplicationManager contextDestroyed");
+        }
         final ServletContext ctx = sce.getServletContext();
 
         VO_URP_Facade.freeInstance(ctx);
@@ -55,12 +66,5 @@ public class ApplicationManager implements ServletContextListener {
         a full server shutdown.
          */
         InitShutdownController.shutdownLog4j(ctx);
-/*
-        try {
-            Thread.sleep(100);
-        } catch (final InterruptedException ie) {
-            ie.printStackTrace(System.err);
-        }
- */
     }
 }

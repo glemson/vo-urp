@@ -18,6 +18,8 @@ import org.ivoa.bean.LogSupport;
 public final class SessionMonitor extends LogSupport implements HttpSessionListener {
     //~ Constants --------------------------------------------------------------------------------------------------------
 
+    /** diagnostics flag */
+    public final static boolean ENABLE_DIAGNOSTICS = false;
     /**
      * TODO : Field Description
      */
@@ -54,7 +56,9 @@ public final class SessionMonitor extends LogSupport implements HttpSessionListe
      * Public constructor
      */
     public SessionMonitor() {
-        System.out.println("SessionMonitor new");
+        if (ENABLE_DIAGNOSTICS) {
+            System.out.println("SessionMonitor new");
+        }
         init();
     }
 
@@ -70,16 +74,7 @@ public final class SessionMonitor extends LogSupport implements HttpSessionListe
         if (pollTh != null) {
             // stop polling thread :
             pollTh.stopAndWait();
-/*
-            try {
-                // to be sure the thread died (exit run() method)
-                Thread.sleep(10L);
-            } catch (InterruptedException ie) {
-                if (logD.isErrorEnabled()) {
-                    logD.error("SessionMonitor.onExit : interrupted : ", ie);
-                }
-            }
-*/
+
             // force GC :
             pollTh = null;
         }
