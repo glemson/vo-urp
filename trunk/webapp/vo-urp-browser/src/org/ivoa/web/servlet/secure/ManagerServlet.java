@@ -29,8 +29,7 @@ public final class ManagerServlet extends BaseServlet {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /**
-   * serial UID for Serializable interface : every concrete class must have its value corresponding to last
-   * modification date of the UML model
+   * serial UID for Serializable interface : 1
    */
   private static final long serialVersionUID = 1L;
 

@@ -71,6 +71,7 @@ public final class EntityConfigFactory extends SingletonSupport {
     /**
      * TODO : Method Description
      */
+    @Override
     public void initialize() {
         // process all ClassTypes :
         final MetaModelFactory mf = MetaModelFactory.getInstance();
@@ -92,6 +93,7 @@ public final class EntityConfigFactory extends SingletonSupport {
     /**
      * TODO : Method Description
      */
+    @Override
     public void clear() {
         // force GC :
         getConfigs().clear();
@@ -114,7 +116,7 @@ public final class EntityConfigFactory extends SingletonSupport {
      *
      * @return value TODO : Value Description
      */
-    public Map getConfigs() {
+    public Map<String, EntityConfig> getConfigs() {
         return configs;
     }
 

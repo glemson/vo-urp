@@ -77,22 +77,22 @@ public class EntityConfig {
 
 /**
    * Constructor
-   * @param classe type class
+   * @param pClasse type class
    */
-  public EntityConfig(final Class<?extends MetadataElement> classe) {
-    this(classe, true, false);
+  public EntityConfig(final Class<?extends MetadataElement> pClasse) {
+    this(pClasse, true, false);
   }
 
   /**
    * Creates a new EntityConfig object
    *
-   * @param classe 
+   * @param pClasse type class
    * @param allowPaging 
    * @param allowQuery 
    */
-  public EntityConfig(final Class<?extends MetadataElement> classe, final boolean allowPaging, final boolean allowQuery) {
-    this.classe = classe;
-    this.name = classe.getSimpleName();
+  public EntityConfig(final Class<?extends MetadataElement> pClasse, final boolean allowPaging, final boolean allowQuery) {
+    this.classe = pClasse;
+    this.name = pClasse.getSimpleName();
 
     this.doPaging = allowPaging;
     this.doQuery = allowQuery;
@@ -122,15 +122,15 @@ public class EntityConfig {
   /**
    * TODO : Method Description
    *
-   * @param name 
+   * @param pName 
    * @param viewName 
    */
-  public void addPage(final String name, final String viewName) {
+  public void addPage(final String pName, final String viewName) {
     if (pages == null) {
       pages = new HashMap<String, String>();
     }
 
-    pages.put(name, PATH_PAGE + viewName + EXT_JSP);
+    pages.put(pName, PATH_PAGE + viewName + EXT_JSP);
   }
 
   // Getters :
@@ -200,10 +200,10 @@ public class EntityConfig {
   /**
    * TODO : Method Description
    *
-   * @param orderBy 
+   * @param pOrderBy 
    */
-  public void setOrderBy(final String orderBy) {
-    this.orderBy = orderBy;
+  public void setOrderBy(final String pOrderBy) {
+    this.orderBy = pOrderBy;
   }
 
   // Keys :  
@@ -237,16 +237,16 @@ public class EntityConfig {
   /**
    * TODO : Method Description
    *
-   * @param name 
+   * @param pName 
    *
    * @return value TODO : Value Description
    */
-  public String getPages(final String name) {
+  public String getPages(final String pName) {
     if (pages == null) {
       return null;
     }
 
-    return pages.get(name);
+    return pages.get(pName);
   }
 
   /**

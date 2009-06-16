@@ -1,13 +1,12 @@
 package org.ivoa.web.servlet;
 
-import org.ivoa.web.model.EntityConfig;
-
 import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import org.ivoa.web.model.EntityConfig;
 
 
 /**
@@ -17,8 +16,7 @@ public final class FindServlet extends BaseServlet {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /**
-   * serial UID for Serializable interface : every concrete class must have its value corresponding to last
-   * modification date of the UML model
+   * serial UID for Serializable interface : 1
    */
   private static final long serialVersionUID = 1L;
 
@@ -92,9 +90,6 @@ public final class FindServlet extends BaseServlet {
 
       return;
     }
-
-    // Process Session (creates a new one on first time) :
-    final HttpSession session = createSession(request);
 
     // note : this session is unuseful but it should be when user will have login / password.
     final String view = getStringParameter(request, INPUT_VIEW);

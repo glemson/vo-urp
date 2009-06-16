@@ -27,8 +27,7 @@ public class BaseServlet extends HttpServlet {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /**
-   * serial UID for Serializable interface : every concrete class must have its value corresponding to last
-   * modification date of the UML model
+   * serial UID for Serializable interface : 1
    */
   private static final long serialVersionUID = 1L;
 
@@ -79,6 +78,7 @@ public class BaseServlet extends HttpServlet {
    * Creates a new BaseServlet object
    */
   public BaseServlet() {
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -90,6 +90,7 @@ public class BaseServlet extends HttpServlet {
    *
    * @throws ServletException 
    */
+  @Override
   public void init(final ServletConfig sc) throws ServletException {
     super.init(sc);
 
@@ -102,6 +103,7 @@ public class BaseServlet extends HttpServlet {
    * TODO : Method Description
    */
   protected void onInit() {
+    /* no-op */
   }
 
   /**
@@ -113,6 +115,7 @@ public class BaseServlet extends HttpServlet {
    * @throws ServletException
    * @throws IOException
    */
+  @Override
   protected final void doGet(final HttpServletRequest request, final HttpServletResponse response)
                       throws ServletException, IOException {
     processRequest(request, response);
@@ -127,6 +130,7 @@ public class BaseServlet extends HttpServlet {
    * @throws ServletException
    * @throws IOException
    */
+  @Override
   protected final void doPost(final HttpServletRequest request, final HttpServletResponse response)
                        throws ServletException, IOException {
     processRequest(request, response);

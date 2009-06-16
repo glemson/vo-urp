@@ -52,17 +52,17 @@ public class TAPResult extends BaseResult {
   /**
    * TODO : Field Description
    */
-  private Map paramQuery = null;
+  private Map<String, String> paramQuery = null;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
   /**
    * Creates a new TAPResult object
    *
-   * @param query 
+   * @param pQuery 
    */
-  public TAPResult(final SQLQuery query) {
-    this.query = query;
+  public TAPResult(final SQLQuery pQuery) {
+    this.query = pQuery;
   }
 
   /**
@@ -70,7 +70,7 @@ public class TAPResult extends BaseResult {
    *
    * @param map 
    */
-  public TAPResult(final Map map) {
+  public TAPResult(final Map<String, String> map) {
     this.paramQuery = map;
   }
 
