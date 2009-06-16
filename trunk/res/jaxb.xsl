@@ -38,7 +38,7 @@
       </xsl:apply-templates>
     </xsl:variable>
   @XmlAccessorType( XmlAccessType.NONE )  
-  @XmlType( name = "<xsl:value-of select="name"/>", namespace = "<xsl:value-of select="$namespace"/>")
+  @XmlType( name = "<xsl:value-of select="name"/>"<xsl:apply-templates select="." mode="propOrder"/>, namespace = "<xsl:value-of select="$namespace"/>")
     <xsl:choose>
       <xsl:when test="number($isContained) = 0 and not(@abstract = 'true')">
     @XmlRootElement( name = "a<xsl:value-of select="name"/>", namespace = "<xsl:value-of select="$targetnamespace_root"/>")
@@ -52,6 +52,27 @@ Ofcourse if we always use the schemas to validate XML documents this will still 
     </xsl:choose>
   </xsl:template>
 
+
+
+
+<!--   !!!! IMPORTANT !!!!
+ The propOrder MUST be the same as the order in which the properties appear in the <sequence> in the the XML schema, intermediate2xsd.xsl.
+ This order is {attribute,collection[not(subsets)],reference[not(subsets)]}.
+ NB Might we prefer attribute,referemce, collection??? 
+ -->
+  <xsl:template match="objectType|dataType" mode="propOrder">
+    <xsl:if test="attribute|collection|reference">
+      <xsl:text>,propOrder={
+      </xsl:text>
+        <xsl:for-each select="attribute,collection[not(subsets)],reference[not(subsets)]">
+        <xsl:variable name="prop">
+          <xsl:if test="name()='reference'">p_</xsl:if><xsl:value-of select="name"/>
+        </xsl:variable>
+        <xsl:text>"</xsl:text><xsl:value-of select="$prop"/><xsl:text>"</xsl:text><xsl:if test="position() != last()"><xsl:text>,</xsl:text></xsl:if>
+        </xsl:for-each>
+      <xsl:text>}</xsl:text>
+    </xsl:if>
+  </xsl:template>
 
 
 
