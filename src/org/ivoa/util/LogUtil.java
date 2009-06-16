@@ -74,7 +74,9 @@ public final class LogUtil {
             }
             instance = l;
 
-            instance.log.error("LogUtil.getInstance : new : " + instance);
+            if (instance.log.isWarnEnabled()) {
+                instance.log.warn("LogUtil.getInstance : new singleton : " + instance);
+            }
         }
 
         return instance;
@@ -115,7 +117,9 @@ public final class LogUtil {
         isShutdown = true;
         if (instance != null) {
 
-            instance.log.error("LogUtil.onExit : clearing : " + instance);
+            if (instance.log.isWarnEnabled()) {
+                instance.log.warn("LogUtil.getInstance : free singleton : " + instance);
+            }
 
             // force GC :
             instance.log = null;
