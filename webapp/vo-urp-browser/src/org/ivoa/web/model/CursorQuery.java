@@ -4,27 +4,31 @@ import java.io.Serializable;
 
 import java.util.List;
 
-
 /**
- * CursorQuery.java
- *
- * Created on 22 août 2007, 17:22:27
- *
+ * CursorQuery.java Created on 22 août 2007, 17:22:27
+ * 
  * @author laurent
  */
 public class CursorQuery implements Serializable {
-  //~ Constants --------------------------------------------------------------------------------------------------------
+  // ~ Constants
+  // --------------------------------------------------------------------------------------------------------
+  /**
+   * serial UID for Serializable interface : 1
+   */
+  private static final long serialVersionUID = 1L;
 
   /**
    * TODO : Field Description
    */
   public static final int FIRST_POS = 0;
+
   /**
    * TODO : Field Description
    */
   public static final int NULL_INT = -1;
 
-  //~ Members ----------------------------------------------------------------------------------------------------------
+  // ~ Members
+  // ----------------------------------------------------------------------------------------------------------
 
   /**
    * TODO : Field Description
@@ -41,7 +45,8 @@ public class CursorQuery implements Serializable {
   /**
    * TODO : Field Description
    */
-  private String    queryClause;
+  private String queryClause;
+
   /**
    * TODO : Field Description
    */
@@ -52,6 +57,7 @@ public class CursorQuery implements Serializable {
    * TODO : Field Description
    */
   private boolean refresh;
+
   /**
    * TODO : Field Description
    */
@@ -62,55 +68,67 @@ public class CursorQuery implements Serializable {
    * TODO : Field Description
    */
   private int maxPos;
+
   /**
    * TODO : Field Description
    */
   private int startPos = NULL_INT;
+
   /**
    * TODO : Field Description
    */
   private int prevPos = NULL_INT;
+
   /**
    * TODO : Field Description
    */
   private int nextPos = NULL_INT;
+
   /** transient to avoid serialization issues */
-  private transient List results = null;
+  private transient List<?> results = null;
 
-  //~ Constructors -----------------------------------------------------------------------------------------------------
+  // ~ Constructors
+  // -----------------------------------------------------------------------------------------------------
 
-/**
+  /**
    * Simple Query without paging behaviour
+   * 
+   * @param pQuery query
    */
-  public CursorQuery(final String query) {
-    this(query, NULL_INT, Integer.MAX_VALUE);
+  public CursorQuery(final String pQuery) {
+    this(pQuery, NULL_INT, Integer.MAX_VALUE);
   }
 
-/**
+  /**
    * Cursor Query with paging behaviour
+   * 
+   * @param pQuery query
+   * @param pPageSize page size
+   * @param pMax max position
    */
-  public CursorQuery(final String query, final int pageSize, final int max) {
-    this.query = query;
-    this.maxPos = max;
-    this.pageSize = pageSize;
+  public CursorQuery(final String pQuery, final int pPageSize, final int pMax) {
+    this.query = pQuery;
+    this.maxPos = pMax;
+    this.pageSize = pPageSize;
     setStartPos(FIRST_POS);
   }
 
-  //~ Methods ----------------------------------------------------------------------------------------------------------
+  // ~ Methods
+  // ----------------------------------------------------------------------------------------------------------
 
   /**
    * TODO : Method Description
-   *
+   * 
    * @return value TODO : Value Description
    */
   public boolean isDoPaging() {
     return this.pageSize != NULL_INT;
   }
 
-  // Getters :  
+  // Getters :
   /**
    * TODO : Method Description
-   *
+   * 
    * @return value TODO : Value Description
    */
   public String getQuery() {
@@ -119,7 +137,7 @@ public class CursorQuery implements Serializable {
 
   /**
    * TODO : Method Description
-   *
+   * 
    * @return value TODO : Value Description
    */
   public String getQueryClause() {
@@ -128,7 +146,7 @@ public class CursorQuery implements Serializable {
 
   /**
    * TODO : Method Description
-   *
+   * 
    * @return value TODO : Value Description
    */
   public int getMaxPos() {
@@ -137,7 +155,7 @@ public class CursorQuery implements Serializable {
 
   /**
    * TODO : Method Description
-   *
+   * 
    * @return value TODO : Value Description
    */
   public int getPageSize() {
@@ -146,26 +164,26 @@ public class CursorQuery implements Serializable {
 
   /**
    * TODO : Method Description
-   *
+   * 
    * @return value TODO : Value Description
    */
-  public List getResults() {
+  public List<?> getResults() {
     return results;
   }
 
   /**
    * TODO : Method Description
-   *
+   * 
    * @return value TODO : Value Description
    */
   public int getStartPos() {
     return startPos;
   }
 
-  // Navigation :  
+  // Navigation :
   /**
    * TODO : Method Description
-   *
+   * 
    * @return value TODO : Value Description
    */
   public int getPrevPos() {
@@ -174,7 +192,7 @@ public class CursorQuery implements Serializable {
 
   /**
    * TODO : Method Description
-   *
+   * 
    * @return value TODO : Value Description
    */
   public int getNextPos() {
@@ -183,7 +201,7 @@ public class CursorQuery implements Serializable {
 
   /**
    * TODO : Method Description
-   *
+   * 
    * @return value TODO : Value Description
    */
   public boolean isRefresh() {
@@ -192,7 +210,7 @@ public class CursorQuery implements Serializable {
 
   /**
    * TODO : Method Description
-   *
+   * 
    * @return value TODO : Value Description
    */
   public boolean isRefreshCount() {
@@ -202,50 +220,50 @@ public class CursorQuery implements Serializable {
   // Setters :
   /**
    * Force Refresh
-   *
-   * @param refresh
+   * 
+   * @param pRefresh
    */
-  public void setRefresh(final boolean refresh) {
-    this.refresh = refresh;
+  public void setRefresh(final boolean pRefresh) {
+    this.refresh = pRefresh;
   }
 
   /**
    * Force Refresh Count
-   *
-   * @param refresh
+   * 
+   * @param pRefresh
    */
-  public void setRefreshCount(final boolean refresh) {
-    this.refreshCount = refresh;
+  public void setRefreshCount(final boolean pRefresh) {
+    this.refreshCount = pRefresh;
   }
 
   /**
    * Changing start Position (paging)
-   *
-   * @param startPos
+   * 
+   * @param pStartPos
    */
-  public void setStartPos(final int startPos) {
-    if ((this.startPos != startPos) && (startPos < this.maxPos) && (startPos >= FIRST_POS)) {
-      this.startPos = startPos;
+  public void setStartPos(final int pStartPos) {
+    if ((this.startPos != pStartPos) && (pStartPos < this.maxPos) && (pStartPos >= FIRST_POS)) {
+      this.startPos = pStartPos;
       setRefresh(true);
     }
   }
 
   /**
    * TODO : Method Description
-   *
-   * @param maxPos 
+   * 
+   * @param pMaxPos
    */
-  public void setMaxPos(final int maxPos) {
-    this.maxPos = maxPos;
+  public void setMaxPos(final int pMaxPos) {
+    this.maxPos = pMaxPos;
   }
 
   /**
    * TODO : Method Description
-   *
-   * @param q 
+   * 
+   * @param q
    */
   public void setQueryClause(final String q) {
-    if ((q != null) && ! q.equals(queryClause)) {
+    if ((q != null) && !q.equals(queryClause)) {
       queryClause = q;
       startPos = FIRST_POS;
       maxPos = Integer.MAX_VALUE;
@@ -257,8 +275,8 @@ public class CursorQuery implements Serializable {
 
   /**
    * TODO : Method Description
-   *
-   * @param q 
+   * 
+   * @param q
    */
   public void setQuery(final String q) {
     query = q;
@@ -266,11 +284,11 @@ public class CursorQuery implements Serializable {
 
   /**
    * Called when query gives results
-   *
-   * @param results
+   * 
+   * @param pResults results
    */
-  public void setResults(final List results) {
-    this.results = results;
+  public void setResults(final List<?> pResults) {
+    this.results = pResults;
     setRefresh(false);
 
     if (isDoPaging()) {
@@ -288,7 +306,7 @@ public class CursorQuery implements Serializable {
     } else {
       if (maxPos == Integer.MAX_VALUE) {
         // first time : cached :
-        maxPos = results.size();
+        maxPos = pResults.size();
       }
     }
   }
@@ -296,7 +314,7 @@ public class CursorQuery implements Serializable {
   // Getter - setter :
   /**
    * TODO : Method Description
-   *
+   * 
    * @return value TODO : Value Description
    */
   public boolean isDoQuery() {
@@ -305,11 +323,12 @@ public class CursorQuery implements Serializable {
 
   /**
    * TODO : Method Description
-   *
-   * @param doQuery 
+   * 
+   * @param pDoQuery
    */
-  public void setDoQuery(final boolean doQuery) {
-    this.doQuery = doQuery;
+  public void setDoQuery(final boolean pDoQuery) {
+    this.doQuery = pDoQuery;
   }
 }
-//~ End of file --------------------------------------------------------------------------------------------------------
+// ~ End of file
+// --------------------------------------------------------------------------------------------------------

@@ -22,6 +22,7 @@ public class JPARequestListener implements ServletRequestListener {
    * @param evt 
    */
   public void requestInitialized(final ServletRequestEvent evt) {
+    /* no-op */
   }
 
   /**

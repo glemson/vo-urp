@@ -37,10 +37,10 @@ public class BaseResult {
   /**
    * TODO : Method Description
    *
-   * @param resultCode 
+   * @param pResultCode 
    */
-  public void setResultCode(final int resultCode) {
-    this.resultCode = resultCode;
+  public void setResultCode(final int pResultCode) {
+    this.resultCode = pResultCode;
   }
 
   /**
@@ -55,10 +55,10 @@ public class BaseResult {
   /**
    * TODO : Method Description
    *
-   * @param error 
+   * @param pError 
    */
-  public void setError(final String error) {
-    this.error = error;
+  public void setError(final String pError) {
+    this.error = pError;
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

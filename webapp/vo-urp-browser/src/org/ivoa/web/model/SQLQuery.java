@@ -15,7 +15,10 @@ import java.util.List;
  */
 public class SQLQuery implements Serializable {
   //~ Members ----------------------------------------------------------------------------------------------------------
-
+  /**
+   * serial UID for Serializable interface : 1
+   */
+  private static final long serialVersionUID = 1L;
   /**
    * TODO : Field Description
    */
@@ -35,11 +38,11 @@ public class SQLQuery implements Serializable {
   /**
    * TODO : Field Description
    */
-  private List headers = new ArrayList();
+  private List<?> headers = new ArrayList<Object>();
   /**
    * TODO : Field Description
    */
-  private List results;
+  private List<?> results;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
@@ -47,6 +50,7 @@ public class SQLQuery implements Serializable {
    * Constructor
    */
   public SQLQuery() {
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -73,10 +77,10 @@ public class SQLQuery implements Serializable {
   /**
    * TODO : Method Description
    *
-   * @param sql 
+   * @param pSql 
    */
-  public void setSql(final String sql) {
-    this.sql = sql;
+  public void setSql(final String pSql) {
+    this.sql = pSql;
   }
 
   /**
@@ -91,10 +95,10 @@ public class SQLQuery implements Serializable {
   /**
    * TODO : Method Description
    *
-   * @param maxRows 
+   * @param pMaxRows 
    */
-  public void setMaxRows(final int maxRows) {
-    this.maxRows = maxRows;
+  public void setMaxRows(final int pMaxRows) {
+    this.maxRows = pMaxRows;
   }
 
   /**
@@ -109,10 +113,10 @@ public class SQLQuery implements Serializable {
   /**
    * TODO : Method Description
    *
-   * @param error 
+   * @param pError 
    */
-  public void setError(final String error) {
-    this.error = error;
+  public void setError(final String pError) {
+    this.error = pError;
   }
 
   /**
@@ -127,10 +131,10 @@ public class SQLQuery implements Serializable {
   /**
    * TODO : Method Description
    *
-   * @param duration 
+   * @param pDuration 
    */
-  public void setDuration(final long duration) {
-    this.duration = duration;
+  public void setDuration(final long pDuration) {
+    this.duration = pDuration;
   }
 
   /**
@@ -138,6 +142,7 @@ public class SQLQuery implements Serializable {
    *
    * @return value TODO : Value Description
    */
+  @SuppressWarnings("unchecked")
   public List getHeaders() {
     return headers;
   }
@@ -147,6 +152,7 @@ public class SQLQuery implements Serializable {
    *
    * @return value TODO : Value Description
    */
+  @SuppressWarnings("unchecked")
   public List getResults() {
     return results;
   }
@@ -154,10 +160,11 @@ public class SQLQuery implements Serializable {
   /**
    * TODO : Method Description
    *
-   * @param results 
+   * @param pResults 
    */
-  public void setResults(final List results) {
-    this.results = results;
+  @SuppressWarnings("unchecked")
+  public void setResults(final List pResults) {
+    this.results = pResults;
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

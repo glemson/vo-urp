@@ -1,25 +1,18 @@
 package org.ivoa.web.servlet;
 
-import org.ivoa.conf.RuntimeConfiguration;
-
-import org.ivoa.dm.MetaModelFactory;
-
-import org.ivoa.tap.TAP_v0_31;
-
-import org.ivoa.util.SQLUtils;
-
-import org.ivoa.web.model.SQLQuery;
-import org.ivoa.web.model.TAPResult;
-
 import java.io.IOException;
-
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import org.ivoa.conf.RuntimeConfiguration;
+import org.ivoa.tap.TAP_v0_31;
+import org.ivoa.util.SQLUtils;
+import org.ivoa.web.model.SQLQuery;
+import org.ivoa.web.model.TAPResult;
 
 
 /**
@@ -33,8 +26,7 @@ public class TAP0_31Servlet extends BaseServlet implements TAP_v0_31 {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /**
-   * serial UID for Serializable interface : every concrete class must have its value corresponding to last
-   * modification date of the UML model
+   * serial UID for Serializable interface : 1
    */
   private static final long serialVersionUID = 1L;
 
@@ -85,9 +77,6 @@ public class TAP0_31Servlet extends BaseServlet implements TAP_v0_31 {
     long time;
     long start = System.nanoTime();
 
-    // Process Session (creates a new one on first time) :
-    final HttpSession session = createSession(request);
-
     // first check for sync or async
     String[] pathInfo = request.getPathInfo().split("/");
     boolean  isSync   = false;
@@ -105,7 +94,7 @@ public class TAP0_31Servlet extends BaseServlet implements TAP_v0_31 {
       SQLQuery q   = new SQLQuery();
 
       q.setSql(sql);
-      q.setMaxRows(getLongParameter(request, MAXREC_PARAM, -1L).intValue());
+      q.setMaxRows(getLongParameter(request, MAXREC_PARAM, Long.valueOf(-1L)).intValue());
       result = handleADQLQuery(q, getStringParameter(request, LANG_PARAM), isSync);
     } else if (REQUEST_VALUE_ParamQuery.equalsIgnoreCase(req)) {
       result = handleParamQuery(request, isSync);
@@ -150,6 +139,7 @@ public class TAP0_31Servlet extends BaseServlet implements TAP_v0_31 {
    *
    * @return value TODO : Value Description
    */
+  @SuppressWarnings("unchecked")
   private TAPResult handleADQLQuery(final SQLQuery q, final String lang, final boolean isSync) {
     TAPResult r = new TAPResult(q);
 
@@ -206,6 +196,7 @@ public class TAP0_31Servlet extends BaseServlet implements TAP_v0_31 {
    *
    * @return value TODO : Value Description
    */
+  @SuppressWarnings("unchecked")
   private TAPResult handleParamQuery(final HttpServletRequest request, final boolean isSync) {
     String from   = getStringParameter(request, TAP_v0_31.FROM_PARAM);
     String where  = getStringParameter(request, TAP_v0_31.WHERE_PARAM);

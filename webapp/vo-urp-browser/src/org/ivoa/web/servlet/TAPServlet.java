@@ -1,17 +1,6 @@
 package org.ivoa.web.servlet;
 
-import org.ivoa.tap.TAP_v0_31;
-
-import org.ivoa.util.SQLUtils;
-
-import org.ivoa.votable.Info;
-import org.ivoa.votable.Resource;
-import org.ivoa.votable.VOTABLE;
-
-import org.ivoa.web.model.SQLQuery;
-
 import java.io.IOException;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -20,7 +9,13 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import org.ivoa.tap.TAP_v0_31;
+import org.ivoa.util.SQLUtils;
+import org.ivoa.votable.Info;
+import org.ivoa.votable.Resource;
+import org.ivoa.votable.VOTABLE;
+import org.ivoa.web.model.SQLQuery;
 
 
 /**
@@ -34,8 +29,7 @@ public class TAPServlet extends BaseServlet implements TAP_v0_31 {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /**
-   * serial UID for Serializable interface : every concrete class must have its value corresponding to last
-   * modification date of the UML model
+   * serial UID for Serializable interface : 1
    */
   private static final long serialVersionUID = 1L;
 
@@ -67,11 +61,11 @@ public class TAPServlet extends BaseServlet implements TAP_v0_31 {
   /**
    * TODO : Field Description
    */
-  public static long DEFAULT_MAXREC = 1000; // unlimited
+  public static Long DEFAULT_MAXREC = Long.valueOf(1000L); // unlimited
   /**
    * TODO : Field Description
    */
-  public static long MAX_MAXREC = -1; // unlimited
+  public static Long MAX_MAXREC = Long.valueOf(-1L); // unlimited
 
   //~ Members ----------------------------------------------------------------------------------------------------------
 
@@ -112,9 +106,6 @@ public class TAPServlet extends BaseServlet implements TAP_v0_31 {
                          throws ServletException, IOException {
     long time;
     long start                = System.nanoTime();
-
-    // Process Session (creates a new one on first time) :
-    final HttpSession session = createSession(request);
 
     String            path = request.getServletPath();
 
@@ -192,6 +183,7 @@ public class TAPServlet extends BaseServlet implements TAP_v0_31 {
    */
   private void handleSyncGetCapabilities(final HttpServletRequest request, final HttpServletResponse response)
                                   throws ServletException {
+    /* no-op */
   }
 
   /**
@@ -204,6 +196,7 @@ public class TAPServlet extends BaseServlet implements TAP_v0_31 {
    */
   private void handleSyncGetAvailability(final HttpServletRequest request, final HttpServletResponse response)
                                   throws ServletException {
+    /* no-op */
   }
 
   /**
@@ -216,6 +209,7 @@ public class TAPServlet extends BaseServlet implements TAP_v0_31 {
    */
   private void handleSyncGetTableMetadata(final HttpServletRequest request, final HttpServletResponse response)
                                    throws ServletException {
+    /* no-op */
   }
 
   /**
@@ -226,6 +220,7 @@ public class TAPServlet extends BaseServlet implements TAP_v0_31 {
    *
    * @throws ServletException 
    */
+  @SuppressWarnings("unchecked")
   private void handleSyncADQLQuery(final HttpServletRequest request, final HttpServletResponse response)
                             throws ServletException {
     String runid  = getRunId(request);
@@ -322,6 +317,7 @@ public class TAPServlet extends BaseServlet implements TAP_v0_31 {
    *
    * @throws ServletException 
    */
+  @Override
   public void init(final ServletConfig sc) throws ServletException {
     super.init(sc);
 

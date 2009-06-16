@@ -1,26 +1,7 @@
 package org.ivoa.web.servlet;
 
-import org.apache.commons.fileupload.FileItem;
-
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-
-import org.ivoa.conf.RuntimeConfiguration;
-
-import org.ivoa.dm.DataModelManager;
-
-import org.ivoa.dm.model.MetadataObject;
-
-import org.ivoa.util.FileUtils;
-
-import org.ivoa.xml.validator.ValidationResult;
-
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +10,14 @@ import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.ivoa.conf.RuntimeConfiguration;
+import org.ivoa.dm.DataModelManager;
+import org.ivoa.util.FileUtils;
+import org.ivoa.xml.validator.ValidationResult;
 
 
 /**
@@ -39,8 +27,7 @@ public final class ValidationServlet extends BaseServlet {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /**
-   * serial UID for Serializable interface : every concrete class must have its value corresponding to last
-   * modification date of the UML model
+   * serial UID for Serializable interface : 1
    */
   private static final long serialVersionUID = 1L;
 
@@ -139,8 +126,6 @@ public final class ValidationServlet extends BaseServlet {
       status = "ERROR";
     }
 
-    final HttpSession session = createSession(request);
-
     // note : this session is unuseful but it should be when user will have login / password.
 
     // Output parameters : 
@@ -221,6 +206,7 @@ public final class ValidationServlet extends BaseServlet {
    *
    * @return parameter map
    */
+  @SuppressWarnings({ "unchecked", "unchecked" })
   private Map<String, Object> getParameters(final HttpServletRequest request) {
     Map<String, Object> parameters = new Hashtable<String, Object>();
 
