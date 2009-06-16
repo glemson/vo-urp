@@ -211,10 +211,10 @@ java.lang.Throwable
     /**
      * Inits loggers and checks if Log4J is well configured
      *
-     * @throws IllegalStateException
+   * @throws IllegalStateException if the logger is not a Log4JLogger
      */
     private void init() {
-        this.log = getLog(LOGGER_MAIN);
+    this.log = this.getLog(LOGGER_MAIN);
 
         if (!(this.log instanceof org.apache.commons.logging.impl.Log4JLogger)) {
             throw new IllegalStateException(
@@ -226,17 +226,17 @@ java.lang.Throwable
             this.log.warn("LogUtil : logging enabled now.");
         }
 
-        this.logDev = getLog(LOGGER_DEV);
+    this.logDev = this.getLog(LOGGER_DEV);
     }
 
     /**
-     * Returns main logger
+   * Returns a logger for the given key
      *
      * @param key logger name in log4j.xml
      *
      * @return Log
      *
-     * @throws IllegalStateException
+   * @throws IllegalStateException if the LogFactory returns no logger for the given key
      */
     private Log getLog(final String key) {
         Log l = this.logs.get(key);
@@ -245,7 +245,7 @@ java.lang.Throwable
             l = LogFactory.getLog(key);
 
             if (l != null) {
-                addLog(key, l);
+        this.addLog(key, l);
             } else {
                 throw new IllegalStateException(
                         "LogUtil : Log4J is not initialized correctly : missing logger [" + key + "] (check log4j.xml) !");
@@ -272,7 +272,7 @@ java.lang.Throwable
      */
     private void setLevel(final org.apache.log4j.Level level) {
         for (final Log l : this.logs.values()) {
-            getLog4JLogger(l).setLevel(level);
+      this.getLog4JLogger(l).setLevel(level);
         }
     }
 
@@ -310,7 +310,7 @@ java.lang.Throwable
      * Changes Level for all Loggers to DEBUG Level
      */
     public void setDebug() {
-        setLevel(org.apache.log4j.Level.DEBUG);
+    this.setLevel(org.apache.log4j.Level.DEBUG);
         this.log.error("LogUtil : level changed to : DEBUG");
     }
 
@@ -318,7 +318,7 @@ java.lang.Throwable
      * Changes Level for all Loggers to WARNING Level
      */
     public void setWarn() {
-        setLevel(org.apache.log4j.Level.WARN);
+    this.setLevel(org.apache.log4j.Level.WARN);
         this.log.error("LogUtil : level changed to : WARN");
     }
 }

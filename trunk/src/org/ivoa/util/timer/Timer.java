@@ -1,20 +1,23 @@
 package org.ivoa.util.timer;
 
 /**
- * Simple Timer stats
+ * This class contains statistics for time metrics
  *
  * @author laurent bourges (voparis)
  */
 public final class Timer {
   //~ Members ----------------------------------------------------------------------------------------------------------
 
-  /** TODO : Field Description */
+  /** accumulator */
   private double acc = 0d;
-  /** TODO : Field Description */
+
+  /** value counter */
   private int n = 0;
-  /** TODO : Field Description */
+
+  /** minimum value */
   private double min = Double.MAX_VALUE;
-  /** TODO : Field Description */
+
+  /** maximum value */
   private double max = Double.MIN_VALUE;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
@@ -29,84 +32,86 @@ public final class Timer {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * TODO : Method Description
+   * Add a time value
    *
-   * @param time
+   * @param time value to add in statistics
    */
   public void add(final double time) {
     // linux bug :
     if (time >= 0) {
-      n++;
-      acc += time;
+      this.n++;
+      this.acc += time;
 
-      if (time < min) {
-        min = time;
+      if (time < this.min) {
+        this.min = time;
       }
 
-      if (time > max) {
-        max = time;
+      if (time > this.max) {
+        this.max = time;
       }
     }
   }
 
   /**
-   * TODO : Method Description
+   * Return the accumulator
    *
-   * @return value TODO : Value Description
+   * @return accumulator
    */
   public double getAcc() {
-    return acc;
+    return this.acc;
   }
 
   /**
-   * TODO : Method Description
+   * Return the mean
    *
-   * @return value TODO : Value Description
+   * @return mean
    */
   public double getMean() {
-    if (n == 0) {
+    if (this.n == 0) {
       return 0d;
     }
 
-    return acc / n;
+    return this.acc / this.n;
   }
 
   /**
-   * TODO : Method Description
+   * Return the maximum value
    *
-   * @return value TODO : Value Description
+   * @return maximum value
    */
   public double getMax() {
-    return max;
+    return this.max;
   }
 
   /**
-   * TODO : Method Description
+   * Return the minimum value
    *
-   * @return value TODO : Value Description
+   * @return minimum value
    */
   public double getMin() {
-    return min;
+    return this.min;
   }
 
   /**
-   * TODO : Method Description
+   * Return the value counter
    *
-   * @return value TODO : Value Description
+   * @return value counter
    */
   public int getN() {
-    return n;
+    return this.n;
   }
 
   /**
-   * TODO : Method Description
+   * Return a string representation
    *
-   * @return value TODO : Value Description
+   * @return string representation
    */
   @Override
   public String toString() {
-    return "Timer(ms) {n=" + n +
-           ((n > 0) ? (", min=" + min + ", max=" + max + ", acc=" + acc + ", avg=" + getMean()) : ", n/a") + "}";
+    return "Timer(ms) {n="
+        + this.n
+        + ((this.n > 0) ? (", min=" + this.min + ", max=" + this.max + ", acc=" + this.acc
+            + ", avg=" + this.getMean()) : ", n/a") + "}";
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

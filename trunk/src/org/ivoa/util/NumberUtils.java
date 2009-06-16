@@ -7,7 +7,7 @@ import java.util.Map;
 
 
 /**
- * Number to String methods
+ * Utility class to convert numbers to String
  *
  * @author laurent bourges (voparis)
  */
@@ -20,14 +20,23 @@ public final class NumberUtils {
   private static final int EXP_SIGN = EXPONENT.length();
   /** Format used when <code>isMoreDecimal</code> is set to <code>true</code> */
   public static final String MORE_PRECISION = "0.000000000000000" + EXPONENT;
-  /** Default strFormat to display numreical values */
+  /** Default strFormat to display numerical values */
   public static final String LESS_PRECISION = "0.000000" + EXPONENT;
+
+  /** Web format to display numerical values */
+  public static final String WEB_PRECISION = "0.000" + EXPONENT;
+
+  /** Short format to display numerical values */
+  public static final String LOW_PRECISION = "0.0" + EXPONENT;
+
   /** formatter cache */
   private static Map<String, DecimalFormat> cache = new HashMap<String, DecimalFormat>(4);
   /** field position */
   private static FieldPosition FAKE_POSITION = new FieldPosition(0);
 
   static {
+    cache.put(LOW_PRECISION, new DecimalFormat(LOW_PRECISION));
+    cache.put(WEB_PRECISION, new DecimalFormat(WEB_PRECISION));
     cache.put(LESS_PRECISION, new DecimalFormat(LESS_PRECISION));
     cache.put(MORE_PRECISION, new DecimalFormat(MORE_PRECISION));
   }
@@ -35,55 +44,50 @@ public final class NumberUtils {
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
 /**
-   * Creates a new NumberUtils object
+   * Forbidden constructor
    */
   private NumberUtils() {
-    // not used
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * TODO : Method Description
+   * Format an int to string
    *
-   * @param value
-   *
-   * @return value TODO : Value Description
+   * @param value int value
+   * @return string
    */
   public static String format(final int value) {
     return Integer.toString(value, 10);
   }
 
   /**
-   * TODO : Method Description
+   * Format an Integer to string
    *
-   * @param value
-   *
-   * @return value TODO : Value Description
+   * @param value Integer value
+   * @return string
    */
   public static String format(final Integer value) {
     return value.toString();
   }
 
   /**
-   * TODO : Method Description
+   * Return the precision pattern among MORE_PRECISION and LESS_PRECISION
    *
-   * @param isMoreDecimal
-   *
-   * @return value TODO : Value Description
+   * @param isMoreDecimal flag to indicate to return the MORE_PRECISION pattern
+   * @return precision pattern
    */
   public static String getPrecision(final boolean isMoreDecimal) {
     return (isMoreDecimal) ? MORE_PRECISION : LESS_PRECISION;
   }
 
   /**
-   * TODO : Method Description
+   * Return the existing formatter associated to that precision
    *
-   * @param precision
-   *
-   * @return value TODO : Value Description
-   *
-   * @throws IllegalStateException
+   * @param precision precision pattern
+   * @return decimal formatter
+   * @throws IllegalStateException if that precision is not supported
    */
   public static DecimalFormat getFormatter(final String precision) {
     final DecimalFormat df = cache.get(precision);
@@ -96,85 +100,81 @@ public final class NumberUtils {
   }
 
   /**
-   * TODO : Method Description
+   * Format the given value with the formatter associated to that precision
    *
-   * @param value
-   * @param precision
-   *
-   * @return value TODO : Value Description
+   * @param value value to format
+   * @param precision precision pattern
+   * @return string
    */
   public static String format(final double value, final String precision) {
     return strFormat(getFormatter(precision), value);
   }
 
   /**
-   * TODO : Method Description
+   * Format the given value with the formatter associated to that precision
    *
-   * @param value
-   * @param precision
-   * @param sb
-   *
-   * @return value TODO : Value Description
+   * @param value value to format
+   * @param precision precision pattern
+   * @param sb the buffer to use
+   * @return string
    */
   public static String format(final double value, final String precision, final StringBuffer sb) {
     return strFormat(getFormatter(precision), value, sb);
   }
 
   /**
-   * TODO : Method Description
+   * Format the given value with the formatter associated to that precision
    *
-   * @param value
-   * @param precision
-   *
-   * @return value TODO : Value Description
+   * @param value value to format
+   * @param precision precision pattern
+   * @return string
    */
   public static String format(final Number value, final String precision) {
     return strFormat(getFormatter(precision), value);
   }
 
   /**
-   * TODO : Method Description
+   * Format the given value with the formatter associated to that precision
    *
-   * @param value
-   * @param precision
-   * @param sb
-   *
-   * @return value TODO : Value Description
+   * @param value value to format
+   * @param precision precision pattern
+   * @param sb the buffer to use
+   * @return string
    */
   public static String format(final Number value, final String precision, final StringBuffer sb) {
     return strFormat(getFormatter(precision), value, sb);
   }
 
   /**
-   * Returns a formatted string for numeric object  Useful only for ASCII export
+   * Returns a formatted string for numeric object : replace E0? by E+0? Useful only for ASCII
+   * export
    *
    * @param df formatter
    * @param value the data to strFormat
-   * @param sb where the text is to be appended
-   *
+   * @param sb the buffer to use
    * @return A formatted string
    */
   public static final String formatFixed(final DecimalFormat df, final Double value, final StringBuffer sb) {
     format(df, value, sb);
-
+    final int len = sb.length();
+    if (len > 0) {
     // exponent part : E-00 or E00
-    // hack to handle E+00 instead of E00 :
-    final int pos = sb.length() - EXP_SIGN;
+      // hack to have E+00 instead of E00 :
+      final int pos = len - EXP_SIGN;
 
     if (sb.charAt(pos) == 'E') {
       sb.insert(pos + 1, '+');
     }
-
+    }
     return StringUtils.extract(sb);
   }
 
   /**
-   * Returns the strFormat used to display numericl value in cell  Use this method only if no StringBuffer
-   * already available !
+   * Returns the strFormat used to display numeric value in cell Use this method only if no
+   * StringBuffer already available !
    *
    * @param df formatter
    * @param value the value to strFormat
-   *
    * @return The string representation of this value
    */
   public static String strFormat(final DecimalFormat df, final double value) {
@@ -187,9 +187,7 @@ public final class NumberUtils {
    * @param df formatter
    * @param value The double to strFormat
    * @param sb where the text is to be appended
-   *
    * @return The formatted number string
-   *
    * @see java.text.FieldPosition
    */
   public static String strFormat(final DecimalFormat df, final double value, final StringBuffer sb) {
@@ -204,9 +202,7 @@ public final class NumberUtils {
    * @param df formatter
    * @param value The double to strFormat
    * @param sb where the text is to be appended
-   *
    * @return The formatted number string
-   *
    * @see java.text.FieldPosition
    */
   public static StringBuffer format(final DecimalFormat df, final double value, final StringBuffer sb) {
@@ -214,11 +210,11 @@ public final class NumberUtils {
   }
 
   /**
-   * Returns the strFormat used to display numericl value in cell  Use this method only if no StringBuffer
-   * already available !
+   * Returns the strFormat used to display numeric value in cell Use this method only if no
+   * StringBuffer already available !
    *
    * @param df formatter
-   * @param value the value to strFormat
+   * @param value the Number to format
    *
    * @return The string representation of this value
    */
@@ -230,11 +226,9 @@ public final class NumberUtils {
    * Formats a double to produce a string.
    *
    * @param df formatter
-   * @param value The double to strFormat
+   * @param value The Number to format
    * @param sb where the text is to be appended
-   *
    * @return The formatted number string
-   *
    * @see java.text.FieldPosition
    */
   public static String strFormat(final DecimalFormat df, final Number value, final StringBuffer sb) {
@@ -244,15 +238,12 @@ public final class NumberUtils {
   }
 
   /**
-   * Formats a double to produce a string.
+   * Formats a Number to produce a string.
    *
    * @param df formatter
-   * @param value The double to strFormat
-   * @param sb where the text is to be appended
-   *
+   * @param value The number to format
+   * @param sb where the text will be appended to
    * @return The formatted number string
-   *
-   * @see java.text.FieldPosition
    */
   public static StringBuffer format(final DecimalFormat df, final Number value, final StringBuffer sb) {
     return df.format(value, sb, FAKE_POSITION);

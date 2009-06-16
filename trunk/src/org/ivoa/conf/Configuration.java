@@ -1,20 +1,25 @@
 package org.ivoa.conf;
 
 import org.ivoa.util.CollectionUtils;
+import org.ivoa.util.ReflectionUtils;
 
 
 /**
- * Global Configuration for the application
+ * This class acts as a singleton to store the global Configuration for the application :
+ * <ul>
+ * <li>Values are loaded from the file global.properties located in the class path (first occurrence
+ * in the class path is loaded).</li>
+ * <li>OS Type is available : {@link OSEnum}</li>
+ * </ul>
  *
  * @author laurent bourges (voparis)
  */
-public final class Configuration extends PropertyHolder {
+public class Configuration extends PropertyHolder implements Configurable {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** serial UID for Serializable interface */
   private static final long serialVersionUID = 1L;
-  /** file name for property file */
-  public static final String PROPS = "runtime.properties";
+
   /** singleton instance */
   private static volatile Configuration instance = null;
 
@@ -45,9 +50,9 @@ public final class Configuration extends PropertyHolder {
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
 /**
-   * Constructor (private) : checks OS
+   * public Constructor used for Introspection. Checks the OS
    */
-  private Configuration() {
+  public Configuration() {
     super();
     this.os = checkOsName();
   }
@@ -63,9 +68,12 @@ public final class Configuration extends PropertyHolder {
    */
   public static final Configuration getInstance() {
     if (instance == null) {
-      final Configuration c = new Configuration();
+      final Class<? extends Configuration> confClass = ReflectionUtils.findClass(
+          CONFIGURATION_CLASS, Configuration.class);
 
-      if (c.init(PROPS)) {
+      final Configuration c = ReflectionUtils.newInstance(confClass);
+
+      if (c.init(CONFIGURATION_FILE)) {
         instance = c;
       } else {
         throw new IllegalStateException("Unable to create Configuration !");
@@ -99,7 +107,7 @@ public final class Configuration extends PropertyHolder {
   /**
    * Dumps System.properties in logs (info) ...
    */
-  private void dumpSystemProps() {
+  private final void dumpSystemProps() {
     if (log.isInfoEnabled()) {
       log.info("System.properties : " + CollectionUtils.toString(System.getProperties()));
     }
@@ -110,7 +118,7 @@ public final class Configuration extends PropertyHolder {
    *
    * @return OSEnum value
    */
-  private static OSEnum checkOsName() {
+  private final static OSEnum checkOsName() {
     final String os = System.getProperty("os.name").toLowerCase();
 
     if (log.isInfoEnabled()) {
@@ -135,7 +143,7 @@ public final class Configuration extends PropertyHolder {
    *
    * @return OSEnum value
    */
-  public OSEnum getOs() {
+  public final OSEnum getOs() {
     return this.os;
   }
 
@@ -144,7 +152,7 @@ public final class Configuration extends PropertyHolder {
    *
    * @return true if mac os x
    */
-  public boolean isMacOsX() {
+  public final boolean isMacOsX() {
     return this.os == OSEnum.OS_MAC_OS_X;
   }
 
@@ -153,7 +161,7 @@ public final class Configuration extends PropertyHolder {
    *
    * @return true if linux os
    */
-  public boolean isLinux() {
+  public final boolean isLinux() {
     return this.os == OSEnum.OS_LINUX;
   }
 
@@ -162,7 +170,7 @@ public final class Configuration extends PropertyHolder {
    *
    * @return true if MS Windows os
    */
-  public boolean isMSWindows() {
+  public final boolean isMSWindows() {
     return this.os == OSEnum.OS_MSWINDOWS;
   }
 
@@ -171,7 +179,7 @@ public final class Configuration extends PropertyHolder {
    *
    * @return true if mac os x
    */
-  public boolean isOther() {
+  public final boolean isOther() {
     return this.os == OSEnum.OS_OTHER;
   }
 
@@ -180,8 +188,8 @@ public final class Configuration extends PropertyHolder {
    *
    * @return test mode
    */
-  public boolean isTest() {
-    return getBoolean(MODE_TEST);
+  public final boolean isTest() {
+    return this.getBoolean(MODE_TEST);
   }
 
   /**
@@ -189,8 +197,8 @@ public final class Configuration extends PropertyHolder {
    *
    * @return title + ' - ' + version
    */
-  public String getTitle() {
-    return getProperty(Configuration.APP_TITLE) + " - " + getProperty(Configuration.APP_VERSION);
+  public final String getTitle() {
+    return this.getProperty(Configuration.APP_TITLE) + " - " + this.getProperty(Configuration.APP_VERSION);
   }
 
   /**
@@ -198,8 +206,8 @@ public final class Configuration extends PropertyHolder {
    *
    * @return service IVO Id + "#"
    */
-  public String getIVOIdPrefix() {
-    return ivoIdPrefix;
+  public final String getIVOIdPrefix() {
+    return this.ivoIdPrefix;
   }
 
   /**
@@ -207,8 +215,8 @@ public final class Configuration extends PropertyHolder {
    *
    * @return service IVO Id + "#"
    */
-  protected String getIvoIdPrefix() {
-    return ivoIdPrefix;
+  protected final String getIvoIdPrefix() {
+    return this.ivoIdPrefix;
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

@@ -52,7 +52,7 @@ public final class MetaModelFactory extends LogSupport {
   public static final String BASE_PACKAGE;
 
   static {
-    String bp = RuntimeConfiguration.getInstance().getBasePackage();
+    String bp = RuntimeConfiguration.get().getBasePackage();
 
     BASE_PACKAGE = (bp.endsWith(".") ? bp : (bp + "."));
   }
@@ -60,14 +60,14 @@ public final class MetaModelFactory extends LogSupport {
   /** Identity Type */
   public static final String IDENTITY_TYPE = "Identity";
   /** model path */
-  public static final String JAXB_PACKAGE = RuntimeConfiguration.getInstance().getJAXBPackage();
+  public static final String JAXB_PACKAGE = RuntimeConfiguration.get().getJAXBPackage();
   /** model file to load */
-  public static final String MODEL_FILE = RuntimeConfiguration.getInstance().getIntermediateModelFile();
+  public static final String MODEL_FILE = RuntimeConfiguration.get().getIntermediateModelFile();
   /**
-   * JPA persistence unit to load  TODO Should this be a staic variable? At some point we may want to manage
+   * JPA persistence unit to load ! TODO Should this be a static variable? At some point we may want to manage
    * multiple data models in one application.
    */
-  public static final String JPA_PU = RuntimeConfiguration.getInstance().getJPAPU();
+  public static final String JPA_PU = RuntimeConfiguration.get().getJPAPU();
 
   //~ Members ----------------------------------------------------------------------------------------------------------
 

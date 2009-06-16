@@ -23,7 +23,7 @@ public class MarshallObjectPreProcessor implements Visitor {
    * @param object 
    */
   public void postProcess(final MetadataObject object) {
-    // TODO Auto-generated method stub
+    /* no-op */
   }
 
   /**

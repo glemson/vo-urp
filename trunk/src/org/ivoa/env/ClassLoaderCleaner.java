@@ -26,10 +26,10 @@ public final class ClassLoaderCleaner {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * TODO : Method Description
+   * clean up resource located in the classLoader like factories, singletons ...
    */
   public static void clean() {
-    final Log log = LogUtil.getLogger();
+    final Log log = LogUtil.getLoggerDev();
 
     if (log.isWarnEnabled()) {
         log.warn("ClassLoaderCleaner.clean : enter");

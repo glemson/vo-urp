@@ -13,7 +13,7 @@ public interface ApplicationMain {
   /**
    * TODO : Method Description
    *
-   * @param args
+   * @param args command line arguments
    */
   public void run(final String[] args);
 }
