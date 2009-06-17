@@ -129,7 +129,7 @@ public final class FileUtils extends LogSupport {
   public static File getDirectory(final String path) {
     final File dir = getExistingFile(path);
 
-    if ((dir != null) && dir.isDirectory()) {
+    if (dir != null && dir.isDirectory()) {
       return dir;
     }
 
@@ -145,7 +145,7 @@ public final class FileUtils extends LogSupport {
   public static File getFile(final String path) {
     final File file = getExistingFile(path);
 
-    if ((file != null) && file.isFile()) {
+    if (file != null && file.isFile()) {
       return file;
     }
 
