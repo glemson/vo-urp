@@ -57,7 +57,7 @@ public class JSONTokener {
 /**
      * Construct a JSONTokener from a string.
      *
-     * @param reader     A reader.
+     * @param pReader A reader.
      */
   public JSONTokener(final Reader pReader) {
     this.reader = pReader.markSupported() ? pReader : new BufferedReader(pReader);

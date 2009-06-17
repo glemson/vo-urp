@@ -233,7 +233,7 @@ public class JSONObject {
     /**
      * Construct a JSONObject from a Map.
      *
-     * @param map A map object that can be used to initialize the contents of
+     * @param pMap A map object that can be used to initialize the contents of
      *  the JSONObject.
      */
     public JSONObject(Map pMap) {
@@ -246,7 +246,7 @@ public class JSONObject {
      *
      * Note: Use this constructor when the map contains <key,bean>.
      *
-     * @param map - A map with Key-Bean data.
+     * @param pMap - A map with Key-Bean data.
      * @param includeSuperClass - Tell whether to include the super class properties.
      */
     public JSONObject(Map pMap, boolean includeSuperClass) {
