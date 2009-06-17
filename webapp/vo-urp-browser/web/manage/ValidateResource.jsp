@@ -1,16 +1,16 @@
 <%@page contentType="text/html" session="false" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
-
 <%@page import="org.ivoa.web.servlet.ValidationServlet"%>
 <%@page import="org.ivoa.web.servlet.secure.ManagerServlet"%>
 <%@page import="org.ivoa.conf.RuntimeConfiguration"%>
+
 <jsp:include page="../header.jsp" flush="false" />
 
 <c:set var="error" value="${requestScope.errorMessage}" ></c:set>
 <c:set var="result" value="${requestScope.validation}" ></c:set>
 
 <p>
-  This page checks that an uploaded document is valid against the <%=RuntimeConfiguration.getInstance().getProjectName()%> XML Schema under<br/>
+  This page checks that an uploaded document is valid against the <%=RuntimeConfiguration.get().getProjectName()%> XML Schema under<br/>
   <a href="<%= org.ivoa.dm.DataModelManager.SCHEMA_URL %>" target="_blank"><%=org.ivoa.dm.DataModelManager.SCHEMA_URL%></a>.
 </p>
 

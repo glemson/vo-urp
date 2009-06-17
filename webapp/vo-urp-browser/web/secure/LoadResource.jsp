@@ -3,7 +3,7 @@
 
 <%@page import="org.ivoa.web.servlet.ValidationServlet"%>
 <%@page import="org.ivoa.web.servlet.secure.ManagerServlet"%>
-<%@page import="org.ivoa.conf.RuntimeConfiguration"%>
+
 <jsp:include page="../header.jsp" flush="false" />
 
 <c:set var="error" value="${requestScope.error}" ></c:set>
