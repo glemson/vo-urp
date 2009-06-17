@@ -19,7 +19,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.ivoa.conf.Configuration;
 import org.ivoa.dm.ObjectClassType;
-import org.ivoa.dm.model.visitor.Visitor;
 import org.ivoa.metamodel.Collection;
 
 

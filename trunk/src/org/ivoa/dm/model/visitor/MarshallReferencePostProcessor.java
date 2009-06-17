@@ -4,9 +4,10 @@
  * Author lemson
  * Created on Oct 6, 2008
  */
-package org.ivoa.dm.model;
+package org.ivoa.dm.model.visitor;
 
-import org.ivoa.dm.model.visitor.Visitor;
+import org.ivoa.dm.model.MetadataObject;
+import org.ivoa.dm.model.Visitor;
 
 
 /**
@@ -14,7 +15,7 @@ import org.ivoa.dm.model.visitor.Visitor;
  *
  * @author laurent bourges (voparis) / Gerard Lemson (mpe)
   */
-public class MarshallReferencePreProcessor implements Visitor {
+public class MarshallReferencePostProcessor extends Visitor {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
@@ -32,7 +33,7 @@ public class MarshallReferencePreProcessor implements Visitor {
    * @param object
    */
   public void preProcess(final MetadataObject object) {
-    object.prepareReferencesForMarshalling();
+    resetReferencesAfterMarshalling(object);
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
