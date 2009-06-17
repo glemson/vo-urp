@@ -12,11 +12,11 @@ import javax.xml.bind.Unmarshaller;
 
 import org.ivoa.bean.LogSupport;
 import org.ivoa.conf.RuntimeConfiguration;
-import org.ivoa.dm.model.MarshallObjectPreProcessor;
-import org.ivoa.dm.model.MarshallReferencePostProcessor;
-import org.ivoa.dm.model.MarshallReferencePreProcessor;
 import org.ivoa.dm.model.MetadataElement;
 import org.ivoa.dm.model.MetadataObject;
+import org.ivoa.dm.model.visitor.MarshallObjectPreProcessor;
+import org.ivoa.dm.model.visitor.MarshallReferencePostProcessor;
+import org.ivoa.dm.model.visitor.MarshallReferencePreProcessor;
 import org.ivoa.jaxb.CustomUnmarshallListener;
 import org.ivoa.jaxb.JAXBFactory;
 import org.ivoa.jaxb.XmlBindException;

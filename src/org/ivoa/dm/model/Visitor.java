@@ -4,9 +4,8 @@
  * Author Gerard Lemson
  * Created on 29 Jun 2008
  */
-package org.ivoa.dm.model.visitor;
+package org.ivoa.dm.model;
 
-import org.ivoa.dm.model.MetadataObject;
 
 
 /**
@@ -25,19 +24,44 @@ import org.ivoa.dm.model.MetadataObject;
  * @author Gerard Lemson
  * @since 29 Jun 200829 Jun 2008
  */
-public interface Visitor {
+public abstract class Visitor {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
    * Process the specified object before its collections are being processed.</br>
    * @param object
    */
-  public void preProcess(final MetadataObject object);
+  public abstract void preProcess(final MetadataObject object);
 
   /**
    * Process the specified object after its collections have been processed.</br>
    * @param object
    */
-  public void postProcess(final MetadataObject object);
+  public abstract void postProcess(final MetadataObject object);
+
+
+  // ~ utility methods for accessing protected methods of MetadataObject
+
+  protected void setIvoID(MetadataObject object, String ivoId)
+  {
+	    object.getIdentity().setIvoId(ivoId);
+  }
+  protected void setXmlId(MetadataObject object, String xmlId)
+  {
+	    object.getIdentity().setIvoId(xmlId);
+  }
+  protected void resetReferencesAfterMarshalling(MetadataObject object)
+  {
+	  object.resetReferencesAfterMarshalling();
+  }
+  protected void prepareReferencesForMarshalling(MetadataObject object)
+  {
+	  object.prepareReferencesForMarshalling();
+  }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
+
+
+
+
+
