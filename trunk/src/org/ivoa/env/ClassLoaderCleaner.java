@@ -29,10 +29,10 @@ public final class ClassLoaderCleaner {
    * clean up resource located in the classLoader like factories, singletons ...
    */
   public static void clean() {
-    final Log log = LogUtil.getLoggerDev();
+    final Log logD = LogUtil.getLoggerDev();
 
-    if (log.isWarnEnabled()) {
-        log.warn("ClassLoaderCleaner.clean : enter");
+    if (logD.isInfoEnabled()) {
+      logD.info("ClassLoaderCleaner.clean : enter");
     }
 
     // hard coded Factory calls to onExit() :
@@ -42,8 +42,8 @@ public final class ClassLoaderCleaner {
     JAXBFactory.onExit();
     JPAFactory.onExit();
 
-    if (log.isWarnEnabled()) {
-        log.warn("ClassLoaderCleaner.clean : exit");
+    if (logD.isInfoEnabled()) {
+      logD.info("ClassLoaderCleaner.clean : exit");
     }
 
     LogUtil.onExit();

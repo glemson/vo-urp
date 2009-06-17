@@ -20,7 +20,7 @@ public final class JavaUtils {
    * @return true if value is empty (null or no chars)
    */
   public static boolean isEmpty(final String value) {
-    return (value == null) || (value.length() == 0);
+    return value == null || value.length() == 0;
   }
 
   /**
@@ -30,7 +30,7 @@ public final class JavaUtils {
    * @return true if value is empty (null or no chars after trim)
    */
   public static boolean isTrimmedEmpty(final String value) {
-    return (value == null) || (value.trim().length() == 0);
+    return value == null || value.trim().length() == 0;
   }
   
   /**
@@ -59,7 +59,7 @@ public final class JavaUtils {
    * @param map map to test
    * @return true if the map is null or empty
    */
-  public final static boolean isEmpty(final Map<Object, Object> map) {
+  public final static boolean isEmpty(final Map<?, ?> map) {
     return map == null || map.isEmpty();
   }
 

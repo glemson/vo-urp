@@ -9,8 +9,6 @@ import org.apache.commons.logging.LogFactory;
 /**
  * Commons-logging & Log4J Utility class :
  *
- * TODO : use log4j-contrib to use the LoggerRepositorySelector in order to manage properly the classLoader
- *
  * @author laurent bourges (voparis)
  */
 public final class LogUtil {
@@ -74,8 +72,8 @@ public final class LogUtil {
             }
             instance = l;
 
-            if (instance.log.isWarnEnabled()) {
-                instance.log.warn("LogUtil.getInstance : new singleton : " + instance);
+      if (instance.logDev.isInfoEnabled()) {
+        instance.logDev.info("LogUtil.getInstance : new singleton : " + instance);
             }
         }
 
@@ -116,9 +114,8 @@ public final class LogUtil {
     public static final void onExit() {
         isShutdown = true;
         if (instance != null) {
-
-            if (instance.log.isWarnEnabled()) {
-                instance.log.warn("LogUtil.getInstance : free singleton : " + instance);
+      if (instance.logDev.isInfoEnabled()) {
+        instance.logDev.info("LogUtil.getInstance : free singleton : " + instance);
             }
 
             // force GC :
@@ -310,16 +307,19 @@ java.lang.Throwable
      * Changes Level for all Loggers to DEBUG Level
      */
     public void setDebug() {
-    this.setLevel(org.apache.log4j.Level.DEBUG);
-        this.log.error("LogUtil : level changed to : DEBUG");
+    setLevel(org.apache.log4j.Level.DEBUG);
+    if (log.isWarnEnabled()) {
+      log.warn("LogUtil : level changed to : DEBUG");
     }
+  }
 
     /**
      * Changes Level for all Loggers to WARNING Level
      */
     public void setWarn() {
-    this.setLevel(org.apache.log4j.Level.WARN);
-        this.log.error("LogUtil : level changed to : WARN");
+    setLevel(org.apache.log4j.Level.WARN);
+    if (log.isWarnEnabled()) {
+      log.warn("LogUtil : level changed to : WARN");
     }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
