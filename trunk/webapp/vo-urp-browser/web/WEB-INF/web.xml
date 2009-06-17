@@ -1,25 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
   
   <!-- ========================================================== -->
   <!-- General -->
   <!-- ========================================================== -->
   
     <description>Simple Web Browser for VO-URP database</description>
-    <display-name>VO-URP/Browser</display-name>
+    <display-name>VO-URP Browser</display-name>
+
 
   <!-- ========================================================== -->
   <!-- Context Parameters -->
   <!-- ========================================================== -->
 
+    <!-- Log4J settings -->
     <context-param>
         <!--
-            preferred repository selector. "preferred" because
+            Preferred repository selector : "preferred" because
             if one is already installed, this choice is ignored.
         -->
         <param-name>log4j-selector</param-name>
         <param-value>org.apache.log4j.selector.ContextClassLoaderSelector</param-value>
     </context-param>
+
     <context-param>
         <!--
             relative path to config file within current webapp
@@ -27,22 +32,7 @@
         <param-name>log4j-config</param-name>
         <param-value>WEB-INF/classes/log4j.xml</param-value>
     </context-param>
-    <context-param>
-        <!--
-        config file re-reading specified in milliseconds...
-          Note that if the webapp is served directly from a
-          .war file and the log4j-log-home path is set to within the
-          webapp (default), configureAndWatch() cannot be used because
-          it requires a system file path. In that case, this
-          param will be ignored.  Set to 0 or don't specify this
-          param to do a normal configure().  Additionally, the watchdogs
-          in Log4j-1.2.x have no lifecycle, meaning that they can't be
-          shut down, even by a call to LogManager.shutdown().  For this
-          reason, it is recommended that this param not be used or set to 0.
-         -->
-        <param-name>log4j-cron</param-name>
-        <param-value>0</param-value>
-    </context-param>
+
 
   <!-- ========================================================== -->
   <!-- Listeners -->
@@ -60,6 +50,7 @@
         <description>RequestListener for managing EntityManager with request scope</description>
         <listener-class>org.ivoa.web.servlet.JPARequestListener</listener-class>
     </listener>
+
 
   <!-- ========================================================== -->
   <!-- Servlets -->
@@ -100,8 +91,10 @@
         <servlet-name>TAPServlet</servlet-name>
         <servlet-class>org.ivoa.web.servlet.TAPServlet</servlet-class>
     </servlet>
-  
-  
+
+
+    <!-- servlet mappings -->
+
     <servlet-mapping>
         <servlet-name>Log4JServlet</servlet-name>
         <url-pattern>/Log4j.do</url-pattern>
@@ -127,7 +120,6 @@
         <url-pattern>/secure/Manager.do</url-pattern>
     </servlet-mapping>
 
-  
     <servlet-mapping>
         <servlet-name>QueryServlet</servlet-name>
         <url-pattern>/Query.do</url-pattern>
@@ -148,8 +140,13 @@
         <url-pattern>/Tap.do/*</url-pattern>
     </servlet-mapping>
 
+
+  <!-- ========================================================== -->
+  <!-- Session -->
+  <!-- ========================================================== -->
+
     <session-config>
-        <session-timeout>10</session-timeout>
+        <session-timeout>30</session-timeout>
     </session-config>
   
     <welcome-file-list>
@@ -157,28 +154,65 @@
     </welcome-file-list>
 
 
-<!-- security area -->
+  <!-- ========================================================== -->
+  <!-- Security -->
+  <!-- ========================================================== -->
+
+    <!-- Define referenced roles -->
+    <security-role>
+        <role-name>@project.name@-member</role-name>
+    </security-role>
+
+
+    <!-- Define a constraint to restrict access to /secure/* -->
     <security-constraint>
+
+        <display-name>Security constraint for the /secure folder</display-name>
+
         <web-resource-collection>
-            <web-resource-name>AdminPages</web-resource-name>
-            <description> accessible by authorised users </description>
+            <web-resource-name>Protected Area = Administration Web Interface</web-resource-name>
+            <description>Accessible by authorised users</description>
             <url-pattern>/secure/*</url-pattern>
-            <http-method>GET</http-method>
         </web-resource-collection>
+
         <auth-constraint>
+        <!-- Only administrator can access this area -->
             <description>These are the roles who have access</description>
             <role-name>@project.name@-member</role-name>
         </auth-constraint>
+
     </security-constraint>
+
+
+  <!-- ========================================================== -->
+  <!-- FORM based authentication -->
+  <!-- ========================================================== -->
 
     <login-config>
         <auth-method>FORM</auth-method>
+
         <form-login-config>
             <form-login-page>/login.jsp</form-login-page>
             <form-error-page>/fail_login.jsp</form-error-page>
         </form-login-config>
+
     </login-config>
 
+
+  <!-- ========================================================== -->
+  <!-- Custom error pages -->
+  <!-- ========================================================== -->
+
+<!--
+  <error-page>
+    <error-code>500</error-code>
+    <location>/errors/error.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/errors/error.jsp</location>
+  </error-page>
+-->
 
 
 </web-app>

@@ -4,14 +4,12 @@
 <!-- Uncomment this to disable session persistence across Tomcat restarts -->
 <Manager pathname="" />
 
-<!--
-<Realm className="org.apache.catalina.realm.JDBCRealm" debug="99"
-      driverName="org.postgresql.Driver"
-      connectionURL="jdbc:postgresql://localhost/pdrdb"
-      connectionName="pdrdb_super"
-      connectionPassword="super"
-      userTable="web_users" userNameCol="user_name" userCredCol="user_pass"
-      userRoleTable="web_user_roles" roleNameCol="role_name" />
--->
+<Realm className="org.apache.catalina.realm.JDBCRealm" debug="0"
+      driverName="@eclipselink.jdbc.driver@"
+      connectionURL="@eclipselink.jdbc.url@"
+      connectionName="@eclipselink.jdbc.user@"
+      connectionPassword="@eclipselink.jdbc.password@"
+      userTable="users" userNameCol="username" userCredCol="password"
+      userRoleTable="user_roles" roleNameCol="rolename" />
 
 </Context>
