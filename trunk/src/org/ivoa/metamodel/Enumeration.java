@@ -127,7 +127,7 @@ public class Enumeration
         /**
          * Sets the value of the value property.
          * 
-         * @param value
+         * @param pValue
          *     allowed object is
          *     {@link String }
          *     
@@ -151,7 +151,7 @@ public class Enumeration
         /**
          * Sets the value of the description property.
          * 
-         * @param value
+         * @param pValue
          *     allowed object is
          *     {@link String }
          *     
