@@ -412,7 +412,7 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
     
     <xsl:if test="$hasExtends = 0 or ($kind='Object' and reference)">
       import <xsl:value-of select="$model_package"/>.Metadata<xsl:value-of select="$kind"/>;
-      <xsl:if test="$isRootEntity = 1">
+      <xsl:if test="entity  = 'true'">
       import <xsl:value-of select="$model_package"/>.MetadataRootEntityObject;
       </xsl:if>
     </xsl:if>
