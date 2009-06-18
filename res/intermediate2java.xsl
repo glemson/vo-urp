@@ -775,6 +775,13 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
         }
 
         /**
+         * Returns string representation
+         * @return string representation
+         */
+        public final String toString() {
+            return this.value;
+        }
+        /**
          * Returns <xsl:value-of select="name"/> Enumeration Literal corresponding to the given string representation
          *
          * @param v string representation
