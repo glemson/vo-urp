@@ -6,7 +6,7 @@ package org.ivoa.http;
 public class CommunicationException extends StatusException {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /** ADOC_COMME */
+  /** serial UID for Serializable interface */
   private static final long serialVersionUID = 1L;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
