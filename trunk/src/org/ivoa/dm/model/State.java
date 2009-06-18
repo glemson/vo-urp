@@ -18,71 +18,69 @@ package org.ivoa.dm.model;
  *
  * @since 7 Oct 20087 Oct 2008
  */
-public class State {
-  //~ Constants --------------------------------------------------------------------------------------------------------
+public final class State {
+    //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**
-   * TODO : Field Description
-   */
-  public static final int TO_BE_MARSHALLED = 32;
+    /**
+     * marshall flag value to indicate that the parent metadata object must be marshalled
+     */
+    public static final int TO_BE_MARSHALLED = 32;
 
-  //~ Members ----------------------------------------------------------------------------------------------------------
+    //~ Members ----------------------------------------------------------------------------------------------------------
+    /**
+     * status value (binary flags)
+     */
+    private int status = 0;
 
-  /**
-   * TODO : Field Description
-   */
-  private int status = 0;
-
-  //~ Methods ----------------------------------------------------------------------------------------------------------
-
-  /**
-   * TODO : Method Description
-   */
-  public void setToBeMarshalled() {
-    status = status | TO_BE_MARSHALLED;
-  }
-
-  /**
-   * TODO : Method Description
-   */
-  public void unsetToBeMarshalled() {
-    if (this.isToBeMarshalled()) {
-      status = status - TO_BE_MARSHALLED;
-    }
-  }
-
-  /**
-   * TODO : Method Description
-   *
-   * @return value TODO : Value Description
-   */
-  public boolean isToBeMarshalled() {
-    return (status & TO_BE_MARSHALLED) == TO_BE_MARSHALLED;
-  }
-
-  /**
-   * TODO : Method Description
-   *
-   * @param args 
-   */
-  public static void main(final String[] args) {
-    State s = new State();
-
-    s.setToBeMarshalled();
-
-    if (s.isToBeMarshalled()) {
-      System.out.println("CORRECT");
-    } else {
-      System.out.println("NOT CORRECT");
+    //~ Methods ----------------------------------------------------------------------------------------------------------
+    /**
+     * Set the marshall flag
+     */
+    public void setToBeMarshalled() {
+        this.status |= TO_BE_MARSHALLED;
     }
 
-    s.unsetToBeMarshalled();
-
-    if (s.isToBeMarshalled()) {
-      System.out.println("NOT CORRECT");
-    } else {
-      System.out.println("CORRECT");
+    /**
+     * UnSet the marshall flag
+     */
+    public void unsetToBeMarshalled() {
+        if (isToBeMarshalled()) {
+            this.status -= TO_BE_MARSHALLED;
+        }
     }
-  }
+
+    /**
+     * Return the marshall flag
+     *
+     * @return true if the marshall flag is set
+     */
+    public boolean isToBeMarshalled() {
+        return (this.status & TO_BE_MARSHALLED) == TO_BE_MARSHALLED;
+    }
+
+    /**
+     * Test method
+     *
+     * @param args arguments (unused)
+     */
+    public static void main(final String[] args) {
+        State s = new State();
+
+        s.setToBeMarshalled();
+
+        if (s.isToBeMarshalled()) {
+            System.out.println("CORRECT");
+        } else {
+            System.out.println("NOT CORRECT");
+        }
+
+        s.unsetToBeMarshalled();
+
+        if (s.isToBeMarshalled()) {
+            System.out.println("NOT CORRECT");
+        } else {
+            System.out.println("CORRECT");
+        }
+    }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

@@ -156,19 +156,6 @@ public final class MetaModelFactory extends LogSupport {
     }
 
     if (instance != null) {
-/*
-      instance.model = null;
-
-      instance.getPrimitiveTypes().clear();
-      instance.getDataTypes().clear();
-      instance.getEnumerations().clear();
-      instance.getObjectTypes().clear();
-      instance.getClassTypes().clear();
-      instance.getObjectClassTypes().clear();
-
-      instance.getClasses().clear();
-      instance.getTap().clear();
-*/
       // clean up :
       instance = null;
     }

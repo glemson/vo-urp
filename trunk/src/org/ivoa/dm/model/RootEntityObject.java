@@ -12,17 +12,14 @@ import javax.persistence.Column;
  * @author laurent bourges / gerard lemson
  */
 public abstract class RootEntityObject extends MetadataObject {
-  // ~ Constants
-  // --------------------------------------------------------------------------------------------------------
+    //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**
-   * serial UID for Serializable interface : every concrete class must have its value corresponding
-   * to last modification date of the UML model
-   */
-  private static final long serialVersionUID = 1L;
+    /**
+     * serial UID for Serializable interface
+     */
+    private static final long serialVersionUID = 1L;
 
-  // ~ Members
-  // ----------------------------------------------------------------------------------------------------------
+    //~ Members ----------------------------------------------------------------------------------------------------------
 
   /**
    * Username of owner of this root entity class.<br/>
@@ -34,9 +31,6 @@ public abstract class RootEntityObject extends MetadataObject {
   /**
    * Username of owner of this root entity class.<br/>
    */
-  /**
-     * 
-     */
   @Basic(optional = true)
   @Column(name = "updateUser", nullable = true)
   private String updateUser;
@@ -55,8 +49,7 @@ public abstract class RootEntityObject extends MetadataObject {
   @Column(name = "updateTimestamp", nullable = true)
   private Timestamp updateTimestamp;
 
-  // ~ Constructors
-  // -----------------------------------------------------------------------------------------------------
+    //~ Constructors -----------------------------------------------------------------------------------------------------
 
   /**
    * Public constructor
@@ -65,8 +58,7 @@ public abstract class RootEntityObject extends MetadataObject {
     super();
   }
 
-  // ~ Methods
-  // ----------------------------------------------------------------------------------------------------------
+    //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
    * @return owner
@@ -97,20 +89,6 @@ public abstract class RootEntityObject extends MetadataObject {
   }
 
   /**
-   * TODO : Method Description
-   * 
-   * @param sb
-   * @param isDeep
-   * @param ids
-   * @return value TODO : Value Description
-   */
-  @Override
-  protected StringBuilder deepToString(final StringBuilder sb, final boolean isDeep,
-      final Map<MetadataElement, Object> ids) {
-    return null;
-  }
-
-  /**
    * @return createTimestamp
    */
   public Timestamp getCreateTimestamp() {
@@ -137,6 +115,24 @@ public abstract class RootEntityObject extends MetadataObject {
   public void setUpdateTimestamp(final Timestamp pUpdateTimestamp) {
     this.updateTimestamp = pUpdateTimestamp;
   }
+
+  /**
+   * Puts the string representation in the given string buffer : &lt;br&gt; "Type =[class name @ hashcode] : {
+   * field name = field value , ...}". If isDeep is true, it uses an IdentityHashMap to avoid duplicate toString() in
+   * the recursion
+   *
+   * @param sb given string buffer to fill
+   * @param isDeep true means to call toString(sb, true) recursively for all attributes / references / collections
+   *        which are MetadataElement implementations
+   *
+   * @return the given string buffer filled with the string representation
+   */
+  @Override
+  protected StringBuilder deepToString(final StringBuilder sb, final boolean isDeep,
+      final Map<MetadataElement, Object> ids) {
+      // TODO : implement
+    return null;
+  }
+
 }
-// ~ End of file
-// --------------------------------------------------------------------------------------------------------
+//~ End of file ------------------------------------------------------------------------------------------------------

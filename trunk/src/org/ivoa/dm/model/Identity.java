@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.ivoa.dm.MetaModelFactory;
 import org.ivoa.dm.ObjectClassType;
+import org.ivoa.util.JavaUtils;
 
 /**
  * This class contains all flavor for objectType identifiers :  <br>
@@ -50,9 +51,6 @@ public class Identity implements Serializable {
      * A local xsd:ID for this object, can be used when registering a DM/Resource that has internal references.
      * Can also be created on the fly when marshalling an object to XML
      */
-
-    //  @Basic(optional = true)
-    //  @Column(name = "xmlId", nullable = true)
     @Transient
     @XmlID
     @XmlSchemaType(name = "ID")
@@ -62,14 +60,13 @@ public class Identity implements Serializable {
      * The URI uniquely specifying the object as it is published in a DMService  This is not mapped to JPA, as it
      * is generated based on the UTYPE of the object and its generated ID
      */
-
-    //@Basic(optional = true)
-    //@Column(name = "ivoId", nullable = true)
     @Transient
     @XmlSchemaType(name = "anyURI")
     @XmlAttribute(name = "ivoId", required = false)
     private String ivoId = null;
-    /** The URI uniquely specifying the object as it is published in a DMService */
+    /** 
+     * The URI uniquely specifying the object as it is published in a DMService
+     */
     @Basic(optional = true)
     @Column(name = "publisherDID", nullable = true)
     @XmlSchemaType(name = "anyURI")
@@ -151,6 +148,24 @@ public class Identity implements Serializable {
     }
 
     /**
+     * Returns the URI uniquely specifying the object as it is published in a DMService
+     *
+     * @return URI uniquely specifying the object as it is published in a DMService
+     */
+    public String getPublisherDID() {
+        return publisherDID;
+    }
+
+    /**
+     * Sets the URI uniquely specifying the object as it is published in a DMService
+     *
+     * @param pPublisherDID URI uniquely specifying the object as it is published in a DMService
+     */
+    public void setPublisherDID(final String pPublisherDID) {
+        this.publisherDID = pPublisherDID;
+    }
+
+    /**
      * Returns a string representation : creates a temporary StringBuilder(STRING_BUFFER_CAPACITY) and calls
      * #toString(java.lang.StringBuilder) method
      *
@@ -174,48 +189,30 @@ public class Identity implements Serializable {
     protected final StringBuilder toString(final StringBuilder sb) {
         sb.append("[").append((getId() != null) ? getId() : "N/A");
 
-//    if (getXmlId() != null) {
-//      sb.append(" - xmlId: ").append(getXmlId());
-//    }
+        if (JavaUtils.isSet(getXmlId())) {
+            sb.append(" - xmlId: ").append(getXmlId());
+        }
 
-        if (getPublisherDID() != null) {
+        if (JavaUtils.isSet(getPublisherDID())) {
             sb.append(" - publisherDID: ").append(getPublisherDID());
         }
 
-        if (getIvoId() != null) {
+        if (JavaUtils.isSet(getIvoId())) {
             sb.append(" - ivoId: ").append(getIvoId());
-        } // TODO create IvoId if not exists
-
+        }
+        // TODO create IvoId if not exists
 
         return sb.append("] ");
     }
 
     /**
-     * TODO : Method Description
-     *
-     * @return value TODO : Value Description
-     */
-    public String getPublisherDID() {
-        return publisherDID;
-    }
-
-    /**
-     * TODO : Method Description
-     *
-     * @param pPublisherDID publisherDID
-     */
-    public void setPublisherDID(final String pPublisherDID) {
-        this.publisherDID = pPublisherDID;
-    }
-
-    /**
-     * resolve an incoming IVO Id for a given type to the JPA id of the corresponding object instance  The implied
+     * resolve an incoming IVO Id for a given type to the JPA id of the corresponding object instance.<br/> The implied
      * definition of the ivoId (utype+"/"+id), should be synchronised with the getIvoId() method
      *
-     * @param ivoId
-     * @param type
+     * @param ivoId id to resolve
+     * @param type class of the metadata object
      *
-     * @return value TODO : Value Description
+     * @return primary key
      */
     public static Long resolveIvoId(final String ivoId, final Class<?> type) {
         if (ivoId == null) {
@@ -240,12 +237,12 @@ public class Identity implements Serializable {
 
         if (utype.charAt(utype.length() - 1) != '/') {
             // this test should not be necessary, but is safe
-            utype = utype + "/";
+            utype += "/";
         }
 
         if (!ivoId.startsWith(utype)) {
             for (ObjectClassType subclass : md.getSubclasses()) {
-                Long id = resolveIvoId(ivoId, subclass);
+                final Long id = resolveIvoId(ivoId, subclass);
                 if (id != null) {
                     return id;
                 }

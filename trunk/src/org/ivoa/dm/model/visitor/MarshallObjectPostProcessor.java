@@ -1,41 +1,55 @@
-/*
- * IdentityInstantiator.java
- *
- * Author lemson
- * Created on Oct 6, 2008
- */
 package org.ivoa.dm.model.visitor;
 
 import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.Visitor;
 
-
 /**
- * TODO : Class Description
+ * MetadataObject Visitor implementation :
+ * TODO : description
+ *
+ * UNUSED !!
  *
  * @author laurent bourges (voparis) / Gerard Lemson (mpe)
- */
-public class MarshallObjectPostProcessor extends Visitor {
-  //~ Methods ----------------------------------------------------------------------------------------------------------
+  */
+public final class MarshallObjectPostProcessor extends Visitor {
 
-  /**
-   * TODO : Method Description
-   *
-   * @param object 
-   */
-  public void postProcess(final MetadataObject object) {
-    /* no-op */
-  }
+    /** singleton instance (thread safe and stateless) */
+    private static MarshallObjectPostProcessor instance = new MarshallObjectPostProcessor();
 
-  /**
-   * Instantiate the references of the object.<br>
-   *
-   * @param object
-   */
-  public void preProcess(final MetadataObject object) {
-    object.get_state().unsetToBeMarshalled();
-    setIvoID(object, null);
-    setXmlId(object, null);
-  }
+    /**
+     * Return the singleton instance
+     * @return visitor
+     */
+    public static Visitor getInstance() {
+        return instance;
+    }
+
+    /**
+     * Protected constructor to avoid to create instance except for singletons (stateless classes)
+     */
+    protected MarshallObjectPostProcessor() {
+        super();
+    }
+
+    //~ Methods ----------------------------------------------------------------------------------------------------------
+    /**
+     * TODO : Method Description
+     *
+     * @param object
+     */
+    public void postProcess(final MetadataObject object) {
+        /* no-op */
+    }
+
+    /**
+     * Instantiate the references of the object.<br>
+     *
+     * @param object
+     */
+    public void preProcess(final MetadataObject object) {
+        getInternalState(object).unsetToBeMarshalled();
+        setIvoId(object, null);
+        setXmlId(object, null);
+    }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
