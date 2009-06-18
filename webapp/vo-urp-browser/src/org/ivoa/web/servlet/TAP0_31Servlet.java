@@ -25,12 +25,9 @@ import org.ivoa.web.model.TAPResult;
 public class TAP0_31Servlet extends BaseServlet implements TAP_v0_31 {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**
-   * serial UID for Serializable interface : 1
-   */
+  /** serial UID for Serializable interface */
   private static final long serialVersionUID = 1L;
 
-  // constants :
   /** TODO need some way to get the generated files in the jar file */
   public static final String TAP_METADATA_XML_FILE = RuntimeConfiguration.get().getTAPMetadataXMLFile();
   /**

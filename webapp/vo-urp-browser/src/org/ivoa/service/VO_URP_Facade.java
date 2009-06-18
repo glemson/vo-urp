@@ -111,8 +111,14 @@ public class VO_URP_Facade extends LogSupport {
             log.warn("Application is unavailable.");
         }
 
-        // last one (clear logging) :
-        ClassLoaderCleaner.clean();
+        try {
+          // last one (clear logging) :
+          // clean up (GC) : 
+          ClassLoaderCleaner.clean();
+          
+        } catch (final Throwable th) {
+          log.error("VO_URP_Facade.freeInstance : fatal error : ", th);
+        }
     }
 
     /**
@@ -190,10 +196,8 @@ public class VO_URP_Facade extends LogSupport {
         }
 
         // force GC :
-        this.globalCache.clear();
         this.threadLocal = null;
-        this.ecf = null;
-        this.emf = null;
+        this.globalCache.clear();
 
         // free Session stats Thread :
         SessionMonitor.onExit();

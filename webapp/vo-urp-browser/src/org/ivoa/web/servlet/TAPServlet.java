@@ -28,12 +28,8 @@ import org.ivoa.web.model.SQLQuery;
 public class TAPServlet extends BaseServlet implements TAP_v0_31 {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**
-   * serial UID for Serializable interface : 1
-   */
+  /** serial UID for Serializable interface */
   private static final long serialVersionUID = 1L;
-
-  // constants :
   /**
    * TODO : Field Description
    */

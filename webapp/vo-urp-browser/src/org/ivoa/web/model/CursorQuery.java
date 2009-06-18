@@ -10,11 +10,9 @@ import java.util.List;
  * @author laurent
  */
 public class CursorQuery implements Serializable {
-  // ~ Constants
-  // --------------------------------------------------------------------------------------------------------
-  /**
-   * serial UID for Serializable interface : 1
-   */
+  //~ Constants --------------------------------------------------------------------------------------------------------
+
+  /** serial UID for Serializable interface */
   private static final long serialVersionUID = 1L;
 
   /**
