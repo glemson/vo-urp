@@ -47,6 +47,9 @@ public final class ClassLoaderCleaner {
     JAXBFactory.onExit();
     JPAFactory.onExit();
 
+    // ThreadLocal checks :
+    ThreadLocalCleaner.checkThreads();
+
     if (logD.isInfoEnabled()) {
       logD.info("ClassLoaderCleaner.clean : exit");
     }
