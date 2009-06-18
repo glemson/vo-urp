@@ -294,7 +294,7 @@
       <!-- include JPA annotated classes -->
       <include name="org/ivoa/dm/model/Identity*" />
       <include name="org/ivoa/dm/model/MetadataObject*" />
-      <include name="org/ivoa/dm/model/RootEntityObject*" />
+      <include name="org/ivoa/dm/model/MetadataRootEntityObject*" />
       <include name="org/ivoa/tap/**" />
     </fileset>
     <fileset dir="${outputJava}">
@@ -342,7 +342,7 @@
       <!-- exclude JPA annotated classes -->
       <exclude name="org/ivoa/dm/model/Identity*" />
       <exclude name="org/ivoa/dm/model/MetadataObject*" />
-      <exclude name="org/ivoa/dm/model/RootEntityObject*" />
+      <exclude name="org/ivoa/dm/model/MetadataRootEntityObject*" />
       <exclude name="org/ivoa/tap/**" />
     </fileset>
     <fileset dir="${properties}">
