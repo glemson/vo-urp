@@ -89,28 +89,28 @@ public abstract class MetadataRootEntityObject extends MetadataObject {
   }
 
   /**
-   * @return createTimestamp
+   * @return  timestamp at insert time
    */
   public Timestamp getDBInsertTimestamp() {
     return dbInsertTimestamp;
   }
 
   /**
-   * @param pCreateTimestamp createTimestamp
+   * @param pInsertTimestamp timestamp at insert time
    */
   public void setDBInsertTimestamp(final Timestamp pInsertTimestamp) {
     this.dbInsertTimestamp = pInsertTimestamp;
   }
 
   /**
-   * @return updateTimestamp
+   * @return timestamp at update time
    */
   public Timestamp getDBUpdateTimestamp() {
     return dbUpdateTimestamp;
   }
 
   /**
-   * @param pUpdateTimestamp updateTimestamp
+   * @param pDBUpdateTimestamp timestamp at update time
    */
   public void setDbUpdateTimestamp(final Timestamp pDBUpdateTimestamp) {
     this.dbUpdateTimestamp = pDBUpdateTimestamp;
