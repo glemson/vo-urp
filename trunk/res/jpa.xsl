@@ -323,7 +323,7 @@
       <xsl:text>org.ivoa.dm.model.MetadataObject</xsl:text>
     </xsl:element>
     <xsl:element name="class" namespace="http://java.sun.com/xml/ns/persistence">
-      <xsl:text>org.ivoa.dm.model.RootEntityObject</xsl:text>
+      <xsl:text>org.ivoa.dm.model.MetadataRootEntityObject</xsl:text>
     </xsl:element>
 &cr;
     <xsl:element name="class" namespace="http://java.sun.com/xml/ns/persistence">
