@@ -194,11 +194,7 @@ Return a node-set of columns for a single attribute, which may be structured
         </xsl:choose>
       </xsl:when>
       <xsl:when test="$type/name = 'datetime'">
-        <xsl:choose>
-          <xsl:when test="$vendor = 'mssqlserver'">DATETIME</xsl:when>
-          <xsl:when test="$vendor = 'postgres'">TIMESTAMP</xsl:when>
-          <xsl:otherwise>[VENDOR_NOT_SUPPORTED]</xsl:otherwise>
-        </xsl:choose>
+        <xsl:call-template name="datetimeType"/>
       </xsl:when>
       <xsl:otherwise>
         <xsl:variable name="length">
@@ -212,6 +208,17 @@ Return a node-set of columns for a single attribute, which may be structured
       </xsl:choose></xsl:otherwise>
     </xsl:choose>
   </xsl:template>
+  
+  
+  <xsl:template name="datetimeType">
+    <xsl:choose>
+      <xsl:when test="$vendor = 'mssqlserver'">DATETIME</xsl:when>
+      <xsl:when test="$vendor = 'postgres'">TIMESTAMP</xsl:when>
+      <xsl:otherwise>[VENDOR_NOT_SUPPORTED]</xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
+  
+  
   
 
 <!-- constraints utility templates -->

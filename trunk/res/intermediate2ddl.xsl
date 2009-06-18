@@ -40,6 +40,7 @@ CREATE TABLE TargetObjectType (
                 xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   
 
+  <xsl:import href="common.xsl"/>
   <xsl:import href="common-ddl.xsl"/>
   <xsl:import href="utype.xsl"/>
 
@@ -209,6 +210,12 @@ CREATE TABLE TargetObjectType (
     <xsl:variable name="tableName">
       <xsl:apply-templates select="." mode="tableName"/>
     </xsl:variable>
+    
+    <!--  check whether class is root entity -->
+    <xsl:variable name="isRootEntity">
+      <xsl:apply-templates select="." mode="isRootEntity"/> 
+    </xsl:variable>
+    
 <xsl:text>CREATE TABLE </xsl:text><xsl:value-of select="$tableName"/><xsl:text> (</xsl:text>&cr;
 &bl;&bl;<xsl:value-of select="$primaryKeyColumnName"/>&bl;
 <xsl:choose>
@@ -233,7 +240,7 @@ CREATE TABLE TargetObjectType (
 <xsl:apply-templates select="attribute" />
 <xsl:apply-templates select="reference" />
 
-<xsl:apply-templates select="." mode="users"/>
+<xsl:apply-templates select="." mode="rootEntity"/>
 
 <xsl:text>);</xsl:text>&cr;
   </xsl:template>
@@ -417,10 +424,12 @@ DROP INDEX <xsl:value-of select="$tableName"/>.ix_<xsl:value-of select="$tableNa
   <!-- IF this is a root entity class, add user columnsdetermine whether there is a class that contains this class.
   If so generate a containerID column.
   NOTE we should ensure that there is only 1  -->
-  <xsl:template match="objectType" mode="users">
+  <xsl:template match="objectType" mode="rootEntity">
     <xsl:if test="entity='true' and not(extends)">
       <xsl:text>, ownerUser VARCHAR(32)</xsl:text>&cr;
       <xsl:text>, updateUser VARCHAR(32)</xsl:text>&cr;      
+      <xsl:text>, dbInsertTimestamp </xsl:text><xsl:call-template name="datetimeType"/>&cr;
+      <xsl:text>, dbUpdateTimestamp </xsl:text><xsl:call-template name="datetimeType"/>&cr;      
     </xsl:if>
   </xsl:template>
   
