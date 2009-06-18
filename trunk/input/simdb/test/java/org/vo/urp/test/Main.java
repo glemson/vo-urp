@@ -31,7 +31,7 @@ public final class Main {
         final Log log = initLogs();
 
         if (log != null) {
-            ApplicationAdapter.init();
+            ApplicationAdapter.start();
 
             long start = System.nanoTime();
 
