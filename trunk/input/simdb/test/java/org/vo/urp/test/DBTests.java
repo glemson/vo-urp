@@ -204,28 +204,28 @@ public class DBTests extends LogSupport implements ApplicationMain {
             final Simulator simulator = new Simulator();
 
             // Identity attributes :
-            simulator.setPublisherDID("ivo://dummy/gadget2");
+            simulator.setPublisherDID("ivo://cool.simulators/SoCool/v1.2.3");
 
             // Resource attributes :
-            simulator.setName("Gadget");
-            simulator.setDescription("Gadget is a N-body simulation code ... <i>gadget description</i>");
-            simulator.setReferenceURL("http://host/gadget/index.html");
+            simulator.setName("SoCool");
+            simulator.setDescription("SoCool is an N-body simulation code");
+            simulator.setReferenceURL("http://cool.simulators/SoCool/v1.2.3/readme.html");
 
             simulator.setCreated(new Date());
             simulator.setUpdated(new Date());
             simulator.setStatus("published");
 
             // Protocol attributes :
-            simulator.setCode("http://host/download/gadget");
-            simulator.setVersion("1.2.3");
+            simulator.setCode("http://cool.simulators/SoColl/v1.2.3/download.html");
+            simulator.setVersion("v1.2.3");
 
             // Resource references : set main contact party
-            Contact volker = new Contact(simulator);
-            volker.setAddress("MPA, Garching, Germany");
-            volker.setName("Volker Springel");
-            volker.setEmail("***@***");
-            volker.setTelephone("+49 (0)89 30000 ****");
-            volker.setRole(ContactRole.OWNER);
+            Contact me = new Contact(simulator);
+            me.setAddress("Somewhere in the world");
+            me.setName("Its Me");
+            me.setEmail("me@cool.simulators");
+            me.setTelephone("+1 234 567 890");
+            me.setRole(ContactRole.OWNER);
 
             // Protocol references : none
 
@@ -236,7 +236,7 @@ public class DBTests extends LogSupport implements ApplicationMain {
             // Parameter Group :
             ParameterGroup paramGroup = new ParameterGroup(simulator);
             paramGroup.setName("Cosmological Parameters");
-            paramGroup.setDescription("Sample Parameter Group <i>parameter group description</i>");
+            paramGroup.setDescription("Sample Parameter Group");
 
             // Parameters :
             InputParameter param = null;
@@ -245,11 +245,11 @@ public class DBTests extends LogSupport implements ApplicationMain {
             param = new InputParameter(simulator);
 
             // Identity attributes :
-            param.getIdentity().setPublisherDID("ivo://org/gadget/params/boxSize");
+            param.getIdentity().setPublisherDID("ivo://cool.simulators/SoCool/v1.2.3/params/boxSize");
 
             // Field attributes :
             param.setName("box size");
-            param.setDescription("size of the cubic box <i>parameter description</i>");
+            param.setDescription("size of the cubic box");
             param.setDatatype(DataType.FLOAT);
             param.setCardinality(Cardinality.ONE);
             param.setIsEnumerated(false);
@@ -263,17 +263,17 @@ public class DBTests extends LogSupport implements ApplicationMain {
             param = new InputParameter(simulator);
 
             // Identity attributes :
-            param.getIdentity().setPublisherDID("ivo://org/gadget/params/lamda");
+            param.getIdentity().setPublisherDID("ivo://cool.simulators/SoCool/v1.2.3/params/lamda");
 
             // Field attributes :
             param.setName("lambda");
-            param.setDescription("lambda <i>parameter description</i>");
+            param.setDescription("lambda");
             param.setDatatype(DataType.FLOAT);
             param.setCardinality(Cardinality.ONE);
             param.setIsEnumerated(false);
 
             // InputParameter attributes :
-            param.setLabel("sim.cosmo.lambda ?");
+            param.setLabel("sim.cosmo.lambda");
 
             pgm = new ParameterGroupMember(paramGroup);
             pgm.setParameter(param);
@@ -281,17 +281,17 @@ public class DBTests extends LogSupport implements ApplicationMain {
             param = new InputParameter(simulator);
 
             // Identity attributes :
-            param.getIdentity().setPublisherDID("ivo://org/gadget/params/hubble");
+            param.getIdentity().setPublisherDID("ivo://cool.simulators/SoCool/v1.2.3/params/hubble");
 
             // Field attributes :
             param.setName("hubble constant");
-            param.setDescription("hubble constant <i>parameter description</i>");
+            param.setDescription("hubble constant");
             param.setDatatype(DataType.FLOAT);
             param.setCardinality(Cardinality.ONE);
             param.setIsEnumerated(false);
 
             // InputParameter attributes :
-            param.setLabel("sim.hubble ?");
+            param.setLabel("sim.hubble");
 
             pgm = new ParameterGroupMember(paramGroup);
             pgm.setParameter(param);
@@ -300,11 +300,11 @@ public class DBTests extends LogSupport implements ApplicationMain {
             final RepresentationObjectType repDM = new RepresentationObjectType(simulator);
 
             // Identity attributes :
-            repDM.getIdentity().setPublisherDID("ivo://org/gadget/darkMatter");
+            repDM.getIdentity().setPublisherDID("ivo://cool.simulators/SoCool/v1.2.3/darkMatter");
 
             // Representation attributes :
             repDM.setName("dark Matter");
-            repDM.setDescription("dark Matter particules <i>representation description</i>");
+            repDM.setDescription("dark Matter particles");
             repDM.setType(RepresentationObject.POINT_PARTICLE);
             repDM.setLabel("dark matter");
 
@@ -312,7 +312,7 @@ public class DBTests extends LogSupport implements ApplicationMain {
             // Property Group :
             PropertyGroup propGroup = new PropertyGroup(repDM);
             propGroup.setName("Position");
-            propGroup.setDescription("X-Y-Z Coordinates Group <i>property group description</i>");
+            propGroup.setDescription("X-Y-Z Coordinates Group");
 
             // Properties :
             Property propDM = null;
@@ -322,11 +322,11 @@ public class DBTests extends LogSupport implements ApplicationMain {
             propDM = new Property(repDM);
 
             // Identity attributes :
-            propDM.getIdentity().setPublisherDID("ivo://org/gadget/darkMatter/positionX");
+            propDM.getIdentity().setPublisherDID("ivo://cool.simulators/SoCool/v1.2.3/darkMatter/positionX");
 
             // Field attributes :
             propDM.setName("x");
-            propDM.setDescription("X (cartesian) coordinate of the particle in the cubic box <i>property description</i>");
+            propDM.setDescription("X (cartesian) coordinate of the particle in the cubic box");
             propDM.setDatatype(DataType.DOUBLE);
             propDM.setCardinality(Cardinality.ONE);
             propDM.setIsEnumerated(false);
@@ -341,11 +341,11 @@ public class DBTests extends LogSupport implements ApplicationMain {
             propDM = new Property(repDM);
 
             // Identity attributes :
-            propDM.getIdentity().setPublisherDID("ivo://org/gadget/darkMatter/positionY");
+            propDM.getIdentity().setPublisherDID("ivo://cool.simulators/SoCool/v1.2.3/darkMatter/positionY");
 
             // Field attributes :
             propDM.setName("y");
-            propDM.setDescription("Y (cartesian) coordinate of the particle in the cubic box <i>property description</i>");
+            propDM.setDescription("Y (cartesian) coordinate of the particle in the cubic box");
             propDM.setDatatype(DataType.DOUBLE);
             propDM.setCardinality(Cardinality.ONE);
             propDM.setIsEnumerated(false);
@@ -360,11 +360,11 @@ public class DBTests extends LogSupport implements ApplicationMain {
             propDM = new Property(repDM);
 
             // Identity attributes :
-            propDM.getIdentity().setPublisherDID("ivo://org/gadget/darkMatter/positionZ");
+            propDM.getIdentity().setPublisherDID("ivo://cool.simulators/SoCool/v1.2.3/darkMatter/positionZ");
 
             // Field attributes :
             propDM.setName("z");
-            propDM.setDescription("Z (cartesian) coordinate of the particle in the cubic box <i>property description</i>");
+            propDM.setDescription("Z (cartesian) coordinate of the particle in the cubic box");
             propDM.setDatatype(DataType.DOUBLE);
             propDM.setCardinality(Cardinality.ONE);
             propDM.setIsEnumerated(false);
@@ -379,11 +379,11 @@ public class DBTests extends LogSupport implements ApplicationMain {
             propDM = new Property(repDM);
 
             // Identity attributes :
-            propDM.getIdentity().setPublisherDID("ivo://org/gadget/darkMatter/mass");
+            propDM.getIdentity().setPublisherDID("ivo://cool.simulators/SoCool/v1.2.3/darkMatter/mass");
 
             // Field attributes :
             propDM.setName("virial mass");
-            propDM.setDescription("Virial mass of the local dark matter <i>property description</i>");
+            propDM.setDescription("Virial mass of the local dark matter");
             propDM.setDatatype(DataType.DOUBLE);
             propDM.setCardinality(Cardinality.ONE);
             propDM.setIsEnumerated(false);
@@ -414,15 +414,12 @@ public class DBTests extends LogSupport implements ApplicationMain {
             // simulation = a Gadget run :
             final Simulation simulation = new Simulation();
 
-            // Identity attributes :
-            simulation.getIdentity().setPublisherDID("ivo://org/gadget/runs/001");
-
             // Resource attributes :
-            simulation.setName("Run Gadget 001");
-            simulation.setDescription("this run uses parameters ... <i>simulation description</i>");
+            simulation.setName("Run SoCool 001");
+            simulation.setDescription("this run uses parameters ... ");
             simulation.setReferenceURL(null);
 
-            simulation.setPublisherDID("RUN_GADGET_001");
+            simulation.setPublisherDID("ivo://cool.simulators/SoCool/v1.2.3/RUN_SOCOOL_001");
             simulation.setCreated(new Date());
             simulation.setUpdated(new Date());
             simulation.setStatus("published");
