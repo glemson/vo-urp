@@ -412,6 +412,9 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
     
     <xsl:if test="$hasExtends = 0 or ($kind='Object' and reference)">
       import <xsl:value-of select="$model_package"/>.Metadata<xsl:value-of select="$kind"/>;
+      <xsl:if test="$isRootEntity = 1">
+      import <xsl:value-of select="$model_package"/>.MetadataRootEntityObject;
+      </xsl:if>
     </xsl:if>
     
     <xsl:apply-templates select="." mode="typeimports"/>
@@ -430,7 +433,7 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
     public&bl;<xsl:if test="@abstract='true'">abstract</xsl:if>&bl;class <xsl:value-of select="$className"/>&bl;
     <xsl:choose>
       <xsl:when test="$hasExtends = 1">extends <xsl:call-template name="JavaType"><xsl:with-param name="xmiid" select="extends/@xmiidref"/></xsl:call-template></xsl:when>
-      <xsl:otherwise>extends Metadata<xsl:value-of select="$kind"/></xsl:otherwise>
+      <xsl:otherwise>extends Metadata<xsl:if test="entity = 'true'">RootEntity</xsl:if><xsl:value-of select="$kind"/></xsl:otherwise>
     </xsl:choose>
     &bl;{
 
