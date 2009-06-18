@@ -6,7 +6,7 @@ package org.ivoa.http;
 public class StatusException extends Exception {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**  */
+  /** serial UID for Serializable interface */
   private static final long serialVersionUID = 1L;
 
   //~ Members ----------------------------------------------------------------------------------------------------------
