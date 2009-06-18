@@ -26,12 +26,8 @@ import org.ivoa.xml.validator.ValidationResult;
 public final class ValidationServlet extends BaseServlet {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**
-   * serial UID for Serializable interface : 1
-   */
+  /** serial UID for Serializable interface */
   private static final long serialVersionUID = 1L;
-
-  // constants :
   /**
    * TODO : Field Description
    */

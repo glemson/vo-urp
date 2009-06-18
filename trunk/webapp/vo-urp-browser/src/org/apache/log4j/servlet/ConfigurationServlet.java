@@ -75,13 +75,10 @@ import org.apache.log4j.Logger;
  */
 public class ConfigurationServlet extends HttpServlet {
 
-  //~ Constants --------------------------------------------------------------------------------------------------------
+    //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**
-   * serial UID for Serializable interface : every concrete class must have its value corresponding to last
-   * modification date of the UML model
-   */
-  private static final long serialVersionUID = 1L;
+    /** serial UID for Serializable interface */
+    private static final long serialVersionUID = 1L;
     /**
      * The response content type: text/html
      */

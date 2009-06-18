@@ -14,11 +14,11 @@ import java.util.List;
  * @author laurent bourges (voparis)
  */
 public class SQLQuery implements Serializable {
-  //~ Members ----------------------------------------------------------------------------------------------------------
-  /**
-   * serial UID for Serializable interface : 1
-   */
+  //~ Constants --------------------------------------------------------------------------------------------------------
+
+  /** serial UID for Serializable interface */
   private static final long serialVersionUID = 1L;
+  //~ Members ----------------------------------------------------------------------------------------------------------
   /**
    * TODO : Field Description
    */
