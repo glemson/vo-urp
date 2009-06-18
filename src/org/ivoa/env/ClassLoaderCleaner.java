@@ -36,6 +36,11 @@ public final class ClassLoaderCleaner {
     }
 
     // hard coded Factory calls to onExit() :
+
+    /*
+     * TODO : Use the SingletonSupport pattern to know which class should be cleaned up :
+     */
+
     MetaModelFactory.onExit();
     ModelFactory.onExit();
 

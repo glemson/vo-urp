@@ -90,9 +90,6 @@ public final class ModelFactory extends LogSupport {
     }
     if (instance != null) {
       // clean up :
-/*
-      instance.jf = null;
- */
       instance = null;
     }
     if (log.isWarnEnabled()) {
@@ -276,6 +273,8 @@ public final class ModelFactory extends LogSupport {
   }
 
   /**
+   * TODO : use Visitor Pattern : KILL later
+   *
    * Navigate along child axes (references / collection) to resolve all external references (see Identity)  and
    * containement references (parent with collection items)
    *
@@ -291,6 +290,8 @@ public final class ModelFactory extends LogSupport {
   }
 
   /**
+   * TODO : use Visitor Pattern : KILL later
+   *
    * Navigate along child axes (references / collection) to resolve all external references (see Identity)  and
    * containement references (parent with collection items). <br>
    * <b> Recursive method </b>
@@ -314,6 +315,8 @@ public final class ModelFactory extends LogSupport {
   }
 
   /**
+   * TODO : use Visitor Pattern : KILL later
+   *
    * Navigate along child axes (references / collection) to resolve all external references (see Identity)  and
    * containement references (parent with collection items). <br>
    * <b> Recursive method </b>
