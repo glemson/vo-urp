@@ -11,7 +11,7 @@ import javax.persistence.Column;
  * 
  * @author laurent bourges / gerard lemson
  */
-public abstract class RootEntityObject extends MetadataObject {
+public abstract class MetadataRootEntityObject extends MetadataObject {
     //~ Constants --------------------------------------------------------------------------------------------------------
 
     /**
@@ -39,22 +39,22 @@ public abstract class RootEntityObject extends MetadataObject {
    * The timestamp when this record was added to the database.
    */
   @Basic(optional = true)
-  @Column(name = "createTimestamp", nullable = true)
-  private Timestamp createTimestamp;
+  @Column(name = "dbInsertTimestamp", nullable = true)
+  private Timestamp dbInsertTimestamp;
 
   /**
    * The timestamp when this record was last updated in the database.
    */
   @Basic(optional = true)
-  @Column(name = "updateTimestamp", nullable = true)
-  private Timestamp updateTimestamp;
+  @Column(name = "dbUpdateTimestamp", nullable = true)
+  private Timestamp dbUpdateTimestamp;
 
     //~ Constructors -----------------------------------------------------------------------------------------------------
 
   /**
    * Public constructor
    */
-  public RootEntityObject() {
+  public MetadataRootEntityObject() {
     super();
   }
 
@@ -91,29 +91,29 @@ public abstract class RootEntityObject extends MetadataObject {
   /**
    * @return createTimestamp
    */
-  public Timestamp getCreateTimestamp() {
-    return createTimestamp;
+  public Timestamp getDBInsertTimestamp() {
+    return dbInsertTimestamp;
   }
 
   /**
    * @param pCreateTimestamp createTimestamp
    */
-  public void setCreateTimestamp(final Timestamp pCreateTimestamp) {
-    this.createTimestamp = pCreateTimestamp;
+  public void setDBInsertTimestamp(final Timestamp pInsertTimestamp) {
+    this.dbInsertTimestamp = pInsertTimestamp;
   }
 
   /**
    * @return updateTimestamp
    */
-  public Timestamp getUpdateTimestamp() {
-    return updateTimestamp;
+  public Timestamp getDBUpdateTimestamp() {
+    return dbUpdateTimestamp;
   }
 
   /**
    * @param pUpdateTimestamp updateTimestamp
    */
-  public void setUpdateTimestamp(final Timestamp pUpdateTimestamp) {
-    this.updateTimestamp = pUpdateTimestamp;
+  public void setDbUpdateTimestamp(final Timestamp pDBUpdateTimestamp) {
+    this.dbUpdateTimestamp = pDBUpdateTimestamp;
   }
 
   /**
