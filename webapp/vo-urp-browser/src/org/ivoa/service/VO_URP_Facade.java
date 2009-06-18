@@ -15,6 +15,7 @@ import org.ivoa.conf.RuntimeConfiguration;
 import org.ivoa.dm.MetaModelFactory;
 import org.ivoa.env.ClassLoaderCleaner;
 import org.ivoa.jpa.JPAFactory;
+import org.ivoa.util.timer.TimerFactory;
 import org.ivoa.web.model.CursorQuery;
 import org.ivoa.web.model.EntityConfig;
 import org.ivoa.web.model.EntityConfigFactory;
@@ -107,6 +108,11 @@ public class VO_URP_Facade extends LogSupport {
         // force GC :
         instance = null;
 
+        // TimerFactory dump :
+        if (logD.isWarnEnabled()) {
+          logD.warn("TimerFactory : statistics : " + TimerFactory.dumpTimers());
+        }
+
         if (log != null && log.isWarnEnabled()) {
             log.warn("Application is unavailable.");
         }
@@ -181,6 +187,9 @@ public class VO_URP_Facade extends LogSupport {
  
         this.threadLocal = new ThreadLocal<EntityManager>();
 
+        // TimerFactory warmup and reset :
+        TimerFactory.resetTimers();
+        
         if (log != null) {
             log.warn("Application is ready.");
         }
