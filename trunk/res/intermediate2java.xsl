@@ -663,7 +663,7 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
         if(get<xsl:value-of select="$name"/>() != null) 
         {
           this.p_<xsl:value-of select="name"/> = get<xsl:value-of select="$name"/>().asReference();
-          if(get<xsl:value-of select="$name"/>().get_state().isToBeMarshalled())
+          if(getStateFor(get<xsl:value-of select="$name"/>()).isToBeMarshalled())
                get<xsl:value-of select="$name"/>().setXmlId();
             
         }

@@ -22,9 +22,9 @@
                     <encoding>UTF-8</encoding>
                 </source-folder>
                 <source-folder>
-                    <label>libs\jalopy\src</label>
+                    <label>webapp\vo-urp-browser\src</label>
                     <type>java</type>
-                    <location>libs/jalopy/src</location>
+                    <location>webapp/vo-urp-browser/src</location>
                     <encoding>UTF-8</encoding>
                 </source-folder>
                 <source-folder>
@@ -34,27 +34,27 @@
                     <encoding>UTF-8</encoding>
                 </source-folder>
                 <source-folder>
+                    <label>test</label>
+                    <type>java</type>
+                    <location>test</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
+                <source-folder>
                     <label>input\simdb\test\java</label>
                     <type>java</type>
                     <location>input/simdb/test/java</location>
                     <encoding>UTF-8</encoding>
                 </source-folder>
                 <source-folder>
-                    <label>webapp\vo-urp-browser\src</label>
+                    <label>libs\jalopy\src</label>
                     <type>java</type>
-                    <location>webapp/vo-urp-browser/src</location>
+                    <location>libs/jalopy/src</location>
                     <encoding>UTF-8</encoding>
                 </source-folder>
                 <source-folder>
                     <label>deprecated-src</label>
                     <type>java</type>
                     <location>deprecated-src</location>
-                    <encoding>UTF-8</encoding>
-                </source-folder>
-                <source-folder>
-                    <label>test</label>
-                    <type>java</type>
-                    <location>test</location>
                     <encoding>UTF-8</encoding>
                 </source-folder>
             </folders>
@@ -79,28 +79,28 @@
                         <location>src</location>
                     </source-folder>
                     <source-folder style="packages">
-                        <label>libs\jalopy\src</label>
-                        <location>libs/jalopy/src</location>
+                        <label>webapp\vo-urp-browser\src</label>
+                        <location>webapp/vo-urp-browser/src</location>
                     </source-folder>
                     <source-folder style="packages">
                         <label>input\simdb\output\java\src</label>
                         <location>input/simdb/output/java/src</location>
                     </source-folder>
                     <source-folder style="packages">
+                        <label>test</label>
+                        <location>test</location>
+                    </source-folder>
+                    <source-folder style="packages">
                         <label>input\simdb\test\java</label>
                         <location>input/simdb/test/java</location>
                     </source-folder>
                     <source-folder style="packages">
-                        <label>webapp\vo-urp-browser\src</label>
-                        <location>webapp/vo-urp-browser/src</location>
+                        <label>libs\jalopy\src</label>
+                        <location>libs/jalopy/src</location>
                     </source-folder>
                     <source-folder style="packages">
                         <label>deprecated-src</label>
                         <location>deprecated-src</location>
-                    </source-folder>
-                    <source-folder style="packages">
-                        <label>test</label>
-                        <location>test</location>
                     </source-folder>
                     <source-file>
                         <location>build.xml</location>
