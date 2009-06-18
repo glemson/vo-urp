@@ -15,7 +15,7 @@ import org.ivoa.bean.LogSupport;
 import org.ivoa.conf.RuntimeConfiguration;
 import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.ReferenceResolver;
-import org.ivoa.dm.model.RootEntityObject;
+import org.ivoa.dm.model.MetadataRootEntityObject;
 import org.ivoa.jpa.JPAFactory;
 import org.ivoa.util.FileUtils;
 import org.ivoa.xml.validator.ErrorMessage;
@@ -188,10 +188,10 @@ public class DataModelManager extends LogSupport {
 
       o = unmarshall(stream);
 
-      if (o instanceof RootEntityObject) // TODO enforce this ...
+      if (o instanceof MetadataRootEntityObject) // TODO enforce this ...
        {
-        ((RootEntityObject) o).setOwner(userName);
-        ((RootEntityObject) o).setUpdateUser(userName);
+        ((MetadataRootEntityObject) o).setOwner(userName);
+        ((MetadataRootEntityObject) o).setUpdateUser(userName);
       }
 
       // starts TX :
