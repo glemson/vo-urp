@@ -36,7 +36,9 @@ public abstract class Visitor {
      * Process the specified object after its collections have been processed.</br>
      * @param object MetadataObject instance
      */
-    public abstract void postProcess(final MetadataObject object);
+    public void postProcess(final MetadataObject object) {
+      /* no-op */
+    }
 
 
     /*
@@ -46,8 +48,9 @@ public abstract class Visitor {
      */
     
     /**
-     * return the status object of the metadata object
-     *
+     * Return the status object of the MetadataObject instance
+     * 
+     * @param object MetadataObject instance
      * @return state instance
      */
     protected final State getInternalState(final MetadataObject object) {
@@ -55,8 +58,9 @@ public abstract class Visitor {
     }
 
     /**
-     * Sets the external identifier (URI)
+     * Set the external identifier (URI) on the MetadataObject instance
      *
+     * @param object MetadataObject instance
      * @param pIvoId external identifier (URI)
      */
     protected final void setIvoId(final MetadataObject object, final String pIvoId) {
@@ -64,19 +68,30 @@ public abstract class Visitor {
     }
 
     /**
-     * Sets the local xsd:ID for this object
+     * Set the local xsd:ID for this object on the MetadataObject instance
      *
+     * @param object MetadataObject instance
      * @param pXmlId local xsd:ID for this object
      */
     protected final void setXmlId(final MetadataObject object, final String pXmlId) {
         object.getIdentity().setXmlId(pXmlId);
     }
 
-    protected void resetReferencesAfterMarshalling(MetadataObject object) {
+    /**
+     * Set all Reference objects to null on the MetadataObject instance
+     * 
+     * @param object MetadataObject instance
+     */
+    protected final void resetReferencesAfterMarshalling(final MetadataObject object) {
         object.resetReferencesAfterMarshalling();
     }
 
-    protected void prepareReferencesForMarshalling(MetadataObject object) {
+    /**
+     * Set all Reference objects to their appropriate value on the MetadataObject instance
+     * 
+     * @param object MetadataObject instance
+     */
+    protected final void prepareReferencesForMarshalling(final MetadataObject object) {
         object.prepareReferencesForMarshalling();
     }
 }

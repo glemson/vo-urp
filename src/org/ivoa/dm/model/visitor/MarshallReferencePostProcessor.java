@@ -8,7 +8,7 @@ import org.ivoa.dm.model.Visitor;
  * TODO : description
  *
  * Used by :
- * @see ModelFactory#marshallObject(String, MetadataObject)
+ * @see org.ivoa.dm.ModelFactory#marshallObject(String, MetadataObject)
  *
  * @author laurent bourges (voparis) / Gerard Lemson (mpe)
   */
@@ -34,21 +34,21 @@ public final class MarshallReferencePostProcessor extends Visitor {
     //~ Methods ----------------------------------------------------------------------------------------------------------
 
     /**
-     * TODO : Method Description
-     *
-     * @param object
+     * Process the specified object before its collections are being processed.</br>
+     * @param object MetadataObject instance
      */
-    public void postProcess(final MetadataObject object) {
-        /* no-op */
+    @Override
+    public void preProcess(final MetadataObject object) {
+        resetReferencesAfterMarshalling(object);
     }
 
     /**
-     * Instantiate the references of the object.<br>
-     *
-     * @param object
+     * Process the specified object after its collections have been processed.</br>
+     * @param object MetadataObject instance
      */
-    public void preProcess(final MetadataObject object) {
-        resetReferencesAfterMarshalling(object);
+    @Override
+    public void postProcess(final MetadataObject object) {
+        /* no-op */
     }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

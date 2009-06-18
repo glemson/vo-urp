@@ -15,11 +15,54 @@ import org.ivoa.bean.LogSupport;
  * @author laurent bourges (voparis)
  */
 public final class TimerFactory extends LogSupport {
+
   //~ Constants --------------------------------------------------------------------------------------------------------
+
+  /** default warmup cycles = 2000 */
+  private final static int WARMUP_CYCLES = 20000;
+
+  /** category for the first  warmup to optimise the timer code (hotspot) */
+  private final static String WARMUP1_CATEGORY = "warmup-1";
+
+  /** category for the second warmup to estimate latency */
+  private final static String WARMUP2_CATEGORY = "warmup-2";
 
   /** Map[key - timer] */
   protected static Map<String, ThresholdTimer> timers = new LinkedHashMap<String, ThresholdTimer>();
 
+
+  static {
+    // warm up 1 :
+    warmUp(WARMUP_CYCLES, WARMUP1_CATEGORY);
+
+    if (logD.isInfoEnabled()) {
+      logD.info("TimerFactory : warmup 1 : " + dumpTimers());
+    }
+    resetTimers();
+
+    // warm up 2 to get latency :
+    warmUp(WARMUP_CYCLES, WARMUP2_CATEGORY);
+
+    if (logD.isInfoEnabled()) {
+      logD.info("TimerFactory : warmup 2 : " + dumpTimers());
+    }
+    resetTimers();
+  }
+
+  /** 
+   * Warmup timer code (hotspot)
+   * @param cycles empty cycles to operate
+   * @param category name of the category 
+   */
+  private static void warmUp(final int cycles, final String category) {
+    long duration;
+    final long start = System.nanoTime();
+    // EMPTY LOOP to precompile (hotspot) timer code :
+    for (int i = 0, size = cycles; i < size; i++) {
+      duration = TimerFactory.elapsed(start, System.nanoTime());
+      TimerFactory.getTimer(category).add(duration);
+    }
+  }
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
 /**

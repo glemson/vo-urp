@@ -32,24 +32,25 @@ public final class MarshallObjectPostProcessor extends Visitor {
     }
 
     //~ Methods ----------------------------------------------------------------------------------------------------------
-    /**
-     * TODO : Method Description
-     *
-     * @param object
-     */
-    public void postProcess(final MetadataObject object) {
-        /* no-op */
-    }
 
     /**
-     * Instantiate the references of the object.<br>
-     *
-     * @param object
+     * Process the specified object before its collections are being processed.</br>
+     * @param object MetadataObject instance
      */
+    @Override
     public void preProcess(final MetadataObject object) {
         getInternalState(object).unsetToBeMarshalled();
         setIvoId(object, null);
         setXmlId(object, null);
+    }
+
+    /**
+     * Process the specified object after its collections have been processed.</br>
+     * @param object MetadataObject instance
+     */
+    @Override
+    public void postProcess(final MetadataObject object) {
+        /* no-op */
     }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

@@ -33,10 +33,7 @@ import org.ivoa.util.JavaUtils;
 public abstract class MetadataObject extends MetadataElement {
     //~ Constants --------------------------------------------------------------------------------------------------------
 
-    /**
-     * serial UID for Serializable interface : every concrete class must have its value corresponding to last
-     * modification date of the UML model
-     */
+    /** serial UID for Serializable interface */
     private static final long serialVersionUID = 1L;
     /** id field name */
     public static final String PROPERTY_ID = "id";
@@ -425,7 +422,7 @@ public abstract class MetadataObject extends MetadataElement {
     }
 
     /**
-     * Set all Reference objects to null.<br>
+     * Set all Reference objects to null.
      */
     protected void resetReferencesAfterMarshalling() {
         /* no-op */
@@ -441,8 +438,9 @@ public abstract class MetadataObject extends MetadataElement {
     }
 
     /**
-     * return the status object of the source object
+     * return the status object of the source MetadataObject instance
      *
+     * @param source MetadataObject instance
      * @return status object of the source object
      */
     protected final State getStateFor(final MetadataObject source) {

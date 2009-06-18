@@ -11,10 +11,7 @@ import org.ivoa.metamodel.DataType;
 public abstract class MetadataDataType extends MetadataElement {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**
-   * serial UID for Serializable interface : every concrete class must have its value corresponding to last
-   * modification date of the UML model
-   */
+  /** serial UID for Serializable interface */
   private static final long serialVersionUID = 1L;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
