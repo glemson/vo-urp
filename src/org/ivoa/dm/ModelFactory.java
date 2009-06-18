@@ -155,16 +155,9 @@ public final class ModelFactory extends LogSupport {
       w = FileUtils.openFile(filePath);
 
       // object can not be null here so unmarshall References and set containerId on collections :
-      // TODO : NOT working (now) :
-      MarshallObjectPreProcessor mop = new MarshallObjectPreProcessor();
+      source.traverse(MarshallObjectPreProcessor.getInstance());
 
-      source.traverse(mop);
-
-      MarshallReferencePreProcessor mprep = new MarshallReferencePreProcessor();
-
-      source.traverse(mprep);
-
-      //      processExportReferences(source);
+      source.traverse(MarshallReferencePreProcessor.getInstance());
 
       // create an Unmarshaller
       final Marshaller m = getJaxbFactory().createMarshaller();
@@ -173,9 +166,7 @@ public final class ModelFactory extends LogSupport {
       // from the VO-URP-generated root package into an instance document.
       m.marshal(source, w);
 
-      MarshallReferencePostProcessor mpostp = new MarshallReferencePostProcessor();
-
-      source.traverse(mpostp);
+      source.traverse(MarshallReferencePostProcessor.getInstance());
 
       if (log.isDebugEnabled()) {
         log.debug("-------------------------------------------------------------------------------");
@@ -204,17 +195,9 @@ public final class ModelFactory extends LogSupport {
 
       try {
         // object can not be null here so unmarshall References and set containerId on collections :
-        // TODO : NOT working (now) :
-        MarshallObjectPreProcessor mop = new MarshallObjectPreProcessor();
+        source.traverse(MarshallObjectPreProcessor.getInstance());
 
-        source.traverse(mop);
-
-        MarshallReferencePreProcessor mprep = new MarshallReferencePreProcessor();
-
-        source.traverse(mprep);
-
-        //        processIdentities(source);
-        //        processExportReferences(source);
+        source.traverse(MarshallReferencePreProcessor.getInstance());
 
         // create an Unmarshaller
         final Marshaller m = getJaxbFactory().createMarshaller();
@@ -223,9 +206,7 @@ public final class ModelFactory extends LogSupport {
         // from the VO-URP-generated root package into an instance document.
         m.marshal(source, out);
 
-        MarshallReferencePostProcessor mpostp = new MarshallReferencePostProcessor();
-
-        source.traverse(mpostp);
+        source.traverse(MarshallReferencePostProcessor.getInstance());
 
         return out.toString();
       } catch (final JAXBException je) {
