@@ -24,9 +24,7 @@ import org.ivoa.util.JavaUtils;
 public class Reference extends LogSupport implements Serializable {
     //~ Constants --------------------------------------------------------------------------------------------------------
 
-    /**
-     * serial UID for Serializable interface
-     */
+    /** serial UID for Serializable interface */
     private static final long serialVersionUID = 1L;
 
     //~ Members ----------------------------------------------------------------------------------------------------------

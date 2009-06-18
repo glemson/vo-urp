@@ -1,33 +1,63 @@
-/*
- * XmlBindException.java
- * 
- * Author lemson
- * Created on Jun 15, 2009
- */
 package org.ivoa.jaxb;
 
 import javax.xml.bind.JAXBException;
 
 import org.ivoa.xml.validator.ValidationResult;
 
+/**
+ * This class is a RuntimeException wrapping a JAXB Exception or a validation failure 
+ * 
+ * @author laurent bourges (voparis) / gerard lemson (mpe)
+ */
 public class XmlBindException extends RuntimeException {
+  //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /** In case this exception is thrown because of failing validation, this object holds on to the messages. */
+  /** serial UID for Serializable interface */
+  private static final long serialVersionUID = 1L;
+
+  //~ Members ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * In case this exception is thrown because of failing validation, this object holds on to the
+   * messages.
+   */
   private ValidationResult validationResult;
-  public XmlBindException(JAXBException je)
-  {
+
+  /** 
+   * Constructs a new XmlBindException with the specified cause
+   *
+   * @param je JAXBException 
+   */
+  public XmlBindException(final JAXBException je) {
     super(je);
   }
-  public XmlBindException(String message, JAXBException je)
-  {
+
+  /** 
+   * Constructs a new XmlBindException with the specified message and cause
+   *
+   * @param message the detail message
+   * @param je JAXBException 
+   */
+  public XmlBindException(final String message, final JAXBException je) {
     super(message, je);
   }
-  public XmlBindException(String message, ValidationResult validationResult)
-  {
+
+  /** 
+   * Constructs a new XmlBindException with the specified message and cause
+   *
+   * @param message the detail message
+   * @param pValidationResult validationResult 
+   */
+  public XmlBindException(final String message, final ValidationResult pValidationResult) {
     super(message);
-    this.validationResult = validationResult;
+    this.validationResult = pValidationResult;
   }
-  public ValidationResult getValidationResult() {
+
+  /**
+   * Return the optional validationResult
+   * @return validationResult
+   */
+  public final ValidationResult getValidationResult() {
     return validationResult;
   }
 }

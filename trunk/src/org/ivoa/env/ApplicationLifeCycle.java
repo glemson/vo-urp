@@ -47,8 +47,6 @@ public final class ApplicationLifeCycle {
     System.out.println("-------------------------------------------------------------------------------");
     System.out.println(" " + title + " : stop ...");
     System.out.println("-------------------------------------------------------------------------------");
-
-    ClassLoaderCleaner.clean();
   }
 
   /**

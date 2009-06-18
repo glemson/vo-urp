@@ -30,12 +30,10 @@ import org.ivoa.util.JavaUtils;
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "Identity", namespace = "http://www.ivoa.net/xml/dm/base/v0.1")
 public class Identity implements Serializable {
-    //~ Constants --------------------------------------------------------------------------------------------------------
 
-    /**
-     * serial UID for Serializable interface : every concrete class must have its value corresponding to last
-     * modification date of the UML model
-     */
+    //~ Constants --------------------------------------------------------------------------------------------------------
+ 
+    /** serial UID for Serializable interface */
     private static final long serialVersionUID = 1L;
 
     //~ Members ----------------------------------------------------------------------------------------------------------

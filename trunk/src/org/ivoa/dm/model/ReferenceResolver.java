@@ -21,11 +21,6 @@ import org.ivoa.util.JavaUtils;
 public final class ReferenceResolver extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**
-   * serial UID for Serializable interface : every concrete class must have its value corresponding to last
-   * modification date of the UML model
-   */
-  private static final long serialVersionUID = 1L;
   /** Identity / Reference resolver singleton */
   private static ReferenceResolver resolver = new ReferenceResolver();
   /** singleton : thread local contexts */

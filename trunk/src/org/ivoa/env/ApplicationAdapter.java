@@ -27,7 +27,7 @@ public final class ApplicationAdapter extends LogSupport {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * TODO : Method Description
+   * Start event
    */
   public static void init() {
     if (log.isDebugEnabled()) {
@@ -52,22 +52,25 @@ public final class ApplicationAdapter extends LogSupport {
   }
 
   /**
-   * TODO : Method Description
+   * Stop event
    */
   public static void stop() {
     if (log.isDebugEnabled()) {
-      log.debug("ApplicationAdapter.stop : enter");
+      log.debug("ApplicationAdapter.stop ...");
     }
 
+    ApplicationLifeCycle.onExit();
+
     try {
-      ApplicationLifeCycle.onExit();
+      // last one (clear logging) :
+      // clean up (GC) : 
+      ClassLoaderCleaner.clean();
+      
     } catch (final Throwable th) {
       log.error("ApplicationAdapter.stop : fatal error : ", th);
     }
 
-    if (log.isDebugEnabled()) {
-      log.debug("ApplicationAdapter.stop : exit");
-    }
+    ApplicationLifeCycle.onEnd();
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

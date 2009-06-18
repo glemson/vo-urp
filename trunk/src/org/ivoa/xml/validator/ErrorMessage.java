@@ -11,10 +11,7 @@ import java.io.Serializable;
 public final class ErrorMessage implements Serializable {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /**
-   * serial UID for Serializable interface : every concrete class must have its value corresponding to last
-   * modification date of the UML model
-   */
+  /** serial UID for Serializable interface */
   private static final long serialVersionUID = 1L;
 
   //~ Members ----------------------------------------------------------------------------------------------------------
