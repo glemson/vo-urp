@@ -44,7 +44,7 @@ public final class ManagerMain {
     log = initLogs();
 
     if (log != null) {
-      ApplicationAdapter.init();
+      ApplicationAdapter.start();
 
       try {
         process(args);

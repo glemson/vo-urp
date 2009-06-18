@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import org.ivoa.bean.LogSupport;
 import org.ivoa.conf.Configuration;
+import org.ivoa.util.timer.TimerFactory;
 
 
 /**
@@ -29,10 +30,12 @@ public final class ApplicationAdapter extends LogSupport {
   /**
    * Start event
    */
-  public static void init() {
+  public static void start() {
     if (log.isDebugEnabled()) {
-      log.debug("ApplicationAdapter.init : enter");
+      log.debug("ApplicationAdapter.start : enter");
     }
+
+    // callback to create resources (Swing application) :
 
     try {
       // Defines Locale to english (decimal separator 0.x) :
@@ -43,11 +46,14 @@ public final class ApplicationAdapter extends LogSupport {
 
       ApplicationLifeCycle.doStart();
     } catch (final Throwable th) {
-      log.error("ApplicationAdapter.init : fatal error : ", th);
+      log.error("ApplicationAdapter.start : fatal error : ", th);
     }
 
+    // TimerFactory warmup and reset :
+    TimerFactory.resetTimers();
+    
     if (log.isDebugEnabled()) {
-      log.debug("ApplicationAdapter.init : exit");
+      log.debug("ApplicationAdapter.start : exit");
     }
   }
 
@@ -58,9 +64,16 @@ public final class ApplicationAdapter extends LogSupport {
     if (log.isDebugEnabled()) {
       log.debug("ApplicationAdapter.stop ...");
     }
-
+    
     ApplicationLifeCycle.onExit();
 
+    // callback to clean resources :
+
+    // TimerFactory dump :
+    if (logD.isWarnEnabled()) {
+      logD.warn("TimerFactory : statistics : " + TimerFactory.dumpTimers());
+    }
+    
     try {
       // last one (clear logging) :
       // clean up (GC) : 
