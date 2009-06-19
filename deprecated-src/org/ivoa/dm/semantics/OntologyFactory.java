@@ -1,9 +1,3 @@
-/*
- * OntologyLoader.java
- *
- * Author Gerard Lemson
- * Created on 11 May 2008
- */
 package org.ivoa.dm.semantics;
 
 import org.w3c.dom.Document;
@@ -33,9 +27,7 @@ import javax.xml.transform.stream.StreamSource;
 /**
  * Load ontologies/semantic vocabularies etc to be used by data models.<br>
  *
- * @author Gerard Lemson
- *
- * @since 11 May 2008
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class OntologyFactory {
   //~ Methods ----------------------------------------------------------------------------------------------------------

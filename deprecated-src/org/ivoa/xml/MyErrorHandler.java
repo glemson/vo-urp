@@ -1,9 +1,3 @@
-/*
- * ErrorHandler.java
- *
- * Author lemson
- * Created on Apr 30, 2008
- */
 package org.ivoa.xml;
 
 import org.xml.sax.ErrorHandler;
@@ -14,7 +8,7 @@ import org.xml.sax.SAXParseException;
 /**
  * TODO : Class Description
  *
- * @author laurent bourges (voparis) / Gerard Lemson (mpe)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class MyErrorHandler implements ErrorHandler {
   //~ Members ----------------------------------------------------------------------------------------------------------

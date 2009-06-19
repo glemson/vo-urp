@@ -12,7 +12,7 @@ import java.util.HashMap;
 /**
  * XSLT transformer with Saxon 9 API (xslt 2 engine)
  *
- * @author laurent bourges (voparis) / Gerard Lemson (mpe)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class XSLTTransformerTest {
   //~ Methods ----------------------------------------------------------------------------------------------------------

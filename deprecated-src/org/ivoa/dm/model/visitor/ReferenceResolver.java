@@ -1,9 +1,3 @@
-/*
- * ReferenceResolver.java
- *
- * Author Gerard Lemson
- * Created on 29 Jun 2008
- */
 package org.ivoa.dm.model.visitor;
 
 import org.ivoa.dm.model.visitor.*;
@@ -24,9 +18,7 @@ import java.util.Map;
  * For the object to be handled it checks whether any references have been set only "lazily", i.e. using a Reference
  * object
  *
- * @author Gerard Lemson
- *
- * @since 30 Jun 200830 Jun 2008
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class ReferenceResolver implements Visitor {
   //~ Constants --------------------------------------------------------------------------------------------------------

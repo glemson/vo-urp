@@ -1,9 +1,3 @@
-/*
- * TestTAP_SCHEMA.java
- * 
- * Author lemson
- * Created on Oct 30, 2008
- */
 package org.vo.urp.test;
 
 import java.util.List;

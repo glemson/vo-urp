@@ -1,9 +1,3 @@
-/*
- * XMLSXSDTester.java
- *
- * Author lemson
- * Created on Apr 30, 2008
- */
 package org.ivoa.xml;
 
 import org.xml.sax.ErrorHandler;
@@ -21,7 +15,7 @@ import javax.xml.validation.*;
 /**
  * TODO : Class Description
  *
- * @author laurent bourges (voparis) / Gerard Lemson (mpe)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class XMLSXSDTester {
   //~ Methods ----------------------------------------------------------------------------------------------------------

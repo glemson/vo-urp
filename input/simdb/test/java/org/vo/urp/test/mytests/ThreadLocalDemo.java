@@ -1,9 +1,3 @@
-/*
- * ThreadLocalDemo.java
- * 
- * Author Gerard Lemson
- * Created on 8 Jun 2008
- */
 package org.vo.urp.test.mytests;
 
 import java.util.Date;

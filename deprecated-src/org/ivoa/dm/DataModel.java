@@ -5,7 +5,7 @@ package org.ivoa.dm;
  * documents - MetaModelFactory (intermediate model) - JAXBFactory - JPAFactory  Model Version ?  TODO :
  * Implementation & use cases
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class DataModel {
   //~ Members ----------------------------------------------------------------------------------------------------------

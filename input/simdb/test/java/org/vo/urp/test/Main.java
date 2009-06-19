@@ -9,7 +9,7 @@ import org.vo.urp.test.jaxb.XMLTests;
 /**
  * Unit Tests : JPA
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class Main {
     //~ Constructors -----------------------------------------------------------------------------------------------------

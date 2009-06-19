@@ -14,7 +14,7 @@ import org.ivoa.simdb.protocol.Simulator;
 /**
  * TODO : Class Description
  *
- * @author laurent bourges (voparis) / Gerard Lemson (mpe)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class XMLTests extends LogSupport implements ApplicationMain {
   //~ Constants --------------------------------------------------------------------------------------------------------

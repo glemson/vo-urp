@@ -57,15 +57,15 @@ import org.vo.urp.test.jaxb.XMLTests;
 /**
  * Database Tests
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class DBTests extends LogSupport implements ApplicationMain {
     //~ Members ----------------------------------------------------------------------------------------------------------
 
     /** testLOAD_BATCH_WRITE iteration */
-    private final static int WRITE_ITERATION = 2;
+    private final static int WRITE_ITERATION = 10;
     /** testLOAD_THREADS_WRITE jobs */
-    private final static int WRITE_JOBS = 2;
+    private final static int WRITE_JOBS = 10;
     /** testLOAD_THREADS_WRITE number of threads */
     private final static int POOL_THREADS = 5;
     /** testLOAD_BATCH_WRITE jobs wait */

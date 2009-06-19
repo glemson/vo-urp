@@ -1,9 +1,3 @@
-/*
- * VOTableTest.java
- *
- * Author lemson
- * Created on Dec 23, 2008
- */
 package org.ivoa.votable;
 
 import java.io.File;
@@ -16,7 +10,7 @@ import javax.xml.bind.Unmarshaller;
 /**
  * TODO : Class Description
  *
- * @author laurent bourges (voparis) / Gerard Lemson (mpe)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class VOTableTest {
   //~ Methods ----------------------------------------------------------------------------------------------------------
