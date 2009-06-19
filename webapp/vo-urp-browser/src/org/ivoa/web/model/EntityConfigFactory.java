@@ -10,7 +10,7 @@ import org.ivoa.bean.SingletonSupport;
 /**
  * EntityConfig factory to hold references to EntityConfig
  *
- * @author laurent
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class EntityConfigFactory extends SingletonSupport {
     //~ Constants --------------------------------------------------------------------------------------------------------
@@ -51,25 +51,8 @@ public final class EntityConfigFactory extends SingletonSupport {
     }
 
     /**
-     * TODO : Method Description
-     */
-    public static void onExit() {
-        if (logD.isWarnEnabled()) {
-            logD.warn("EntityConfigFactory.onExit : enter");
-        }
-        if (instance != null) {
-            instance.clear();
-        }
-        // force GC :
-        instance = null;
-
-        if (logD.isWarnEnabled()) {
-            logD.warn("EntityConfigFactory.onExit : exit");
-        }
-    }
-
-    /**
-     * TODO : Method Description
+     * Abstract method to be implemented by concrete implementations :
+     * Callback to initialize this SingletonSupport instance
      */
     @Override
     public void initialize() {
@@ -91,7 +74,8 @@ public final class EntityConfigFactory extends SingletonSupport {
     }
 
     /**
-     * TODO : Method Description
+     * Abstract method to be implemented by concrete implementations :
+     * Callback to clean up this SingletonSupport instance
      */
     @Override
     public void clear() {

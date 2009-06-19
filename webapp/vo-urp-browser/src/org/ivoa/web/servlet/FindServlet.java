@@ -10,7 +10,9 @@ import org.ivoa.web.model.EntityConfig;
 
 
 /**
- * The servlet class to list Experiment from SNAP database
+ * The servlet class to show an entity by its ID
+ *
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class FindServlet extends BaseServlet {
   //~ Constants --------------------------------------------------------------------------------------------------------

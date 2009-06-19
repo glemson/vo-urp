@@ -20,7 +20,7 @@ import javax.servlet.http.HttpSession;
 /**
  * Simple SQL Query interface
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class QueryServlet extends BaseServlet {
   //~ Constants --------------------------------------------------------------------------------------------------------

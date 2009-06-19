@@ -7,11 +7,9 @@ import javax.servlet.ServletRequestListener;
 
 
 /**
- * JPARequestListener.java
+ * JPARequestListener
  *
- * Created on 12 sept. 2007, 15:44:15
- *
- * @author laurent
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class JPARequestListener implements ServletRequestListener {
   //~ Methods ----------------------------------------------------------------------------------------------------------

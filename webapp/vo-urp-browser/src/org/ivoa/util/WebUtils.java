@@ -4,11 +4,9 @@ import javax.servlet.http.HttpServletRequest;
 
 
 /**
- * WebUtils.java
+ * WebUtils
  *
- * Created on 20 sept. 2007, 18:19:21
- *
- * @author laurent
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class WebUtils {
   //~ Constructors -----------------------------------------------------------------------------------------------------

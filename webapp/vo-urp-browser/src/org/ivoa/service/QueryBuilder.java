@@ -4,11 +4,9 @@ import org.ivoa.web.model.EntityConfig;
 
 
 /**
- * QueryBuilder.java
+ * QueryBuilder
  *
- * Created on 29 août 2007, 15:41:22
- *
- * @author laurent
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class QueryBuilder {
   //~ Constants --------------------------------------------------------------------------------------------------------

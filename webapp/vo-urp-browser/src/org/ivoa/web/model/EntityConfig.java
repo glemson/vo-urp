@@ -9,11 +9,11 @@ import java.util.Map;
 
 
 /**
- * Generic Access to DataBase SNAP
+ * Generic Configuration for the data model associated to web pages
  *
- * @author laurent
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public class EntityConfig {
+public final class EntityConfig {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /**

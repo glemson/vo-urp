@@ -1,16 +1,10 @@
-/*
- * BaseResult.java
- *
- * Author lemson
- * Created on Oct 31, 2008
- */
 package org.ivoa.web.model;
 
 /**
  * TODO : Class Description
  *
- * @author laurent bourges (voparis) / Gerard Lemson (mpe)
-  */
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
+ */
 public class BaseResult {
   //~ Members ----------------------------------------------------------------------------------------------------------
 

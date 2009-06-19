@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * SQL Query bean
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class SQLQuery implements Serializable {
   //~ Constants --------------------------------------------------------------------------------------------------------

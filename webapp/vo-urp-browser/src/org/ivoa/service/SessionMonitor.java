@@ -13,7 +13,7 @@ import org.ivoa.bean.LogSupport;
 /**
  * Session monitor :
  *
- * @author laurent
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class SessionMonitor extends LogSupport implements HttpSessionListener {
     //~ Constants --------------------------------------------------------------------------------------------------------

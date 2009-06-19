@@ -23,7 +23,7 @@ import org.ivoa.web.model.EntityConfigFactory;
 /**
  * Facade pattern for the web application
  *
- * @author laurent
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class VO_URP_Facade extends LogSupport {
     //~ Constants --------------------------------------------------------------------------------------------------------
@@ -34,14 +34,14 @@ public class VO_URP_Facade extends LogSupport {
     public static final int DEF_PAGE_SIZE = 10;
     /** TODO : Field Description */
     private static VO_URP_Facade instance = null;
+    /** EntityManager Thread Local (lazy weaving) */
+    private static EntityManagerThreadLocal entityLocal = null;
+
     //~ Members ----------------------------------------------------------------------------------------------------------
     /** TODO : Field Description */
     private EntityConfigFactory ecf;
     /** EntityManager factory */
     private EntityManagerFactory emf;
-    /** EntityManager Thread Local (lazy weaving) */
-    private ThreadLocal<EntityManager> threadLocal;
-
     /** global Cache (thread safe) */
     @SuppressWarnings("unchecked")
     private Map globalCache = new ConcurrentHashMap();
@@ -51,7 +51,7 @@ public class VO_URP_Facade extends LogSupport {
      * Constructor
      */
     private VO_URP_Facade() {
-      /* no-op */
+        /* no-op */
     }
 
     //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -76,11 +76,11 @@ public class VO_URP_Facade extends LogSupport {
         }
 
         final VO_URP_Facade facade = new VO_URP_Facade();
-        
+
         // defines the singleton before initialization :
         // check if really necessary :
         instance = facade;
-        
+
         facade.prepare();
 
         // finally add this component to the application context :
@@ -110,7 +110,7 @@ public class VO_URP_Facade extends LogSupport {
 
         // TimerFactory dump :
         if (logD.isWarnEnabled()) {
-          logD.warn("TimerFactory : statistics : " + TimerFactory.dumpTimers());
+            logD.warn("TimerFactory : statistics : " + TimerFactory.dumpTimers());
         }
 
         if (log != null && log.isWarnEnabled()) {
@@ -118,12 +118,12 @@ public class VO_URP_Facade extends LogSupport {
         }
 
         try {
-          // last one (clear logging) :
-          // clean up (GC) : 
-          ClassLoaderCleaner.clean();
-          
+            // last one (clear logging) :
+            // clean up (GC) :
+            ClassLoaderCleaner.clean();
+
         } catch (final Throwable th) {
-          log.error("VO_URP_Facade.freeInstance : fatal error : ", th);
+            log.error("VO_URP_Facade.freeInstance : fatal error : ", th);
         }
     }
 
@@ -184,12 +184,13 @@ public class VO_URP_Facade extends LogSupport {
         }
 
         this.emf = jf.getEmf();
- 
-        this.threadLocal = new ThreadLocal<EntityManager>();
+
+        // prepare the entityManager thread local :
+        entityLocal = new EntityManagerThreadLocal(this.emf);
 
         // TimerFactory warmup and reset :
         TimerFactory.resetTimers();
-        
+
         if (log != null) {
             log.warn("Application is ready.");
         }
@@ -205,8 +206,9 @@ public class VO_URP_Facade extends LogSupport {
         }
 
         // force GC :
-        this.threadLocal = null;
         this.globalCache.clear();
+
+        entityLocal = null;
 
         // free Session stats Thread :
         SessionMonitor.onExit();
@@ -220,36 +222,15 @@ public class VO_URP_Facade extends LogSupport {
 
     // Utilities --------------
     /**
-     * TODO : Method Description
+     * Return an entity manager associated to the current thread<br/>
+     * Do not close it if used by an HTTPServletRequest
+     *
+     * @ee #closeEntityManager()
      *
      * @return value TODO : Value Description
      */
-    public EntityManager createEntityManager() {
-        EntityManager em = this.threadLocal.get();
-
-        if (em == null) {
-            em = doCreateEntityManager();
-            if (em != null) {
-                threadLocal.set(em);
-            }
-        }
-
-        return em;
-    }
-
-    /**
-     * TODO : Method Description
-     *
-     * @return value TODO : Value Description
-     */
-    private EntityManager doCreateEntityManager() {
-        final EntityManager em = emf.createEntityManager();
-
-        if (log.isInfoEnabled()) {
-            log.info("doCreateEntityManager : instance created : " + em);
-        }
-
-        return em;
+    protected EntityManager createEntityManager() {
+        return entityLocal.createValue();
     }
 
     /**
@@ -257,27 +238,12 @@ public class VO_URP_Facade extends LogSupport {
      *
      * Used by :
      * JPARequestListener.requestDestroyed()
+     *
+     * @see JPARequestListener#requestDestroyed()
      */
     public void closeEntityManager() {
-        if (this.threadLocal != null) {
-            final EntityManager em = threadLocal.get();
-
-            if (em != null) {
-                // free thread-local first
-                threadLocal.remove();
-
-                if (em.isOpen()) {
-                    if (log.isInfoEnabled()) {
-                        log.info("doCreateEntityManager : instance closed : " + em);
-                    }
-
-                    em.close();
-                } else {
-                    if (log.isInfoEnabled()) {
-                        log.info("doCreateEntityManager : instance already closed : " + em);
-                    }
-                }
-            }
+        if (entityLocal != null) {
+            entityLocal.releaseValue();
         }
     }
 
@@ -293,8 +259,8 @@ public class VO_URP_Facade extends LogSupport {
     public Object getItem(final Long id, final Class c) {
         final EntityManager em = createEntityManager();
 
+        // close is defered in JPARequestListener
         return em.find(c, id);
-    // close is defered in JPARequestListener
     }
 
     /**
@@ -309,8 +275,8 @@ public class VO_URP_Facade extends LogSupport {
 
         final Long c = (Long) em.createQuery(query).getSingleResult();
 
+        // close is defered in JPARequestListener
         return Integer.valueOf(c.intValue());
-    // close is defered in JPARequestListener
     }
 
     /**
@@ -348,8 +314,8 @@ public class VO_URP_Facade extends LogSupport {
             log.debug("refreshCursor : size : " + results.size());
         }
 
+        // close is defered in JPARequestListener
         cq.setResults(results);
-    // close is defered in JPARequestListener
     }
 
     // CursorQuery
@@ -455,6 +421,74 @@ public class VO_URP_Facade extends LogSupport {
      */
     public EntityConfigFactory getEntityConfigFactory() {
         return ecf;
+    }
+
+
+    //~ Inner Classes ----------------------------------------------------------------------------------------------------
+    /**
+     * This class uses the ThreadLocal pattern to associate an EntityManager to the current thread
+     */
+    protected static final class EntityManagerThreadLocal extends ThreadLocal<EntityManager> {
+        //~ Members ----------------------------------------------------------------------------------------------------------
+
+        /** EntityManager factory */
+        private EntityManagerFactory emf;
+
+        //~ Constructors ---------------------------------------------------------------------------------------------------
+        /**
+         * Protected constructor
+         */
+        protected EntityManagerThreadLocal(final EntityManagerFactory emf) {
+            super();
+            this.emf = emf;
+        }
+
+        //~ Methods --------------------------------------------------------------------------------------------------------
+        /**
+         * Return a new EntityManager for the current thread
+         * @return new EntityManager instance using the inner EntityManagerFactory
+         */
+        protected final EntityManager createValue() {
+
+            EntityManager em = get();
+
+            if (em == null) {
+                em = emf.createEntityManager();
+
+                if (log.isInfoEnabled()) {
+                    log.info("doCreateEntityManager : instance created : " + em);
+                }
+                if (em != null) {
+                    set(em);
+                }
+            }
+            return em;
+        }
+
+        protected final void releaseValue() {
+            final EntityManager em = get();
+
+            if (em != null) {
+                // free thread-local first
+                remove();
+
+                if (em.isOpen()) {
+                    if (log.isInfoEnabled()) {
+                        log.info("doCreateEntityManager : instance closed : " + em);
+                    }
+
+                    em.close();
+                } else {
+                    if (log.isInfoEnabled()) {
+                        log.info("doCreateEntityManager : instance already closed : " + em);
+                    }
+                }
+            }
+        }
+
+        protected void clear() {
+            this.emf = null;
+        }
     }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

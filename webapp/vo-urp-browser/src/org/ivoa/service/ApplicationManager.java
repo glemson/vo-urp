@@ -7,7 +7,7 @@ import org.apache.log4j.servlet.InitShutdownController;
 
 /**
  *
- * @author laurent
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class ApplicationManager implements ServletContextListener {
     //~ Constants --------------------------------------------------------------------------------------------------------
