@@ -1,9 +1,3 @@
-/*
- * S9APIExamples.java
- *
- * Author Gerard Lemson
- * Created on 24 Dec 2008
- */
 package org.ivoa.xml;
 
 import net.sf.saxon.s9api.*;

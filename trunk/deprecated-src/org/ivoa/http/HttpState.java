@@ -3,7 +3,7 @@ package org.ivoa.http;
 /**
  * TODO : Class Description
  *
- * @author Laurent Bourges
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class HttpState {
   //~ Constants --------------------------------------------------------------------------------------------------------

@@ -1,9 +1,3 @@
-/*
- * ToXML.java
- *
- * Author Gerard Lemson
- * Created on 29 Jun 2008
- */
 package org.ivoa.dm.model.visitor;
 
 import org.ivoa.dm.model.visitor.*;
@@ -18,9 +12,7 @@ import org.ivoa.metamodel.Reference;
 /**
  * This test Visitor calculates a simple XML representation of a starting object.<br>
  *
- * @author Gerard Lemson
- *
- * @since 29 Jun 200829 Jun 2008
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class ToXML implements Visitor {
   //~ Members ----------------------------------------------------------------------------------------------------------
