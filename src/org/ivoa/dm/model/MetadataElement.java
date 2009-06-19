@@ -15,7 +15,7 @@ import org.ivoa.dm.MetaModelFactory;
  * Super class for all generated java classes (JPA 1.0 & soon JAXB 2.1 compliant). Implements Serializable to be
  * compatible with JPA API contract. Supports simple API (like java.lang.reflection) via MetaModelFactory class.
  *
- * @author Gerard Lemson, Laurent Bourges
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public abstract class MetadataElement extends LogSupport implements Serializable, Cloneable {
   //~ Constants --------------------------------------------------------------------------------------------------------

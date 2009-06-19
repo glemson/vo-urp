@@ -18,7 +18,7 @@ import org.ivoa.bean.LogSupport;
 /**
  * TODO : Class Description
  *
- * @author laurent bourges (voparis) / Gerard Lemson (mpe)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class TypeWrapper extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------

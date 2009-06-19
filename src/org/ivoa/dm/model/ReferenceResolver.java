@@ -16,7 +16,7 @@ import org.ivoa.util.JavaUtils;
  * This class manages xmlId & ivoId references and looks up for corresponding items in memory (JAXB unmarshalling
  * ID / IDREF) or in database (ivoId)
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ReferenceResolver extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
@@ -52,7 +52,7 @@ public final class ReferenceResolver extends LogSupport {
    * @param em entity manager
    */
   public static final void initContext(final EntityManager em) {
-    localContext.getContext().setEm(em);
+    localContext.get().setEm(em);
   }
 
   /**
@@ -68,7 +68,7 @@ public final class ReferenceResolver extends LogSupport {
    * @return ResolverContext associated with the current thread
    */
   protected static final ResolverContext currentContext() {
-    return localContext.getContext();
+    return localContext.get();
   }
 
   /**
@@ -181,7 +181,7 @@ public final class ReferenceResolver extends LogSupport {
   protected static final class ResolverThreadLocal extends ThreadLocal<ResolverContext> {
     //~ Constructors ---------------------------------------------------------------------------------------------------
 
-/**
+    /**
      * Protected constructor
      */
     protected ResolverThreadLocal() {
@@ -198,15 +198,6 @@ public final class ReferenceResolver extends LogSupport {
     @Override
     public ResolverContext initialValue() {
       return new ResolverContext();
-    }
-
-    /**
-     * Returns the current ResolverContext for the current thread (creates a new one if needed)
-     *
-     * @return ResolverContext instance associated with the current thread
-     */
-    protected final ResolverContext getContext() {
-      return super.get();
     }
   }
 

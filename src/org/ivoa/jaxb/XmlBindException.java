@@ -7,7 +7,7 @@ import org.ivoa.xml.validator.ValidationResult;
 /**
  * This class is a RuntimeException wrapping a JAXB Exception or a validation failure 
  * 
- * @author laurent bourges (voparis) / gerard lemson (mpe)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class XmlBindException extends RuntimeException {
   //~ Constants --------------------------------------------------------------------------------------------------------

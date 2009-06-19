@@ -31,7 +31,7 @@ import org.ivoa.util.StringBuilderWriter;
 /**
  * MetadataElement factory  Manages creating new instances for generated classes
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ModelFactory extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------

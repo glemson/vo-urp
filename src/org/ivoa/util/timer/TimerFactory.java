@@ -1,7 +1,5 @@
 package org.ivoa.util.timer;
 
-
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -12,14 +10,14 @@ import org.ivoa.bean.LogSupport;
  * The Timer factory contains a map[key - Timer] to associate time metrics statistics to several
  * categories of operations
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class TimerFactory extends LogSupport {
 
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** default warmup cycles = 2000 */
-  private final static int WARMUP_CYCLES = 20000;
+  private final static int WARMUP_CYCLES = 10000;
 
   /** category for the first  warmup to optimise the timer code (hotspot) */
   private final static String WARMUP1_CATEGORY = "warmup-1";
@@ -30,6 +28,8 @@ public final class TimerFactory extends LogSupport {
   /** Map[key - timer] */
   protected static Map<String, ThresholdTimer> timers = new LinkedHashMap<String, ThresholdTimer>();
 
+  /** threshold for long time = 2s */
+  private final static double THRESHOLD = 2000d;
 
   static {
     // warm up 1 :
@@ -96,7 +96,7 @@ public final class TimerFactory extends LogSupport {
     ThresholdTimer timer = timers.get(category);
 
     if (timer == null) {
-      timer = new ThresholdTimer(10000d); // 10s
+      timer = new ThresholdTimer(THRESHOLD);
       timers.put(category, timer);
     }
 

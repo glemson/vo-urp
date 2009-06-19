@@ -6,7 +6,7 @@ import org.ivoa.conf.Configuration;
 /**
  * Simple class to manage internal start / stop / terminate events
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ApplicationLifeCycle {
   //~ Constructors -----------------------------------------------------------------------------------------------------

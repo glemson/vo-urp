@@ -9,7 +9,7 @@ import org.ivoa.dm.model.Visitor;
  *
  * UNUSED !!
  *
- * @author laurent bourges (voparis) / Gerard Lemson (mpe)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
   */
 public final class MarshallObjectPostProcessor extends Visitor {
 

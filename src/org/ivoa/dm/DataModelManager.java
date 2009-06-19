@@ -26,7 +26,7 @@ import org.ivoa.xml.validator.XMLValidator;
 /**
  * Facade Class to manage data model instance (xml documents & database representation)
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class DataModelManager extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------

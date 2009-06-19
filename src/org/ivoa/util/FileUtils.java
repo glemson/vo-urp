@@ -20,7 +20,7 @@ import org.ivoa.bean.LogSupport;
  * File Utils : Several utility methods : finds a file in classpath (jar), open files for read or
  * write operation and close file
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class FileUtils extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ public final class FileUtils extends LogSupport {
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
-/**
+  /**
    * Forbidden FileUtils constructor
    */
   private FileUtils() {

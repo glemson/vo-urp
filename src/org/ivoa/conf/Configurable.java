@@ -3,7 +3,7 @@ package org.ivoa.conf;
 /**
  * This interface defines the Configuration class to use in this project and its file name
  * 
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public interface Configurable {
 

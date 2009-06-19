@@ -3,7 +3,7 @@ package org.ivoa.conf;
 /**
  * OS Enumeration describes main OS (windows, mac os, linux, other)
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public enum OSEnum {
 

@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Collection toString() methods
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class CollectionUtils {
 

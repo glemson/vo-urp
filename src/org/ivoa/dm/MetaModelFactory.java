@@ -35,7 +35,7 @@ import org.ivoa.util.StringUtils;
  * This Class exposes a MetaModel API to get informations on every UML elements to allow easy inspection of any
  * instances of the model  It loads the metaModel from an XML document with JAXB and prepares the collections
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class MetaModelFactory extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------

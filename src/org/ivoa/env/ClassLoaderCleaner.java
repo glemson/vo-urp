@@ -1,6 +1,7 @@
 package org.ivoa.env;
 
 import org.apache.commons.logging.Log;
+import org.ivoa.bean.SingletonSupport;
 import org.ivoa.dm.MetaModelFactory;
 import org.ivoa.dm.ModelFactory;
 import org.ivoa.jaxb.JAXBFactory;
@@ -11,7 +12,7 @@ import org.ivoa.util.LogUtil;
 /**
  * Cleans singleton before ClassLoader gets cleared (to ensure good gc)
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ClassLoaderCleaner {
   //~ Constructors -----------------------------------------------------------------------------------------------------
@@ -37,15 +38,17 @@ public final class ClassLoaderCleaner {
 
     // hard coded Factory calls to onExit() :
 
-    /*
-     * TODO : Use the SingletonSupport pattern to know which class should be cleaned up :
-     */
-
     MetaModelFactory.onExit();
     ModelFactory.onExit();
 
     JAXBFactory.onExit();
     JPAFactory.onExit();
+
+    /*
+     * TODO : Use the SingletonSupport pattern to know which class should be cleaned up :
+     */
+
+    SingletonSupport.onExit();
 
     // ThreadLocal checks :
     ThreadLocalCleaner.checkThreads();

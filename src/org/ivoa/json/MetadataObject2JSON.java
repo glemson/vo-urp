@@ -16,7 +16,7 @@ import org.json.JSONObject;
 /**
  * TODO : Class Description
  *
- * @author laurent bourges (voparis) / Gerard Lemson (mpe)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class MetadataObject2JSON {
   //~ Constants --------------------------------------------------------------------------------------------------------

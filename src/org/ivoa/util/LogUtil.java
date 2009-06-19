@@ -9,7 +9,7 @@ import org.apache.commons.logging.LogFactory;
 /**
  * Commons-logging & Log4J Utility class :
  * 
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class LogUtil {
   // ~ Constants

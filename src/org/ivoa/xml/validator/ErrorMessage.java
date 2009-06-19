@@ -6,7 +6,7 @@ import java.io.Serializable;
 /**
  * Xml validation error message
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ErrorMessage implements Serializable {
   //~ Constants --------------------------------------------------------------------------------------------------------

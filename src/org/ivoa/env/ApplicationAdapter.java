@@ -12,7 +12,7 @@ import org.ivoa.util.timer.TimerFactory;
  * This class defines a way to initialize properly the running Environment and indicate that an
  * implementation interacts with the application life cycle Mainly used by Main classes
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ApplicationAdapter extends LogSupport {
 

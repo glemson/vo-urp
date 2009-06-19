@@ -19,7 +19,7 @@ import org.xml.sax.SAXParseException;
 /**
  * XML Document Validator against an xml schema
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class XMLValidator {
   //~ Members ----------------------------------------------------------------------------------------------------------

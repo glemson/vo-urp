@@ -9,7 +9,7 @@ import javax.persistence.Column;
 /**
  * Root Entity Object is a base type corresponding to a full XML document
  * 
- * @author laurent bourges / gerard lemson
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public abstract class MetadataRootEntityObject extends MetadataObject {
     //~ Constants --------------------------------------------------------------------------------------------------------

@@ -4,9 +4,9 @@ import org.ivoa.bean.LogSupport;
 
 
 /**
- * Reflection tools :
+ * Reflection tools
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ReflectionUtils extends LogSupport {
 

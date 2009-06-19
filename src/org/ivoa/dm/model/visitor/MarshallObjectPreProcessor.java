@@ -11,8 +11,8 @@ import org.ivoa.dm.model.Visitor;
  * Used by :
  * @see org.ivoa.dm.ModelFactory#marshallObject(String, MetadataObject)
  *
- * @author laurent bourges (voparis) / Gerard Lemson (mpe)
-  */
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
+ */
 public final class MarshallObjectPreProcessor extends Visitor {
 
 

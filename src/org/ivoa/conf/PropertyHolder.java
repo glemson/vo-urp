@@ -15,7 +15,7 @@ import org.ivoa.util.JavaUtils;
 /**
  * This class loads a property file & exposes a simple API
  *
- * @author laurent
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class PropertyHolder extends LogSupport implements Serializable {
   //~ Constants --------------------------------------------------------------------------------------------------------

@@ -4,7 +4,7 @@ package org.ivoa.env;
 /**
  * Application Main entry point
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public interface ApplicationMain {
 

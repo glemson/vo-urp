@@ -38,7 +38,7 @@ import org.xml.sax.SAXException;
  * Unused : 08/06/2009 but may be useful for dev tests.
  * </p>
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class XmlFactory extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
