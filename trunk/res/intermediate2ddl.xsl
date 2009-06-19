@@ -211,10 +211,6 @@ CREATE TABLE TargetObjectType (
       <xsl:apply-templates select="." mode="tableName"/>
     </xsl:variable>
     
-    <!--  check whether class is root entity -->
-    <xsl:variable name="isRootEntity">
-      <xsl:apply-templates select="." mode="isRootEntity"/> 
-    </xsl:variable>
     
 <xsl:text>CREATE TABLE </xsl:text><xsl:value-of select="$tableName"/><xsl:text> (</xsl:text>&cr;
 &bl;&bl;<xsl:value-of select="$primaryKeyColumnName"/>&bl;
@@ -425,7 +421,7 @@ DROP INDEX <xsl:value-of select="$tableName"/>.ix_<xsl:value-of select="$tableNa
   If so generate a containerID column.
   NOTE we should ensure that there is only 1  -->
   <xsl:template match="objectType" mode="rootEntity">
-    <xsl:if test="entity='true' and not(extends)">
+    <xsl:if test="@entity='true' and not(extends)">
       <xsl:text>, ownerUser VARCHAR(32)</xsl:text>&cr;
       <xsl:text>, updateUser VARCHAR(32)</xsl:text>&cr;      
       <xsl:text>, dbInsertTimestamp </xsl:text><xsl:call-template name="datetimeType"/>&cr;
