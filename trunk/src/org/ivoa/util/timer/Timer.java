@@ -3,7 +3,7 @@ package org.ivoa.util.timer;
 /**
  * This class contains statistics for time metrics
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class Timer {
   //~ Members ----------------------------------------------------------------------------------------------------------

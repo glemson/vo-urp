@@ -16,7 +16,7 @@ import org.ivoa.metamodel.TypeRef;
  * inheritance hierarchy to know which attributes, references and collections are present in this element.  Wrapper
  * pattern
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ObjectClassType extends ClassType {
   //~ Constants --------------------------------------------------------------------------------------------------------

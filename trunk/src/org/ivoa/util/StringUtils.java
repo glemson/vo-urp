@@ -3,7 +3,7 @@ package org.ivoa.util;
 /**
  * Useful string methods
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class StringUtils {
   //~ Constants --------------------------------------------------------------------------------------------------------

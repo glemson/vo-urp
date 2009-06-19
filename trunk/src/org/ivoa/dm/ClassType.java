@@ -16,7 +16,7 @@ import org.ivoa.metamodel.TypeRef;
  * ClassType represents a java class (in memory) corresponding to the metamodel for an UML DataType. This class is
  * used to find directly all elements inside an inheritance hierarchy
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class ClassType extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------

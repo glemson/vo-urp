@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Main Java utility methods : isEmpty / asList
  * 
- * @author laurent bourges
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class JavaUtils {
 

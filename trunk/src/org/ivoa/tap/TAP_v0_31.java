@@ -1,16 +1,10 @@
-/*
- * TAP.java
- *
- * Author Gerard Lemson
- * Created on 30 Dec 2008
- */
 package org.ivoa.tap;
 
 /**
- * TODO : Interface Description
+ * TAP version 0.31
  *
- * @author laurent bourges (voparis) / Gerard Lemson (mpe)
-  */
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
+ */
 public interface TAP_v0_31 {
   //~ Constants --------------------------------------------------------------------------------------------------------
 

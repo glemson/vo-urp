@@ -7,7 +7,7 @@ import org.ivoa.env.ApplicationAdapter;
 /**
  * DataModelManager Command Line Tool
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ManagerMain {
   //~ Constants --------------------------------------------------------------------------------------------------------

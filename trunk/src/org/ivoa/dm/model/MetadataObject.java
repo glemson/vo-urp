@@ -25,7 +25,7 @@ import org.ivoa.util.JavaUtils;
 /**
  * MetadataObject : Super class for all UML ObjectType only.
  *
- * @author Gerard Lemson, Laurent Bourges
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 @MappedSuperclass
 @XmlAccessorType(XmlAccessType.NONE)

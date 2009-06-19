@@ -8,8 +8,7 @@ import java.io.Writer;
  * Unsynchronized StringBuilder writer for performance A character stream that collects its output
  * in a string builder, which can then be used to construct a string.
  *
- * @author laurent bourges (voparis)  A character stream that collects its output in a string builder, which can then
- *         be used to construct a string. <p>
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class StringBuilderWriter extends Writer {
   //~ Members ----------------------------------------------------------------------------------------------------------

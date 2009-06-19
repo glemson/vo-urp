@@ -11,7 +11,7 @@ import org.ivoa.util.LogUtil;
 /**
  * Handles JAXB Unmarshaller events
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class CustomUnmarshallListener extends Unmarshaller.Listener {
 

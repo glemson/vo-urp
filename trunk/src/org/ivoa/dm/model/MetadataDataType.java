@@ -6,7 +6,7 @@ import org.ivoa.metamodel.DataType;
 /**
  * MetadataDataType : Super class for all UML DataType only.
  *
- * @author Gerard Lemson, laurent bourges
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public abstract class MetadataDataType extends MetadataElement {
   //~ Constants --------------------------------------------------------------------------------------------------------

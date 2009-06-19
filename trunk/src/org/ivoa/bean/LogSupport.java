@@ -6,7 +6,7 @@ import org.ivoa.util.LogUtil;
 /**
  * Log Support class to manage LogUtil references and classLoader issues
  *
- * @author laurent bourges
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class LogSupport {
 //~ Constants --------------------------------------------------------------------------------------------------------

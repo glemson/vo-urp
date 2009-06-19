@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Simple class to contain XML validation status and messages
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class ValidationResult {
   //~ Members ----------------------------------------------------------------------------------------------------------

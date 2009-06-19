@@ -24,7 +24,7 @@ import org.ivoa.util.JavaUtils;
  * - string xmlId : string for XML ID (xsd:id type) for xml instances <br>
  * - ivoId : URI format for external references
  *
- * @author Gerard Lemson, Laurent Bourges
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 @Embeddable
 @XmlAccessorType(XmlAccessType.NONE)

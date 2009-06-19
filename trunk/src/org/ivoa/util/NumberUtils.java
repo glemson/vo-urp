@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * Utility class to convert numbers to String
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class NumberUtils {
   //~ Constants --------------------------------------------------------------------------------------------------------

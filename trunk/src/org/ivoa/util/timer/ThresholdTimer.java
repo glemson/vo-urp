@@ -3,7 +3,7 @@ package org.ivoa.util.timer;
 /**
  * Special Timer with a threshold to separate low & high values
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ThresholdTimer {
   //~ Members ----------------------------------------------------------------------------------------------------------

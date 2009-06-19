@@ -17,7 +17,7 @@ import org.ivoa.util.JavaUtils;
  * - string xmlId : string for XML IDREF (xsd:idref type) for xml instances <br>
  * - ivoId : URI format for external references
  *
- * @author Gerard Lemson, Laurent Bourges
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "Reference", namespace = "http://www.ivoa.net/xml/dm/base/v0.1")

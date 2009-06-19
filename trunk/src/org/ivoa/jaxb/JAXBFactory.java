@@ -17,7 +17,7 @@ import org.ivoa.util.StringBuilderWriter;
 /**
  * JAXBFactory is an utility class to configure JAXB Connection & properties
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class JAXBFactory extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------

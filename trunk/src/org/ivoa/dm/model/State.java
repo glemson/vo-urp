@@ -1,9 +1,3 @@
-/*
- * Status.java
- *
- * Author Gerard Lemson
- * Created on 7 Oct 2008
- */
 package org.ivoa.dm.model;
 
 /**
@@ -14,9 +8,7 @@ package org.ivoa.dm.model;
  * this?).  For now only marshalling flags are to be set, so that we know whether an XML IDREF should be set on a
  * reference, or an ivoId.
  *
- * @author Gerard Lemson
- *
- * @since 7 Oct 20087 Oct 2008
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class State {
     //~ Constants --------------------------------------------------------------------------------------------------------

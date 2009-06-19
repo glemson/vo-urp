@@ -13,8 +13,7 @@ package org.ivoa.dm.model;
  * we need to keep track of whether objects have already been visited, as
  * objects may now be reached in multiple ways.
  *
- * @author Gerard Lemson
- * @since 29 Jun 200829 Jun 2008
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public abstract class Visitor {
 

@@ -12,7 +12,7 @@ import org.ivoa.util.ReflectionUtils;
  * <li>OS Type is available : {@link OSEnum}</li>
  * </ul>
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class Configuration extends PropertyHolder implements Configurable {
   //~ Constants --------------------------------------------------------------------------------------------------------

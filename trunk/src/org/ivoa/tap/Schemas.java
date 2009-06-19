@@ -1,9 +1,3 @@
-/*
- * Schema.java
- *
- * Author lemson
- * Created on Oct 29, 2008
- */
 package org.ivoa.tap;
 import java.util.List;
 
@@ -18,10 +12,10 @@ import javax.persistence.Table;
 
 
 /**
- * TODO : Class Description
+ * TAP Schemas
  *
- * @author laurent bourges (voparis) / Gerard Lemson (mpe)
-  */
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
+ */
 @Entity
 @Table(name = "TAP_SCHEMA.schemas")
 public class Schemas {

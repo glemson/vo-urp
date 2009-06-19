@@ -1,9 +1,3 @@
-/*
- * Column.java
- *
- * Author lemson
- * Created on Oct 29, 2008
- */
 package org.ivoa.tap;
 
 import javax.persistence.CascadeType;
@@ -16,10 +10,10 @@ import javax.persistence.Table;
 
 
 /**
- * TODO : Class Description
+ * TAP Columns
  *
- * @author laurent bourges (voparis) / Gerard Lemson (mpe)
-  */
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
+ */
 @Entity
 @Table(name = "TAP_SCHEMA.columns")
 public class Columns {

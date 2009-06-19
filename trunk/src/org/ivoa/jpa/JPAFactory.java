@@ -22,7 +22,7 @@ import org.ivoa.util.CollectionUtils;
 /**
  * JPAFactory is an utility class to configure JPA Connection & properties
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class JPAFactory extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
