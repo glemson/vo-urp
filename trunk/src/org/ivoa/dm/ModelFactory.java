@@ -254,6 +254,7 @@ public final class ModelFactory extends LogSupport {
 
       // unmarshal an instance document into a tree of Java content
       // objects composed of classes from the VO-URP generated root package.
+      // TODO TBD should this be a MetadataRootEntiityObject. In current design it alwasy should be, but should we make this restriction here or put this burden on the user?
       final MetadataObject m = (MetadataObject) u.unmarshal(r);
 
       // object can not be null here so unmarshall References and set containerId on collections :
