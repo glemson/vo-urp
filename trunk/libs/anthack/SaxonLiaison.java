@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * This class is a hack to work around Ant bug #41314: http://issues.apache.org/bugzilla/show_bug.cgi?id=41314
  * 
- * @author laurent bourges (voparis)
+ * @author laurent bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class SaxonLiaison extends TraXLiaison {
 
