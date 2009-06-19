@@ -8,6 +8,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -16,6 +20,9 @@ import org.ivoa.conf.RuntimeConfiguration;
 import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.ReferenceResolver;
 import org.ivoa.dm.model.MetadataRootEntityObject;
+import org.ivoa.dm.model.visitor.PersistObjectPostProcessor;
+import org.ivoa.dm.model.visitor.PersistObjectPreProcessor;
+import org.ivoa.dm.model.visitor.Persistor;
 import org.ivoa.jpa.JPAFactory;
 import org.ivoa.util.FileUtils;
 import org.ivoa.xml.validator.ErrorMessage;
@@ -41,6 +48,7 @@ public class DataModelManager extends LogSupport {
   /** TODO : Field Description */
   private XMLValidator validator;
 
+  private EntityManager currentEM;
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
 /**
@@ -181,32 +189,20 @@ public class DataModelManager extends LogSupport {
     Long             id = null;
 
     try {
-      em = jf.getEm();
+      em = getCurrentEM();//jf.getEm();
 
       // sets EntityManager to ReferenceResolver Context :
       ReferenceResolver.initContext(em);
 
       o = unmarshall(stream);
 
-      if (o instanceof MetadataRootEntityObject) // TODO enforce this ...
-       {
-        ((MetadataRootEntityObject) o).setOwner(userName);
-        ((MetadataRootEntityObject) o).setUpdateUser(userName);
-      }
-
-      // starts TX :
-      // starts transaction on snap database :
-      log.warn("DataModelManager.load : starting TX ...");
-      em.getTransaction().begin();
-
-      em.persist(o);
-
-      // finally : commits transaction on snap database :
-      log.warn("DataModelManager.load : committing TX");
-      em.getTransaction().commit();
-      log.warn("DataModelManager.load : TX commited.");
-
-      id = o.getId();
+      if (!(o instanceof MetadataRootEntityObject)) // TODO enforce this ...
+        throw new RuntimeException("Can only load root entity objects");
+      List<MetadataRootEntityObject> l = new ArrayList<MetadataRootEntityObject>();
+      l.add((MetadataRootEntityObject)o);
+      
+      persist(l, userName); // TODO do something about the userName, maybe get from (threadlocal) context? 
+      
     } catch (final RuntimeException re) {
       log.error("DataModelManager.load : runtime failure : ", re);
 
@@ -233,5 +229,59 @@ public class DataModelManager extends LogSupport {
 
     return o;
   }
+  /**
+   * Persist (aka flush) alll specified objects (and their children) to the database.<br/>
+   * Only root entity objects can be persisted as a whole.
+   * 
+   * @param objects
+   */
+  public void persist(List<MetadataRootEntityObject> objects, String username)
+  {
+    try
+    {
+    EntityManager em = getCurrentEM();//
+
+    em.getTransaction().begin();
+
+    // TODO here we could(should?) get the current timestamp from the database, which is not necessarily in synch with the web server.
+    // For now a simpler solution ...
+    Timestamp currentTimestamp = new Timestamp(Calendar.getInstance().getTimeInMillis());
+    PersistObjectPreProcessor pre = new PersistObjectPreProcessor(username, currentTimestamp);
+    for(MetadataRootEntityObject o : objects)
+      o.traverse(pre);
+    for(MetadataRootEntityObject o : objects)
+      em.persist(o);
+    PersistObjectPostProcessor post = PersistObjectPostProcessor.getInstance();
+    for(MetadataRootEntityObject o : objects)
+      o.traverse(post);
+
+    // finally : commits transaction on snap database :
+    log.warn("DataModelManager.load : committing TX");
+    em.getTransaction().commit();
+    log.warn("DataModelManager.load : TX commited.");
+
+    } catch(RuntimeException re)
+    {
+      throw re;
+    }
+    
+
+  }
+  
+  /**
+   * For sharing the EntityManager between methods, store it on the DataModelManagar.<br/>
+   * TODO make sure this is thread safe !!!
+   * @return
+   */
+  public EntityManager getCurrentEM()
+  {
+    if(currentEM ==null || !currentEM.isOpen())
+    {
+      JPAFactory jf = getJPAFactory();
+      currentEM = jf.getEm();
+    }
+    return currentEM;
+  }
+  
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

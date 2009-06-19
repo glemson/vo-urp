@@ -106,6 +106,15 @@ public abstract class MetadataObject extends MetadataElement {
     public Long getId() {
         return this.id;
     }
+    /**
+     * Retrun true if this object does not have a representation in the database yet, false otherwise.<br/>
+     * TODO currently a little bit a shaky implementation. We may want to implement this using a proper status object. Or by using special values for the id.
+     * @return
+     */
+    public boolean isPurelyTransient()
+    {
+      return getId() == null;
+    }
 
     /**
      * Returns the current field but creates a new Identity if needed. <br>

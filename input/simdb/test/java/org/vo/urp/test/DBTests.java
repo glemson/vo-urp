@@ -1,13 +1,17 @@
 package org.vo.urp.test;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
+import org.ivoa.dm.DataModelManager;
 import org.ivoa.dm.MetaModelFactory;
 import org.ivoa.dm.model.MetadataObject;
+import org.ivoa.dm.model.MetadataRootEntityObject;
 import org.ivoa.dm.model.ReferenceResolver;
 
 import org.ivoa.env.ApplicationMain;
@@ -63,11 +67,11 @@ public class DBTests extends LogSupport implements ApplicationMain {
     //~ Members ----------------------------------------------------------------------------------------------------------
 
     /** testLOAD_BATCH_WRITE iteration */
-    private final static int WRITE_ITERATION = 10;
+    private final static int WRITE_ITERATION = 4;
     /** testLOAD_THREADS_WRITE jobs */
-    private final static int WRITE_JOBS = 10;
+    private final static int WRITE_JOBS = 4;
     /** testLOAD_THREADS_WRITE number of threads */
-    private final static int POOL_THREADS = 5;
+    private final static int POOL_THREADS = 2;
     /** testLOAD_BATCH_WRITE jobs wait */
     private final static int WRITE_WAIT_SECONDS = 120;
     /** XMLTests */
@@ -166,6 +170,7 @@ public class DBTests extends LogSupport implements ApplicationMain {
 
         // Batch writes : Laurent : In progress :
         testLOAD_BATCH_WRITE(jf, PROTOCOL_FILE_PDR);
+        testLOAD_BATCH_WRITE_SINGLE_TRANSACTION(jf, PROTOCOL_FILE_PDR);
 
         // Batch writes : Laurent : In progress :
         testLOAD_THREADS_WRITE(jf, PROTOCOL_FILE_PDR);
@@ -799,6 +804,52 @@ public class DBTests extends LogSupport implements ApplicationMain {
         if (em != null) {
             em.close();
         }
+    }
+
+    /**
+     * TODO : Method Description
+     * Alternative implementation of testLOAD_BATCH_WRITE. Persists a whole collection of objects in one transaction.<br/>
+     *
+     * @param jf
+     * @param xmlDocumentPath
+     */
+    public void testLOAD_BATCH_WRITE_SINGLE_TRANSACTION(final JPAFactory jf, final String xmlDocumentPath) {
+        log.info("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION : enter");
+    
+        EntityManager em = null;
+    
+        StringBuffer ids = new StringBuffer();
+            try {
+                em = jf.getEm();
+   
+                DataModelManager dm = new DataModelManager(jf.getPu());
+
+                ReferenceResolver.initContext(em);
+    
+                final List<MetadataRootEntityObject> simList = new ArrayList<MetadataRootEntityObject>();
+                for (int i = 0; i < WRITE_ITERATION; i++) 
+                    simList.add((MetadataRootEntityObject)xmlTest.testUnMashall(xmlDocumentPath));
+    
+                dm.persist(simList,"testuser");
+                for (MetadataRootEntityObject sim: simList) 
+                  ids.append(sim.getId()).append(" ");
+                log.warn("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION : TX wrote " + simList.size()+" simulators to database: " + ids.toString());
+    
+            } catch(XmlBindException je)
+            {
+              log.error("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION: error parsing XML document : \n" + je.getMessage());
+              throw je;
+            } catch (final RuntimeException re) {
+                log.error("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION : runtime failure : ", re);
+    
+                throw re;
+            } finally {
+                // free resolver context (thread local) :
+                ReferenceResolver.freeContext();
+    
+                em.close();
+            }
+        log.info("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION : exit");
     }
 
     private static final class WriteJob implements Runnable {
