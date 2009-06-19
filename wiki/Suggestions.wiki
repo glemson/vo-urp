@@ -18,6 +18,7 @@ Show objects of type anyURI as hyperlinks (if they start with http, ftp, file).
 
 
 [GL 2006-06-19]:
+
 At beginning of a persist, within the transaction, retrieve the current
 timestamp from the database and use it to set the appropriate
 dbInserttimestamp and dbUpdatetimestamp on all metadatarootentitytobject-s.
