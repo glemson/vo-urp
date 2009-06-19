@@ -1,9 +1,3 @@
-/*
- * TAPResult.java
- *
- * Author lemson
- * Created on Oct 31, 2008
- */
 package org.ivoa.web.model;
 
 import java.io.IOException;
@@ -15,7 +9,7 @@ import java.util.Map;
 /**
  * TODO : Class Description
  *
- * @author laurent bourges (voparis) / Gerard Lemson (mpe)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
   */
 public class TAPResult extends BaseResult {
   //~ Constants --------------------------------------------------------------------------------------------------------

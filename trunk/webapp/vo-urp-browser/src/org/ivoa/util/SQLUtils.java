@@ -21,7 +21,7 @@ import javax.persistence.EntityManager;
 /**
  * Simple SQL Query executor using eclipseLink
  *
- * @author laurent bourges (voparis)
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class SQLUtils {
 

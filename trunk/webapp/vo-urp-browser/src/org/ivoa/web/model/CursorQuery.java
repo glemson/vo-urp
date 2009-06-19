@@ -5,9 +5,9 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * CursorQuery.java Created on 22 août 2007, 17:22:27
+ * CursorQuery
  * 
- * @author laurent
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class CursorQuery implements Serializable {
   //~ Constants --------------------------------------------------------------------------------------------------------

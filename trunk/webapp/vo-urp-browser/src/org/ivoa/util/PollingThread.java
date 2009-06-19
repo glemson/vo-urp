@@ -8,7 +8,7 @@ import java.util.concurrent.CountDownLatch;
  * Simple Looping Thread that calls the handle() method then waits some time and loops till Thread.interrupt() sent
  * by another thread
  *
- * @author laurent
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public abstract class PollingThread extends Thread {
     //~ Constants --------------------------------------------------------------------------------------------------------

@@ -20,7 +20,7 @@ import org.ivoa.web.model.TAPResult;
  * Current version is (to be ) based on TAP v0.31 The doGet and doPost methods of this servlet interpret the
  * corresponding HTTP requests.
  *
- * @author Gerard Lemson
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class TAP0_31Servlet extends BaseServlet implements TAP_v0_31 {
   //~ Constants --------------------------------------------------------------------------------------------------------

@@ -18,10 +18,9 @@ import javax.servlet.http.HttpSession;
 
 
 /**
- * Base class for VO-URP servlets.
+ * Base class for VO-URP servlets
  *
- * @author laurent
- * @author gerard
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class BaseServlet extends HttpServlet {
   //~ Constants --------------------------------------------------------------------------------------------------------

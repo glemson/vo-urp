@@ -25,6 +25,8 @@ import org.ivoa.xml.XSLTTransformer;
 /**
  * The servlet class uses XSLT documents to transform from the domain representation of objects to denormalised
  * views.<br>
+ * 
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class XSLTTransformerServlet extends BaseServlet {
   //~ Constants --------------------------------------------------------------------------------------------------------

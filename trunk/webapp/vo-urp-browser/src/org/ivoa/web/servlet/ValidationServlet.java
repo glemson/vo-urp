@@ -21,7 +21,9 @@ import org.ivoa.xml.validator.ValidationResult;
 
 
 /**
- * The servlet class to list Experiment from SNAP database
+ * The servlet class to validate XML documents
+ *
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ValidationServlet extends BaseServlet {
   //~ Constants --------------------------------------------------------------------------------------------------------

@@ -14,7 +14,9 @@ import javax.servlet.http.HttpSession;
 
 
 /**
- * The servlet class to list Experiment from SNAP database
+ * The servlet class to list entities
+ *
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ListServlet extends BaseServlet {
   //~ Constants --------------------------------------------------------------------------------------------------------
