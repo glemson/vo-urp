@@ -14,4 +14,12 @@ For unique attributes, create a named query.
 
 [GL 2009-06-11]:
 
-Show objects of type nayURI as hyperlinks (if they start with http, ftp, file).
+Show objects of type anyURI as hyperlinks (if they start with http, ftp, file).
+
+
+[GL 2006-06-19]:
+At beginning of a persist, within the transaction, retrieve the current
+timestamp from the database and use it to set the appropriate
+dbInserttimestamp and dbUpdatetimestamp on all metadatarootentitytobject-s.
+(dbInserttimestamp and dbOwner only if this is an insert: how do we know?
+status object? form non-existsence of Long id ?
