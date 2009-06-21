@@ -48,21 +48,17 @@
 
   3. Visitor for toString + processExport refs
 
-  4. SimDBHelper for collection and several utility methods
-(findInCollection ...) as I did in pdrDB
+  4. SimDBHelper for collection and several utility methods (findInCollection ...) as I did in pdrDB
 
   5. add voparis job engine (usfeul for TAP)
 
 
 > Gerard Lemson : 
-  0. add unit (default) into Field entity + a semantic reference for unit
-thesaurus
-  0. Quantity.unit will be not used in the first SimDB : only for later
-purpose : add this constraint in the documentation (uml, note ...)
+  0. add unit (default) into Field entity + a semantic reference for unit thesaurus
+  0. Quantity.unit will be not used in the first SimDB : only for later purpose : add this constraint in the documentation (uml, note ...)
 
   1. ValidValue = add a double value to the string value
-  1. Quantity re-design : rename to Literal to support both string and
-numerical values :
+  1. Quantity re-design : rename to Literal to support both string and numerical values :
        + ValueLiteral
        |- StringLiteral  (string)
        |- NumericLiteral (double)
