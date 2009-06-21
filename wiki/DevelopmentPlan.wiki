@@ -1,5 +1,6 @@
 #summary This page presents the developer point of view about the VO-URP developments
 
+
 = Development tasks =
 
 - Laurent : 
@@ -8,6 +9,7 @@
 
 - Gerard : 
     volute = *SimDB DM + note : important*
+
 
 
 
@@ -27,7 +29,9 @@
         - Download the schemas : create a simple web page to list these files (FileServlet + directory listing) in tomcat or apache ?
 
 
-# TODO List coming from a skype talk on 20/06/2009
+
+
+= TODO List coming from a skype talk on 20/06/2009 =
 
 - Issue No 6 :
 
@@ -62,6 +66,8 @@ numerical values :
        + ValueLiteral
        |- StringLiteral  (string)
        |- NumericLiteral (double)
+
+
 
 
 
