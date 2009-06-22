@@ -9,12 +9,14 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 import javax.servlet.ServletContext;
 
+import org.apache.commons.logging.Log;
 import org.ivoa.bean.LogSupport;
 import org.ivoa.conf.Configuration;
 import org.ivoa.conf.RuntimeConfiguration;
 import org.ivoa.dm.MetaModelFactory;
 import org.ivoa.env.ClassLoaderCleaner;
 import org.ivoa.jpa.JPAFactory;
+import org.ivoa.util.LogUtil;
 import org.ivoa.util.timer.TimerFactory;
 import org.ivoa.web.model.CursorQuery;
 import org.ivoa.web.model.EntityConfig;
@@ -213,8 +215,6 @@ public class VO_URP_Facade extends LogSupport {
         // free Session stats Thread :
         SessionMonitor.onExit();
 
-        EntityConfigFactory.onExit();
-
         if (log.isInfoEnabled()) {
             log.info("VO_URP_Facade.exit : exit");
         }
@@ -239,7 +239,7 @@ public class VO_URP_Facade extends LogSupport {
      * Used by :
      * JPARequestListener.requestDestroyed()
      *
-     * @see JPARequestListener#requestDestroyed()
+     * @see org.ivoa.web.servlet.JPARequestListener#requestDestroyed(javax.servlet.ServletRequestEvent)
      */
     public void closeEntityManager() {
         if (entityLocal != null) {
@@ -429,6 +429,11 @@ public class VO_URP_Facade extends LogSupport {
      * This class uses the ThreadLocal pattern to associate an EntityManager to the current thread
      */
     protected static final class EntityManagerThreadLocal extends ThreadLocal<EntityManager> {
+        //~ Constants --------------------------------------------------------------------------------------------------------
+  
+        /** Logger for this class and subclasses */
+        protected static Log logT = LogUtil.getLogger();
+      
         //~ Members ----------------------------------------------------------------------------------------------------------
 
         /** EntityManager factory */
@@ -437,10 +442,11 @@ public class VO_URP_Facade extends LogSupport {
         //~ Constructors ---------------------------------------------------------------------------------------------------
         /**
          * Protected constructor
+         * @param pEmf entity manager factory
          */
-        protected EntityManagerThreadLocal(final EntityManagerFactory emf) {
+        protected EntityManagerThreadLocal(final EntityManagerFactory pEmf) {
             super();
-            this.emf = emf;
+            this.emf = pEmf;
         }
 
         //~ Methods --------------------------------------------------------------------------------------------------------
@@ -455,8 +461,8 @@ public class VO_URP_Facade extends LogSupport {
             if (em == null) {
                 em = emf.createEntityManager();
 
-                if (log.isInfoEnabled()) {
-                    log.info("doCreateEntityManager : instance created : " + em);
+                if (logT.isInfoEnabled()) {
+                  logT.info("doCreateEntityManager : instance created : " + em);
                 }
                 if (em != null) {
                     set(em);
@@ -465,6 +471,9 @@ public class VO_URP_Facade extends LogSupport {
             return em;
         }
 
+        /**
+         * 
+         */
         protected final void releaseValue() {
             final EntityManager em = get();
 
@@ -473,19 +482,22 @@ public class VO_URP_Facade extends LogSupport {
                 remove();
 
                 if (em.isOpen()) {
-                    if (log.isInfoEnabled()) {
-                        log.info("doCreateEntityManager : instance closed : " + em);
+                    if (logT.isInfoEnabled()) {
+                      logT.info("doCreateEntityManager : instance closed : " + em);
                     }
 
                     em.close();
                 } else {
-                    if (log.isInfoEnabled()) {
-                        log.info("doCreateEntityManager : instance already closed : " + em);
+                    if (logT.isInfoEnabled()) {
+                      logT.info("doCreateEntityManager : instance already closed : " + em);
                     }
                 }
             }
         }
 
+        /**
+         * 
+         */
         protected void clear() {
             this.emf = null;
         }
