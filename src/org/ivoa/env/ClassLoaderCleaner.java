@@ -37,8 +37,6 @@ public final class ClassLoaderCleaner {
     }
 
     // hard coded Factory calls to onExit() :
-
-    MetaModelFactory.onExit();
     ModelFactory.onExit();
 
     JAXBFactory.onExit();

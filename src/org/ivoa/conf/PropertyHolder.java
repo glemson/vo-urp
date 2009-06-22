@@ -54,6 +54,8 @@ public class PropertyHolder extends LogSupport implements Serializable {
    * Initialization : loads the configuration file found in the system classpath (removes any empty property
    * value)
    *
+   * Use the Factory Pattern (introspection used to get a newInstance of the concrete PropertyHolder reference)
+   *
    * @param propertyFile property file name
    *
    * @return true if well done

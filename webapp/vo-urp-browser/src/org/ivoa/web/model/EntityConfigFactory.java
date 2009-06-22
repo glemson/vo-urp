@@ -15,10 +15,8 @@ import org.ivoa.bean.SingletonSupport;
 public final class EntityConfigFactory extends SingletonSupport {
     //~ Constants --------------------------------------------------------------------------------------------------------
 
-    /**
-     * TODO : Field Description
-     */
-    private static EntityConfigFactory instance = null;
+    /** singleton instance */
+    private static volatile EntityConfigFactory instance = null;
 
     //~ Members ----------------------------------------------------------------------------------------------------------
 
@@ -36,26 +34,29 @@ public final class EntityConfigFactory extends SingletonSupport {
 
     //~ Methods ----------------------------------------------------------------------------------------------------------
     /**
-     * TODO : Method Description
+     * Return the EntityConfigFactory singleton instance
      *
-     * @return value TODO : Value Description
+     * @return EntityConfigFactory singleton instance
+     *
+     * @throws IllegalStateException if a problem occured
      */
     public static final EntityConfigFactory getInstance() {
         if (instance == null) {
-            final EntityConfigFactory factory = new EntityConfigFactory();
-            factory.initialize();
-
-            instance = factory;
+            instance = (EntityConfigFactory) prepareInstance(new EntityConfigFactory());
         }
         return instance;
     }
 
     /**
-     * Abstract method to be implemented by concrete implementations :
+     * Concrete implementations of the SingletonSupport's initialize() method :<br/>
      * Callback to initialize this SingletonSupport instance
+     *
+     * @see SingletonSupport#initialize()
+     *
+     * @throws IllegalStateException if a problem occured
      */
     @Override
-    public void initialize() {
+    protected void initialize() throws IllegalStateException {
         // process all ClassTypes :
         final MetaModelFactory mf = MetaModelFactory.getInstance();
 
@@ -74,42 +75,59 @@ public final class EntityConfigFactory extends SingletonSupport {
     }
 
     /**
-     * Abstract method to be implemented by concrete implementations :
-     * Callback to clean up this SingletonSupport instance
+     * Concrete implementations of the SingletonSupport's clear() method :<br/>
+     * Callback to clean up this SingletonSupport instance iso clear instance fields
+     *
+     * @see SingletonSupport#clear()
      */
     @Override
-    public void clear() {
+    protected void clear() {
         // force GC :
         getConfigs().clear();
+
     }
 
     /**
-     * TODO : Method Description
+     * Concrete implementations of the SingletonSupport's clearStaticReferences() method :<br/>
+     * Callback to clean up the possible static references used by this SingletonSupport instance
+     * iso clear static references
      *
-     * @param e
+     * @see SingletonSupport#clearStaticReferences()
      */
-    public void addConfig(final EntityConfig e) {
+    @Override
+    protected void clearStaticReferences() {
+        if (instance != null) {
+            instance = null;
+        }
+    }
+
+    /**
+     * Add the given entityConfig instance to the entityConfig map
+     *
+     * @param ec entityConfig instance to add
+     */
+    public void addConfig(final EntityConfig ec) {
         // calls init (compute) :
-        e.init();
+        ec.init();
 
-        configs.put(e.getName(), e);
+        configs.put(ec.getName(), ec);
     }
 
     /**
-     * TODO : Method Description
+     * Return the entityConfig map
      *
-     * @return value TODO : Value Description
+     * @return entityConfig map
      */
-    public Map<String, EntityConfig> getConfigs() {
+    protected Map<String, EntityConfig> getConfigs() {
         return configs;
     }
 
     /**
-     * TODO : Method Description
+     * Return the entityConfig instance for the given alias
      *
-     * @param alias
+     * @param alias class type name
      *
-     * @return value TODO : Value Description
+     * @return entityConfig instance or null if not found
      */
     public EntityConfig getConfig(final String alias) {
         return configs.get(alias);
