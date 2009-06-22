@@ -97,7 +97,7 @@ public abstract class SingletonSupport extends LogSupport {
      * @return singleton log message
      */
     protected static final String getSingletonLogName(final SingletonSupport singleton) {
-        return "[" + getSingletonName(singleton) + " = " + singleton + "]";
+        return "[" + singleton + "]";
     }
 
     /**
@@ -178,8 +178,8 @@ public abstract class SingletonSupport extends LogSupport {
      */
     protected static final void onExit(final SingletonSupport singleton) {
         if (singleton != null) {
-            if (log.isInfoEnabled()) {
-                log.info("SingletonSupport.onExit : clear " + getSingletonLogName(singleton));
+            if (log.isWarnEnabled()) {
+                log.warn("SingletonSupport.onExit : clear : " + getSingletonLogName(singleton)  + " : enter");
             }
             try {
                 // clear instance fields :
@@ -190,6 +190,9 @@ public abstract class SingletonSupport extends LogSupport {
 
             } catch (RuntimeException re) {
                 log.error("SingletonSupport.onExit : runtime failure " + getSingletonLogName(singleton), re);
+            }
+            if (log.isWarnEnabled()) {
+                log.warn("SingletonSupport.onExit : clear : " + getSingletonLogName(singleton) + " : exit");
             }
         }
     }

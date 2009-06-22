@@ -781,7 +781,7 @@ public class DBTests extends LogSupport implements ApplicationMain {
                 log.error("DBTests.testSQLQuery : query : " + sql);
 
                 // Returns a List<Record implements Map> :
-                List rows = s.executeSelectingCall(new SQLCall(sql));
+                List<?> rows = s.executeSelectingCall(new SQLCall(sql));
 
                 log.error("DBTests.testSQLQuery : results : " + CollectionUtils.toString(rows));
             }
