@@ -157,9 +157,8 @@ public final class FastSemaphore implements Serializable {
       // processCancels(1);
       }
       return rc;
-    } else {
-      return true;
     }
+    return true;
   }
 
   /**
@@ -217,10 +216,11 @@ public final class FastSemaphore implements Serializable {
     }
   }
 
-  /*
+  /**
    * processCancels - add cancelCount to current count
    *
-   *   increment count by min(cancelCount, -(count)) iff count < 0
+   *   increment count by min(cancelCount, -(count)) if count < 0
+   * @param cancelCount value
    */
   private void processCancels(final int cancelCount) {
     int newCancelCount = cancelCount;

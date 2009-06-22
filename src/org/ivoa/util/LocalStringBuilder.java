@@ -16,6 +16,10 @@ public final class LocalStringBuilder extends SingletonSupport {
     private static ThreadLocal<StringBuilder> bufferLocal = new StringBuilderThreadLocal();
 
     //~ Constructors -----------------------------------------------------------------------------------------------------
+    
+    /**
+     * Forbidden constructor
+     */
     private LocalStringBuilder() {
         super();
     }
@@ -46,9 +50,9 @@ public final class LocalStringBuilder extends SingletonSupport {
     }
 
     /**
-     *
-     * @param sb
-     * @return
+     * Return the string contained in the given buffer and reset the buffer
+     * @param sb buffer
+     * @return string contained in the given buffer
      */
     public final static String toString(final StringBuilder sb) {
         final String s = sb.toString();

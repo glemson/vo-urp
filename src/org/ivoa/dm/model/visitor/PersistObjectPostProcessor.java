@@ -1,9 +1,7 @@
 package org.ivoa.dm.model.visitor;
 
 import org.ivoa.dm.model.MetadataObject;
-import org.ivoa.dm.model.MetadataRootEntityObject;
 import org.ivoa.dm.model.Visitor;
-import java.sql.Timestamp;
 
 /**
  * MetadataObject Visitor implementation :

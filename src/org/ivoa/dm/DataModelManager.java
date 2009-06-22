@@ -18,11 +18,10 @@ import javax.persistence.EntityManager;
 import org.ivoa.bean.LogSupport;
 import org.ivoa.conf.RuntimeConfiguration;
 import org.ivoa.dm.model.MetadataObject;
-import org.ivoa.dm.model.ReferenceResolver;
 import org.ivoa.dm.model.MetadataRootEntityObject;
+import org.ivoa.dm.model.ReferenceResolver;
 import org.ivoa.dm.model.visitor.PersistObjectPostProcessor;
 import org.ivoa.dm.model.visitor.PersistObjectPreProcessor;
-import org.ivoa.dm.model.visitor.Persistor;
 import org.ivoa.jpa.JPAFactory;
 import org.ivoa.util.FileUtils;
 import org.ivoa.xml.validator.ErrorMessage;
@@ -48,7 +47,9 @@ public class DataModelManager extends LogSupport {
   /** TODO : Field Description */
   private XMLValidator validator;
 
+  /** TODO : Field Description */
   private EntityManager currentEM;
+  
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
 /**
@@ -182,14 +183,13 @@ public class DataModelManager extends LogSupport {
    * @return value TODO : Value Description
    */
   public MetadataObject load(final InputStream stream, final String userName) {
-    final JPAFactory jf = getJPAFactory();
 
     EntityManager    em = null;
     MetadataObject   o  = null;
     Long             id = null;
 
     try {
-      em = getCurrentEM();//jf.getEm();
+      em = getCurrentEM();
 
       // sets EntityManager to ReferenceResolver Context :
       ReferenceResolver.initContext(em);
@@ -230,10 +230,11 @@ public class DataModelManager extends LogSupport {
     return o;
   }
   /**
-   * Persist (aka flush) alll specified objects (and their children) to the database.<br/>
+   * Persist (aka flush) all specified objects (and their children) to the database.<br/>
    * Only root entity objects can be persisted as a whole.
    * 
    * @param objects
+   * @param username 
    */
   public void persist(List<MetadataRootEntityObject> objects, String username)
   {
@@ -271,7 +272,7 @@ public class DataModelManager extends LogSupport {
   /**
    * For sharing the EntityManager between methods, store it on the DataModelManagar.<br/>
    * TODO make sure this is thread safe !!!
-   * @return
+   * @return EntityManager
    */
   public EntityManager getCurrentEM()
   {

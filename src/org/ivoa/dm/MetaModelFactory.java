@@ -109,7 +109,7 @@ public final class MetaModelFactory extends SingletonSupport {
      */
     public static final MetaModelFactory getInstance() {
         if (instance == null) {
-            instance = (MetaModelFactory) prepareInstance(new MetaModelFactory());
+            instance = prepareInstance(new MetaModelFactory());
 
             // Post Initialization pattern :
             if (instance != null) {
