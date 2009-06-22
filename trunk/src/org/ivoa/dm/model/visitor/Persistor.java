@@ -1,18 +1,16 @@
 package org.ivoa.dm.model.visitor;
 
-import org.ivoa.dm.model.MetadataObject;
-import org.ivoa.dm.model.MetadataRootEntityObject;
-import org.ivoa.dm.model.Visitor;
-import java.sql.Timestamp;
-
 import javax.persistence.EntityManager;
+
+import org.ivoa.dm.model.MetadataObject;
+import org.ivoa.dm.model.Visitor;
 
 /**
  * MetadataObject Visitor implementation :
  * This visitor persists incoming objects to the JPA entity manage.<br/>
  *
  * Used by :
- * @see org.ivoa.dm.DataModelManager#persists(List<MetedataRootEntityObject, String)
+ * @see org.ivoa.dm.DataModelManager#persists(java.util.List<MetadataRootEntityObject>, String)
  *
  * @author Gerard Lemson
  */

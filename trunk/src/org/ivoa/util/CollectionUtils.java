@@ -56,7 +56,6 @@ public final class CollectionUtils {
    * 
    * @param sb buffer
    * @param c collection
-   * @return string
    */
   public static void toString(final StringBuilder sb, final Collection<?> c) {
     toString(sb, c, LINE_SEPARATOR, BEGIN_SEPARATOR, END_SEPARATOR);
@@ -87,7 +86,6 @@ public final class CollectionUtils {
    * 
    * @param sb buffer
    * @param m map
-   * @return string
    */
   public static void toString(final StringBuilder sb, final Map<?, ?> m) {
     toString(sb, m, LINE_SEPARATOR, BEGIN_SEPARATOR, END_SEPARATOR);
@@ -114,7 +112,6 @@ public final class CollectionUtils {
    * @param sb buffer
    * @param c collection
    * @param lineSep line separator
-   * @return string
    */
   public static void toString(final StringBuilder sb, final Collection<?> c, final String lineSep) {
     toString(sb, c, lineSep, "", "");
@@ -141,7 +138,6 @@ public final class CollectionUtils {
    * @param sb buffer
    * @param m map
    * @param lineSep line separator
-   * @return string
    */
   public static void toString(final StringBuilder sb, final Map<?, ?> m, final String lineSep) {
     toString(sb, m, lineSep, "", "");
@@ -173,7 +169,6 @@ public final class CollectionUtils {
    * @param lineSep line separator
    * @param startSep start separator
    * @param endSep end separator
-   * @return string
    */
   public static void toString(final StringBuilder sb, final Collection<?> c, final String lineSep,
       final String startSep, final String endSep) {
@@ -218,7 +213,6 @@ public final class CollectionUtils {
    * @param lineSep line separator
    * @param startSep start separator
    * @param endSep end separator
-   * @return string
    */
   @SuppressWarnings("unchecked")
   public static void toString(final StringBuilder sb, final Map<?, ?> m, final String lineSep,

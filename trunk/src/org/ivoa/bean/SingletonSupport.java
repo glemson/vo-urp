@@ -39,14 +39,15 @@ public abstract class SingletonSupport extends LogSupport {
 
     /**
      * Prepare the given singleton instance
+     * @param <T> SingletonSupport child class type
      *
-     * @param SingletonSupport instance
+     * @param singleton SingletonSupport instance
      * @return prepared SingletonSupport instance
      *
      * @throws IllegalStateException if a problem occured
      */
-    protected static final SingletonSupport prepareInstance(final SingletonSupport singleton) {
-        SingletonSupport managedInstance = null;
+  protected static final <T extends SingletonSupport> T prepareInstance(final T singleton) {
+    T managedInstance = null;
         if (singleton != null) {
             try {
                 // initialize :
@@ -150,7 +151,7 @@ public abstract class SingletonSupport extends LogSupport {
                 // clean up :
                 SingletonSupport singleton;
 
-                for (Iterator<SingletonSupport> it = managedInstances.values().iterator(); it.hasNext();) {
+                for (final Iterator<SingletonSupport> it = managedInstances.values().iterator(); it.hasNext();) {
                     singleton = it.next();
 
                     onExit(singleton);
@@ -209,7 +210,7 @@ public abstract class SingletonSupport extends LogSupport {
      * @throws IllegalStateException if a problem occured
      */
     protected void initialize() throws IllegalStateException {
-        /* no-op */
+      /* no-op */
     }
 
     /**
@@ -220,7 +221,16 @@ public abstract class SingletonSupport extends LogSupport {
      * @throws IllegalStateException if a problem occured
      */
     protected void postInitialize() throws IllegalStateException {
-        /* no-op */
+      /* no-op */
+    }
+
+    /**
+     * Abstract method to be implemented by concrete implementations :<br/>
+     * Callback to clean up the possible static references used by this SingletonSupport instance
+     * iso clear static references
+     */
+    protected void clearStaticReferences() {
+      /* no-op */
     }
 
     /**
@@ -229,13 +239,5 @@ public abstract class SingletonSupport extends LogSupport {
      */
     protected abstract void clear();
 
-    /**
-     * Abstract method to be implemented by concrete implementations :<br/>
-     * Callback to clean up the possible static references used by this SingletonSupport instance
-     * iso clear static references
-     */
-    protected void clearStaticReferences() {
-        /* no-op */
-    }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

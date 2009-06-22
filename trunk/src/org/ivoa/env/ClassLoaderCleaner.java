@@ -2,7 +2,6 @@ package org.ivoa.env;
 
 import org.apache.commons.logging.Log;
 import org.ivoa.bean.SingletonSupport;
-import org.ivoa.dm.MetaModelFactory;
 import org.ivoa.dm.ModelFactory;
 import org.ivoa.jaxb.JAXBFactory;
 import org.ivoa.jpa.JPAFactory;

@@ -107,12 +107,14 @@ public abstract class MetadataObject extends MetadataElement {
         return this.id;
     }
     /**
-     * Retrun true if this object does not have a representation in the database yet, false otherwise.<br/>
-     * TODO currently a little bit a shaky implementation. We may want to implement this using a proper status object. Or by using special values for the id.
-     * @return
+     * Return true if this object does not have a representation in the database yet, false otherwise.<br/>
+     * 
+     * TODO currently a little bit a shaky implementation. We may want to implement this using a proper status object. 
+     * Or by using special values for the id.
+     * 
+     * @return true if this object does not have a representation in the database yet, false otherwise
      */
-    public boolean isPurelyTransient()
-    {
+    public boolean isPurelyTransient() {
       return getId() == null;
     }
 
