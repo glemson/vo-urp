@@ -27,7 +27,7 @@ public final class LogUtil {
   /** developer logger : dev */
   public static final String LOGGER_DEV = "org.ivoa.dev";
 
-  /** singleton instance */
+  /** singleton instance (java 5 memory model) */
   private static volatile LogUtil instance = null;
 
   /** shutdown flag to avoid singleton to be defined */

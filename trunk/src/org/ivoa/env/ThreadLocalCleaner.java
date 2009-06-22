@@ -34,9 +34,8 @@ public class ThreadLocalCleaner extends LogSupport {
         Thread.enumerate(ta);
 
         for (Thread t : ta) {
-            if (logD.isInfoEnabled()) {
-                log.info("ThreadLocalCleaner.checkThreads : analyse : " + t.getName());
-            }
+            log.warn("ThreadLocalCleaner.checkThreads : checking : " + t.getName());
+
             ThreadLocalCleaner.checkThreadLocals(t);
         }
 
