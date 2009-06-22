@@ -15,6 +15,9 @@ public final class LocalStringBuilder extends SingletonSupport {
     /** buffer thread Local */
     private static ThreadLocal<StringBuilder> bufferLocal = new StringBuilderThreadLocal();
 
+    /** singleton instance (java 5 memory model) */
+    private static LocalStringBuilder instance = new LocalStringBuilder();
+    
     //~ Constructors -----------------------------------------------------------------------------------------------------
     
     /**
@@ -22,15 +25,24 @@ public final class LocalStringBuilder extends SingletonSupport {
      */
     private LocalStringBuilder() {
         super();
+        
+        // register this instance in SingletonSupport
+        register(this);
     }
 
     /**
-     * Abstract method to be implemented by concrete implementations :
-     * Callback to clean up this SingletonSupport instance
+     * Concrete implementations of the SingletonSupport's clearStaticReferences() method :<br/>
+     * Callback to clean up the possible static references used by this SingletonSupport instance iso
+     * clear static references
+     * 
+     * @see SingletonSupport#clearStaticReferences()
      */
     @Override
-    public void clear() {
+    protected void clearStaticReferences() {
         // force GC :
+      if (instance != null) {
+        instance = null;
+      }
         bufferLocal = null;
     }
 
