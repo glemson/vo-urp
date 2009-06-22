@@ -170,6 +170,20 @@ public final class MetaModelFactory extends SingletonSupport {
     }
 
     /**
+     * Concrete implementations of the SingletonSupport's clearStaticReferences() method :<br/>
+     * Callback to clean up the possible static references used by this SingletonSupport instance
+     * iso clear static references
+     *
+     * @see SingletonSupport#clearStaticReferences()
+     */
+    @Override
+    protected void clearStaticReferences() {
+        if (instance != null) {
+            instance = null;
+        }
+    }
+
+    /**
      * Concrete implementations of the SingletonSupport's clear() method :<br/>
      * Callback to clean up this SingletonSupport instance iso clear instance fields
      *
@@ -188,20 +202,6 @@ public final class MetaModelFactory extends SingletonSupport {
         this.objectClassTypes.clear();
         this.classes.clear();
         this.tap.clear();
-    }
-
-    /**
-     * Concrete implementations of the SingletonSupport's clearStaticReferences() method :<br/>
-     * Callback to clean up the possible static references used by this SingletonSupport instance
-     * iso clear static references
-     *
-     * @see SingletonSupport#clearStaticReferences()
-     */
-    @Override
-    protected void clearStaticReferences() {
-        if (instance != null) {
-            instance = null;
-        }
     }
 
     /**

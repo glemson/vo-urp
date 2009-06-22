@@ -146,7 +146,7 @@ public final class InspectorTests extends LogSupport implements ApplicationMain 
   public void dumpCollections(final ObjectClassType ct, final MetadataObject m) {
     String               propertyName;
     Object               value;
-    java.util.Collection col;
+    java.util.Collection<?> col;
     int                  size;
 
     for (final Collection c : ct.getCollections().values()) {
@@ -159,7 +159,7 @@ public final class InspectorTests extends LogSupport implements ApplicationMain 
       value = m.getProperty(propertyName);
 
       if (value instanceof java.util.Collection) {
-        col = (java.util.Collection) value;
+        col = (java.util.Collection<?>) value;
         size = col.size();
 
         if (log.isInfoEnabled()) {

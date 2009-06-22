@@ -8,7 +8,7 @@ import org.ivoa.dm.model.Visitor;
  * This updates the objects id-s after persistence.<br/>
  * 
  * Used by :
- * @see org.ivoa.dm.DataModelManager#persists(List<MetedataRootEntityObject, String)
+ * @see org.ivoa.dm.DataModelManager#persists(List<MetadataRootEntityObject>, String)
  *
  * @author Gerard Lemson (mpe)
   */
