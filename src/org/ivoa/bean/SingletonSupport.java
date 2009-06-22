@@ -204,7 +204,7 @@ public abstract class SingletonSupport extends LogSupport {
 
     //~ Methods ----------------------------------------------------------------------------------------------------------
     /**
-     * Abstract method to be implemented by concrete implementations :<br/>
+   * Empty method to be implemented by concrete implementations :<br/>
      * Callback to initialize this SingletonSupport instance
      *
      * @throws IllegalStateException if a problem occured
@@ -214,7 +214,7 @@ public abstract class SingletonSupport extends LogSupport {
     }
 
     /**
-     * Abstract method to be implemented by concrete implementations :<br/>
+   * Empty method to be implemented by concrete implementations :<br/>
      * This method must be called by concrete implementation after the singleton is defined.<br/>
      * Post Initialization pattern called after the singleton is defined
      *
@@ -225,19 +225,21 @@ public abstract class SingletonSupport extends LogSupport {
     }
 
     /**
-     * Abstract method to be implemented by concrete implementations :<br/>
-     * Callback to clean up the possible static references used by this SingletonSupport instance
-     * iso clear static references
+   * Empty method to be implemented by concrete implementations :<br/>
+   * Callback to clean up the possible static references used by this SingletonSupport instance iso
+   * clear static references
      */
     protected void clearStaticReferences() {
       /* no-op */
     }
 
     /**
-     * Abstract method to be implemented by concrete implementations :<br/>
+   * Empty method to be implemented by concrete implementations :<br/>
      * Callback to clean up this SingletonSupport instance iso clear instance fields
      */
-    protected abstract void clear();
+  protected void clear() {
+    /* no-op */
+  }
 
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
