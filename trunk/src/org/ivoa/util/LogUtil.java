@@ -5,9 +5,15 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.eclipse.persistence.logging.CommonsLoggingSessionLog;
 
 /**
- * Commons-logging & Log4J Utility class :
+ * Commons-logging & Log4J Utility class.<br/>
+ *
+ * This class is the first loaded class (singleton) to provide logging API.<br/>
+ * It acts like SingletonSupport but can not use it because SingletonSupport has a direct reference to loggers !
+ *
+ * @see org.ivoa.bean.SingletonSupport
  * 
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
@@ -272,9 +278,34 @@ public final class LogUtil {
    * @param level Log4J Level
    */
   private void setLevel(final org.apache.log4j.Level level) {
-    for (final Log l : this.logs.values()) {
-      this.getLog4JLogger(l).setLevel(level);
+    if (log.isWarnEnabled()) {
+      log.warn("LogUtil : level changed to : " + level.toString());
     }
+
+    for (final Log l : this.logs.values()) {
+        setLevel(l, level);
+    }
+  }
+
+  /**
+   * Public method to change the level of a Log4J Logger
+   * @param log Log
+   * @param level Log4J Level
+   */
+  public static final void setLevel(final Log log, final org.apache.log4j.Level level) {
+    setLevel(getLog4JLogger(log), level);
+  }
+
+  /**
+   * Public method to change the level of a Log4J Logger
+   * @param logger Log4J Logger
+   * @param level Log4J Level
+   */
+  public static final void setLevel(final org.apache.log4j.Logger logger, final org.apache.log4j.Level level) {
+    logger.setLevel(level);
+
+    // Reset the cachedLevel for the log hierarchy :
+    CommonsLoggingSessionLog.resetCachedLevels();
   }
 
   /**
@@ -283,7 +314,7 @@ public final class LogUtil {
    * @param l Log
    * @return Log4JLogger
    */
-  private org.apache.log4j.Logger getLog4JLogger(final Log l) {
+  private static final org.apache.log4j.Logger getLog4JLogger(final Log l) {
     return ((org.apache.commons.logging.impl.Log4JLogger) l).getLogger();
   }
 
@@ -292,7 +323,7 @@ public final class LogUtil {
    * 
    * @return Log
    */
-  private Log getLog() {
+  private final Log getLog() {
     return this.log;
   }
 
@@ -301,7 +332,7 @@ public final class LogUtil {
    * 
    * @return Log
    */
-  private Log getLogDev() {
+  private final Log getLogDev() {
     return this.logDev;
   }
 
@@ -309,21 +340,15 @@ public final class LogUtil {
   /**
    * Changes Level for all Loggers to DEBUG Level
    */
-  public void setDebug() {
+  public final void setDebug() {
     setLevel(org.apache.log4j.Level.DEBUG);
-    if (log.isWarnEnabled()) {
-      log.warn("LogUtil : level changed to : DEBUG");
-    }
   }
 
   /**
    * Changes Level for all Loggers to WARNING Level
    */
-  public void setWarn() {
+  public final void setWarn() {
     setLevel(org.apache.log4j.Level.WARN);
-    if (log.isWarnEnabled()) {
-      log.warn("LogUtil : level changed to : WARN");
-    }
   }
 }
 // ~ End of file

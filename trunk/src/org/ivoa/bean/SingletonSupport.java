@@ -1,8 +1,12 @@
 package org.ivoa.bean;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import org.ivoa.util.CollectionUtils;
 import org.ivoa.util.JavaUtils;
 import org.ivoa.util.concurrent.FastSemaphore;
 
@@ -46,8 +50,8 @@ public abstract class SingletonSupport extends LogSupport {
      *
      * @throws IllegalStateException if a problem occured
      */
-  protected static final <T extends SingletonSupport> T prepareInstance(final T singleton) {
-    T managedInstance = null;
+    protected static final <T extends SingletonSupport> T prepareInstance(final T singleton) {
+        T managedInstance = null;
         if (singleton != null) {
             try {
                 // initialize :
@@ -151,7 +155,15 @@ public abstract class SingletonSupport extends LogSupport {
                 // clean up :
                 SingletonSupport singleton;
 
-                for (final Iterator<SingletonSupport> it = managedInstances.values().iterator(); it.hasNext();) {
+                // reverse singleton ordering :
+                final List<SingletonSupport> instances = new ArrayList<SingletonSupport>(managedInstances.values());
+                Collections.reverse(instances);
+
+                if (log.isWarnEnabled()) {
+                    log.warn("SingletonSupport.onExit : instances to free : " + CollectionUtils.toString(instances));
+                }
+
+                for (final Iterator<SingletonSupport> it = instances.iterator(); it.hasNext();) {
                     singleton = it.next();
 
                     onExit(singleton);
@@ -179,7 +191,7 @@ public abstract class SingletonSupport extends LogSupport {
     protected static final void onExit(final SingletonSupport singleton) {
         if (singleton != null) {
             if (log.isWarnEnabled()) {
-                log.warn("SingletonSupport.onExit : clear : " + getSingletonLogName(singleton)  + " : enter");
+                log.warn("SingletonSupport.onExit : clear : " + getSingletonLogName(singleton) + " : enter");
             }
             try {
                 // clear instance fields :
@@ -207,42 +219,41 @@ public abstract class SingletonSupport extends LogSupport {
 
     //~ Methods ----------------------------------------------------------------------------------------------------------
     /**
-   * Empty method to be implemented by concrete implementations :<br/>
+     * Empty method to be implemented by concrete implementations :<br/>
      * Callback to initialize this SingletonSupport instance
      *
      * @throws IllegalStateException if a problem occured
      */
     protected void initialize() throws IllegalStateException {
-      /* no-op */
+        /* no-op */
     }
 
     /**
-   * Empty method to be implemented by concrete implementations :<br/>
+     * Empty method to be implemented by concrete implementations :<br/>
      * This method must be called by concrete implementation after the singleton is defined.<br/>
      * Post Initialization pattern called after the singleton is defined
      *
      * @throws IllegalStateException if a problem occured
      */
     protected void postInitialize() throws IllegalStateException {
-      /* no-op */
+        /* no-op */
     }
 
     /**
-   * Empty method to be implemented by concrete implementations :<br/>
-   * Callback to clean up the possible static references used by this SingletonSupport instance iso
-   * clear static references
+     * Empty method to be implemented by concrete implementations :<br/>
+     * Callback to clean up the possible static references used by this SingletonSupport instance iso
+     * clear static references
      */
     protected void clearStaticReferences() {
-      /* no-op */
+        /* no-op */
     }
 
     /**
-   * Empty method to be implemented by concrete implementations :<br/>
+     * Empty method to be implemented by concrete implementations :<br/>
      * Callback to clean up this SingletonSupport instance iso clear instance fields
      */
-  protected void clear() {
-    /* no-op */
-  }
-
+    protected void clear() {
+        /* no-op */
+    }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
