@@ -9,6 +9,10 @@ import org.ivoa.conf.Configuration;
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ApplicationLifeCycle {
+    
+    /** application title copied in doStart() method */
+    private static String APPLICATION_TITLE = null;
+
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
 /**
@@ -26,6 +30,9 @@ public final class ApplicationLifeCycle {
   protected static void doStart() {
     final String title = Configuration.getInstance().getTitle();
 
+    // memorize the application title to avoid using Configuration.getInstance() :
+    APPLICATION_TITLE = title;
+
     System.out.println("-------------------------------------------------------------------------------");
     System.out.println(" " + title + " : start ...");
     System.out.println("-------------------------------------------------------------------------------");
@@ -42,10 +49,8 @@ public final class ApplicationLifeCycle {
    * Called when JVM exit
    */
   public static void onExit() {
-    final String title = Configuration.getInstance().getTitle();
-
     System.out.println("-------------------------------------------------------------------------------");
-    System.out.println(" " + title + " : stop ...");
+    System.out.println(" " + APPLICATION_TITLE + " : stop ...");
     System.out.println("-------------------------------------------------------------------------------");
   }
 
@@ -53,10 +58,8 @@ public final class ApplicationLifeCycle {
    * Called when JVM ends
    */
   protected static void onEnd() {
-    final String title = Configuration.getInstance().getTitle();
-
     System.out.println("-------------------------------------------------------------------------------");
-    System.out.println(" " + title + " : terminated.");
+    System.out.println(" " + APPLICATION_TITLE + " : terminated.");
     System.out.println("-------------------------------------------------------------------------------");
   }
 }

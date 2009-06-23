@@ -105,6 +105,9 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
                                               Level.WARNING, Level.SEVERE, Level.OFF
                                             };
 
+  /** managed instances for change levels at runtime */
+  private static List<CommonsLoggingSessionLog> managedInstances = new ArrayList<CommonsLoggingSessionLog>(2);
+
   static {
     /* static Initializer to call onInit method */
     onInit();
@@ -149,6 +152,9 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
   public CommonsLoggingSessionLog() {
     super();
 
+    // memorize managed instances :
+    managedInstances.add(this);
+
     if (FORCE_INTERNAL_DEBUG) {
       debug("CommonsLoggingSessionLog.new : instance : " + this, true);
     }
@@ -192,9 +198,34 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
    * @see org.apache.commons.logging.LogFactory#release(ClassLoader)
    */
   public static final void onExit() {
+    // force GC :
+    for (CommonsLoggingSessionLog sessionLog : managedInstances) {
+      sessionLog.NAMESPACE_MAP.clear();
+      sessionLog.CATEGORY_LOGGERS.clear();
+    }
+
+    // reset managed instances :
+    managedInstances.clear();
+
     // Classloader unload problem with commons-logging :
     LogFactory.release(Thread.currentThread().getContextClassLoader());
   }
+
+
+    /**
+     * PUBLIC :
+     * Reset the cachedLevel for the log hierarchy when any log4J logger's level is changed
+     */
+    public static final void resetCachedLevels() {
+      if (USE_INTERNAL_CACHE) {
+        for (CommonsLoggingSessionLog sessionLog : managedInstances) {
+          for (LogWrapper lw : sessionLog.CATEGORY_LOGGERS.values()) {
+              lw.resetCachedLevelHierarchy();
+          }
+        }
+      }
+    }
+
 
   /**
    * PUBLIC:
@@ -290,6 +321,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
           }
         });
   }
+
 
   /**
    * PUBLIC:
@@ -494,7 +526,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
    *
    * @return LogWrapper instance or null if not found
    */
-  protected final LogWrapper getLogWrapper(final String category) {
+  private final LogWrapper getLogWrapper(final String category) {
     LogWrapper lw = null;
 
     if (getSession() == null) {
@@ -990,6 +1022,13 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
     protected final void setLevel(final int pLevel) {
       this.level = pLevel;
 
+      this.resetCachedLevelHierarchy();
+    }
+
+    /**
+     * INTERNAL : Reset the cachedLevel for the log hierarchy
+     */
+    protected final void resetCachedLevelHierarchy() {
       if (USE_INTERNAL_CACHE) {
         this.resetCachedLevel();
 

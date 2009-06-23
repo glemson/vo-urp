@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.ivoa.util.LogUtil;
 
 /**
  * A servlet used to dynamically adjust package logging levels while an application is running. NOTE: This servlet is
@@ -76,7 +77,6 @@ import org.apache.log4j.Logger;
 public class ConfigurationServlet extends HttpServlet {
 
     //~ Constants --------------------------------------------------------------------------------------------------------
-
     /** serial UID for Serializable interface */
     private static final long serialVersionUID = 1L;
     /**
@@ -132,56 +132,56 @@ public class ConfigurationServlet extends HttpServlet {
         String sortByLevelParam = request.getParameter(PARAM_SORTBYLEVEL);
         boolean sortByLevel = ("true".equalsIgnoreCase(sortByLevelParam) || "yes".equalsIgnoreCase(sortByLevelParam));
 
-        synchronized(this) {
-        
-        List<Logger> loggers = getSortedLoggers(sortByLevel);
-        int loggerNum = 0;
+        synchronized (this) {
 
-        PrintWriter out = response.getWriter();
-        if (!isFragment) {
-            response.setContentType(CONTENT_TYPE);
+            List<Logger> loggers = getSortedLoggers(sortByLevel);
+            int loggerNum = 0;
 
-            // print title and header
-            printHeader(out, request);
-        }
+            PrintWriter out = response.getWriter();
+            if (!isFragment) {
+                response.setContentType(CONTENT_TYPE);
 
-        // print scripts
-        out.println("<a href=\"" + request.getRequestURI() + "\">Refresh</a>");
+                // print title and header
+                printHeader(out, request);
+            }
 
-        out.println("<table class=\"log4jtable\">");
-        out.println("<thead><tr>");
+            // print scripts
+            out.println("<a href=\"" + request.getRequestURI() + "\">Refresh</a>");
 
-        out.println("<th title=\"Logger name\">");
-        out.println("<a href=\"?" + PARAM_SORTBYLEVEL + "=false\">Class</a>");
-        out.println("</th>");
+            out.println("<table class=\"log4jtable\">");
+            out.println("<thead><tr>");
 
-        out.println("<th title=\"Is logging level inherited from parent?\" style=\"text-align:right\" >*</th>");
-        out.println("<th title=\"Logger level\">");
-        out.println("<a href=\"?" + PARAM_SORTBYLEVEL + "=true\">Level</a>");
-        out.println("</th>");
+            out.println("<th title=\"Logger name\">");
+            out.println("<a href=\"?" + PARAM_SORTBYLEVEL + "=false\">Class</a>");
+            out.println("</th>");
 
-        out.println("</tr></thead>");
-        out.println("<tbody>");
+            out.println("<th title=\"Is logging level inherited from parent?\" style=\"text-align:right\" >*</th>");
+            out.println("<th title=\"Logger level\">");
+            out.println("<a href=\"?" + PARAM_SORTBYLEVEL + "=true\">Level</a>");
+            out.println("</th>");
 
-        // print the root Logger
-        displayLogger(out, Logger.getRootLogger(), loggerNum++, request);
+            out.println("</tr></thead>");
+            out.println("<tbody>");
 
-        // print the rest of the loggers
-        Iterator<Logger> iterator = loggers.iterator();
+            // print the root Logger
+            displayLogger(out, Logger.getRootLogger(), loggerNum++, request);
 
-        while (iterator.hasNext()) {
-            displayLogger(out, iterator.next(), loggerNum++, request);
-        }
+            // print the rest of the loggers
+            Iterator<Logger> iterator = loggers.iterator();
 
-        out.println("</tbody>");
-        out.println("</table>");
-        out.println("<a href=\"\">Refresh</a>");
+            while (iterator.hasNext()) {
+                displayLogger(out, iterator.next(), loggerNum++, request);
+            }
 
-        if (!isFragment) {
-            out.println("</body></html>");
-            out.flush();
-            out.close();
-        }
+            out.println("</tbody>");
+            out.println("</table>");
+            out.println("<a href=\"\">Refresh</a>");
+
+            if (!isFragment) {
+                out.println("</body></html>");
+                out.flush();
+                out.close();
+            }
         }
     }
 
@@ -197,13 +197,13 @@ public class ConfigurationServlet extends HttpServlet {
         String className = request.getParameter(PARAM_CLASS);
         String level = request.getParameter(PARAM_LEVEL);
 
-        synchronized(this) {
-        
-        if (className != null) {
-            setClass(className, level);
-        }
+        synchronized (this) {
 
-        doGet(request, response);
+            if (className != null) {
+                setClass(className, level);
+            }
+
+            doGet(request, response);
         }
     }
 
@@ -257,7 +257,14 @@ public class ConfigurationServlet extends HttpServlet {
 
         try {
             logger = (ROOT.equalsIgnoreCase(className) ? Logger.getRootLogger() : Logger.getLogger(className));
-            logger.setLevel(Level.toLevel(level));
+
+            /*
+             * LBO : change this direct method call to LogUtil to reset Commons
+             *
+             * logger.setLevel(Level.toLevel(level));
+             */
+            LogUtil.setLevel(logger, Level.toLevel(level));
+
             return "Message Set For " + (logger.getName().equals("") ? ROOT : logger.getName());
         } catch (Throwable e) {
             System // permetti system.out
