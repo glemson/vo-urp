@@ -106,13 +106,13 @@ public class DBTests extends LogSupport implements ApplicationMain {
      * @param args
      */
     public void run(final String[] args) {
-        log.info("DBTests.run : enter");
+        log.warn("DBTests.run : enter");
 
         testJAXB(args);
 
         testJPA(args);
 
-        log.info("DBTests.run : exit");
+        log.warn("DBTests.run : exit");
     }
 
     /**
@@ -121,15 +121,15 @@ public class DBTests extends LogSupport implements ApplicationMain {
      * @param args
      */
     public void testJAXB(final String[] args) {
-        log.info("DBTests.testJAXB : enter");
+        log.warn("DBTests.testJAXB : enter");
 
-        log.info("DBTests.testJAXB : get MetaModelFactory and load model : " + MetaModelFactory.MODEL_FILE);
+        log.warn("DBTests.testJAXB : get MetaModelFactory and load model : " + MetaModelFactory.MODEL_FILE);
 
         MetaModelFactory.getInstance();
 
-        log.info("DBTests.testJAXB : get MetaModelFactory : OK");
+        log.warn("DBTests.testJAXB : get MetaModelFactory : OK");
 
-        log.info("DBTests.testJAXB : exit");
+        log.warn("DBTests.testJAXB : exit");
     }
 
     /**
@@ -138,23 +138,23 @@ public class DBTests extends LogSupport implements ApplicationMain {
      * @param args
      */
     public void testJPA(final String[] args) {
-        log.info("DBTests.testJPA : enter");
+        log.warn("DBTests.testJPA : enter");
 
         String jpa_pu = args[0];
 
-        log.info("DBTests.testJPA : get JPAFactory : " + jpa_pu + " ...");
+        log.warn("DBTests.testJPA : get JPAFactory : " + jpa_pu + " ...");
 
         final JPAFactory jf = JPAFactory.getInstance(jpa_pu);
 
-        log.info("DBTests.testJPA : get JPAFactory : " + jpa_pu + " : OK");
+        log.warn("DBTests.testJPA : get JPAFactory : " + jpa_pu + " : OK");
 
         EntityManager em = null;
 
         try {
-            log.info("DBTests.testJPA : get EntityManager ...");
+            log.warn("DBTests.testJPA : get EntityManager ...");
             em = jf.getEm();
 
-            log.info("DBTests.testJPA : get EntityManager : OK");
+            log.warn("DBTests.testJPA : get EntityManager : OK");
         } finally {
             close(em);
         }
@@ -177,7 +177,7 @@ public class DBTests extends LogSupport implements ApplicationMain {
 
         testSQLQuery(jf);
 
-        log.info("DBTests.testJPA : exit");
+        log.warn("DBTests.testJPA : exit");
     }
 
     /**
@@ -186,7 +186,7 @@ public class DBTests extends LogSupport implements ApplicationMain {
      * @param jf
      */
     public void testWRITE(final JPAFactory jf) {
-        log.info("DBTests.testWRITE : enter");
+        log.warn("DBTests.testWRITE : enter");
 
         EntityManager em = null;
         Long id = null;
@@ -508,10 +508,10 @@ public class DBTests extends LogSupport implements ApplicationMain {
 
             throw re;
         } finally {
-            em.close();
+            close(em);
         }
 
-        log.info("DBTests.testWRITE : exit : " + id);
+        log.warn("DBTests.testWRITE : exit : " + id);
 
         if (id != null) {
             final Experiment loadedObject = (Simulation) testREAD(jf, Experiment.class, id);
@@ -569,7 +569,7 @@ public class DBTests extends LogSupport implements ApplicationMain {
      * @return loaded item
      */
     public MetadataObject testREAD(final JPAFactory jf, final Class<? extends MetadataObject> type, final Long id) {
-        log.info("DBTests.testEM_READ : enter");
+        log.warn("DBTests.testEM_READ : enter");
 
         MetadataObject o = null;
         EntityManager em = null;
@@ -585,10 +585,10 @@ public class DBTests extends LogSupport implements ApplicationMain {
         } catch (final RuntimeException re) {
             log.error("DBTests.testEM_READ : runtime failure : ", re);
         } finally {
-            em.close();
+            close(em);
         }
 
-        log.info("DBTests.testEM_READ : exit");
+        log.warn("DBTests.testEM_READ : exit");
         return o;
     }
 
@@ -599,7 +599,7 @@ public class DBTests extends LogSupport implements ApplicationMain {
      * @param xmlDocumentPath
      */
     public void testLOAD_WRITE(final JPAFactory jf, final String xmlDocumentPath) {
-        log.info("DBTests.testLOAD_WRITE : enter");
+        log.warn("DBTests.testLOAD_WRITE : enter");
 
         EntityManager em = null;
         Long id = null;
@@ -641,10 +641,9 @@ public class DBTests extends LogSupport implements ApplicationMain {
             xmlTest.saveMarshall(simulator, xmlDocumentPath.replace(XMLTests.XML_EXT, "-out" + XMLTests.XML_EXT));
 
             inspectorTest.test(simulator);
-        } catch(XmlBindException je)
-        {
-          log.error("DBTests.testLOAD_WRITE: error parsing XML document : \n" + je.getMessage());
-          throw je;
+        } catch (XmlBindException je) {
+            log.error("DBTests.testLOAD_WRITE: error parsing XML document : \n" + je.getMessage());
+            throw je;
         } catch (final RuntimeException re) {
             log.error("DBTests.testLOAD_WRITE : runtime failure : ", re);
 
@@ -660,13 +659,13 @@ public class DBTests extends LogSupport implements ApplicationMain {
             // free resolver context (thread local) :
             ReferenceResolver.freeContext();
 
-            em.close();
+            close(em);
         }
         if (id != null) {
             final Protocol loadedObject = (Protocol) testREAD(jf, Protocol.class, id);
             xmlTest.saveMarshall(loadedObject, xmlDocumentPath.replace(XMLTests.XML_EXT, "-out-afterLoad" + XMLTests.XML_EXT));
         }
-        log.info("DBTests.testLOAD_WRITE : exit : " + id);
+        log.warn("DBTests.testLOAD_WRITE : exit : " + id);
     }
 
     /**
@@ -676,7 +675,7 @@ public class DBTests extends LogSupport implements ApplicationMain {
      * @param xmlDocumentPath
      */
     public void testLOAD_BATCH_WRITE(final JPAFactory jf, final String xmlDocumentPath) {
-        log.info("DBTests.testLOAD_BATCH_WRITE : enter");
+        log.warn("DBTests.testLOAD_BATCH_WRITE : enter");
 
         EntityManager em = null;
         Long id = null;
@@ -699,10 +698,9 @@ public class DBTests extends LogSupport implements ApplicationMain {
                 em.getTransaction().commit();
                 log.warn("DBTests.testLOAD_BATCH_WRITE : TX commited : " + i);
 
-            } catch(XmlBindException je)
-            {
-              log.error("DBTests.testLOAD_BATCH_WRITE: error parsing XML document : \n" + je.getMessage());
-              throw je;
+            } catch (XmlBindException je) {
+                log.error("DBTests.testLOAD_BATCH_WRITE: error parsing XML document : \n" + je.getMessage());
+                throw je;
             } catch (final RuntimeException re) {
                 log.error("DBTests.testLOAD_BATCH_WRITE : runtime failure : ", re);
 
@@ -718,11 +716,11 @@ public class DBTests extends LogSupport implements ApplicationMain {
                 // free resolver context (thread local) :
                 ReferenceResolver.freeContext();
 
-                em.close();
+                close(em);
             }
         }
 
-        log.info("DBTests.testLOAD_BATCH_WRITE : exit : " + id);
+        log.warn("DBTests.testLOAD_BATCH_WRITE : exit : " + id);
     }
 
     /**
@@ -732,7 +730,7 @@ public class DBTests extends LogSupport implements ApplicationMain {
      * @param xmlDocumentPath
      */
     public void testLOAD_THREADS_WRITE(final JPAFactory jf, final String xmlDocumentPath) {
-        log.info("DBTests.testLOAD_THREADS_WRITE : enter");
+        log.warn("DBTests.testLOAD_THREADS_WRITE : enter");
 
         final ExecutorService executor = Executors.newFixedThreadPool(POOL_THREADS);
 
@@ -759,11 +757,11 @@ public class DBTests extends LogSupport implements ApplicationMain {
             log.error("DBTests.testLOAD_THREADS_WRITE : runtime failure : ", re);
         }
 
-        log.info("DBTests.testLOAD_THREADS_WRITE : exit");
+        log.warn("DBTests.testLOAD_THREADS_WRITE : exit");
     }
 
     public void testSQLQuery(final JPAFactory jf) {
-        log.info("DBTests.testSQLQuery : enter");
+        log.warn("DBTests.testSQLQuery : enter");
 
         EntityManager em = null;
         // executeSelectingCall
@@ -789,10 +787,10 @@ public class DBTests extends LogSupport implements ApplicationMain {
 
         } finally {
 
-            em.close();
+            close(em);
         }
 
-        log.info("DBTests.testSQLQuery : exit");
+        log.warn("DBTests.testSQLQuery : exit");
     }
 
     /**
@@ -814,42 +812,47 @@ public class DBTests extends LogSupport implements ApplicationMain {
      * @param xmlDocumentPath
      */
     public void testLOAD_BATCH_WRITE_SINGLE_TRANSACTION(final JPAFactory jf, final String xmlDocumentPath) {
-        log.info("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION : enter");
-    
-        EntityManager em = null;
-    
-        StringBuffer ids = new StringBuffer();
-            try {
-                em = jf.getEm();
-   
-                DataModelManager dm = new DataModelManager(jf.getPu());
+        log.warn("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION : enter");
 
-                ReferenceResolver.initContext(em);
-    
-                final List<MetadataRootEntityObject> simList = new ArrayList<MetadataRootEntityObject>();
-                for (int i = 0; i < WRITE_ITERATION; i++) 
-                    simList.add((MetadataRootEntityObject)xmlTest.testUnMashall(xmlDocumentPath));
-    
-                dm.persist(simList,"testuser");
-                for (MetadataRootEntityObject sim: simList) 
-                  ids.append(sim.getId()).append(" ");
-                log.warn("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION : TX wrote " + simList.size()+" simulators to database: " + ids.toString());
-    
-            } catch(XmlBindException je)
-            {
-              log.error("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION: error parsing XML document : \n" + je.getMessage());
-              throw je;
-            } catch (final RuntimeException re) {
-                log.error("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION : runtime failure : ", re);
-    
-                throw re;
-            } finally {
-                // free resolver context (thread local) :
-                ReferenceResolver.freeContext();
-    
+        EntityManager em = null;
+
+        final StringBuffer ids = new StringBuffer();
+        try {
+            em = jf.getEm();
+
+            final DataModelManager dm = new DataModelManager(jf.getPu());
+
+            ReferenceResolver.initContext(em);
+
+            final List<MetadataRootEntityObject> simList = new ArrayList<MetadataRootEntityObject>();
+            for (int i = 0; i < WRITE_ITERATION; i++) {
+                simList.add((MetadataRootEntityObject) xmlTest.testUnMashall(xmlDocumentPath));
+            }
+
+            dm.persist(simList, "testuser");
+
+            // log ids :
+            for (MetadataRootEntityObject sim : simList) {
+                ids.append(sim.getId()).append(" ");
+            }
+            log.warn("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION : TX wrote " + simList.size() + " simulators to database: " + ids.toString());
+
+        } catch (XmlBindException je) {
+            log.error("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION: error parsing XML document : \n" + je.getMessage());
+            throw je;
+        } catch (final RuntimeException re) {
+            log.error("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION : runtime failure : ", re);
+
+            throw re;
+        } finally {
+            // free resolver context (thread local) :
+            ReferenceResolver.freeContext();
+
+            if (em != null) {
                 em.close();
             }
-        log.info("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION : exit");
+        }
+        log.warn("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION : exit");
     }
 
     private static final class WriteJob implements Runnable {

@@ -195,7 +195,8 @@ public class DataModelManager extends LogSupport {
             List<MetadataRootEntityObject> l = new ArrayList<MetadataRootEntityObject>();
             l.add((MetadataRootEntityObject) o);
 
-            persist(l, userName); // TODO do something about the userName, maybe get from (threadlocal) context?
+             // TODO do something about the userName, maybe get from (threadlocal) context?
+            persist(l, userName);
 
         } catch (final RuntimeException re) {
             log.error("DataModelManager.load : runtime failure : ", re);
@@ -231,15 +232,18 @@ public class DataModelManager extends LogSupport {
      * @param objects
      * @param username
      */
-    public void persist(List<MetadataRootEntityObject> objects, String username) {
+    public void persist(final List<MetadataRootEntityObject> objects, final String username) {
+        EntityManager em = null;
         try {
-            EntityManager em = getCurrentEM();
+            em = getCurrentEM();
 
-            em.getTransaction().begin();
+            if (!em.getTransaction().isActive()) {
+                em.getTransaction().begin();
+            }
 
             // TODO here we could(should?) get the current timestamp from the database, which is not necessarily in synch with the web server.
             // For now a simpler solution ...
-            Timestamp currentTimestamp = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            final Timestamp currentTimestamp = new Timestamp(Calendar.getInstance().getTimeInMillis());
             PersistObjectPreProcessor pre = new PersistObjectPreProcessor(username, currentTimestamp);
             for (MetadataRootEntityObject o : objects) {
                 o.traverse(pre);
@@ -253,15 +257,20 @@ public class DataModelManager extends LogSupport {
             }
 
             // finally : commits transaction on snap database :
-            log.warn("DataModelManager.load : committing TX");
+            log.warn("DataModelManager.persist : committing TX");
             em.getTransaction().commit();
-            log.warn("DataModelManager.load : TX commited.");
+            log.warn("DataModelManager.persist : TX commited.");
 
-        } catch (RuntimeException re) {
+        } catch (final RuntimeException re) {
+
+            // if connection failure => em is null :
+            if (em != null && em.getTransaction().isActive()) {
+                log.warn("DataModelManager.persist : rollbacking TX ...");
+                em.getTransaction().rollback();
+                log.warn("DataModelManager.persist : TX rollbacked.");
+            }
             throw re;
         }
-
-
     }
 
     /**
