@@ -225,7 +225,7 @@ public class VO_URP_Facade extends LogSupport {
      * Return an entity manager associated to the current thread<br/>
      * Do not close it if used by an HTTPServletRequest
      *
-     * @ee #closeEntityManager()
+     * @see #closeEntityManager()
      *
      * @return value TODO : Value Description
      */
