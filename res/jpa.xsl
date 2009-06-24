@@ -18,7 +18,7 @@
 
   <!-- common DDL templates used -->
   <xsl:import href="common-ddl.xsl"/>
-  
+
   <xsl:output name="persistenceInfo" method="xml" encoding="UTF-8" indent="yes"  />
 
   <xsl:param name="persistence.xml"/>
@@ -26,7 +26,9 @@
 
   <xsl:key name="element" match="*//*" use="@xmiid"/>
 
-  
+
+
+
   <xsl:template match="objectType" mode="JPAAnnotation">
     <xsl:variable name="className" select="name" />
     <xsl:variable name="xmiid" select="@xmiid" />
@@ -48,17 +50,15 @@
         <xsl:otherwise>0</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    
+
   @Entity
   @Table( name = "<xsl:apply-templates select="." mode="tableName"/>" )
 <!--  always generate discriminator column, looks nicer in the database. -->
-<!--   <xsl:if test="$hasChild = 1">  -->
 &cr;    
   <!-- JOINED strategy for inheritance -->
   @Inheritance( strategy = InheritanceType.JOINED )
   @DiscriminatorColumn( name = "<xsl:value-of select="$discriminatorColumnName"/>", discriminatorType = DiscriminatorType.STRING, length = <xsl:value-of select="$discriminatorColumnLength"/>)
 &cr;    
-<!--   </xsl:if>   -->
 
   <xsl:if test="$extMod = 1">
   @DiscriminatorValue( "<xsl:value-of select="$className"/>" ) <!-- TODO decide whether this should be a path -->
@@ -67,16 +67,11 @@
   @NamedQueries( {
     @NamedQuery( name = "<xsl:value-of select="$className"/>.findById", query = "SELECT o FROM <xsl:value-of select="$className"/> o WHERE o.id = :id"),
     @NamedQuery( name = "<xsl:value-of select="$className"/>.findByPublisherDID", query = "SELECT o FROM <xsl:value-of select="$className"/> o WHERE o.identity.publisherDID = :publisherDID")
-<!--  
-,    @NamedQuery( name = "<xsl:value-of select="$className"/>.findByXmlId", query = "SELECT o FROM <xsl:value-of select="$className"/> o WHERE o.identity.xmlId = :xmlId")
-,    @NamedQuery( name = "<xsl:value-of select="$className"/>.findByIvoId", query = "SELECT o FROM <xsl:value-of select="$className"/> o WHERE o.identity.ivoId = :ivoId")
--->
   <xsl:if test="$hasName = 1">
 ,     @NamedQuery( name = "<xsl:value-of select="$className"/>.findByName", query = "SELECT o FROM <xsl:value-of select="$className"/> o WHERE o.name = :name") 
   </xsl:if>
   } )
   </xsl:template>
-
 
 
 
@@ -122,10 +117,10 @@
 
 
 
-  <!-- temlate attribute : adds JPA annotations for primitive types, data types & enumerations -->
+  <!-- template attribute : adds JPA annotations for primitive types, data types & enumerations -->
   <xsl:template match="attribute" mode="JPAAnnotation">
     <xsl:variable name="type" select="key('element', datatype/@xmiidref)"/>
-    
+
     <xsl:choose>
       <xsl:when test="name($type) = 'primitiveType'">
         <xsl:choose>
@@ -188,7 +183,7 @@
 
   <xsl:template match="reference" mode="JPAAnnotation">
     <xsl:variable name="type" select="key('element', datatype/@xmiidref)"/>
-    
+
     <xsl:choose>
       <xsl:when test="name($type) = 'primitiveType' or name($type) = 'enumeration'">
     [NOT_SUPPORTED_REFERENCE]
@@ -200,9 +195,9 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-    
-    
-    
+
+
+
 
   <xsl:template match="reference" mode="JPAAnnotation_reference">
   @Transient
@@ -213,7 +208,7 @@
 
   <xsl:template match="collection" mode="JPAAnnotation">
     <xsl:variable name="type" select="key('element', datatype/@xmiidref)"/>
-    
+
     <xsl:choose>
       <xsl:when test="name($type) = 'primitiveType' or name($type) = 'enumeration' or name($type) = 'dataType'">
     [NOT_SUPPORTED_COLLECTION]
@@ -226,8 +221,8 @@
   </xsl:template>
 
 
-  
-  
+
+
   <xsl:template name="enumPattern">
     <xsl:param name="columnName"/>
 
@@ -236,9 +231,9 @@
     @Column( name = "<xsl:apply-templates select="." mode="columnName"/>", nullable = <xsl:apply-templates select="." mode="nullable"/> )
   </xsl:template>
 
-  
-  
-  
+
+
+
   <xsl:template match="objectType|dataType" mode="hashcode_equals">
     <xsl:variable name="name" select="name"/>
 
@@ -258,7 +253,7 @@
     if( !(super.equals(object, isDeep))) {
 		  return false;
 		}
-    
+
     /* do check values (attributes / references / collections) */  
     <xsl:choose>
       <xsl:when test="name() = 'dataType'">
@@ -268,7 +263,7 @@
     if (isDeep) {
       </xsl:otherwise>
     </xsl:choose>
-    
+
       final <xsl:value-of select="$name"/> other = (<xsl:value-of select="$name"/>) object;
       <xsl:for-each select="attribute">
         if (! areEquals(this.<xsl:value-of select="name"/>, other.<xsl:value-of select="name"/>)) {
@@ -276,22 +271,22 @@
         }
 		  </xsl:for-each>
     }
-		
+
 		return true;
 	}
   </xsl:template>
 
-  
-  
-<!-- persistence.xml configuration file -->  
-  
+
+
+
+  <!-- persistence.xml configuration file -->  
   <xsl:template match="model" mode="jpaConfig">
     <xsl:variable name="file" select="'META-INF/persistence.xml'"/>
-    
+
     <!-- reading persistence-template.xml file : -->
-    
+
     <xsl:variable name="jpaConf" select="document($persistence.xml)"/>
-    
+
     <!-- open file for global jpa configuration -->
     <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
     <xsl:result-document href="{$file}" format="persistenceInfo">
@@ -313,7 +308,7 @@
       <xsl:when test="name() = 'properties'">
 &cr;
 &cr;
-<xsl:comment>generated JPA entities</xsl:comment>
+<xsl:comment>Base JPA entities</xsl:comment>
 &cr;
 &cr;
     <xsl:element name="class" namespace="http://java.sun.com/xml/ns/persistence">
@@ -337,7 +332,7 @@
     </xsl:element>
 &cr;
 &cr;
-<xsl:comment>generated JPA entities</xsl:comment>
+<xsl:comment>Generated JPA entities (VO-URP)</xsl:comment>
 &cr;
 &cr;
 
@@ -353,9 +348,9 @@
 &cr;
 &cr;
 <xsl:element name="properties" namespace="http://java.sun.com/xml/ns/persistence">
-  
+
   <xsl:apply-templates select="child::*"  mode="otherXml"/>
-  
+
 &cr;
 &cr;
 <xsl:comment>
@@ -374,16 +369,16 @@
         </xsl:copy>    
         </xsl:otherwise>
     </xsl:choose>
-    
+
   </xsl:template>
-  
-  
-  
-  
+
+
+
+
   <xsl:template name="packageJpaConfig">
     <xsl:param name="package"/>
     <xsl:param name="path"/>
-    
+
     <xsl:variable name="newpath">
       <xsl:choose>
         <xsl:when test="$path">
@@ -394,15 +389,15 @@
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    
+
     <xsl:message>package = <xsl:value-of select="$newpath"></xsl:value-of></xsl:message>
-    
+
     <xsl:for-each select="$package/objectType|$package/dataType">
       <xsl:element name="class" namespace="http://java.sun.com/xml/ns/persistence">
         <xsl:value-of select="$newpath"/><xsl:text>.</xsl:text><xsl:value-of select="name"/>
       </xsl:element>
     </xsl:for-each>
-    
+
     <xsl:for-each select="$package/package">
       <xsl:call-template name="packageJpaConfig">
         <xsl:with-param name="package" select="."/>
@@ -411,5 +406,5 @@
     </xsl:for-each>
   </xsl:template>
 
-  
+
 </xsl:stylesheet>

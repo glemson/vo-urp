@@ -19,37 +19,37 @@
   <xsl:import href="common.xsl"/>
   <xsl:import href="jpa.xsl"/>
   <xsl:import href="jaxb.xsl"/>
-  
-  
+
+
   <xsl:output method="text" encoding="UTF-8" indent="yes" />
   <xsl:output name="packageInfo" method="html" encoding="UTF-8" doctype-public="-//W3C//DTD HTML 4.01 Transitional//EN"/>
-  
+
   <xsl:strip-space elements="*" />
-  
+
   <xsl:key name="element" match="*//*" use="@xmiid"/>
-  <!-- Next is to check wheher package needs handling, or is internal -->
+  <!-- Next is to check whether package needs handling, or is internal -->
   <!-- <xsl:key name="modelpackage" match="*//package[not(name='IVOAValueTypes')]" use="@xmiid"/>  -->
   <xsl:key name="modelpackage" match="*//package" use="@xmiid"/>
-  
+
   <xsl:param name="lastModified"/>
   <xsl:param name="lastModifiedText"/>
-  
-  
+
+
   <xsl:param name="root_package"/> <!--  select="'org.ivoa.'" -->
   <xsl:param name="model_package"/>
   <xsl:param name="targetnamespace_root"/> 
   <xsl:param name="persistence.xml"/>
-  
+
   <!-- next could be parameters -->
   <xsl:variable name="root_package_dir" select="replace($root_package,'[.]','/')"/>
-  
-  
+
+
   <!-- 
     Use '{NOTE/TODO} [JPA_COMPLIANCE] :' to indicate a violated rule and explain why.
 
-  
+
     JPA 1.0 specification extract for Entity definition :
-    
+
 
     "2.1 Requirements on the Entity Class 
 
@@ -165,23 +165,23 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
     <xsl:message>Model package = <xsl:value-of select="$model_package"/></xsl:message>
     <xsl:apply-templates select="model"/>
   </xsl:template>
-  
-  
-  
-  
+
+
+
+
   <!-- model pattern : generates gen-log and processes nodes package and generates the ModelVersion class and persistence.xml -->
   <xsl:template match="model">
     <xsl:message>Model = <xsl:value-of select="name"></xsl:value-of></xsl:message>
 -- Generating Java code for model <xsl:value-of select="name"/>.
 -- last modification date of the UML model <xsl:value-of select="$lastModifiedText"/>
-    
+
     <xsl:for-each select="package[key('modelpackage',@xmiid)]">
       <xsl:call-template name="package">
         <xsl:with-param name="dir" select="$root_package_dir"/>
         <xsl:with-param name="path" select="$root_package"/>
       </xsl:call-template>
     </xsl:for-each>
-    
+
     <xsl:for-each select="profile/package[key('modelpackage',@xmiid)]">
       <xsl:call-template name="package">
         <xsl:with-param name="dir" select="$root_package_dir"/>
@@ -190,20 +190,20 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
     </xsl:for-each>
 
     <xsl:apply-templates select="." mode="modelVersion" />
-    
+
     <xsl:apply-templates select="." mode="jpaConfig" />
-    
+
     <xsl:apply-templates select="." mode="jaxb.context.classpath" />
-    
+
   </xsl:template>  
-  
-  
-  
-  
+
+
+
+
   <xsl:template name="package">
     <xsl:param name="dir"/>
     <xsl:param name="path"/>
-    
+
     <xsl:variable name="newdir">
       <xsl:choose>
         <xsl:when test="$dir">
@@ -214,7 +214,7 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    
+   
     <xsl:variable name="newpath">
       <xsl:choose>
         <xsl:when test="$path">
@@ -225,13 +225,13 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    
+   
     <xsl:message>package = <xsl:value-of select="$newpath"></xsl:value-of></xsl:message>
-    
+   
     <xsl:apply-templates select="." mode="packageDesc">
       <xsl:with-param name="dir" select="$newdir"/>
     </xsl:apply-templates>
-    
+   
     <xsl:apply-templates select="." mode="jaxb.index">
       <xsl:with-param name="dir" select="$newdir"/>
     </xsl:apply-templates>
@@ -242,21 +242,21 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
         <xsl:with-param name="path" select="$newpath"/>
       </xsl:call-template>
     </xsl:for-each>
-    
+
     <xsl:for-each select="dataType">
       <xsl:call-template name="dataType">
         <xsl:with-param name="dir" select="$newdir"/>
         <xsl:with-param name="path" select="$newpath"/>
       </xsl:call-template>
     </xsl:for-each>
-    
+
     <xsl:for-each select="enumeration">
       <xsl:call-template name="enumeration">
         <xsl:with-param name="dir" select="$newdir"/>
         <xsl:with-param name="path" select="$newpath"/>
       </xsl:call-template>
     </xsl:for-each>
-    
+
     <xsl:for-each select="package">
       <xsl:call-template name="package">
         <xsl:with-param name="dir" select="$newdir"/>
@@ -264,59 +264,56 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
       </xsl:call-template>
     </xsl:for-each>
   </xsl:template>
-  
-  
-  
-  
+
+
+
+
   <xsl:template name="objectType">
     <xsl:param name="dir"/>
     <xsl:param name="path"/>
-    
+
     <xsl:variable name="className" select="name" />
     <xsl:variable name="xmiid" select="@xmiid" />
-    
+
     <xsl:variable name="hasChild">
       <xsl:choose>
         <xsl:when test="count(//objectType[extends/@xmiidref = $xmiid]) > 0">1</xsl:when>
         <xsl:otherwise>0</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    
+
     <xsl:variable name="hasExtends">
       <xsl:choose>
         <xsl:when test="count(extends) = 1">1</xsl:when>
         <xsl:otherwise>0</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    
+
     <xsl:variable name="hasList">
       <xsl:choose>
         <xsl:when test="count(collection) > 0">1</xsl:when>
         <xsl:otherwise>0</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    
+
     <xsl:variable name="file" select="concat('src/', $dir, '/', name, '.java')"/>
 
     <!-- open file for this class -->
     <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
 
-    <xsl:result-document href="{$file}">
-
-      <xsl:apply-templates select="." mode="class">
+    <xsl:result-document href="{$file}"><xsl:apply-templates select="." mode="class">
         <xsl:with-param name="path" select="$path"/>
         <xsl:with-param name="className" select="$className"/>
         <xsl:with-param name="hasChild" select="$hasChild"/>
         <xsl:with-param name="hasExtends" select="$hasExtends"/>
         <xsl:with-param name="hasList" select="$hasList"/>
       </xsl:apply-templates>
-
     </xsl:result-document>
   </xsl:template>
-  
-  
 
-  
+
+
+
   <xsl:template match="objectType|dataType" mode="typeimports">
     <xsl:variable name="thispackageid" select="./../@xmiid"/>
     <xsl:for-each select="key('element',distinct-values(extends/@xmiidref|container/@xmiidref|attribute/datatype/@xmiidref|reference/datatype/@xmiidref|collection/datatype/@xmiidref))" >
@@ -328,14 +325,14 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
       </xsl:if>
     </xsl:for-each>
   </xsl:template>
-  
-  
-  
-  
+
+
+
+
   <xsl:template name="dataType">
     <xsl:param name="dir"/>
     <xsl:param name="path"/>
-    
+
     <xsl:variable name="className" select="name" />
 
     <xsl:variable name="xmiid" select="@xmiid" />
@@ -345,36 +342,32 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
         <xsl:otherwise>0</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    
+
     <xsl:variable name="hasExtends">
       <xsl:choose>
         <xsl:when test="count(extends) = 1">1</xsl:when>
         <xsl:otherwise>0</xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    
+
     <xsl:variable name="file" select="concat('src/', $dir, '/', name, '.java')"/>
 
     <!-- open file for this class -->
     <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
 
-    <xsl:result-document href="{$file}">
-
-      <xsl:apply-templates select="." mode="class">
+    <xsl:result-document href="{$file}"><xsl:apply-templates select="." mode="class">
         <xsl:with-param name="path" select="$path"/>
         <xsl:with-param name="className" select="$className"/>
         <xsl:with-param name="hasChild" select="$hasChild"/>
         <xsl:with-param name="hasExtends" select="$hasExtends"/>
         <xsl:with-param name="hasList" select="0"/>
       </xsl:apply-templates>
-      
     </xsl:result-document>
   </xsl:template>
 
 
 
 
-  
   <!-- template class creates a java class (JPA compliant) for UML object & data types -->
   <xsl:template match="objectType|dataType" mode="class">
     <xsl:param name="path"/>
@@ -382,15 +375,13 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
     <xsl:param name="hasChild"/>
     <xsl:param name="hasExtends"/>
     <xsl:param name="hasList"/>
-
     <xsl:variable name="kind">
       <xsl:choose>
         <xsl:when test="name() = 'dataType'">DataType</xsl:when>
         <xsl:when test="name() = 'objectType'">Object</xsl:when>
       </xsl:choose>
     </xsl:variable>
-
-    package <xsl:value-of select="$path"/>;
+package <xsl:value-of select="$path"/>;
 
     <!-- imports -->
     import java.util.Date;
@@ -409,14 +400,14 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
     <xsl:if test="reference[not(extends)]">
     import <xsl:value-of select="$model_package"/>.Reference;
     </xsl:if>
-    
+
     <xsl:if test="$hasExtends = 0 or ($kind='Object' and reference)">
       import <xsl:value-of select="$model_package"/>.Metadata<xsl:value-of select="$kind"/>;
       <xsl:if test="@entity  = 'true'">
       import <xsl:value-of select="$model_package"/>.MetadataRootEntityObject;
       </xsl:if>
     </xsl:if>
-    
+
     <xsl:apply-templates select="." mode="typeimports"/>
 
     /**
@@ -424,7 +415,7 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
     *
     * <xsl:apply-templates select="." mode="desc" />
     *
-    * @author generated by VO-URP "http://code.google.com/p/vo-urp/"
+    * @author generated by VO-URP tools <a href="http://code.google.com/p/vo-urp/">VO-URP Home</a>
     * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
     */
 
@@ -449,7 +440,7 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
       <xsl:apply-templates select="attribute" mode="declare" />
       <xsl:apply-templates select="collection" mode="declare" />
       <xsl:apply-templates select="reference" mode="declare" />
-      
+
       /**
        * Creates a new <xsl:value-of select="$className"/>
        */
@@ -474,7 +465,7 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
         </xsl:when>
         <xsl:otherwise>
           <xsl:variable name="parentContainer"><xsl:call-template name="findParentContainer"><xsl:with-param name="xmiid" select="@xmiid"/></xsl:call-template></xsl:variable>
-          
+
           <xsl:if test="string-length($parentContainer) > 0">
         <!-- if current object is a child of a contained class then add parent constructor for container management -->
         <xsl:variable name="type"><xsl:call-template name="JavaType"><xsl:with-param name="xmiid" select="$parentContainer"/></xsl:call-template></xsl:variable>
@@ -599,9 +590,8 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
           }
         </xsl:if>
 
-        <!-- TODO collection support ? -->
         <xsl:apply-templates select="attribute|reference|collection" mode="getProperty" />
-        
+
         return res;
       }
 
@@ -612,19 +602,19 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
        *
        * @param propertyName name of the property (like in UML model)
        *
-       * @param value to be set
+       * @param pValue to be set
        * 
        * @return true if property has been set
        */
       @Override
-      public boolean setProperty(final String propertyName, final Object value) {
+      public boolean setProperty(final String propertyName, final Object pValue) {
         // first : checks if propertyName is null or empty :
         if (propertyName == null) {
           return false;
         }
         // second : search in parent classes (maybe null) :
-        boolean res = super.setProperty(propertyName, value);
-        
+        boolean res = super.setProperty(propertyName, pValue);
+
         if (!res) {
         <xsl:if test="container">
           <xsl:variable name="type"><xsl:call-template name="JavaType"><xsl:with-param name="xmiid" select="container/@xmiidref"/></xsl:call-template></xsl:variable>
@@ -634,11 +624,11 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
             </xsl:call-template>
           </xsl:variable>
           if (PROPERTY_CONTAINER.equals(propertyName)) {
-            setContainerField((<xsl:value-of select="$type"/>) value);
+            setContainerField((<xsl:value-of select="$type"/>) pValue);
             return true;
           }
           if (PROPERTY_RANK.equals(propertyName)) {
-            setRank(((Integer)value).intValue());
+            setRank(((Integer)pValue).intValue());
             return true;
           }
         </xsl:if>
@@ -654,8 +644,7 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
        * Sets all Reference fields to their appropriate value.&lt;br/&gt;
        */
       @Override
-      protected void prepareReferencesForMarshalling()
-      {
+      protected void prepareReferencesForMarshalling() {
         super.prepareReferencesForMarshalling();
         <xsl:for-each select="reference">
           <xsl:variable name="name">
@@ -663,13 +652,12 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
               <xsl:with-param name="val" select="name"/>
             </xsl:call-template>
           </xsl:variable>
-        
-        if(get<xsl:value-of select="$name"/>() != null) 
-        {
+
+        if(get<xsl:value-of select="$name"/>() != null) {
           this.p_<xsl:value-of select="name"/> = get<xsl:value-of select="$name"/>().asReference();
-          if(getStateFor(get<xsl:value-of select="$name"/>()).isToBeMarshalled())
+          if(getStateFor(get<xsl:value-of select="$name"/>()).isToBeMarshalled()) {
                get<xsl:value-of select="$name"/>().setXmlId();
-            
+          }
         }
         </xsl:for-each>
       }
@@ -678,14 +666,13 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
        * Resets all Reference fields to null.&lt;br/&gt;
        */
       @Override
-      protected void resetReferencesAfterMarshalling()
-      {
+      protected void resetReferencesAfterMarshalling() {
         super.prepareReferencesForMarshalling();
         <xsl:for-each select="reference">
         this.p_<xsl:value-of select="name"/> = null;
         </xsl:for-each>
       }
-      
+
       </xsl:if>
       /**
        * Puts the string representation in the given string buffer : &lt;br&gt; 
@@ -698,9 +685,7 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
        *
        * @return stringbuffer the given string buffer filled with the string representation
        */
-      <xsl:if test="$hasExtends = 1">
       @Override
-      </xsl:if>
       protected StringBuilder deepToString(final StringBuilder sb, final boolean isDeep, final Map&lt;MetadataElement, Object&gt; ids) {
       <xsl:if test="$hasExtends = 1">
         super.deepToString(sb, isDeep, ids);
@@ -725,37 +710,35 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
 
     }
   </xsl:template>
-  
-  
-  
-  
+
+
+
+
   <xsl:template name="enumeration">
     <xsl:param name="dir"/>
     <xsl:param name="path"/>
-    
+
     <xsl:variable name="file" select="concat('src/', $dir, '/', name, '.java')"/>
 
     <!-- open file for this class -->
     <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
 
-    <xsl:result-document href="{$file}">
-
-      package <xsl:value-of select="$path"/>;
+    <xsl:result-document href="{$file}">package <xsl:value-of select="$path"/>;
 
       <!-- imports -->
-      import javax.persistence.*;
       import javax.xml.bind.annotation.*;
-      
+
       /**
       * UML Enumeration <xsl:value-of select="name"/> :
       *
       * <xsl:apply-templates select="." mode="desc" />
       *
-      * @author generated by UML2 Generator tool (UML->XMI->XSLT->java code)
+      * @author generated by VO-URP tools <a href="http://code.google.com/p/vo-urp/">VO-URP Home</a>
+      * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
       */
       <xsl:apply-templates select="." mode="JAXBAnnotation"/>
       public enum <xsl:value-of select="name"/>&bl;{
-      
+
         <xsl:apply-templates select="literal"  />
 
         /** string representation */
@@ -771,28 +754,31 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
         }
 
         /**
-         * Returns string representation
-         * @return string representation
+         * Return the string representation of this enum constant (value)
+         * @return string representation of this enum constant (value)
          */
         public final String value() {
             return this.value;
         }
 
         /**
-         * Returns string representation
-         * @return string representation
+         * Return the string representation of this enum constant (value)
+         * @see #value()
+         * @return string representation of this enum constant (value)
          */
+        @Override
         public final String toString() {
-            return this.value;
+            return value();
         }
+
         /**
-         * Returns <xsl:value-of select="name"/> Enumeration Literal corresponding to the given string representation
+         * Return the <xsl:value-of select="name"/> enum constant corresponding to the given string representation (value)
          *
-         * @param v string representation
+         * @param v string representation (value)
          *
-         * @return value <xsl:value-of select="name"/> Enumeration Literal
+         * @return <xsl:value-of select="name"/> enum constant
          *
-         * @throws IllegalArgumentException if string representation not found
+         * @throws IllegalArgumentException if there is no matching enum constant
          */
         public final static <xsl:value-of select="name"/> fromValue(final String v) {
           for (<xsl:value-of select="name"/> c : <xsl:value-of select="name"/>.values()) {
@@ -800,20 +786,16 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
                   return c;
               }
           }
-          throw new IllegalArgumentException("<xsl:value-of select="name"/>.fromValue : unknown value : " + v);
+          throw new IllegalArgumentException("<xsl:value-of select="name"/>.fromValue : No enum const for the value : " + v);
         }
-      
+
       }
     </xsl:result-document>
   </xsl:template>
-  
-  
-  
 
-  
-  
-  
-  
+
+
+
   <xsl:template match="attribute" mode="declare">
     <xsl:variable name="type"><xsl:call-template name="JavaType"><xsl:with-param name="xmiid" select="datatype/@xmiidref"/></xsl:call-template></xsl:variable>
     /** 
@@ -830,10 +812,10 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
     <xsl:apply-templates select="." mode="JAXBAnnotation"/>
     private <xsl:value-of select="$type"/>&bl;<xsl:value-of select="name"/>;
   </xsl:template>
-  
-  
-  
-  
+
+
+
+
   <xsl:template match="attribute" mode="getset">
     <xsl:variable name="type"><xsl:call-template name="JavaType"><xsl:with-param name="xmiid" select="datatype/@xmiidref"/></xsl:call-template></xsl:variable>
     <xsl:variable name="name">
@@ -868,14 +850,14 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
       </xsl:call-template>
     </xsl:variable>
     if ("<xsl:value-of select="name"/>".equals(propertyName)) {
-      set<xsl:value-of select="$name"/>((<xsl:value-of select="$type"/>)value);
+      set<xsl:value-of select="$name"/>((<xsl:value-of select="$type"/>)pValue);
       return true;
     }
   </xsl:template>
-  
-  
-  
-  
+
+
+
+
   <xsl:template match="collection" mode="declare">
     <xsl:variable name="type"><xsl:call-template name="JavaType"><xsl:with-param name="xmiid" select="datatype/@xmiidref"/></xsl:call-template></xsl:variable>
     /** 
@@ -889,10 +871,10 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
     <xsl:apply-templates select="." mode="JAXBAnnotation"/>
     private List&lt;<xsl:value-of select="$type"/>&gt;&bl;<xsl:value-of select="name"/> = null;
   </xsl:template>
-  
-  
-  
-  
+
+
+
+
   <xsl:template match="collection" mode="getset">
     <xsl:variable name="type"><xsl:call-template name="JavaType"><xsl:with-param name="xmiid" select="datatype/@xmiidref"/></xsl:call-template></xsl:variable>
     <xsl:variable name="name">
@@ -922,8 +904,8 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
       if(this.<xsl:value-of select="name"/> == null) {
         this.<xsl:value-of select="name"/> = new ArrayList&lt;<xsl:value-of select="$type"/>&gt;();
       }
-      final int rank = this.<xsl:value-of select="name"/>.size();
-      p<xsl:value-of select="$type"/>.setRank(rank);
+      final int idx = this.<xsl:value-of select="name"/>.size();
+      p<xsl:value-of select="$type"/>.setRank(idx);
       this.<xsl:value-of select="name"/>.add(p<xsl:value-of select="$type"/>);
     }
   </xsl:template>
@@ -953,10 +935,10 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
     protected Reference&bl;p_<xsl:value-of select="name"/> = null;
     </xsl:if>
   </xsl:template>
-  
-  
-  
-  
+
+
+
+
   <xsl:template match="reference" mode="getset">
     <xsl:variable name="ctype" select="key('element',datatype/@xmiidref)"/>
 
@@ -1000,10 +982,10 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
     </xsl:choose>
     }
   </xsl:template>
-  
-  
-  
-  
+
+
+
+
   <xsl:template match="reference" mode="setProperty">
     <xsl:variable name="ctype" select="key('element',datatype/@xmiidref)"/>
 
@@ -1015,12 +997,12 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
     </xsl:variable>
 
     if ("<xsl:value-of select="name"/>".equals(propertyName)) {
-      set<xsl:value-of select="$name"/>((<xsl:value-of select="$type"/>)value);
+      set<xsl:value-of select="$name"/>((<xsl:value-of select="$type"/>)pValue);
       return true;
     }
     if ("<xsl:value-of select="name"/>Ref".equals(propertyName)) {
       // sets JAXB Reference Field
-      this.p_<xsl:value-of select="name"/> = newReference((MetadataObject)value);
+      this.p_<xsl:value-of select="name"/> = newReference((MetadataObject)pValue);
       return true;
     }
   </xsl:template>
@@ -1039,7 +1021,7 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
         <xsl:with-param name="text" select="value"/>
       </xsl:call-template>
     </xsl:variable>
-    
+
     <xsl:apply-templates select="." mode="JAXBAnnotation"/>
     <xsl:value-of select="$up"/>("<xsl:value-of select="value"/>")
     <xsl:choose>
@@ -1048,10 +1030,10 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
     </xsl:choose>
     &cr;
   </xsl:template>
-  
-  
-  
-  
+
+
+
+
   <xsl:template match="attribute|reference|collection" mode="tostring">
     <xsl:variable name="name">
       <xsl:call-template name="upperFirst">
@@ -1088,10 +1070,10 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
       <xsl:otherwise>TODO : Missing description : please, update your UML model asap.</xsl:otherwise>
     </xsl:choose>
   </xsl:template>  
-  
-  
-  
-  
+
+
+
+
   <!-- specific documents --> 
 
   <!-- ModelVersion.java -->
@@ -1099,32 +1081,28 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
     <xsl:variable name="file" select="concat('src/', $root_package_dir,'/','ModelVersion.java')"/>
     <!-- open file for this class -->
     <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
-    <xsl:result-document href="{$file}">
-      package <xsl:value-of select="$root_package"/>;
-      
+    <xsl:result-document href="{$file}">package <xsl:value-of select="$root_package"/>;
+
       /**
       * Version class for <xsl:value-of select="name"/> :
       *
       * <xsl:apply-templates select="." mode="desc" />
       *
-      * @author generated by UML2 Generator tool (UML->XMI->XSLT->java code)
+      * @author generated by VO-URP tools <a href="http://code.google.com/p/vo-urp/">VO-URP Home</a>
+      * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
       */
-      public final class ModelVersion { 
-      
-      /** last modification date of the UML model */
-      public final static long LAST_MODIFICATION_DATE = <xsl:value-of select="$lastModified"/>l;
-      
-      private ModelVersion() {
-      // forbidden constructor
-      }
-      
+      public interface ModelVersion { 
+
+        /** last modification date of the UML model */
+        public final static long LAST_MODIFICATION_DATE = <xsl:value-of select="$lastModified"/>l;
+
       }
     </xsl:result-document>
   </xsl:template>
-  
-  
-  
-  
+
+
+
+
   <!-- package.html -->
   <xsl:template match="package" mode="packageDesc">
     <xsl:param name="dir"/>
@@ -1143,20 +1121,12 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
       </html>
     </xsl:result-document>
   </xsl:template>
-  
-  
-  
-  
-    
-  
-  
-  
+
+
+
+
   <xsl:template name="QualifiedJavaType">
     <xsl:param name="type"/>
-<!--     <xsl:param name="xmiid"/>  
-    <xsl:variable name="type" select="key('element',$xmiid)"/>
-     <xsl:message>QualifiedJavaType: XMIID = <xsl:value-of select="$xmiid"/></xsl:message>
-   --> 
     <xsl:choose>
       <xsl:when test="name($type) = 'primitiveType'">
         <xsl:choose>
@@ -1188,7 +1158,8 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template> 
-  
+
+
 
 
   <xsl:template name="findParentContainer">
@@ -1207,6 +1178,6 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
-  
+
+
 </xsl:stylesheet>
