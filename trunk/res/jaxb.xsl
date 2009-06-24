@@ -89,7 +89,7 @@ Ofcourse if we always use the schemas to validate XML documents this will still 
 
 
 
-  <!-- temlate attribute : adds JAXB annotations for primitive types, data types & enumerations -->
+  <!-- template attribute : adds JAXB annotations for primitive types, data types & enumerations -->
   <xsl:template match="attribute" mode="JAXBAnnotation">
     <xsl:variable name="type"><xsl:call-template name="JavaType"><xsl:with-param name="xmiid" select="datatype/@xmiidref"/></xsl:call-template></xsl:variable>
     @XmlElement( name = "<xsl:value-of select="name"/>", required = <xsl:apply-templates select="." mode="required"/>, type = <xsl:value-of select="$type"/>.class)

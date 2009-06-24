@@ -13,26 +13,26 @@
 
   <xsl:template name="upperFirst">
     <xsl:param name="val"/>
-    
+
     <xsl:variable name="prem" select="substring($val,1,1)"/>
     <xsl:variable name="first" select="upper-case($prem)"/>
     <xsl:variable name="end" select="substring($val,2,string-length($val)-1)"/>
     <xsl:value-of select="concat($first,$end)"/>
   </xsl:template>
-  
-  
-  
-  
+
+
+
+
   <xsl:template name="constant">
     <xsl:param name="text"/>
-    
+
     <xsl:variable name="v0" select="replace($text, '0', 'ZERO')"/>
     <xsl:variable name="v1" select="replace($v0,   '1', 'ONE')"/>
     <xsl:value-of select="translate(upper-case($v1),' .:*','___N')"/>
   </xsl:template>
-  
-  
-  
+
+
+
 
   <!-- Calculate the full path to the package identified by the packageid
       Use the specified delimiter. -->
@@ -40,7 +40,7 @@
     <xsl:param name="packageid"/>
     <xsl:param name="delimiter"/>
     <xsl:param name="suffix"/>
-    
+
     <xsl:variable name="p" select="key('element',$packageid)"/>
     <xsl:choose>
       <xsl:when test="name($p) = 'package'">
@@ -65,13 +65,13 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
-  
-  
-    
+
+
+
+
   <xsl:template name="JavaType">
     <xsl:param name="xmiid"/>
-    <!--
+<!--
     Primitive types :
         boolean
         short
@@ -85,7 +85,7 @@
 
     Characters type :
         string
-        
+
     Unsupported type (later) => string :
         complex
         rational
@@ -116,10 +116,11 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-   
-  
-  
-    <!-- Only counts whether this class or subclass is contained, not if a base class is contained -->
+
+
+
+
+  <!-- Only counts whether this class or subclass is contained, not if a base class is contained -->
   <xsl:template match="*[@xmi:type='uml:Class']" mode="testrootelements">
     <xsl:param name="count" select="0"/>
     <xsl:variable name="xmiid" select="@xmi:id"/>
@@ -147,8 +148,10 @@
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
-  
-  
+
+
+
+
   <xsl:template name="findRootId">
     <xsl:param name="xmiid"/>
     <xsl:variable name="class" select="key('classid',$xmiid)"/>
@@ -164,10 +167,13 @@
     </xsl:choose>
   </xsl:template>
 
+
+
+
   <xsl:template match="*[@xmi:type='uml:Class']" mode="dummy">
-<xsl:message><xsl:value-of select="@name"/></xsl:message>
+    <xsl:message><xsl:value-of select="@name"/></xsl:message>
     <xsl:value-of select="'0'"/>
   </xsl:template>
-  
-  
+
+
 </xsl:stylesheet>
