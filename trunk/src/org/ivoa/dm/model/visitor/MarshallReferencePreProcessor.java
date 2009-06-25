@@ -1,7 +1,7 @@
 package org.ivoa.dm.model.visitor;
 
 import org.ivoa.dm.model.MetadataObject;
-import org.ivoa.dm.model.Visitor;
+import org.ivoa.dm.model.MetaDataObjectVisitor;
 
 /**
  * MetadataObject Visitor implementation :
@@ -12,16 +12,16 @@ import org.ivoa.dm.model.Visitor;
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public final class MarshallReferencePreProcessor extends Visitor {
+public final class MarshallReferencePreProcessor extends MetaDataObjectVisitor {
 
-    /** singleton instance (thread safe and stateless) */
+    /** singleton instance (java 5 memory model) : statically defined (thread safe and stateless) */
     private static MarshallReferencePreProcessor instance = new MarshallReferencePreProcessor();
 
     /**
      * Return the singleton instance
      * @return visitor
      */
-    public static Visitor getInstance() {
+    public static MetaDataObjectVisitor getInstance() {
         return instance;
     }
 
@@ -29,7 +29,10 @@ public final class MarshallReferencePreProcessor extends Visitor {
      * Protected constructor to avoid to create instance except for singletons (stateless classes)
      */
     protected MarshallReferencePreProcessor() {
-        super();
+         super();
+
+        // register this instance in SingletonSupport
+        register(this);
     }
 
     //~ Methods ----------------------------------------------------------------------------------------------------------

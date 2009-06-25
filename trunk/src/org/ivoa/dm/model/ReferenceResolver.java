@@ -22,9 +22,9 @@ public final class ReferenceResolver extends LogSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** Identity / Reference resolver singleton */
-  private static ReferenceResolver resolver = new ReferenceResolver();
+  private static ReferenceResolver resolverInstance = new ReferenceResolver();
   /** singleton : thread local contexts */
-  private static ResolverThreadLocal localContext = new ResolverThreadLocal();
+  private static ResolverThreadLocal resolverThreadLocalInstance = new ResolverThreadLocal();
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
@@ -43,7 +43,7 @@ public final class ReferenceResolver extends LogSupport {
    * @return ReferenceResolver singleton
    */
   public static ReferenceResolver getInstance() {
-    return resolver;
+    return resolverInstance;
   }
 
   /**
@@ -52,14 +52,14 @@ public final class ReferenceResolver extends LogSupport {
    * @param em entity manager
    */
   public static final void initContext(final EntityManager em) {
-    localContext.get().setEm(em);
+    resolverThreadLocalInstance.get().setEm(em);
   }
 
   /**
    * Free the ResolverContext associated with the current thread
    */
   public static final void freeContext() {
-    localContext.remove();
+    resolverThreadLocalInstance.remove();
   }
 
   /**
@@ -68,7 +68,7 @@ public final class ReferenceResolver extends LogSupport {
    * @return ResolverContext associated with the current thread
    */
   protected static final ResolverContext currentContext() {
-    return localContext.get();
+    return resolverThreadLocalInstance.get();
   }
 
   /**

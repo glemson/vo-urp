@@ -6,12 +6,16 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.ivoa.util.CollectionUtils;
 import org.ivoa.util.JavaUtils;
 import org.ivoa.util.concurrent.FastSemaphore;
 
 /**
- * Singleton design pattern implementation for Java 5+
+ * Singleton design pattern implementation for Java 5+.<br/>
+ *
+ * TODO : Remove LogSupport dependency and set/release log instances at runtime (start / stop)
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
@@ -23,7 +27,7 @@ public abstract class SingletonSupport extends LogSupport {
     /** shutdown flag to avoid singleton references to be kept after shutdown process */
     private static boolean isShutdown = false;
     /** internal semaphore (avoid synchronized blocks) */
-    private static final FastSemaphore SEM = new FastSemaphore(1);
+    private static FastSemaphore SEM = new FastSemaphore(1);
     /** instances to monitor = map [class name, SingletonSupport instance] */
     private static Map<String, SingletonSupport> managedInstances = new LinkedHashMap<String, SingletonSupport>();
 
@@ -115,8 +119,14 @@ public abstract class SingletonSupport extends LogSupport {
 
         try {
             // semaphore is acquired to protect instances :
+            SEM.acquire();
+
             managedInstances.put(getSingletonName(singleton), singleton);
 
+        } catch (InterruptedException ie) {
+            if (log.isInfoEnabled()) {
+               log.info("SingletonSupport.register : Interrupted : ", ie);
+            }
         } finally {
             // semaphore is released :
             SEM.release();
@@ -134,8 +144,14 @@ public abstract class SingletonSupport extends LogSupport {
         }
         try {
             // semaphore is acquired to protect instances :
+            SEM.acquire();
+
             managedInstances.remove(getSingletonName(singleton));
 
+        } catch (InterruptedException ie) {
+            if (log.isInfoEnabled()) {
+               log.info("SingletonSupport.unregister : Interrupted : ", ie);
+            }
         } finally {
             // semaphore is released :
             SEM.release();
@@ -151,17 +167,20 @@ public abstract class SingletonSupport extends LogSupport {
         }
         try {
             // semaphore is acquired to protect instances :
+            SEM.acquire();
+            
             if (!JavaUtils.isEmpty(managedInstances)) {
                 // clean up :
                 SingletonSupport singleton;
 
-                // reverse singleton ordering :
                 final List<SingletonSupport> instances = new ArrayList<SingletonSupport>(managedInstances.values());
-                Collections.reverse(instances);
 
                 if (log.isWarnEnabled()) {
                     log.warn("SingletonSupport.onExit : instances to free : " + CollectionUtils.toString(instances));
                 }
+
+                // reverse singleton ordering :
+                Collections.reverse(instances);
 
                 for (final Iterator<SingletonSupport> it = instances.iterator(); it.hasNext();) {
                     singleton = it.next();
@@ -173,6 +192,10 @@ public abstract class SingletonSupport extends LogSupport {
             }
             managedInstances = null;
 
+        } catch (InterruptedException ie) {
+            if (log.isInfoEnabled()) {
+               log.info("SingletonSupport.onExit : Interrupted : ", ie);
+            }
         } finally {
             // semaphore is released :
             SEM.release();

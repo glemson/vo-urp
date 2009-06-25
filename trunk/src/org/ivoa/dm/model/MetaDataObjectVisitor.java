@@ -1,5 +1,8 @@
 package org.ivoa.dm.model;
 
+import org.ivoa.bean.SingletonSupport;
+import org.ivoa.dm.model.visitor.Visitor;
+
 /**
  * Represents a visitor in the visitor pattern.<br>
  * Can traverse a MetadataObjbect containment tree.
@@ -15,12 +18,12 @@ package org.ivoa.dm.model;
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public abstract class Visitor {
+public abstract class MetaDataObjectVisitor extends SingletonSupport implements Visitor<MetadataObject> {
 
     /**
      * Protected constructor to avoid to create instance except for singletons (stateless classes)
      */
-    protected Visitor() {
+    protected MetaDataObjectVisitor() {
         /* no-op */
     }
     //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -36,16 +39,14 @@ public abstract class Visitor {
      * @param object MetadataObject instance
      */
     public void postProcess(final MetadataObject object) {
-      /* no-op */
+        /* no-op */
     }
-
 
     /*
      * Utility methods for accessing protected methods of MetadataObject
      * 
      * Facade like pattern
      */
-    
     /**
      * Return the status object of the MetadataObject instance
      * 
@@ -95,8 +96,3 @@ public abstract class Visitor {
     }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
-
-
-
-
-
