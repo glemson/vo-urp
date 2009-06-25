@@ -22,7 +22,7 @@ public abstract class SingletonSupport extends LogSupport {
     //~ Constants --------------------------------------------------------------------------------------------------------
 
     /** internal diagnostic FLAG */
-    public static final boolean DIAGNOSTICS = true;
+  public static final boolean SINGLETON_SUPPORT_DIAGNOSTICS = true;
     /** shutdown flag to avoid singleton references to be kept after shutdown process */
     private static boolean isShutdown = false;
     /** internal semaphore (avoid synchronized blocks) */
@@ -36,7 +36,7 @@ public abstract class SingletonSupport extends LogSupport {
      * @return true if shutdown flag is not set
      */
     protected static final boolean isRunning() {
-        if (DIAGNOSTICS && isShutdown) {
+    if (SINGLETON_SUPPORT_DIAGNOSTICS && isShutdown) {
             System.out.println("SingletonSupport.isRunning : shutdown detected : ");
             new Throwable().printStackTrace(System.out);
         }
