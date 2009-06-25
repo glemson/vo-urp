@@ -1,7 +1,7 @@
 package org.ivoa.dm.model.visitor;
 
 import org.ivoa.dm.model.MetadataObject;
-import org.ivoa.dm.model.Visitor;
+import org.ivoa.dm.model.MetaDataObjectVisitor;
 
 /**
  * MetadataObject Visitor implementation :
@@ -12,9 +12,9 @@ import org.ivoa.dm.model.Visitor;
  *
  * @author Gerard Lemson (mpe)
   */
-public final class PersistObjectPostProcessor extends Visitor {
+public final class PersistObjectPostProcessor extends MetaDataObjectVisitor {
 
-  /** singleton instance (thread safe and stateless) */
+    /** singleton instance (java 5 memory model) : statically defined (thread safe and stateless) */
   private static PersistObjectPostProcessor instance = new PersistObjectPostProcessor();
 
   /**
@@ -25,10 +25,14 @@ public final class PersistObjectPostProcessor extends Visitor {
       return instance;
   }
 
-  /**
+    /**
      * Protected constructor to avoid to create instance except for singletons (stateless classes)
      */
     protected PersistObjectPostProcessor() {
+        super();
+
+        // register this instance in SingletonSupport
+        register(this);
     }
 
     //~ Methods ----------------------------------------------------------------------------------------------------------

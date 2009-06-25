@@ -372,7 +372,7 @@ public abstract class MetadataObject extends MetadataElement {
      * @param visitor
      */
     @SuppressWarnings("unchecked")
-    public final void traverse(final Visitor visitor) {
+    public final void traverse(final MetaDataObjectVisitor visitor) {
         visitor.preProcess(this);
 
         final ObjectClassType metadataObject = getClassMetaData();

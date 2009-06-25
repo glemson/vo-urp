@@ -3,7 +3,7 @@ package org.ivoa.dm.model.visitor;
 import javax.persistence.EntityManager;
 
 import org.ivoa.dm.model.MetadataObject;
-import org.ivoa.dm.model.Visitor;
+import org.ivoa.dm.model.MetaDataObjectVisitor;
 
 /**
  * MetadataObject Visitor implementation :
@@ -14,8 +14,9 @@ import org.ivoa.dm.model.Visitor;
  *
  * @author Gerard Lemson
  */
-public final class Persistor extends Visitor {
+public final class Persistor extends MetaDataObjectVisitor {
 
+    /* members : statefull visitor */
     private EntityManager em;
     
   /**

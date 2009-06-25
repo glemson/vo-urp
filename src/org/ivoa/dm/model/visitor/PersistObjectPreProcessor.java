@@ -4,7 +4,7 @@ import java.sql.Timestamp;
 
 import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.MetadataRootEntityObject;
-import org.ivoa.dm.model.Visitor;
+import org.ivoa.dm.model.MetaDataObjectVisitor;
 
 /**
  * MetadataObject Visitor implementation :
@@ -16,8 +16,9 @@ import org.ivoa.dm.model.Visitor;
  * 
  * @author Gerard Lemson (mpe)
  */
-public final class PersistObjectPreProcessor extends Visitor {
+public final class PersistObjectPreProcessor extends MetaDataObjectVisitor {
 
+    /* members : statefull visitor */
     private String username;
     private Timestamp now;
 
