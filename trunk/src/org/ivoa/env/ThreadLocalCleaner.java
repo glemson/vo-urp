@@ -71,8 +71,12 @@ public class ThreadLocalCleaner extends LogSupport {
                 Field valueField = null;
                 Object value;
                 String type;
-                Class<?> cl;
+        Class<?> clazz;
 
+        /*
+         * Create a dedicated string builder for the complete graph visit.
+         * Can not use LocalStringBuilder because of possible re-entrance issues
+         */ 
                 final StringBuilder sb = new StringBuilder(2048);
 
                 for (int i = 0; i < threadLocalCount; i++) {
@@ -86,8 +90,8 @@ public class ThreadLocalCleaner extends LogSupport {
 
                         value = valueField.get(entry);
                         if (value != null) {
-                            cl = value.getClass();
-                            type = cl.getCanonicalName();
+              clazz = value.getClass();
+              type = clazz.getCanonicalName();
 
                             sb.append("\n    + ").append(type).append("@").append(
                                     Integer.toHexString(value.hashCode()));
@@ -99,23 +103,23 @@ public class ThreadLocalCleaner extends LogSupport {
                                 CollectionUtils.toString(sb, (Map<?, ?>) value);
                             } else if (value instanceof Reference) {
                                 sb.append(((Reference<?>) value).get());
-                            } else if (cl.isArray()) {
+              } else if (clazz.isArray()) {
                                 // check all kind of primitive types :
-                                if (cl == byte[].class) {
+                if (clazz == byte[].class) {
                                     sb.append(Arrays.toString((byte[]) value));
-                                } else if (cl == short[].class) {
+                } else if (clazz == short[].class) {
                                     sb.append(Arrays.toString((short[]) value));
-                                } else if (cl == int[].class) {
+                } else if (clazz == int[].class) {
                                     sb.append(Arrays.toString((int[]) value));
-                                } else if (cl == long[].class) {
+                } else if (clazz == long[].class) {
                                     sb.append(Arrays.toString((long[]) value));
-                                } else if (cl == char[].class) {
+                } else if (clazz == char[].class) {
                                     sb.append(Arrays.toString((char[]) value));
-                                } else if (cl == float[].class) {
+                } else if (clazz == float[].class) {
                                     sb.append(Arrays.toString((float[]) value));
-                                } else if (cl == double[].class) {
+                } else if (clazz == double[].class) {
                                     sb.append(Arrays.toString((double[]) value));
-                                } else if (cl == boolean[].class) {
+                } else if (clazz == boolean[].class) {
                                     sb.append(Arrays.toString((boolean[]) value));
                                 } else {
                                     sb.append(Arrays.deepToString((Object[]) value));

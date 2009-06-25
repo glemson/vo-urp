@@ -56,9 +56,10 @@ public final class CollectionUtils {
    * 
    * @param sb buffer
    * @param c collection
+   * @return buffer (sb)
    */
-  public static void toString(final StringBuilder sb, final Collection<?> c) {
-    toString(sb, c, LINE_SEPARATOR, BEGIN_SEPARATOR, END_SEPARATOR);
+  public static StringBuilder toString(final StringBuilder sb, final Collection<?> c) {
+    return toString(sb, c, LINE_SEPARATOR, BEGIN_SEPARATOR, END_SEPARATOR);
   }
 
   /**
@@ -86,9 +87,10 @@ public final class CollectionUtils {
    * 
    * @param sb buffer
    * @param m map
+   * @return buffer (sb)
    */
-  public static void toString(final StringBuilder sb, final Map<?, ?> m) {
-    toString(sb, m, LINE_SEPARATOR, BEGIN_SEPARATOR, END_SEPARATOR);
+  public static StringBuilder toString(final StringBuilder sb, final Map<?, ?> m) {
+    return toString(sb, m, LINE_SEPARATOR, BEGIN_SEPARATOR, END_SEPARATOR);
   }
 
   /**
@@ -112,9 +114,10 @@ public final class CollectionUtils {
    * @param sb buffer
    * @param c collection
    * @param lineSep line separator
+   * @return buffer (sb)
    */
-  public static void toString(final StringBuilder sb, final Collection<?> c, final String lineSep) {
-    toString(sb, c, lineSep, "", "");
+  public static StringBuilder toString(final StringBuilder sb, final Collection<?> c, final String lineSep) {
+    return toString(sb, c, lineSep, "", "");
   }
 
   /**
@@ -138,9 +141,10 @@ public final class CollectionUtils {
    * @param sb buffer
    * @param m map
    * @param lineSep line separator
+   * @return buffer (sb)
    */
-  public static void toString(final StringBuilder sb, final Map<?, ?> m, final String lineSep) {
-    toString(sb, m, lineSep, "", "");
+  public static StringBuilder toString(final StringBuilder sb, final Map<?, ?> m, final String lineSep) {
+    return toString(sb, m, lineSep, "", "");
   }
 
   /**
@@ -154,11 +158,7 @@ public final class CollectionUtils {
    */
   public static String toString(final Collection<?> c, final String lineSep, final String startSep,
       final String endSep) {
-    final StringBuilder sb = new StringBuilder(256);
-
-    toString(sb, c, lineSep, startSep, endSep);
-
-    return sb.toString();
+    return LocalStringBuilder.toString(toString(LocalStringBuilder.getBuffer(), c, lineSep, startSep, endSep));
   }
 
   /**
@@ -169,8 +169,9 @@ public final class CollectionUtils {
    * @param lineSep line separator
    * @param startSep start separator
    * @param endSep end separator
+   * @return buffer (sb)
    */
-  public static void toString(final StringBuilder sb, final Collection<?> c, final String lineSep,
+  public static StringBuilder toString(final StringBuilder sb, final Collection<?> c, final String lineSep,
       final String startSep, final String endSep) {
     final Iterator<?> it = c.iterator();
 
@@ -184,7 +185,7 @@ public final class CollectionUtils {
       }
     }
 
-    sb.append(endSep);
+    return sb.append(endSep);
   }
 
   /**
@@ -198,11 +199,7 @@ public final class CollectionUtils {
    */
   public static String toString(final Map<?, ?> m, final String lineSep, final String startSep,
       final String endSep) {
-    final StringBuilder sb = new StringBuilder(1024);
-
-    toString(sb, m, lineSep, startSep, endSep);
-
-    return sb.toString();
+    return LocalStringBuilder.toString(toString(LocalStringBuilder.getBuffer(), m, lineSep, startSep, endSep));
   }
 
   /**
@@ -213,9 +210,10 @@ public final class CollectionUtils {
    * @param lineSep line separator
    * @param startSep start separator
    * @param endSep end separator
+   * @return buffer (sb)
    */
   @SuppressWarnings("unchecked")
-  public static void toString(final StringBuilder sb, final Map<?, ?> m, final String lineSep,
+  public static StringBuilder toString(final StringBuilder sb, final Map<?, ?> m, final String lineSep,
       final String startSep, final String endSep) {
     final Iterator it = m.entrySet().iterator();
 
@@ -236,7 +234,7 @@ public final class CollectionUtils {
       }
     }
 
-    sb.append(endSep);
+    return sb.append(endSep);
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

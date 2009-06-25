@@ -74,14 +74,16 @@ public final class JavaUtils {
   }
 
   /**
-   * Converts the given array to a List. If the array is empty, it gives the Collections.EMPTY_LIST
+   * Converts the given array to a List. <br/>
+   * If the array is empty, it gives the Collections.EMPTY_LIST
    * 
+   * @param <T> type of objects contained in the array
    * @param array array to convert
    * @return list (Collections.EMPTY_LIST if the array is empty)
-   * @see java.util.Arrays#asList(Object[])
+   * @see java.util.Arrays#asList(Object...)
    */
-  public final static List<Object> asList(final Object[] array) {
-    List<Object> res;
+  public final static <T> List<T> asList(final T[] array) {
+    List<T> res;
     if (isEmpty(array)) {
       res = Collections.emptyList();
     } else {

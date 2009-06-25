@@ -64,15 +64,15 @@ public final class ReflectionUtils extends LogSupport {
    * Factory implementation : creates new instance for given class
    *
    * @param <T> super Class Type
-   * @param cl class (should not be real implementation class, not an abstract class)
+   * @param clazz class (should not be real implementation class, not an abstract class)
    * @return new instance
    * @throws IllegalStateException if it is not possible to create an instance
    */
-  public static <T> T newInstance(final Class<T> cl) {
+  public static <T> T newInstance(final Class<T> clazz) {
     try {
-      return cl.newInstance();
+      return clazz.newInstance();
     } catch (final Exception e) {
-      throw new IllegalStateException("unable to create instance for class : " + cl, e);
+      throw new IllegalStateException("unable to create instance for class : " + clazz, e);
     }
   }
 }
