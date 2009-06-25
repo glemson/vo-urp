@@ -8,11 +8,11 @@ import org.ivoa.dm.model.MetaDataObjectVisitor;
  * This updates the objects id-s after persistence.<br/>
  * 
  * Used by :
- * @see org.ivoa.dm.DataModelManager#persists(List<MetadataRootEntityObject>, String)
+ * @see org.ivoa.dm.DataModelManager#persist(java.util.List, String)
  *
  * @author Gerard Lemson (mpe)
   */
-public final class PersistObjectPostProcessor extends MetaDataObjectVisitor {
+public final class PersistObjectPostProcessor extends MetaDataObjectVisitor<MetadataObject> {
 
     /** singleton instance (java 5 memory model) : statically defined (thread safe and stateless) */
   private static PersistObjectPostProcessor instance = new PersistObjectPostProcessor();

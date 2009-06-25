@@ -13,7 +13,7 @@ import org.ivoa.dm.model.MetaDataObjectVisitor;
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public final class MarshallObjectPreProcessor extends MetaDataObjectVisitor {
+public final class MarshallObjectPreProcessor extends MetaDataObjectVisitor<MetadataObject> {
 
     /** singleton instance (java 5 memory model) : statically defined (thread safe and stateless) */
     private static MarshallObjectPreProcessor instance = new MarshallObjectPreProcessor();
@@ -22,7 +22,7 @@ public final class MarshallObjectPreProcessor extends MetaDataObjectVisitor {
      * Return the singleton instance
      * @return visitor
      */
-    public static MetaDataObjectVisitor getInstance() {
+    public static MarshallObjectPreProcessor getInstance() {
         return instance;
     }
 

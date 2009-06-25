@@ -91,9 +91,17 @@ public final class ErrorMessage implements Serializable {
 
   //~ Enumerations -----------------------------------------------------------------------------------------------------
 
+  /**
+   * Error severity enum
+   */
   public enum SEVERITY {
       //~ Enumeration constant initializers ----------------------------------------------------------------------------
-    WARNING, ERROR, FATAL;
+    /** WARNING */
+    WARNING, 
+    /** ERROR */
+    ERROR, 
+    /** FATAL */
+    FATAL;
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
