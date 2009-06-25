@@ -12,7 +12,7 @@ import org.ivoa.dm.model.MetaDataObjectVisitor;
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public final class MarshallReferencePostProcessor extends MetaDataObjectVisitor<MetadataObject> {
+public final class MarshallReferencePostProcessor extends MetaDataObjectVisitor {
 
     /** singleton instance (java 5 memory model) : statically defined (thread safe and stateless) */
     private static MarshallReferencePostProcessor instance = new MarshallReferencePostProcessor();
@@ -43,15 +43,6 @@ public final class MarshallReferencePostProcessor extends MetaDataObjectVisitor<
     @Override
     public void preProcess(final MetadataObject object) {
         resetReferencesAfterMarshalling(object);
-    }
-
-    /**
-     * Process the specified object after its collections have been processed.</br>
-     * @param object MetadataObject instance
-     */
-    @Override
-    public void postProcess(final MetadataObject object) {
-        /* no-op */
     }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

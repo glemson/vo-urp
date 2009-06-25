@@ -12,7 +12,7 @@ import org.ivoa.dm.model.MetaDataObjectVisitor;
  *
  * @author Gerard Lemson (mpe)
   */
-public final class PersistObjectPostProcessor extends MetaDataObjectVisitor<MetadataObject> {
+public final class PersistObjectPostProcessor extends MetaDataObjectVisitor {
 
     /** singleton instance (java 5 memory model) : statically defined (thread safe and stateless) */
   private static PersistObjectPostProcessor instance = new PersistObjectPostProcessor();
@@ -46,15 +46,6 @@ public final class PersistObjectPostProcessor extends MetaDataObjectVisitor<Meta
       /* no-op for now 
        * If at some point we store state on objects, here this can be updated
        * */
-    }
-
-    /**
-     * Process the specified object after its collections have been processed.</br>
-     * @param object MetadataObject instance
-     */
-    @Override
-    public void postProcess(final MetadataObject object) {
-        /* no-op */
     }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

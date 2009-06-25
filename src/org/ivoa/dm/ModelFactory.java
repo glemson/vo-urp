@@ -13,6 +13,7 @@ import org.ivoa.bean.SingletonSupport;
 import org.ivoa.conf.RuntimeConfiguration;
 import org.ivoa.dm.model.MetadataElement;
 import org.ivoa.dm.model.MetadataObject;
+import org.ivoa.dm.model.visitor.MarshallObjectPostProcessor;
 import org.ivoa.dm.model.visitor.MarshallObjectPreProcessor;
 import org.ivoa.dm.model.visitor.MarshallReferencePostProcessor;
 import org.ivoa.dm.model.visitor.MarshallReferencePreProcessor;
@@ -171,6 +172,7 @@ public final class ModelFactory extends SingletonSupport {
             // from the VO-URP-generated root package into an instance document.
             m.marshal(source, w);
 
+            source.traverse(MarshallObjectPostProcessor.getInstance());
             source.traverse(MarshallReferencePostProcessor.getInstance());
 
             if (log.isDebugEnabled()) {

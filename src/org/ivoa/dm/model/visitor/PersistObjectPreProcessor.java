@@ -3,6 +3,7 @@ package org.ivoa.dm.model.visitor;
 import java.sql.Timestamp;
 
 import org.ivoa.dm.model.MetaDataObjectVisitor;
+import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.MetadataRootEntityObject;
 
 /**
@@ -14,7 +15,7 @@ import org.ivoa.dm.model.MetadataRootEntityObject;
  * @see org.ivoa.dm.DataModelManager#persist(java.util.List, String)
  * @author Gerard Lemson (mpe)
  */
-public final class PersistObjectPreProcessor extends MetaDataObjectVisitor<MetadataRootEntityObject> {
+public final class PersistObjectPreProcessor extends MetaDataObjectVisitor {
 
   /* members : statefull visitor */
   /** user name */
@@ -44,23 +45,16 @@ public final class PersistObjectPreProcessor extends MetaDataObjectVisitor<Metad
    * @param object MetadataObject instance
    */
   @Override
-  public void preProcess(final MetadataRootEntityObject object) {
-    object.setDbUpdateTimestamp(now);
-    object.setUpdateUser(username);
-    if (object.isPurelyTransient()) {
-      object.setDBInsertTimestamp(now);
-      object.setOwner(username);
-    }
-  }
-
-  /**
-   * Process the specified object after its collections have been processed.</br>
-   * 
-   * @param object MetadataObject instance
-   */
-  @Override
-  public void postProcess(final MetadataRootEntityObject object) {
-    /* no-op */
+  public void preProcess(final MetadataObject object) {
+      if (object instanceof MetadataRootEntityObject) {
+          final MetadataRootEntityObject root = (MetadataRootEntityObject)object;
+        root.setDbUpdateTimestamp(now);
+        root.setUpdateUser(username);
+        if (root.isPurelyTransient()) {
+          root.setDBInsertTimestamp(now);
+          root.setOwner(username);
+        }
+      }
   }
 }
 // ~ End of file
