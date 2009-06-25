@@ -42,7 +42,7 @@ public final class EntityConfigFactory extends SingletonSupport {
      */
     public static final EntityConfigFactory getInstance() {
         if (instance == null) {
-            instance = (EntityConfigFactory) prepareInstance(new EntityConfigFactory());
+            instance = prepareInstance(new EntityConfigFactory());
         }
         return instance;
     }

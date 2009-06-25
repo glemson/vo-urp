@@ -204,7 +204,7 @@ public final class ValidationServlet extends BaseServlet {
    *
    * @return parameter map
    */
-  @SuppressWarnings({ "unchecked", "unchecked" })
+  @SuppressWarnings({ "unchecked" })
   private Map<String, Object> getParameters(final HttpServletRequest request) {
     Map<String, Object> parameters = new Hashtable<String, Object>();
 

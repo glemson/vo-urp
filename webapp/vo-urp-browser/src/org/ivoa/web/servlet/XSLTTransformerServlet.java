@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.ivoa.conf.RuntimeConfiguration;
-import org.ivoa.dm.DataModelManager;
 import org.ivoa.util.FileUtils;
 import org.ivoa.xml.XSLTTransformer;
 
@@ -69,13 +67,6 @@ public final class XSLTTransformerServlet extends BaseServlet {
    * TODO : Field Description
    */
   public static final String PATH_PAGES = "/page/";
-
-  //~ Members ----------------------------------------------------------------------------------------------------------
-
-  /**
-   * TODO : Field Description
-   */
-  private DataModelManager dataModelManager;
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
@@ -199,7 +190,7 @@ public final class XSLTTransformerServlet extends BaseServlet {
    *
    * @return parameter map
    */
-  @SuppressWarnings({ "unchecked", "unchecked" })
+  @SuppressWarnings({ "unchecked" })
   private Map<String, Object> getParameters(final HttpServletRequest request) {
     Map<String, Object> parameters = new Hashtable<String, Object>();
 
@@ -264,15 +255,6 @@ public final class XSLTTransformerServlet extends BaseServlet {
   @Override
   public void init(final ServletConfig sc) throws ServletException {
     super.init(sc);
-
-    try {
-      dataModelManager = new DataModelManager(RuntimeConfiguration.get().getJPAPU());
-    } catch (final Exception e) {
-      log.error(
-        "Unable to initiate DataModelManager for UploadServlet using JPA persistence unit " +
-        RuntimeConfiguration.get().getJPAPU());
-      dataModelManager = null; // TODO should we throw an exception or simply make uploads not possible?
-    }
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
