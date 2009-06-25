@@ -37,6 +37,18 @@ public final class ThresholdTimer {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
+   * Add a time value
+   * 
+   * @param start t0
+   * @param now t1
+   * 
+   * @see TimerFactory#elapsed(long, long)
+   */
+  public void add(final long start, final long now) {
+    add(TimerFactory.elapsed(start, now));
+  }
+  
+  /**
    * TODO : Method Description
    *
    * @param time 

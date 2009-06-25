@@ -20,7 +20,7 @@ import org.ivoa.dm.model.visitor.Visitor;
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public abstract class MetaDataObjectVisitor<T extends MetadataObject> extends SingletonSupport implements Visitor<T> {
+public abstract class MetaDataObjectVisitor extends SingletonSupport implements Visitor<MetadataObject> {
 
     /**
      * Protected constructor to avoid to create instance except for singletons (stateless classes)
@@ -34,7 +34,7 @@ public abstract class MetaDataObjectVisitor<T extends MetadataObject> extends Si
      * Process the specified object after its collections have been processed.</br>
      * @param object MetadataObject instance
      */
-    public void postProcess(final T object) {
+    public void postProcess(final MetadataObject object) {
         /* no-op */
     }
 
