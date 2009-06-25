@@ -33,7 +33,7 @@ public class ThreadLocalCleaner extends LogSupport {
         final Thread[] ta = new Thread[Thread.activeCount()];
         Thread.enumerate(ta);
 
-        for (Thread t : ta) {
+    for (final Thread t : ta) {
             log.warn("ThreadLocalCleaner.checkThreads : checking : " + t.getName());
 
             ThreadLocalCleaner.checkThreadLocals(t);

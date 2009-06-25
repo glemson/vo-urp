@@ -6,8 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import org.ivoa.util.CollectionUtils;
 import org.ivoa.util.JavaUtils;
 import org.ivoa.util.concurrent.FastSemaphore;

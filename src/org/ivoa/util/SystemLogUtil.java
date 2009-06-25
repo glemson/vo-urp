@@ -8,5 +8,5 @@ package org.ivoa.util;
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class SystemLogUtil {
-
+  /* TODO : implement */
 }

@@ -16,9 +16,11 @@ import org.ivoa.dm.model.visitor.Visitor;
  * we need to keep track of whether objects have already been visited, as
  * objects may now be reached in multiple ways.
  *
+ * @param <T> Type of the navigable class (child of MetadataObject)
+ *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public abstract class MetaDataObjectVisitor extends SingletonSupport implements Visitor<MetadataObject> {
+public abstract class MetaDataObjectVisitor<T extends MetadataObject> extends SingletonSupport implements Visitor<T> {
 
     /**
      * Protected constructor to avoid to create instance except for singletons (stateless classes)
@@ -29,16 +31,10 @@ public abstract class MetaDataObjectVisitor extends SingletonSupport implements 
     //~ Methods ----------------------------------------------------------------------------------------------------------
 
     /**
-     * Process the specified object before its collections are being processed.</br>
-     * @param object MetadataObject instance
-     */
-    public abstract void preProcess(final MetadataObject object);
-
-    /**
      * Process the specified object after its collections have been processed.</br>
      * @param object MetadataObject instance
      */
-    public void postProcess(final MetadataObject object) {
+    public void postProcess(final T object) {
         /* no-op */
     }
 

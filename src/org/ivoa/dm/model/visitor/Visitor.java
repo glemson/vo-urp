@@ -3,7 +3,7 @@ package org.ivoa.dm.model.visitor;
 /**
  * Represents a generic visitor in the visitor pattern.
  *
- * @param <T> Type of the visitable class
+ * @param <T> Type of the navigable class
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public interface Visitor<T> {

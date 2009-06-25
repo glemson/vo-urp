@@ -39,11 +39,11 @@ public class PropertyHolder extends SingletonSupport implements Serializable {
     /**
      * Constructor (protected)
      *
-     * @param propertyFile property file name
+   * @param pPropertyFile property file name
      */
-    public PropertyHolder(final String propertyFile) {
+  public PropertyHolder(final String pPropertyFile) {
         super();
-        setPropertyFile(propertyFile);
+        setPropertyFile(pPropertyFile);
         initialize();
     }
 
@@ -150,10 +150,10 @@ public class PropertyHolder extends SingletonSupport implements Serializable {
 
     /**
      * Set the property file name
-     * @param propertyFile property file name
+     * @param pPropertyFile property file name
      */
-    protected final void setPropertyFile(final String propertyFile) {
-        this.propertyFile = propertyFile;
+    protected final void setPropertyFile(final String pPropertyFile) {
+        this.propertyFile = pPropertyFile;
     }
 
     /**

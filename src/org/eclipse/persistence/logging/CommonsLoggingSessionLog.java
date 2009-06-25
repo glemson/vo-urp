@@ -526,7 +526,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
    *
    * @return LogWrapper instance or null if not found
    */
-  private final LogWrapper getLogWrapper(final String category) {
+  protected final LogWrapper getLogWrapper(final String category) {
     LogWrapper lw = null;
 
     if (getSession() == null) {

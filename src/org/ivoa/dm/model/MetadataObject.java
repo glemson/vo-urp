@@ -369,7 +369,7 @@ public abstract class MetadataObject extends MetadataElement {
      * First the preProcess method of the specified visitor is called with this in the argument. Than it is sent on to
      * the contained collections. At the end the postProcess method is called with thihs.
      *
-     * @param visitor
+     * @param visitor visitor instance
      */
     @SuppressWarnings("unchecked")
     public final void traverse(final MetaDataObjectVisitor visitor) {

@@ -244,7 +244,7 @@ public class DataModelManager extends LogSupport {
             // TODO here we could(should?) get the current timestamp from the database, which is not necessarily in synch with the web server.
             // For now a simpler solution ...
             final Timestamp currentTimestamp = new Timestamp(Calendar.getInstance().getTimeInMillis());
-            PersistObjectPreProcessor pre = new PersistObjectPreProcessor(username, currentTimestamp);
+            final PersistObjectPreProcessor pre = new PersistObjectPreProcessor(username, currentTimestamp);
             for (MetadataRootEntityObject o : objects) {
                 o.traverse(pre);
             }
