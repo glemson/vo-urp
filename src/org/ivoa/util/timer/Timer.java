@@ -33,6 +33,18 @@ public final class Timer {
 
   /**
    * Add a time value
+   * 
+   * @param start t0
+   * @param now t1
+   * 
+   * @see TimerFactory#elapsed(long, long)
+   */
+  public void add(final long start, final long now) {
+    add(TimerFactory.elapsed(start, now));
+  }
+
+  /**
+   * Add a time value
    *
    * @param time value to add in statistics
    */

@@ -52,10 +52,14 @@ public final class LocalStringBuilder extends SingletonSupport {
    */
   @Override
   protected void clearStaticReferences() {
+    // Free possible instance with the current thread :
+    LocalStringBuilder.cleanThread();
+
     // force GC :
     if (instance != null) {
       instance = null;
     }
+    // free ThreadLocal :
     bufferLocal = null;
   }
 
@@ -177,7 +181,9 @@ public final class LocalStringBuilder extends SingletonSupport {
      * Private Constructor
      */
     protected Context() {
-      /* no-op */
+      if (DIAGNOSTICS && log.isInfoEnabled()) {
+        log.info("LocalStringBuilder.Context.new : " + Thread.currentThread().getName());
+      }
     }
 
     /**
