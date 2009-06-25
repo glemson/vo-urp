@@ -55,12 +55,10 @@ public final class TimerFactory extends LogSupport {
    * @param category name of the category 
    */
   private static void warmUp(final int cycles, final String category) {
-    long duration;
     final long start = System.nanoTime();
     // EMPTY LOOP to precompile (hotspot) timer code :
     for (int i = 0, size = cycles; i < size; i++) {
-      duration = TimerFactory.elapsed(start, System.nanoTime());
-      TimerFactory.getTimer(category).add(duration);
+      TimerFactory.getTimer(category).add(start, System.nanoTime());
     }
   }
   //~ Constructors -----------------------------------------------------------------------------------------------------

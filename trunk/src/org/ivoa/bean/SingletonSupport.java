@@ -46,12 +46,11 @@ public abstract class SingletonSupport extends LogSupport {
 
     /**
      * Prepare the given singleton instance
-     * @param <T> SingletonSupport child class type
      *
+   * @param <T> SingletonSupport child class type
      * @param singleton SingletonSupport instance
      * @return prepared SingletonSupport instance
-     *
-     * @throws IllegalStateException if a problem occured
+   * @throws IllegalStateException if a problem occurred
      */
     protected static final <T extends SingletonSupport> T prepareInstance(final T singleton) {
         T managedInstance = null;
@@ -74,7 +73,7 @@ public abstract class SingletonSupport extends LogSupport {
                     log.error("SingletonSupport.prepareInstance : shutdown detected for singleton " + getSingletonLogName(singleton), new Throwable());
                 }
 
-            } catch (RuntimeException re) {
+      } catch (final RuntimeException re) {
                 if (log.isInfoEnabled()) {
                     log.info("SingletonSupport.prepareInstance : runtime failure " + getSingletonLogName(singleton), re);
                 }
@@ -91,6 +90,7 @@ public abstract class SingletonSupport extends LogSupport {
 
     /**
      * Return the singleton class name
+   * 
      * @param singleton SingletonSupport instance
      * @return singleton class name (fully qualified)
      */
@@ -100,6 +100,7 @@ public abstract class SingletonSupport extends LogSupport {
 
     /**
      * Return the singleton log message [ #getSingletonName(singleton) = #singleton]
+   * 
      * @param singleton SingletonSupport instance
      * @return singleton log message
      */
@@ -109,6 +110,7 @@ public abstract class SingletonSupport extends LogSupport {
 
     /**
      * Register the given singleton to the managed instances
+   * 
      * @param singleton SingletonSupport instance
      */
     public static final void register(final SingletonSupport singleton) {
@@ -122,7 +124,7 @@ public abstract class SingletonSupport extends LogSupport {
 
             managedInstances.put(getSingletonName(singleton), singleton);
 
-        } catch (InterruptedException ie) {
+    } catch (final InterruptedException ie) {
             if (log.isInfoEnabled()) {
                log.info("SingletonSupport.register : Interrupted : ", ie);
             }
@@ -135,6 +137,7 @@ public abstract class SingletonSupport extends LogSupport {
 
     /**
      * UnRegister the given singleton to the managed instances
+   * 
      * @param singleton instance of SingletonSupport
      */
     public static final void unregister(final SingletonSupport singleton) {
@@ -147,7 +150,7 @@ public abstract class SingletonSupport extends LogSupport {
 
             managedInstances.remove(getSingletonName(singleton));
 
-        } catch (InterruptedException ie) {
+    } catch (final InterruptedException ie) {
             if (log.isInfoEnabled()) {
                log.info("SingletonSupport.unregister : Interrupted : ", ie);
             }
@@ -191,7 +194,7 @@ public abstract class SingletonSupport extends LogSupport {
             }
             managedInstances = null;
 
-        } catch (InterruptedException ie) {
+    } catch (final InterruptedException ie) {
             if (log.isInfoEnabled()) {
                log.info("SingletonSupport.onExit : Interrupted : ", ie);
             }
@@ -208,6 +211,7 @@ public abstract class SingletonSupport extends LogSupport {
 
     /**
      * Called on exit (clean up code)
+   * 
      * @param singleton instance of SingletonSupport
      */
     protected static final void onExit(final SingletonSupport singleton) {
@@ -222,7 +226,7 @@ public abstract class SingletonSupport extends LogSupport {
                 // clear static references :
                 singleton.clearStaticReferences();
 
-            } catch (RuntimeException re) {
+      } catch (final RuntimeException re) {
                 log.error("SingletonSupport.onExit : runtime failure " + getSingletonLogName(singleton), re);
             }
             if (log.isWarnEnabled()) {
@@ -244,7 +248,7 @@ public abstract class SingletonSupport extends LogSupport {
      * Empty method to be implemented by concrete implementations :<br/>
      * Callback to initialize this SingletonSupport instance
      *
-     * @throws IllegalStateException if a problem occured
+   * @throws IllegalStateException if a problem occurred
      */
     protected void initialize() throws IllegalStateException {
         /* no-op */
@@ -255,7 +259,7 @@ public abstract class SingletonSupport extends LogSupport {
      * This method must be called by concrete implementation after the singleton is defined.<br/>
      * Post Initialization pattern called after the singleton is defined
      *
-     * @throws IllegalStateException if a problem occured
+   * @throws IllegalStateException if a problem occurred
      */
     protected void postInitialize() throws IllegalStateException {
         /* no-op */
