@@ -25,6 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
 
+import org.ivoa.bean.LogSupport;
 import org.ivoa.bean.SingletonSupport;
 
 /**
@@ -43,210 +44,211 @@ import org.ivoa.bean.SingletonSupport;
  * that will be removed from the thread automatically at the end of the current request.<br/>
  * 
  * @see #registerRequestThreadLocal
- * 
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ThreadLocalUtils extends SingletonSupport {
-    //~ Constants --------------------------------------------------------------------------------------------------------
+  // ~ Constants
+  // --------------------------------------------------------------------------------------------------------
 
-    /** Name used for the default ThreadLocalManager */
-    private static final String DEFAULT_MANAGER = ThreadLocalUtils.class.getName();
-    /** singleton instance (java 5 memory model) */
-    private static volatile ThreadLocalUtils instance = null;
+  /** Name used for the default ThreadLocalManager */
+  private static final String DEFAULT_MANAGER = ThreadLocalUtils.class.getName();
 
-    /** threadLocalGroup -> ThreadLocalManager Map */
-    private static ConcurrentMap<String, ResettableThreadLocalManager> threadLocalManagers = new ConcurrentHashMap<String, ResettableThreadLocalManager>();
+  /** singleton instance (java 5 memory model) */
+  private static volatile ThreadLocalUtils instance = null;
 
-    //~ Constructors -----------------------------------------------------------------------------------------------------
+  /** threadLocalGroup -> ThreadLocalManager Map */
+  private static volatile ConcurrentMap<String, ResettableThreadLocalManager> threadLocalManagers = new ConcurrentHashMap<String, ResettableThreadLocalManager>();
 
-    /**
-     * Forbidden constructor
-     */
-    private ThreadLocalUtils() {
-        getThreadLocalManager(DEFAULT_MANAGER);
+  // ~ Constructors
+  // -----------------------------------------------------------------------------------------------------
+
+  /**
+   * Forbidden constructor
+   */
+  private ThreadLocalUtils() {
+    getThreadLocalManager(DEFAULT_MANAGER);
+  }
+
+  // ~ Methods
+  // ----------------------------------------------------------------------------------------------------------
+  /**
+   * Return the ThreadLocalUtils singleton instance
+   * 
+   * @return ThreadLocalUtils singleton instance
+   * @throws IllegalStateException if a problem occured
+   */
+  public static final ThreadLocalUtils getInstance() {
+    if (instance == null) {
+      instance = prepareInstance(new ThreadLocalUtils());
+    }
+    return instance;
+  }
+
+  /**
+   * Reset the threadLocalManagers collection
+   */
+  private final static void resetManagers() {
+    // free ResettableThreadLocalManager :
+    threadLocalManagers.clear();
+    threadLocalManagers = null;
+  }
+
+  /**
+   * Concrete implementations of the SingletonSupport's clearStaticReferences() method :<br/>
+   * Callback to clean up the possible static references used by this SingletonSupport instance iso
+   * clear static references
+   * 
+   * @see SingletonSupport#onExit()
+   */
+  @Override
+  protected void clearStaticReferences() {
+    if (log.isWarnEnabled()) {
+      log.warn("ThreadLocalUtils.clearStaticReferences : enter");
     }
 
-    //~ Methods ----------------------------------------------------------------------------------------------------------
-    /**
-     * Return the ThreadLocalUtils singleton instance
-     *
-     * @return ThreadLocalUtils singleton instance
-     *
-     * @throws IllegalStateException if a problem occured
-     */
-    public static final ThreadLocalUtils getInstance() {
-        if (instance == null) {
-            instance = prepareInstance(new ThreadLocalUtils());
+    // force GC :
+    if (threadLocalManagers != null) {
+      clearThreadLocals();
+
+      resetManagers();
+    }
+    if (log.isWarnEnabled()) {
+      log.warn("ThreadLocalUtils.clearStaticReferences : exit");
+    }
+  }
+
+  /**
+   * This method cleans up all of the ThreadLocals registered with all registered ThreadLocalManager
+   */
+  public final static void clearThreadLocals() {
+    if (threadLocalManagers != null) {
+      for (ResettableThreadLocalManager manager : threadLocalManagers.values()) {
+        if (manager != null) {
+          // clean up all ThreadLocals
+          manager.removeThreadLocals();
         }
-        return instance;
+      }
+    }
+  }
+
+  /**
+   * Registers and returns the ThreadLocal to be automatically managed when the classloader is
+   * released
+   * 
+   * @param <T> type used by the ThreadLocal<T>
+   * @param threadLocal ThreadLocal to register for automatic removal
+   * @return The registered ThreadLocal
+   */
+  public static <T> ThreadLocal<T> registerRequestThreadLocal(final ThreadLocal<T> threadLocal) {
+    return getThreadLocalManager(DEFAULT_MANAGER).registerThreadLocal(threadLocal);
+  }
+
+  /**
+   * Returns the ResettableThreadLocalManager for the specified threadLocalGroup name. If no
+   * ResettableThreadLocalManager is currently registered for the threadLocalGroup, one will be
+   * instantiated, its related ThreadLocalLifecycle instantiated and the ThreadLocalManager
+   * registered with the ThreadLocalLifecycle
+   * 
+   * @param threadLocalGroup Identifier for this group
+   * @return the ResettableThreadLocalManager for this threadLocalGroup name
+   */
+  private static ResettableThreadLocalManager getThreadLocalManager(final String threadLocalGroup) {
+    // see if we already have a ResettableThreadLocalManager registered
+    ResettableThreadLocalManager threadLocalManager = threadLocalManagers.get(threadLocalGroup);
+
+    // if we don't, create one
+    if (threadLocalManager == null) {
+      threadLocalManager = new ResettableThreadLocalManager();
+
+      // handle simultaneous registration
+      final ResettableThreadLocalManager oldThreadLocalManager = threadLocalManagers.putIfAbsent(threadLocalGroup, threadLocalManager);
+
+      if (oldThreadLocalManager != null) {
+        // simultaneous registration, use the one that was registered first
+        threadLocalManager = oldThreadLocalManager;
+      }
+    }
+
+    return threadLocalManager;
+  }
+
+  /**
+   * Integration interface implemented by object holding onto ThreadLocals with a specified lifetime
+   */
+  public static abstract class ThreadLocalManager extends LogSupport {
+
+    /**
+     * Called by the ThreadLocalLifeCycle when the ThreadLocals managed by this ThreadLocalManager
+     * need to be cleaned up by removing their instances from the current Thread.
+     */
+    protected abstract void removeThreadLocals();
+  }
+
+  /**
+   * ThreadLocalManager implementation class
+   */
+  private static final class ResettableThreadLocalManager extends ThreadLocalManager {
+
+    /** threadLocal weak references */
+    private final Collection<WeakReference<ThreadLocal<?>>> threadLocals;
+
+    /**
+     * Protected Constructor
+     */
+    protected ResettableThreadLocalManager() {
+      // create the list of resettable ThreadLocals for this group
+      threadLocals = new ConcurrentLinkedQueue<WeakReference<ThreadLocal<?>>>();
     }
 
     /**
-     * Concrete implementations of the SingletonSupport's clearStaticReferences() method :<br/>
-     * Callback to clean up the possible static references used by this SingletonSupport instance iso
-     * clear static references
-     *
-     * @see SingletonSupport#clearStaticReferences()
-     */
-    @Override
-    protected void clearStaticReferences() {
-        if (log.isWarnEnabled()) {
-            log.warn("ThreadLocalUtils.clearStaticReferences : enter");
-        }
-
-        for (ResettableThreadLocalManager manager : threadLocalManagers.values()) {
-            if (manager != null) {
-                // clean up all ThreadLocals
-                manager.removeThreadLocals();
-            }
-        }
-
-        // force GC :
-        if (threadLocalManagers != null) {
-            threadLocalManagers.clear();
-            threadLocalManagers = null;
-        }
-        if (log.isWarnEnabled()) {
-            log.warn("ThreadLocalUtils.clearStaticReferences : exit");
-        }
-    }
-
-    /**
-     * Registers and returns the ThreadLocal to be automatically managed when the classloader is released
-     *
-     * @param threadLocal ThreadLocal to register for automatic removal
+     * Registers the ThreadLocal for cleanup when this ThreadLocalManager is cleaned up
+     * 
+     * @param <T> type used by the ThreadLocal<T>
+     * @param threadLocal ThreadLocal to register for clean up
      * @return The registered ThreadLocal
      */
-    public static <T> ThreadLocal<T> registerRequestThreadLocal(final ThreadLocal<T> threadLocal) {
-        return getThreadLocalManager(DEFAULT_MANAGER).registerThreadLocal(threadLocal);
+    protected <T> ThreadLocal<T> registerThreadLocal(final ThreadLocal<T> threadLocal) {
+      if (threadLocal == null) {
+        throw new NullPointerException();
+      }
+
+      // WeakReference might be overkill here, but make sure we don't pin ThreadLocals
+      threadLocals.add(new WeakReference<ThreadLocal<?>>(threadLocal));
+
+      return threadLocal;
     }
 
     /**
-     * Returns the ResettableThreadLocalManager for the specified threadLocalGroup name. If no
-     * ResettableThreadLocalManager is currently registered for the threadLocalGroup, one will be
-     * instantiated, its related ThreadLocalLifecycle instantiated and the ThreadLocalManager
-     * registered with the ThreadLocalLifecycle
-     *
-     * @param threadLocalGroup Identifier for this group
-     * @return the ResettableThreadLocalManager for this threadLocalGroup name
+     * Called by the SingletonSupport onExit() method to clean up all of the ThreadLocals registered
+     * with this ThreadLocalManager
+     * 
+     * @see ThreadLocalUtils#clearThreadLocals()
+     * @see ThreadLocalUtils#clearStaticReferences()
+     * @see SingletonSupport#onExit()
+     * @see ThreadLocal#remove()
      */
-    private static ResettableThreadLocalManager getThreadLocalManager(final String threadLocalGroup) {
-        // see if we already have a ResettableThreadLocalManager registered
-        ResettableThreadLocalManager threadLocalManager = threadLocalManagers.get(threadLocalGroup);
+    @Override
+    protected void removeThreadLocals() {
+      final Iterator<WeakReference<ThreadLocal<?>>> iterator = threadLocals.iterator();
 
-        // if we don't, create one
-        if (threadLocalManager == null) {
-            threadLocalManager = new ResettableThreadLocalManager();
+      ThreadLocal<?> threadLocal;
+      while (iterator.hasNext()) {
+        threadLocal = iterator.next().get();
 
-            // handle simultaneous registration
-            final ResettableThreadLocalManager oldThreadLocalManager = threadLocalManagers.putIfAbsent(
-                    threadLocalGroup, threadLocalManager);
-
-            if (oldThreadLocalManager != null) {
-                // simultaneous registration, use the one that was registered first
-                threadLocalManager = oldThreadLocalManager;
-            }
+        if (log.isWarnEnabled()) {
+          log.warn("ResettableThreadLocalManager.removeThreadLocals : threadLocal to remove : " + threadLocal);
         }
 
-        return threadLocalManager;
-    }
-
-    /**
-     * Integration interface implemented by object holding onto ThreadLocals with a specified lifetime
-     *
-     * @see ThreadLocalLifecycle
-     */
-    public static abstract class ThreadLocalManager {
-
-        /**
-         * Called by the ThreadLocalLifeCycle when the ThreadLocals managed by this ThreadLocalManager
-         * need to be cleaned up by removing their instances from the current Thread.
-         */
-        protected abstract void removeThreadLocals();
-    }
-
-    /**
-     * Integration interface implemented by an object that cleans up the ThreadLocals in a
-     * ThreadLocalManager with the specified lifetime. The ThreadLocalLifecycle cleans up the
-     * ThreadLocals by calling <code>removeThreadLocals</code> on the ThreadLocalManager passed to it
-     * in <code>init</code> at the appropriate time.
-     *
-     * @see ThreadLocalManager
-     * @see #init
-     */
-    public static abstract class ThreadLocalLifecycle {
-
-        /**
-         * Called after instantiating the ThreadLocalLifecycle so that the ThreadLocalLifecycle can
-         * clean up the ThreadLocalManager at the appropriate moment.
-         *
-         * @param manager Manager of ThreadLocals that will be cleaned up by this ThreadLocalLifecycle.
-         * @see ThreadLocalManager#removeThreadLocals
-         */
-        protected abstract void init(final ThreadLocalManager manager);
-    }
-
-    /**
-     * ThreadLocalManager implementation class
-     */
-    private static final class ResettableThreadLocalManager extends ThreadLocalManager {
-
-        /** threadLocal weak references */
-        private final Collection<WeakReference<ThreadLocal<?>>> threadLocals;
-
-        /**
-         * Protected Constructor
-         */
-        protected ResettableThreadLocalManager() {
-            // create the list of resettable ThreadLocals for this group
-            threadLocals = new ConcurrentLinkedQueue<WeakReference<ThreadLocal<?>>>();
+        // if the threadLocal is null, that means it has been released and we would really
+        // like to reclaim the entry, however remove isn't supported on CopyOnWriteArrayLists
+        // and the synchronization required to safely remove this item probably isn't
+        // worthy the small increase in memory of keeping around this empty item, so we don't
+        // bother cleaning up this entry
+        if (threadLocal != null) {
+          // reset the thread local for this thread
+          threadLocal.remove();
         }
-
-        /**
-         * Registers the ThreadLocal for cleanup when this ThreadLocalManager is cleaned up
-         *
-         * @param threadLocal ThreadLocal to register for clean up
-         * @return The registered ThreadLocal
-         */
-        protected <T> ThreadLocal<T> registerThreadLocal(final ThreadLocal<T> threadLocal) {
-            if (threadLocal == null) {
-                throw new NullPointerException();
-            }
-
-            // WeakReference might be overkill here, but make sure we don't pin ThreadLocals
-            threadLocals.add(new WeakReference<ThreadLocal<?>>(threadLocal));
-
-            return threadLocal;
-        }
-
-        /**
-         * Called by the ThreadLocalLifecycle to clean up all of the ThreadLocals registered with this
-         * ThreadLocalManager
-         *
-         * @see ThreadLocal#remove()
-         */
-        @Override
-        protected void removeThreadLocals() {
-            final Iterator<WeakReference<ThreadLocal<?>>> iterator = threadLocals.iterator();
-
-            ThreadLocal<?> threadLocal;
-            while (iterator.hasNext()) {
-                threadLocal = iterator.next().get();
-
-                if (log.isWarnEnabled()) {
-                    log.warn("ResettableThreadLocalManager.removeThreadLocals : threadLocal to remove : " + threadLocal);
-                }
-
-                // if the threadLocal is null, that means it has been released and we would really
-                // like to reclaim the entry, however remove isn't supported on CopyOnWriteArrayLists
-                // and the synchronization required to safely remove this item probably isn't
-                // worthy the small increase in memory of keeping around this empty item, so we don't
-                // bother cleaning up this entry
-                if (threadLocal != null) {
-                    // reset the thread local for this thread
-                    threadLocal.remove();
-                }
-            }
-        }
+      }
     }
+  }
 }
