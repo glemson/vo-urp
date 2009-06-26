@@ -59,7 +59,7 @@ public class PropertyHolder extends SingletonSupport implements Serializable {
      *
      * @see SingletonSupport#initialize()
      *
-     * @throws IllegalStateException if a problem occured
+   * @throws IllegalStateException if a problem occurred
      */
     @Override
     protected final void initialize() throws IllegalStateException {

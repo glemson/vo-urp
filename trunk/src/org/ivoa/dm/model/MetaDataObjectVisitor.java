@@ -16,8 +16,6 @@ import org.ivoa.dm.model.visitor.Visitor;
  * we need to keep track of whether objects have already been visited, as
  * objects may now be reached in multiple ways.
  *
- * @param <T> Type of the navigable class (child of MetadataObject)
- *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public abstract class MetaDataObjectVisitor extends SingletonSupport implements Visitor<MetadataObject> {
