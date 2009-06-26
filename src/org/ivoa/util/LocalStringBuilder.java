@@ -14,16 +14,16 @@ public final class LocalStringBuilder extends SingletonSupport {
     // --------------------------------------------------------------------------------------------------------
 
     /** diagnostic flag */
-    public final static boolean DIAGNOSTICS = true;
+  public final static boolean DIAGNOSTICS = false;
     /** max reentrance depth = 9 */
     public final static int DEPTH = 9;
     /** initial buffer capacity = 2048 chars */
     public final static int CAPACITY = 256;
     /** max buffer capacity = 32768 chars */
     public final static int MAX_CAPACITY = 4096;
-    /** buffer thread Local */
-    private static ThreadLocal<Context> bufferLocal = ThreadLocalUtils.registerRequestThreadLocal(new StringBuilderThreadLocal());
 
+  /** buffer thread Local */
+  private static volatile ThreadLocal<Context> bufferLocal = ThreadLocalUtils.registerRequestThreadLocal(new StringBuilderThreadLocal());
 
     // ~ Constructors
     // -----------------------------------------------------------------------------------------------------
@@ -44,6 +44,13 @@ public final class LocalStringBuilder extends SingletonSupport {
       prepareInstance(new LocalStringBuilder());
     }
 
+    /**
+     * Reset the bufferLocal ThreadLocal<Context>
+     */
+  private final static void resetBufferLocal() {
+    // free ThreadLocal :
+    bufferLocal = null;
+  }
 
     /**
      * Concrete implementations of the SingletonSupport's clearStaticReferences() method :<br/>
@@ -54,17 +61,16 @@ public final class LocalStringBuilder extends SingletonSupport {
      */
     @Override
     protected void clearStaticReferences() {
-        // free ThreadLocal :
-        bufferLocal = null;
+    resetBufferLocal();
     }
 
     /**
      * Free the thread local Context associated to the current thread
      */
-    public final static void cleanThread() {
-        if (bufferLocal != null) {
+  public final static void cleanCurrentThread() {
+    if (isRunning()) {
             if (log.isWarnEnabled()) {
-      log.warn("cleanThread : " + bufferLocal.get());
+        log.warn("cleanCurrentThread : " + bufferLocal.get());
             }
             bufferLocal.remove();
         }
@@ -80,7 +86,7 @@ public final class LocalStringBuilder extends SingletonSupport {
      * @return StringBuilder threadLocal instance
      */
     public final static StringBuilder getBuffer() {
-        if (bufferLocal != null) {
+    if (isRunning()) {
             return bufferLocal.get().acquire();
         }
         if (DIAGNOSTICS && logD.isInfoEnabled()) {
@@ -100,7 +106,7 @@ public final class LocalStringBuilder extends SingletonSupport {
      * @return StringBuilder threadLocal instance
      */
     public final static StringBuilder getCurrentBuffer() {
-        if (bufferLocal != null) {
+    if (isRunning()) {
             final Context ctx = bufferLocal.get();
             StringBuilder sb = ctx.current();
             if (sb == null) {
@@ -119,7 +125,7 @@ public final class LocalStringBuilder extends SingletonSupport {
      */
     public final static String toString(final StringBuilder sb) {
         String s = null;
-        if (bufferLocal != null) {
+    if (isRunning()) {
             final Context ctx = bufferLocal.get();
             final StringBuilder sbLocal = ctx.current();
             s = sb != null ? sb.toString() : sbLocal != null ? sbLocal.toString() : null;
@@ -140,7 +146,7 @@ public final class LocalStringBuilder extends SingletonSupport {
      * @param sbTo destination buffer
      */
     public final static void toStringBuilder(final StringBuilder sb, final StringBuilder sbTo) {
-        if (bufferLocal != null) {
+    if (isRunning()) {
             final Context ctx = bufferLocal.get();
             final StringBuilder sbLocal = ctx.current();
             sbTo.append(sb != null ? sb : sbLocal);
@@ -153,10 +159,18 @@ public final class LocalStringBuilder extends SingletonSupport {
         }
     }
 
+    /**
+     * Create a new StringBuilder with the default capacity
+     * @return new StringBuilder with the default capacity
+     */
     protected static StringBuilder createStringBuilder() {
         return new StringBuilder(CAPACITY);
     }
 
+    /**
+     * Reset the length of the given StringBuilder
+     * @param sb buffer to reset
+     */
     protected static void resetStringBuilder(final StringBuilder sb) {
         if (sb != null) {
             // reset without array operation : just set count to 0 / leave buffer available with the
@@ -201,7 +215,7 @@ public final class LocalStringBuilder extends SingletonSupport {
     private static final class Context extends LogSupport {
 
         /** Undefined value for current Position */
-        protected final static int UNDEFINED = -1;
+    public final static int UNDEFINED = -1;
         /** internal array of StringBuilder instances */
         private final StringBuilder[] buffers = new StringBuilder[DEPTH];
         /** currently used buffer */

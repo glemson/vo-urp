@@ -22,13 +22,27 @@ public abstract class SingletonSupport extends LogSupport {
     //~ Constants --------------------------------------------------------------------------------------------------------
 
     /** internal diagnostic FLAG */
-    public static final boolean SINGLETON_SUPPORT_DIAGNOSTICS = true;
-    /** shutdown flag to avoid singleton references to be kept after shutdown process (java 5 memory model) */
+  public static final boolean SINGLETON_SUPPORT_DIAGNOSTICS = false;
+
+  /** startup flag to indicate if the Singleton Factory is ready */
+  private static volatile boolean isReady = false;
+
+  /**
+   * shutdown flag to avoid singleton references to be kept after shutdown process (java 5 memory
+   * model)
+   */
     private static volatile boolean isShutdown = false;
     /** instances to monitor = queue [SingletonSupport instance] */
     private static LinkedBlockingQueue<SingletonSupport> managedInstances = new LinkedBlockingQueue<SingletonSupport>();
 
-    static {
+  /**
+   * Prepare the SingletonSupport
+   */
+  protected static final void prepareSingletonSupport() {
+    isReady = true;
+    if (SINGLETON_SUPPORT_DIAGNOSTICS) {
+      System.out.println("SingletonSupport.prepareSingletonSupport : initialization now ...");
+    }
         // prepare ThreadLocalUtils as the first singleton to be release the last :
         ThreadLocalUtils.getInstance();
 
@@ -120,6 +134,10 @@ public abstract class SingletonSupport extends LogSupport {
         if (log.isInfoEnabled()) {
             log.info("SingletonSupport.register : add " + getSingletonLogName(singleton));
         }
+
+    if (!isReady) {
+      prepareSingletonSupport();
+    }
 
         if (isRunning()) {
             managedInstances.add(singleton);

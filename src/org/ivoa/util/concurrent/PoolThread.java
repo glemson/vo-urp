@@ -1,7 +1,6 @@
 package org.ivoa.util.concurrent;
 
 import org.apache.commons.logging.Log;
-import org.ivoa.util.LocalStringBuilder;
 import org.ivoa.util.LogUtil;
 
 /**
@@ -16,11 +15,9 @@ public final class PoolThread extends Thread {
   // ~ Constants
   // --------------------------------------------------------------------------------------------------------
 
-  /** Logger for this class and subclasses */
-  protected static Log log = LogUtil.getLogger();
 
   /** Dev Logger for this class and subclasses */
-  protected static Log logD = LogUtil.getLoggerDev();
+  private final Log logD = LogUtil.getLoggerDev();
 
   // ~ End of file
   // --------------------------------------------------------------------------------------------------------
@@ -72,8 +69,8 @@ public final class PoolThread extends Thread {
       if (logD.isInfoEnabled()) {
         logD.info(getName() + " : after run() : ");
       }
-      // Free possible LocalStringBuilder instance :
-      LocalStringBuilder.cleanThread();
+      // Free any ThreadLocal value :
+      ThreadLocalUtils.clearThreadLocals();
     }
 
   }
