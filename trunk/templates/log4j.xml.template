@@ -30,7 +30,7 @@
     
   <!-- Loggers : begin -->
   <logger name="dev">
-    <level value="warn"/>
+    <level value="info"/>
     <appender-ref ref="fileRoot"/>
   </logger>
 

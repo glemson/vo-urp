@@ -205,7 +205,10 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
     }
 
     // reset managed instances :
-    managedInstances.clear();
+    if (managedInstances != null) {
+        managedInstances.clear();
+        managedInstances = null;
+    }
 
     // Classloader unload problem with commons-logging :
     LogFactory.release(Thread.currentThread().getContextClassLoader());

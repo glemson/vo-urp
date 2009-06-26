@@ -99,26 +99,11 @@ public final class JPAFactory extends SingletonSupport {
         if (log.isWarnEnabled()) {
             log.warn("JPAFactory.clearStaticReferences : enter");
         }
-        // force GC :
-        managedInstances.clear();
-
-        /*
-        if (! managedInstances.isEmpty()) {
-        // clean up :
-        JPAFactory jf;
-
-        for (Iterator<JPAFactory> it = managedInstances.values().iterator(); it.hasNext();) {
-        jf = it.next();
-
-        if (jf != null) {
-        jf.stop();
+        // reset managed instances :
+        if (managedInstances != null) {
+            managedInstances.clear();
+            managedInstances = null;
         }
-
-        it.remove();
-        }
-        }
-         */
-        managedInstances = null;
         if (log.isWarnEnabled()) {
             log.warn("JPAFactory.clearStaticReferences : exit");
         }
