@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="input/adm/test/java"/>
-	<classpathentry kind="src" path="input/adm/output/java/META-INF"/>
-	<classpathentry kind="src" path="input/adm/output/java/src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry excluding="**/.svn/*" kind="src" path="src"/>
+	<classpathentry excluding="**/.svn/*" kind="src" path="input/simdb/output/java/src"/>
+	<classpathentry excluding="**/.svn/*" kind="src" path="input/simdb/test/java"/>
 	<classpathentry kind="lib" path="libs/activation.jar"/>
-	<classpathentry kind="lib" path="libs/commons-dbutils-1.1.jar"/>
-	<classpathentry kind="lib" path="libs/commons-fileupload-1.2.1.jar"/>
 	<classpathentry kind="lib" path="libs/commons-httpclient-3.1.jar"/>
-	<classpathentry kind="lib" path="libs/commons-io-1.3.2.jar"/>
-	<classpathentry kind="lib" path="libs/commons-logging-1.1.jar"/>
 	<classpathentry kind="lib" path="libs/eclipselink.jar"/>
 	<classpathentry kind="lib" path="libs/javax.persistence_1.0.0.jar"/>
 	<classpathentry kind="lib" path="libs/jaxb-api-2.1.jar"/>
@@ -20,5 +14,13 @@
 	<classpathentry kind="lib" path="libs/log4j-1.2.15.jar"/>
 	<classpathentry kind="lib" path="libs/saxon9.jar"/>
 	<classpathentry kind="lib" path="libs/saxon9-s9api.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="lib" path="libs/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="webapp/vo-urp-browser/lib/commons-fileupload-1.2.1.jar"/>
+	<classpathentry kind="lib" path="webapp/vo-urp-browser/lib/commons-io-1.3.2.jar"/>
+	<classpathentry kind="lib" path="webapp/vo-urp-browser/lib/jstl.jar"/>
+	<classpathentry kind="lib" path="webapp/vo-urp-browser/lib/standard.jar"/>
+	<classpathentry kind="lib" path="webapp/vo-urp-browser/lib/server/jsp-api.jar"/>
+	<classpathentry kind="lib" path="webapp/vo-urp-browser/lib/server/servlet-api.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="classes"/>
 </classpath>
