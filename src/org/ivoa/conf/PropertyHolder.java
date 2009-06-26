@@ -33,7 +33,7 @@ public class PropertyHolder extends SingletonSupport implements Serializable {
      * public Constructor used for Introspection.
      */
     public PropertyHolder() {
-        /* no-op */
+      super();
     }
 
     /**

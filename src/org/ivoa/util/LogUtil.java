@@ -36,8 +36,8 @@ public final class LogUtil {
   /** singleton instance (java 5 memory model) */
   private static volatile LogUtil instance = null;
 
-  /** shutdown flag to avoid singleton to be defined */
-  private static boolean isShutdown = false;
+  /** shutdown flag to avoid singleton to be defined (java 5 memory model) */
+  private static volatile boolean isShutdown = false;
 
   static {
     /* static Initializer to call onInit method */

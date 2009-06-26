@@ -150,7 +150,7 @@ public class VO_URP_Facade extends LogSupport {
         }
 
         if (log.isInfoEnabled()) {
-            log.info("DBTests.testJAXB : get MetaModelFactory : OK");
+            log.info("get MetaModelFactory : OK");
         }
 
         this.ecf = EntityConfigFactory.getInstance();

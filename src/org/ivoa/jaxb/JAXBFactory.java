@@ -81,25 +81,11 @@ public final class JAXBFactory extends SingletonSupport {
         if (log.isWarnEnabled()) {
             log.warn("JAXBFactory.clearStaticReferences : enter");
         }
-        // force GC :
-        managedInstances.clear();
-        /*
-        if (! managedInstances.isEmpty()) {
-        // clean up :
-        JAXBFactory jf;
-
-        for (Iterator<JAXBFactory> it = managedInstances.values().iterator(); it.hasNext();) {
-        jf = it.next();
-
-        if (jf != null) {
-        jf.stop();
+        // reset managed instances :
+        if (managedInstances != null) {
+            managedInstances.clear();
+            managedInstances = null;
         }
-
-        it.remove();
-        }
-        }
-         */
-        managedInstances = null;
         if (log.isWarnEnabled()) {
             log.warn("JAXBFactory.clearStaticReferences : exit");
         }

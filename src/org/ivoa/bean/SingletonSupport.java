@@ -3,13 +3,13 @@ package org.ivoa.bean;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
+import java.util.concurrent.LinkedBlockingQueue;
 import org.ivoa.util.CollectionUtils;
 import org.ivoa.util.JavaUtils;
-import org.ivoa.util.concurrent.FastSemaphore;
+import org.ivoa.util.LocalStringBuilder;
+import org.ivoa.util.concurrent.ThreadLocalUtils;
 
 /**
  * Singleton design pattern implementation for Java 5+.<br/>
@@ -22,21 +22,26 @@ public abstract class SingletonSupport extends LogSupport {
     //~ Constants --------------------------------------------------------------------------------------------------------
 
     /** internal diagnostic FLAG */
-  public static final boolean SINGLETON_SUPPORT_DIAGNOSTICS = true;
-    /** shutdown flag to avoid singleton references to be kept after shutdown process */
-    private static boolean isShutdown = false;
-    /** internal semaphore (avoid synchronized blocks) */
-    private static FastSemaphore SEM = new FastSemaphore(1);
-    /** instances to monitor = map [class name, SingletonSupport instance] */
-    private static Map<String, SingletonSupport> managedInstances = new LinkedHashMap<String, SingletonSupport>();
+    public static final boolean SINGLETON_SUPPORT_DIAGNOSTICS = true;
+    /** shutdown flag to avoid singleton references to be kept after shutdown process (java 5 memory model) */
+    private static volatile boolean isShutdown = false;
+    /** instances to monitor = queue [SingletonSupport instance] */
+    private static LinkedBlockingQueue<SingletonSupport> managedInstances = new LinkedBlockingQueue<SingletonSupport>();
 
+    static {
+        // prepare ThreadLocalUtils as the first singleton to be release the last :
+        ThreadLocalUtils.getInstance();
+
+        // prepare LocalStringBuilder as the second singleton :
+        LocalStringBuilder.prepareInstance();
+    }
     /**
      * Returns true if shutdown flag is not set
      *
      * @return true if shutdown flag is not set
      */
     protected static final boolean isRunning() {
-    if (SINGLETON_SUPPORT_DIAGNOSTICS && isShutdown) {
+        if (SINGLETON_SUPPORT_DIAGNOSTICS && isShutdown) {
             System.out.println("SingletonSupport.isRunning : shutdown detected : ");
             new Throwable().printStackTrace(System.out);
         }
@@ -47,10 +52,10 @@ public abstract class SingletonSupport extends LogSupport {
     /**
      * Prepare the given singleton instance
      *
-   * @param <T> SingletonSupport child class type
+     * @param <T> SingletonSupport child class type
      * @param singleton SingletonSupport instance
      * @return prepared SingletonSupport instance
-   * @throws IllegalStateException if a problem occurred
+     * @throws IllegalStateException if a problem occurred
      */
     protected static final <T extends SingletonSupport> T prepareInstance(final T singleton) {
         T managedInstance = null;
@@ -73,10 +78,8 @@ public abstract class SingletonSupport extends LogSupport {
                     log.error("SingletonSupport.prepareInstance : shutdown detected for singleton " + getSingletonLogName(singleton), new Throwable());
                 }
 
-      } catch (final RuntimeException re) {
-                if (log.isInfoEnabled()) {
-                    log.info("SingletonSupport.prepareInstance : runtime failure " + getSingletonLogName(singleton), re);
-                }
+            } catch (final RuntimeException re) {
+                log.error("SingletonSupport.prepareInstance : runtime failure " + getSingletonLogName(singleton), re);
 
                 // release this phantom instance (bad state) :
                 onExit(singleton);
@@ -90,7 +93,7 @@ public abstract class SingletonSupport extends LogSupport {
 
     /**
      * Return the singleton class name
-   * 
+     *
      * @param singleton SingletonSupport instance
      * @return singleton class name (fully qualified)
      */
@@ -100,7 +103,7 @@ public abstract class SingletonSupport extends LogSupport {
 
     /**
      * Return the singleton log message [ #getSingletonName(singleton) = #singleton]
-   * 
+     *
      * @param singleton SingletonSupport instance
      * @return singleton log message
      */
@@ -110,7 +113,7 @@ public abstract class SingletonSupport extends LogSupport {
 
     /**
      * Register the given singleton to the managed instances
-   * 
+     *
      * @param singleton SingletonSupport instance
      */
     public static final void register(final SingletonSupport singleton) {
@@ -118,45 +121,27 @@ public abstract class SingletonSupport extends LogSupport {
             log.info("SingletonSupport.register : add " + getSingletonLogName(singleton));
         }
 
-        try {
-            // semaphore is acquired to protect instances :
-            SEM.acquire();
-
-            managedInstances.put(getSingletonName(singleton), singleton);
-
-    } catch (final InterruptedException ie) {
-            if (log.isInfoEnabled()) {
-               log.info("SingletonSupport.register : Interrupted : ", ie);
-            }
-        } finally {
-            // semaphore is released :
-            SEM.release();
+        if (isRunning()) {
+            managedInstances.add(singleton);
+        } else {
+            log.error("SingletonSupport.register : shutdown detected for singleton " + getSingletonLogName(singleton), new Throwable());
         }
 
     }
 
     /**
      * UnRegister the given singleton to the managed instances
-   * 
+     *
      * @param singleton instance of SingletonSupport
      */
     public static final void unregister(final SingletonSupport singleton) {
         if (log.isInfoEnabled()) {
             log.info("SingletonSupport.unregister : remove " + getSingletonLogName(singleton));
         }
-        try {
-            // semaphore is acquired to protect instances :
-            SEM.acquire();
+        if (isRunning()) {
+            managedInstances.remove(singleton);
 
-            managedInstances.remove(getSingletonName(singleton));
-
-    } catch (final InterruptedException ie) {
-            if (log.isInfoEnabled()) {
-               log.info("SingletonSupport.unregister : Interrupted : ", ie);
-            }
-        } finally {
-            // semaphore is released :
-            SEM.release();
+            onExit(singleton);
         }
     }
 
@@ -164,18 +149,18 @@ public abstract class SingletonSupport extends LogSupport {
      * Called on exit (clean up code)
      */
     public static final void onExit() {
+        isShutdown = true;
         if (log.isWarnEnabled()) {
             log.warn("SingletonSupport.onExit : enter");
         }
-        try {
-            // semaphore is acquired to protect instances :
-            SEM.acquire();
-            
-            if (!JavaUtils.isEmpty(managedInstances)) {
+
+        if (!JavaUtils.isEmpty(managedInstances)) {
                 // clean up :
                 SingletonSupport singleton;
 
-                final List<SingletonSupport> instances = new ArrayList<SingletonSupport>(managedInstances.values());
+                final List<SingletonSupport> instances = new ArrayList<SingletonSupport>(managedInstances.size());
+
+                managedInstances.drainTo(instances);
 
                 if (log.isWarnEnabled()) {
                     log.warn("SingletonSupport.onExit : instances to free : " + CollectionUtils.toString(instances));
@@ -194,16 +179,6 @@ public abstract class SingletonSupport extends LogSupport {
             }
             managedInstances = null;
 
-    } catch (final InterruptedException ie) {
-            if (log.isInfoEnabled()) {
-               log.info("SingletonSupport.onExit : Interrupted : ", ie);
-            }
-        } finally {
-            // semaphore is released :
-            SEM.release();
-        }
-
-
         if (log.isWarnEnabled()) {
             log.warn("SingletonSupport.onExit : exit");
         }
@@ -211,7 +186,7 @@ public abstract class SingletonSupport extends LogSupport {
 
     /**
      * Called on exit (clean up code)
-   * 
+     *
      * @param singleton instance of SingletonSupport
      */
     protected static final void onExit(final SingletonSupport singleton) {
@@ -226,7 +201,7 @@ public abstract class SingletonSupport extends LogSupport {
                 // clear static references :
                 singleton.clearStaticReferences();
 
-      } catch (final RuntimeException re) {
+            } catch (final RuntimeException re) {
                 log.error("SingletonSupport.onExit : runtime failure " + getSingletonLogName(singleton), re);
             }
             if (log.isWarnEnabled()) {
@@ -248,7 +223,7 @@ public abstract class SingletonSupport extends LogSupport {
      * Empty method to be implemented by concrete implementations :<br/>
      * Callback to initialize this SingletonSupport instance
      *
-   * @throws IllegalStateException if a problem occurred
+     * @throws IllegalStateException if a problem occurred
      */
     protected void initialize() throws IllegalStateException {
         /* no-op */
@@ -259,7 +234,7 @@ public abstract class SingletonSupport extends LogSupport {
      * This method must be called by concrete implementation after the singleton is defined.<br/>
      * Post Initialization pattern called after the singleton is defined
      *
-   * @throws IllegalStateException if a problem occurred
+     * @throws IllegalStateException if a problem occurred
      */
     protected void postInitialize() throws IllegalStateException {
         /* no-op */
