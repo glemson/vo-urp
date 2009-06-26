@@ -91,6 +91,42 @@
 
 
 
+  <xsd:complexType name="MetadataRootEntityObject">
+    <xsd:annotation>
+      <xsd:documentation>
+      Represent the root of a containment hierarchy. 
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="MetadataObject">
+        <xsd:sequence>
+          <xsd:element name="createUser" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The user who created the entity.</xsd:documentation>
+          </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="updateUser" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The user who last updated the entity.</xsd:documentation>
+          </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="insertTimestamp" type="xsd:dateTime" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The time at which the entity was inserted into the database.</xsd:documentation>
+          </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="updateTimestamp" type="xsd:dateTime" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>The time at which the entity was last updated in the database.</xsd:documentation>
+          </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+
+
   <xsd:complexType name="Reference">
     <xsd:annotation>
       <xsd:documentation>
