@@ -100,22 +100,22 @@
     <xsd:complexContent>
       <xsd:extension base="MetadataObject">
         <xsd:sequence>
-          <xsd:element name="createUser" type="xsd:string" minOccurs="0">
+          <xsd:element name="creationUser" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>The user who created the entity.</xsd:documentation>
           </xsd:annotation>
           </xsd:element>
-          <xsd:element name="updateUser" type="xsd:string" minOccurs="0">
+          <xsd:element name="modificationUser" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>The user who last updated the entity.</xsd:documentation>
           </xsd:annotation>
           </xsd:element>
-          <xsd:element name="insertTimestamp" type="xsd:dateTime" minOccurs="0">
+          <xsd:element name="creationDate" type="xsd:dateTime" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>The time at which the entity was inserted into the database.</xsd:documentation>
           </xsd:annotation>
           </xsd:element>
-          <xsd:element name="updateTimestamp" type="xsd:dateTime" minOccurs="0">
+          <xsd:element name="modificationDate" type="xsd:dateTime" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>The time at which the entity was last updated in the database.</xsd:documentation>
           </xsd:annotation>
