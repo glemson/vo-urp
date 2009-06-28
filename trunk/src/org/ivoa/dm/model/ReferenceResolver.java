@@ -16,6 +16,8 @@ import org.ivoa.util.JavaUtils;
  * This class manages xmlId & ivoId references and looks up for corresponding items in memory (JAXB unmarshalling
  * ID / IDREF) or in database (ivoId)
  *
+ * TODO : Use SingletonSupport
+ *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ReferenceResolver extends LogSupport {

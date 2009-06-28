@@ -106,6 +106,7 @@ public abstract class MetadataObject extends MetadataElement {
     public Long getId() {
         return this.id;
     }
+
     /**
      * Return true if this object does not have a representation in the database yet, false otherwise.<br/>
      * 
@@ -115,7 +116,7 @@ public abstract class MetadataObject extends MetadataElement {
      * @return true if this object does not have a representation in the database yet, false otherwise
      */
     public boolean isPurelyTransient() {
-      return getId() == null;
+        return getId() == null;
     }
 
     /**
@@ -373,6 +374,9 @@ public abstract class MetadataObject extends MetadataElement {
      */
     @SuppressWarnings("unchecked")
     public final void traverse(final MetaDataObjectVisitor visitor) {
+        if (log.isDebugEnabled()) {
+            log.debug("traverse : enter : " + this.getId());
+        }
         visitor.preProcess(this);
 
         final ObjectClassType metadataObject = getClassMetaData();
@@ -390,6 +394,9 @@ public abstract class MetadataObject extends MetadataElement {
         }
 
         visitor.postProcess(this);
+        if (log.isDebugEnabled()) {
+            log.debug("traverse : exit : " + this.getId());
+        }
     }
 
     /**
@@ -457,6 +464,5 @@ public abstract class MetadataObject extends MetadataElement {
     protected final State getStateFor(final MetadataObject source) {
         return source.getInternalState();
     }
-
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

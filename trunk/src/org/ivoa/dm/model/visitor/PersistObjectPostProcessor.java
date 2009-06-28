@@ -11,41 +11,57 @@ import org.ivoa.dm.model.MetaDataObjectVisitor;
  * @see org.ivoa.dm.DataModelManager#persist(java.util.List, String)
  *
  * @author Gerard Lemson (mpe)
-  */
+ */
 public final class PersistObjectPostProcessor extends MetaDataObjectVisitor {
 
     /** singleton instance (java 5 memory model) : statically defined (thread safe and stateless) */
-  private static PersistObjectPostProcessor instance = new PersistObjectPostProcessor();
+    private static PersistObjectPostProcessor instance = null;
 
-  /**
-   * Return the singleton instance
-   * @return visitor
-   */
-  public static PersistObjectPostProcessor getInstance() {
-      return instance;
-  }
+    /**
+     * Return the PersistObjectPostProcessor singleton instance
+     *
+     * @return PersistObjectPostProcessor singleton instance
+     *
+     * @throws IllegalStateException if a problem occured
+     */
+    public static final PersistObjectPostProcessor getInstance() {
+        if (instance == null) {
+            instance = prepareInstance(new PersistObjectPostProcessor());
+        }
+        return instance;
+    }
+
+    /**
+     * Concrete implementations of the SingletonSupport's clearStaticReferences() method :<br/>
+     * Callback to clean up the possible static references used by this SingletonSupport instance
+     * iso clear static references
+     *
+     * @see SingletonSupport#clearStaticReferences()
+     */
+    @Override
+    protected void clearStaticReferences() {
+        if (instance != null) {
+            instance = null;
+        }
+    }
 
     /**
      * Protected constructor to avoid to create instance except for singletons (stateless classes)
      */
     protected PersistObjectPostProcessor() {
         super();
-
-        // register this instance in SingletonSupport
-        register(this);
     }
 
     //~ Methods ----------------------------------------------------------------------------------------------------------
-
     /**
      * Process the specified object before its collections are being processed.</br>
      * @param object MetadataObject instance
      */
     @Override
     public void preProcess(final MetadataObject object) {
-      /* no-op for now 
-       * If at some point we store state on objects, here this can be updated
-       * */
+        /* no-op for now
+         * If at some point we store state on objects, here this can be updated
+         * */
     }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

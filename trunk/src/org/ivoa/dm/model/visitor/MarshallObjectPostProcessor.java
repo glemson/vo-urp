@@ -14,14 +14,34 @@ import org.ivoa.dm.model.MetaDataObjectVisitor;
 public final class MarshallObjectPostProcessor extends MetaDataObjectVisitor {
 
     /** singleton instance (java 5 memory model) : statically defined (thread safe and stateless) */
-    private static MarshallObjectPostProcessor instance = new MarshallObjectPostProcessor();
+    private static MarshallObjectPostProcessor instance = null;
 
     /**
-     * Return the singleton instance
-     * @return visitor
+     * Return the MarshallObjectPostProcessor singleton instance
+     *
+     * @return MarshallObjectPostProcessor singleton instance
+     *
+     * @throws IllegalStateException if a problem occured
      */
-    public static MarshallObjectPostProcessor getInstance() {
+    public static final MarshallObjectPostProcessor getInstance() {
+        if (instance == null) {
+            instance = prepareInstance(new MarshallObjectPostProcessor());
+        }
         return instance;
+    }
+
+    /**
+     * Concrete implementations of the SingletonSupport's clearStaticReferences() method :<br/>
+     * Callback to clean up the possible static references used by this SingletonSupport instance
+     * iso clear static references
+     *
+     * @see SingletonSupport#clearStaticReferences()
+     */
+    @Override
+    protected void clearStaticReferences() {
+        if (instance != null) {
+            instance = null;
+        }
     }
 
     /**
@@ -29,9 +49,6 @@ public final class MarshallObjectPostProcessor extends MetaDataObjectVisitor {
      */
     protected MarshallObjectPostProcessor() {
         super();
-
-        // register this instance in SingletonSupport
-        register(this);
     }
 
     //~ Methods ----------------------------------------------------------------------------------------------------------
