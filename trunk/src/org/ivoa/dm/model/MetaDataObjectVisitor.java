@@ -27,7 +27,14 @@ public abstract class MetaDataObjectVisitor extends SingletonSupport implements 
         /* no-op */
     }
     //~ Methods ----------------------------------------------------------------------------------------------------------
-
+    /**
+     * Process the specified object before its collections are being processed.</br>
+     * @param object MetadataObject instance
+     */
+    public void preProcess(final MetadataObject object) {
+      /* no-op  */
+    }
+    
     /**
      * Process the specified object after its collections have been processed.</br>
      * @param object MetadataObject instance

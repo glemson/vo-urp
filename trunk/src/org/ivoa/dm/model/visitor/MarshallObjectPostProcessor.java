@@ -35,7 +35,7 @@ public final class MarshallObjectPostProcessor extends MetaDataObjectVisitor {
      * Callback to clean up the possible static references used by this SingletonSupport instance
      * iso clear static references
      *
-     * @see SingletonSupport#clearStaticReferences()
+     * @see org.ivoa.bean.SingletonSupport#clearStaticReferences()
      */
     @Override
     protected void clearStaticReferences() {
