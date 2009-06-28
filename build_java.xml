@@ -303,6 +303,9 @@
     <fileset dir="${outputJava}/src">
       <include name="**/jaxb.index" />
     </fileset>
+    <fileset dir="${output.xsd}">
+      <include name="**/*.xsd" />
+    </fileset>
 
     <manifest>
       <attribute name="Built-By" value="${project.authors}"/>

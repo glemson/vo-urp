@@ -86,6 +86,7 @@
 	<property name="javadoc" location="${dist}/doc" />
 	<property name="outputJava" location="${output}/java"/>
 	<property name="sources.gen" location="${outputJava}" />
+	<property name="output.xsd" location="${output}/schema" />
 	<property name="build" location="./build" />
 	<property name="build.src" location="${build}/src" />
 	<property name="build.gen" location="${build}/gen" />
@@ -473,7 +474,7 @@
 	<target name="run_intermediate2xsd">
 		<echo>run_intermediate2xsd : starting generate XSD files from file ${output}/${source_intermediate}</echo>
 
-		<xslt2 in="${output}/${source_intermediate}" out="${output}/schema/xsd-gen.log" style="${res}/intermediate2xsd.xsl">
+		<xslt2 in="${output}/${source_intermediate}" out="${output.xsd}/xsd-gen.log" style="${res}/intermediate2xsd.xsl">
 			<param name="targetnamespace_root" expression="${targetnamespace_root}" />
 			<param name="schemalocation_root" expression="${schemalocation_root}" />
 			<param name="generateAppinfo" expression="true" />
