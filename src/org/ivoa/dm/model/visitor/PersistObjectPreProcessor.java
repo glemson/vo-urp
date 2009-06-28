@@ -1,6 +1,7 @@
 package org.ivoa.dm.model.visitor;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 import org.ivoa.dm.model.MetaDataObjectVisitor;
 import org.ivoa.dm.model.MetadataObject;
@@ -22,7 +23,7 @@ public final class PersistObjectPreProcessor extends MetaDataObjectVisitor {
   private final String username;
 
   /** timestamp = now */
-  private final Timestamp now;
+  private final Date now;
 
   /**
    * Public constructor.<br/>
@@ -48,11 +49,11 @@ public final class PersistObjectPreProcessor extends MetaDataObjectVisitor {
   public void preProcess(final MetadataObject object) {
       if (object instanceof MetadataRootEntityObject) {
           final MetadataRootEntityObject root = (MetadataRootEntityObject)object;
-        root.setDbUpdateTimestamp(now);
-        root.setUpdateUser(username);
+        root.setModificationDate(now);
+        root.setModificationUser(username);
         if (root.isPurelyTransient()) {
-          root.setDBInsertTimestamp(now);
-          root.setOwner(username);
+          root.setCreationDate(now);
+          root.setCreationUser(username);
         }
       }
   }
