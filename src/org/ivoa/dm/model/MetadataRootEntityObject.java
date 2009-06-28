@@ -1,16 +1,27 @@
 package org.ivoa.dm.model;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.Map;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * Root Entity Object is a base type corresponding to a full XML document
  * 
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
+@MappedSuperclass
+@XmlAccessorType(XmlAccessType.NONE)
+@XmlType(name = "MetadataRootEntityObject", namespace = "http://www.ivoa.net/xml/dm/base/v0.1")
 public abstract class MetadataRootEntityObject extends MetadataObject {
     //~ Constants --------------------------------------------------------------------------------------------------------
 
@@ -25,29 +36,35 @@ public abstract class MetadataRootEntityObject extends MetadataObject {
    * Username of owner of this root entity class.<br/>
    */
   @Basic(optional = true)
-  @Column(name = "ownerUser", nullable = true)
-  private String owner;
+  @Column(name = "creationUser", nullable = true)
+  @XmlElement(name = "creationUser", required = false, type = String.class)
+  private String creationUser;
 
   /**
    * Username of owner of this root entity class.<br/>
    */
   @Basic(optional = true)
-  @Column(name = "updateUser", nullable = true)
-  private String updateUser;
+  @Column(name = "modificationUser", nullable = true)
+  @XmlElement(name = "modificationUser", required = false, type = String.class)
+  private String modificationUser;
 
   /**
    * The timestamp when this record was added to the database.
    */
   @Basic(optional = true)
-  @Column(name = "dbInsertTimestamp", nullable = true)
-  private Timestamp dbInsertTimestamp;
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "creationDate", nullable = true)
+  @XmlElement(name = "creationDate", required = false, type = Date.class)
+  private Date creationDate;
 
   /**
    * The timestamp when this record was last updated in the database.
    */
   @Basic(optional = true)
-  @Column(name = "dbUpdateTimestamp", nullable = true)
-  private Timestamp dbUpdateTimestamp;
+    @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "modificationDate", nullable = true)
+  @XmlElement(name = "modificationDate", required = true, type = Date.class)
+  private Date modificationDate;
 
     //~ Constructors -----------------------------------------------------------------------------------------------------
 
@@ -63,57 +80,57 @@ public abstract class MetadataRootEntityObject extends MetadataObject {
   /**
    * @return owner
    */
-  public String getOwner() {
-    return owner;
+  public String getCreationUser() {
+    return creationUser;
   }
 
   /**
    * @param pOwner owner
    */
-  public void setOwner(final String pOwner) {
-    this.owner = pOwner;
+  public void setCreationUser(final String pCreationUser) {
+    this.creationUser = pCreationUser;
   }
 
   /**
    * @return updateUser
    */
-  public String getUpdateUser() {
-    return updateUser;
+  public String getModificationUser() {
+    return modificationUser;
   }
 
   /**
    * @param pUpdateUser updateUser
    */
-  public void setUpdateUser(final String pUpdateUser) {
-    this.updateUser = pUpdateUser;
+  public void setModificationUser(final String pModificationUser) {
+    this.modificationUser = pModificationUser;
   }
 
   /**
    * @return  timestamp at insert time
    */
-  public Timestamp getDBInsertTimestamp() {
-    return dbInsertTimestamp;
+  public Date getCreationDate() {
+    return creationDate;
   }
 
   /**
    * @param pInsertTimestamp timestamp at insert time
    */
-  public void setDBInsertTimestamp(final Timestamp pInsertTimestamp) {
-    this.dbInsertTimestamp = pInsertTimestamp;
+  public void setCreationDate(final Date pCreationDate) {
+    this.creationDate = pCreationDate;
   }
 
   /**
    * @return timestamp at update time
    */
-  public Timestamp getDBUpdateTimestamp() {
-    return dbUpdateTimestamp;
+  public Date getModificationDate() {
+    return modificationDate;
   }
 
   /**
    * @param pDBUpdateTimestamp timestamp at update time
    */
-  public void setDbUpdateTimestamp(final Timestamp pDBUpdateTimestamp) {
-    this.dbUpdateTimestamp = pDBUpdateTimestamp;
+  public void setModificationDate(final Date pModificationDate) {
+    this.modificationDate = pModificationDate;
   }
 
   /**

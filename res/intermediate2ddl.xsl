@@ -422,10 +422,10 @@ DROP INDEX <xsl:value-of select="$tableName"/>.ix_<xsl:value-of select="$tableNa
   NOTE we should ensure that there is only 1  -->
   <xsl:template match="objectType" mode="rootEntity">
     <xsl:if test="@entity='true' and not(extends)">
-      <xsl:text>, ownerUser VARCHAR(32)</xsl:text>&cr;
-      <xsl:text>, updateUser VARCHAR(32)</xsl:text>&cr;      
-      <xsl:text>, dbInsertTimestamp </xsl:text><xsl:call-template name="datetimeType"/>&cr;
-      <xsl:text>, dbUpdateTimestamp </xsl:text><xsl:call-template name="datetimeType"/>&cr;      
+      <xsl:text>, creationUser VARCHAR(32)</xsl:text>&cr;
+      <xsl:text>, modificationUser VARCHAR(32)</xsl:text>&cr;      
+      <xsl:text>, creationDate </xsl:text><xsl:call-template name="datetimeType"/>&cr;
+      <xsl:text>, modificationDate </xsl:text><xsl:call-template name="datetimeType"/>&cr;      
     </xsl:if>
   </xsl:template>
   
