@@ -43,6 +43,7 @@
   <xsl:variable name="referenceType" select="concat($base-prefix,':Reference')"/>
 
   <xsl:variable name="metadataObjectType" select="concat($base-prefix,':MetadataObject')"/>
+  <xsl:variable name="metadataRootEntityObjectType" select="concat($base-prefix,':MetadataRootEntityObject')"/>
   
   
   
@@ -351,7 +352,14 @@ Should do a tranformation if the nameis not suite for this (spaces etc).
           <xsd:complexContent>
             <xsd:extension>
               <xsl:attribute name="base">
-                <xsl:value-of select="$metadataObjectType"/>
+                <xsl:choose>
+                  <xsl:when test="@entity='true'">
+                    <xsl:value-of select="$metadataRootEntityObjectType"/>
+                  </xsl:when>
+                  <xsl:otherwise>
+                    <xsl:value-of select="$metadataObjectType"/>
+                  </xsl:otherwise>
+                </xsl:choose>
               </xsl:attribute>
               <xsl:apply-templates select="." mode="content"/>
             </xsd:extension>
