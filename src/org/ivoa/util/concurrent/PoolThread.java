@@ -15,7 +15,6 @@ public final class PoolThread extends Thread {
   // ~ Constants
   // --------------------------------------------------------------------------------------------------------
 
-
   /** Dev Logger for this class and subclasses */
   private final Log logD = LogUtil.getLoggerDev();
 
@@ -56,7 +55,7 @@ public final class PoolThread extends Thread {
   }
 
   /**
-   * 
+   * Run method overriden to add logs and clean up
    */
   @Override
   public void run() {

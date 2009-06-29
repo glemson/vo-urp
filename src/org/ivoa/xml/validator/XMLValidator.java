@@ -21,10 +21,10 @@ import org.xml.sax.SAXParseException;
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public class XMLValidator {
+public final class XMLValidator {
   //~ Members ----------------------------------------------------------------------------------------------------------
 
-  /** TODO : Field Description */
+  /** XML Schema instance */
   private Schema schema;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
@@ -40,13 +40,13 @@ public class XMLValidator {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * TODO : Method Description
+   * Retrieve a schema instance from the given URL
    *
-   * @param schemaURL
+   * @param schemaURL schema URI
    *
-   * @return value TODO : Value Description
+   * @return schema instance
    *
-   * @throws IllegalStateException
+   * @throws IllegalStateException if the schema can be retrieved or parsed
    */
   public static Schema getSchema(final String schemaURL) {
     // 1. Lookup a factory for the W3C XML Schema language
@@ -65,23 +65,23 @@ public class XMLValidator {
   }
 
   /**
-   * TODO : Method Description
+   * Validate the given XML stream according to the schema
    *
-   * @param document
+   * @param document XML stream
    *
-   * @return value TODO : Value Description
+   * @return ValidationResult instance
    */
   public ValidationResult validate(final InputStream document) {
     return validate(document, new ValidationResult());
   }
 
   /**
-   * TODO : Method Description
+   * Validate the given XML stream according to the schema
    *
-   * @param document
-   * @param result
+   * @param document XML stream
+   * @param result ValidationResult instance
    *
-   * @return value TODO : Value Description
+   * @return ValidationResult instance
    */
   public ValidationResult validate(final InputStream document, final ValidationResult result) {
     // 3. Get a validator from the schema.
@@ -112,29 +112,53 @@ public class XMLValidator {
 
   //~ Inner Classes ----------------------------------------------------------------------------------------------------
 
+  /**
+   * SAX ErrorHandler implementation to add validation exception to the given ValidationResult instance
+   * @see org.xml.sax.ErrorHandler
+   */
   private final class CustomErrorHandler implements ErrorHandler {
     //~ Members --------------------------------------------------------------------------------------------------------
 
+    /** validation result */
     private ValidationResult result;
 
     //~ Constructors ---------------------------------------------------------------------------------------------------
 
+    /**
+     * Public constructor with the given validation result
+     * @param pResult validation result to use
+     */
     public CustomErrorHandler(final ValidationResult pResult) {
       this.result = pResult;
     }
 
     //~ Methods --------------------------------------------------------------------------------------------------------
 
+    /**
+     * Wrap the SAX exception in an ErrorMessage instance added to the validation result
+     * @param se SAX parse exception 
+     * @see org.xml.sax.ErrorHandler#warning(SAXParseException)
+     */
     public void warning(final SAXParseException se) {
       result.getMessages().add(
         new ErrorMessage(ErrorMessage.SEVERITY.WARNING, se.getLineNumber(), se.getColumnNumber(), se.getMessage()));
     }
 
+    /**
+     * Wrap the SAX exception in an ErrorMessage instance added to the validation result
+     * @param se SAX parse exception 
+     * @see org.xml.sax.ErrorHandler#error(SAXParseException)
+     */
     public void error(final SAXParseException se) {
       result.getMessages().add(
         new ErrorMessage(ErrorMessage.SEVERITY.ERROR, se.getLineNumber(), se.getColumnNumber(), se.getMessage()));
     }
 
+    /**
+     * Wrap the SAX exception in an ErrorMessage instance added to the validation result
+     * @param se SAX parse exception 
+     * @see org.xml.sax.ErrorHandler#fatalError(SAXParseException)
+     */
     public void fatalError(final SAXParseException se) {
       result.getMessages().add(
         new ErrorMessage(ErrorMessage.SEVERITY.FATAL, se.getLineNumber(), se.getColumnNumber(), se.getMessage()));
