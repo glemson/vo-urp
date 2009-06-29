@@ -14,7 +14,7 @@ import org.ivoa.bean.LogSupport;
 public final class CustomThreadFactory extends LogSupport implements ThreadFactory {
 
   // members :
-  /** name */
+  /** thread pool name */
   private final String name;
 
   /** thread priority */
@@ -48,7 +48,7 @@ public final class CustomThreadFactory extends LogSupport implements ThreadFacto
   }
 
   /**
-   * Creates a new Thread (PoolThread) with the name [pool name]-thread-[number] and set its
+   * Creates a new Thread (PoolThread) with the name [thread pool name]-thread-[number] and set its
    * priority
    * 
    * @param r Runnable task
@@ -75,14 +75,27 @@ public final class CustomThreadFactory extends LogSupport implements ThreadFacto
     return t;
   }
 
+  /**
+   * Return the thread pool name
+   * @return thread pool name
+   */
   public String getName() {
     return name;
   }
 
+  /**
+   * Return the thread priority (Thread.NORM_PRIORITY by default)
+   * @see Thread#NORM_PRIORITY
+   * @return thread priority
+   */
   public int getPriority() {
     return priority;
   }
 
+  /**
+   * Return the global thread counter
+   * @return global thread counter
+   */
   public AtomicInteger getThreadNumber() {
     return threadNumber;
   }

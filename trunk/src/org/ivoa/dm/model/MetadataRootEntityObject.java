@@ -1,6 +1,5 @@
 package org.ivoa.dm.model;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Map;
 
@@ -33,7 +32,7 @@ public abstract class MetadataRootEntityObject extends MetadataObject {
     //~ Members ----------------------------------------------------------------------------------------------------------
 
   /**
-   * Username of owner of this root entity class.<br/>
+   * User name of the user that created this root entity
    */
   @Basic(optional = true)
   @Column(name = "creationUser", nullable = true)
@@ -41,7 +40,7 @@ public abstract class MetadataRootEntityObject extends MetadataObject {
   private String creationUser;
 
   /**
-   * Username of owner of this root entity class.<br/>
+   * User name of the user that modified this root entity
    */
   @Basic(optional = true)
   @Column(name = "modificationUser", nullable = true)
@@ -49,7 +48,7 @@ public abstract class MetadataRootEntityObject extends MetadataObject {
   private String modificationUser;
 
   /**
-   * The timestamp when this record was added to the database.
+   * Date defined when this root entity was added to the database
    */
   @Basic(optional = true)
   @Temporal(TemporalType.TIMESTAMP)
@@ -58,10 +57,10 @@ public abstract class MetadataRootEntityObject extends MetadataObject {
   private Date creationDate;
 
   /**
-   * The timestamp when this record was last updated in the database.
+   * Date defined when this root entity was last updated in the database
    */
   @Basic(optional = true)
-    @Temporal(TemporalType.TIMESTAMP)
+  @Temporal(TemporalType.TIMESTAMP)
   @Column(name = "modificationDate", nullable = true)
   @XmlElement(name = "modificationDate", required = true, type = Date.class)
   private Date modificationDate;
@@ -78,56 +77,56 @@ public abstract class MetadataRootEntityObject extends MetadataObject {
     //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * @return owner
+   * @return user name of the owner that created this root entity class.
    */
   public String getCreationUser() {
     return creationUser;
   }
 
   /**
-   * @param pOwner owner
+   * @param pCreationUser user name of the owner that created this root entity class.
    */
   public void setCreationUser(final String pCreationUser) {
     this.creationUser = pCreationUser;
   }
 
   /**
-   * @return updateUser
+   * @return User name of the user that modified this root entity
    */
   public String getModificationUser() {
     return modificationUser;
   }
 
   /**
-   * @param pUpdateUser updateUser
+   * @param pModificationUser User name of the user that modified this root entity
    */
   public void setModificationUser(final String pModificationUser) {
     this.modificationUser = pModificationUser;
   }
 
   /**
-   * @return  timestamp at insert time
+   * @return Date defined when this root entity was added to the database
    */
   public Date getCreationDate() {
     return creationDate;
   }
 
   /**
-   * @param pInsertTimestamp timestamp at insert time
+   * @param pCreationDate Date defined when this root entity was added to the database
    */
   public void setCreationDate(final Date pCreationDate) {
     this.creationDate = pCreationDate;
   }
 
   /**
-   * @return timestamp at update time
+   * @return Date defined when this root entity was last updated in the database
    */
   public Date getModificationDate() {
     return modificationDate;
   }
 
   /**
-   * @param pDBUpdateTimestamp timestamp at update time
+   * @param pModificationDate Date defined when this root entity was last updated in the database
    */
   public void setModificationDate(final Date pModificationDate) {
     this.modificationDate = pModificationDate;

@@ -29,10 +29,10 @@ public final class ThreadExecutors extends LogSupport {
   // ~ Constants
   // --------------------------------------------------------------------------------------------------------
 
-  /** default single thread-pool name */
+  /** default single thread pool name */
   public static final String DEFAULT_SINGLE_THREAD_POOL = "DefaultSinglePool";
 
-  /** generic thread-pool name */
+  /** generic thread pool name */
   public static final String GENERIC_THREAD_POOL = "GenericPool";
   
   /** Generic thread Pool : idle thread keep alive before kill : 120s */
@@ -111,6 +111,11 @@ public final class ThreadExecutors extends LogSupport {
      */
   }
 
+  /**
+   * Prepare the singleExecutors map
+   * @param doCreate flag to indicate to create the map if null
+   * @return singleExecutors map
+   */
   private final static Map<String, ThreadExecutors> getSingleExecutors(final boolean doCreate) {
     Map<String, ThreadExecutors> m = singleExecutors;
     if (doCreate) {
@@ -263,6 +268,10 @@ public final class ThreadExecutors extends LogSupport {
     threadExecutor.shutdownNow();
   }
 
+  /**
+   * Return the thread pool name defined by the CustomThreadFactory
+   * @return thread pool name
+   */
   private final String getPoolName() {
     return ((CustomThreadFactory) threadExecutor.getThreadFactory()).getName();
   }
