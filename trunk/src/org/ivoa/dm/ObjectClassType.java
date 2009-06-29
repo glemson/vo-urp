@@ -154,7 +154,7 @@ public final class ObjectClassType extends ClassType {
       for (final Attribute a : ot.getAttribute()) {
         name = a.getName();
 
-        // attribute can be overriden for a given name :
+        // attribute can be overridden for a given name :
         getAttributes().put(name, a);
       }
     }
@@ -163,7 +163,7 @@ public final class ObjectClassType extends ClassType {
     for (final Reference r : ot.getReference()) {
       name = r.getName();
 
-      // reference can be overriden for a given name :
+      // reference can be overridden for a given name :
       getReferences().put(name, r);
     }
 
@@ -171,7 +171,7 @@ public final class ObjectClassType extends ClassType {
     for (final Collection c : ot.getCollection()) {
       name = c.getName();
 
-      // reference can be overriden for a given name :
+      // reference can be overridden for a given name :
       getCollections().put(name, c);
     }
 

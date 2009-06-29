@@ -18,9 +18,8 @@ public final class PoolThread extends Thread {
   /** Dev Logger for this class and subclasses */
   private final Log logD = LogUtil.getLoggerDev();
 
-  // ~ End of file
-  // --------------------------------------------------------------------------------------------------------
-
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+  
   /**
    * Allocates a new <code>Thread</code> object.
    * 
@@ -31,6 +30,8 @@ public final class PoolThread extends Thread {
   public PoolThread(final Runnable target, final String name) {
     super(target, name);
   }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
    * Log and Interrupt this thread.
@@ -55,7 +56,7 @@ public final class PoolThread extends Thread {
   }
 
   /**
-   * Run method overriden to add logs and clean up
+   * Run method overridden to add logs and clean up
    */
   @Override
   public void run() {
@@ -73,4 +74,8 @@ public final class PoolThread extends Thread {
     }
 
   }
+
+  // ~ End of file
+  // --------------------------------------------------------------------------------------------------------
+
 }

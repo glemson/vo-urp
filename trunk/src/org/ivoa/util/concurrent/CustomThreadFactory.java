@@ -13,7 +13,7 @@ import org.ivoa.bean.LogSupport;
  */
 public final class CustomThreadFactory extends LogSupport implements ThreadFactory {
 
-  // members :
+  //~ Members ----------------------------------------------------------------------------------------------------------
   /** thread pool name */
   private final String name;
 
@@ -26,6 +26,8 @@ public final class CustomThreadFactory extends LogSupport implements ThreadFacto
   /** thread name prefix */
   private final String namePrefix;
 
+  //~ Constructors -----------------------------------------------------------------------------------------------------
+  
   /**
    * Constructor with the given thread pool name and use the normal thread priority
    * 
@@ -46,6 +48,8 @@ public final class CustomThreadFactory extends LogSupport implements ThreadFacto
     priority = pPriority;
     namePrefix = pPoolName + "-thread-";
   }
+
+  //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
    * Creates a new Thread (PoolThread) with the name [thread pool name]-thread-[number] and set its
