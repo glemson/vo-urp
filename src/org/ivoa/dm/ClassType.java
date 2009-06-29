@@ -95,7 +95,7 @@ public class ClassType extends LogSupport {
       for (final Attribute a : t.getAttribute()) {
         name = a.getName();
 
-        // attribute can be overriden for a given name :
+        // attribute can be overridden for a given name :
         getAttributes().put(name, a);
       }
     }

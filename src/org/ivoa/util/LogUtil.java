@@ -47,7 +47,6 @@ public final class LogUtil {
   // ~ Members
   // ----------------------------------------------------------------------------------------------------------
 
-  // members :
   /** main logger : main */
   private Log log;
 
