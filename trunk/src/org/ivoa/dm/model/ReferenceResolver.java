@@ -10,6 +10,7 @@ import org.ivoa.bean.LogSupport;
 import org.ivoa.conf.Configuration;
 import org.ivoa.jpa.JPAHelper;
 import org.ivoa.util.JavaUtils;
+import org.ivoa.util.concurrent.ThreadLocalUtils;
 
 
 /**
@@ -26,7 +27,8 @@ public final class ReferenceResolver extends LogSupport {
   /** Identity / Reference resolver singleton */
   private static ReferenceResolver resolverInstance = new ReferenceResolver();
   /** singleton : thread local contexts */
-  private static ResolverThreadLocal resolverThreadLocalInstance = new ResolverThreadLocal();
+  private static ThreadLocal<ResolverContext> resolverThreadLocalInstance = ThreadLocalUtils.registerRequestThreadLocal(new ResolverThreadLocal());
+
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
