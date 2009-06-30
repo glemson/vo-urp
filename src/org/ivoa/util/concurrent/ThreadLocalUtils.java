@@ -221,6 +221,13 @@ public final class ThreadLocalUtils extends SingletonSupport {
     /**
      * Called by the SingletonSupport onExit() method to clean up all of the ThreadLocals registered
      * with this ThreadLocalManager
+     *
+     * TODO : Use introspection to be able to remove a registered ThreadLocal from any thread =
+     *      public void remove() {
+     *        ThreadLocalMap m = getMap(Thread.currentThread());
+     *        if (m != null)
+     *          m.remove(this);
+     *      }
      * 
      * @see ThreadLocalUtils#clearThreadLocals()
      * @see ThreadLocalUtils#clearStaticReferences()

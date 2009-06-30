@@ -17,6 +17,7 @@ import org.ivoa.dm.MetaModelFactory;
 import org.ivoa.env.ClassLoaderCleaner;
 import org.ivoa.jpa.JPAFactory;
 import org.ivoa.util.LogUtil;
+import org.ivoa.util.concurrent.ThreadLocalUtils;
 import org.ivoa.util.timer.TimerFactory;
 import org.ivoa.web.model.CursorQuery;
 import org.ivoa.web.model.EntityConfig;
@@ -37,7 +38,7 @@ public class VO_URP_Facade extends LogSupport {
     /** TODO : Field Description */
     private static VO_URP_Facade instance = null;
     /** EntityManager Thread Local (lazy weaving) */
-    private static EntityManagerThreadLocal entityLocal = null;
+    private static volatile EntityManagerThreadLocal entityLocal = null;
 
     //~ Members ----------------------------------------------------------------------------------------------------------
     /** TODO : Field Description */
@@ -189,6 +190,8 @@ public class VO_URP_Facade extends LogSupport {
 
         // prepare the entityManager thread local :
         entityLocal = new EntityManagerThreadLocal(this.emf);
+        
+        ThreadLocalUtils.registerRequestThreadLocal(entityLocal);
 
         // TimerFactory warmup and reset :
         TimerFactory.resetTimers();

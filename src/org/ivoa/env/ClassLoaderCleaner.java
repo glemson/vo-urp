@@ -36,7 +36,7 @@ public final class ClassLoaderCleaner {
     SingletonSupport.onExit();
 
     // ThreadLocal checks :
-    ThreadLocalCleaner.checkThreads();
+    ThreadLocalCleaner.cleanAndcheckThreads();
 
     if (logD.isInfoEnabled()) {
       logD.info("ClassLoaderCleaner.clean : exit");

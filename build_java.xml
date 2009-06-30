@@ -442,6 +442,7 @@ Optional
          target="${build.weaving}"
          loglevel="INFO">
     <classpath>
+      <pathelement path="${properties}"/>
       <pathelement location="${dist}/${build.src.file}" />
       <path refid="project.class.path" />
     </classpath>
