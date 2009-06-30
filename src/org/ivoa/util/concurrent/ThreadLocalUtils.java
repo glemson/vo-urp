@@ -19,6 +19,8 @@ package org.ivoa.util.concurrent;
  *  under the License.
  */
 import java.lang.ref.WeakReference;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
@@ -27,6 +29,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import org.ivoa.bean.LogSupport;
 import org.ivoa.bean.SingletonSupport;
+import org.ivoa.util.ReflectionUtils;
 
 /**
  * Utility functions related to ThreadLocals. This class provides utilities for managing the life
@@ -50,6 +53,22 @@ public final class ThreadLocalUtils extends SingletonSupport {
   // ~ Constants
   // --------------------------------------------------------------------------------------------------------
 
+  /** name of the attribute Thread.threadLocals */
+  private final static String FIELD_THREAD_THREADLOCALS = "threadLocals";
+
+  /** name of the method ThreadLocalMap.remove(ThreadLocal) */
+  private final static String METHOD_THREADLOCALMAP_REMOVE = "remove";
+  
+  /** 
+   * Temporary cached Field Thread.threadLocals
+   */
+  static Field threadThreadLocalsField = null;
+
+  /** 
+   * Temporary cached Method ThreadLocalMap.remove(ThreadLocal) 
+   */
+  static Method threadLocalMapRemoveMethod;
+  
   /** Name used for the default ThreadLocalManager */
   private static final String DEFAULT_MANAGER = ThreadLocalUtils.class.getName();
 
@@ -85,6 +104,22 @@ public final class ThreadLocalUtils extends SingletonSupport {
   }
 
   /**
+   * Prepare the necessary fields using reflection 
+   */
+  private static void prepareFields() {
+    threadThreadLocalsField = ReflectionUtils.getField(Thread.class, FIELD_THREAD_THREADLOCALS);
+  }
+
+  /**
+   * Clear the fields 
+   */
+  private static void clearFields() {
+    threadThreadLocalsField = null;
+    threadLocalMapRemoveMethod = null;
+  }  
+  
+  
+  /**
    * Reset the threadLocalManagers collection
    */
   private final static void resetManagers() {
@@ -102,18 +137,20 @@ public final class ThreadLocalUtils extends SingletonSupport {
    */
   @Override
   protected void clearStaticReferences() {
-    if (log.isWarnEnabled()) {
-      log.warn("ThreadLocalUtils.clearStaticReferences : enter");
+    if (logD.isWarnEnabled()) {
+      logD.warn("ThreadLocalUtils.clearStaticReferences : enter");
     }
 
     // force GC :
     if (threadLocalManagers != null) {
       clearThreadLocals();
 
+      clearAllThreadLocals();
+      
       resetManagers();
     }
-    if (log.isWarnEnabled()) {
-      log.warn("ThreadLocalUtils.clearStaticReferences : exit");
+    if (logD.isWarnEnabled()) {
+      logD.warn("ThreadLocalUtils.clearStaticReferences : exit");
     }
   }
 
@@ -131,6 +168,33 @@ public final class ThreadLocalUtils extends SingletonSupport {
     }
   }
 
+  /**
+   * This method cleans up all of the ThreadLocals registered for every thread present in the current ThreadGroup
+   */
+  public final static void clearAllThreadLocals() {
+    if (threadLocalManagers != null) {
+      try {
+        prepareFields();
+        
+        final Thread[] ta = new Thread[Thread.activeCount()];
+        Thread.enumerate(ta);
+
+        for (final Thread t : ta) {
+          logD.warn("ThreadLocalUtils.clearAllThreadLocals : cleaning thread [" + t.getName() + "] ...");
+          
+          for (ResettableThreadLocalManager manager : threadLocalManagers.values()) {
+            if (manager != null) {
+              // clean up all ThreadLocals
+              manager.removeThreadLocals(t);
+            }
+          } 
+        }
+      } finally {
+        clearFields();
+      }
+    }      
+  }  
+  
   /**
    * Registers and returns the ThreadLocal to be automatically managed when the classloader is
    * released
@@ -178,10 +242,16 @@ public final class ThreadLocalUtils extends SingletonSupport {
   public static abstract class ThreadLocalManager extends LogSupport {
 
     /**
-     * Called by the ThreadLocalLifeCycle when the ThreadLocals managed by this ThreadLocalManager
-     * need to be cleaned up by removing their instances from the current Thread.
+     * Clean up by removing the ThreadLocal instances from the current Thread.
      */
     protected abstract void removeThreadLocals();
+    
+    /**
+     * Clean up by removing the ThreadLocal instances from the given thread.
+     * @param thread thread to clean up
+     */
+    protected abstract void removeThreadLocals(Thread thread);
+    
   }
 
   /**
@@ -190,14 +260,14 @@ public final class ThreadLocalUtils extends SingletonSupport {
   private static final class ResettableThreadLocalManager extends ThreadLocalManager {
 
     /** threadLocal weak references */
-    private final Collection<WeakReference<ThreadLocal<?>>> threadLocals;
+    private final Collection<WeakReference<ThreadLocal<?>>> managedThreadLocals;
 
     /**
      * Protected Constructor
      */
     protected ResettableThreadLocalManager() {
       // create the list of resettable ThreadLocals for this group
-      threadLocals = new ConcurrentLinkedQueue<WeakReference<ThreadLocal<?>>>();
+      managedThreadLocals = new ConcurrentLinkedQueue<WeakReference<ThreadLocal<?>>>();
     }
 
     /**
@@ -213,7 +283,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
       }
 
       // WeakReference might be overkill here, but make sure we don't pin ThreadLocals
-      threadLocals.add(new WeakReference<ThreadLocal<?>>(threadLocal));
+      managedThreadLocals.add(new WeakReference<ThreadLocal<?>>(threadLocal));
 
       return threadLocal;
     }
@@ -222,13 +292,6 @@ public final class ThreadLocalUtils extends SingletonSupport {
      * Called by the SingletonSupport onExit() method to clean up all of the ThreadLocals registered
      * with this ThreadLocalManager
      *
-     * TODO : Use introspection to be able to remove a registered ThreadLocal from any thread =
-     *      public void remove() {
-     *        ThreadLocalMap m = getMap(Thread.currentThread());
-     *        if (m != null)
-     *          m.remove(this);
-     *      }
-     * 
      * @see ThreadLocalUtils#clearThreadLocals()
      * @see ThreadLocalUtils#clearStaticReferences()
      * @see SingletonSupport#onExit()
@@ -236,14 +299,14 @@ public final class ThreadLocalUtils extends SingletonSupport {
      */
     @Override
     protected void removeThreadLocals() {
-      final Iterator<WeakReference<ThreadLocal<?>>> iterator = threadLocals.iterator();
+      final Iterator<WeakReference<ThreadLocal<?>>> iterator = managedThreadLocals.iterator();
 
       ThreadLocal<?> threadLocal;
       while (iterator.hasNext()) {
         threadLocal = iterator.next().get();
 
-        if (log.isWarnEnabled()) {
-          log.warn("ResettableThreadLocalManager.removeThreadLocals : threadLocal to remove : " + threadLocal);
+        if (logD.isWarnEnabled()) {
+          logD.warn("ResettableThreadLocalManager.removeThreadLocals : threadLocal to remove : " + threadLocal);
         }
 
         // if the threadLocal is null, that means it has been released and we would really
@@ -257,5 +320,62 @@ public final class ThreadLocalUtils extends SingletonSupport {
         }
       }
     }
+    
+    /**
+     * Called by the SingletonSupport onExit() method to clean up all of the ThreadLocals registered
+     * with this ThreadLocalManager
+     * 
+     * @see ThreadLocalUtils#clearThreadLocals()
+     * @see ThreadLocalUtils#clearStaticReferences()
+     * @see SingletonSupport#onExit()
+     * @see ThreadLocal#remove()
+     */
+    @Override
+    protected void removeThreadLocals(final Thread thread) {
+      try {
+        final Object threadLocalsValue = ReflectionUtils.getFieldValue(threadThreadLocalsField, thread);
+        
+        if (threadLocalsValue != null) {
+          if (threadLocalMapRemoveMethod == null) {
+            threadLocalMapRemoveMethod = ReflectionUtils.getMethod(threadLocalsValue.getClass(), METHOD_THREADLOCALMAP_REMOVE, ThreadLocal.class); 
+            logD.warn("method = " + threadLocalMapRemoveMethod);
+          }
+          
+          if (threadLocalMapRemoveMethod != null) {
+            
+            final Iterator<WeakReference<ThreadLocal<?>>> iterator = managedThreadLocals.iterator();
+            
+            final Object[] params = new Object[1];
+            
+            ThreadLocal<?> threadLocal;
+            while (iterator.hasNext()) {
+              threadLocal = iterator.next().get();
+    
+              if (logD.isWarnEnabled()) {
+                logD.warn("ResettableThreadLocalManager.removeThreadLocals : threadLocal to remove : " + threadLocal);
+              }
+    
+              // if the threadLocal is null, that means it has been released and we would really
+              // like to reclaim the entry, however remove isn't supported on CopyOnWriteArrayLists
+              // and the synchronization required to safely remove this item probably isn't
+              // worthy the small increase in memory of keeping around this empty item, so we don't
+              // bother cleaning up this entry
+              if (threadLocal != null) {
+                // reset the thread local for the given thread :
+                // idem threadLocal.remove(); */
+
+                params[0] = threadLocal;
+                
+                ReflectionUtils.invokeMethod(threadLocalMapRemoveMethod, threadLocalsValue, params);
+              }
+            }
+          }
+        }
+      
+      } catch (final RuntimeException re) {
+        logD.error("ResettableThreadLocalManager.removeThreadLocals : failure : ", re);
+      }
+      
+    }    
   }
 }

@@ -1,7 +1,6 @@
 package org.ivoa.env;
 
 import java.lang.ref.Reference;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;
@@ -14,218 +13,243 @@ import org.ivoa.util.ReflectionUtils;
 
 /**
  * Simple ThreadLocal inspectors to guess unreleased references (possible memory leak)
- *
+ * 
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ThreadLocalCleaner extends LogSupport {
 
-    private final static String FIELD_THREAD_THREADLOCALS = "threadLocals";
-    private final static String CLASS_THREADLOCAL_MAP = "java.lang.ThreadLocal$ThreadLocalMap";
-    private final static String FIELD_THREADLOCALMAP_TABLE = "table";
-    private final static String FIELD_THREADLOCALMAP_ENTRY_VALUE = "value";
+  /** name of the attribute Thread.threadLocals */
+  private final static String FIELD_THREAD_THREADLOCALS = "threadLocals";
 
-    private final static String CLASS_TO_REMOVE = "org.ivoa";
+  /** name of the class ThreadLocal$ThreadLocalMap */
+  private final static String CLASS_THREADLOCAL_MAP = "java.lang.ThreadLocal$ThreadLocalMap";
 
-    /**
-     * Forbidden constructor
-     */
-    private ThreadLocalCleaner() {
-        /* no-op */
+  /** name of the attribute ThreadLocalMap.table */
+  private final static String FIELD_THREADLOCALMAP_TABLE = "table";
+
+  /** name of the attribute Thread.threadLocals.Entry.value */
+  private final static String FIELD_THREADLOCALMAP_ENTRY_VALUE = "value";
+
+  /** pattern to detect or.ivoa classes to remove from WeakHashMap */
+  private final static String CLASS_TO_REMOVE = "org.ivoa";
+
+  /**
+   * Temporary cached Field Thread.threadLocals
+   */
+  private static Field threadThreadLocalsField = null;
+
+  /**
+   * Temporary cached Field ThreadLocalMap.table
+   */
+  private static Field threadLocalMapTableField = null;
+  
+  /**
+   * Temporary cached Field Thread.threadLocals.Entry.value
+   */
+  private static Field threadLocalMapEntryValueField = null;
+
+  /**
+   * Forbidden constructor
+   */
+  private ThreadLocalCleaner() {
+    /* no-op */
+  }
+
+  /**
+   * Check all threads in the current ThreadGroup
+   */
+  public static void cleanAndcheckThreads() {
+    logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : begin");
+    logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : classLoader =\n" + ThreadLocalCleaner.class.getClassLoader());
+
+    try {
+      prepareFields();
+
+      final Thread[] ta = new Thread[Thread.activeCount()];
+      Thread.enumerate(ta);
+
+      for (final Thread t : ta) {
+        logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : cleaning thread [" + t.getName() + "] ...");
+        ThreadLocalCleaner.cleanThreadLocals(t, CLASS_TO_REMOVE);
+
+        logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : checking thread [" + t.getName() + "] ...");
+        ThreadLocalCleaner.checkThreadLocals(t);
+      }
+    } finally {
+      clearFields();
     }
 
-    /**
-     * Check all threads in the current ThreadGroup
-     */
-    public static void cleanAndcheckThreads() {
-        logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : begin");
-        logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : classLoader =\n" + ThreadLocalCleaner.class.getClassLoader());
+    logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : end");
+  }
 
-        final Thread[] ta = new Thread[Thread.activeCount()];
-        Thread.enumerate(ta);
+  /**
+   * Prepare the necessary fields using reflection
+   */
+  private static void prepareFields() {
+    threadThreadLocalsField = ReflectionUtils.getField(Thread.class, FIELD_THREAD_THREADLOCALS);
 
-        for (final Thread t : ta) {
-            log.warn("ThreadLocalCleaner.cleanAndcheckThreads : cleaning : " + t.getName());
-            ThreadLocalCleaner.cleanThreadLocals(t, CLASS_TO_REMOVE);
-
-            log.warn("ThreadLocalCleaner.cleanAndcheckThreads : checking : " + t.getName());
-            ThreadLocalCleaner.checkThreadLocals(t);
-        }
-
-        logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : end");
+    final Class<?> threadLocalMapKlazz = ReflectionUtils.findClass(CLASS_THREADLOCAL_MAP);
+    if (threadLocalMapKlazz != null) {
+      threadLocalMapTableField = ReflectionUtils.getField(threadLocalMapKlazz, FIELD_THREADLOCALMAP_TABLE);
     }
+  }
 
-    /**
-     * Clean the given thread's ThreadLocal map
-     * @param thread thread to clean
-     */
-    private static void cleanThreadLocals(final Thread thread, final String pattern) {
-        try {
-            final Field threadLocalsField = ReflectionUtils.getField(Thread.class, FIELD_THREAD_THREADLOCALS);
+  /**
+   * Clear the fields
+   */
+  private static void clearFields() {
+    threadThreadLocalsField = null;
+    threadLocalMapTableField = null;
+    threadLocalMapEntryValueField = null;
+  }
 
-            final Object threadLocalsValue = threadLocalsField.get(thread);
+  /**
+   * Clean the given thread's ThreadLocal map
+   * 
+   * @param thread thread to clean
+   * @param pattern String pattern to recognize classes in WeakHashMap.keys that will trigger a call
+   *          to WeakHashMap.clear() in order to release ASAP these references
+   */
+  private static void cleanThreadLocals(final Thread thread, final String pattern) {
+    try {
+      final Object threadLocalsValue = ReflectionUtils.getFieldValue(threadThreadLocalsField, thread);
 
-            if (threadLocalsValue != null) {
+      if (threadLocalsValue != null) {
+        /* private class ThreadLocal.ThreadLocalMap.Entry[] */
+        final Object[] table = (Object[]) ReflectionUtils.getFieldValue(threadLocalMapTableField, threadLocalsValue);
 
-                final Class<?> threadLocalMapKlazz = ReflectionUtils.findClass(CLASS_THREADLOCAL_MAP);
-                if (threadLocalMapKlazz != null) {
-                    final Field tableField = ReflectionUtils.getField(threadLocalMapKlazz, FIELD_THREADLOCALMAP_TABLE);
+        final int threadLocalCount = table.length;
 
-                    final Object table = tableField.get(threadLocalsValue); /* Entry[] */
+        Object entry;
+        Field valueField = null;
+        Object value;
 
-                    final int threadLocalCount = Array.getLength(table);
+        for (int i = 0; i < threadLocalCount; i++) {
+          entry = table[i];
+          if (entry != null) {
 
-                    Object entry;
-                    Field valueField = null;
-                    Object value;
-                    Class<?> clazz;
-
-                    for (int i = 0; i < threadLocalCount; i++) {
-                        entry = Array.get(table, i);
-                        if (entry != null) {
-
-                            if (valueField == null) {
-                                valueField = ReflectionUtils.getField(entry.getClass(), FIELD_THREADLOCALMAP_ENTRY_VALUE);
-                                valueField.setAccessible(true);
-                            }
-
-                            value = valueField.get(entry);
-                            if (value != null) {
-                                clazz = value.getClass();
-
-                                if (value instanceof WeakHashMap) {
-
-                                    final WeakHashMap wm = (WeakHashMap) value;
-
-                                    try {
-                                        for (Object o : wm.keySet()) {
-                                            if (o != null && o.toString().contains(pattern)) {
-                                                log.warn("Cleaning WeakHashMap :" + CollectionUtils.toString(wm));
-
-                                                wm.clear();
-                                                break;
-                                            }
-                                        }
-                                    } catch (RuntimeException re) {
-                                        logD.error("Cleaning WeakHashMap : failure : ", re);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+            if (valueField == null) {
+              valueField = ReflectionUtils.getField(entry.getClass(), FIELD_THREADLOCALMAP_ENTRY_VALUE);
             }
-        } catch (final IllegalAccessException iae) {
-            logD.error("ThreadLocalCleaner.checkThreadLocals : failure : ", iae);
-        } catch (final IllegalArgumentException iarge) {
-            logD.error("ThreadLocalCleaner.checkThreadLocals : failure : ", iarge);
-        } catch (final RuntimeException re) {
-            logD.error("ThreadLocalCleaner.checkThreadLocals : failure : ", re);
-        }
-    }
 
-    /**
-     * Check the given thread's ThreadLocal map
-     * @param thread thread to inspect
-     */
-    private static void checkThreadLocals(final Thread thread) {
-        try {
-            final Field threadLocalsField = ReflectionUtils.getField(Thread.class, FIELD_THREAD_THREADLOCALS);
+            value = ReflectionUtils.getFieldValue(valueField, entry);
+            if (value != null) {
+              if (value instanceof WeakHashMap) {
+                final WeakHashMap<?, ?> wm = (WeakHashMap<?, ?>) value;
 
-            final Object threadLocalsValue = threadLocalsField.get(thread);
+                try {
+                  for (Object o : wm.keySet()) {
+                    if (o != null && o.toString().contains(pattern)) {
+                      logD.warn("Cleaning WeakHashMap :" + CollectionUtils.toString(wm));
 
-            if (threadLocalsValue != null) {
-
-                final Class<?> threadLocalMapKlazz = ReflectionUtils.findClass(CLASS_THREADLOCAL_MAP);
-                if (threadLocalMapKlazz != null) {
-                    final Field tableField = ReflectionUtils.getField(threadLocalMapKlazz, FIELD_THREADLOCALMAP_TABLE);
-
-                    final Object table = tableField.get(threadLocalsValue); /* Entry[] */
-
-                    final int threadLocalCount = Array.getLength(table);
-
-                    int leakCount = 0;
-
-                    Object entry;
-                    Field valueField = null;
-                    Object value;
-                    String type;
-                    Class<?> clazz;
-
-                    /*
-                     * Create a dedicated string builder for the complete graph visit.
-                     * Can not use LocalStringBuilder because of possible re-entrance issues
-                     */
-                    final StringBuilder sb = new StringBuilder(2048);
-
-                    for (int i = 0; i < threadLocalCount; i++) {
-                        entry = Array.get(table, i);
-                        if (entry != null) {
-
-                            if (valueField == null) {
-                                valueField = ReflectionUtils.getField(entry.getClass(), FIELD_THREADLOCALMAP_ENTRY_VALUE);
-                                valueField.setAccessible(true);
-                            }
-
-                            value = valueField.get(entry);
-                            if (value != null) {
-                                clazz = value.getClass();
-                                type = clazz.getCanonicalName();
-
-                                sb.append("\n    + ").append(type).append("@").append(
-                                        Integer.toHexString(value.hashCode()));
-
-                                sb.append(" value = ");
-                                if (value instanceof Collection) {
-                                    CollectionUtils.toString(sb, (Collection<?>) value);
-                                } else if (value instanceof Map) {
-                                    CollectionUtils.toString(sb, (Map<?, ?>) value);
-                                } else if (value instanceof Reference) {
-                                    sb.append("{\n        ").append(((Reference<?>) value).get()).append("\n  }");
-                                } else if (clazz.isArray()) {
-                                    sb.append("{\n        ");
-                                    // check all kind of primitive types :
-                                    if (clazz == byte[].class) {
-                                        sb.append(Arrays.toString((byte[]) value));
-                                    } else if (clazz == short[].class) {
-                                        sb.append(Arrays.toString((short[]) value));
-                                    } else if (clazz == int[].class) {
-                                        sb.append(Arrays.toString((int[]) value));
-                                    } else if (clazz == long[].class) {
-                                        sb.append(Arrays.toString((long[]) value));
-                                    } else if (clazz == char[].class) {
-                                        sb.append(Arrays.toString((char[]) value));
-                                    } else if (clazz == float[].class) {
-                                        sb.append(Arrays.toString((float[]) value));
-                                    } else if (clazz == double[].class) {
-                                        sb.append(Arrays.toString((double[]) value));
-                                    } else if (clazz == boolean[].class) {
-                                        sb.append(Arrays.toString((boolean[]) value));
-                                    } else {
-                                        sb.append(Arrays.deepToString((Object[]) value));
-                                    }
-                                    sb.append("\n  }");
-                                } else {
-                                    sb.append("{\n        ").append(value).append("\n  }");
-                                }
-                            }
-
-                            leakCount++;
-                        }
+                      wm.clear();
+                      break;
                     }
-
-                    if (leakCount > 0) {
-                        sb.append("\n}");
-
-                        logD.warn("Possible ThreadLocal leaks for thread : " + thread.getName() + " [" + leakCount + " / " + threadLocalCount + "] {" + sb.toString());
-                    }
+                  }
+                } catch (RuntimeException re) {
+                  logD.error("Cleaning WeakHashMap : failure : ", re);
                 }
+              }
             }
-        } catch (final IllegalAccessException iae) {
-            logD.error("ThreadLocalCleaner.checkThreadLocals : failure : ", iae);
-        } catch (final IllegalArgumentException iarge) {
-            logD.error("ThreadLocalCleaner.checkThreadLocals : failure : ", iarge);
-        } catch (final RuntimeException re) {
-            logD.error("ThreadLocalCleaner.checkThreadLocals : failure : ", re);
+          }
         }
+      }
+    } catch (final RuntimeException re) {
+      logD.error("ThreadLocalCleaner.checkThreadLocals : failure : ", re);
     }
+  }
+
+  /**
+   * Check the given thread's ThreadLocal map
+   * 
+   * @param thread thread to inspect
+   */
+  private static void checkThreadLocals(final Thread thread) {
+    try {
+      final Object threadLocalsValue = ReflectionUtils.getFieldValue(threadThreadLocalsField, thread);
+
+      if (threadLocalsValue != null) {
+        /* private class ThreadLocal.ThreadLocalMap.Entry[] */
+        final Object[] table = (Object[]) ReflectionUtils.getFieldValue(threadLocalMapTableField, threadLocalsValue);
+
+        final int threadLocalCount = table.length;
+
+        int leakCount = 0;
+
+        Object entry;
+        Object value;
+        String type;
+        Class<?> clazz;
+
+        /*
+         * Create a dedicated string builder for the complete graph visit. Can not use
+         * LocalStringBuilder because of possible re-entrance issues
+         */
+        final StringBuilder sb = new StringBuilder(2048);
+
+        for (int i = 0; i < threadLocalCount; i++) {
+          entry = table[i];
+          if (entry != null) {
+
+            if (threadLocalMapEntryValueField == null) {
+              threadLocalMapEntryValueField = ReflectionUtils.getField(entry.getClass(), FIELD_THREADLOCALMAP_ENTRY_VALUE);
+            }
+
+            value = ReflectionUtils.getFieldValue(threadLocalMapEntryValueField, entry);
+            if (value != null) {
+              clazz = value.getClass();
+              type = clazz.getCanonicalName();
+
+              sb.append("\n    + ").append(type).append("@").append(Integer.toHexString(value.hashCode()));
+
+              sb.append(" value = ");
+              if (value instanceof Collection) {
+                CollectionUtils.toString(sb, (Collection<?>) value);
+              } else if (value instanceof Map) {
+                CollectionUtils.toString(sb, (Map<?, ?>) value);
+              } else if (value instanceof Reference) {
+                sb.append("{\n        ").append(((Reference<?>) value).get()).append("\n  }");
+              } else if (clazz.isArray()) {
+                sb.append("{\n        ");
+                // check all kind of primitive types :
+                if (clazz == byte[].class) {
+                  sb.append(Arrays.toString((byte[]) value));
+                } else if (clazz == short[].class) {
+                  sb.append(Arrays.toString((short[]) value));
+                } else if (clazz == int[].class) {
+                  sb.append(Arrays.toString((int[]) value));
+                } else if (clazz == long[].class) {
+                  sb.append(Arrays.toString((long[]) value));
+                } else if (clazz == char[].class) {
+                  sb.append(Arrays.toString((char[]) value));
+                } else if (clazz == float[].class) {
+                  sb.append(Arrays.toString((float[]) value));
+                } else if (clazz == double[].class) {
+                  sb.append(Arrays.toString((double[]) value));
+                } else if (clazz == boolean[].class) {
+                  sb.append(Arrays.toString((boolean[]) value));
+                } else {
+                  sb.append(Arrays.deepToString((Object[]) value));
+                }
+                sb.append("\n  }");
+              } else {
+                sb.append("{\n        ").append(value).append("\n  }");
+              }
+            }
+
+            leakCount++;
+          }
+        }
+
+        if (leakCount > 0) {
+          sb.append("\n}");
+
+          logD.warn("Possible ThreadLocal leaks for thread : " + thread.getName() + " [" + leakCount + " / " + threadLocalCount + "] {"
+              + sb.toString());
+        }
+      }
+    } catch (final RuntimeException re) {
+      logD.error("ThreadLocalCleaner.checkThreadLocals : failure : ", re);
+    }
+  }
 }
