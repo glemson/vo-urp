@@ -87,8 +87,7 @@
 <!-- defines eclipselink static weaving task -->
 <taskdef name="weave" classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeaveAntTask">
   <classpath>
-    <pathelement location="${libs}/eclipselink.jar" />
-    <pathelement location="${libs}/javax.persistence_1.0.0.jar" />
+    <fileset refid="jarfiles"/>
   </classpath>
 </taskdef>
 
@@ -442,9 +441,8 @@ Optional
          target="${build.weaving}"
          loglevel="INFO">
     <classpath>
-      <pathelement path="${properties}"/>
       <pathelement location="${dist}/${build.src.file}" />
-      <path refid="project.class.path" />
+      <pathelement path="${properties}" />
     </classpath>
   </weave>         
   
