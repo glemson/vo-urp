@@ -19,9 +19,9 @@ import org.ivoa.util.concurrent.ThreadLocalUtils;
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public abstract class SingletonSupport extends LogSupport {
-    //~ Constants --------------------------------------------------------------------------------------------------------
+  //~ Constants --------------------------------------------------------------------------------------------------------
 
-    /** internal diagnostic FLAG */
+  /** internal diagnostic FLAG */
   public static final boolean SINGLETON_SUPPORT_DIAGNOSTICS = false;
 
   /** startup flag to indicate if the Singleton Factory is ready */

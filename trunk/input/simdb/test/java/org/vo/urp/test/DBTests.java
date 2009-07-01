@@ -26,7 +26,6 @@ import org.ivoa.simdb.protocol.Simulator;
 
 
 import javax.persistence.EntityManager;
-import javax.xml.bind.JAXBException;
 
 import org.eclipse.persistence.config.HintValues;
 import org.eclipse.persistence.config.QueryHints;
@@ -816,7 +815,7 @@ public class DBTests extends LogSupport implements ApplicationMain {
 
         EntityManager em = null;
 
-        final StringBuffer ids = new StringBuffer();
+        final StringBuilder ids = new StringBuilder(64);
         try {
             em = jf.getEm();
 

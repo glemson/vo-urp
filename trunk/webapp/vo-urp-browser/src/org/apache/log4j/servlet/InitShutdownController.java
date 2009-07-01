@@ -40,8 +40,10 @@ import javax.servlet.ServletContext;
  * @author Andreas Werner
  * @since  1.3
  */
-public class InitShutdownController {
+public final class InitShutdownController {
 
+    /** enable the servlet context logger */
+    public final static boolean USE_CONTEXT_LOG = false;
     /**
      * preferred repository selector config param.
      * Maps to web.xml &lt;context-param&gt; with
@@ -85,10 +87,11 @@ public class InitShutdownController {
      */
     public static void shutdownLog4j(final ServletContext context) {
         //shutdown this webapp's logger repository
-        context.log("Cleaning up Log4j resources for context: " + context.getServletContextName() + "...");
-        context.log("Shutting down all loggers and appenders...");
+        if (USE_CONTEXT_LOG) {
+            contextLog(context, "shutdownLog4j : Cleaning up Log4j resources for context : " + context.getServletContextName() + "...");
+        }
+
         org.apache.log4j.LogManager.shutdown();
-        context.log("Log4j cleaned up.");
     }
 
     /**
@@ -111,8 +114,7 @@ public class InitShutdownController {
             //log4j.jar).
             //based on the following article...
             //http://www-106.ibm.com/developerworks/websphere/library/techarticles/0310_searle/searle.html
-            Thread.currentThread().setContextClassLoader(
-                    InitShutdownController.class.getClassLoader());
+            Thread.currentThread().setContextClassLoader(InitShutdownController.class.getClassLoader());
         } catch (SecurityException se) {
             //oh, well, we tried.  Security is turned on and we aren't allowed to
             //tamper with the thread context class loader.  You're on your own!
@@ -122,7 +124,7 @@ public class InitShutdownController {
             //Attempt to set the repository selector no matter what else happens
             setSelector(context);
 
-            String configPath = getLog4jConfigPathFromContext(context);
+            final String configPath = getLog4jConfigPathFromContext(context);
 
             if ((configPath != null) && (configPath.length() >= 1)) {
                 setLog4jLogHome(context);
@@ -161,8 +163,7 @@ public class InitShutdownController {
      * @return the path to the log4j config file within the context or null if
      *         the 'log4j-config' context param is not set.
      */
-    private static String getLog4jConfigPathFromContext(
-            final ServletContext context) {
+    private static String getLog4jConfigPathFromContext(final ServletContext context) {
         String configPath = context.getInitParameter(PARAM_LOG4J_CONFIG_PATH);
 
         if (configPath != null) {
@@ -189,7 +190,7 @@ public class InitShutdownController {
             // set up custom log path system property
             setFileAppenderSystemProperty(logHome, context);
         } else {
-            String contextPath = context.getRealPath("/");
+            final String contextPath = context.getRealPath("/");
 
             if (contextPath != null) {
                 //no log path specified in web.xml. Setting to default within current
@@ -213,7 +214,7 @@ public class InitShutdownController {
         //so we *cannot* do File IO. Note that we *won't* be able to use
         //configureAndWatch() here because that requires an absolute system file
         //path.
-        boolean isXMLConfigFile = (configPath.endsWith(".xml")) ? true : false;
+        final boolean isXMLConfigFile = (configPath.endsWith(".xml")) ? true : false;
 
         URL log4jURL = null;
 
@@ -225,7 +226,9 @@ public class InitShutdownController {
 
         //Now let's check if the given configPath actually exists.
         if (log4jURL != null) {
-            context.log("Configuring Log4j from URL at path: /" + configPath);
+            if (USE_CONTEXT_LOG) {
+                contextLog(context, "Configuring Log4j from URL at path : /" + configPath);
+            }
 
             if (isXMLConfigFile) {
                 try {
@@ -237,7 +240,7 @@ public class InitShutdownController {
                     LogLog.error(e.getMessage());
                 }
             } else {
-                Properties log4jProps = new Properties();
+                final Properties log4jProps = new Properties();
 
                 try {
                     log4jProps.load(log4jURL.openStream());
@@ -263,35 +266,34 @@ public class InitShutdownController {
      *        log4j configuration file
      * @param context the current servlet context
      */
-    private static void configureLog4jFromFile(
-            final String configPath, final ServletContext context) {
+    private static void configureLog4jFromFile(final String configPath, final ServletContext context) {
         //The webapp is deployed directly off the filesystem, not from a .war file
         //so we *can* do File IO. This means we can use configureAndWatch() to
         //re-read the the config file at defined intervals.
-        boolean isXMLConfigFile = (configPath.endsWith(".xml")) ? true : false;
+        final boolean isXMLConfigFile = (configPath.endsWith(".xml")) ? true : false;
 
-        String contextPath = context.getRealPath("/");
-        String systemConfigPath = configPath.replace('/', File.separatorChar);
+        final String contextPath = context.getRealPath("/");
+        final String systemConfigPath = configPath.replace('/', File.separatorChar);
         File log4jFile = new File(contextPath + systemConfigPath);
 
         //Now let's check if the given configPath actually exists.
         if (log4jFile.canRead()) {
             log4jFile = null;
 
-            long timerIntervalVal = getTimerIntervalFromContext(context);
-            context.log(
-                    "Configuring Log4j from File: " + contextPath + systemConfigPath);
+            final long timerIntervalVal = getTimerIntervalFromContext(context);
+            if (USE_CONTEXT_LOG) {
+                contextLog(context, "Configuring Log4j from File : " + contextPath + systemConfigPath);
+            }
 
             if (timerIntervalVal > 0) {
-                context.log(
-                        "Configuring Log4j with watch interval: " + timerIntervalVal + "ms");
+                if (USE_CONTEXT_LOG) {
+                    contextLog(context, "Configuring Log4j with watch interval: " + timerIntervalVal + "ms");
+                }
 
                 if (isXMLConfigFile) {
-                    DOMConfigurator.configureAndWatch(
-                            contextPath + systemConfigPath, timerIntervalVal);
+                    DOMConfigurator.configureAndWatch(contextPath + systemConfigPath, timerIntervalVal);
                 } else {
-                    PropertyConfigurator.configureAndWatch(
-                            contextPath + systemConfigPath, timerIntervalVal);
+                    PropertyConfigurator.configureAndWatch(contextPath + systemConfigPath, timerIntervalVal);
                 }
             } else {
                 if (isXMLConfigFile) {
@@ -316,8 +318,7 @@ public class InitShutdownController {
      */
     private static long getTimerIntervalFromContext(
             final ServletContext context) {
-        String timerInterval =
-                context.getInitParameter(PARAM_LOG4J_WATCH_INTERVAL);
+        final String timerInterval = context.getInitParameter(PARAM_LOG4J_WATCH_INTERVAL);
         long timerIntervalVal = 0L;
 
         if (timerInterval != null) {
@@ -335,8 +336,7 @@ public class InitShutdownController {
      * standard configuration not found message
      */
     private static void displayConfigNotFoundMessage() {
-        LogLog.warn(
-                "No Log4j configuration file found at given path. " + "Falling back to Log4j auto-configuration.");
+        LogLog.warn("No Log4j configuration file found at given path. " + "Falling back to Log4j auto-configuration.");
     }
 
     /**
@@ -345,11 +345,10 @@ public class InitShutdownController {
      * @param logHome the path to a logging directory
      * @param context the current servlet context
      */
-    private static void setFileAppenderSystemProperty(
-            final String logHome, final ServletContext context) {
+    private static void setFileAppenderSystemProperty(final String logHome, final ServletContext context) {
         String logHomePropName = null;
-        String customPropName = context.getInitParameter(PARAM_LOG4J_SYSPROP_NAME);
-        File logHomeDir = new File(logHome);
+        final String customPropName = context.getInitParameter(PARAM_LOG4J_SYSPROP_NAME);
+        final File logHomeDir = new File(logHome);
 
         if (logHomeDir.exists() || logHomeDir.mkdirs()) {
             if (customPropName != null) {
@@ -358,8 +357,9 @@ public class InitShutdownController {
                 logHomePropName = getContextPath(context) + ".log.home";
             }
 
-            context.log(
-                    "Setting system property [ " + logHomePropName + " ] to [ " + logHome + " ]");
+            if (USE_CONTEXT_LOG) {
+                contextLog(context, "Setting system property [ " + logHomePropName + " ] to [ " + logHome + " ]");
+            }
             System.setProperty(logHomePropName, logHome);
         }
     }
@@ -384,7 +384,7 @@ public class InitShutdownController {
             //use a more standard way to obtain the context path name
             //which should work across all servers. The tmpdir technique
             //(above) depends upon the naming scheme that Tomcat uses.
-            String path = context.getResource("/").getPath();
+            final String path = context.getResource("/").getPath();
 
             //first remove trailing slash, then take what's left over
             //which should be the context path less the preceeding
@@ -410,35 +410,40 @@ public class InitShutdownController {
      * @param context the current servlet context
      */
     private static void setSelector(final ServletContext context) {
-        String selector = context.getInitParameter(PARAM_LOG4J_PREF_SELECTOR);
+        final String selector = context.getInitParameter(PARAM_LOG4J_PREF_SELECTOR);
 
         if (selector == null) {
-            LogLog.warn(
-                    "No preferred selector supplied. Using default repository selector...");
+            LogLog.warn("No preferred selector supplied. Using default repository selector...");
 
             return;
         }
 
         try {
-            Object guard = new Object();
+            final Object guard = new Object();
 
-            Class<?> clazz =
-                    Class.forName(
-                    selector, true, Thread.currentThread().getContextClassLoader());
-            LogManager.setRepositorySelector(
-                    (RepositorySelector) clazz.newInstance(), guard);
+            final Class<?> clazz = Class.forName(selector, true, Thread.currentThread().getContextClassLoader());
+
+            LogManager.setRepositorySelector((RepositorySelector) clazz.newInstance(), guard);
+
         } catch (ClassNotFoundException cnfe) {
-            LogLog.warn(
-                    "Preferred selector not found. Using default repository selector...");
+            LogLog.warn("Preferred selector not found. Using default repository selector...");
         } catch (InstantiationException ie) {
-            LogLog.warn(
-                    "Error in instantiation of preferred selector. Using default " + "repository selector...");
+            LogLog.warn("Error in instantiation of preferred selector. Using default " + "repository selector...");
         } catch (IllegalAccessException iae) {
-            LogLog.warn(
-                    "Unable to access preferred selector. Using default repository " + "selector...");
+            LogLog.warn("Unable to access preferred selector. Using default repository " + "selector...");
         } catch (IllegalArgumentException iae) {
-            LogLog.warn(
-                    "Preferred repository selector not installed because one has already " + "exists.  No problem, using existing selector...");
+            LogLog.warn("Preferred repository selector not installed because one has already " + "exists.  No problem, using existing selector...");
+        }
+    }
+
+    /**
+     * Logs a message in the J2EE servlet context log
+     * @param context J2EE servlet context
+     * @param message message to log
+     */
+    private static void contextLog(final ServletContext context, final String message) {
+        if (USE_CONTEXT_LOG) {
+            context.log(message);
         }
     }
 }

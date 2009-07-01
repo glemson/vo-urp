@@ -10,6 +10,7 @@ import org.ivoa.metamodel.Attribute;
 import org.ivoa.metamodel.DataType;
 import org.ivoa.metamodel.Type;
 import org.ivoa.metamodel.TypeRef;
+import org.ivoa.util.LocalStringBuilder;
 
 
 /**
@@ -115,8 +116,7 @@ public class ClassType extends LogSupport {
    */
   @Override
   public final String toString() {
-    // always gives an initial size to buffer : 
-    return toString(new StringBuilder(STRING_BUFFER_CAPACITY)).toString();
+    return LocalStringBuilder.toString(toString(LocalStringBuilder.getBuffer()));
   }
 
   /**

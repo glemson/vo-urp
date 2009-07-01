@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.ivoa.bean.LogSupport;
 import org.ivoa.dm.MetaModelFactory;
+import org.ivoa.util.LocalStringBuilder;
 
 
 /**
@@ -23,8 +24,6 @@ public abstract class MetadataElement extends LogSupport implements Serializable
   /** serial UID for Serializable interface */
   private static final long serialVersionUID = 1L;
 
-  /** default toString buffer size */
-  public static final int STRING_BUFFER_CAPACITY = 2048;
   /** present flag for identity Map */
   public static final Object PRESENT = new Object();
 
@@ -169,8 +168,7 @@ public abstract class MetadataElement extends LogSupport implements Serializable
    */
   @Override
   public final String toString() {
-    // always gives an initial size to buffer : 
-    return toString(new StringBuilder(STRING_BUFFER_CAPACITY)).toString();
+    return LocalStringBuilder.toString(toString(LocalStringBuilder.getBuffer()));
   }
 
   /**
@@ -196,8 +194,7 @@ public abstract class MetadataElement extends LogSupport implements Serializable
    * @see #toString(java.lang.StringBuilder, boolean) method
    */
   public final String deepToString() {
-    // always gives an initial size to buffer : 
-    return toString(new StringBuilder(STRING_BUFFER_CAPACITY), true).toString();
+    return LocalStringBuilder.toString(toString(LocalStringBuilder.getBuffer(), true));
   }
 
   /**

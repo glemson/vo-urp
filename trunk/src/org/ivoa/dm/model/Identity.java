@@ -17,6 +17,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.ivoa.dm.MetaModelFactory;
 import org.ivoa.dm.ObjectClassType;
 import org.ivoa.util.JavaUtils;
+import org.ivoa.util.LocalStringBuilder;
 
 /**
  * This class contains all flavor for objectType identifiers :  <br>
@@ -173,8 +174,7 @@ public class Identity implements Serializable {
      */
     @Override
     public final String toString() {
-        // always gives an initial size to buffer :
-        return toString(new StringBuilder(128)).toString();
+      return LocalStringBuilder.toString(toString(LocalStringBuilder.getBuffer()));
     }
 
     /**
