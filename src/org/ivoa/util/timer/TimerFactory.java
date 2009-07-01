@@ -4,6 +4,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.ivoa.bean.LogSupport;
+import org.ivoa.util.LocalStringBuilder;
 
 
 /**
@@ -116,13 +117,13 @@ public final class TimerFactory extends LogSupport {
    * @return string representation for all timer instances
    */
   public static final String dumpTimers() {
-    final StringBuilder sb = new StringBuilder(4096);
+    final StringBuilder sb = LocalStringBuilder.getBuffer();
 
     for (final Map.Entry<String, ThresholdTimer> e : timers.entrySet()) {
       sb.append("\n").append(e.getKey()).append(" : ").append(e.getValue());
     }
 
-    return sb.toString();
+    return LocalStringBuilder.toString(sb);
   }
 
   /**

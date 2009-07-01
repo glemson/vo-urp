@@ -244,6 +244,9 @@ public final class LocalStringBuilder extends SingletonSupport {
                 sb = buffers[current];
             }
             if (sb == null) {
+              if (logD.isWarnEnabled()) {
+                log.warn("LocalStringBuilder.Context.acquire : create a new StringBuilder : consider to increment LocalStringBuilder.DEPTH = " + DEPTH);
+              }
                 sb = createStringBuilder();
             }
             if (useCache) {

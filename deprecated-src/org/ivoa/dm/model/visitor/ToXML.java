@@ -1,6 +1,5 @@
 package org.ivoa.dm.model.visitor;
 
-import org.ivoa.dm.model.visitor.*;
 import org.ivoa.dm.ObjectClassType;
 
 import org.ivoa.dm.model.MetadataObject;
@@ -14,7 +13,7 @@ import org.ivoa.metamodel.Reference;
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public class ToXML implements Visitor {
+public class ToXML implements Visitor<MetadataObject> {
   //~ Members ----------------------------------------------------------------------------------------------------------
 
   /** TODO : Field Description */

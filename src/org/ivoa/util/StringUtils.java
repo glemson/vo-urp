@@ -14,9 +14,6 @@ public final class StringUtils {
   /** Html tags regexp matcher */
   private final static String REGEXP_HTML = "\\<.*?\\>";
 
-  /** swing string builder : mono thread => no synchronization */
-  private static StringBuilder ssb = new StringBuilder(512);
-
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
 /**
@@ -27,15 +24,6 @@ public final class StringUtils {
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
-
-  /**
-   * Return the shared string buffer (unsynchronized)
-   * 
-   * @return shared string buffer
-   */
-  public static StringBuilder getSharedBuffer() {
-    return ssb;
-  }
 
   /**
    * Extract buffer content & reset buffer
@@ -63,74 +51,6 @@ public final class StringUtils {
     sb.setLength(0);
 
     return text;
-  }
-
-  /**
-   * Returns an html fragment with the given title and message (center)
-   *
-   * @param title title of the message
-   * @param msg message content
-   * @return html string
-   */
-  public static String getMessage(final String title, final String msg) {
-    if (!JavaUtils.isEmpty(msg)) {
-      ssb.append("<html><body><center><b>").append(title).append(" :</b>").append(HTML_BR).append(
-          HTML_BR).append(msg).append("</center></body></html>");
-
-      return extract(ssb);
-    }
-
-    return null;
-  }
-
-  /**
-   * Returns an html fragment with the given message (center)
-   *
-   * @param msg message content
-   * @return html string
-   */
-  public static String getTooltipText(final String msg) {
-    if (!JavaUtils.isEmpty(msg)) {
-      ssb.append("<html><body><center>").append(msg).append("</center></body></html>");
-
-      return extract(ssb);
-    }
-
-    return null;
-  }
-
-  /**
-   * Returns an html fragment with the given messages (center)
-   *
-   * @param msg message content
-   * @param msg2 message content
-   * @return html string
-   */
-  public static String getTooltipText(final String msg, final String msg2) {
-    final boolean v1 = !JavaUtils.isEmpty(msg);
-    final boolean v2 = !JavaUtils.isEmpty(msg2);
-
-    if (v1 || v2) {
-      ssb.append("<html><body><center>");
-
-      if (v1) {
-        ssb.append(msg);
-      }
-
-      if (v2) {
-        if (v1) {
-          ssb.append(HTML_BR);
-        }
-
-        ssb.append(msg2);
-      }
-
-      ssb.append("</center></body></html>");
-
-      return extract(ssb);
-    }
-
-    return null;
   }
 
   /**

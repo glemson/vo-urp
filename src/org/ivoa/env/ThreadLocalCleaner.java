@@ -20,29 +20,22 @@ public final class ThreadLocalCleaner extends LogSupport {
 
   /** name of the attribute Thread.threadLocals */
   private final static String FIELD_THREAD_THREADLOCALS = "threadLocals";
-
   /** name of the class ThreadLocal$ThreadLocalMap */
   private final static String CLASS_THREADLOCAL_MAP = "java.lang.ThreadLocal$ThreadLocalMap";
-
   /** name of the attribute ThreadLocalMap.table */
   private final static String FIELD_THREADLOCALMAP_TABLE = "table";
-
   /** name of the attribute Thread.threadLocals.Entry.value */
   private final static String FIELD_THREADLOCALMAP_ENTRY_VALUE = "value";
-
   /** pattern to detect or.ivoa classes to remove from WeakHashMap */
   private final static String CLASS_TO_REMOVE = "org.ivoa";
-
   /**
    * Temporary cached Field Thread.threadLocals
    */
   private static Field threadThreadLocalsField = null;
-
   /**
    * Temporary cached Field ThreadLocalMap.table
    */
   private static Field threadLocalMapTableField = null;
-  
   /**
    * Temporary cached Field Thread.threadLocals.Entry.value
    */
@@ -59,8 +52,10 @@ public final class ThreadLocalCleaner extends LogSupport {
    * Check all threads in the current ThreadGroup
    */
   public static void cleanAndcheckThreads() {
-    logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : begin");
-    logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : classLoader =\n" + ThreadLocalCleaner.class.getClassLoader());
+    if (logD.isWarnEnabled()) {
+      logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : begin");
+      logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : classLoader =\n" + ThreadLocalCleaner.class.getClassLoader());
+    }
 
     try {
       prepareFields();
@@ -69,17 +64,26 @@ public final class ThreadLocalCleaner extends LogSupport {
       Thread.enumerate(ta);
 
       for (final Thread t : ta) {
-        logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : cleaning thread [" + t.getName() + "] ...");
+        if (logD.isWarnEnabled()) {
+          logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : cleaning thread [" + t.getName() + "] ...");
+        }
         ThreadLocalCleaner.cleanThreadLocals(t, CLASS_TO_REMOVE);
-
-        logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : checking thread [" + t.getName() + "] ...");
-        ThreadLocalCleaner.checkThreadLocals(t);
       }
+
+      // Checks are only logged if the debug logger is enabled for warning level :
+      if (logD.isWarnEnabled()) {
+        for (final Thread t : ta) {
+          logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : checking thread [" + t.getName() + "] ...");
+          ThreadLocalCleaner.checkThreadLocals(t);
+        }
+      }
+
     } finally {
       clearFields();
     }
-
-    logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : end");
+    if (logD.isWarnEnabled()) {
+      logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : end");
+    }
   }
 
   /**
@@ -105,7 +109,7 @@ public final class ThreadLocalCleaner extends LogSupport {
 
   /**
    * Clean the given thread's ThreadLocal map
-   * 
+   *
    * @param thread thread to clean
    * @param pattern String pattern to recognize classes in WeakHashMap.keys that will trigger a call
    *          to WeakHashMap.clear() in order to release ASAP these references
@@ -119,6 +123,8 @@ public final class ThreadLocalCleaner extends LogSupport {
         final Object[] table = (Object[]) ReflectionUtils.getFieldValue(threadLocalMapTableField, threadLocalsValue);
 
         final int threadLocalCount = table.length;
+
+        // TODO : remove weakHashMap from table ?
 
         Object entry;
         Field valueField = null;
@@ -140,7 +146,9 @@ public final class ThreadLocalCleaner extends LogSupport {
                 try {
                   for (Object o : wm.keySet()) {
                     if (o != null && o.toString().contains(pattern)) {
-                      logD.warn("Cleaning WeakHashMap :" + CollectionUtils.toString(wm));
+                      if (logD.isWarnEnabled()) {
+                        logD.warn("Cleaning WeakHashMap :" + CollectionUtils.toString(wm));
+                      }
 
                       wm.clear();
                       break;
@@ -161,7 +169,7 @@ public final class ThreadLocalCleaner extends LogSupport {
 
   /**
    * Check the given thread's ThreadLocal map
-   * 
+   *
    * @param thread thread to inspect
    */
   private static void checkThreadLocals(final Thread thread) {
@@ -183,7 +191,7 @@ public final class ThreadLocalCleaner extends LogSupport {
 
         /*
          * Create a dedicated string builder for the complete graph visit. Can not use
-         * LocalStringBuilder because of possible re-entrance issues
+         * LocalStringBuilder because this singleton is already stopped.
          */
         final StringBuilder sb = new StringBuilder(2048);
 
@@ -244,8 +252,9 @@ public final class ThreadLocalCleaner extends LogSupport {
         if (leakCount > 0) {
           sb.append("\n}");
 
-          logD.warn("Possible ThreadLocal leaks for thread : " + thread.getName() + " [" + leakCount + " / " + threadLocalCount + "] {"
-              + sb.toString());
+          if (logD.isWarnEnabled()) {
+            logD.warn("Possible ThreadLocal leaks for thread : " + thread.getName() + " [" + leakCount + " / " + threadLocalCount + "] {" + sb.toString());
+          }
         }
       }
     } catch (final RuntimeException re) {

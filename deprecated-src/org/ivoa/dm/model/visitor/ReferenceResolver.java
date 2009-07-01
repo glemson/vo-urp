@@ -1,12 +1,10 @@
 package org.ivoa.dm.model.visitor;
 
-import org.ivoa.dm.model.visitor.*;
 import org.ivoa.dm.ObjectClassType;
 
 import org.ivoa.dm.model.MetadataElement;
 import org.ivoa.dm.model.MetadataObject;
 
-import org.ivoa.metamodel.Collection;
 import org.ivoa.metamodel.Reference;
 
 import java.util.IdentityHashMap;
@@ -20,7 +18,7 @@ import java.util.Map;
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public class ReferenceResolver implements Visitor {
+public class ReferenceResolver implements Visitor<MetadataObject> {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** TODO : Field Description */

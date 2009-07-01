@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.ivoa.bean.LogSupport;
 import org.ivoa.util.JavaUtils;
+import org.ivoa.util.LocalStringBuilder;
 
 /**
  * This class defines a reference (close to Identity class) as it contains both xmlId and ivoId identifiers : <br>
@@ -132,8 +133,7 @@ public class Reference extends LogSupport implements Serializable {
      */
     @Override
     public final String toString() {
-        // always gives an initial size to buffer :
-        return toString(new StringBuilder(128)).toString();
+      return LocalStringBuilder.toString(toString(LocalStringBuilder.getBuffer()));
     }
 
     /**
