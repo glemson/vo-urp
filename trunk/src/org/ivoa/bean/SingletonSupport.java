@@ -167,15 +167,12 @@ public abstract class SingletonSupport extends LogSupport {
      * Called on exit (clean up code)
      */
     public static final void onExit() {
-        isShutdown = true;
         if (log.isWarnEnabled()) {
             log.warn("SingletonSupport.onExit : enter");
         }
 
         if (!JavaUtils.isEmpty(managedInstances)) {
                 // clean up :
-                SingletonSupport singleton;
-
                 final List<SingletonSupport> instances = new ArrayList<SingletonSupport>(managedInstances.size());
 
                 managedInstances.drainTo(instances);
@@ -187,6 +184,7 @@ public abstract class SingletonSupport extends LogSupport {
                 // reverse singleton ordering :
                 Collections.reverse(instances);
 
+                SingletonSupport singleton;
                 for (final Iterator<SingletonSupport> it = instances.iterator(); it.hasNext();) {
                     singleton = it.next();
 
@@ -195,6 +193,10 @@ public abstract class SingletonSupport extends LogSupport {
                     it.remove();
                 }
             }
+            // Flag to indicate that onExit calls are done :
+            isShutdown = true;
+
+            // force GC :
             managedInstances = null;
 
         if (log.isWarnEnabled()) {

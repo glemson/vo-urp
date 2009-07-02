@@ -124,6 +124,12 @@ public final class ThreadLocalCleaner extends LogSupport {
 
         final int threadLocalCount = table.length;
 
+        /*
+         * Create a dedicated string builder for the complete graph visit. Can not use
+         * LocalStringBuilder because this singleton is already stopped.
+         */
+        final StringBuilder sb = new StringBuilder(512);
+
         // TODO : remove weakHashMap from table ?
 
         Object entry;
@@ -147,7 +153,7 @@ public final class ThreadLocalCleaner extends LogSupport {
                   for (Object o : wm.keySet()) {
                     if (o != null && o.toString().contains(pattern)) {
                       if (logD.isWarnEnabled()) {
-                        logD.warn("Cleaning WeakHashMap :" + CollectionUtils.toString(wm));
+                        logD.warn("Cleaning WeakHashMap :" + CollectionUtils.toString(sb, wm));
                       }
 
                       wm.clear();
@@ -182,18 +188,17 @@ public final class ThreadLocalCleaner extends LogSupport {
 
         final int threadLocalCount = table.length;
 
-        int leakCount = 0;
-
-        Object entry;
-        Object value;
-        String type;
-        Class<?> clazz;
-
         /*
          * Create a dedicated string builder for the complete graph visit. Can not use
          * LocalStringBuilder because this singleton is already stopped.
          */
         final StringBuilder sb = new StringBuilder(2048);
+
+        int leakCount = 0;
+        Object entry;
+        Object value;
+        String type;
+        Class<?> clazz;
 
         for (int i = 0; i < threadLocalCount; i++) {
           entry = table[i];
