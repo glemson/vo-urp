@@ -1,9 +1,9 @@
 package org.ivoa.util.concurrent.local;
 
-  /**
-   * This class uses the ThreadLocal pattern to associate a StringBuilder to the current thread
-   *
- * @author laurent
+/**
+ * This class uses the ThreadLocal pattern to associate a StringBuilder to the current thread
+ *
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class StringBuilderThreadLocal extends ManagedThreadLocal<StringBuilderContext> {
   

@@ -26,8 +26,10 @@ public final class ThreadLocalCleaner extends LogSupport {
   private final static String FIELD_THREADLOCALMAP_TABLE = "table";
   /** name of the attribute Thread.threadLocals.Entry.value */
   private final static String FIELD_THREADLOCALMAP_ENTRY_VALUE = "value";
-  /** pattern to detect or.ivoa classes to remove from WeakHashMap */
+
+  /** pattern to detect application classes to remove from WeakHashMap */
   private final static String CLASS_TO_REMOVE = "org.ivoa";
+
   /**
    * Temporary cached Field Thread.threadLocals
    */
@@ -129,8 +131,6 @@ public final class ThreadLocalCleaner extends LogSupport {
          * LocalStringBuilder because this singleton is already stopped.
          */
         final StringBuilder sb = new StringBuilder(512);
-
-        // TODO : remove weakHashMap from table ?
 
         Object entry;
         Field valueField = null;

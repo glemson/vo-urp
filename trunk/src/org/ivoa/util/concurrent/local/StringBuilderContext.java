@@ -6,7 +6,7 @@ import org.ivoa.bean.LogSupport;
  * This private class defines a Context iso an array of StringBuilder instances to allow
  * reentrance
  *
- * @author laurent
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class StringBuilderContext extends LogSupport {
   // ~ Constants

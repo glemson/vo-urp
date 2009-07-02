@@ -1,45 +1,82 @@
 package org.ivoa.util.concurrent.local;
 
-  /**
-   * This class enhances the ThreadLocal class to define initialization and shutdown events
-   *
-   * TODO : in progress = implement init / release events
-   *
-   * @param <T> ThreadLocal Type used
-   *
- * @author laurent
+import org.apache.commons.logging.Log;
+import org.ivoa.util.LogUtil;
+
+/**
+ * This class enhances the ThreadLocal class to define initialization and shutdown events
+ * 
+ * @param <T> ThreadLocal Type used
+ * @see org.ivoa.bean.LogSupport
+ *
+ * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class ManagedThreadLocal<T> extends ThreadLocal<T> {
-  
-    // ~ Constructors
-    // ---------------------------------------------------------------------------------------------------
+  // ~ Constants
+  // --------------------------------------------------------------------------------------------------------
 
-    /**
-     * Protected constructor
-     */
-    public ManagedThreadLocal() {
-      super();
-    }
+  /** Logger for this class and subclasses */
+  protected static Log log = LogUtil.getLogger();
 
-    //~ Methods ----------------------------------------------------------------------------------------------------------
-    
-    /**
-     * Empty method to be implemented by concrete implementations :<br/>
-     * Callback to initialize this ManagedThreadLocal instance
-     *
-     * @throws IllegalStateException if a problem occurred
-     */
-    public void initialize() throws IllegalStateException {
-        /* no-op */
-    }
+  /** Dev Logger for this class and subclasses */
+  protected static Log logD = LogUtil.getLoggerDev();
 
-    /**
-     * Empty method to be implemented by concrete implementations :<br/>
-     * Callback to clean up this ManagedThreadLocal instance iso release resources or clear instance fields
-     */
-    public void clear() throws IllegalStateException {
-        /* no-op */
-    }
+  // ~ Constructors
+  // --------------------------------------------------------------------------------------------------------
 
+  /**
+   * Protected constructor
+   */
+  public ManagedThreadLocal() {
+    super();
   }
 
+  // ~ Methods
+  // --------------------------------------------------------------------------------------------------------
+
+  /**
+   * Empty method to be implemented by concrete implementations :<br/>
+   * Callback to initialize this ManagedThreadLocal instance
+   * 
+   * @throws IllegalStateException if a problem occurred
+   */
+  public void onInitialize() throws IllegalStateException {
+    /* no-op */
+  }
+
+  /**
+   * Empty method to be implemented by concrete implementations :<br/>
+   * Callback to clean up the possible static references and instance fields used by this
+   * ManagedThreadLocal instance
+   * 
+   * @throws IllegalStateException if a problem occurred
+   */
+  public void onExit() throws IllegalStateException {
+    /* no-op */
+  }
+
+  /**
+   * Empty method to be implemented by concrete implementations :<br/>
+   * Callback to handle the initialValue() event for this ManagedThreadLocal instance
+   * 
+   * @see ThreadLocal#initialValue()
+   * @throws IllegalStateException if a problem occurred
+   */
+  public void onInitialValue() throws IllegalStateException {
+    /* no-op */
+  }
+
+  /**
+   * Empty method to be implemented by concrete implementations :<br/>
+   * Callback to handle the remove() event for this ManagedThreadLocal instance
+   * 
+   * @see ThreadLocal#remove()
+   * @throws IllegalStateException if a problem occurred
+   */
+  public void onRemoveValue() throws IllegalStateException {
+    /* no-op */
+  }
+
+  // ~ End of file
+  // --------------------------------------------------------------------------------------------------------
+}
