@@ -48,6 +48,7 @@ import org.ivoa.util.concurrent.local.ManagedThreadLocal;
  * that will be removed from the thread automatically at the end of the current request.<br/>
  * 
  * @see #registerRequestThreadLocal
+ *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ThreadLocalUtils extends SingletonSupport {
@@ -56,20 +57,26 @@ public final class ThreadLocalUtils extends SingletonSupport {
 
   /** name of the attribute Thread.threadLocals */
   private final static String FIELD_THREAD_THREADLOCALS = "threadLocals";
+
   /** name of the method ThreadLocalMap.remove(ThreadLocal) */
   private final static String METHOD_THREADLOCALMAP_REMOVE = "remove";
+
   /**
    * Temporary cached Field Thread.threadLocals
    */
   static Field threadThreadLocalsField = null;
+
   /**
    * Temporary cached Method ThreadLocalMap.remove(ThreadLocal)
    */
   static Method threadLocalMapRemoveMethod;
+
   /** Name used for the default ThreadLocalManager */
   private static final String DEFAULT_MANAGER = ThreadLocalUtils.class.getName();
+
   /** singleton instance (java 5 memory model) */
   private static volatile ThreadLocalUtils instance = null;
+
   /** threadLocalGroup -> ThreadLocalManager Map */
   private static volatile ConcurrentMap<String, ResettableThreadLocalManager> threadLocalManagers = new ConcurrentHashMap<String, ResettableThreadLocalManager>();
 
@@ -86,7 +93,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
   // ----------------------------------------------------------------------------------------------------------
   /**
    * Return the ThreadLocalUtils singleton instance
-   *
+   * 
    * @return ThreadLocalUtils singleton instance
    * @throws IllegalStateException if a problem occured
    */
@@ -125,7 +132,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
    * Concrete implementations of the SingletonSupport's clearStaticReferences() method :<br/>
    * Callback to clean up the possible static references used by this SingletonSupport instance iso
    * clear static references
-   *
+   * 
    * @see SingletonSupport#onExit()
    */
   @Override
@@ -162,7 +169,8 @@ public final class ThreadLocalUtils extends SingletonSupport {
   }
 
   /**
-   * This method cleans up all of the ThreadLocals registered for every thread present in the current ThreadGroup
+   * This method cleans up all of the ThreadLocals registered for every thread present in the
+   * current ThreadGroup
    */
   public final static void clearAllThreadLocals() {
     if (threadLocalManagers != null) {
@@ -193,7 +201,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
   /**
    * Registers and returns the ThreadLocal to be automatically managed when the classloader is
    * released
-   *
+   * 
    * @param <T> type used by the ThreadLocal<T>
    * @param threadLocal ThreadLocal to register for automatic removal
    * @return The registered ThreadLocal
@@ -207,7 +215,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
    * ResettableThreadLocalManager is currently registered for the threadLocalGroup, one will be
    * instantiated, its related ThreadLocalLifecycle instantiated and the ThreadLocalManager
    * registered with the ThreadLocalLifecycle
-   *
+   * 
    * @param threadLocalGroup Identifier for this group
    * @return the ResettableThreadLocalManager for this threadLocalGroup name
    */
@@ -243,6 +251,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
 
     /**
      * Clean up by removing the ThreadLocal instances from the given thread.
+     * 
      * @param thread thread to clean up
      */
     protected abstract void removeThreadLocals(Thread thread);
@@ -266,7 +275,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
 
     /**
      * Registers the ThreadLocal for cleanup when this ThreadLocalManager is cleaned up
-     *
+     * 
      * @param <T> type used by the ThreadLocal<T>
      * @param threadLocal ThreadLocal to register for clean up
      * @return The registered ThreadLocal
@@ -276,19 +285,10 @@ public final class ThreadLocalUtils extends SingletonSupport {
         throw new NullPointerException();
       }
 
-      try {
-        // initialize callback :
-        if (threadLocal instanceof ManagedThreadLocal) {
-          final ManagedThreadLocal managed = (ManagedThreadLocal) threadLocal;
+      sendInitializeEvent(threadLocal);
 
-          managed.initialize();
-        }
-
-        // WeakReference might be overkill here, but make sure we don't pin ThreadLocals
-        managedThreadLocals.add(new WeakReference<ThreadLocal<?>>(threadLocal));
-      } catch (RuntimeException re) {
-        log.error("ThreadLocalUtils.registerThreadLocal : failure : ", re);
-      }
+      // WeakReference might be overkill here, but make sure we don't pin ThreadLocals
+      managedThreadLocals.add(new WeakReference<ThreadLocal<?>>(threadLocal));
 
       return threadLocal;
     }
@@ -296,7 +296,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
     /**
      * Called by the SingletonSupport onExit() method to clean up all of the ThreadLocals registered
      * with this ThreadLocalManager
-     *
+     * 
      * @see ThreadLocalUtils#clearThreadLocals()
      * @see ThreadLocalUtils#clearStaticReferences()
      * @see SingletonSupport#onExit()
@@ -320,17 +320,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
             logD.info("ResettableThreadLocalManager.removeThreadLocals : threadLocal to remove : " + threadLocal);
           }
 
-          try {
-            // initialize callback :
-            if (threadLocal instanceof ManagedThreadLocal) {
-              final ManagedThreadLocal managed = (ManagedThreadLocal) threadLocal;
-
-              managed.clear();
-            }
-
-          } catch (RuntimeException re) {
-            log.error("ThreadLocalUtils.registerThreadLocal : failure : ", re);
-          }
+          sendRemoveEvent(threadLocal);
 
           // reset the thread local for this thread
           threadLocal.remove();
@@ -341,7 +331,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
     /**
      * Called by the SingletonSupport onExit() method to clean up all of the ThreadLocals registered
      * with this ThreadLocalManager
-     *
+     * 
      * @see ThreadLocalUtils#clearThreadLocals()
      * @see ThreadLocalUtils#clearStaticReferences()
      * @see SingletonSupport#onExit()
@@ -380,19 +370,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
                   logD.info("ResettableThreadLocalManager.removeThreadLocals[" + thread.getName() + "] : threadLocal to remove : " + threadLocal);
                 }
 
-
-                try {
-                  // initialize callback :
-                  if (threadLocal instanceof ManagedThreadLocal) {
-                    final ManagedThreadLocal managed = (ManagedThreadLocal) threadLocal;
-
-                    managed.clear();
-                  }
-
-                } catch (RuntimeException re) {
-                  log.error("ThreadLocalUtils.registerThreadLocal : failure : ", re);
-                }
-
+                sendRemoveEvent(threadLocal);
 
                 // reset the thread local for the given thread :
                 // idem threadLocal.remove(); */
@@ -409,4 +387,55 @@ public final class ThreadLocalUtils extends SingletonSupport {
 
     }
   }
+
+  /* ManagedThreadLocal events */
+
+  /**
+   * Return a ManagedThreadLocal if the given threadLocal is an instance of ManagedThreadLocal
+   * 
+   * @param threadLocal threadLocal to inspect
+   * @return ManagedThreadLocal or null
+   */
+  protected static ManagedThreadLocal<?> getManagedThreadLocal(final ThreadLocal<?> threadLocal) {
+    ManagedThreadLocal<?> managed = null;
+    if (threadLocal instanceof ManagedThreadLocal) {
+      managed = (ManagedThreadLocal<?>) threadLocal;
+    }
+    return managed;
+  }
+
+  /**
+   * Send the onInitialize event if the given threadLocal is an instance of ManagedThreadLocal
+   * 
+   * @param threadLocal threadLocal to inspect
+   * @see ManagedThreadLocal#onInitialize()
+   */
+  protected static void sendInitializeEvent(final ThreadLocal<?> threadLocal) {
+    final ManagedThreadLocal<?> managed = getManagedThreadLocal(threadLocal);
+    if (managed != null) {
+      try {
+        managed.onInitialize();
+      } catch (RuntimeException re) {
+        log.error("ThreadLocalUtils.sendInitializeEvent : failure : ", re);
+      }
+    }
+  }
+
+  /**
+   * Send the onRemoveValue event if the given threadLocal is an instance of ManagedThreadLocal
+   * 
+   * @param threadLocal threadLocal to inspect
+   * @see ManagedThreadLocal#onRemoveValue()
+   */
+  protected static void sendRemoveEvent(final ThreadLocal<?> threadLocal) {
+    final ManagedThreadLocal<?> managed = getManagedThreadLocal(threadLocal);
+    if (managed != null) {
+      try {
+        managed.onRemoveValue();
+      } catch (RuntimeException re) {
+        log.error("ThreadLocalUtils.sendRemoveEvent : failure : ", re);
+      }
+    }
+  }
+
 }
