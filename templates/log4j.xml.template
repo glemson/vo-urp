@@ -29,14 +29,13 @@
 
     
   <!-- Loggers : begin -->
-  <logger name="dev">
-    <level value="info"/>
-    <appender-ref ref="fileRoot"/>
-  </logger>
-
   <logger name="org.ivoa">
     <level value="warn"/>
     <appender-ref ref="fileRoot"/>
+  </logger>
+
+  <logger name="org.ivoa.dev">
+    <level value="warn"/>
   </logger>
 
   <logger name="org.eclipse.persistence">
