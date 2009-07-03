@@ -43,7 +43,7 @@ public final class ThresholdTimer {
    * @param start t0
    * @param now t1
    *
-   * @see TimerFactory#elapsed(long, long)
+   * @see TimerFactory#elapsedMilliSeconds(long, long)
    */
   public void addMilliSeconds(final long start, final long now) {
     add(TimerFactory.elapsedMilliSeconds(start, now));
@@ -55,7 +55,7 @@ public final class ThresholdTimer {
    * @param start t0
    * @param now t1
    *
-   * @see TimerFactory#elapsed(long, long)
+   * @see TimerFactory#elapsedNanoSeconds(long, long)
    */
   public void addNanoSeconds(final long start, final long now) {
     add(TimerFactory.elapsedNanoSeconds(start, now));
