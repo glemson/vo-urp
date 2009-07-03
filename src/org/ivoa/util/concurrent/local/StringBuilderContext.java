@@ -49,7 +49,7 @@ public final class StringBuilderContext extends LogSupport {
    * Create a new StringBuilder with the default capacity
    * @return new StringBuilder with the default capacity
    */
-  public static StringBuilder createStringBuilder() {
+  public final static StringBuilder createStringBuilder() {
     return new StringBuilder(CAPACITY);
   }
 
@@ -57,7 +57,7 @@ public final class StringBuilderContext extends LogSupport {
    * Reset the length of the given StringBuilder
    * @param sb buffer to reset
    */
-  public static void resetStringBuilder(final StringBuilder sb) {
+  public final static void resetStringBuilder(final StringBuilder sb) {
     if (sb != null) {
       // reset without array operation : just set count to 0 / leave buffer available with the
       // same capacity :
@@ -70,38 +70,43 @@ public final class StringBuilderContext extends LogSupport {
    *
    * @return empty buffer
    */
-  public StringBuilder acquire() {
+  public final StringBuilder acquire() {
     StringBuilder sb = null;
-    boolean useCache = false;
-    int pos = UNDEFINED;
 
     current++;
-    if (DIAGNOSTICS && logD.isDebugEnabled()) {
-      logD.debug("LocalStringBuilder.Context.acquire : current = " + current);
-    }
 
-    final boolean useFirst = (current == FIRST);
-
-    if (useFirst) {
+    if (current == FIRST) {
       sb = firstBuffer;
+
+      if (sb == null) {
+        sb = createStringBuilder();
+      }
+
+      firstBuffer = sb;
     } else {
-      pos = current - 1;
-      useCache = pos < DEPTH;
-      if (useCache) {
-        sb = buffers[pos];
-      } else {
-        if (logD.isWarnEnabled()) {
-          log.warn("LocalStringBuilder.Context.acquire : create a new StringBuilder : consider to increment LocalStringBuilder.DEPTH = " + current + " / " + DEPTH);
-        }
+      sb = acquireInBuffers();
+    }
+    return sb;
+  }
+
+  private final StringBuilder acquireInBuffers() {
+    StringBuilder sb = null;
+
+    final int pos = current - 1;
+    final boolean useCache = pos < DEPTH;
+
+    if (useCache) {
+      sb = buffers[pos];
+    } else {
+      if (logD.isWarnEnabled()) {
+        log.warn("LocalStringBuilder.Context.acquire : create a new StringBuilder : consider to increment LocalStringBuilder.DEPTH = " + current + " / " + DEPTH);
       }
     }
 
     if (sb == null) {
       sb = createStringBuilder();
     }
-    if (useFirst) {
-      firstBuffer = sb;
-    } else if (useCache) {
+    if (useCache) {
       buffers[pos] = sb;
     }
     return sb;
@@ -112,7 +117,7 @@ public final class StringBuilderContext extends LogSupport {
    *
    * @return buffer (not empty) or null
    */
-  public StringBuilder current() {
+  public final StringBuilder current() {
     StringBuilder sb = null;
 
     if (current != UNDEFINED) {
@@ -134,7 +139,7 @@ public final class StringBuilderContext extends LogSupport {
    *
    * @param sb buffer (optional)
    */
-  public void release(final StringBuilder sb) {
+  public final void release(final StringBuilder sb) {
     if (sb != null) {
       if (DIAGNOSTICS && logD.isInfoEnabled()) {
         logD.info("LocalStringBuilder.Context.release : used buffer capacity : " + sb.length() + " / " + sb.capacity());
@@ -148,9 +153,7 @@ public final class StringBuilderContext extends LogSupport {
         }
         // release it :
 
-        final boolean useFirst = (current == FIRST);
-
-        if (useFirst) {
+        if (current == FIRST) {
           firstBuffer = null;
         } else {
           final int pos = current - 1;
@@ -161,9 +164,5 @@ public final class StringBuilderContext extends LogSupport {
       }
     }
     current--;
-    if (DIAGNOSTICS && logD.isDebugEnabled()) {
-      logD.debug("LocalStringBuilder.Context.release : current = " + current);
-    }
-
   }
 }

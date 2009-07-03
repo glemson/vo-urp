@@ -36,27 +36,6 @@ public class ManagedThreadLocal<T> extends ThreadLocal<T> {
 
   /**
    * Empty method to be implemented by concrete implementations :<br/>
-   * Callback to initialize this ManagedThreadLocal instance
-   * 
-   * @throws IllegalStateException if a problem occurred
-   */
-  public void onInitialize() throws IllegalStateException {
-    /* no-op */
-  }
-
-  /**
-   * Empty method to be implemented by concrete implementations :<br/>
-   * Callback to clean up the possible static references and instance fields used by this
-   * ManagedThreadLocal instance
-   * 
-   * @throws IllegalStateException if a problem occurred
-   */
-  public void onExit() throws IllegalStateException {
-    /* no-op */
-  }
-
-  /**
-   * Empty method to be implemented by concrete implementations :<br/>
    * Callback to handle the initialValue() event for this ManagedThreadLocal instance
    * 
    * @see ThreadLocal#initialValue()

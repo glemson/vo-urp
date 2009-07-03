@@ -78,7 +78,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
   private static volatile ThreadLocalUtils instance = null;
 
   /** threadLocalGroup -> ThreadLocalManager Map */
-  private static volatile ConcurrentMap<String, ResettableThreadLocalManager> threadLocalManagers = new ConcurrentHashMap<String, ResettableThreadLocalManager>();
+  private static ConcurrentMap<String, ResettableThreadLocalManager> threadLocalManagers = new ConcurrentHashMap<String, ResettableThreadLocalManager>();
 
   // ~ Constructors
   // -----------------------------------------------------------------------------------------------------
@@ -285,8 +285,6 @@ public final class ThreadLocalUtils extends SingletonSupport {
         throw new NullPointerException();
       }
 
-      sendInitializeEvent(threadLocal);
-
       // WeakReference might be overkill here, but make sure we don't pin ThreadLocals
       managedThreadLocals.add(new WeakReference<ThreadLocal<?>>(threadLocal));
 
@@ -402,23 +400,6 @@ public final class ThreadLocalUtils extends SingletonSupport {
       managed = (ManagedThreadLocal<?>) threadLocal;
     }
     return managed;
-  }
-
-  /**
-   * Send the onInitialize event if the given threadLocal is an instance of ManagedThreadLocal
-   * 
-   * @param threadLocal threadLocal to inspect
-   * @see ManagedThreadLocal#onInitialize()
-   */
-  protected static void sendInitializeEvent(final ThreadLocal<?> threadLocal) {
-    final ManagedThreadLocal<?> managed = getManagedThreadLocal(threadLocal);
-    if (managed != null) {
-      try {
-        managed.onInitialize();
-      } catch (RuntimeException re) {
-        log.error("ThreadLocalUtils.sendInitializeEvent : failure : ", re);
-      }
-    }
   }
 
   /**
