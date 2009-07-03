@@ -66,7 +66,7 @@ public final class StringBuilderContext extends LogSupport {
   }
 
   /**
-   * Return a new buffer in the stack or create a new one if the stack capacity is exceeded
+   * Return an empty buffer in the stack or create a new one if the stack capacity is exceeded
    *
    * @return empty buffer
    */
@@ -89,6 +89,10 @@ public final class StringBuilderContext extends LogSupport {
     return sb;
   }
 
+  /**
+   * Return a buffer from the buffer array (slower mode)
+   * @return empty buffer
+   */
   private final StringBuilder acquireInBuffers() {
     StringBuilder sb = null;
 

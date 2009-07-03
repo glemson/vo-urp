@@ -54,9 +54,9 @@ public final class ThreadLocalCleaner extends LogSupport {
    * Check all threads in the current ThreadGroup
    */
   public static void cleanAndcheckThreads() {
-    if (logD.isWarnEnabled()) {
-      logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : begin");
-      logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : classLoader =\n" + ThreadLocalCleaner.class.getClassLoader());
+    if (logD.isInfoEnabled()) {
+      logD.info("ThreadLocalCleaner.cleanAndcheckThreads : begin");
+      logD.info("ThreadLocalCleaner.cleanAndcheckThreads : classLoader =\n" + ThreadLocalCleaner.class.getClassLoader());
     }
 
     try {
@@ -66,16 +66,16 @@ public final class ThreadLocalCleaner extends LogSupport {
       Thread.enumerate(ta);
 
       for (final Thread t : ta) {
-        if (logD.isWarnEnabled()) {
-          logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : cleaning thread [" + t.getName() + "] ...");
+        if (logD.isInfoEnabled()) {
+          logD.info("ThreadLocalCleaner.cleanAndcheckThreads : cleaning thread [" + t.getName() + "] ...");
         }
         ThreadLocalCleaner.cleanThreadLocals(t, CLASS_TO_REMOVE);
       }
 
-      // Checks are only logged if the debug logger is enabled for warning level :
-      if (logD.isWarnEnabled()) {
+      // Checks are only logged if the debug logger is enabled for the level INFO :
+      if (logD.isInfoEnabled()) {
         for (final Thread t : ta) {
-          logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : checking thread [" + t.getName() + "] ...");
+          logD.info("ThreadLocalCleaner.cleanAndcheckThreads : checking thread [" + t.getName() + "] ...");
           ThreadLocalCleaner.checkThreadLocals(t);
         }
       }
@@ -83,8 +83,8 @@ public final class ThreadLocalCleaner extends LogSupport {
     } finally {
       clearFields();
     }
-    if (logD.isWarnEnabled()) {
-      logD.warn("ThreadLocalCleaner.cleanAndcheckThreads : end");
+    if (logD.isInfoEnabled()) {
+      logD.info("ThreadLocalCleaner.cleanAndcheckThreads : end");
     }
   }
 
@@ -150,17 +150,17 @@ public final class ThreadLocalCleaner extends LogSupport {
                 final WeakHashMap<?, ?> wm = (WeakHashMap<?, ?>) value;
 
                 try {
-                  for (Object o : wm.keySet()) {
+                  for (final Object o : wm.keySet()) {
                     if (o != null && o.toString().contains(pattern)) {
-                      if (logD.isWarnEnabled()) {
-                        logD.warn("Cleaning WeakHashMap :" + CollectionUtils.toString(sb, wm));
+                      if (logD.isInfoEnabled()) {
+                        logD.info("Cleaning WeakHashMap :" + CollectionUtils.toString(sb, wm));
                       }
 
                       wm.clear();
                       break;
                     }
                   }
-                } catch (RuntimeException re) {
+                } catch (final RuntimeException re) {
                   logD.error("Cleaning WeakHashMap : failure : ", re);
                 }
               }
@@ -257,8 +257,9 @@ public final class ThreadLocalCleaner extends LogSupport {
         if (leakCount > 0) {
           sb.append("\n}");
 
-          if (logD.isWarnEnabled()) {
-            logD.warn("Possible ThreadLocal leaks for thread : " + thread.getName() + " [" + leakCount + " / " + threadLocalCount + "] {" + sb.toString());
+          if (logD.isInfoEnabled()) {
+            logD.info("Possible ThreadLocal leaks for thread : " + thread.getName() + " [" + leakCount + " / " + threadLocalCount + "] {"
+                + sb.toString());
           }
         }
       }

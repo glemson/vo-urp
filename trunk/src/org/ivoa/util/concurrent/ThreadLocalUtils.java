@@ -137,8 +137,8 @@ public final class ThreadLocalUtils extends SingletonSupport {
    */
   @Override
   protected void clearStaticReferences() {
-    if (logD.isWarnEnabled()) {
-      logD.warn("ThreadLocalUtils.clearStaticReferences : enter");
+    if (logD.isInfoEnabled()) {
+      logD.info("ThreadLocalUtils.clearStaticReferences : enter");
     }
 
     // force GC :
@@ -149,8 +149,9 @@ public final class ThreadLocalUtils extends SingletonSupport {
 
       resetManagers();
     }
-    if (logD.isWarnEnabled()) {
-      logD.warn("ThreadLocalUtils.clearStaticReferences : exit");
+    
+    if (logD.isInfoEnabled()) {
+      logD.info("ThreadLocalUtils.clearStaticReferences : exit");
     }
   }
 
@@ -159,7 +160,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
    */
   public final static void clearThreadLocals() {
     if (threadLocalManagers != null) {
-      for (ResettableThreadLocalManager manager : threadLocalManagers.values()) {
+      for (final ResettableThreadLocalManager manager : threadLocalManagers.values()) {
         if (manager != null) {
           // clean up all ThreadLocals
           manager.removeThreadLocals();
@@ -181,11 +182,11 @@ public final class ThreadLocalUtils extends SingletonSupport {
         Thread.enumerate(ta);
 
         for (final Thread t : ta) {
-          if (logD.isWarnEnabled()) {
-            logD.warn("ThreadLocalUtils.clearAllThreadLocals : cleaning thread [" + t.getName() + "] ...");
+          if (logD.isInfoEnabled()) {
+            logD.info("ThreadLocalUtils.clearAllThreadLocals : cleaning thread [" + t.getName() + "] ...");
           }
 
-          for (ResettableThreadLocalManager manager : threadLocalManagers.values()) {
+          for (final ResettableThreadLocalManager manager : threadLocalManagers.values()) {
             if (manager != null) {
               // clean up all ThreadLocals
               manager.removeThreadLocals(t);
@@ -380,7 +381,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
         }
 
       } catch (final RuntimeException re) {
-        log.error("ResettableThreadLocalManager.removeThreadLocals[" + thread.getName() + "] : failure : ", re);
+        logD.error("ResettableThreadLocalManager.removeThreadLocals[" + thread.getName() + "] : failure : ", re);
       }
 
     }
@@ -413,8 +414,8 @@ public final class ThreadLocalUtils extends SingletonSupport {
     if (managed != null) {
       try {
         managed.onRemoveValue();
-      } catch (RuntimeException re) {
-        log.error("ThreadLocalUtils.sendRemoveEvent : failure : ", re);
+      } catch (final RuntimeException re) {
+        logD.error("ThreadLocalUtils.sendRemoveEvent : failure : ", re);
       }
     }
   }

@@ -5,67 +5,53 @@ package org.ivoa.util.timer;
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public final class ThresholdTimer {
-  //~ Members ----------------------------------------------------------------------------------------------------------
+public final class ThresholdTimer extends AbstractTimer {
+  // ~ Members
+  // ----------------------------------------------------------------------------------------------------------
 
   /**
-   * TODO : Field Description
+   * Timer instance for the low values
    */
-  private final Timer low = new Timer();
+  private final Timer low;
 
   /**
-   * TODO : Field Description
+   * Timer instance for the high values
    */
-  private final Timer high = new Timer();
+  private final Timer high;
 
   /**
-   * TODO : Field Description
+   * High-value threshold
    */
   private final double threshold;
 
-  //~ Constructors -----------------------------------------------------------------------------------------------------
+  // ~ Constructors
+  // -----------------------------------------------------------------------------------------------------
 
   /**
-   * Creates a new ThresholdTimer object
+   * Protected Constructor for ThresholdTimer objects : use the factory pattern
    *
-   * @param th 
+   * @see TimerFactory.UNIT
+   * @see TimerFactory#getTimer(String)
+   * @param pCategory a string representing the kind of operation
+   * @param pUnit MILLI_SECONDS or NANO_SECONDS
+   * @param th threshold to detect an high value
    */
-  public ThresholdTimer(final double th) {
-    this.threshold = th;
+  protected ThresholdTimer(final String pCategory, final TimerFactory.UNIT pUnit, final double th) {
+    super(pCategory, pUnit);
+    low = new Timer(pCategory, pUnit);
+    high = new Timer(pCategory, pUnit);
+    threshold = th;
   }
 
-  //~ Methods ----------------------------------------------------------------------------------------------------------
-
-
-  /**
-   * Add a time measure in milliseconds
-   *
-   * @param start t0
-   * @param now t1
-   *
-   * @see TimerFactory#elapsedMilliSeconds(long, long)
-   */
-  public void addMilliSeconds(final long start, final long now) {
-    add(TimerFactory.elapsedMilliSeconds(start, now));
-  }
-
-  /**
-   * Add a time measure in nanoseconds
-   *
-   * @param start t0
-   * @param now t1
-   *
-   * @see TimerFactory#elapsedNanoSeconds(long, long)
-   */
-  public void addNanoSeconds(final long start, final long now) {
-    add(TimerFactory.elapsedNanoSeconds(start, now));
-  }
+  // ~ Methods
+  // ----------------------------------------------------------------------------------------------------------
   
   /**
-   * TODO : Method Description
+   * Add a time value
    *
-   * @param time 
+   * @param time value to add in statistics
    */
+  @Override
   public void add(final double time) {
     if (time > threshold) {
       high.add(time);
@@ -75,31 +61,33 @@ public final class ThresholdTimer {
   }
 
   /**
-   * TODO : Method Description
+   * Return the Timer instance for the high values
    *
-   * @return value TODO : Value Description
+   * @return Timer instance for the high values
    */
   public Timer getTimerHigh() {
     return high;
   }
 
   /**
-   * TODO : Method Description
+   * Return the Timer instance for the low values
    *
-   * @return value TODO : Value Description
+   * @return Timer instance for the low values
    */
   public Timer getTimerLow() {
     return low;
   }
 
   /**
-   * TODO : Method Description
+   * Return a string representation
    *
-   * @return value TODO : Value Description
+   * @return string representation
    */
   @Override
   public String toString() {
-    return "Low: " + getTimerLow().toString() + " - High: " + getTimerHigh().toString();
+    return "ThresholdTimer (threshold = " + threshold + " " + getUnit() + ") {\n  Low  : " + getTimerLow().toString() + "\n  High : "
+        + getTimerHigh().toString() + "\n}";
   }
 }
-//~ End of file --------------------------------------------------------------------------------------------------------
+// ~ End of file
+// --------------------------------------------------------------------------------------------------------

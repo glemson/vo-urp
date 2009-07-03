@@ -91,6 +91,18 @@ public final class JavaUtils {
     }
     return res;
   }
+  
+  /**
+   * Fill the given array with the given value
+   * @param <T> Type of array elements
+   * @param array array to fill
+   * @param value value to use
+   * @return filled array
+   */
+  public final static <T> T[] fill(final T[] array, final T value) {
+    Arrays.fill(array, value);
+    return array;
+  }
 
   /**
    * Get short name for the given class
