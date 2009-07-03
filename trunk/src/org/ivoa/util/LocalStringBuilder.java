@@ -1,9 +1,12 @@
 package org.ivoa.util;
 
 import org.ivoa.bean.SingletonSupport;
+import org.ivoa.dm.model.Identity;
 import org.ivoa.util.concurrent.ThreadLocalUtils;
 import org.ivoa.util.concurrent.local.StringBuilderContext;
 import org.ivoa.util.concurrent.local.StringBuilderThreadLocal;
+import org.ivoa.util.timer.ThresholdTimer;
+import org.ivoa.util.timer.TimerFactory;
 
 /**
  * ThreadLocal StringBuilder for performance
@@ -13,9 +16,12 @@ import org.ivoa.util.concurrent.local.StringBuilderThreadLocal;
 public final class LocalStringBuilder extends SingletonSupport {
   // ~ Constants
   // --------------------------------------------------------------------------------------------------------
-  
+
+  /** flag to execute the micro benchmark at startup */
+  private final static boolean DO_MICRO_BENCHMARK = false;
+
   /** buffer thread Local */
-  private static volatile ThreadLocal<StringBuilderContext> bufferLocal = ThreadLocalUtils.registerRequestThreadLocal(new StringBuilderThreadLocal());
+  private static ThreadLocal<StringBuilderContext> bufferLocal = ThreadLocalUtils.registerRequestThreadLocal(new StringBuilderThreadLocal());
 
   // ~ Constructors
   // -----------------------------------------------------------------------------------------------------
@@ -34,6 +40,10 @@ public final class LocalStringBuilder extends SingletonSupport {
    */
   public static final void prepareInstance() {
     prepareInstance(new LocalStringBuilder());
+
+    if (DO_MICRO_BENCHMARK) {
+      microbenchmark();
+    }
   }
 
   /**
@@ -149,6 +159,28 @@ public final class LocalStringBuilder extends SingletonSupport {
         StringBuilderContext.resetStringBuilder(sb);
       }
     }
+  }
+
+  /**
+   * MicroBenchmark :
+   * LocalStringBuilder : Low: Timer(ms) {n=9799, min=1676.0, max=9778.0, acc=2.6544453E7, avg=2708.8940708235536} - High: Timer(ms) {n=201, min=10057.0, max=1062985.0, acc=3538450.0, avg=17604.228855721394}
+   */
+  protected static void microbenchmark() {
+
+    // bench here :
+    final Identity id = new Identity(Long.valueOf(7));
+    id.setPublisherDID("pPublisherDID");
+
+    final ThresholdTimer timer = TimerFactory.getTimer("LocalStringBuilder");
+    long start;
+    for (int i = 0; i < 10000; i++) {
+      start = System.nanoTime();
+      id.toString();
+      timer.addNanoSeconds(start, System.nanoTime());
+    }
+    log.error("LocalStringBuilder : micro benchmark (ns) : " + TimerFactory.dumpTimers());
+    TimerFactory.resetTimers();
+
   }
 
 }

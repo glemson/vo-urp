@@ -36,16 +36,29 @@ public final class ThresholdTimer {
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
+
   /**
-   * Add a time value
-   * 
+   * Add a time measure in milliseconds
+   *
    * @param start t0
    * @param now t1
-   * 
+   *
    * @see TimerFactory#elapsed(long, long)
    */
-  public void add(final long start, final long now) {
-    add(TimerFactory.elapsed(start, now));
+  public void addMilliSeconds(final long start, final long now) {
+    add(TimerFactory.elapsedMilliSeconds(start, now));
+  }
+
+  /**
+   * Add a time measure in nanoseconds
+   *
+   * @param start t0
+   * @param now t1
+   *
+   * @see TimerFactory#elapsed(long, long)
+   */
+  public void addNanoSeconds(final long start, final long now) {
+    add(TimerFactory.elapsedNanoSeconds(start, now));
   }
   
   /**

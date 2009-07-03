@@ -29,15 +29,15 @@ public final class TimerFactory extends LogSupport {
   /** Map[key - timer] */
   protected static Map<String, ThresholdTimer> timers = new LinkedHashMap<String, ThresholdTimer>();
 
-  /** threshold for long time = 2s */
-  private final static double THRESHOLD = 2000d;
+  /** threshold for long time = 10s (ms unit) or 10 milliSeconds (ns unit) */
+  private final static double THRESHOLD = 10 * 1000d;
 
   static {
     // warm up 1 :
     warmUp(WARMUP_CYCLES, WARMUP1_CATEGORY);
 
     if (logD.isInfoEnabled()) {
-      logD.info("TimerFactory : warmup 1 : " + dumpTimers());
+      logD.info("TimerFactory : warmup 1 (ns) : " + dumpTimers());
     }
     resetTimers();
 
@@ -45,7 +45,7 @@ public final class TimerFactory extends LogSupport {
     warmUp(WARMUP_CYCLES, WARMUP2_CATEGORY);
 
     if (logD.isInfoEnabled()) {
-      logD.info("TimerFactory : warmup 2 : " + dumpTimers());
+      logD.info("TimerFactory : warmup 2 (ns) : " + dumpTimers());
     }
     resetTimers();
   }
@@ -59,7 +59,7 @@ public final class TimerFactory extends LogSupport {
     final long start = System.nanoTime();
     // EMPTY LOOP to precompile (hotspot) timer code :
     for (int i = 0, size = cycles; i < size; i++) {
-      TimerFactory.getTimer(category).add(start, System.nanoTime());
+      TimerFactory.getTimer(category).addNanoSeconds(start, System.nanoTime());
     }
   }
   //~ Constructors -----------------------------------------------------------------------------------------------------
@@ -74,15 +74,27 @@ public final class TimerFactory extends LogSupport {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * Returns elapsed time between 2 time values get from System.nanoTime().
+   * Returns elapsed time between 2 time values get from System.nanoTime() in milliseconds
    *
    * @see System#nanoTime()
    * @param start t0
    * @param now t1
    * @return (t1 - t0) in milliseconds
    */
-  public static final long elapsed(final long start, final long now) {
+  public static final long elapsedMilliSeconds(final long start, final long now) {
     return (now - start) / 1000000L;
+  }
+
+  /**
+   * Returns elapsed time between 2 time values get from System.nanoTime() in nanoseconds
+   *
+   * @see System#nanoTime()
+   * @param start t0
+   * @param now t1
+   * @return (t1 - t0) in nanoseconds
+   */
+  public static final long elapsedNanoSeconds(final long start, final long now) {
+    return (now - start);
   }
 
   /**
