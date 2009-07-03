@@ -1,6 +1,8 @@
 package org.ivoa.util.timer;
 
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.ivoa.bean.LogSupport;
@@ -9,32 +11,49 @@ import org.ivoa.util.LocalStringBuilder;
 
 /**
  * The Timer factory contains a map[key - Timer] to associate time metrics statistics to several
- * categories of operations
+ * categories of operations TODO : Use the warmup 2 values to define an estimated latency in order
+ * to adjust time measure :<br/>
+ * corrected elapsed time = (elapsed time - latency)
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class TimerFactory extends LogSupport {
 
-  //~ Constants --------------------------------------------------------------------------------------------------------
+  // ~ Constants
+  // --------------------------------------------------------------------------------------------------------
 
-  /** default warmup cycles = 2000 */
-  private final static int WARMUP_CYCLES = 10000;
+  /** warmup 1 cycles = 20000 */
+  private final static int WARMUP_CYCLES_1 = 20 * 1000;
 
-  /** category for the first  warmup to optimise the timer code (hotspot) */
-  private final static String WARMUP1_CATEGORY = "warmup-1";
+  /** warmup 2 cycles = 100000 */
+  private final static int WARMUP_CYCLES_2 = 100 * 1000;
 
-  /** category for the second warmup to estimate latency */
-  private final static String WARMUP2_CATEGORY = "warmup-2";
+  /** category for the warm-up to optimize the timer code */
+  private final static String WARMUP_CATEGORY = "warmup";
 
-  /** Map[key - timer] */
-  protected static Map<String, ThresholdTimer> timers = new LinkedHashMap<String, ThresholdTimer>();
+  /** initial capacity = 64 */
+  private final static int CAPACITY = 32;
 
-  /** threshold for long time = 10s (ms unit) or 10 milliSeconds (ns unit) */
-  private final static double THRESHOLD = 10 * 1000d;
+  /** List[timer] */
+  private static List<AbstractTimer> timerList = new ArrayList<AbstractTimer>(CAPACITY);
+
+  /** fast Map[key - timer] */
+  private static Map<String, AbstractTimer> timerMap = new HashMap<String, AbstractTimer>(CAPACITY);
+
+  /** threshold for long time = 1s (ms) or 1 milliSeconds (ns) */
+  private final static double THRESHOLD = 1 * 1000d;
+
+  /** timer unit constants */
+  public static enum UNIT {
+    /** MilliSeconds */
+    ms,
+    /** NanoSeconds */
+    ns
+  }
 
   static {
     // warm up 1 :
-    warmUp(WARMUP_CYCLES, WARMUP1_CATEGORY);
+    warmUp(WARMUP_CYCLES_1, WARMUP_CATEGORY);
 
     if (logD.isInfoEnabled()) {
       logD.info("TimerFactory : warmup 1 (ns) : " + dumpTimers());
@@ -42,7 +61,7 @@ public final class TimerFactory extends LogSupport {
     resetTimers();
 
     // warm up 2 to get latency :
-    warmUp(WARMUP_CYCLES, WARMUP2_CATEGORY);
+    warmUp(WARMUP_CYCLES_2, WARMUP_CATEGORY);
 
     if (logD.isInfoEnabled()) {
       logD.info("TimerFactory : warmup 2 (ns) : " + dumpTimers());
@@ -51,18 +70,26 @@ public final class TimerFactory extends LogSupport {
   }
 
   /** 
-   * Warmup timer code (hotspot)
+   * Warm-up timer code (hotspot)
+   * 
    * @param cycles empty cycles to operate
    * @param category name of the category 
    */
   private static void warmUp(final int cycles, final String category) {
-    final long start = System.nanoTime();
-    // EMPTY LOOP to precompile (hotspot) timer code :
+    // preallocate the timer :
+    TimerFactory.getTimer(category, UNIT.ns);
+
+    long start;
+
+    // EMPTY LOOP to compile the code of Timer classes  :
     for (int i = 0, size = cycles; i < size; i++) {
-      TimerFactory.getTimer(category).addNanoSeconds(start, System.nanoTime());
+      start = System.nanoTime();
+      TimerFactory.getTimer(category, UNIT.ns).addNanoSeconds(start, System.nanoTime());
     }
   }
-  //~ Constructors -----------------------------------------------------------------------------------------------------
+
+  // ~ Constructors
+  // -----------------------------------------------------------------------------------------------------
 
 /**
    * Forbidden Constructor
@@ -71,7 +98,8 @@ public final class TimerFactory extends LogSupport {
     /* no-op */
   }
 
-  //~ Methods ----------------------------------------------------------------------------------------------------------
+  // ~ Methods
+  // ----------------------------------------------------------------------------------------------------------
 
   /**
    * Returns elapsed time between 2 time values get from System.nanoTime() in milliseconds
@@ -94,45 +122,71 @@ public final class TimerFactory extends LogSupport {
    * @return (t1 - t0) in nanoseconds
    */
   public static final long elapsedNanoSeconds(final long start, final long now) {
-    return (now - start);
+    return now - start;
   }
 
   /**
-   * Return an existing or a new Timer for that category (lazy)
+   * Return an existing or a new ThresholdTimer for that category (lazy) with the default threshold
+   * and unit (milliseconds)
    *
+   * @see #THRESHOLD
    * @param category a string representing the kind of operation
    * @return timer instance
    */
-  public static final ThresholdTimer getTimer(final String category) {
-    ThresholdTimer timer = timers.get(category);
+  public static final AbstractTimer getTimer(final String category) {
+    return getTimer(category, UNIT.ms, THRESHOLD);
+    }
+
+  /**
+   * Return an existing or a new ThresholdTimer for that category (lazy) with the default threshold
+   * and the given unit
+   * 
+   * @see #THRESHOLD
+   * @see UNIT
+   * @param category a string representing the kind of operation
+   * @param unit MILLI_SECONDS or NANO_SECONDS
+   * @return timer instance
+   */
+  public static final AbstractTimer getTimer(final String category, final UNIT unit) {
+    return getTimer(category, unit, THRESHOLD);
+  }
+
+  /**
+   * Return an existing or a new Timer for that category (lazy) with the given threshold
+   *
+   * @see UNIT
+   * @param category a string representing the kind of operation
+   * @param th threshold to detect an high value
+   * @param unit MILLI_SECONDS or NANO_SECONDS
+   * @return timer instance
+   */
+  public static final AbstractTimer getTimer(final String category, final UNIT unit, final double th) {
+    AbstractTimer timer = timerMap.get(category);
 
     if (timer == null) {
-      timer = new ThresholdTimer(THRESHOLD);
-      timers.put(category, timer);
+      timer = new ThresholdTimer(category, unit, th);
+
+      synchronized (timerList) {
+        timerList.add(timer);
+        timerMap.put(category, timer);
+      }
     }
 
     return timer;
   }
 
   /**
-   * Return the map of timer instances
-   *
-   * @return map of timer instances
-   */
-  public static final Map<String, ThresholdTimer> getTimers() {
-    return timers;
-  }
-
-  /**
-   * Return a string representation for all timer instances present in the timers map
+   * Return a string representation for all timer instances present in the timerMap map
    *
    * @return string representation for all timer instances
    */
   public static final String dumpTimers() {
     final StringBuilder sb = LocalStringBuilder.getBuffer();
 
-    for (final Map.Entry<String, ThresholdTimer> e : timers.entrySet()) {
-      sb.append("\n").append(e.getKey()).append(" : ").append(e.getValue());
+    synchronized (timerList) {
+      for (final AbstractTimer timer : timerList) {
+        sb.append("\n").append(timer.toString());
+    }
     }
 
     return LocalStringBuilder.toString(sb);
@@ -142,7 +196,20 @@ public final class TimerFactory extends LogSupport {
    * Reset all timer instances
    */
   public static final void resetTimers() {
-    timers.clear();
+    synchronized (timerList) {
+      timerList.clear();
+      timerMap.clear();
   }
 }
-//~ End of file --------------------------------------------------------------------------------------------------------
+  
+  /**
+   * Return true if there is no existing timer
+   * @return true if there is no existing timer
+   */
+  public static final boolean isEmpty() {
+    return timerList.isEmpty();
+  }
+  
+}
+// ~ End of file
+// --------------------------------------------------------------------------------------------------------

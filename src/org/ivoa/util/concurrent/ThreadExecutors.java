@@ -2,6 +2,7 @@ package org.ivoa.util.concurrent;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -257,6 +258,27 @@ public final class ThreadExecutors extends LogSupport {
   }
 
   /**
+   * Submits a Callable task for execution and returns a Future representing that task.
+   * 
+   * @see ThreadPoolExecutor#submit(Callable)
+   * @param <T> result type
+   * @param job the task to submit
+   * @return a Future representing pending completion of the task, and whose <tt>get()</tt> method
+   *         will return <tt>null</tt> upon completion.
+   * @throws IllegalStateException if task cannot be scheduled for execution
+   */
+  public <T> Future<T> submit(final Callable<T> job) {
+    if (log.isDebugEnabled()) {
+      log.debug("ThreadExecutors.submit : submit job in pool : " + getPoolName() + " = " + job);
+    }
+    try {
+      return threadExecutor.submit(job);
+    } catch (final RejectedExecutionException ree) {
+      throw new IllegalStateException("unable to queue the job !", ree);
+    }
+  }
+
+  /**
    * Shutdown this thread pool now
    * 
    * @see ThreadPoolExecutor#shutdownNow()
@@ -265,7 +287,8 @@ public final class ThreadExecutors extends LogSupport {
     if (log.isInfoEnabled()) {
       log.info("ThreadExecutors.stop : starting shutdown now : " + getPoolName());
     }
-    threadExecutor.shutdownNow();
+    threadExecutor.shutdown();
+    /* threadExecutor.shutdownNow(); */
   }
 
   /**

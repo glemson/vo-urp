@@ -1,12 +1,12 @@
 package org.ivoa.util;
 
 import org.ivoa.bean.SingletonSupport;
-import org.ivoa.dm.model.Identity;
 import org.ivoa.util.concurrent.ThreadLocalUtils;
 import org.ivoa.util.concurrent.local.StringBuilderContext;
 import org.ivoa.util.concurrent.local.StringBuilderThreadLocal;
-import org.ivoa.util.timer.ThresholdTimer;
+import org.ivoa.util.timer.AbstractTimer;
 import org.ivoa.util.timer.TimerFactory;
+import org.ivoa.util.timer.TimerFactory.UNIT;
 
 /**
  * ThreadLocal StringBuilder for performance
@@ -18,7 +18,7 @@ public final class LocalStringBuilder extends SingletonSupport {
   // --------------------------------------------------------------------------------------------------------
 
   /** flag to execute the micro benchmark at startup */
-  private final static boolean DO_MICRO_BENCHMARK = false;
+  private final static boolean DO_MICRO_BENCHMARK = true;
 
   /** buffer thread Local */
   private static ThreadLocal<StringBuilderContext> bufferLocal = ThreadLocalUtils.registerRequestThreadLocal(new StringBuilderThreadLocal());
@@ -32,10 +32,11 @@ public final class LocalStringBuilder extends SingletonSupport {
     super();
   }
 
-  //~ Methods ----------------------------------------------------------------------------------------------------------
+  // ~ Methods
+  // ----------------------------------------------------------------------------------------------------------
   /**
    * Prepare the LocalStringBuilder singleton instance
-   *
+   * 
    * @throws IllegalStateException if a problem occured
    */
   public static final void prepareInstance() {
@@ -58,7 +59,7 @@ public final class LocalStringBuilder extends SingletonSupport {
    * Concrete implementations of the SingletonSupport's clearStaticReferences() method :<br/>
    * Callback to clean up the possible static references used by this SingletonSupport instance iso
    * clear static references
-   *
+   * 
    * @see SingletonSupport#clearStaticReferences()
    */
   @Override
@@ -82,7 +83,7 @@ public final class LocalStringBuilder extends SingletonSupport {
    * Return an empty threadLocal StringBuilder instance.<br/>
    * MUST BE RELEASED after use by calling toString(StringBuilder) or toStringBuilder(StringBuilder)
    * methods
-   *
+   * 
    * @see #toString(StringBuilder)
    * @see #toStringBuilder(StringBuilder, StringBuilder)
    * @return StringBuilder threadLocal instance
@@ -102,7 +103,7 @@ public final class LocalStringBuilder extends SingletonSupport {
    * instance.<br/>
    * MUST BE RELEASED after use by calling toString(StringBuilder) or toStringBuilder(StringBuilder)
    * methods
-   *
+   * 
    * @see #toString(StringBuilder)
    * @see #toStringBuilder(StringBuilder, StringBuilder)
    * @return StringBuilder threadLocal instance
@@ -121,7 +122,7 @@ public final class LocalStringBuilder extends SingletonSupport {
 
   /**
    * Return the string contained in the current local buffer and release the buffer
-   *
+   * 
    * @param sb buffer (optional)
    * @return string contained in the given buffer
    */
@@ -143,7 +144,7 @@ public final class LocalStringBuilder extends SingletonSupport {
 
   /**
    * Unsynchronized copy from the current local buffer to another buffer and release the buffer
-   *
+   * 
    * @param sb buffer (optional)
    * @param sbTo destination buffer
    */
@@ -162,25 +163,30 @@ public final class LocalStringBuilder extends SingletonSupport {
   }
 
   /**
-   * MicroBenchmark :
-   * LocalStringBuilder : Low: Timer(ms) {n=9799, min=1676.0, max=9778.0, acc=2.6544453E7, avg=2708.8940708235536} - High: Timer(ms) {n=201, min=10057.0, max=1062985.0, acc=3538450.0, avg=17604.228855721394}
+   * MicroBenchmark : LocalStringBuilder : Low: Timer(ms) {n=9799, min=1676.0, max=9778.0,
+   * acc=2.6544453E7, avg=2708.8940708235536} - High: Timer(ms) {n=201, min=10057.0, max=1062985.0,
+   * acc=3538450.0, avg=17604.228855721394}
    */
   protected static void microbenchmark() {
+    if (logD.isWarnEnabled()) {
+      final String value = "---------------------------------------";
 
-    // bench here :
-    final Identity id = new Identity(Long.valueOf(7));
-    id.setPublisherDID("pPublisherDID");
+      final AbstractTimer timer = TimerFactory.getTimer("LocalStringBuilder", UNIT.ns);
 
-    final ThresholdTimer timer = TimerFactory.getTimer("LocalStringBuilder");
-    long start;
-    for (int i = 0; i < 10000; i++) {
-      start = System.nanoTime();
-      id.toString();
-      timer.addNanoSeconds(start, System.nanoTime());
+      long start;
+      for (int i = 0; i < 50000; i++) {
+        start = System.nanoTime();
+
+        LocalStringBuilder.toString(LocalStringBuilder.getBuffer().append(value));
+
+        timer.addNanoSeconds(start, System.nanoTime());
+      }
+
+      log.warn("LocalStringBuilder : micro benchmark : " + TimerFactory.dumpTimers());
+
+      // TimerFactory reset :
+      TimerFactory.resetTimers();
     }
-    log.error("LocalStringBuilder : micro benchmark (ns) : " + TimerFactory.dumpTimers());
-    TimerFactory.resetTimers();
-
   }
 
 }

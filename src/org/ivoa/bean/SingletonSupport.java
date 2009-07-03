@@ -94,8 +94,8 @@ public abstract class SingletonSupport extends LogSupport {
         // initialize :
         singleton.initialize();
 
-        if (log.isInfoEnabled()) {
-          log.info("SingletonSupport.prepareInstance : new singleton ready " + getSingletonLogName(singleton));
+        if (logD.isInfoEnabled()) {
+          logD.info("SingletonSupport.prepareInstance : new singleton ready " + getSingletonLogName(singleton));
         }
 
         if (isRunning()) {
@@ -105,11 +105,13 @@ public abstract class SingletonSupport extends LogSupport {
           // keep reference in singleton class :
           managedInstance = singleton;
         } else {
-          log.error("SingletonSupport.prepareInstance : shutdown detected for singleton " + getSingletonLogName(singleton), new Throwable());
+          logD.error("SingletonSupport.prepareInstance : shutdown detected for singleton " + getSingletonLogName(singleton), new Throwable());
         }
 
       } catch (final RuntimeException re) {
-        log.error("SingletonSupport.prepareInstance : runtime failure " + getSingletonLogName(singleton), re);
+        if (logD.isInfoEnabled()) {
+          logD.info("SingletonSupport.prepareInstance : runtime failure " + getSingletonLogName(singleton), re);
+        }
 
         // release this phantom instance (bad state) :
         onExit(singleton);
@@ -153,13 +155,13 @@ public abstract class SingletonSupport extends LogSupport {
       prepareSingletonSupport();
     }
 
-    if (log.isInfoEnabled()) {
-      log.info("SingletonSupport.register : add " + getSingletonLogName(singleton));
+    if (logD.isInfoEnabled()) {
+      logD.info("SingletonSupport.register : add " + getSingletonLogName(singleton));
     }
     if (isRunning()) {
       managedInstances.add(singleton);
     } else {
-      log.error("SingletonSupport.register : shutdown detected for singleton " + getSingletonLogName(singleton), new Throwable());
+      logD.error("SingletonSupport.register : shutdown detected for singleton " + getSingletonLogName(singleton), new Throwable());
     }
 
   }
@@ -170,8 +172,8 @@ public abstract class SingletonSupport extends LogSupport {
    * @param singleton instance of SingletonSupport
    */
   public static final void unregister(final SingletonSupport singleton) {
-    if (log.isInfoEnabled()) {
-      log.info("SingletonSupport.unregister : remove " + getSingletonLogName(singleton));
+    if (logD.isInfoEnabled()) {
+      logD.info("SingletonSupport.unregister : remove " + getSingletonLogName(singleton));
     }
     if (isRunning()) {
       managedInstances.remove(singleton);
@@ -184,8 +186,8 @@ public abstract class SingletonSupport extends LogSupport {
    * Called on exit (clean up code)
    */
   public static final void onExit() {
-    if (log.isWarnEnabled()) {
-      log.warn("SingletonSupport.onExit : enter");
+    if (logD.isInfoEnabled()) {
+      logD.info("SingletonSupport.onExit : enter");
     }
 
     if (!JavaUtils.isEmpty(managedInstances)) {
@@ -194,8 +196,8 @@ public abstract class SingletonSupport extends LogSupport {
 
       managedInstances.drainTo(instances);
 
-      if (log.isWarnEnabled()) {
-        log.warn("SingletonSupport.onExit : instances to free : " + CollectionUtils.toString(instances));
+      if (logD.isInfoEnabled()) {
+        logD.info("SingletonSupport.onExit : instances to free : " + CollectionUtils.toString(instances));
       }
 
       // reverse singleton ordering :
@@ -216,8 +218,8 @@ public abstract class SingletonSupport extends LogSupport {
     // force GC :
     managedInstances = null;
 
-    if (log.isWarnEnabled()) {
-      log.warn("SingletonSupport.onExit : exit");
+    if (logD.isInfoEnabled()) {
+      logD.info("SingletonSupport.onExit : exit");
     }
   }
 
@@ -228,8 +230,8 @@ public abstract class SingletonSupport extends LogSupport {
    */
   protected static final void onExit(final SingletonSupport singleton) {
     if (singleton != null) {
-      if (log.isWarnEnabled()) {
-        log.warn("SingletonSupport.onExit : clear : " + getSingletonLogName(singleton) + " : enter");
+      if (logD.isInfoEnabled()) {
+        logD.info("SingletonSupport.onExit : clear : " + getSingletonLogName(singleton) + " : enter");
       }
       try {
         // clear instance fields :
@@ -239,15 +241,16 @@ public abstract class SingletonSupport extends LogSupport {
         singleton.clearStaticReferences();
 
       } catch (final RuntimeException re) {
-        log.error("SingletonSupport.onExit : runtime failure " + getSingletonLogName(singleton), re);
+        logD.error("SingletonSupport.onExit : runtime failure " + getSingletonLogName(singleton), re);
       }
-      if (log.isWarnEnabled()) {
-        log.warn("SingletonSupport.onExit : clear : " + getSingletonLogName(singleton) + " : exit");
+      if (logD.isInfoEnabled()) {
+        logD.info("SingletonSupport.onExit : clear : " + getSingletonLogName(singleton) + " : exit");
       }
     }
   }
 
-  //~ Constructors -----------------------------------------------------------------------------------------------------
+  // ~ Constructors
+  // -----------------------------------------------------------------------------------------------------
   /**
    * Protected Constructor to avoid creating instances except by singleton pattern : getInstance()
    */
@@ -255,7 +258,8 @@ public abstract class SingletonSupport extends LogSupport {
     super();
   }
 
-  //~ Methods ----------------------------------------------------------------------------------------------------------
+  // ~ Methods
+  // ----------------------------------------------------------------------------------------------------------
   /**
    * Empty method to be implemented by concrete implementations :<br/>
    * Callback to initialize this SingletonSupport instance
@@ -294,4 +298,5 @@ public abstract class SingletonSupport extends LogSupport {
     /* no-op */
   }
 }
-//~ End of file --------------------------------------------------------------------------------------------------------
+// ~ End of file
+// --------------------------------------------------------------------------------------------------------

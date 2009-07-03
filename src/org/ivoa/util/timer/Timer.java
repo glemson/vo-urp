@@ -5,14 +5,12 @@ package org.ivoa.util.timer;
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public final class Timer {
-  //~ Members ----------------------------------------------------------------------------------------------------------
+public final class Timer extends AbstractTimer {
+  // ~ Members
+  // ----------------------------------------------------------------------------------------------------------
 
   /** accumulator */
   private double acc = 0d;
-
-  /** value counter */
-  private int n = 0;
 
   /** minimum value */
   private double min = Double.MAX_VALUE;
@@ -20,58 +18,42 @@ public final class Timer {
   /** maximum value */
   private double max = Double.MIN_VALUE;
 
-  //~ Constructors -----------------------------------------------------------------------------------------------------
+  // ~ Constructors
+  // -----------------------------------------------------------------------------------------------------
 
 /**
-   * Creates a new Timer object
-   */
-  public Timer() {
-    /* no-op */
-  }
-
-  //~ Methods ----------------------------------------------------------------------------------------------------------
-
-  /**
-   * Add a time measure in milliseconds
+   * Protected Constructor for Timer objects : use the factory pattern
    * 
-   * @param start t0
-   * @param now t1
-   * 
-   * @see TimerFactory#elapsedMilliSeconds(long, long)
+   * @see TimerFactory.UNIT
+   * @see TimerFactory#getTimer(String)
+   * @param pCategory a string representing the kind of operation
+   * @param pUnit MILLI_SECONDS or NANO_SECONDS
    */
-  public void addMilliSeconds(final long start, final long now) {
-    add(TimerFactory.elapsedMilliSeconds(start, now));
+  protected Timer(final String pCategory, final TimerFactory.UNIT pUnit) {
+    super(pCategory, pUnit);
   }
 
-  /**
-   * Add a time measure in nanoseconds
-   *
-   * @param start t0
-   * @param now t1
-   *
-   * @see TimerFactory#elapsedNanoSeconds(long, long)
-   */
-  public void addNanoSeconds(final long start, final long now) {
-    add(TimerFactory.elapsedNanoSeconds(start, now));
-  }
+  // ~ Methods
+  // ----------------------------------------------------------------------------------------------------------
 
   /**
    * Add a time value
    *
    * @param time value to add in statistics
    */
+  @Override
   public void add(final double time) {
-    // linux bug :
+    // LINUX bug :
     if (time >= 0) {
-      this.n++;
-      this.acc += time;
+      incN();
+      acc += time;
 
-      if (time < this.min) {
-        this.min = time;
+      if (time < min) {
+        min = time;
       }
 
-      if (time > this.max) {
-        this.max = time;
+      if (time > max) {
+        max = time;
       }
     }
   }
@@ -82,7 +64,7 @@ public final class Timer {
    * @return accumulator
    */
   public double getAcc() {
-    return this.acc;
+    return acc;
   }
 
   /**
@@ -91,11 +73,12 @@ public final class Timer {
    * @return mean
    */
   public double getMean() {
-    if (this.n == 0) {
+    final int n = getN();
+    if (n == 0) {
       return 0d;
     }
 
-    return this.acc / this.n;
+    return acc / n;
   }
 
   /**
@@ -104,7 +87,7 @@ public final class Timer {
    * @return maximum value
    */
   public double getMax() {
-    return this.max;
+    return max;
   }
 
   /**
@@ -113,16 +96,7 @@ public final class Timer {
    * @return minimum value
    */
   public double getMin() {
-    return this.min;
-  }
-
-  /**
-   * Return the value counter
-   *
-   * @return value counter
-   */
-  public int getN() {
-    return this.n;
+    return min;
   }
 
   /**
@@ -132,10 +106,8 @@ public final class Timer {
    */
   @Override
   public String toString() {
-    return "Timer(ms) {n="
-        + this.n
-        + ((this.n > 0) ? (", min=" + this.min + ", max=" + this.max + ", acc=" + this.acc
-            + ", avg=" + this.getMean()) : ", n/a") + "}";
+    return super.toString() + "{" + (getN() > 0 ? "min = " + min + ", max = " + max + ", acc = " + acc + ", avg = " + getMean() : "") + "}";
   }
 }
-//~ End of file --------------------------------------------------------------------------------------------------------
+// ~ End of file
+// --------------------------------------------------------------------------------------------------------
