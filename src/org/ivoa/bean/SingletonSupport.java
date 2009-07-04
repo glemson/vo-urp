@@ -81,7 +81,6 @@ public abstract class SingletonSupport extends LogSupport {
    * @throws IllegalStateException if a problem occurred
    */
   protected static final <T extends SingletonSupport> T prepareInstance(final T singleton) {
-
     /* prepare first */
     if (STATE == STATUS.INITIAL) {
       prepareSingletonSupport();
@@ -94,8 +93,8 @@ public abstract class SingletonSupport extends LogSupport {
         // initialize :
         singleton.initialize();
 
-        if (logD.isInfoEnabled()) {
-          logD.info("SingletonSupport.prepareInstance : new singleton ready " + getSingletonLogName(singleton));
+        if (logB.isWarnEnabled()) {
+          logB.warn("SingletonSupport.prepareInstance : new singleton ready " + getSingletonLogName(singleton));
         }
 
         if (isRunning()) {
@@ -105,12 +104,13 @@ public abstract class SingletonSupport extends LogSupport {
           // keep reference in singleton class :
           managedInstance = singleton;
         } else {
-          logD.error("SingletonSupport.prepareInstance : shutdown detected for singleton " + getSingletonLogName(singleton), new Throwable());
+          logB.error("SingletonSupport.prepareInstance : shutdown detected for singleton " + getSingletonLogName(singleton), new Throwable());
         }
 
       } catch (final RuntimeException re) {
-        if (logD.isInfoEnabled()) {
-          logD.info("SingletonSupport.prepareInstance : runtime failure " + getSingletonLogName(singleton), re);
+        // info because the exception will be thrown again :
+        if (logB.isInfoEnabled()) {
+          logB.info("SingletonSupport.prepareInstance : runtime failure " + getSingletonLogName(singleton), re);
         }
 
         // release this phantom instance (bad state) :
@@ -124,23 +124,29 @@ public abstract class SingletonSupport extends LogSupport {
   }
 
   /**
-   * Return the singleton class name
+   * Post Prepare the given singleton instance
    *
+   * @param <T> SingletonSupport child class type
    * @param singleton SingletonSupport instance
-   * @return singleton class name (fully qualified)
+   * @throws IllegalStateException if a problem occurred
    */
-  protected static final String getSingletonName(final SingletonSupport singleton) {
-    return singleton.getClass().getName();
-  }
+  protected static final <T extends SingletonSupport> void postPrepareInstance(final T singleton) {
+    if (singleton != null) {
+      try {
+        singleton.postInitialize();
 
-  /**
-   * Return the singleton log message [ #getSingletonName(singleton) = #singleton]
-   *
-   * @param singleton SingletonSupport instance
-   * @return singleton log message
-   */
-  protected static final String getSingletonLogName(final SingletonSupport singleton) {
-    return "[" + singleton + "]";
+      } catch (final RuntimeException re) {
+        // info because the exception will be thrown again :
+        if (logB.isInfoEnabled()) {
+          logB.info("SingletonSupport.postPrepareInstance : runtime failure " + getSingletonLogName(singleton), re);
+        }
+
+        // release this phantom instance (bad state) :
+        onExit(singleton);
+
+        throw re;
+      }
+    }
   }
 
   /**
@@ -155,13 +161,13 @@ public abstract class SingletonSupport extends LogSupport {
       prepareSingletonSupport();
     }
 
-    if (logD.isInfoEnabled()) {
-      logD.info("SingletonSupport.register : add " + getSingletonLogName(singleton));
+    if (logB.isInfoEnabled()) {
+      logB.info("SingletonSupport.register : add " + getSingletonLogName(singleton));
     }
     if (isRunning()) {
       managedInstances.add(singleton);
     } else {
-      logD.error("SingletonSupport.register : shutdown detected for singleton " + getSingletonLogName(singleton), new Throwable());
+      logB.error("SingletonSupport.register : shutdown detected for singleton " + getSingletonLogName(singleton), new Throwable());
     }
 
   }
@@ -172,8 +178,8 @@ public abstract class SingletonSupport extends LogSupport {
    * @param singleton instance of SingletonSupport
    */
   public static final void unregister(final SingletonSupport singleton) {
-    if (logD.isInfoEnabled()) {
-      logD.info("SingletonSupport.unregister : remove " + getSingletonLogName(singleton));
+    if (logB.isWarnEnabled()) {
+      logB.warn("SingletonSupport.unregister : remove " + getSingletonLogName(singleton));
     }
     if (isRunning()) {
       managedInstances.remove(singleton);
@@ -186,8 +192,8 @@ public abstract class SingletonSupport extends LogSupport {
    * Called on exit (clean up code)
    */
   public static final void onExit() {
-    if (logD.isInfoEnabled()) {
-      logD.info("SingletonSupport.onExit : enter");
+    if (logB.isWarnEnabled()) {
+      logB.warn("SingletonSupport.onExit : enter");
     }
 
     if (!JavaUtils.isEmpty(managedInstances)) {
@@ -196,8 +202,8 @@ public abstract class SingletonSupport extends LogSupport {
 
       managedInstances.drainTo(instances);
 
-      if (logD.isInfoEnabled()) {
-        logD.info("SingletonSupport.onExit : instances to free : " + CollectionUtils.toString(instances));
+      if (logB.isWarnEnabled()) {
+        logB.warn("SingletonSupport.onExit : instances to free : " + CollectionUtils.toString(instances));
       }
 
       // reverse singleton ordering :
@@ -218,8 +224,8 @@ public abstract class SingletonSupport extends LogSupport {
     // force GC :
     managedInstances = null;
 
-    if (logD.isInfoEnabled()) {
-      logD.info("SingletonSupport.onExit : exit");
+    if (logB.isWarnEnabled()) {
+      logB.warn("SingletonSupport.onExit : exit");
     }
   }
 
@@ -230,8 +236,8 @@ public abstract class SingletonSupport extends LogSupport {
    */
   protected static final void onExit(final SingletonSupport singleton) {
     if (singleton != null) {
-      if (logD.isInfoEnabled()) {
-        logD.info("SingletonSupport.onExit : clear : " + getSingletonLogName(singleton) + " : enter");
+      if (logB.isInfoEnabled()) {
+        logB.info("SingletonSupport.onExit : clear : " + getSingletonLogName(singleton) + " : enter");
       }
       try {
         // clear instance fields :
@@ -241,12 +247,32 @@ public abstract class SingletonSupport extends LogSupport {
         singleton.clearStaticReferences();
 
       } catch (final RuntimeException re) {
-        logD.error("SingletonSupport.onExit : runtime failure " + getSingletonLogName(singleton), re);
+        logB.error("SingletonSupport.onExit : runtime failure " + getSingletonLogName(singleton), re);
       }
-      if (logD.isInfoEnabled()) {
-        logD.info("SingletonSupport.onExit : clear : " + getSingletonLogName(singleton) + " : exit");
+      if (logB.isInfoEnabled()) {
+        logB.info("SingletonSupport.onExit : clear : " + getSingletonLogName(singleton) + " : exit");
       }
     }
+  }
+
+  /**
+   * Return the singleton class name
+   *
+   * @param singleton SingletonSupport instance
+   * @return singleton class name (fully qualified)
+   */
+  public static final String getSingletonName(final Object singleton) {
+    return singleton.getClass().getName();
+  }
+
+  /**
+   * Return the singleton log message [ #getSingletonName(singleton) = #singleton]
+   *
+   * @param singleton SingletonSupport instance
+   * @return singleton log message
+   */
+  public static final String getSingletonLogName(final Object singleton) {
+    return "[" + singleton + "]";
   }
 
   // ~ Constructors

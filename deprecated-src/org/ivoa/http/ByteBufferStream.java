@@ -30,9 +30,12 @@ import java.io.UnsupportedEncodingException;
 public final class ByteBufferStream extends OutputStream {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /** logger */
-  private static final Log log = LogUtil.getLoggerDev();
-
+  /**
+   * Logger for the base framework
+   * @see org.ivoa.bean.LogSupport
+   */
+  protected static Log logB = LogUtil.getLoggerBase();
+  
   //~ Members ----------------------------------------------------------------------------------------------------------
 
   /** The buffer where data is stored. */
@@ -76,8 +79,8 @@ public final class ByteBufferStream extends OutputStream {
     if (newSize > buf.length) {
       final byte[] newbuf = new byte[Math.max(buf.length << 1, newSize)];
 
-      if (log.isInfoEnabled()) {
-        log.info("ByteBufferStream.ensureCapacity : " + newSize + " <> " + buf.length);
+      if (logB.isInfoEnabled()) {
+        logB.info("ByteBufferStream.ensureCapacity : " + newSize + " <> " + buf.length);
       }
 
       System.arraycopy(buf, 0, newbuf, 0, count);
@@ -96,7 +99,7 @@ public final class ByteBufferStream extends OutputStream {
     if (newcount > buf.length) {
       final byte[] newbuf = new byte[Math.max(buf.length << 1, newcount)];
 
-      log.error("resize : " + newcount + " <> " + newbuf.length);
+      logB.error("resize : " + newcount + " <> " + newbuf.length);
 
       System.arraycopy(buf, 0, newbuf, 0, count);
       buf = newbuf;
@@ -129,7 +132,7 @@ public final class ByteBufferStream extends OutputStream {
     if (newcount > buf.length) {
       final byte[] newbuf = new byte[Math.max(buf.length << 1, newcount)];
 
-      log.error("resize : " + newcount + " <> " + newbuf.length);
+      logB.error("resize : " + newcount + " <> " + newbuf.length);
 
       System.arraycopy(buf, 0, newbuf, 0, count);
       buf = newbuf;

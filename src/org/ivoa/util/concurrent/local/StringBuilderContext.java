@@ -40,8 +40,8 @@ public final class StringBuilderContext extends LogSupport {
    * Private Constructor
    */
   protected StringBuilderContext() {
-    if (DIAGNOSTICS && logD.isInfoEnabled()) {
-      logD.info("LocalStringBuilder.Context.new : " + Thread.currentThread().getName());
+    if (DIAGNOSTICS && logB.isInfoEnabled()) {
+      logB.info("LocalStringBuilder.Context.new : " + Thread.currentThread().getName());
     }
   }
 
@@ -102,7 +102,7 @@ public final class StringBuilderContext extends LogSupport {
     if (useCache) {
       sb = buffers[pos];
     } else {
-      if (logD.isWarnEnabled()) {
+      if (logB.isWarnEnabled()) {
         log.warn("LocalStringBuilder.Context.acquire : create a new StringBuilder : consider to increment LocalStringBuilder.DEPTH = " + current + " / " + DEPTH);
       }
     }
@@ -145,15 +145,15 @@ public final class StringBuilderContext extends LogSupport {
    */
   public final void release(final StringBuilder sb) {
     if (sb != null) {
-      if (DIAGNOSTICS && logD.isInfoEnabled()) {
-        logD.info("LocalStringBuilder.Context.release : used buffer capacity : " + sb.length() + " / " + sb.capacity());
+      if (DIAGNOSTICS && logB.isInfoEnabled()) {
+        logB.info("LocalStringBuilder.Context.release : used buffer capacity : " + sb.length() + " / " + sb.capacity());
       }
       // reset buffer content :
       resetStringBuilder(sb);
 
       if (sb.capacity() > MAX_CAPACITY) {
-        if (DIAGNOSTICS && logD.isInfoEnabled()) {
-          logD.info("LocalStringBuilder.Context.release : reuse buffer capacity exceeded : " + sb.capacity() + " / " + MAX_CAPACITY);
+        if (DIAGNOSTICS && logB.isInfoEnabled()) {
+          logB.info("LocalStringBuilder.Context.release : reuse buffer capacity exceeded : " + sb.capacity() + " / " + MAX_CAPACITY);
         }
         // release it :
 

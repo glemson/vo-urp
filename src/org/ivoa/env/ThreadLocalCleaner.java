@@ -26,10 +26,8 @@ public final class ThreadLocalCleaner extends LogSupport {
   private final static String FIELD_THREADLOCALMAP_TABLE = "table";
   /** name of the attribute Thread.threadLocals.Entry.value */
   private final static String FIELD_THREADLOCALMAP_ENTRY_VALUE = "value";
-
   /** pattern to detect application classes to remove from WeakHashMap */
   private final static String CLASS_TO_REMOVE = "org.ivoa";
-
   /**
    * Temporary cached Field Thread.threadLocals
    */
@@ -54,9 +52,9 @@ public final class ThreadLocalCleaner extends LogSupport {
    * Check all threads in the current ThreadGroup
    */
   public static void cleanAndcheckThreads() {
-    if (logD.isInfoEnabled()) {
-      logD.info("ThreadLocalCleaner.cleanAndcheckThreads : begin");
-      logD.info("ThreadLocalCleaner.cleanAndcheckThreads : classLoader =\n" + ThreadLocalCleaner.class.getClassLoader());
+    if (logB.isWarnEnabled()) {
+      logB.warn("ThreadLocalCleaner.cleanAndcheckThreads : begin");
+      logB.warn("ThreadLocalCleaner.cleanAndcheckThreads : classLoader =\n" + ThreadLocalCleaner.class.getClassLoader());
     }
 
     try {
@@ -66,16 +64,16 @@ public final class ThreadLocalCleaner extends LogSupport {
       Thread.enumerate(ta);
 
       for (final Thread t : ta) {
-        if (logD.isInfoEnabled()) {
-          logD.info("ThreadLocalCleaner.cleanAndcheckThreads : cleaning thread [" + t.getName() + "] ...");
+        if (logB.isWarnEnabled()) {
+          logB.warn("ThreadLocalCleaner.cleanAndcheckThreads : cleaning thread [" + t.getName() + "] ...");
         }
         ThreadLocalCleaner.cleanThreadLocals(t, CLASS_TO_REMOVE);
       }
 
       // Checks are only logged if the debug logger is enabled for the level INFO :
-      if (logD.isInfoEnabled()) {
+      if (logB.isWarnEnabled()) {
         for (final Thread t : ta) {
-          logD.info("ThreadLocalCleaner.cleanAndcheckThreads : checking thread [" + t.getName() + "] ...");
+          logB.warn("ThreadLocalCleaner.cleanAndcheckThreads : checking thread [" + t.getName() + "] ...");
           ThreadLocalCleaner.checkThreadLocals(t);
         }
       }
@@ -83,8 +81,8 @@ public final class ThreadLocalCleaner extends LogSupport {
     } finally {
       clearFields();
     }
-    if (logD.isInfoEnabled()) {
-      logD.info("ThreadLocalCleaner.cleanAndcheckThreads : end");
+    if (logB.isWarnEnabled()) {
+      logB.warn("ThreadLocalCleaner.cleanAndcheckThreads : end");
     }
   }
 
@@ -152,8 +150,8 @@ public final class ThreadLocalCleaner extends LogSupport {
                 try {
                   for (final Object o : wm.keySet()) {
                     if (o != null && o.toString().contains(pattern)) {
-                      if (logD.isInfoEnabled()) {
-                        logD.info("Cleaning WeakHashMap :" + CollectionUtils.toString(sb, wm));
+                      if (logB.isWarnEnabled()) {
+                        logB.warn("Cleaning WeakHashMap :" + CollectionUtils.toString(sb, wm));
                       }
 
                       wm.clear();
@@ -161,7 +159,7 @@ public final class ThreadLocalCleaner extends LogSupport {
                     }
                   }
                 } catch (final RuntimeException re) {
-                  logD.error("Cleaning WeakHashMap : failure : ", re);
+                  logB.error("Cleaning WeakHashMap : failure : ", re);
                 }
               }
             }
@@ -169,7 +167,7 @@ public final class ThreadLocalCleaner extends LogSupport {
         }
       }
     } catch (final RuntimeException re) {
-      logD.error("ThreadLocalCleaner.checkThreadLocals : failure : ", re);
+      logB.error("ThreadLocalCleaner.checkThreadLocals : failure : ", re);
     }
   }
 
@@ -257,14 +255,11 @@ public final class ThreadLocalCleaner extends LogSupport {
         if (leakCount > 0) {
           sb.append("\n}");
 
-          if (logD.isInfoEnabled()) {
-            logD.info("Possible ThreadLocal leaks for thread : " + thread.getName() + " [" + leakCount + " / " + threadLocalCount + "] {"
-                + sb.toString());
-          }
+          logB.warn("Possible ThreadLocal leaks for thread : " + thread.getName() + " [" + leakCount + " / " + threadLocalCount + "] {" + sb.toString());
         }
       }
     } catch (final RuntimeException re) {
-      logD.error("ThreadLocalCleaner.checkThreadLocals : failure : ", re);
+      logB.error("ThreadLocalCleaner.checkThreadLocals : failure : ", re);
     }
   }
 }

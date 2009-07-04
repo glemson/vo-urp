@@ -4,15 +4,17 @@ import org.apache.commons.logging.Log;
 
 import org.ivoa.util.LogUtil;
 
-
 /**
  * 
  */
 public final class HttpClient {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /** logger */
-  public static final Log log = LogUtil.getLoggerDev();
+  /**
+   * Logger for the base framework
+   * @see org.ivoa.bean.LogSupport
+   */
+  protected static Log logB = LogUtil.getLoggerBase();
 
   //~ Members ----------------------------------------------------------------------------------------------------------
 
@@ -21,8 +23,7 @@ public final class HttpClient {
   private HTTPConnector http = null; // http client
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
-
-/**
+  /**
    * Creates a new HttpConnector and initialize XML et HTTP Connector
    */
   public HttpClient() {
@@ -30,7 +31,6 @@ public final class HttpClient {
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
-
   /**
    * Reset large buffer
    */
@@ -46,16 +46,16 @@ public final class HttpClient {
    * @throws CommunicationException if I/O failed
    */
   public final void retrieveDocument(final HttpDocument doc)
-                              throws CommunicationException {
+          throws CommunicationException {
     http.getResponse(doc);
 
     final int clen = doc.getContentLength();
-    double    ms   = 0d;
+    double ms = 0d;
 
     if ((ms != 0d) && (clen > 0)) {
       final double ratio = (1000d * clen) / (1024d * ms); // k octet / s
 
-      log.error("HttpClient.retrieveDocument : Transfer ratio (ko/s) : " + ratio + " == " + doc.getUrl());
+      logB.error("HttpClient.retrieveDocument : Transfer ratio (ko/s) : " + ratio + " == " + doc.getUrl());
     }
   }
 
@@ -80,7 +80,7 @@ public final class HttpClient {
    * @throws CommunicationException
    */
   public final HttpDocument retrieveHeaders(final String strURL, final String parentURL, final boolean doHead)
-                                     throws CommunicationException {
+          throws CommunicationException {
     int testNo = -1;
 
     final HttpDocument doc = http.getHeaders(strURL, parentURL, doHead);

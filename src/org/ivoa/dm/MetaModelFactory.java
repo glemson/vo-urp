@@ -111,21 +111,8 @@ public final class MetaModelFactory extends SingletonSupport {
         if (instance == null) {
             instance = prepareInstance(new MetaModelFactory());
 
-            // Post Initialization pattern :
             if (instance != null) {
-                try {
-                    instance.postInitialize();
-
-                } catch (RuntimeException re) {
-                    if (log.isInfoEnabled()) {
-                        log.info("MetaModelFactory.getInstance : runtime failure :", re);
-                    }
-
-                    // release this phantom instance (bad state) :
-                    onExit(instance);
-
-                    throw re;
-                }
+              postPrepareInstance(instance);
             }
         }
         return instance;

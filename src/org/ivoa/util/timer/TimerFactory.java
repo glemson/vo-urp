@@ -8,7 +8,6 @@ import java.util.Map;
 import org.ivoa.bean.LogSupport;
 import org.ivoa.util.LocalStringBuilder;
 
-
 /**
  * The Timer factory contains a map[key - Timer] to associate time metrics statistics to several
  * categories of operations TODO : Use the warmup 2 values to define an estimated latency in order
@@ -21,50 +20,45 @@ public final class TimerFactory extends LogSupport {
 
   // ~ Constants
   // --------------------------------------------------------------------------------------------------------
-
   /** warmup 1 cycles = 20000 */
   private final static int WARMUP_CYCLES_1 = 20 * 1000;
-
   /** warmup 2 cycles = 100000 */
   private final static int WARMUP_CYCLES_2 = 100 * 1000;
-
   /** category for the warm-up to optimize the timer code */
   private final static String WARMUP_CATEGORY = "warmup";
-
   /** initial capacity = 64 */
   private final static int CAPACITY = 32;
-
   /** List[timer] */
   private static List<AbstractTimer> timerList = new ArrayList<AbstractTimer>(CAPACITY);
-
   /** fast Map[key - timer] */
   private static Map<String, AbstractTimer> timerMap = new HashMap<String, AbstractTimer>(CAPACITY);
-
   /** threshold for long time = 1s (ms) or 1 milliSeconds (ns) */
   private final static double THRESHOLD = 1 * 1000d;
 
   /** timer unit constants */
   public static enum UNIT {
+
     /** MilliSeconds */
     ms,
     /** NanoSeconds */
     ns
   }
 
+
   static {
     // warm up 1 :
     warmUp(WARMUP_CYCLES_1, WARMUP_CATEGORY);
 
-    if (logD.isInfoEnabled()) {
-      logD.info("TimerFactory : warmup 1 (ns) : " + dumpTimers());
+    if (logB.isWarnEnabled()) {
+      logB.warn("TimerFactory : warmup 1 (ns) : " + dumpTimers());
     }
     resetTimers();
 
     // warm up 2 to get latency :
     warmUp(WARMUP_CYCLES_2, WARMUP_CATEGORY);
 
-    if (logD.isInfoEnabled()) {
-      logD.info("TimerFactory : warmup 2 (ns) : " + dumpTimers());
+    if (logB.isWarnEnabled()) {
+      logB.warn("TimerFactory : warmup 2 (ns) : " + dumpTimers());
     }
     resetTimers();
   }
@@ -90,8 +84,7 @@ public final class TimerFactory extends LogSupport {
 
   // ~ Constructors
   // -----------------------------------------------------------------------------------------------------
-
-/**
+  /**
    * Forbidden Constructor
    */
   private TimerFactory() {
@@ -100,7 +93,6 @@ public final class TimerFactory extends LogSupport {
 
   // ~ Methods
   // ----------------------------------------------------------------------------------------------------------
-
   /**
    * Returns elapsed time between 2 time values get from System.nanoTime() in milliseconds
    *
@@ -135,7 +127,7 @@ public final class TimerFactory extends LogSupport {
    */
   public static final AbstractTimer getTimer(final String category) {
     return getTimer(category, UNIT.ms, THRESHOLD);
-    }
+  }
 
   /**
    * Return an existing or a new ThresholdTimer for that category (lazy) with the default threshold
@@ -186,7 +178,7 @@ public final class TimerFactory extends LogSupport {
     synchronized (timerList) {
       for (final AbstractTimer timer : timerList) {
         sb.append("\n").append(timer.toString());
-    }
+      }
     }
 
     return LocalStringBuilder.toString(sb);
@@ -199,9 +191,9 @@ public final class TimerFactory extends LogSupport {
     synchronized (timerList) {
       timerList.clear();
       timerMap.clear();
+    }
   }
-}
-  
+
   /**
    * Return true if there is no existing timer
    * @return true if there is no existing timer
@@ -209,7 +201,6 @@ public final class TimerFactory extends LogSupport {
   public static final boolean isEmpty() {
     return timerList.isEmpty();
   }
-  
 }
 // ~ End of file
 // --------------------------------------------------------------------------------------------------------

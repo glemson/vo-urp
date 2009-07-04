@@ -15,11 +15,13 @@ public final class PoolThread extends Thread {
   // ~ Constants
   // --------------------------------------------------------------------------------------------------------
 
-  /** Dev Logger for this class and subclasses */
-  private final Log logD = LogUtil.getLoggerDev();
+  /**
+   * Logger for the base framework
+   * @see org.ivoa.bean.LogSupport
+   */
+  protected static Log logB = LogUtil.getLoggerBase();
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
-  
   /**
    * Allocates a new <code>Thread</code> object.
    * 
@@ -32,14 +34,13 @@ public final class PoolThread extends Thread {
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
-
   /**
    * Log and Interrupt this thread.
    */
   @Override
   public void interrupt() {
-    if (logD.isInfoEnabled()) {
-      logD.info(getName() + " : interrupt");
+    if (logB.isInfoEnabled()) {
+      logB.info(getName() + " : interrupt");
     }
     super.interrupt();
   }
@@ -49,8 +50,8 @@ public final class PoolThread extends Thread {
    */
   @Override
   public synchronized void start() {
-    if (logD.isInfoEnabled()) {
-      logD.info(getName() + " : start");
+    if (logB.isInfoEnabled()) {
+      logB.info(getName() + " : start");
     }
     super.start();
   }
@@ -60,14 +61,14 @@ public final class PoolThread extends Thread {
    */
   @Override
   public void run() {
-    if (logD.isInfoEnabled()) {
-      logD.info(getName() + " : before run() : ");
+    if (logB.isInfoEnabled()) {
+      logB.info(getName() + " : before run() : ");
     }
     try {
       super.run();
     } finally {
-      if (logD.isInfoEnabled()) {
-        logD.info(getName() + " : after run() : ");
+      if (logB.isInfoEnabled()) {
+        logB.info(getName() + " : after run() : ");
       }
       // Free any ThreadLocal value :
       ThreadLocalUtils.clearThreadLocals();
@@ -77,5 +78,4 @@ public final class PoolThread extends Thread {
 
   // ~ End of file
   // --------------------------------------------------------------------------------------------------------
-
 }

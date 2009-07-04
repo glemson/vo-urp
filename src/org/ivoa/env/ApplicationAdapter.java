@@ -1,12 +1,10 @@
 package org.ivoa.env;
 
-
 import java.util.Locale;
 
 import org.ivoa.bean.LogSupport;
 import org.ivoa.conf.Configuration;
 import org.ivoa.util.timer.TimerFactory;
-
 
 /**
  * This class defines a way to initialize properly the running Environment and indicate that an
@@ -17,8 +15,7 @@ import org.ivoa.util.timer.TimerFactory;
 public final class ApplicationAdapter extends LogSupport {
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
-
-/**
+  /**
    * Constructor
    */
   private ApplicationAdapter() {
@@ -26,7 +23,6 @@ public final class ApplicationAdapter extends LogSupport {
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
-
   /**
    * Start event
    */
@@ -51,7 +47,7 @@ public final class ApplicationAdapter extends LogSupport {
 
     // TimerFactory warmup and reset :
     TimerFactory.resetTimers();
-    
+
     if (log.isDebugEnabled()) {
       log.debug("ApplicationAdapter.start : exit");
     }
@@ -64,21 +60,21 @@ public final class ApplicationAdapter extends LogSupport {
     if (log.isDebugEnabled()) {
       log.debug("ApplicationAdapter.stop ...");
     }
-    
+
     ApplicationLifeCycle.onExit();
 
     // callback to clean resources :
 
     // TimerFactory dump :
-    if (logD.isWarnEnabled()) {
-      logD.warn("TimerFactory : statistics : " + TimerFactory.dumpTimers());
+    if (!TimerFactory.isEmpty() && logB.isWarnEnabled()) {
+      logB.warn("TimerFactory : statistics : " + TimerFactory.dumpTimers());
     }
-    
+
     try {
       // last one (clear logging) :
       // clean up (GC) : 
       ClassLoaderCleaner.clean();
-      
+
     } catch (final Throwable th) {
       log.error("ApplicationAdapter.stop : fatal error : ", th);
     }

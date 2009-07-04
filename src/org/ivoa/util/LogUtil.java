@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.eclipse.persistence.logging.CommonsLoggingSessionLog;
+import org.ivoa.bean.SingletonSupport;
 
 /**
  * Commons-logging & Log4J Utility class.<br/>
@@ -23,21 +24,19 @@ public final class LogUtil {
 
   /** internal diagnostic FLAG : use System.out */
   public static final boolean LOGGING_DIAGNOSTICS = false;
-
   /** internal apache commons Logging diagnostic FLAG : use System.out */
   public static final boolean FORCE_APACHE_COMMONS_LOGGING_DIAGNOSTICS = false;
-
-  /** main logger : main */
+  /** Main logger = org.ivoa */
   public static final String LOGGER_MAIN = "org.ivoa";
-
-  /** developer logger : dev */
+  /** Base framework logger = org.ivoa.base */
+  public static final String LOGGER_BASE = "org.ivoa.base";
+  /** Development logger = org.ivoa.dev */
   public static final String LOGGER_DEV = "org.ivoa.dev";
-
   /** singleton instance (java 5 memory model) */
   private static volatile LogUtil instance = null;
-
   /** shutdown flag to avoid singleton to be defined (java 5 memory model) */
   private static volatile boolean isShutdown = false;
+
 
   static {
     /* static Initializer to call onInit method */
@@ -46,13 +45,21 @@ public final class LogUtil {
 
   // ~ Members
   // ----------------------------------------------------------------------------------------------------------
-
-  /** main logger : main */
+  /**
+   * Main logger
+   * @see #LOGGER_MAIN
+   */
   private Log log;
-
-  /** developer logger : dev */
+  /**
+   * Development logger
+   * @see #LOGGER_BASE
+   */
+  private Log logBase;
+  /**
+   * Development logger
+   * @see #LOGGER_DEV
+   */
   private Log logDev;
-
   /** all loggers */
   private final Map<String, Log> logs = new HashMap<String, Log>();
 
@@ -68,7 +75,7 @@ public final class LogUtil {
   // ~ Methods
   // ----------------------------------------------------------------------------------------------------------
   /**
-   * Returns singleton instance
+   * Return the singleton instance
    * 
    * @return LogUtil singleton instance
    */
@@ -85,8 +92,8 @@ public final class LogUtil {
       }
       instance = l;
 
-      if (instance.logDev.isInfoEnabled()) {
-        instance.logDev.info("LogUtil.getInstance : new singleton : " + instance);
+      if (instance.logBase.isInfoEnabled()) {
+        instance.logBase.info("LogUtil.getInstance : new singleton : " + instance);
       }
     }
 
@@ -125,12 +132,13 @@ public final class LogUtil {
   public static final void onExit() {
     isShutdown = true;
     if (instance != null) {
-      if (instance.logDev.isInfoEnabled()) {
-        instance.logDev.info("LogUtil.getInstance : free singleton : " + instance);
+      if (instance.logBase.isWarnEnabled()) {
+        instance.logBase.warn("LogUtil.getInstance : free singleton : " + SingletonSupport.getSingletonLogName(instance));
       }
 
       // force GC :
       instance.log = null;
+      instance.logBase = null;
       instance.logDev = null;
       instance.logs.clear();
 
@@ -143,7 +151,7 @@ public final class LogUtil {
   }
 
   /**
-   * Returns true if shutdown flag is not set
+   * Return true if shutdown flag is not set
    * 
    * @return true if shutdown flag is not set
    */
@@ -176,7 +184,8 @@ public final class LogUtil {
   }
 
   /**
-   * Returns main logger : @see LOGGER_MAIN
+   * Return the Main logger :
+   * @see #LOGGER_MAIN
    * 
    * @return Log instance or null if shutdown flag is set
    */
@@ -189,7 +198,22 @@ public final class LogUtil {
   }
 
   /**
-   * Returns the developer logger : @see LOGGER_DEV
+   * Return the Base logger :
+   * @see #LOGGER_BASE
+   *
+   * @return Log instance or null if shutdown flag is set
+   */
+  public static Log getLoggerBase() {
+    Log l = null;
+    if (isRunning()) {
+      l = getInstance().getLogBase();
+    }
+    return l;
+  }
+
+  /**
+   * Return the Development logger :
+   * @see #LOGGER_DEV
    * 
    * @return Log instance or null if shutdown flag is set
    */
@@ -202,7 +226,7 @@ public final class LogUtil {
   }
 
   /**
-   * Returns a logger for the given key (category)
+   * Return a logger for the given key (category)
    * 
    * @param key logger name defined in Log4J.xml
    * @return Log instance or null if shutdown flag is set
@@ -213,77 +237,6 @@ public final class LogUtil {
       l = getInstance().getLog(key);
     }
     return l;
-  }
-
-  /**
-   * Inits loggers and checks if Log4J is well configured
-   * 
-   * @throws IllegalStateException if the logger is not a Log4JLogger
-   */
-  private void init() {
-    this.log = this.getLog(LOGGER_MAIN);
-
-    if (!(this.log instanceof org.apache.commons.logging.impl.Log4JLogger)) {
-      throw new IllegalStateException(
-          "LogUtil : apache Log4J library or log4j.xml file are not present in classpath !");
-    }
-
-    // TODO : check if logger has an appender (use parent hierarchy if needed)
-    if (this.log.isWarnEnabled()) {
-      this.log.warn("LogUtil : logging enabled now.");
-    }
-
-    this.logDev = this.getLog(LOGGER_DEV);
-  }
-
-  /**
-   * Returns a logger for the given key
-   * 
-   * @param key logger name in log4j.xml
-   * @return Log
-   * @throws IllegalStateException if the LogFactory returns no logger for the given key
-   */
-  private Log getLog(final String key) {
-    Log l = this.logs.get(key);
-
-    if (l == null) {
-      l = LogFactory.getLog(key);
-
-      if (l != null) {
-        this.addLog(key, l);
-      } else {
-        throw new IllegalStateException(
-            "LogUtil : Log4J is not initialized correctly : missing logger [" + key
-                + "] (check log4j.xml) !");
-      }
-    }
-
-    return l;
-  }
-
-  /**
-   * Adds Log into logs map
-   * 
-   * @param key alias
-   * @param logger Log to add
-   */
-  private void addLog(final String key, final Log logger) {
-    this.logs.put(key, logger);
-  }
-
-  /**
-   * Changes Level for all Loggers to given level
-   * 
-   * @param level Log4J Level
-   */
-  private void setLevel(final org.apache.log4j.Level level) {
-    if (log.isWarnEnabled()) {
-      log.warn("LogUtil : level changed to : " + level.toString());
-    }
-
-    for (final Log l : this.logs.values()) {
-        setLevel(l, level);
-    }
   }
 
   /**
@@ -308,8 +261,8 @@ public final class LogUtil {
   }
 
   /**
-   * Returns Log4JLogger
-   * 
+   * Return the Log4JLogger corresponding to the Log instance
+   *
    * @param l Log
    * @return Log4JLogger
    */
@@ -318,24 +271,103 @@ public final class LogUtil {
   }
 
   /**
-   * Returns main logger
+   * Initialize loggers and checks if Log4J is well configured
    * 
+   * @throws IllegalStateException if the logger is not a Log4JLogger
+   */
+  private void init() {
+    this.log = this.getLog(LOGGER_MAIN);
+
+    if (!(this.log instanceof org.apache.commons.logging.impl.Log4JLogger)) {
+      throw new IllegalStateException(
+              "LogUtil : apache Log4J library or log4j.xml file are not present in classpath !");
+    }
+
+    // TODO : check if logger has an appender (use parent hierarchy if needed)
+    if (this.log.isWarnEnabled()) {
+      this.log.warn("LogUtil : logging enabled now.");
+    }
+
+    this.logBase = this.getLog(LOGGER_BASE);
+    this.logDev = this.getLog(LOGGER_DEV);
+  }
+
+  /**
+   * Return a logger for the given key
+   * 
+   * @param key logger name in log4j.xml
    * @return Log
+   * @throws IllegalStateException if the LogFactory returns no logger for the given key
+   */
+  private Log getLog(final String key) {
+    Log l = this.logs.get(key);
+
+    if (l == null) {
+      l = LogFactory.getLog(key);
+
+      if (l != null) {
+        this.addLog(key, l);
+      } else {
+        throw new IllegalStateException(
+                "LogUtil : Log4J is not initialized correctly : missing logger [" + key + "] (check log4j.xml) !");
+      }
+    }
+
+    return l;
+  }
+
+  /**
+   * Add a Log into the logs map
+   * 
+   * @param key alias
+   * @param logger Log to add
+   */
+  private void addLog(final String key, final Log logger) {
+    this.logs.put(key, logger);
+  }
+
+  /**
+   * Change Log Levels for all Loggers to given level
+   * 
+   * @param level Log4J Level
+   */
+  private void setLevel(final org.apache.log4j.Level level) {
+    if (log.isWarnEnabled()) {
+      log.warn("LogUtil : level changed to : " + level.toString());
+    }
+
+    for (final Log l : this.logs.values()) {
+      setLevel(l, level);
+    }
+  }
+
+  /**
+   * Return the Main logger
+   * 
+   * @return Main Log
    */
   private final Log getLog() {
     return this.log;
   }
 
   /**
-   * Returns developer logger
-   * 
-   * @return Log
+   * Return the Base logger
+   *
+   * @return Base Log
+   */
+  private final Log getLogBase() {
+    return this.logBase;
+  }
+
+  /**
+   * Return the Development logger
+   *
+   * @return Development Log
    */
   private final Log getLogDev() {
     return this.logDev;
   }
 
-  // public methods :
   /**
    * Changes Level for all Loggers to DEBUG Level
    */

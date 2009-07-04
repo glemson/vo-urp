@@ -47,8 +47,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class HTTPConnector {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /** logger */
-  public static final Log log = LogUtil.getLoggerDev();
+  /**
+   * Logger for the base framework
+   * @see org.ivoa.bean.LogSupport
+   */
+  protected static Log logB = LogUtil.getLoggerBase();
+
+
   /** traces Http de debuggage */
   private static final boolean DO_HTTP_DEBUG = false;
   /** traces Http de monitoring */
@@ -115,9 +120,9 @@ public final class HTTPConnector {
       // Debug HttpClient logs :
       if (DO_HTTP_DEBUG) {
         System.setProperty("org.apache.commons.logging.Log", "org.apache.commons.logging.impl.SimpleLog");
-        System.setProperty("org.apache.commons.logging.simplelog.showdatetime", "true");
-        System.setProperty("org.apache.commons.logging.simplelog.log.httpclient.wire.header", "debug");
-        System.setProperty("org.apache.commons.logging.simplelog.log.org.apache.commons.httpclient", "debug");
+        System.setProperty("org.apache.commons.logging.simplelogB.showdatetime", "true");
+        System.setProperty("org.apache.commons.logging.simplelogB.logB.httpclient.wire.header", "debug");
+        System.setProperty("org.apache.commons.logging.simplelogB.logB.org.apache.commons.httpclient", "debug");
       }
 
       httpclient = new HttpClient(new MultiThreadedHttpConnectionManager());
@@ -143,8 +148,8 @@ public final class HTTPConnector {
    * Clears large buffers : up to file size !
    */
   public void reset() {
-    if (log.isDebugEnabled()) {
-      log.debug("HTTPConnector.reset : done");
+    if (logB.isDebugEnabled()) {
+      logB.debug("HTTPConnector.reset : done");
     }
 
     out = null;
@@ -183,8 +188,8 @@ public final class HTTPConnector {
    */
   protected final void sendRequest(final HttpMethodBase method)
                             throws CommunicationException {
-    if (log.isDebugEnabled()) {
-      log.debug("HTTPConnector.sendRequest : before ");
+    if (logB.isDebugEnabled()) {
+      logB.debug("HTTPConnector.sendRequest : before ");
     }
 
     try {
@@ -197,8 +202,8 @@ public final class HTTPConnector {
       throw new CommunicationException("kMsgErrorHTTPConnection", "HTTP Connection failure", ioe);
     }
 
-    if (log.isDebugEnabled()) {
-      log.debug("HTTPConnector.sendRequest : done ");
+    if (logB.isDebugEnabled()) {
+      logB.debug("HTTPConnector.sendRequest : done ");
     }
   }
 
@@ -282,8 +287,8 @@ public final class HTTPConnector {
    */
   public final HttpDocument getHeaders(final String url, final String parentURL, final boolean doHead)
                                 throws CommunicationException {
-    if (log.isDebugEnabled()) {
-      log.debug("HTTPConnector.getHeaders  : URL : " + url);
+    if (logB.isDebugEnabled()) {
+      logB.debug("HTTPConnector.getHeaders  : URL : " + url);
     }
 
     HttpMethodBase method = null;
@@ -322,8 +327,8 @@ public final class HTTPConnector {
       }
     }
 
-    if (log.isDebugEnabled()) {
-      log.debug("HTTPConnector.getHeaders  : exit");
+    if (logB.isDebugEnabled()) {
+      logB.debug("HTTPConnector.getHeaders  : exit");
     }
 
     return doc;
@@ -338,14 +343,14 @@ public final class HTTPConnector {
    */
   public final void getResponse(final HttpDocument doc)
                          throws CommunicationException {
-    if (log.isDebugEnabled()) {
-      log.debug("HTTPConnector.getResponse  : enter");
+    if (logB.isDebugEnabled()) {
+      logB.debug("HTTPConnector.getResponse  : enter");
     }
 
     extractResponse(doc);
 
-    if (log.isDebugEnabled()) {
-      log.debug("HTTPConnector.getResponse  : exit");
+    if (logB.isDebugEnabled()) {
+      logB.debug("HTTPConnector.getResponse  : exit");
     }
   }
 
@@ -355,8 +360,8 @@ public final class HTTPConnector {
    * @param doc
    */
   public final void reset(final HttpDocument doc) {
-    if (log.isDebugEnabled()) {
-      log.debug("HTTPConnector.reset  : enter");
+    if (logB.isDebugEnabled()) {
+      logB.debug("HTTPConnector.reset  : enter");
     }
 
     if (doc != null) {
@@ -368,8 +373,8 @@ public final class HTTPConnector {
       method.releaseConnection();
     }
 
-    if (log.isDebugEnabled()) {
-      log.debug("HTTPConnector.reset  : exit");
+    if (logB.isDebugEnabled()) {
+      logB.debug("HTTPConnector.reset  : exit");
     }
   }
 
@@ -384,16 +389,16 @@ public final class HTTPConnector {
 
     doc.setStatus(status);
 
-    if (log.isDebugEnabled()) {
-      log.debug("HTTPConnector.extractHeader : status code : " + status);
+    if (logB.isDebugEnabled()) {
+      logB.debug("HTTPConnector.extractHeader : status code : " + status);
     }
 
     final Header[] headers = method.getResponseHeaders();
 
     if (headers != null) {
       for (int i = 0, size = headers.length; i < size; i++) {
-        if (log.isDebugEnabled()) {
-          log.debug("header " + headers[i].getName() + " : " + headers[i].getValue());
+        if (logB.isDebugEnabled()) {
+          logB.debug("header " + headers[i].getName() + " : " + headers[i].getValue());
         }
       }
     }
@@ -403,8 +408,8 @@ public final class HTTPConnector {
     if (header != null) {
       doc.setContentType(header.getValue());
 
-      if (log.isDebugEnabled()) {
-        log.debug("HTTPConnector.extractHeader : content type : " + doc.getContentType());
+      if (logB.isDebugEnabled()) {
+        logB.debug("HTTPConnector.extractHeader : content type : " + doc.getContentType());
       }
     }
 
@@ -414,15 +419,15 @@ public final class HTTPConnector {
       try {
         final int len = Integer.parseInt(header.getValue());
 
-        if (log.isDebugEnabled()) {
-          log.debug("HTTPConnector.extractHeader : content-length : " + len);
+        if (logB.isDebugEnabled()) {
+          logB.debug("HTTPConnector.extractHeader : content-length : " + len);
         }
 
         if (len > 0) {
           doc.setContentLength(len);
         }
       } catch (final NumberFormatException nfe) {
-        log.error("HTTPConnector.extractHeader : parse content-length failure : ", nfe);
+        logB.error("HTTPConnector.extractHeader : parse content-length failure : ", nfe);
       }
     }
 
@@ -436,8 +441,8 @@ public final class HTTPConnector {
 
         final long lastModified = usCalendar.getTime().getTime();
 
-        if (log.isDebugEnabled()) {
-          log.debug("HTTPConnector.extractHeader : Last-Modified : " + usCalendar.getTime());
+        if (logB.isDebugEnabled()) {
+          logB.debug("HTTPConnector.extractHeader : Last-Modified : " + usCalendar.getTime());
         }
 
         doc.setLast(lastModified);
@@ -459,8 +464,8 @@ public final class HTTPConnector {
     if (! (method instanceof GetMethod)) {
       method = new GetMethod(doc.getUrl());
 
-      if (log.isDebugEnabled()) {
-        log.debug("HTTPConnector.extractResponse  : send Get Request : " + doc.getUrl());
+      if (logB.isDebugEnabled()) {
+        logB.debug("HTTPConnector.extractResponse  : send Get Request : " + doc.getUrl());
       }
 
       HttpState hs = null;
@@ -477,14 +482,14 @@ public final class HTTPConnector {
         }
       }
 
-      if (log.isDebugEnabled()) {
-        log.debug("HTTPConnector.extractResponse  : sendRequest finished");
+      if (logB.isDebugEnabled()) {
+        logB.debug("HTTPConnector.extractResponse  : sendRequest finished");
       }
     }
 
     if (doc.getStatus() != HttpStatus.SC_OK) {
-      if (log.isDebugEnabled()) {
-        log.debug("HTTPConnector.extractResponse : status code : " + doc.getStatus());
+      if (logB.isDebugEnabled()) {
+        logB.debug("HTTPConnector.extractResponse : status code : " + doc.getStatus());
       }
 
       doc.setMethod(null);
@@ -514,8 +519,8 @@ public final class HTTPConnector {
       out.reset();
 
       if (clen > 0) {
-        if (log.isInfoEnabled()) {
-          log.info("HTTPConnector.extractResponse : ensureCapacity : " + clen);
+        if (logB.isInfoEnabled()) {
+          logB.info("HTTPConnector.extractResponse : ensureCapacity : " + clen);
         }
 
         out.ensureCapacity(clen);
@@ -528,8 +533,8 @@ public final class HTTPConnector {
     InputStream in = null;
 
     try {
-      if (log.isInfoEnabled()) {
-        log.info("HTTPConnector.extractResponse : before download ");
+      if (logB.isInfoEnabled()) {
+        logB.info("HTTPConnector.extractResponse : before download ");
       }
 
       in = new BufferedInputStream(method.getResponseBodyAsStream(), IO_BUFFER_SIZE);
@@ -556,11 +561,11 @@ public final class HTTPConnector {
               }
             }
 
-            if (log.isInfoEnabled()) {
-              log.info("HTTPConnector.extractResponse : downloaded part  : " + pos);
+            if (logB.isInfoEnabled()) {
+              logB.info("HTTPConnector.extractResponse : downloaded part  : " + pos);
 
               if (clen > 0) {
-                log.info("HTTPConnector.extractResponse : downloaded ratio = " + (pos / clen));
+                logB.info("HTTPConnector.extractResponse : downloaded ratio = " + (pos / clen));
               }
             }
 
@@ -569,22 +574,22 @@ public final class HTTPConnector {
         }
       }
 
-      if (log.isInfoEnabled()) {
-        log.info("HTTPConnector.extractResponse : after download ");
+      if (logB.isInfoEnabled()) {
+        logB.info("HTTPConnector.extractResponse : after download ");
       }
 
       b = out.toByteArray();
 
-      if (log.isInfoEnabled()) {
-        log.info("HTTPConnector.extractResponse : after toByteArray ");
+      if (logB.isInfoEnabled()) {
+        logB.info("HTTPConnector.extractResponse : after toByteArray ");
       }
     } catch (final IOException ioe) {
-      log.error("HTTPConnector.extractResponse : content binary failure ", ioe);
+      logB.error("HTTPConnector.extractResponse : content binary failure ", ioe);
     } finally {
       try {
         in.close();
       } catch (final IOException ioe) {
-        log.error("HTTPConnector.extractResponse : content binary failure ", ioe);
+        logB.error("HTTPConnector.extractResponse : content binary failure ", ioe);
       }
 
       doc.setMethod(null);
@@ -597,8 +602,8 @@ public final class HTTPConnector {
       doc.setContentLength(b.length);
     }
 
-    if (log.isDebugEnabled()) {
-      log.debug("HTTPConnector.extractResponse : binary length : " + b.length);
+    if (logB.isDebugEnabled()) {
+      logB.debug("HTTPConnector.extractResponse : binary length : " + b.length);
     }
 
     doc.setBinary(b);
@@ -607,8 +612,8 @@ public final class HTTPConnector {
       stopOperation(hs, doc.getContentLength(), "last : " + doc.getLast() + " ctype : " + doc.getContentType());
     }
 
-    if (log.isDebugEnabled()) {
-      log.debug("HTTPConnector.extractResponse : exit");
+    if (logB.isDebugEnabled()) {
+      logB.debug("HTTPConnector.extractResponse : exit");
     }
   }
 
@@ -636,8 +641,8 @@ public final class HTTPConnector {
       return new String[0]; // stream in problem
     }
 
-    if (log.isDebugEnabled()) {
-      log.debug("HTTPConnector.postFile  : URL : " + url);
+    if (logB.isDebugEnabled()) {
+      logB.debug("HTTPConnector.postFile  : URL : " + url);
     }
 
     PostMethod post = new PostMethod(url);
@@ -679,8 +684,8 @@ public final class HTTPConnector {
         return false;
       }
 
-      if (log.isDebugEnabled()) {
-        log.debug("MyHttpMethodRetryHandler.retryMethod : " + method.getPath() + " : " + executionCount, exception);
+      if (logB.isDebugEnabled()) {
+        logB.debug("MyHttpMethodRetryHandler.retryMethod : " + method.getPath() + " : " + executionCount, exception);
       }
 
       if (exception instanceof NoHttpResponseException) {
@@ -699,8 +704,8 @@ public final class HTTPConnector {
         return true;
       }
 
-      if (log.isDebugEnabled()) {
-        log.debug("MyHttpMethodRetryHandler.retryMethod : " + method.getPath() + " : skip retry : ", exception);
+      if (logB.isDebugEnabled()) {
+        logB.debug("MyHttpMethodRetryHandler.retryMethod : " + method.getPath() + " : skip retry : ", exception);
       }
 
       // otherwise do not retry

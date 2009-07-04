@@ -57,10 +57,20 @@ public class BaseServlet extends HttpServlet {
    */
   public static final String OUTPUT_TITLE = "title";
 
-  /* LogSupport code */
-  /** Logger for this class and subclasses : @see org.ivoa.bean.LogSupport */
+  /**
+   * Main Logger for the application
+   * @see org.ivoa.bean.LogSupport
+   */
   protected static Log log = LogUtil.getLogger();
-  /** Dev Logger for this class and subclasses : @see org.ivoa.bean.LogSupport */
+  /**
+   * Logger for the base framework
+   * @see org.ivoa.bean.LogSupport
+   */
+  protected static Log logB = LogUtil.getLoggerBase();
+  /**
+   * Logger for development purposes
+   * @see org.ivoa.bean.LogSupport
+   */
   protected static Log logD = LogUtil.getLoggerDev();
 
   //~ Members ----------------------------------------------------------------------------------------------------------

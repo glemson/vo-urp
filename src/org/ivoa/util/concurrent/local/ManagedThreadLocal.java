@@ -15,11 +15,11 @@ public class ManagedThreadLocal<T> extends ThreadLocal<T> {
   // ~ Constants
   // --------------------------------------------------------------------------------------------------------
 
-  /** Logger for this class and subclasses */
-  protected static Log log = LogUtil.getLogger();
-
-  /** Dev Logger for this class and subclasses */
-  protected static Log logD = LogUtil.getLoggerDev();
+  /**
+   * Logger for the base framework
+   * @see org.ivoa.bean.LogSupport
+   */
+  protected static Log logB = LogUtil.getLoggerBase();
 
   // ~ Constructors
   // --------------------------------------------------------------------------------------------------------
