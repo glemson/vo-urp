@@ -261,7 +261,7 @@ public final class ModelFactory extends SingletonSupport {
       final Unmarshaller u = getJaxbFactory().createUnMarshaller();
 
       // adds identityListener to manage references & collections properly :
-      u.setListener(new CustomUnmarshallListener());
+      u.setListener(CustomUnmarshallListener.getInstance());
 
       // unmarshal an instance document into a tree of Java content
       // objects composed of classes from the VO-URP generated root package.

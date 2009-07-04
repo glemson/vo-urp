@@ -113,9 +113,9 @@ public final class ReflectionUtils extends LogSupport {
     try {
       value = field.get(subject);
     } catch (final IllegalAccessException iae) {
-      logD.error("ReflectionUtils.getFieldValue : failure : ", iae);
+      logB.error("ReflectionUtils.getFieldValue : failure : ", iae);
     } catch (final IllegalArgumentException iarge) {
-      logD.error("ReflectionUtils.getFieldValue : failure : ", iarge);
+      logB.error("ReflectionUtils.getFieldValue : failure : ", iarge);
     }
     return value;
   }
@@ -170,7 +170,7 @@ public final class ReflectionUtils extends LogSupport {
   public static Object invokeMethod(final Method method, final Object subject, final Object[] parameters) {
     Object value = null;
     try {
-      if (logD.isDebugEnabled()) {
+      if (logB.isDebugEnabled()) {
         log.debug("ReflectionUtils.invokeMethod : method  = " + method);
         log.debug("ReflectionUtils.invokeMethod : subject = " + subject);
         log.debug("ReflectionUtils.invokeMethod : parameters = " + Arrays.toString(parameters));
@@ -178,11 +178,11 @@ public final class ReflectionUtils extends LogSupport {
       
       value = method.invoke(subject, parameters);
     } catch (final IllegalAccessException iae) {
-      logD.error("ReflectionUtils.invokeMethod : failure : ", iae);
+      logB.error("ReflectionUtils.invokeMethod : failure : ", iae);
     } catch (final IllegalArgumentException iarge) {
-      logD.error("ReflectionUtils.invokeMethod : failure : ", iarge);
+      logB.error("ReflectionUtils.invokeMethod : failure : ", iarge);
     } catch (final InvocationTargetException ite) {
-      logD.error("ReflectionUtils.invokeMethod : failure : ", ite);
+      logB.error("ReflectionUtils.invokeMethod : failure : ", ite);
     }
     return value;
   }

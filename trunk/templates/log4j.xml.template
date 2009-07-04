@@ -34,8 +34,12 @@
     <appender-ref ref="fileRoot"/>
   </logger>
 
-  <logger name="org.ivoa.dev">
+  <logger name="org.ivoa.base">
     <level value="warn"/>
+  </logger>
+
+  <logger name="org.ivoa.dev">
+    <level value="debug"/>
   </logger>
 
   <logger name="org.eclipse.persistence">

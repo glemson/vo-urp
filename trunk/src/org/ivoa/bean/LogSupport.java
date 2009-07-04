@@ -11,9 +11,20 @@ import org.ivoa.util.LogUtil;
 public class LogSupport {
 //~ Constants --------------------------------------------------------------------------------------------------------
 
-  /** Logger for this class and subclasses */
+  /** 
+   * Main Logger for the application
+   * @see org.ivoa.bean.LogSupport
+   */
   protected static Log log = LogUtil.getLogger();
-  /** Dev Logger for this class and subclasses */
+  /** 
+   * Logger for the base framework
+   * @see org.ivoa.bean.LogSupport
+   */
+  protected static Log logB = LogUtil.getLoggerBase();
+  /** 
+   * Logger for development purposes
+   * @see org.ivoa.bean.LogSupport
+   */
   protected static Log logD = LogUtil.getLoggerDev();
 
 //~ End of file --------------------------------------------------------------------------------------------------------

@@ -19,7 +19,6 @@ public final class LocalStringBuilder extends SingletonSupport {
 
   /** flag to execute the micro benchmark at startup */
   private final static boolean DO_MICRO_BENCHMARK = true;
-
   /** buffer thread Local */
   private static ThreadLocal<StringBuilderContext> bufferLocal = ThreadLocalUtils.registerRequestThreadLocal(new StringBuilderThreadLocal());
 
@@ -92,8 +91,8 @@ public final class LocalStringBuilder extends SingletonSupport {
     if (isRunning()) {
       return bufferLocal.get().acquire();
     }
-    if (StringBuilderContext.DIAGNOSTICS && logD.isInfoEnabled()) {
-      logD.info("LocalStringBuilder.getBuffer : createStringBuilder because threadLocal is not running : ", new Throwable());
+    if (StringBuilderContext.DIAGNOSTICS && logB.isInfoEnabled()) {
+      logB.info("LocalStringBuilder.getBuffer : createStringBuilder because threadLocal is not running : ", new Throwable());
     }
     return StringBuilderContext.createStringBuilder();
   }
@@ -168,7 +167,7 @@ public final class LocalStringBuilder extends SingletonSupport {
    * acc=3538450.0, avg=17604.228855721394}
    */
   protected static void microbenchmark() {
-    if (logD.isWarnEnabled()) {
+    if (logB.isWarnEnabled()) {
       final String value = "---------------------------------------";
 
       final AbstractTimer timer = TimerFactory.getTimer("LocalStringBuilder", UNIT.ns);
@@ -188,5 +187,4 @@ public final class LocalStringBuilder extends SingletonSupport {
       TimerFactory.resetTimers();
     }
   }
-
 }

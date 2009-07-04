@@ -16,18 +16,14 @@ public final class CustomThreadFactory extends LogSupport implements ThreadFacto
   //~ Members ----------------------------------------------------------------------------------------------------------
   /** thread pool name */
   private final String name;
-
   /** thread priority */
   private final int priority;
-
   /** global thread counter */
   private final AtomicInteger threadNumber = new AtomicInteger(1);
-
   /** thread name prefix */
   private final String namePrefix;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
-  
   /**
    * Constructor with the given thread pool name and use the normal thread priority
    * 
@@ -50,7 +46,6 @@ public final class CustomThreadFactory extends LogSupport implements ThreadFacto
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
-
   /**
    * Creates a new Thread (PoolThread) with the name [thread pool name]-thread-[number] and set its
    * priority
@@ -59,8 +54,8 @@ public final class CustomThreadFactory extends LogSupport implements ThreadFacto
    * @return new thread created
    */
   public Thread newThread(final Runnable r) {
-    if (logD.isDebugEnabled()) {
-      logD.debug("CustomThreadFactory.newThread : enter with task : " + r);
+    if (logB.isDebugEnabled()) {
+      logB.debug("CustomThreadFactory.newThread : enter with task : " + r);
     }
     final Thread t = new PoolThread(r, namePrefix + threadNumber.getAndIncrement());
     if (t.isDaemon()) {
@@ -72,9 +67,8 @@ public final class CustomThreadFactory extends LogSupport implements ThreadFacto
       t.setPriority(Thread.NORM_PRIORITY);
     }
 
-    if (logD.isInfoEnabled()) {
-      logD.info("CustomThreadFactory.newThread : exit with thread : " + t + " with priority["
-          + t.getPriority() + "] for task : " + r);
+    if (logB.isWarnEnabled()) {
+      logB.warn("CustomThreadFactory.newThread : exit with thread : " + t + " with priority[" + t.getPriority() + "] for task : " + r);
     }
     return t;
   }
@@ -103,5 +97,4 @@ public final class CustomThreadFactory extends LogSupport implements ThreadFacto
   public AtomicInteger getThreadNumber() {
     return threadNumber;
   }
-
 }
