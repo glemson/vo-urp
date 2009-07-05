@@ -1,5 +1,7 @@
 package org.ivoa.util.timer;
 
+import org.ivoa.util.stat.StatLong;
+
 /**
  * This class contains statistics for time metrics
  *
@@ -9,19 +11,12 @@ public final class Timer extends AbstractTimer {
   // ~ Members
   // ----------------------------------------------------------------------------------------------------------
 
-  /** accumulator */
-  private double acc = 0d;
-
-  /** minimum value */
-  private double min = Double.MAX_VALUE;
-
-  /** maximum value */
-  private double max = Double.MIN_VALUE;
+  /** statistics for elapsed time */
+  private final StatLong monitorTime = new StatLong();
 
   // ~ Constructors
   // -----------------------------------------------------------------------------------------------------
-
-/**
+  /**
    * Protected Constructor for Timer objects : use the factory pattern
    * 
    * @see TimerFactory.UNIT
@@ -35,7 +30,6 @@ public final class Timer extends AbstractTimer {
 
   // ~ Methods
   // ----------------------------------------------------------------------------------------------------------
-
   /**
    * Add a time value
    *
@@ -45,58 +39,26 @@ public final class Timer extends AbstractTimer {
   public void add(final double time) {
     // LINUX bug :
     if (time >= 0) {
-      incN();
-      acc += time;
-
-      if (time < min) {
-        min = time;
-      }
-
-      if (time > max) {
-        max = time;
-      }
+      monitorTime.add(time);
     }
   }
 
   /**
-   * Return the accumulator
+   * Return the usage counter
    *
-   * @return accumulator
+   * @return usage counter
    */
-  public double getAcc() {
-    return acc;
+  public int getCounter() {
+    return this.monitorTime.getCounter();
   }
 
   /**
-   * Return the mean
+   * Return the time statistics
    *
-   * @return mean
+   * @return time statistics
    */
-  public double getMean() {
-    final int n = getN();
-    if (n == 0) {
-      return 0d;
-    }
-
-    return acc / n;
-  }
-
-  /**
-   * Return the maximum value
-   *
-   * @return maximum value
-   */
-  public double getMax() {
-    return max;
-  }
-
-  /**
-   * Return the minimum value
-   *
-   * @return minimum value
-   */
-  public double getMin() {
-    return min;
+  public StatLong getTimeStats() {
+    return this.monitorTime;
   }
 
   /**
@@ -106,7 +68,26 @@ public final class Timer extends AbstractTimer {
    */
   @Override
   public String toString() {
-    return super.toString() + "{" + (getN() > 0 ? "min = " + min + ", max = " + max + ", acc = " + acc + ", avg = " + getMean() : "") + "}";
+    String res = super.toString();
+
+    if (getCounter() > 0) {
+      final StatLong stat = getTimeStats();
+      res += "{" +
+              "min = " + adjustValue(stat.getMin()) + ", " +
+              "avg = " + adjustValue(stat.getAverage()) + ", " +
+              "max = " + adjustValue(stat.getMax()) + ", " +
+              "acc = " + adjustValue(stat.getAccumulator()) + ", " +
+              "std = " + adjustValue(stat.getStdDev()) +
+              "}";
+    }
+
+    return res;
+  }
+
+  private double adjustValue(final double value) {
+    final long intValue = (long) (1000d * value);
+
+    return intValue / 1000d;
   }
 }
 // ~ End of file

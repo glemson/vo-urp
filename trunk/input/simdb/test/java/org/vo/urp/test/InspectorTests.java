@@ -4,7 +4,6 @@ import org.ivoa.bean.LogSupport;
 import org.ivoa.dm.ObjectClassType;
 import org.ivoa.dm.model.MetadataObject;
 
-import org.ivoa.env.ApplicationMain;
 
 import org.ivoa.metamodel.Attribute;
 import org.ivoa.metamodel.Collection;
@@ -13,13 +12,12 @@ import org.ivoa.metamodel.Reference;
 import org.ivoa.metamodel.Type;
 import org.ivoa.util.CollectionUtils;
 
-
 /**
- * TODO
+ * This class tests the memory data model retrieved from the intermediate model loaded via JAXB
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public final class InspectorTests extends LogSupport implements ApplicationMain {
+public final class InspectorTests extends LogSupport {
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
   /**
@@ -29,18 +27,8 @@ public final class InspectorTests extends LogSupport implements ApplicationMain 
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
-
   /**
-   * TODO : Method Description
-   *
-   * @param args
-   */
-  public void run(final String[] args) {
-    // nothing to do
-  }
-
-  /**
-   * TODO : Method Description
+   * Dump all meta data fro the given MetadataObject instance
    *
    * @param m MetadataObject to process
    */
@@ -144,10 +132,10 @@ public final class InspectorTests extends LogSupport implements ApplicationMain 
    * @param m MetadataObject to inspect
    */
   public void dumpCollections(final ObjectClassType ct, final MetadataObject m) {
-    String               propertyName;
-    Object               value;
+    String propertyName;
+    Object value;
     java.util.Collection<?> col;
-    int                  size;
+    int size;
 
     for (final Collection c : ct.getCollections().values()) {
       propertyName = c.getName();

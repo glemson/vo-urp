@@ -10,9 +10,8 @@ import org.ivoa.simdb.DataType;
 import org.ivoa.simdb.protocol.InputParameter;
 import org.ivoa.simdb.protocol.Simulator;
 
-
 /**
- * TODO : Class Description
+ * This class tests the ModelFactory marshall / unmarshall functions
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
@@ -20,17 +19,15 @@ public final class XMLTests extends LogSupport implements ApplicationMain {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /**
-   * local /test/ folder
+   * local /test folder
    */
   public static final String TEST_PATH = "../test/";
-
   /**
    * xml file extension
    */
   public static final String XML_EXT = ".xml";
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
-
   /**
    * Constructor
    */
@@ -38,11 +35,10 @@ public final class XMLTests extends LogSupport implements ApplicationMain {
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
-
   /**
-   * TODO : Method Description
+   * This method is the main entry point to execute test code
    *
-   * @param args
+   * @param args command line arguments
    */
   public void run(final String[] args) {
     log.info("XMLTests.run : enter");
@@ -76,20 +72,19 @@ public final class XMLTests extends LogSupport implements ApplicationMain {
   }
 
   /**
-   * TODO : Method Description
+   * Dump the given MetadataObject instance as an XML document to test marshalling
    *
-   * @param e
+   * @param o object to process
    */
-  public void testMarshall(final MetadataObject e) {
+  public void testMarshall(final MetadataObject o) {
     // create an Unmarshaller
-//    ModelFactory.getInstance().getJaxbFactory().dump(e, 4096);
-    System.out.print(ModelFactory.getInstance().marshallObject(e, 4096));
+    System.out.print(ModelFactory.getInstance().marshallObject(o, 4096));
   }
-  
+
   /**
-   * TODO : Method Description
+   * Save the given MetadataObject instance as an XML document to test marshalling
    *
-   * @param o object to save
+   * @param o object to process
    * @param filePath file to produce
    */
   public void saveMarshall(final MetadataObject o, final String filePath) {

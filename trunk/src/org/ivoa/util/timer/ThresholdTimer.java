@@ -9,16 +9,16 @@ public final class ThresholdTimer extends AbstractTimer {
   // ~ Members
   // ----------------------------------------------------------------------------------------------------------
 
+  /** occurence counter */
+  private int counter = 0;
   /**
    * Timer instance for the low values
    */
   private final Timer low;
-
   /**
    * Timer instance for the high values
    */
   private final Timer high;
-
   /**
    * High-value threshold
    */
@@ -26,7 +26,6 @@ public final class ThresholdTimer extends AbstractTimer {
 
   // ~ Constructors
   // -----------------------------------------------------------------------------------------------------
-
   /**
    * Protected Constructor for ThresholdTimer objects : use the factory pattern
    *
@@ -45,7 +44,6 @@ public final class ThresholdTimer extends AbstractTimer {
 
   // ~ Methods
   // ----------------------------------------------------------------------------------------------------------
-  
   /**
    * Add a time value
    *
@@ -53,11 +51,21 @@ public final class ThresholdTimer extends AbstractTimer {
    */
   @Override
   public void add(final double time) {
+    this.counter++;
     if (time > threshold) {
       high.add(time);
     } else {
       low.add(time);
     }
+  }
+
+  /**
+   * Return the usage counter
+   *
+   * @return usage counter
+   */
+  public int getCounter() {
+    return this.counter;
   }
 
   /**
@@ -85,8 +93,9 @@ public final class ThresholdTimer extends AbstractTimer {
    */
   @Override
   public String toString() {
-    return "ThresholdTimer (threshold = " + threshold + " " + getUnit() + ") {\n  Low  : " + getTimerLow().toString() + "\n  High : "
-        + getTimerHigh().toString() + "\n}";
+    return super.toString() + "(threshold = " + threshold + " " + getUnit() + ") {\n  " +
+            "Low  : " + getTimerLow().toString() + "\n  " +
+            "High : " + getTimerHigh().toString() + "\n}";
   }
 }
 // ~ End of file

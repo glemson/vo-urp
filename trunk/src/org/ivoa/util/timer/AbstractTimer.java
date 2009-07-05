@@ -11,16 +11,11 @@ public abstract class AbstractTimer {
 
   /** category */
   private final String category;
-
   /** unit */
   private final TimerFactory.UNIT unit;
 
-  /** usage counter */
-  private int n = 0;
-
   // ~ Constructors
   // -----------------------------------------------------------------------------------------------------
-
   /**
    * Protected Constructor for AbstractTimer objects : use the factory pattern
    * 
@@ -36,7 +31,6 @@ public abstract class AbstractTimer {
 
   // ~ Methods
   // ----------------------------------------------------------------------------------------------------------
-
   /**
    * Add a time measure in milliseconds
    * 
@@ -89,16 +83,7 @@ public abstract class AbstractTimer {
    * 
    * @return usage counter
    */
-  public final int getN() {
-    return n;
-  }
-
-  /**
-   * Increments the usage counter
-   */
-  public final void incN() {
-    n++;
-  }
+  public abstract int getCounter();
 
   /**
    * Return a string representation like "Timer (#unit) [#n]"
@@ -107,7 +92,7 @@ public abstract class AbstractTimer {
    */
   @Override
   public String toString() {
-    return "Timer (" + unit + ") [" + n + "] ";
+    return "Timer [" + getCategory() + " - " + getUnit() + "] [" + getCounter() + "] ";
   }
 }
 // ~ End of file

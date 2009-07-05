@@ -1,4 +1,4 @@
-package org.vo.urp.test.mytests;
+package org.vo.urp.test;
 
 import java.util.Date;
 
