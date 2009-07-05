@@ -11,7 +11,7 @@ public interface ApplicationMain {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * TODO : Method Description
+   * This method is the main entry point to execute code
    *
    * @param args command line arguments
    */

@@ -172,13 +172,15 @@ public final class LocalStringBuilder extends SingletonSupport {
 
       final AbstractTimer timer = TimerFactory.getTimer("LocalStringBuilder", UNIT.ns);
 
-      long start;
+      long start, stop;
       for (int i = 0; i < 50000; i++) {
         start = System.nanoTime();
 
         LocalStringBuilder.toString(LocalStringBuilder.getBuffer().append(value));
 
-        timer.addNanoSeconds(start, System.nanoTime());
+        stop = System.nanoTime();
+
+        timer.addNanoSeconds(start, stop);
       }
 
       log.warn("LocalStringBuilder : micro benchmark : " + TimerFactory.dumpTimers());

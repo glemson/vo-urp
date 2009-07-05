@@ -28,6 +28,8 @@ public final class TimerFactory extends LogSupport {
   private final static String WARMUP_CATEGORY = "warmup";
   /** initial capacity = 64 */
   private final static int CAPACITY = 32;
+  /** internal lock object for synchroniz'd blocks */
+  private final static Object lock = new Object();
   /** List[timer] */
   private static List<AbstractTimer> timerList = new ArrayList<AbstractTimer>(CAPACITY);
   /** fast Map[key - timer] */
@@ -158,7 +160,7 @@ public final class TimerFactory extends LogSupport {
     if (timer == null) {
       timer = new ThresholdTimer(category, unit, th);
 
-      synchronized (timerList) {
+      synchronized (lock) {
         timerList.add(timer);
         timerMap.put(category, timer);
       }
@@ -175,7 +177,7 @@ public final class TimerFactory extends LogSupport {
   public static final String dumpTimers() {
     final StringBuilder sb = LocalStringBuilder.getBuffer();
 
-    synchronized (timerList) {
+    synchronized (lock) {
       for (final AbstractTimer timer : timerList) {
         sb.append("\n").append(timer.toString());
       }
@@ -188,7 +190,7 @@ public final class TimerFactory extends LogSupport {
    * Reset all timer instances
    */
   public static final void resetTimers() {
-    synchronized (timerList) {
+    synchronized (lock) {
       timerList.clear();
       timerMap.clear();
     }
