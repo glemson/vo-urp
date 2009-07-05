@@ -227,8 +227,9 @@ public class DataModelManager extends LogSupport {
 
     /**
      * Persist (aka flush) all specified objects (and their children) to the database.<br/>
-     * Only root entity objects can be persisted as a whole.
-     *
+     * For now only root entity objects can be persisted as a whole.
+     * TODO decide whether this can be generalised.
+     * 
      * @param objects
      * @param username
      */
