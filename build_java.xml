@@ -244,7 +244,8 @@
 
 
 <!-- target makeOutput : compiles generated java code and javadoc : -->
-<target name="makeOutput" depends="format, compile, compileOutput, weaving, compileTest, makeJavaDoc">
+<target name="makeOutput" depends="format, compile, compileOutput, weaving, compileTest, makeJavaDoc"
+        description="makes all java products">
   <echo>makeOutput : done.</echo>
 </target>
 
@@ -424,7 +425,7 @@ For more information, see Logging.
 Level.OFF
 Optional
 -->
-<target name="weaving" description="perform static weaving" if="target.weaving.do">
+<target name="weaving" if="target.weaving.do">
 
   <mkdir dir="${build.weaving}"/>
 
@@ -724,18 +725,29 @@ Optional
 
 
 <!-- target run : launches test application  -->
-<target name="run" if="target.run.do">
+<target name="run" if="target.run.do" description="run unit tests ...">
   <echo message="running ${project.title} ..."/>
-  
-  <property name="log.file" value="${project.name}.log"/>
-  <delete file="${log.file}" />
+
+  <pathconvert property="log.file.path" dirsep="/">
+    <path location="${build}"/>
+  </pathconvert>
+
+  <property name="log.file" value="${log.file.path}/${project.name}.log"/>
+
+  <!-- removes log file if possible -->
+  <delete file="${log.file}" verbose="true" failonerror="false" />
+
+  <!-- indicates if the file is still present = something is running -->
+  <available property="log.file.locked" file="${log.file}" />
+
+	<fail if="log.file.locked" message="Another program is still running using the log.file : ${log.file} !" />
   
   <copy tofile="${properties}/log4j.xml" filtering="true" verbose="true" overwrite="true">
-	<fileset file="${templates}/log4j.xml.template" />
-	<filterset>
-	  <filter token="log.file" value="${log.file}" />
-	  <filter token="project.name" value="${project.name}" />
-	</filterset>
+    <fileset file="${templates}/log4j.xml.template" />
+    <filterset>
+      <filter token="log.file" value="${log.file}" />
+      <filter token="project.name" value="${project.name}" />
+    </filterset>
   </copy>
   
   <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true"  inputstring="">

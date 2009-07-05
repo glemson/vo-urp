@@ -254,7 +254,7 @@
 
 
 	<!-- main target : force to generate all documents -->
-	<target name="forceMakeAll"  depends="init, cleanOutput, cleanJava" description="make all transformations (forced)">
+	<target name="forceMakeAll"  depends="init, cleanOutput, cleanJava" description="CLEANS outputs and make all transformations (forced)">
 		<ant target="makeAll" inheritAll="false" />
 		<echo>forceMakeAll : done.</echo>
 	</target>
@@ -421,7 +421,7 @@
 	<!-- generic targets -->
 
 	<!-- target checkSource : check xmi well formed tags in source document -->
-	<target name="checkSource" description="check that xmi is well formed">
+	<target name="checkSource">
 		<echo>checkSource : starting checks on file ${input}/${source}</echo>
 
 		<xslt2 in="${input}/${source}" out="${output}/${source_checked}" style="${res}/xmiCheck.xsl" />
@@ -433,7 +433,7 @@
 
 
 	<!-- target filterSource : remove all xmi:Extension tags in source document -->
-	<target name="filterSource" description="remove all xmi:Extension tags in source document">
+	<target name="filterSource">
 		<echo>filterSource : starting filter on file ${input}/${source}</echo>
 
 		<xslt2 in="${input}/${source}" out="${output}/${source_filtered}" style="${res}/xmiFilter.xsl" />
@@ -456,7 +456,7 @@
 
 
 	<!-- target xmi2intermediate : GenTool preprocessor generating according to ivoaDMMetamodel.xsd -->
-	<target name="xmi2intermediate" description="transform XMI to intermediate">
+	<target name="xmi2intermediate">
 		<echo>xmi2intermediate : starting generate intermediate model from file ${output}/${source}</echo>
 
 		<xslt2 in="${source}" out="${output}/${source_filtered}" style="${res}/xmi2intermediate.xsl">
@@ -662,7 +662,7 @@
 
 
     <!-- target echo : echos properties -->
-    <target name="echo" depends="init" description="Echo properties">
+    <target name="echo" depends="init">
       <echoproperties />
     </target>
 
