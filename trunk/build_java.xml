@@ -739,15 +739,20 @@ Optional
   </copy>
   
   <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true"  inputstring="">
-    <jvmarg value="-XX:+UseParallelGC"/>
-    <jvmarg value="-XX:NewRatio=2"/>
     <jvmarg value="-Xms384m"/>
     <jvmarg value="-Xmx384m"/>
-<!--
+    <jvmarg value="-XX:+UseParallelGC"/>
+    <jvmarg value="-XX:NewRatio=2"/>
+    <jvmarg value="-XX:-UseAdaptiveSizePolicy"/>
+
+<!-- -->
     <jvmarg value="-verbose:gc"/>
     <jvmarg value="-XX:+PrintGCDetails"/>
     <jvmarg value="-XX:+PrintGCTimeStamps"/>
--->
+    <jvmarg value="-XX:+TraceClassUnloading"/>
+    <jvmarg value="-XX:+PrintTenuringDistribution"/>
+<!-- -->
+
     <arg value="${jpa.persistence.unit}"/>
    </java>  
 

@@ -68,7 +68,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
   //~ Members ----------------------------------------------------------------------------------------------------------
 
   /** testLOAD_BATCH_WRITE iteration */
-  private final static int WRITE_ITERATION = 100;
+  private final static int WRITE_ITERATION = 10;
   /** testLOAD_THREADS_WRITE jobs */
   private final static int WRITE_JOBS = 10;
   /** testLOAD_THREADS_WRITE number of threads */
