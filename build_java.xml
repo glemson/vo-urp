@@ -82,16 +82,6 @@
 </uptodate>
 
 
-<!-- presets -->
-
-<!-- defines eclipselink static weaving task -->
-<taskdef name="weave" classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeaveAntTask">
-  <classpath>
-    <fileset refid="jarfiles"/>
-  </classpath>
-</taskdef>
-
-
 
 
 <!-- targets -->
@@ -426,7 +416,6 @@ Level.OFF
 Optional
 -->
 <target name="weaving" if="target.weaving.do">
-
   <mkdir dir="${build.weaving}"/>
 
   <delete includeemptydirs="true" verbose="false" failonerror="false">
@@ -438,20 +427,26 @@ Optional
   <echo>to        : ${dist}/${build.gen.weave.file}</echo>
   <echo>classpath : ${dist}/${build.src.file}</echo>
 
-  <weave source="${dist}/${build.gen.file}" 
-         target="${build.weaving}"
-         loglevel="INFO">
+  <!-- the ant weave ant task cuases leaks in the ant jvm so use the java code directly -->
+
+  <java classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeave"
+        dir="${build}" fork="true" failonerror="true" inputstring="">
+
+    <arg line="-loglevel WARNING ${dist}/${build.gen.file} ${build.weaving}"/>
+
     <classpath>
+      <fileset refid="jarfiles"/>
       <pathelement location="${dist}/${build.src.file}" />
       <pathelement path="${properties}" />
     </classpath>
-  </weave>         
-  
+
+  </java>
+
   <jar jarfile="${dist}/${build.gen.weave.file}" compress="true" roundup="true" manifest="${build.weaving}/META-INF/MANIFEST.MF">
     <fileset dir="${build.weaving}" />
   </jar>
- 
-  <delete includeemptydirs="true" verbose="true" failonerror="no">
+
+  <delete includeemptydirs="true" verbose="false" failonerror="no">
     <fileset dir="${build.weaving}"/>
   </delete>
 
