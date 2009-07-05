@@ -188,7 +188,10 @@ public final class MetaModelFactory extends SingletonSupport {
         this.classTypes.clear();
         this.objectClassTypes.clear();
         this.classes.clear();
-        this.tap.clear();
+
+        if (tap != null) {
+            tap.clear();
+        }
     }
 
     /**
