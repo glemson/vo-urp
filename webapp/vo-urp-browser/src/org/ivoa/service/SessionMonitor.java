@@ -67,8 +67,8 @@ public final class SessionMonitor extends LogSupport implements HttpSessionListe
    * TODO : Method Description
    */
   protected static void onExit() {
-    if (logB.isWarnEnabled()) {
-      logB.warn("SessionMonitor.onExit : enter");
+    if (logB.isInfoEnabled()) {
+      log.info("SessionMonitor.onExit : enter");
     }
 
     if (pollTh != null) {
@@ -79,8 +79,8 @@ public final class SessionMonitor extends LogSupport implements HttpSessionListe
       pollTh = null;
     }
 
-    if (logB.isWarnEnabled()) {
-      logB.warn("SessionMonitor.onExit : exit");
+    if (logB.isInfoEnabled()) {
+      log.info("SessionMonitor.onExit : exit");
     }
   }
 
