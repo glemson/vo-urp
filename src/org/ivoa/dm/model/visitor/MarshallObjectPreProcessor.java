@@ -62,8 +62,10 @@ public final class MarshallObjectPreProcessor extends MetaDataObjectVisitor {
     @Override
     public void preProcess(final MetadataObject object) {
       getInternalState(object).setToBeMarshalled();
-      if(object.getId() >= 0) // do not set ivoId if object is purely transient.
+      if(object.getId() != null && object.getId().longValue() >= 0l) {
+        // do not set ivoId if object is purely transient.
         setIvoId(object, object.getIvoId());
+      }
     }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

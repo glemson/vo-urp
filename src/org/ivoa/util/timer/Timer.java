@@ -48,6 +48,7 @@ public final class Timer extends AbstractTimer {
    *
    * @return usage counter
    */
+  @Override
   public int getCounter() {
     return this.monitorTime.getCounter();
   }
@@ -84,6 +85,11 @@ public final class Timer extends AbstractTimer {
     return res;
   }
 
+  /**
+   * Format the given double value to keep only 3 decimal digits
+   * @param value value to adjust
+   * @return double value with only 3 decimal digits
+   */
   private double adjustValue(final double value) {
     final long intValue = (long) (1000d * value);
 
