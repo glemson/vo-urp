@@ -35,7 +35,7 @@
   </logger>
 
   <logger name="org.ivoa.base">
-    <level value="warn"/>
+    <level value="info"/>
   </logger>
 
   <logger name="org.ivoa.dev">
