@@ -28,11 +28,11 @@ public final class CommandStat extends BaseStat {
 
 	/**
 	 * Creates a new CommandStat object.
-	 * @param method operation name
+	 * @param pMethod operation name
 	 */
-	public CommandStat(final String method) {
+	public CommandStat(final String pMethod) {
 		super();
-		this.method = method;
+		this.method = pMethod;
 		this.monitorTimeOK = new StatLong();
 		this.monitorTimeFAIL = new StatLong();
 	}

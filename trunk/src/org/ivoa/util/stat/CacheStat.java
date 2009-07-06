@@ -22,11 +22,11 @@ public final class CacheStat extends BaseStat {
 
 	/**
 	 * Creates a new CommandStat object.
-	 * @param key cache key
+	 * @param pKey cache key
 	 */
-	public CacheStat(final String key) {
+	public CacheStat(final String pKey) {
 		super();
-		this.key = key;
+		this.key = pKey;
 		this.monitorTime = new StatLong();
 	}
 

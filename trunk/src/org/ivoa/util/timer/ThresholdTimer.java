@@ -64,6 +64,7 @@ public final class ThresholdTimer extends AbstractTimer {
    *
    * @return usage counter
    */
+  @Override
   public int getCounter() {
     return this.counter;
   }
