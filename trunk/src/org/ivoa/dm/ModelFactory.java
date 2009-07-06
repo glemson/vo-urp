@@ -96,14 +96,14 @@ public final class ModelFactory extends SingletonSupport {
    */
   @Override
   protected void clearStaticReferences() {
-    if (log.isWarnEnabled()) {
-      log.warn("ModelFactory.onExit : enter");
+    if (logB.isInfoEnabled()) {
+      log.info("ModelFactory.onExit : enter");
     }
     if (instance != null) {
       instance = null;
     }
-    if (log.isWarnEnabled()) {
-      log.warn("ModelFactory.onExit : exit");
+    if (logB.isInfoEnabled()) {
+      log.info("ModelFactory.onExit : exit");
     }
   }
 

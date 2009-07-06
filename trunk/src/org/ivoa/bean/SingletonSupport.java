@@ -93,8 +93,8 @@ public abstract class SingletonSupport extends LogSupport {
         // initialize :
         singleton.initialize();
 
-        if (logB.isWarnEnabled()) {
-          logB.warn("SingletonSupport.prepareInstance : new singleton ready " + getSingletonLogName(singleton));
+        if (logB.isInfoEnabled()) {
+          logB.info("SingletonSupport.prepareInstance : new singleton ready " + getSingletonLogName(singleton));
         }
 
         if (isRunning()) {
@@ -178,8 +178,8 @@ public abstract class SingletonSupport extends LogSupport {
    * @param singleton instance of SingletonSupport
    */
   public static final void unregister(final SingletonSupport singleton) {
-    if (logB.isWarnEnabled()) {
-      logB.warn("SingletonSupport.unregister : remove " + getSingletonLogName(singleton));
+    if (logB.isInfoEnabled()) {
+      logB.info("SingletonSupport.unregister : remove " + getSingletonLogName(singleton));
     }
     if (isRunning()) {
       managedInstances.remove(singleton);
@@ -192,8 +192,8 @@ public abstract class SingletonSupport extends LogSupport {
    * Called on exit (clean up code)
    */
   public static final void onExit() {
-    if (logB.isWarnEnabled()) {
-      logB.warn("SingletonSupport.onExit : enter");
+    if (logB.isInfoEnabled()) {
+      logB.info("SingletonSupport.onExit : enter");
     }
 
     if (!JavaUtils.isEmpty(managedInstances)) {
@@ -202,8 +202,8 @@ public abstract class SingletonSupport extends LogSupport {
 
       managedInstances.drainTo(instances);
 
-      if (logB.isWarnEnabled()) {
-        logB.warn("SingletonSupport.onExit : instances to free : " + CollectionUtils.toString(instances));
+      if (logB.isInfoEnabled()) {
+        logB.info("SingletonSupport.onExit : instances to free : " + CollectionUtils.toString(instances));
       }
 
       // reverse singleton ordering :
@@ -224,8 +224,8 @@ public abstract class SingletonSupport extends LogSupport {
     // force GC :
     managedInstances = null;
 
-    if (logB.isWarnEnabled()) {
-      logB.warn("SingletonSupport.onExit : exit");
+    if (logB.isInfoEnabled()) {
+      logB.info("SingletonSupport.onExit : exit");
     }
   }
 

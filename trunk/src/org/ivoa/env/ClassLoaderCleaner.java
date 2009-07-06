@@ -20,8 +20,7 @@ public final class ClassLoaderCleaner {
   // --------------------------------------------------------------------------------------------------------
 
   /** flag to indicate to clear static references found in classes of the current class loader */
-  public final static boolean CLEAR_STATIC_REFERENCES = true;
-
+  public final static boolean CLEAR_STATIC_REFERENCES = false;
   /**
    * Logger for the base framework
    * 
@@ -58,9 +57,10 @@ public final class ClassLoaderCleaner {
       // Application or Web Application Class Loader to clean up :
       final ClassLoader appClazzLoader = ClassLoaderCleaner.class.getClassLoader();
 
-      final String[] excludedPackages = { "org.apache.log4j" };
+      final String[] excludedPackages = {"org.apache.log4j"};
+      final String[] includedPackages = {"org.ivoa"};
 
-      clearReferences(appClazzLoader, JavaUtils.asList(excludedPackages));
+      clearReferences(appClazzLoader, JavaUtils.asList(excludedPackages), JavaUtils.asList(includedPackages));
     }
 
     if (logB.isWarnEnabled()) {
@@ -76,17 +76,17 @@ public final class ClassLoaderCleaner {
    * 
    * @param clazzLoader class loader to process
    * @param excludedPackages list of package prefixes to exclude in the clean up process
+   * @param includedPackages list of package prefixes to include in the clean up process
    */
-  protected static void clearReferences(final ClassLoader clazzLoader, final List<String> excludedPackages) {
+  protected static void clearReferences(final ClassLoader clazzLoader, final List<String> excludedPackages, final List<String> includedPackages) {
     if (logB.isWarnEnabled()) {
-      logB.warn("ClassLoaderCleaner.clearReferences : enter : " + clazzLoader + "\n Excluded packages : "
-          + CollectionUtils.toString(excludedPackages));
+      logB.warn("ClassLoaderCleaner.clearReferences : enter : " + clazzLoader + "\n Excluded packages : " + CollectionUtils.toString(excludedPackages));
     }
 
     final Class<?>[] classes = ClassScope.getLoadedClasses(clazzLoader);
 
-    if (logB.isWarnEnabled()) {
-      logB.warn("ClassLoaderCleaner.clearReferences : loaded classes : " + CollectionUtils.toString(JavaUtils.asList(classes)));
+    if (logB.isInfoEnabled()) {
+      logB.info("ClassLoaderCleaner.clearReferences : loaded classes : " + CollectionUtils.toString(JavaUtils.asList(classes)));
     }
 
     // Null out any static or final fields from loaded classes,
@@ -94,7 +94,7 @@ public final class ClassLoaderCleaner {
 
     for (Class<?> clazz : classes) {
       // skip this class & excluded classes :
-      if (checkClass(excludedPackages, clazz)) {
+      if (checkClass(excludedPackages, includedPackages, clazz)) {
         clearReference(clazzLoader, clazz);
       }
     }
@@ -110,22 +110,35 @@ public final class ClassLoaderCleaner {
    * excludedPackages list
    * 
    * @param excludedPackages list of package prefixes to exclude in the clean up process
+   * @param includedPackages list of package prefixes to include in the clean up process
    * @param clazz class to check
    * @return true if the class can be processed
    */
-  private static boolean checkClass(final List<String> excludedPackages, final Class<?> clazz) {
+  private static boolean checkClass(final List<String> excludedPackages, final List<String> includedPackages, final Class<?> clazz) {
     boolean result = !clazz.equals(ClassLoaderCleaner.class) && !clazz.equals(ClassScope.class);
 
     if (result) {
       String className;
-      for (String packagePrefix : excludedPackages) {
+      for (String packagePrefix : includedPackages) {
         className = clazz.getName();
-        if (className.startsWith(packagePrefix)) {
-          if (logB.isWarnEnabled()) {
-            logB.warn("ClassLoaderCleaner.checkClass : skip class : " + className);
+        if (!className.startsWith(packagePrefix)) {
+          if (logB.isDebugEnabled()) {
+            logB.debug("ClassLoaderCleaner.checkClass : skip class : " + className);
           }
           result = false;
           break;
+        }
+      }
+      if (result) {
+        for (String packagePrefix : excludedPackages) {
+          className = clazz.getName();
+          if (className.startsWith(packagePrefix)) {
+            if (logB.isDebugEnabled()) {
+              logB.debug("ClassLoaderCleaner.checkClass : skip class : " + className);
+            }
+            result = false;
+            break;
+          }
         }
       }
     }
@@ -140,10 +153,7 @@ public final class ClassLoaderCleaner {
    * @param clazz class to clean up
    */
   protected static void clearReference(final ClassLoader clazzLoader, final Class<?> clazz) {
-    if (logB.isWarnEnabled()) {
-      logB.warn("ClassLoaderCleaner.clearReference : enter : " + clazz.getName());
-      logB.warn("{");
-    }
+    boolean used = false;
     try {
       Field field;
       int mods;
@@ -155,6 +165,11 @@ public final class ClassLoaderCleaner {
           continue;
         }
         if (Modifier.isStatic(mods)) {
+          if (!used && logB.isWarnEnabled()) {
+            logB.warn("ClassLoaderCleaner.clearReference : enter : " + clazz.getName());
+            logB.warn("{");
+          }
+          used = true;
           if (logB.isWarnEnabled()) {
             logB.warn("ClassLoaderCleaner.clearReference : clear static field [" + field + "] ? ");
           }
@@ -182,7 +197,7 @@ public final class ClassLoaderCleaner {
         logB.warn("ClassLoaderCleaner.clearReference : Could not clean fields for class " + clazz.getName(), t);
       }
     }
-    if (logB.isWarnEnabled()) {
+    if (used && logB.isWarnEnabled()) {
       logB.warn("}");
       logB.warn("ClassLoaderCleaner.clearReference : exit : " + clazz.getName());
     }
@@ -222,8 +237,7 @@ public final class ClassLoaderCleaner {
           valueClass = value.getClass();
           if (!loadedByThisOrChild(clazzLoader, valueClass)) {
             if (logB.isWarnEnabled()) {
-              logB.warn("ClassLoaderCleaner.nullInstance : Not setting field [" + field + "] to null in object of class " + clazz.getName()
-                  + " because the referenced object was of type " + valueClass.getName() + " which was not loaded by this WebappClassLoader.");
+              logB.warn("ClassLoaderCleaner.nullInstance : Not setting field [" + field + "] to null in object of class " + clazz.getName() + " because the referenced object was of type " + valueClass.getName() + " which was not loaded by the same classLoader.");
             }
           } else {
             field.set(instance, null);
@@ -234,8 +248,7 @@ public final class ClassLoaderCleaner {
         }
       } catch (Throwable t) {
         if (logB.isWarnEnabled()) {
-          logB
-              .warn("ClassLoaderCleaner.nullInstance : Could not set field [" + field + "] to null in object instance of class " + clazz.getName(), t);
+          logB.warn("ClassLoaderCleaner.nullInstance : Could not set field [" + field + "] to null in object instance of class " + clazz.getName(), t);
         }
       }
     }

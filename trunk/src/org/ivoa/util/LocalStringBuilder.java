@@ -71,8 +71,8 @@ public final class LocalStringBuilder extends SingletonSupport {
    */
   public final static void cleanCurrentThread() {
     if (isRunning()) {
-      if (log.isWarnEnabled()) {
-        log.warn("LocalStringBuilder.cleanCurrentThread : " + bufferLocal.get());
+      if (logB.isInfoEnabled()) {
+        log.info("LocalStringBuilder.cleanCurrentThread : " + bufferLocal.get());
       }
       bufferLocal.remove();
     }

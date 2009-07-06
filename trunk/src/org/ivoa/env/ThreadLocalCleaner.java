@@ -64,16 +64,16 @@ public final class ThreadLocalCleaner extends LogSupport {
       Thread.enumerate(ta);
 
       for (final Thread t : ta) {
-        if (logB.isWarnEnabled()) {
-          logB.warn("ThreadLocalCleaner.cleanAndcheckThreads : cleaning thread [" + t.getName() + "] ...");
+        if (logB.isInfoEnabled()) {
+          logB.info("ThreadLocalCleaner.cleanAndcheckThreads : cleaning thread [" + t.getName() + "] ...");
         }
         ThreadLocalCleaner.cleanThreadLocals(t, CLASS_TO_REMOVE);
       }
 
       // Checks are only logged if the debug logger is enabled for the level INFO :
-      if (logB.isWarnEnabled()) {
+      if (logB.isInfoEnabled()) {
         for (final Thread t : ta) {
-          logB.warn("ThreadLocalCleaner.cleanAndcheckThreads : checking thread [" + t.getName() + "] ...");
+          logB.info("ThreadLocalCleaner.cleanAndcheckThreads : checking thread [" + t.getName() + "] ...");
           ThreadLocalCleaner.checkThreadLocals(t);
         }
       }
@@ -150,8 +150,8 @@ public final class ThreadLocalCleaner extends LogSupport {
                 try {
                   for (final Object o : wm.keySet()) {
                     if (o != null && o.toString().contains(pattern)) {
-                      if (logB.isWarnEnabled()) {
-                        logB.warn("Cleaning WeakHashMap :" + CollectionUtils.toString(sb, wm));
+                      if (logB.isInfoEnabled()) {
+                        logB.info("Cleaning WeakHashMap :" + CollectionUtils.toString(sb, wm));
                       }
 
                       wm.clear();
@@ -255,7 +255,7 @@ public final class ThreadLocalCleaner extends LogSupport {
         if (leakCount > 0) {
           sb.append("\n}");
 
-          logB.warn("Possible ThreadLocal leaks for thread : " + thread.getName() + " [" + leakCount + " / " + threadLocalCount + "] {" + sb.toString());
+          logB.info("Possible ThreadLocal leaks for thread : " + thread.getName() + " [" + leakCount + " / " + threadLocalCount + "] {" + sb.toString());
         }
       }
     } catch (final RuntimeException re) {
