@@ -29,4 +29,4 @@ This is related to how we do our flushing/persisiting to the DB.
 Currently we have various parts of code that ultimately go back to the JPA code to perform the persists. Maybe this should be wrapped in a method on DataModelManager for example.
 This method could take care of starting/committing transaction and persisting all objects that are part of the unit of work. Also knowing which elements must be inserted, which updated and setting variables accordingly.
 
-This may require a "transientobjectanager", a cache manager that knows of al objects in a transaction, of all objects that have been modified, deleted, created etc.
+This may require a "transientobjectmanager", a cache manager that knows of al objects in a transaction, of all objects that have been modified, deleted, created etc.
