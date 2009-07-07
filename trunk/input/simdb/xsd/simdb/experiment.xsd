@@ -145,7 +145,6 @@ The base class for those kinds of experiments that can produce representations o
          <xsd:extension base="p4:Resource">
             <xsd:sequence>
                <xsd:element name="targetObject" type="TargetObjectType" minOccurs="0" maxOccurs="unbounded"/>
-               <xsd:element name="snapshot" type="Snapshot" minOccurs="0" maxOccurs="unbounded"/>
                <xsd:element name="targetProcess" type="TargetProcess" minOccurs="0" maxOccurs="unbounded"/>
                <xsd:element name="parameter" type="ParameterSetting" minOccurs="0" maxOccurs="unbounded"/>
                <xsd:element name="inputData" type="InputDataset" minOccurs="0" maxOccurs="unbounded"/>
@@ -153,6 +152,7 @@ The base class for those kinds of experiments that can produce representations o
                             maxOccurs="unbounded"/>
                <xsd:element name="appliedAlgorithm" type="AppliedAlgorithm" minOccurs="0"
                             maxOccurs="unbounded"/>
+               <xsd:element name="snapshot" type="Snapshot" minOccurs="0" maxOccurs="unbounded"/>
                <xsd:element name="protocol" type="base:Reference">
                   <xsd:annotation>
                      <xsd:documentation>The protocol according to which this experiment was performed. Will in general be overridden by sub-classes of Experiment to indicate a sub-class of Protocol</xsd:documentation>
@@ -527,6 +527,11 @@ May not correspond to a predefined statistical operation such as mean or mode.</
          <xsd:enumeration value="stdev">
             <xsd:annotation>
                <xsd:documentation>Represents the expected/attained standard deviation for the characterised property.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="constant">
+            <xsd:annotation>
+               <xsd:documentation>This value indicates that a given object collection has a constant value for the property characterised by this value.</xsd:documentation>
             </xsd:annotation>
          </xsd:enumeration>
       </xsd:restriction>

@@ -114,11 +114,11 @@ web page where documentation of this simulator can be obtained</xsd:documentatio
                      </xsd:appinfo>
                   </xsd:annotation>
                </xsd:element>
-               <xsd:element name="parameterGroup" type="ParameterGroup" minOccurs="0" maxOccurs="unbounded"/>
                <xsd:element name="representation" type="RepresentationObjectType" minOccurs="0"
                             maxOccurs="unbounded"/>
-               <xsd:element name="parameter" type="InputParameter" minOccurs="0" maxOccurs="unbounded"/>
                <xsd:element name="algorithm" type="Algorithm" minOccurs="0" maxOccurs="unbounded"/>
+               <xsd:element name="parameter" type="InputParameter" minOccurs="0" maxOccurs="unbounded"/>
+               <xsd:element name="parameterGroup" type="ParameterGroup" minOccurs="0" maxOccurs="unbounded"/>
             </xsd:sequence>
          </xsd:extension>
       </xsd:complexContent>

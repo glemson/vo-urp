@@ -21,7 +21,7 @@ Hence we create a new type.</xsd:documentation>
          </xsd:appinfo>
       </xsd:annotation>
       <xsd:complexContent>
-         <xsd:extension base="base:MetadataObject">
+         <xsd:extension base="base:MetadataRootEntityObject">
             <xsd:sequence>
                <xsd:element name="name" type="xsd:string">
                   <xsd:annotation>
