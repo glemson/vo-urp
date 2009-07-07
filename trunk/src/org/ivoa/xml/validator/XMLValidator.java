@@ -14,10 +14,10 @@ import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
 import org.ivoa.bean.SingletonSupport;
+import org.ivoa.util.timer.TimerFactory;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-
 
 /**
  * XML Document Validator against an xml schema
@@ -26,17 +26,16 @@ import org.xml.sax.SAXParseException;
  */
 public final class XMLValidator extends SingletonSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
+
   /** all factories */
   private static ConcurrentHashMap<String, XMLValidator> managedInstances = new ConcurrentHashMap<String, XMLValidator>(4);
 
   //~ Members ----------------------------------------------------------------------------------------------------------
-
   /** XML Schema instance */
   private Schema schema;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
-
-/**
+  /**
    * Constructor for a given schema URL
    * @param schemaURL URL for the schema to validate against
    */
@@ -107,23 +106,32 @@ public final class XMLValidator extends SingletonSupport {
     // 1. Lookup a factory for the W3C XML Schema language
     final SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
+    Schema s = null;
     try {
       final URL url = new URL(schemaURL);
 
       if (logB.isWarnEnabled()) {
         logB.warn("XMLValidator.getSchema : retrieve schema and compile it : " + schemaURL);
       }
+
       // 2. Compile the schema.
-      return factory.newSchema(url);
+      final long start = System.nanoTime();
+
+      s = factory.newSchema(url);
+
+      final long stop = System.nanoTime();
+      TimerFactory.getTimer("XMLValidator.getSchema[" + schemaURL + "]").addMilliSeconds(start, stop);
+
+      if (logB.isWarnEnabled()) {
+        logB.warn("XMLValidator.getSchema : schema ready : " + s);
+      }
+
     } catch (final SAXException se) {
       throw new IllegalStateException("getSchema : unable to create a Schema for : " + schemaURL, se);
     } catch (final MalformedURLException mue) {
       throw new IllegalStateException("getSchema : unable to create a Schema for : " + schemaURL, mue);
-    } finally {
-      if (logB.isWarnEnabled()) {
-        logB.warn("XMLValidator.getSchema : retrieve schema and compile it : " + schemaURL);
-      }
     }
+    return s;
   }
 
   /**
@@ -173,7 +181,6 @@ public final class XMLValidator extends SingletonSupport {
   }
 
   //~ Inner Classes ----------------------------------------------------------------------------------------------------
-
   /**
    * SAX ErrorHandler implementation to add validation exception to the given ValidationResult instance
    * @see org.xml.sax.ErrorHandler
@@ -185,7 +192,6 @@ public final class XMLValidator extends SingletonSupport {
     private ValidationResult result;
 
     //~ Constructors ---------------------------------------------------------------------------------------------------
-
     /**
      * Public constructor with the given validation result
      * @param pResult validation result to use
@@ -195,7 +201,6 @@ public final class XMLValidator extends SingletonSupport {
     }
 
     //~ Methods --------------------------------------------------------------------------------------------------------
-
     /**
      * Wrap the SAX exception in an ErrorMessage instance added to the validation result
      * @param se SAX parse exception 
@@ -203,7 +208,7 @@ public final class XMLValidator extends SingletonSupport {
      */
     public void warning(final SAXParseException se) {
       result.getMessages().add(
-        new ErrorMessage(ErrorMessage.SEVERITY.WARNING, se.getLineNumber(), se.getColumnNumber(), se.getMessage()));
+              new ErrorMessage(ErrorMessage.SEVERITY.WARNING, se.getLineNumber(), se.getColumnNumber(), se.getMessage()));
     }
 
     /**
@@ -213,7 +218,7 @@ public final class XMLValidator extends SingletonSupport {
      */
     public void error(final SAXParseException se) {
       result.getMessages().add(
-        new ErrorMessage(ErrorMessage.SEVERITY.ERROR, se.getLineNumber(), se.getColumnNumber(), se.getMessage()));
+              new ErrorMessage(ErrorMessage.SEVERITY.ERROR, se.getLineNumber(), se.getColumnNumber(), se.getMessage()));
     }
 
     /**
@@ -223,7 +228,7 @@ public final class XMLValidator extends SingletonSupport {
      */
     public void fatalError(final SAXParseException se) {
       result.getMessages().add(
-        new ErrorMessage(ErrorMessage.SEVERITY.FATAL, se.getLineNumber(), se.getColumnNumber(), se.getMessage()));
+              new ErrorMessage(ErrorMessage.SEVERITY.FATAL, se.getLineNumber(), se.getColumnNumber(), se.getMessage()));
     }
   }
 }
