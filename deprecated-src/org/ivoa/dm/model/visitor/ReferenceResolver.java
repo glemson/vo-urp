@@ -1,5 +1,6 @@
 package org.ivoa.dm.model.visitor;
 
+import org.ivoa.bean.Visitor;
 import org.ivoa.dm.ObjectClassType;
 
 import org.ivoa.dm.model.MetadataElement;

@@ -1,5 +1,6 @@
 package org.ivoa.util;
 
+import org.ivoa.util.text.StringUtils;
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
 import java.util.HashMap;

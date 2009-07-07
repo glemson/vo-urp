@@ -1,4 +1,4 @@
-package org.ivoa.util.concurrent.local;
+package org.ivoa.util.text;
 
 import org.ivoa.bean.LogSupport;
 
@@ -46,10 +46,22 @@ public final class StringBuilderContext extends LogSupport {
   }
 
   /**
+   * Clear the context
+   */
+  protected void clear() {
+    // force GC :
+    this.firstBuffer = null;
+    for (int i = 0; i < DEPTH; i++) {
+      buffers[i] = null;
+    }
+  }
+
+
+  /**
    * Create a new StringBuilder with the default capacity
    * @return new StringBuilder with the default capacity
    */
-  public final static StringBuilder createStringBuilder() {
+  protected final static StringBuilder createStringBuilder() {
     return new StringBuilder(CAPACITY);
   }
 
@@ -57,7 +69,7 @@ public final class StringBuilderContext extends LogSupport {
    * Reset the length of the given StringBuilder
    * @param sb buffer to reset
    */
-  public final static void resetStringBuilder(final StringBuilder sb) {
+  protected final static void resetStringBuilder(final StringBuilder sb) {
     if (sb != null) {
       // reset without array operation : just set count to 0 / leave buffer available with the
       // same capacity :
@@ -70,7 +82,7 @@ public final class StringBuilderContext extends LogSupport {
    *
    * @return empty buffer
    */
-  public final StringBuilder acquire() {
+  protected final StringBuilder acquire() {
     StringBuilder sb = null;
 
     current++;
@@ -121,7 +133,7 @@ public final class StringBuilderContext extends LogSupport {
    *
    * @return buffer (not empty) or null
    */
-  public final StringBuilder current() {
+  protected final StringBuilder current() {
     StringBuilder sb = null;
 
     if (current != UNDEFINED) {
@@ -143,7 +155,7 @@ public final class StringBuilderContext extends LogSupport {
    *
    * @param sb buffer (optional)
    */
-  public final void release(final StringBuilder sb) {
+  protected final void release(final StringBuilder sb) {
     if (sb != null) {
       if (DIAGNOSTICS && logB.isInfoEnabled()) {
         logB.info("LocalStringBuilder.Context.release : used buffer capacity : " + sb.length() + " / " + sb.capacity());

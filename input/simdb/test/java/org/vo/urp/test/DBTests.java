@@ -12,7 +12,7 @@ import org.ivoa.dm.DataModelManager;
 import org.ivoa.dm.MetaModelFactory;
 import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.MetadataRootEntityObject;
-import org.ivoa.dm.model.ReferenceResolver;
+import org.ivoa.dm.model.reference.ReferenceResolver;
 
 import org.ivoa.env.ApplicationMain;
 
@@ -651,10 +651,10 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
       throw re;
     } finally {
+      close(em);
+      
       // free resolver context (thread local) :
       ReferenceResolver.freeContext();
-
-      close(em);
     }
     if (id != null) {
       final Protocol loadedObject = (Protocol) testREAD(jf, Protocol.class, id);
@@ -712,10 +712,10 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
         throw re;
       } finally {
+        close(em);
+
         // free resolver context (thread local) :
         ReferenceResolver.freeContext();
-
-        close(em);
       }
 
       stop = System.nanoTime();
@@ -847,12 +847,10 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
       throw re;
     } finally {
+      close(em);
+
       // free resolver context (thread local) :
       ReferenceResolver.freeContext();
-
-      if (em != null) {
-        em.close();
-      }
     }
     log.warn("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION : exit");
   }

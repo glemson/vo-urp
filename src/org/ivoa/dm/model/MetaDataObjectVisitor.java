@@ -1,7 +1,7 @@
 package org.ivoa.dm.model;
 
 import org.ivoa.bean.SingletonSupport;
-import org.ivoa.dm.model.visitor.Visitor;
+import org.ivoa.bean.Visitor;
 
 /**
  * Represents a visitor in the visitor pattern.<br>

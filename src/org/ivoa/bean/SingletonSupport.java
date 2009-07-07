@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.concurrent.LinkedBlockingQueue;
 import org.ivoa.util.CollectionUtils;
 import org.ivoa.util.JavaUtils;
-import org.ivoa.util.LocalStringBuilder;
+import org.ivoa.util.text.LocalStringBuilder;
 import org.ivoa.util.concurrent.ThreadLocalUtils;
 
 /**

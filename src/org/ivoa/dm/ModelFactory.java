@@ -25,7 +25,7 @@ import org.ivoa.metamodel.Collection;
 import org.ivoa.metamodel.Reference;
 import org.ivoa.util.FileUtils;
 import org.ivoa.util.ReflectionUtils;
-import org.ivoa.util.StringBuilderWriter;
+import org.ivoa.util.text.StringBuilderWriter;
 
 /**
  * MetadataElement factory  Manages creating new instances for generated classes
@@ -97,13 +97,13 @@ public final class ModelFactory extends SingletonSupport {
   @Override
   protected void clearStaticReferences() {
     if (logB.isInfoEnabled()) {
-      log.info("ModelFactory.onExit : enter");
+      logB.info("ModelFactory.onExit : enter");
     }
     if (instance != null) {
       instance = null;
     }
     if (logB.isInfoEnabled()) {
-      log.info("ModelFactory.onExit : exit");
+      logB.info("ModelFactory.onExit : exit");
     }
   }
 

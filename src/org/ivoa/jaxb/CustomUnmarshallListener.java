@@ -4,7 +4,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.apache.commons.logging.Log;
 import org.ivoa.dm.model.MetadataObject;
-import org.ivoa.dm.model.ReferenceResolver;
+import org.ivoa.dm.model.reference.ReferenceResolver;
 import org.ivoa.util.LogUtil;
 
 /**
@@ -20,8 +20,7 @@ public final class CustomUnmarshallListener extends Unmarshaller.Listener {
    * @see org.ivoa.bean.LogSupport
    */
   private static Log log = LogUtil.getLogger();
-
-  /** singleton instance (java 5 memory model) : statically defined (thread safe and stateless) */
+  /** singleton instance (java 5 memory model) */
   private static CustomUnmarshallListener instance = null;
 
   /**

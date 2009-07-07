@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.ivoa.bean.LogSupport;
-import org.ivoa.util.LocalStringBuilder;
+import org.ivoa.util.text.LocalStringBuilder;
 
 /**
  * The Timer factory contains a map[key - Timer] to associate time metrics statistics to several
