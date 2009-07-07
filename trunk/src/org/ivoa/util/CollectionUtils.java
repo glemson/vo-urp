@@ -1,5 +1,6 @@
 package org.ivoa.util;
 
+import org.ivoa.util.text.LocalStringBuilder;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;

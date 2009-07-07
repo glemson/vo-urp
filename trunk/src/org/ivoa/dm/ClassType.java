@@ -10,7 +10,7 @@ import org.ivoa.metamodel.Attribute;
 import org.ivoa.metamodel.DataType;
 import org.ivoa.metamodel.Type;
 import org.ivoa.metamodel.TypeRef;
-import org.ivoa.util.LocalStringBuilder;
+import org.ivoa.util.text.LocalStringBuilder;
 
 
 /**

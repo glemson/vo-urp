@@ -160,7 +160,7 @@ public final class JPAFactory extends SingletonSupport {
       final String targetDB = properties.getProperty(PersistenceUnitProperties.TARGET_DATABASE);
 
       if (logB.isInfoEnabled()) {
-        log.info("JPAFactory.initialize : connecting to " + targetDB + " ...");
+        logB.info("JPAFactory.initialize : connecting to " + targetDB + " ...");
       }
 
       if (USE_INTEGRITY_CHECKER) {
@@ -174,7 +174,7 @@ public final class JPAFactory extends SingletonSupport {
     }
 
     if (logB.isInfoEnabled()) {
-      log.info("JPAFactory.initialize : done.");
+      logB.info("JPAFactory.initialize : done.");
     }
 
     EntityManager em = null;
@@ -182,13 +182,13 @@ public final class JPAFactory extends SingletonSupport {
     try {
       // Create an EntityManager to check if connection is ready & fails fast.
       if (logB.isInfoEnabled()) {
-        log.info("JPAFactory.initialize : test to create an entityManager instance ...");
+        logB.info("JPAFactory.initialize : test to create an entityManager instance ...");
       }
 
       em = getEm();
 
       if (logB.isInfoEnabled()) {
-        log.info("JPAFactory.initialize : test : OK");
+        logB.info("JPAFactory.initialize : test : OK");
       }
     } finally {
       if (em != null) {
@@ -197,7 +197,7 @@ public final class JPAFactory extends SingletonSupport {
     }
 
     if (logB.isInfoEnabled()) {
-      log.info("JPAFactory.initialize : exit : OK");
+      logB.info("JPAFactory.initialize : exit : OK");
     }
   }
 

@@ -9,7 +9,7 @@ import java.util.Map;
 
 import org.ivoa.bean.LogSupport;
 import org.ivoa.dm.MetaModelFactory;
-import org.ivoa.util.LocalStringBuilder;
+import org.ivoa.util.text.LocalStringBuilder;
 
 
 /**

@@ -10,7 +10,7 @@ import javax.xml.bind.helpers.DefaultValidationEventHandler;
 
 import org.ivoa.bean.SingletonSupport;
 import org.ivoa.conf.Configuration;
-import org.ivoa.util.StringBuilderWriter;
+import org.ivoa.util.text.StringBuilderWriter;
 
 /**
  * JAXBFactory is an utility class to configure JAXB Connection & properties
@@ -54,7 +54,7 @@ public final class JAXBFactory extends SingletonSupport {
 
     if (jf == null) {
       if (logB.isInfoEnabled()) {
-        log.info("JAXBFactory.getInstance : creating new instance for : " + jaxbPath);
+        logB.info("JAXBFactory.getInstance : creating new instance for : " + jaxbPath);
       }
 
       jf = prepareInstance(new JAXBFactory(jaxbPath));
@@ -79,7 +79,7 @@ public final class JAXBFactory extends SingletonSupport {
   @Override
   protected void clearStaticReferences() {
     if (logB.isInfoEnabled()) {
-      log.info("JAXBFactory.clearStaticReferences : enter");
+      logB.info("JAXBFactory.clearStaticReferences : enter");
     }
     // reset managed instances :
     if (managedInstances != null) {
@@ -87,7 +87,7 @@ public final class JAXBFactory extends SingletonSupport {
       managedInstances = null;
     }
     if (logB.isInfoEnabled()) {
-      log.info("JAXBFactory.clearStaticReferences : exit");
+      logB.info("JAXBFactory.clearStaticReferences : exit");
     }
   }
 
@@ -101,13 +101,13 @@ public final class JAXBFactory extends SingletonSupport {
   @Override
   protected void clear() {
     if (logB.isInfoEnabled()) {
-      log.info("JAXBFactory.clear : enter : " + this.jaxbPath);
+      logB.info("JAXBFactory.clear : enter : " + this.jaxbPath);
     }
     // force GC :
     this.jc = null;
 
     if (logB.isInfoEnabled()) {
-      log.info("JAXBFactory.clear : exit : " + this.jaxbPath);
+      logB.info("JAXBFactory.clear : exit : " + this.jaxbPath);
     }
   }
 
@@ -130,7 +130,7 @@ public final class JAXBFactory extends SingletonSupport {
       this.jc = getContext(jaxbPath);
 
       if (logB.isInfoEnabled()) {
-        log.info("JAXBFactory.initialize : done : " + jaxbPath);
+        logB.info("JAXBFactory.initialize : done : " + jaxbPath);
       }
     } catch (final RuntimeException re) {
       log.error("JAXBFactory.initialize : JAXB failure : ", re);
@@ -138,7 +138,7 @@ public final class JAXBFactory extends SingletonSupport {
     }
 
     if (logB.isInfoEnabled()) {
-      log.info("JAXBFactory.initialize : exit : OK");
+      logB.info("JAXBFactory.initialize : exit : OK");
     }
   }
 
@@ -195,6 +195,11 @@ public final class JAXBFactory extends SingletonSupport {
     try {
       // create an Unmarshaller
       u = getJAXBContext().createUnmarshaller();
+
+      /*
+      final Schema s = schemaFactory.newSchema( toStreamSources(uri));
+      u.setSchema(s);
+       */
 
       // this implementation is a part of the API and convenient for
       // trouble-shooting, as it prints out errors to System.out

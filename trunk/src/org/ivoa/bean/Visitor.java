@@ -1,4 +1,4 @@
-package org.ivoa.dm.model.visitor;
+package org.ivoa.bean;
 
 /**
  * Represents a generic visitor in the visitor pattern.

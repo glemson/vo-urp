@@ -1,9 +1,7 @@
-package org.ivoa.util;
+package org.ivoa.util.text;
 
 import org.ivoa.bean.SingletonSupport;
 import org.ivoa.util.concurrent.ThreadLocalUtils;
-import org.ivoa.util.concurrent.local.StringBuilderContext;
-import org.ivoa.util.concurrent.local.StringBuilderThreadLocal;
 import org.ivoa.util.timer.AbstractTimer;
 import org.ivoa.util.timer.TimerFactory;
 import org.ivoa.util.timer.TimerFactory.UNIT;
@@ -47,14 +45,6 @@ public final class LocalStringBuilder extends SingletonSupport {
   }
 
   /**
-   * Reset the bufferLocal ThreadLocal<Context>
-   */
-  private final static void resetBufferLocal() {
-    // free ThreadLocal :
-    bufferLocal = null;
-  }
-
-  /**
    * Concrete implementations of the SingletonSupport's clearStaticReferences() method :<br/>
    * Callback to clean up the possible static references used by this SingletonSupport instance iso
    * clear static references
@@ -63,19 +53,21 @@ public final class LocalStringBuilder extends SingletonSupport {
    */
   @Override
   protected void clearStaticReferences() {
-    resetBufferLocal();
+    // free ThreadLocal :
+    bufferLocal = null;
   }
 
   /**
-   * Free the thread local Context associated to the current thread
+   * Concatenates the given values
+   * @param values string values to concat
+   * @return string result
    */
-  public final static void cleanCurrentThread() {
-    if (isRunning()) {
-      if (logB.isInfoEnabled()) {
-        log.info("LocalStringBuilder.cleanCurrentThread : " + bufferLocal.get());
-      }
-      bufferLocal.remove();
+  public static final String concat(final String... values) {
+    final StringBuilder sb = LocalStringBuilder.getBuffer();
+    for (String n : values) {
+      sb.append(n);
     }
+    return LocalStringBuilder.toString(sb);
   }
 
   /**
@@ -117,6 +109,18 @@ public final class LocalStringBuilder extends SingletonSupport {
       return sb;
     }
     return StringBuilderContext.createStringBuilder();
+  }
+
+  /**
+   * Free the thread local Context associated to the current thread
+   */
+  public final static void freeBuffer() {
+    if (isRunning()) {
+      if (logB.isInfoEnabled()) {
+        logB.info("LocalStringBuilder.freeBuffer : " + bufferLocal.get());
+      }
+      bufferLocal.remove();
+    }
   }
 
   /**

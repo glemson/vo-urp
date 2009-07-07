@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentMap;
 import org.ivoa.bean.LogSupport;
 import org.ivoa.bean.SingletonSupport;
 import org.ivoa.util.ReflectionUtils;
-import org.ivoa.util.concurrent.local.ManagedThreadLocal;
+import org.ivoa.util.concurrent.ManagedThreadLocal;
 
 /**
  * Utility functions related to ThreadLocals. This class provides utilities for managing the life
@@ -132,7 +132,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
   @Override
   protected void clearStaticReferences() {
     if (logB.isInfoEnabled()) {
-      log.info("ThreadLocalUtils.clearStaticReferences : enter");
+      logB.info("ThreadLocalUtils.clearStaticReferences : enter");
     }
 
     // force GC :
@@ -145,7 +145,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
     }
 
     if (logB.isInfoEnabled()) {
-      log.info("ThreadLocalUtils.clearStaticReferences : exit");
+      logB.info("ThreadLocalUtils.clearStaticReferences : exit");
     }
   }
 
@@ -177,7 +177,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
 
         for (final Thread t : ta) {
           if (logB.isInfoEnabled()) {
-            log.info("ThreadLocalUtils.clearAllThreadLocals : cleaning thread [" + t.getName() + "] ...");
+            logB.info("ThreadLocalUtils.clearAllThreadLocals : cleaning thread [" + t.getName() + "] ...");
           }
 
           for (final ResettableThreadLocalManager manager : threadLocalManagers.values()) {
@@ -310,10 +310,8 @@ public final class ThreadLocalUtils extends SingletonSupport {
         // bother cleaning up this entry
         if (threadLocal != null) {
           if (logB.isInfoEnabled()) {
-            log.info("ResettableThreadLocalManager.removeThreadLocals : threadLocal to remove : " + threadLocal);
+            logB.info("ResettableThreadLocalManager.removeThreadLocals : threadLocal to remove : " + threadLocal);
           }
-
-          sendRemoveEvent(threadLocal);
 
           // reset the thread local for this thread
           threadLocal.remove();
@@ -360,7 +358,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
               // bother cleaning up this entry
               if (threadLocal != null) {
                 if (logB.isInfoEnabled()) {
-                  log.info("ResettableThreadLocalManager.removeThreadLocals[" + thread.getName() + "] : threadLocal to remove : " + threadLocal);
+                  logB.info("ResettableThreadLocalManager.removeThreadLocals[" + thread.getName() + "] : threadLocal to remove : " + threadLocal);
                 }
 
                 sendRemoveEvent(threadLocal);

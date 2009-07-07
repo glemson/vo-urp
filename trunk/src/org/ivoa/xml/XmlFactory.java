@@ -24,7 +24,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import org.ivoa.bean.LogSupport;
-import org.ivoa.util.StringBuilderWriter;
+import org.ivoa.util.text.StringBuilderWriter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;

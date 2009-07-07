@@ -27,7 +27,7 @@ import org.ivoa.tap.Schemas;
 import org.ivoa.util.CollectionUtils;
 import org.ivoa.util.FileUtils;
 import org.ivoa.util.ReflectionUtils;
-import org.ivoa.util.StringUtils;
+import org.ivoa.util.text.StringUtils;
 
 /**
  * This Class exposes a MetaModel API to get informations on every UML elements to allow easy inspection of any
@@ -129,7 +129,7 @@ public final class MetaModelFactory extends SingletonSupport {
   @Override
   protected void initialize() throws IllegalStateException {
     if (logB.isInfoEnabled()) {
-      log.info("MetaModelFactory.init ...");
+      logB.info("MetaModelFactory.init ...");
     }
 
     this.model = loadModel(MODEL_FILE);
@@ -215,7 +215,7 @@ public final class MetaModelFactory extends SingletonSupport {
   @Override
   protected void postInitialize() throws IllegalStateException {
     if (logB.isInfoEnabled()) {
-      log.info("MetaModelFactory.postInitialize ...");
+      logB.info("MetaModelFactory.postInitialize ...");
     }
     ClassType ct;
 

@@ -18,7 +18,7 @@ import org.ivoa.bean.LogSupport;
 import org.ivoa.conf.RuntimeConfiguration;
 import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.MetadataRootEntityObject;
-import org.ivoa.dm.model.ReferenceResolver;
+import org.ivoa.dm.model.reference.ReferenceResolver;
 import org.ivoa.dm.model.visitor.PersistObjectPostProcessor;
 import org.ivoa.dm.model.visitor.PersistObjectPreProcessor;
 import org.ivoa.jpa.JPAFactory;
@@ -54,7 +54,7 @@ public class DataModelManager extends LogSupport {
    */
   public DataModelManager(final String jpaPU) {
     this.jpa_pu = jpaPU;
-    this.validator = new XMLValidator(SCHEMA_URL);
+    this.validator = XMLValidator.getInstance(SCHEMA_URL);
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -210,12 +210,12 @@ public class DataModelManager extends LogSupport {
 
       throw re;
     } finally {
-      // free resolver context (thread local) :
-      ReferenceResolver.freeContext();
-
       if (em != null) {
         em.close();
       }
+
+      // free resolver context (thread local) :
+      ReferenceResolver.freeContext();
     }
 
     if (log.isInfoEnabled()) {

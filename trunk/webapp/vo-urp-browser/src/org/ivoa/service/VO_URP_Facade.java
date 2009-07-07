@@ -430,6 +430,8 @@ public class VO_URP_Facade extends LogSupport {
   //~ Inner Classes ----------------------------------------------------------------------------------------------------
   /**
    * This class uses the ThreadLocal pattern to associate an EntityManager to the current thread
+   *
+   * TODO : manage this as a ManagedThreadLocal to be sure to release the entity manager anyway
    */
   protected static final class EntityManagerThreadLocal extends ThreadLocal<EntityManager> {
     //~ Constants --------------------------------------------------------------------------------------------------------

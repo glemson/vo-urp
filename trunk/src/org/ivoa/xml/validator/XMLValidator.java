@@ -5,12 +5,15 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import java.util.concurrent.ConcurrentHashMap;
+import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import org.ivoa.bean.SingletonSupport;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -21,7 +24,11 @@ import org.xml.sax.SAXParseException;
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public final class XMLValidator {
+public final class XMLValidator extends SingletonSupport {
+  //~ Constants --------------------------------------------------------------------------------------------------------
+  /** all factories */
+  private static ConcurrentHashMap<String, XMLValidator> managedInstances = new ConcurrentHashMap<String, XMLValidator>(4);
+
   //~ Members ----------------------------------------------------------------------------------------------------------
 
   /** XML Schema instance */
@@ -33,11 +40,59 @@ public final class XMLValidator {
    * Constructor for a given schema URL
    * @param schemaURL URL for the schema to validate against
    */
-  public XMLValidator(final String schemaURL) {
+  private XMLValidator(final String schemaURL) {
     this.schema = getSchema(schemaURL);
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
+  /**
+   * Factory singleton per schema URL pattern
+   *
+   * @param schemaURL URL for the schema to validate against
+   *
+   * @return XMLValidator initialized
+   */
+  public static final XMLValidator getInstance(final String schemaURL) {
+    XMLValidator v = managedInstances.get(schemaURL);
+
+    if (v == null) {
+      if (logB.isInfoEnabled()) {
+        logB.info("XMLValidator.getInstance : creating new instance for : " + schemaURL);
+      }
+
+      v = prepareInstance(new XMLValidator(schemaURL));
+
+      if (v != null) {
+        managedInstances.putIfAbsent(schemaURL, v);
+        // to be sure to return the singleton :
+        v = managedInstances.get(schemaURL);
+      }
+    }
+
+    return v;
+  }
+
+  /**
+   * Concrete implementations of the SingletonSupport's clearStaticReferences() method :<br/>
+   * Callback to clean up the possible static references used by this SingletonSupport instance
+   * iso clear static references
+   *
+   * @see SingletonSupport#clearStaticReferences()
+   */
+  @Override
+  protected void clearStaticReferences() {
+    if (logB.isInfoEnabled()) {
+      logB.info("XMLValidator.clearStaticReferences : enter");
+    }
+    // reset managed instances :
+    if (managedInstances != null) {
+      managedInstances.clear();
+      managedInstances = null;
+    }
+    if (logB.isInfoEnabled()) {
+      log.info("XMLValidator.clearStaticReferences : exit");
+    }
+  }
 
   /**
    * Retrieve a schema instance from the given URL
@@ -50,17 +105,24 @@ public final class XMLValidator {
    */
   public static Schema getSchema(final String schemaURL) {
     // 1. Lookup a factory for the W3C XML Schema language
-    final SchemaFactory factory = SchemaFactory.newInstance("http://www.w3.org/2001/XMLSchema");
+    final SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
     try {
       final URL url = new URL(schemaURL);
 
+      if (logB.isWarnEnabled()) {
+        logB.warn("XMLValidator.getSchema : retrieve schema and compile it : " + schemaURL);
+      }
       // 2. Compile the schema.
       return factory.newSchema(url);
     } catch (final SAXException se) {
       throw new IllegalStateException("getSchema : unable to create a Schema for : " + schemaURL, se);
     } catch (final MalformedURLException mue) {
       throw new IllegalStateException("getSchema : unable to create a Schema for : " + schemaURL, mue);
+    } finally {
+      if (logB.isWarnEnabled()) {
+        logB.warn("XMLValidator.getSchema : retrieve schema and compile it : " + schemaURL);
+      }
     }
   }
 

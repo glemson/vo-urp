@@ -1,4 +1,4 @@
-package org.ivoa.util;
+package org.ivoa.util.text;
 
 import java.io.IOException;
 import java.io.Writer;

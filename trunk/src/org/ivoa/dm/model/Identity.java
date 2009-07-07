@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.ivoa.dm.MetaModelFactory;
 import org.ivoa.dm.ObjectClassType;
 import org.ivoa.util.JavaUtils;
-import org.ivoa.util.LocalStringBuilder;
+import org.ivoa.util.text.LocalStringBuilder;
 
 /**
  * This class contains all flavor for objectType identifiers :  <br>
