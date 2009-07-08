@@ -56,8 +56,8 @@ public final class SessionMonitor extends LogSupport implements HttpSessionListe
    * Public constructor
    */
   public SessionMonitor() {
-    if (ENABLE_DIAGNOSTICS) {
-      System.out.println("SessionMonitor new");
+    if (ENABLE_DIAGNOSTICS && logB.isInfoEnabled()) {
+      logB.info("SessionMonitor new");
     }
     init();
   }
