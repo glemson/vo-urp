@@ -68,9 +68,9 @@ public final class SystemLogUtil {
    */
   public static final void info(final String message) {
     if (STD_OUT_ALLOWED) {
-      System.out.println("-------------------------------------------------------------------------------");
+      System.out.println(LOG_LINE_SEPARATOR);
       System.out.println(message);
-      System.out.println("-------------------------------------------------------------------------------");
+      System.out.println(LOG_LINE_SEPARATOR);
     }
   }
 
