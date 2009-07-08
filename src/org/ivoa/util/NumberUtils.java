@@ -1,10 +1,11 @@
 package org.ivoa.util;
 
-import org.ivoa.util.text.StringUtils;
 import java.text.DecimalFormat;
 import java.text.FieldPosition;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.ivoa.util.text.LocalStringBuilder;
 
 
 /**
@@ -167,7 +168,7 @@ public final class NumberUtils {
       sb.insert(pos + 1, '+');
     }
     }
-    return StringUtils.extract(sb);
+    return LocalStringBuilder.extract(sb);
   }
 
   /**
@@ -194,7 +195,7 @@ public final class NumberUtils {
   public static String strFormat(final DecimalFormat df, final double value, final StringBuffer sb) {
     df.format(value, sb, FAKE_POSITION);
 
-    return StringUtils.extract(sb);
+    return LocalStringBuilder.extract(sb);
   }
 
   /**
@@ -235,7 +236,7 @@ public final class NumberUtils {
   public static String strFormat(final DecimalFormat df, final Number value, final StringBuffer sb) {
     df.format(value, sb, FAKE_POSITION);
 
-    return StringUtils.extract(sb);
+    return LocalStringBuilder.extract(sb);
   }
 
   /**

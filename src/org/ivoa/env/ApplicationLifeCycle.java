@@ -1,6 +1,7 @@
 package org.ivoa.env;
 
 import org.ivoa.conf.Configuration;
+import org.ivoa.util.SystemLogUtil;
 
 
 /**
@@ -33,9 +34,9 @@ public final class ApplicationLifeCycle {
     // memorize the application title to avoid using Configuration.getInstance() :
     APPLICATION_TITLE = title;
 
-    System.out.println("-------------------------------------------------------------------------------");
-    System.out.println(" " + title + " : start ...");
-    System.out.println("-------------------------------------------------------------------------------");
+    if (SystemLogUtil.isInfoEnabled()) {
+      SystemLogUtil.info(" " + title + " : start ...");
+    }
   }
 
   /**
@@ -49,18 +50,18 @@ public final class ApplicationLifeCycle {
    * Called when JVM exit
    */
   public static void onExit() {
-    System.out.println("-------------------------------------------------------------------------------");
-    System.out.println(" " + APPLICATION_TITLE + " : stop ...");
-    System.out.println("-------------------------------------------------------------------------------");
+    if (SystemLogUtil.isInfoEnabled()) {
+      SystemLogUtil.info(" " + APPLICATION_TITLE + " : stop ...");
+    }
   }
 
   /**
    * Called when JVM ends
    */
   protected static void onEnd() {
-    System.out.println("-------------------------------------------------------------------------------");
-    System.out.println(" " + APPLICATION_TITLE + " : terminated.");
-    System.out.println("-------------------------------------------------------------------------------");
+    if (SystemLogUtil.isInfoEnabled()) {
+      SystemLogUtil.info(" " + APPLICATION_TITLE + " : terminated.");
+    }
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

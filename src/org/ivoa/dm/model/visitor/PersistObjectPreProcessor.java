@@ -8,7 +8,7 @@ import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.MetadataRootEntityObject;
 
 /**
- * MetadataObject Visitor implementation : This visitor sets username and update time on
+ * MetadataObject TreeVisitor implementation : This visitor sets username and update time on
  * MetadattaObjects before peersistence.<br/>
  * Currently only sets this on MetadataRootEntityObjects, as we have these variables only there.
  * This may change in the future. Used by :

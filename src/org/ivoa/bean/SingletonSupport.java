@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-
 import java.util.concurrent.LinkedBlockingQueue;
+
 import org.ivoa.util.CollectionUtils;
 import org.ivoa.util.JavaUtils;
-import org.ivoa.util.text.LocalStringBuilder;
+import org.ivoa.util.SystemLogUtil;
 import org.ivoa.util.concurrent.ThreadLocalUtils;
+import org.ivoa.util.text.LocalStringBuilder;
 
 /**
  * Singleton design pattern implementation for Java 5+.<br/>
@@ -25,7 +26,7 @@ public abstract class SingletonSupport extends LogSupport {
   public static final boolean SINGLETON_SUPPORT_DIAGNOSTICS = false;
 
   /**
-   * Enumeration of lifecycle status
+   * Enumeration of life cycle status
    */
   private static enum STATUS {
 
@@ -65,8 +66,9 @@ public abstract class SingletonSupport extends LogSupport {
    */
   protected static final boolean isRunning() {
     if (SINGLETON_SUPPORT_DIAGNOSTICS && STATE == STATUS.STOP) {
-      System.out.println("SingletonSupport.isRunning : shutdown detected : ");
-      new Throwable().printStackTrace(System.out);
+      if (SystemLogUtil.isDebugEnabled()) {
+        SystemLogUtil.debug("SingletonSupport.isRunning : shutdown detected : ");
+      }
     }
 
     return STATE == STATUS.READY;

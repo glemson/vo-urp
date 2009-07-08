@@ -26,34 +26,6 @@ public final class StringUtils {
   //~ Methods ----------------------------------------------------------------------------------------------------------
 
   /**
-   * Extract buffer content & reset buffer
-   *
-   * @param sb StringBuilder
-   * @return String value
-   */
-  public static String extract(final StringBuilder sb) {
-    final String text = sb.toString();
-
-    sb.setLength(0);
-
-    return text;
-  }
-
-  /**
-   * Extract buffer content & reset buffer
-   *
-   * @param sb StringBuilder
-   * @return String value
-   */
-  public static String extract(final StringBuffer sb) {
-    final String text = sb.toString();
-
-    sb.setLength(0);
-
-    return text;
-  }
-
-  /**
    * Return an encoded string : < > characters replaced by html entities
    *
    * @param source input string

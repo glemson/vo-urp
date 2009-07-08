@@ -1,25 +1,37 @@
 package org.ivoa.bean;
 
 /**
- * Represents a generic visitor in the visitor pattern.
- *
- * @param <T> Type of the navigable class
+ * Visitor class to implement the visitor pattern T is the type of the visited class.
+ * 
+ * @see Navigable
+ * @see TreeVisitor
+ * @param <T> type of the visited class
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public interface Visitor<T> {
+public class Visitor<T> extends LogSupport {
 
-    //~ Methods ----------------------------------------------------------------------------------------------------------
+  /**
+   * Empty implementation of the Visitor Design pattern
+   * 
+   * @param element instance to visit
+   * @return true if the traversal is OK
+   */
+  public final boolean visit(final T element) {
+    return this.visit(element, null);
+  }
 
-    /**
-     * Process the specified object before its collections are being processed.</br>
-     * @param object instance
-     */
-    public void preProcess(final T object);
+  /**
+   * Empty implementation of the Visitor Design pattern
+   * 
+   * @param element instance to visit
+   * @param argument optional argument
+   * @return true if the traversal is OK
+   */
+  public boolean visit(final T element, final Object argument) {
+    if (logD.isDebugEnabled()) {
+      logD.debug(this.getClass().getSimpleName() + ".visit : element : " + element + " - " + argument);
+    }
+    return true;
+  }
 
-    /**
-     * Process the specified object after its collections have been processed.</br>
-     * @param object instance
-     */
-    public void postProcess(final T object);
 }
-//~ End of file --------------------------------------------------------------------------------------------------------

@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.Vector;
 
 import org.ivoa.util.JavaUtils;
+import org.ivoa.util.SystemLogUtil;
 
 // ----------------------------------------------------------------------------
 /**
@@ -88,9 +89,11 @@ public final class ClassScope {
       }
 
       return result;
-    } catch (IllegalAccessException e) {
+    } catch (IllegalAccessException iae) {
       // this should not happen if the static class initializer was successful:
-      e.printStackTrace(System.out);
+      if (SystemLogUtil.isErrorEnabled()) {
+        SystemLogUtil.error("ClassScope.getLoadedClasses : failure : ", iae);
+      }
     }
     return EMPTY_CLASS_ARRAY;
   }
