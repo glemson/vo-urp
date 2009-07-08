@@ -1,6 +1,7 @@
 package org.ivoa.util.text;
 
 import org.ivoa.bean.SingletonSupport;
+import org.ivoa.util.SystemLogUtil;
 import org.ivoa.util.concurrent.ThreadLocalUtils;
 import org.ivoa.util.timer.AbstractTimer;
 import org.ivoa.util.timer.TimerFactory;
@@ -207,7 +208,7 @@ public final class LocalStringBuilder extends SingletonSupport {
    */
   protected static void microbenchmark() {
     if (logB.isWarnEnabled()) {
-      final String value = "---------------------------------------";
+      final String value = SystemLogUtil.LOG_LINE_SEPARATOR;
 
       final AbstractTimer timer = TimerFactory.getTimer("LocalStringBuilder", UNIT.ns);
 

@@ -309,8 +309,7 @@ public final class LogUtil {
       if (l != null) {
         this.addLog(key, l);
       } else {
-        throw new IllegalStateException(
-                "LogUtil : Log4J is not initialized correctly : missing logger [" + key + "] (check log4j.xml) !");
+        throw new IllegalStateException("LogUtil : Log4J is not initialized correctly : missing logger [" + key + "] (check log4j.xml) !");
       }
     }
 

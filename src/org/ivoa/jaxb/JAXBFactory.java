@@ -10,6 +10,7 @@ import javax.xml.bind.helpers.DefaultValidationEventHandler;
 
 import org.ivoa.bean.SingletonSupport;
 import org.ivoa.conf.Configuration;
+import org.ivoa.util.SystemLogUtil;
 import org.ivoa.util.text.StringBuilderWriter;
 
 /**
@@ -273,7 +274,7 @@ public final class JAXBFactory extends SingletonSupport {
 
       if (xml != null) {
         if (log.isDebugEnabled()) {
-          log.debug("-------------------------------------------------------------------------------");
+          log.debug(SystemLogUtil.LOG_LINE_SEPARATOR);
         }
 
         if (log.isDebugEnabled()) {
@@ -285,7 +286,7 @@ public final class JAXBFactory extends SingletonSupport {
         }
 
         if (log.isDebugEnabled()) {
-          log.debug("-------------------------------------------------------------------------------");
+          log.debug(SystemLogUtil.LOG_LINE_SEPARATOR);
         }
       }
     }

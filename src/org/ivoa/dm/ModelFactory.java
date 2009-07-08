@@ -25,6 +25,7 @@ import org.ivoa.metamodel.Collection;
 import org.ivoa.metamodel.Reference;
 import org.ivoa.util.FileUtils;
 import org.ivoa.util.ReflectionUtils;
+import org.ivoa.util.SystemLogUtil;
 import org.ivoa.util.text.StringBuilderWriter;
 
 /**
@@ -162,9 +163,9 @@ public final class ModelFactory extends SingletonSupport {
       marshallObject(source, writer);
 
       if (log.isDebugEnabled()) {
-        log.debug("-------------------------------------------------------------------------------");
+        log.debug(SystemLogUtil.LOG_LINE_SEPARATOR);
         log.debug("ModelFactory.marshallObject : file saved : " + filePath);
-        log.debug("-------------------------------------------------------------------------------");
+        log.debug(SystemLogUtil.LOG_LINE_SEPARATOR);
       }
     } catch (final RuntimeException re) {
       log.error("ModelFactory.marshallObject : runtime failure : ", re);
