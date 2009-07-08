@@ -2,6 +2,7 @@ package org.ivoa.dm;
 
 import org.apache.commons.logging.Log;
 import org.ivoa.env.ApplicationAdapter;
+import org.ivoa.util.SystemLogUtil;
 
 /**
  * DataModelManager Command Line Tool
@@ -62,8 +63,9 @@ public final class ManagerMain {
         try {
             l = org.ivoa.util.LogUtil.getLogger();
         } catch (final Throwable th) {
-            System.err.println("Unable to initialize logging system :");
-            th.printStackTrace(System.err);
+          if (SystemLogUtil.isErrorEnabled()) {
+            SystemLogUtil.error("Unable to initialize logging system :", th);
+          }
         }
 
         return l;

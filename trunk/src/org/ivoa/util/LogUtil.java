@@ -176,8 +176,9 @@ public final class LogUtil {
      * org.apache.catalina.manager.HTMLManagerServlet.doGet(HTMLManagerServlet.java:131)
      */
     if (LOGGING_DIAGNOSTICS && isShutdown) {
-      System.out.println("LogUtil.isRunning : shutdown detected : ");
-      new Throwable().printStackTrace(System.out);
+      if (SystemLogUtil.isDebugEnabled()) {
+        SystemLogUtil.debug("LogUtil.isRunning : shutdown detected : ");
+      }
     }
 
     return !isShutdown;

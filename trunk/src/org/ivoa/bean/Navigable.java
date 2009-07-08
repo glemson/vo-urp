@@ -3,6 +3,11 @@ package org.ivoa.bean;
 /**
  * This interface defines an accept method with a Visitor instance
  * 
+ * TODO : use the standard Visitor class
+ * 
+ * @see TreeVisitor
+ * @see Visitor
+ * 
  * @param <T> type of the visited class
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
@@ -15,5 +20,5 @@ public interface Navigable<T> {
    * @param visitor visitor instance
    * @param argument optional argument
    */
-  public void accept(Visitor<T> visitor, Object argument);
+  public void accept(TreeVisitor<T> visitor, Object argument);
 }

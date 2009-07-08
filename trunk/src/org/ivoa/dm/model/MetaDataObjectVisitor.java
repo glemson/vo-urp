@@ -1,7 +1,7 @@
 package org.ivoa.dm.model;
 
 import org.ivoa.bean.SingletonSupport;
-import org.ivoa.bean.Visitor;
+import org.ivoa.bean.TreeVisitor;
 
 /**
  * Represents a visitor in the visitor pattern.<br>
@@ -18,7 +18,7 @@ import org.ivoa.bean.Visitor;
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public abstract class MetaDataObjectVisitor extends SingletonSupport implements Visitor<MetadataObject> {
+public abstract class MetaDataObjectVisitor extends SingletonSupport implements TreeVisitor<MetadataObject> {
 
     /**
      * Protected constructor to avoid to create instance except for singletons (stateless classes)

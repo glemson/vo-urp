@@ -70,6 +70,24 @@ public final class LocalStringBuilder extends SingletonSupport {
     return LocalStringBuilder.toString(sb);
   }
 
+  /**
+   * Return the string contained in the current local buffer ONLY.<br/>
+   * DO NOT release the buffer
+   *
+   * @param sb buffer
+   * @return string contained in the given buffer
+   */
+  public final static String extract(final StringBuffer sb) {
+    String s = null;
+    if (sb != null) {
+      s = sb.toString();
+
+      // reset without array operation : just set count to 0 / leave buffer available with the
+      // same capacity :
+      sb.setLength(0);
+    }
+    return s;
+  }
   
   /**
    * Return the string contained in the current local buffer ONLY.<br/>

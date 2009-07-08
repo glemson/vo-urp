@@ -4,7 +4,7 @@ import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.MetaDataObjectVisitor;
 
 /**
- * MetadataObject Visitor implementation :
+ * MetadataObject TreeVisitor implementation :
  * TODO : description
  *
  * Used by :

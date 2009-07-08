@@ -285,7 +285,7 @@ public final class ModelFactory extends SingletonSupport {
   }
 
   /**
-   * TODO : use Visitor Pattern : KILL later
+   * TODO : use TreeVisitor Pattern : KILL later
    *
    * Navigate along child axes (references / collection) to resolve all external references (see Identity)  and
    * containement references (parent with collection items)
@@ -302,7 +302,7 @@ public final class ModelFactory extends SingletonSupport {
   }
 
   /**
-   * TODO : use Visitor Pattern : KILL later
+   * TODO : use TreeVisitor Pattern : KILL later
    *
    * Navigate along child axes (references / collection) to resolve all external references (see Identity)  and
    * containement references (parent with collection items). <br>
@@ -327,7 +327,7 @@ public final class ModelFactory extends SingletonSupport {
   }
 
   /**
-   * TODO : use Visitor Pattern : KILL later
+   * TODO : use TreeVisitor Pattern : KILL later
    *
    * Navigate along child axes (references / collection) to resolve all external references (see Identity)  and
    * containement references (parent with collection items). <br>
