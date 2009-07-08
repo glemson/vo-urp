@@ -1,9 +1,8 @@
 package org.vo.urp.test;
 
 import org.apache.commons.logging.Log;
-
 import org.ivoa.env.ApplicationAdapter;
-
+import org.ivoa.util.SystemLogUtil;
 import org.ivoa.util.timer.TimerFactory;
 import org.vo.urp.test.jaxb.XMLTests;
 
@@ -19,6 +18,7 @@ public final class Main {
    * Creates a new instance of Main
    */
   private Main() {
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -61,8 +61,9 @@ public final class Main {
     try {
       l = org.ivoa.util.LogUtil.getLogger();
     } catch (final Throwable th) {
-      System.err.println("Unable to initialize logging system :");
-      th.printStackTrace(System.err);
+      if (SystemLogUtil.isErrorEnabled()) {
+        SystemLogUtil.error("Unable to initialize logging system :", th);
+      }
     }
 
     return l;

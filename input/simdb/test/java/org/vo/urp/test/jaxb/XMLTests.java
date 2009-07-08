@@ -32,6 +32,7 @@ public final class XMLTests extends LogSupport implements ApplicationMain {
    * Constructor
    */
   public XMLTests() {
+    /* no-op */
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -77,8 +78,7 @@ public final class XMLTests extends LogSupport implements ApplicationMain {
    * @param o object to process
    */
   public void testMarshall(final MetadataObject o) {
-    // create an Unmarshaller
-    System.out.print(ModelFactory.getInstance().marshallObject(o, 4096));
+    log.info("XMLTests.testMarshall : result = " + ModelFactory.getInstance().marshallObject(o, 4096));
   }
 
   /**
