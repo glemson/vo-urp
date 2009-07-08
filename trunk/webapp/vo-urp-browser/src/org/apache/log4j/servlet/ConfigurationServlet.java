@@ -34,6 +34,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.ivoa.util.LogUtil;
+import org.ivoa.util.SystemLogUtil;
 
 /**
  * A servlet used to dynamically adjust package logging levels while an application is running. NOTE: This servlet is
@@ -266,9 +267,10 @@ public class ConfigurationServlet extends HttpServlet {
             LogUtil.setLevel(logger, Level.toLevel(level));
 
             return "Message Set For " + (logger.getName().equals("") ? ROOT : logger.getName());
-        } catch (Throwable e) {
-            System // permetti system.out
-                    .out.println("ERROR Setting LOG4J Logger:" + e);
+        } catch (Throwable th) {
+          if (SystemLogUtil.isErrorEnabled()) {  
+            SystemLogUtil.error("ConfigurationServlet.setClass : Error setting LOG4J Logger level : ", th);
+          }
         }
         return "";
     }
