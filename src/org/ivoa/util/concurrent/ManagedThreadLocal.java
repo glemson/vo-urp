@@ -106,6 +106,8 @@ public class ManagedThreadLocal<T> extends ThreadLocal<T> {
    * Callback to handle the remove() event for this ManagedThreadLocal instance
    * 
    * @see ThreadLocal#remove()
+   * 
+   * @return true if the value can be removed from the thread local map
    *
    * @throws IllegalStateException if a problem occurred
    */

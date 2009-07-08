@@ -70,6 +70,23 @@ public final class LocalStringBuilder extends SingletonSupport {
     return LocalStringBuilder.toString(sb);
   }
 
+  
+  /**
+   * Return the string contained in the current local buffer ONLY.<br/>
+   * DO NOT release the buffer
+   *
+   * @param sb buffer
+   * @return string contained in the given buffer
+   */
+  public final static String extract(final StringBuilder sb) {
+    String s = null;
+    if (sb != null) {
+      s = sb.toString();
+      StringBuilderContext.resetStringBuilder(sb);
+    }
+    return s;
+  }
+
   /**
    * Return an empty threadLocal StringBuilder instance.<br/>
    * MUST BE RELEASED after use by calling toString(StringBuilder) or toStringBuilder(StringBuilder)

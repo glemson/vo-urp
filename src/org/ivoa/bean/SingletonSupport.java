@@ -49,7 +49,7 @@ public abstract class SingletonSupport extends LogSupport {
     STATE = STATUS.READY;
 
     if (SINGLETON_SUPPORT_DIAGNOSTICS) {
-      System.out.println("SingletonSupport.prepareSingletonSupport : initialization now ...");
+      logB.error("SingletonSupport.prepareSingletonSupport : initialization now ...");
     }
     // prepare ThreadLocalUtils as the first singleton to be release the last :
     ThreadLocalUtils.getInstance();

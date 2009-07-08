@@ -105,21 +105,20 @@ public final class ReferenceResolver extends SingletonSupport {
       if (em == null) {
         throw new IllegalStateException(
                 "unable to resolve any reference because the entity manager is undefined", new Throwable());
-      } else {
-        final MetadataObject res = JPAHelper.findItemByIvoId(em, type, ivoId);
-
-        if (res == null) {
-          throw new IllegalStateException(
-                  "unable to resolve reference : " + reference.toString() + " in the database",
-                  new Throwable());
-        }
-
-        if (log.isInfoEnabled()) {
-          log.info("ReferenceResolver.resolve : exit : " + reference + " <=> " + res);
-        }
-
-        return res;
       }
+      final MetadataObject res = JPAHelper.findItemByIvoId(em, type, ivoId);
+
+      if (res == null) {
+        throw new IllegalStateException(
+                "unable to resolve reference : " + reference.toString() + " in the database",
+                new Throwable());
+      }
+
+      if (log.isInfoEnabled()) {
+        log.info("ReferenceResolver.resolve : exit : " + reference + " <=> " + res);
+      }
+
+      return res;
     }
 
     if (!JavaUtils.isEmpty(reference.getPublisherDID())) {
@@ -129,22 +128,21 @@ public final class ReferenceResolver extends SingletonSupport {
       if (em == null) {
         throw new IllegalStateException(
                 "unable to resolve any reference because the entity manager is undefined", new Throwable());
-      } else {
-
-        final MetadataObject res = JPAHelper.findItemByPublisherDID(em, type, reference.getPublisherDID());
-
-        if (res == null) {
-          throw new IllegalStateException(
-                  "unable to resolve reference : " + reference.toString() + " in the database",
-                  new Throwable());
-        }
-
-        if (log.isInfoEnabled()) {
-          log.info("ReferenceResolver.resolve : exit : " + reference + " <=> " + res);
-        }
-
-        return res;
       }
+
+      final MetadataObject res = JPAHelper.findItemByPublisherDID(em, type, reference.getPublisherDID());
+
+      if (res == null) {
+        throw new IllegalStateException(
+                "unable to resolve reference : " + reference.toString() + " in the database",
+                new Throwable());
+      }
+
+      if (log.isInfoEnabled()) {
+        log.info("ReferenceResolver.resolve : exit : " + reference + " <=> " + res);
+      }
+
+      return res;
     }
     return null;
   }
