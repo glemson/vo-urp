@@ -22,7 +22,6 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ConcurrentMap;
@@ -30,7 +29,6 @@ import java.util.concurrent.ConcurrentMap;
 import org.ivoa.bean.LogSupport;
 import org.ivoa.bean.SingletonSupport;
 import org.ivoa.util.ReflectionUtils;
-import org.ivoa.util.concurrent.ManagedThreadLocal;
 
 /**
  * Utility functions related to ThreadLocals. This class provides utilities for managing the life
@@ -187,6 +185,24 @@ public final class ThreadLocalUtils extends SingletonSupport {
             }
           }
         }
+
+        ThreadLocal<?> threadLocal;
+        ManagedThreadLocal<?> managed;
+        for (final ResettableThreadLocalManager manager : threadLocalManagers.values()) {
+          if (manager != null) {
+
+            for (WeakReference<ThreadLocal<?>> ref : manager.getManagedThreadLocals()) {
+              threadLocal = ref.get();
+
+              if (threadLocal != null) {
+                managed = getManagedThreadLocal(threadLocal);
+                if (managed != null) {
+                  managed.dumpStatistics();
+                }
+              }
+            }
+          }
+        }
       } finally {
         clearFields();
       }
@@ -286,6 +302,10 @@ public final class ThreadLocalUtils extends SingletonSupport {
       return threadLocal;
     }
 
+    protected Collection<WeakReference<ThreadLocal<?>>> getManagedThreadLocals() {
+      return managedThreadLocals;
+    }
+
     /**
      * Called by the SingletonSupport onExit() method to clean up all of the ThreadLocals registered
      * with this ThreadLocalManager
@@ -297,11 +317,9 @@ public final class ThreadLocalUtils extends SingletonSupport {
      */
     @Override
     protected void removeThreadLocals() {
-      final Iterator<WeakReference<ThreadLocal<?>>> iterator = managedThreadLocals.iterator();
-
       ThreadLocal<?> threadLocal;
-      while (iterator.hasNext()) {
-        threadLocal = iterator.next().get();
+      for (WeakReference<ThreadLocal<?>> ref : managedThreadLocals) {
+        threadLocal = ref.get();
 
         // if the threadLocal is null, that means it has been released and we would really
         // like to reclaim the entry, however remove isn't supported on CopyOnWriteArrayLists
@@ -343,13 +361,11 @@ public final class ThreadLocalUtils extends SingletonSupport {
 
           if (threadLocalMapRemoveMethod != null) {
 
-            final Iterator<WeakReference<ThreadLocal<?>>> iterator = managedThreadLocals.iterator();
-
             final Object[] params = new Object[1];
 
             ThreadLocal<?> threadLocal;
-            while (iterator.hasNext()) {
-              threadLocal = iterator.next().get();
+            for (WeakReference<ThreadLocal<?>> ref : managedThreadLocals) {
+              threadLocal = ref.get();
 
               // if the threadLocal is null, that means it has been released and we would really
               // like to reclaim the entry, however remove isn't supported on CopyOnWriteArrayLists

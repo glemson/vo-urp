@@ -1,6 +1,8 @@
 @echo off
-
 REM script validated on Windows XP with Java 6.0.14 + apache tomcat 6.0.20
+
+REM delete previous log files :
+del /S /Q ..\logs\*
 
 REM set your JRE here :
 set JAVA_HOME=C:\Java\Jdk6_14
