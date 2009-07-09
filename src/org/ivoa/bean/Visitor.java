@@ -28,8 +28,8 @@ public class Visitor<T> extends LogSupport {
    * @return true if the traversal is OK
    */
   public boolean visit(final T element, final Object argument) {
-    if (logD.isDebugEnabled()) {
-      logD.debug(this.getClass().getSimpleName() + ".visit : element : " + element + " - " + argument);
+    if (logB.isDebugEnabled()) {
+      logB.debug(this.getClass().getSimpleName() + ".visit : element : " + element + " - " + argument);
     }
     return true;
   }

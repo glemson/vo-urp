@@ -37,7 +37,7 @@ public final class ReflectionUtils extends LogSupport {
         try {
             return Class.forName(className);
         } catch (final ClassNotFoundException cnfe) {
-      log.error("ReflectionUtils.findClass : Unable to find class [" + className + "] in classpath : " + System.getProperty("java.class.path"), cnfe);
+      logB.error("ReflectionUtils.findClass : Unable to find class [" + className + "] in classpath : " + System.getProperty("java.class.path"), cnfe);
         }
 
         return null;
@@ -55,7 +55,7 @@ public final class ReflectionUtils extends LogSupport {
         try {
             return Class.forName(className).asSubclass(type);
         } catch (final ClassNotFoundException cnfe) {
-      log.error("ReflectionUtils.findClass : Unable to find class [" + className + "] in classpath : " + System.getProperty("java.class.path"), cnfe);
+      logB.error("ReflectionUtils.findClass : Unable to find class [" + className + "] in classpath : " + System.getProperty("java.class.path"), cnfe);
         }
 
         return null;
@@ -171,9 +171,9 @@ public final class ReflectionUtils extends LogSupport {
     Object value = null;
     try {
       if (logB.isDebugEnabled()) {
-        log.debug("ReflectionUtils.invokeMethod : method  = " + method);
-        log.debug("ReflectionUtils.invokeMethod : subject = " + subject);
-        log.debug("ReflectionUtils.invokeMethod : parameters = " + Arrays.toString(parameters));
+        logB.debug("ReflectionUtils.invokeMethod : method  = " + method);
+        logB.debug("ReflectionUtils.invokeMethod : subject = " + subject);
+        logB.debug("ReflectionUtils.invokeMethod : parameters = " + Arrays.toString(parameters));
       }
       
       value = method.invoke(subject, parameters);
@@ -214,7 +214,7 @@ public final class ReflectionUtils extends LogSupport {
       try {
         this.object.setAccessible(true);
       } catch (final SecurityException se) {
-        log.error("FieldAccessible.run : Security exception to set the accessibility of the object[" + this.object + "]", se);
+        logB.error("FieldAccessible.run : Security exception to set the accessibility of the object[" + object + "]", se);
       }
 
       return Boolean.TRUE;

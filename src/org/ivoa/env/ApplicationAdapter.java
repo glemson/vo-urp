@@ -27,8 +27,8 @@ public final class ApplicationAdapter extends LogSupport {
    * Start event
    */
   public static void start() {
-    if (log.isDebugEnabled()) {
-      log.debug("ApplicationAdapter.start : enter");
+    if (logB.isDebugEnabled()) {
+      logB.debug("ApplicationAdapter.start : enter");
     }
 
     // callback to create resources (Swing application) :
@@ -42,14 +42,14 @@ public final class ApplicationAdapter extends LogSupport {
 
       ApplicationLifeCycle.doStart();
     } catch (final Throwable th) {
-      log.error("ApplicationAdapter.start : fatal error : ", th);
+      logB.error("ApplicationAdapter.start : fatal error : ", th);
     }
 
     // TimerFactory warmup and reset :
     TimerFactory.resetTimers();
 
-    if (log.isDebugEnabled()) {
-      log.debug("ApplicationAdapter.start : exit");
+    if (logB.isDebugEnabled()) {
+      logB.debug("ApplicationAdapter.start : exit");
     }
   }
 
@@ -57,8 +57,8 @@ public final class ApplicationAdapter extends LogSupport {
    * Stop event
    */
   public static void stop() {
-    if (log.isDebugEnabled()) {
-      log.debug("ApplicationAdapter.stop ...");
+    if (logB.isDebugEnabled()) {
+      logB.debug("ApplicationAdapter.stop ...");
     }
 
     ApplicationLifeCycle.onExit();
@@ -76,7 +76,7 @@ public final class ApplicationAdapter extends LogSupport {
       ClassLoaderCleaner.clean();
 
     } catch (final Throwable th) {
-      log.error("ApplicationAdapter.stop : fatal error : ", th);
+      logB.error("ApplicationAdapter.stop : fatal error : ", th);
     }
 
     ApplicationLifeCycle.onEnd();

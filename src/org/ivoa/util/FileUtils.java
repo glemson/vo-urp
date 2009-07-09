@@ -17,8 +17,8 @@ import org.ivoa.bean.LogSupport;
 
 
 /**
- * File Utils : Several utility methods : finds a file in classpath (jar), open files for read or
- * write operation and close file
+ * File utility methods : Several utility methods : finds a file in the class path (jar), open files
+ * for read or write operation and close file
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
@@ -61,8 +61,8 @@ public final class FileUtils extends LogSupport {
       throw new RuntimeException("Unable to find file in classpath : " + fileName);
     }
 
-    if (log.isInfoEnabled()) {
-      log.info("FileUtils.getSystemFileInputStream : reading file : " + url);
+    if (logB.isInfoEnabled()) {
+      logB.info("FileUtils.getSystemFileInputStream : reading file : " + url);
     }
 
     try {
@@ -82,7 +82,7 @@ public final class FileUtils extends LogSupport {
       try {
         in.close();
       } catch (final IOException ioe) {
-        log.error("FileUtils.closeStream : io close failure : ", ioe);
+        logB.error("FileUtils.closeStream : io close failure : ", ioe);
       }
     }
   }
@@ -97,7 +97,7 @@ public final class FileUtils extends LogSupport {
       try {
         out.close();
       } catch (final IOException ioe) {
-        log.error("FileUtils.closeStream : io close failure : ", ioe);
+        logB.error("FileUtils.closeStream : io close failure : ", ioe);
       }
     }
   }
@@ -199,7 +199,7 @@ public final class FileUtils extends LogSupport {
     try {
       return new BufferedWriter(new FileWriter(file), bufferSize);
     } catch (final IOException ioe) {
-      log.error("FileUtils.openFile : io failure : ", ioe);
+      logB.error("FileUtils.openFile : io failure : ", ioe);
     }
 
     return null;
@@ -216,7 +216,7 @@ public final class FileUtils extends LogSupport {
       try {
         w.close();
       } catch (final IOException ioe) {
-        log.error("FileUtils.closeFile : io close failure : ", ioe);
+        logB.error("FileUtils.closeFile : io close failure : ", ioe);
       }
     }
 
@@ -266,7 +266,7 @@ public final class FileUtils extends LogSupport {
     try {
       return new BufferedReader(new FileReader(file), bufferSize);
     } catch (final IOException ioe) {
-      log.error("FileUtils.readFile : io failure : ", ioe);
+      logB.error("FileUtils.readFile : io failure : ", ioe);
     }
 
     return null;
@@ -283,7 +283,7 @@ public final class FileUtils extends LogSupport {
       try {
         r.close();
       } catch (final IOException ioe) {
-        log.error("FileUtils.closeFile : io close failure : ", ioe);
+        logB.error("FileUtils.closeFile : io close failure : ", ioe);
       }
     }
 

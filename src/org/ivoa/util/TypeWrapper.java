@@ -93,7 +93,7 @@ public final class TypeWrapper extends LogSupport {
         return US_INT_SDF.parse(val);
       }
     } catch (final ParseException pe) {
-      log.error("TypeWrapper.parseInternationalFormat : parse failure : ", pe);
+      logB.error("TypeWrapper.parseInternationalFormat : parse failure : ", pe);
     }
 
     return null;

@@ -223,7 +223,7 @@ public final class LocalStringBuilder extends SingletonSupport {
         timer.addNanoSeconds(start, stop);
       }
 
-      log.warn("LocalStringBuilder : micro benchmark : " + TimerFactory.dumpTimers());
+      logB.warn("LocalStringBuilder : micro benchmark : " + TimerFactory.dumpTimers());
 
       // TimerFactory reset :
       TimerFactory.resetTimers();
