@@ -181,7 +181,7 @@
 	<filter token="jaxb.package" value="${root_package}.metamodel"/> 
 	<!-- TODO next can not be given as a property, must be generated from the model -->
 	<filter token="jaxb.classpath" value="${jaxb.classpath}"/>
-	<filter token="root.schema.url" value="${schemalocation_root}/${project.name}_root.xsd"/>
+	<filter token="root.schema.url" value="${schemalocation_root}${project.name}_root.xsd"/>
 	<filter token="project.contact" value="${project.contact}"/>
 
 	<filter token="tap.metadata.xml.file" value=""/>
