@@ -95,14 +95,14 @@ public class PropertyHolder extends SingletonSupport implements Serializable {
                 }
             }
 
-            if (log.isDebugEnabled()) {
-                log.debug("properties [" + propertyFile + "] : " + CollectionUtils.toString(getProperties()));
+      if (logB.isDebugEnabled()) {
+        logB.debug("properties [" + propertyFile + "] : " + CollectionUtils.toString(getProperties()));
             }
 
             // postInit event :
             res = this.postInit();
         } catch (final IOException ioe) {
-            log.error("IO Failure : ", ioe);
+      logB.error("IO Failure : ", ioe);
         } finally {
             FileUtils.closeStream(in);
         }

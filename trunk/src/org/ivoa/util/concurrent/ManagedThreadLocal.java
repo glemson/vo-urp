@@ -115,6 +115,13 @@ public class ManagedThreadLocal<T> extends ThreadLocal<T> {
     /* no-op */
     return true;
   }
+  
+  /**
+   * TODO : fix
+   */
+  protected void dumpStatistics() {
+    
+  }
 
   // ~ End of file
   // --------------------------------------------------------------------------------------------------------

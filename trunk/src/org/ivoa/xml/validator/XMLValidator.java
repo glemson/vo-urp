@@ -89,7 +89,7 @@ public final class XMLValidator extends SingletonSupport {
       managedInstances = null;
     }
     if (logB.isInfoEnabled()) {
-      log.info("XMLValidator.clearStaticReferences : exit");
+      logB.info("XMLValidator.clearStaticReferences : exit");
     }
   }
 

@@ -99,8 +99,8 @@ public class Configuration extends PropertyHolder implements Configurable {
      * Dumps System.properties in logs (info) ...
      */
     private final void dumpSystemProps() {
-        if (log.isInfoEnabled()) {
-            log.info("System.properties : " + CollectionUtils.toString(System.getProperties()));
+    if (logB.isInfoEnabled()) {
+      logB.info("System.properties : " + CollectionUtils.toString(System.getProperties()));
         }
     }
 
@@ -112,8 +112,8 @@ public class Configuration extends PropertyHolder implements Configurable {
     private final static OSEnum checkOsName() {
         final String os = System.getProperty("os.name").toLowerCase();
 
-        if (log.isInfoEnabled()) {
-            log.info("OS : " + os);
+    if (logB.isInfoEnabled()) {
+      logB.info("OS : " + os);
         }
 
         OSEnum res = OSEnum.OS_OTHER;

@@ -91,7 +91,7 @@ public final class XmlFactory extends LogSupport {
       try {
         tFactory = TransformerFactory.newInstance();
       } catch (final TransformerFactoryConfigurationError tfce) {
-        log.error("XmlFactory.getTransformerFactory : failure on TransformerFactory initialisation : ", tfce);
+        logB.error("XmlFactory.getTransformerFactory : failure on TransformerFactory initialisation : ", tfce);
       }
     }
 
@@ -107,7 +107,7 @@ public final class XmlFactory extends LogSupport {
     try {
       return getOutTransformer(getTransformerFactory().newTransformer());
     } catch (final TransformerConfigurationException tce) {
-      log.error("XmlFactory.newTransformer : failure on creating new Transformer : ", tce);
+      logB.error("XmlFactory.newTransformer : failure on creating new Transformer : ", tce);
     }
 
     return null;
@@ -124,7 +124,7 @@ public final class XmlFactory extends LogSupport {
     try {
       return getOutTransformer(getTransformerFactory().newTransformer(source));
     } catch (final TransformerConfigurationException tce) {
-      log.error("XmlFactory.newTransformer : failure on creating new Transformer for source : " + source, tce);
+      logB.error("XmlFactory.newTransformer : failure on creating new Transformer for source : " + source, tce);
     }
 
     return null;
@@ -141,7 +141,7 @@ public final class XmlFactory extends LogSupport {
     try {
       return getOutTransformer(tmp.newTransformer());
     } catch (final TransformerConfigurationException tce) {
-      log.error("XmlFactory.newTransformer : failure on creating new Transformer for template : " + tmp, tce);
+      logB.error("XmlFactory.newTransformer : failure on creating new Transformer for template : " + tmp, tce);
     }
 
     return null;
@@ -158,7 +158,7 @@ public final class XmlFactory extends LogSupport {
     try {
       return getTransformerFactory().newTemplates(source);
     } catch (final TransformerConfigurationException tce) {
-      log.error("XmlFactory.newTransformer : failure on creating new template : " + source, tce);
+      logB.error("XmlFactory.newTransformer : failure on creating new template : " + source, tce);
     }
 
     return null;
@@ -232,8 +232,8 @@ public final class XmlFactory extends LogSupport {
    * @return Document (DOM)
    */
   public static final Document parse(final InputSource input) {
-    if (log.isDebugEnabled()) {
-      log.debug("XmlFactory.parse : begin");
+    if (logB.isDebugEnabled()) {
+      logB.debug("XmlFactory.parse : begin");
     }
 
     Document document = null;
@@ -242,15 +242,15 @@ public final class XmlFactory extends LogSupport {
       input.setEncoding(ENCODING);
       document = getFactory().newDocumentBuilder().parse(input);
     } catch (final SAXException se) {
-      log.error("XmlFactory.parse : error", se);
+      logB.error("XmlFactory.parse : error", se);
     } catch (final IOException ioe) {
-      log.error("XmlFactory.parse : error", ioe);
+      logB.error("XmlFactory.parse : error", ioe);
     } catch (final ParserConfigurationException pce) {
-      log.error("XmlFactory.parse : error", pce);
+      logB.error("XmlFactory.parse : error", pce);
     }
 
-    if (log.isInfoEnabled()) {
-      log.info("XmlFactory.parse : exit : " + document);
+    if (logB.isInfoEnabled()) {
+      logB.info("XmlFactory.parse : exit : " + document);
     }
 
     return document;
@@ -316,8 +316,8 @@ public final class XmlFactory extends LogSupport {
    */
   public static void transform(final String xmlSource, final String xslFilePath, final long lastModified,
                                final boolean doCacheXsl, final Writer out) {
-    if (log.isDebugEnabled()) {
-      log.debug("XmlFactory.transform : enter : xslFilePath : " + xslFilePath);
+    if (logB.isDebugEnabled()) {
+      logB.debug("XmlFactory.transform : enter : xslFilePath : " + xslFilePath);
     }
 
     if ((xmlSource != null) && (xslFilePath != null)) {
@@ -336,16 +336,16 @@ public final class XmlFactory extends LogSupport {
           tf.setParameter("lastModified", String.valueOf(lastModified));
         }
 
-        if (log.isDebugEnabled()) {
-          log.debug("XmlFactory.transform : XML Source : " + xmlSource);
+        if (logB.isDebugEnabled()) {
+          logB.debug("XmlFactory.transform : XML Source : " + xmlSource);
         }
 
         asString(tf, new StreamSource(new StringReader(xmlSource)), out);
       }
     }
 
-    if (log.isDebugEnabled()) {
-      log.debug("XmlFactory.transform : exit : " + out);
+    if (logB.isDebugEnabled()) {
+      logB.debug("XmlFactory.transform : exit : " + out);
     }
   }
 
@@ -358,7 +358,7 @@ public final class XmlFactory extends LogSupport {
    */
   public static final Document loadTemplate(final String absoluteFilePath) {
     if ((absoluteFilePath == null) || (absoluteFilePath.length() == 0)) {
-      log.error("XmlFactory.loadTemplate : unable to load template : empty file name !");
+      logB.error("XmlFactory.loadTemplate : unable to load template : empty file name !");
 
       return null;
     }
@@ -369,13 +369,13 @@ public final class XmlFactory extends LogSupport {
       final File file = new File(absoluteFilePath);
 
       if (! file.exists()) {
-        log.error("XmlFactory.loadTemplate : unable to load template : no file found for : " + absoluteFilePath);
+        logB.error("XmlFactory.loadTemplate : unable to load template : no file found for : " + absoluteFilePath);
 
         return null;
       }
 
-      if (log.isDebugEnabled()) {
-        log.debug("XmlFactory.loadTemplate : file : " + file);
+      if (logB.isDebugEnabled()) {
+        logB.debug("XmlFactory.loadTemplate : file : " + file);
       }
 
       doc = parse(file);
@@ -383,23 +383,23 @@ public final class XmlFactory extends LogSupport {
       if (doc != null) {
         m_oCacheDOM.put(absoluteFilePath, doc);
 
-        if (log.isDebugEnabled()) {
-          log.debug(
+        if (logB.isDebugEnabled()) {
+          logB.debug(
             "XmlFactory.loadTemplate : template : " + Integer.toHexString(doc.hashCode()) + " : \n" + asString(doc));
         }
       }
     }
 
     if (doc != null) {
-      if (log.isDebugEnabled()) {
-        log.debug("XmlFactory.loadTemplate : template in use : " + Integer.toHexString(doc.hashCode()));
+      if (logB.isDebugEnabled()) {
+        logB.debug("XmlFactory.loadTemplate : template in use : " + Integer.toHexString(doc.hashCode()));
       }
 
       doc = (Document) doc.cloneNode(true);
     }
 
-    if (log.isDebugEnabled()) {
-      log.debug("XmlFactory.loadTemplate : xml document :\n" + asString(doc));
+    if (logB.isDebugEnabled()) {
+      logB.debug("XmlFactory.loadTemplate : xml document :\n" + asString(doc));
     }
 
     return doc;
@@ -414,7 +414,7 @@ public final class XmlFactory extends LogSupport {
    */
   public static final Transformer loadXsl(final String absoluteFilePath) {
     if ((absoluteFilePath == null) || (absoluteFilePath.length() == 0)) {
-      log.error("XmlFactory.loadXsl : unable to load template : empty file name !");
+      logB.error("XmlFactory.loadXsl : unable to load template : empty file name !");
 
       return null;
     }
@@ -426,37 +426,37 @@ public final class XmlFactory extends LogSupport {
       final File file = new File(absoluteFilePath);
 
       if (! file.exists()) {
-        log.error("XmlFactory.loadXsl : unable to load xslt : no file found for : " + absoluteFilePath);
+        logB.error("XmlFactory.loadXsl : unable to load xslt : no file found for : " + absoluteFilePath);
 
         return null;
       }
 
-      if (log.isDebugEnabled()) {
-        log.debug("XmlFactory.loadXsl : file : " + file);
+      if (logB.isDebugEnabled()) {
+        logB.debug("XmlFactory.loadXsl : file : " + file);
       }
 
       try {
         tmp = newTemplate(new StreamSource(file));
         m_oCacheXSL.put(absoluteFilePath, tmp);
 
-        if (log.isDebugEnabled()) {
-          log.debug("XmlFactory.loadXsl : template : " + Integer.toHexString(tmp.hashCode()));
+        if (logB.isDebugEnabled()) {
+          logB.debug("XmlFactory.loadXsl : template : " + Integer.toHexString(tmp.hashCode()));
         }
       } catch (final Exception e) {
-        log.error("XmlFactory.loadXsl : unable to create template for XSL : " + file, e);
+        logB.error("XmlFactory.loadXsl : unable to create template for XSL : " + file, e);
       }
     }
 
     if (tmp != null) {
-      if (log.isDebugEnabled()) {
-        log.debug("XmlFactory.loadXsl : template in cache : " + Integer.toHexString(tmp.hashCode()));
+      if (logB.isDebugEnabled()) {
+        logB.debug("XmlFactory.loadXsl : template in cache : " + Integer.toHexString(tmp.hashCode()));
       }
 
       tf = newTransformer(tmp);
     }
 
-    if (log.isDebugEnabled()) {
-      log.debug("XmlFactory.loadXsl : xslt : " + tf);
+    if (logB.isDebugEnabled()) {
+      logB.debug("XmlFactory.loadXsl : xslt : " + tf);
     }
 
     return tf;

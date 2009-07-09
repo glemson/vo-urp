@@ -68,8 +68,8 @@ public final class ThreadExecutors extends LogSupport {
   protected ThreadExecutors(final ThreadPoolExecutor executor) {
     threadExecutor = executor;
 
-    if (log.isInfoEnabled()) {
-      log.info("ThreadExecutors.new : creating a new thread pool : " + getPoolName());
+    if (logB.isInfoEnabled()) {
+      logB.info("ThreadExecutors.new : creating a new thread pool : " + getPoolName());
     }
 
     // creates now core threads (min threads) :
@@ -91,8 +91,8 @@ public final class ThreadExecutors extends LogSupport {
 
       return true;
     } catch (final InterruptedException ie) {
-      if (log.isDebugEnabled()) {
-        log.debug(Thread.currentThread().getName() + " sleep : interrupted : ", ie);
+      if (logB.isDebugEnabled()) {
+        logB.debug(Thread.currentThread().getName() + " sleep : interrupted : ", ie);
       }
     }
 
@@ -227,8 +227,8 @@ public final class ThreadExecutors extends LogSupport {
    * @throws IllegalStateException if this task cannot be accepted for execution.
    */
   public void execute(final Runnable job) {
-    if (log.isDebugEnabled()) {
-      log.debug("ThreadExecutors.execute : execute job in pool : " + getPoolName() + " = " + job);
+    if (logB.isDebugEnabled()) {
+      logB.debug("ThreadExecutors.execute : execute job in pool : " + getPoolName() + " = " + job);
     }
     try {
       threadExecutor.execute(job);
@@ -247,8 +247,8 @@ public final class ThreadExecutors extends LogSupport {
    * @throws IllegalStateException if task cannot be scheduled for execution
    */
   public Future<?> submit(final Runnable job) {
-    if (log.isDebugEnabled()) {
-      log.debug("ThreadExecutors.submit : submit job in pool : " + getPoolName() + " = " + job);
+    if (logB.isDebugEnabled()) {
+      logB.debug("ThreadExecutors.submit : submit job in pool : " + getPoolName() + " = " + job);
     }
     try {
       return threadExecutor.submit(job);
@@ -268,8 +268,8 @@ public final class ThreadExecutors extends LogSupport {
    * @throws IllegalStateException if task cannot be scheduled for execution
    */
   public <T> Future<T> submit(final Callable<T> job) {
-    if (log.isDebugEnabled()) {
-      log.debug("ThreadExecutors.submit : submit job in pool : " + getPoolName() + " = " + job);
+    if (logB.isDebugEnabled()) {
+      logB.debug("ThreadExecutors.submit : submit job in pool : " + getPoolName() + " = " + job);
     }
     try {
       return threadExecutor.submit(job);
@@ -284,8 +284,8 @@ public final class ThreadExecutors extends LogSupport {
    * @see ThreadPoolExecutor#shutdownNow()
    */
   protected void stop() {
-    if (log.isInfoEnabled()) {
-      log.info("ThreadExecutors.stop : starting shutdown now : " + getPoolName());
+    if (logB.isInfoEnabled()) {
+      logB.info("ThreadExecutors.stop : starting shutdown now : " + getPoolName());
     }
     threadExecutor.shutdown();
     /* threadExecutor.shutdownNow(); */

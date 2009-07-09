@@ -115,7 +115,8 @@ public final class StringBuilderContext extends LogSupport {
       sb = buffers[pos];
     } else {
       if (logB.isInfoEnabled()) {
-        log.info("LocalStringBuilder.Context.acquire : create a new StringBuilder : consider to increment LocalStringBuilder.DEPTH = " + current + " / " + DEPTH);
+        logB.info("LocalStringBuilder.Context.acquire : create a new StringBuilder : consider to increment LocalStringBuilder.DEPTH = " + current
+            + " / " + DEPTH);
       }
     }
 
