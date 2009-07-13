@@ -1,5 +1,6 @@
 package org.ivoa.util.concurrent;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.logging.Log;
 import org.ivoa.util.LogUtil;
 
@@ -15,6 +16,7 @@ public class ManagedThreadLocal<T> extends ThreadLocal<T> {
   // ~ Constants
   // --------------------------------------------------------------------------------------------------------
 
+  private final boolean DIAGNOSTICS = false;
   /**
    * Logger for the base framework
    * @see org.ivoa.bean.LogSupport
@@ -24,6 +26,10 @@ public class ManagedThreadLocal<T> extends ThreadLocal<T> {
   //~ Members ----------------------------------------------------------------------------------------------------------
   /** ThreadLocal name */
   private final String name;
+  /** creation counter */
+  private final AtomicInteger createCounter = new AtomicInteger();
+  /** remove counter */
+  private final AtomicInteger removeCounter = new AtomicInteger();
 
   // ~ Constructors
   // --------------------------------------------------------------------------------------------------------
@@ -55,6 +61,12 @@ public class ManagedThreadLocal<T> extends ThreadLocal<T> {
     } catch (RuntimeException re) {
       logB.error(this.name + ".initialValue : failure : ", re);
     }
+
+    if (DIAGNOSTICS) {
+      logB.error(this.name + ".initialValue : caller : ", new Throwable());
+    }
+
+    createCounter.incrementAndGet();
     if (logB.isDebugEnabled()) {
       logB.debug(this.name + ".initialValue : exit : " + newValue);
     }
@@ -81,6 +93,12 @@ public class ManagedThreadLocal<T> extends ThreadLocal<T> {
     if (doRemove) {
       super.remove();
     }
+
+    if (DIAGNOSTICS) {
+      logB.error(this.name + ".remove : caller : ", new Throwable());
+    }
+
+    removeCounter.incrementAndGet();
     if (logB.isDebugEnabled()) {
       logB.debug(this.name + ".remove : exit");
     }
@@ -115,12 +133,9 @@ public class ManagedThreadLocal<T> extends ThreadLocal<T> {
     /* no-op */
     return true;
   }
-  
-  /**
-   * TODO : fix
-   */
-  protected void dumpStatistics() {
-    
+
+  public void dumpStatistics() {
+    logB.error(this.name + ".dumpStatistics : creation = " + createCounter.get() + " - remove = " + removeCounter.get());
   }
 
   // ~ End of file

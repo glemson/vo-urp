@@ -5,7 +5,6 @@ package org.ivoa.bean;
  * 
  * TODO : use the standard Visitor class
  * 
- * @see TreeVisitor
  * @see Visitor
  * 
  * @param <T> type of the visited class
@@ -20,5 +19,5 @@ public interface Navigable<T> {
    * @param visitor visitor instance
    * @param argument optional argument
    */
-  public void accept(TreeVisitor<T> visitor, Object argument);
+  public void accept(Visitor<T> visitor, Object argument);
 }

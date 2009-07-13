@@ -19,6 +19,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.ivoa.bean.Navigable;
+import org.ivoa.bean.Visitor;
 import org.ivoa.conf.Configuration;
 import org.ivoa.dm.ObjectClassType;
 import org.ivoa.metamodel.Collection;
@@ -33,7 +35,7 @@ import org.ivoa.util.text.LocalStringBuilder;
 @MappedSuperclass
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "MetadataObject", namespace = "http://www.ivoa.net/xml/dm/base/v0.1")
-public abstract class MetadataObject extends MetadataElement {
+public abstract class MetadataObject extends MetadataElement implements Navigable<MetadataObject> {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** serial UID for Serializable interface */
@@ -391,6 +393,16 @@ public abstract class MetadataObject extends MetadataElement {
     }
      */
     return false;
+  }
+
+  /**
+   * Navigate through this instance and possibly its children using the given visitor instance
+   *
+   * @param visitor visitor instance
+   * @param argument optional argument
+   */
+  public void accept(final Visitor<MetadataObject> visitor, final Object argument) {
+    // TODO : implement
   }
 
   /**
