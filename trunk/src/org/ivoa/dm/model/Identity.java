@@ -1,6 +1,5 @@
 package org.ivoa.dm.model;
 
-import java.io.Serializable;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -16,21 +15,23 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.ivoa.dm.MetaModelFactory;
 import org.ivoa.dm.ObjectClassType;
+import org.ivoa.dm.api.IIdentity;
 import org.ivoa.util.JavaUtils;
 import org.ivoa.util.text.LocalStringBuilder;
 
 /**
- * This class contains all flavor for objectType identifiers :  <br>
- * - primary key value : numeric (long)  <br>
- * - string xmlId : string for XML ID (xsd:id type) for xml instances <br>
- * - ivoId : URI format for external references
+ * This class implements the Identity API to specify all objectType identifiers :  <br/>
+ * - primary key value : numeric (long)  <br/>
+ * - string xmlId : string for XML ID (xsd:id type) for xml instances <br/>
+ * - ivoId : URI format for external references <br/>
+ * - publisherDID : URI uniquely specifying the object as it is published in a DMService
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 @Embeddable
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlType(name = "Identity", namespace = "http://www.ivoa.net/xml/dm/base/v0.1")
-public class Identity implements Serializable {
+public class Identity implements IIdentity {
 
     //~ Constants --------------------------------------------------------------------------------------------------------
  
@@ -111,24 +112,6 @@ public class Identity implements Serializable {
     }
 
     /**
-     * Returns the external identifier (URI)
-     *
-     * @return external identifier (URI)
-     */
-    public String getIvoId() {
-        return ivoId;
-    }
-
-    /**
-     * Sets the external identifier (URI)
-     *
-     * @param pIvoId external identifier (URI)
-     */
-    protected void setIvoId(final String pIvoId) {
-        this.ivoId = pIvoId;
-    }
-
-    /**
      * Returns the local xsd:ID for this object
      *
      * @return local xsd:ID for this object
@@ -144,6 +127,24 @@ public class Identity implements Serializable {
      */
     protected void setXmlId(final String pXmlId) {
         this.xmlId = pXmlId;
+    }
+
+    /**
+     * Returns the external identifier (URI)
+     *
+     * @return external identifier (URI)
+     */
+    public String getIvoId() {
+        return ivoId;
+    }
+
+    /**
+     * Sets the external identifier (URI)
+     *
+     * @param pIvoId external identifier (URI)
+     */
+    protected void setIvoId(final String pIvoId) {
+        this.ivoId = pIvoId;
     }
 
     /**
