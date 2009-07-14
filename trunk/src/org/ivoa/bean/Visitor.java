@@ -4,7 +4,6 @@ package org.ivoa.bean;
  * Visitor class to implement the visitor pattern T is the type of the visited class.
  * 
  * @see Navigable
- * @see TreeVisitor
  * @param <T> type of the visited class
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */

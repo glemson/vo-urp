@@ -12,13 +12,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-
 /**
- * TODO : Class Description
+ * This class contains utility methods to convert metadataObjects to JSON structures
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public class MetadataObject2JSON {
+public final class MetadataObject2JSON {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** TODO : Field Description */
@@ -43,6 +42,12 @@ public class MetadataObject2JSON {
   public static final String references = "references";
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
+  /**
+   * Forbidden constructor
+   */
+  private MetadataObject2JSON() {
+    /* no-op */
+  }
 
   /**
    * TODO : Method Description
@@ -51,7 +56,7 @@ public class MetadataObject2JSON {
    *
    * @return value TODO : Value Description
    */
-  public String toJSONString(final MetadataObject obj) {
+  public static final String toJSONString(final MetadataObject obj) {
     String s = null;
 
     try {
@@ -76,7 +81,7 @@ public class MetadataObject2JSON {
    *
    * @return JSONObject or null
    */
-  public JSONObject toJSON(final MetadataObject obj) {
+  public static final JSONObject toJSON(final MetadataObject obj) {
     if (obj == null) {
       return null;
     }
@@ -88,7 +93,7 @@ public class MetadataObject2JSON {
       attributes2JSON(json, obj);
       collections2JSON(json, obj);
 
-      //		references2JSON(json, obj);
+    //		references2JSON(json, obj);
     } catch (final JSONException e) {
       return null;
     }
@@ -104,8 +109,8 @@ public class MetadataObject2JSON {
    *
    * @throws JSONException
    */
-  private void typeMetadata2JSON(final JSONObject json, final MetadataObject obj)
-                          throws JSONException {
+  private static final void typeMetadata2JSON(final JSONObject json, final MetadataObject obj)
+          throws JSONException {
     ObjectClassType md = obj.getClassMetaData();
 
     json.put("type", md.getType().getName());
@@ -119,9 +124,9 @@ public class MetadataObject2JSON {
    *
    * @throws JSONException
    */
-  private void attributes2JSON(final JSONObject json, final MetadataObject obj)
-                        throws JSONException {
-    ObjectClassType     md  = obj.getClassMetaData();
+  private static final void attributes2JSON(final JSONObject json, final MetadataObject obj)
+          throws JSONException {
+    ObjectClassType md = obj.getClassMetaData();
     Map<String, Object> map = new HashMap<String, Object>();
 
     for (final Attribute a : md.getAttributeList()) {
@@ -140,9 +145,9 @@ public class MetadataObject2JSON {
    * @throws JSONException
    */
   @SuppressWarnings("unchecked")
-  private void collections2JSON(final JSONObject json, final MetadataObject obj)
-                         throws JSONException {
-    ObjectClassType     md  = obj.getClassMetaData();
+  private static final void collections2JSON(final JSONObject json, final MetadataObject obj)
+          throws JSONException {
+    ObjectClassType md = obj.getClassMetaData();
     Map<String, Object> map = new HashMap<String, Object>();
 
     json.put(collections, map);
@@ -171,12 +176,12 @@ public class MetadataObject2JSON {
    * @throws InstantiationException
    * @throws IllegalAccessException
    */
-  public MetadataObject toMetadataObject(final String jsonString)
-                                  throws JSONException, InstantiationException, IllegalAccessException {
-    JSONObject     json = new JSONObject(jsonString);
-    String         t    = json.getString(type);
-    Class<?>          cl   = MetaModelFactory.getInstance().getClass(t);
-    MetadataObject o    = (MetadataObject) cl.newInstance();
+  public static final MetadataObject toMetadataObject(final String jsonString)
+          throws JSONException, InstantiationException, IllegalAccessException {
+    JSONObject json = new JSONObject(jsonString);
+    String t = json.getString(type);
+    Class<?> cl = MetaModelFactory.getInstance().getClass(t);
+    MetadataObject o = (MetadataObject) cl.newInstance();
 
     return o;
   }

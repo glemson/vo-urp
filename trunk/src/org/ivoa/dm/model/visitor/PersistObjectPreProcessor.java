@@ -8,8 +8,8 @@ import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.MetadataRootEntityObject;
 
 /**
- * MetadataObject TreeVisitor implementation : This visitor sets username and update time on
- * MetadattaObjects before peersistence.<br/>
+ * MetadataObjectVisitor implementation :
+ * This visitor sets username and update time on MetadattaObjects before peersistence.<br/>
  * Currently only sets this on MetadataRootEntityObjects, as we have these variables only there.
  * This may change in the future. Used by :
  * 
@@ -44,9 +44,10 @@ public final class PersistObjectPreProcessor extends MetaDataObjectVisitor {
    * Process the specified object
    * 
    * @param object MetadataObject instance
+   * @param argument optional argument
    */
   @Override
-  public void process(final MetadataObject object) {
+  public void process(final MetadataObject object, final Object argument) {
     if (object instanceof MetadataRootEntityObject) {
       final MetadataRootEntityObject root = (MetadataRootEntityObject) object;
       root.setModificationDate(now);

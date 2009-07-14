@@ -53,7 +53,7 @@ public abstract class MetaDataObjectVisitor extends Visitor<MetadataObject> {
 
     // send the preProcess events :
     if (this.processBeforeChildren) {
-      this.process(element);
+      this.process(element, argument);
     }
 
     final java.util.Collection<org.ivoa.metamodel.Collection> collections = element.getClassMetaData().getCollectionList();
@@ -74,7 +74,7 @@ public abstract class MetaDataObjectVisitor extends Visitor<MetadataObject> {
 
     // send the postProcess events :
     if (!this.processBeforeChildren) {
-      this.process(element);
+      this.process(element, argument);
     }
 
     if (logB.isDebugEnabled()) {
@@ -86,8 +86,9 @@ public abstract class MetaDataObjectVisitor extends Visitor<MetadataObject> {
   /**
    * Process the specified object
    * @param object MetadataObject instance
+   * @param argument optional argument
    */
-  public abstract void process(final MetadataObject object);
+  public abstract void process(final MetadataObject object, final Object argument);
 
   /*
    * Utility methods for accessing protected methods of MetadataObject
