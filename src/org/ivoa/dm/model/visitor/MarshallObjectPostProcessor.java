@@ -4,7 +4,7 @@ import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.MetaDataObjectVisitor;
 
 /**
- * MetadataObject TreeVisitor implementation :
+ * MetadataObjectVisitor implementation :
  * TODO : description
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
@@ -54,9 +54,10 @@ public final class MarshallObjectPostProcessor extends MetaDataObjectVisitor {
    * Process the specified object
    *
    * @param object MetadataObject instance
+   * @param argument optional argument
    */
   @Override
-  public void process(final MetadataObject object) {
+  public void process(final MetadataObject object, final Object argument) {
     getInternalState(object).unsetToBeMarshalled();
     setIvoId(object, null);
     setXmlId(object, null);

@@ -1,7 +1,6 @@
 package org.ivoa.dm.model;
 
 import org.ivoa.dm.model.reference.ReferenceResolver;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.persistence.Column;
@@ -23,7 +22,6 @@ import org.ivoa.bean.Navigable;
 import org.ivoa.bean.Visitor;
 import org.ivoa.conf.Configuration;
 import org.ivoa.dm.ObjectClassType;
-import org.ivoa.metamodel.Collection;
 import org.ivoa.util.JavaUtils;
 import org.ivoa.util.text.LocalStringBuilder;
 

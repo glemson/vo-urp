@@ -17,6 +17,7 @@ import org.ivoa.dm.model.visitor.MarshallObjectPostProcessor;
 import org.ivoa.dm.model.visitor.MarshallObjectPreProcessor;
 import org.ivoa.dm.model.visitor.MarshallReferencePostProcessor;
 import org.ivoa.dm.model.visitor.MarshallReferencePreProcessor;
+import org.ivoa.dm.model.visitor.UnmarshallObjectProcessor;
 import org.ivoa.jaxb.CustomUnmarshallListener;
 import org.ivoa.jaxb.JAXBFactory;
 import org.ivoa.jaxb.XmlBindException;
@@ -267,181 +268,25 @@ public final class ModelFactory extends SingletonSupport {
       // unmarshal an instance document into a tree of Java content
       // objects composed of classes from the VO-URP generated root package.
       // TODO TBD should this be a MetadataRootEntiityObject. In current design it alwasy should be, but should we make this restriction here or put this burden on the user?
-      final MetadataObject m = (MetadataObject) u.unmarshal(r);
+      final MetadataObject object = (MetadataObject) u.unmarshal(r);
 
       // object can not be null here so unmarshall References and set containerId on collections :
-      processImportReferences(m);
+
+      object.accept(UnmarshallObjectProcessor.getInstance());
 
       if (log.isInfoEnabled()) {
-        log.info("ModelFactory.unmarshallToObject : item loaded : " + m.deepToString());
+        log.info("ModelFactory.unmarshallToObject : item loaded : " + object.deepToString());
       }
 
-      return m;
+      return object;
     } catch (final JAXBException je) {
       log.error("ModelFactory.unmarshallToObject : JAXB Failure : ", je);
       throw new XmlBindException(je);
     }
-
-//    return null;
   }
 
   /**
-   * TODO : use TreeVisitor Pattern : KILL later
-   *
-   * Navigate along child axes (references / collection) to resolve all external references (see Identity)  and
-   * containement references (parent with collection items)
-   *
-   * @param object element to process (must not be null)
-   */
-  private void processImportReferences(final MetadataObject object) {
-    final Map<MetadataElement, Object> ids = new IdentityHashMap<MetadataElement, Object>(DEFAULT_IDENTITY_CAPACITY);
-
-    processImportReferences(ids, object);
-
-    // clears identity map to force gc asap :
-    ids.clear();
-  }
-
-  /**
-   * TODO : use TreeVisitor Pattern : KILL later
-   *
-   * Navigate along child axes (references / collection) to resolve all external references (see Identity)  and
-   * containement references (parent with collection items). <br>
-   * <b> Recursive method </b>
-   *
-   * @param ids identity map to avoid cyclic loops
-   * @param object object to process (must not be null)
-   */
-  private final void processImportReferences(final Map<MetadataElement, Object> ids, final MetadataObject object) {
-    if (log.isInfoEnabled()) {
-      log.info("ModelFactory.processImportReferences : enter : " + object);
-    }
-
-    // avoid cyclic loops :
-    if (!MetadataElement.exists(object, ids)) {
-      this.processImportReferences(ids, object, object.getClassMetaData());
-    }
-
-    if (log.isInfoEnabled()) {
-      log.info("ModelFactory.processImportReferences : exit : " + object);
-    }
-  }
-
-  /**
-   * TODO : use TreeVisitor Pattern : KILL later
-   *
-   * Navigate along child axes (references / collection) to resolve all external references (see Identity)  and
-   * containement references (parent with collection items). <br>
-   * <b> Recursive method </b>
-   *
-   * @param ids
-   * @param object
-   * @param ct
-   */
-  @SuppressWarnings("unchecked")
-  private final void processImportReferences(final Map<MetadataElement, Object> ids, final MetadataObject object,
-          final ObjectClassType ct) {
-    if (log.isInfoEnabled()) {
-      log.info(
-              "ModelFactory.processImportReferences : enter : " + object + " with type definition : " +
-              ct.getObjectType().getName());
-    }
-
-    String propertyName;
-    Object value;
-    MetadataObject child;
-    java.util.Collection<? extends MetadataObject> col;
-
-    // navigate through references :
-    // implies that lazy references will be resolved by ReferenceResolver :
-    for (final Reference r : ct.getReferences().values()) {
-      propertyName = r.getName();
-      // this getProperty implies the lazy reference to be resolved now :
-      value = object.getProperty(propertyName);
-
-      if ((value != null) && value instanceof MetadataObject) {
-        child = (MetadataObject) value;
-
-        // process References (recursive loop) :
-        // maybe : should only check local references ?
-        this.processImportReferences(ids, child);
-      }
-    }
-
-    // navigate through collections :
-    for (final Collection c : ct.getCollections().values()) {
-      propertyName = c.getName();
-      value = object.getProperty(propertyName);
-
-      if (value != null) {
-        col = (java.util.Collection<? extends MetadataObject>) value;
-
-        if (col.size() > 0) {
-          int i = 1;
-
-          for (final MetadataObject item : col) {
-            // avoid cyclic loops :
-            if (item != null) {
-              checkContainer(ids, item, i, object);
-              i++;
-            }
-          }
-        }
-      }
-    }
-
-    if (log.isInfoEnabled()) {
-      log.info("ModelFactory.processImportReferences : exit : " + object);
-    }
-  }
-
-  /**
-   * Sets containement references (parent with collection items). <br>
-   * YOU SUPPORT SOON Collection Ordering base on a rank smallint field
-   *
-   * @param ids
-   * @param object
-   * @param position
-   * @param parent
-   */
-  private void checkContainer(final Map<MetadataElement, Object> ids, final MetadataObject object, final int position,
-          final MetadataObject parent) {
-    if (log.isInfoEnabled()) {
-      log.info("ModelFactory.checkContainer : enter : " + object);
-    }
-
-    // check getContainer() value :
-    final MetadataObject container = (MetadataObject) object.getProperty(MetadataObject.PROPERTY_CONTAINER);
-
-    if (container == null) {
-      if (log.isInfoEnabled()) {
-        log.info("ModelFactory.checkContainer : setContainer to : " + parent);
-      }
-
-      object.setProperty(MetadataObject.PROPERTY_CONTAINER, parent);
-    }
-
-    // check getRank() value :
-    final Integer rank = (Integer) object.getProperty(MetadataObject.PROPERTY_RANK);
-
-    if (rank.intValue() == 0) {
-      if (log.isInfoEnabled()) {
-        log.info("ModelFactory.checkContainer : setRank to : " + position);
-      }
-
-      object.setProperty(MetadataObject.PROPERTY_RANK, Integer.valueOf(position));
-    }
-
-    // then check item : TODO should this be container iso object?
-    this.processImportReferences(ids, object);
-
-    if (log.isInfoEnabled()) {
-      log.info("ModelFactory.checkContainer : exit : " + object);
-    }
-  }
-
-  /**
-   * Returns the JAXBFactory for the data model
+   * Return the JAXBFactory for the data model
    *
    * @return JAXBFactory for the data model
    */
@@ -450,14 +295,14 @@ public final class ModelFactory extends SingletonSupport {
   }
 
   /**
-   * Returns JSON serialisation of object.<br>
+   * Return JSON serialisation of the given object.<br>
    *
-   * @param obj
+   * @param object MetadataObject to serialize as a JSON string
    *
-   * @return value TODO : Value Description
+   * @return JSON serialisation of the given object
    */
-  public String toJSON(final MetadataObject obj) {
-    return new MetadataObject2JSON().toJSONString(obj);
+  public String toJSON(final MetadataObject object) {
+    return MetadataObject2JSON.toJSONString(object);
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

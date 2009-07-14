@@ -4,7 +4,7 @@ import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.MetaDataObjectVisitor;
 
 /**
- * MetadataObject TreeVisitor implementation :
+ * MetadataObjectVisitor implementation :
  * TODO : description
  *
  * Used by :
@@ -57,9 +57,10 @@ public final class MarshallReferencePreProcessor extends MetaDataObjectVisitor {
    * Process the specified object
    *
    * @param object MetadataObject instance
+   * @param argument optional argument
    */
   @Override
-  public void process(final MetadataObject object) {
+  public void process(final MetadataObject object, final Object argument) {
     prepareReferencesForMarshalling(object);
   }
 }
