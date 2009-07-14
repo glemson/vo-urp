@@ -21,7 +21,6 @@ public final class PersistObjectPreProcessor extends MetaDataObjectVisitor {
   /* members : statefull visitor */
   /** user name */
   private final String username;
-
   /** timestamp = now */
   private final Date now;
 
@@ -34,6 +33,7 @@ public final class PersistObjectPreProcessor extends MetaDataObjectVisitor {
    * @param currentTimestamp now
    */
   public PersistObjectPreProcessor(final String user, final Timestamp currentTimestamp) {
+    super(true);
     username = user;
     now = currentTimestamp;
   }
@@ -41,21 +41,21 @@ public final class PersistObjectPreProcessor extends MetaDataObjectVisitor {
   // ~ Methods
   // ----------------------------------------------------------------------------------------------------------
   /**
-   * Process the specified object before its collections are being processed.</br>
+   * Process the specified object
    * 
    * @param object MetadataObject instance
    */
   @Override
-  public void preProcess(final MetadataObject object) {
-      if (object instanceof MetadataRootEntityObject) {
-          final MetadataRootEntityObject root = (MetadataRootEntityObject)object;
-        root.setModificationDate(now);
-        root.setModificationUser(username);
-        if (root.isPurelyTransient()) {
-          root.setCreationDate(now);
-          root.setCreationUser(username);
-        }
+  public void process(final MetadataObject object) {
+    if (object instanceof MetadataRootEntityObject) {
+      final MetadataRootEntityObject root = (MetadataRootEntityObject) object;
+      root.setModificationDate(now);
+      root.setModificationUser(username);
+      if (root.isPurelyTransient()) {
+        root.setCreationDate(now);
+        root.setCreationUser(username);
       }
+    }
   }
 }
 // ~ End of file

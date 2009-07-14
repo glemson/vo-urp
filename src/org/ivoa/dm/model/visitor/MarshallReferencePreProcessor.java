@@ -49,16 +49,17 @@ public final class MarshallReferencePreProcessor extends MetaDataObjectVisitor {
    * Protected constructor to avoid to create instance except for singletons (stateless classes)
    */
   protected MarshallReferencePreProcessor() {
-    super();
+    super(true);
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
   /**
-   * Process the specified object before its collections are being processed.</br>
+   * Process the specified object
+   *
    * @param object MetadataObject instance
    */
   @Override
-  public void preProcess(final MetadataObject object) {
+  public void process(final MetadataObject object) {
     prepareReferencesForMarshalling(object);
   }
 }

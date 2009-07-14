@@ -399,44 +399,20 @@ public abstract class MetadataObject extends MetadataElement implements Navigabl
    * Navigate through this instance and possibly its children using the given visitor instance
    *
    * @param visitor visitor instance
-   * @param argument optional argument
    */
-  public void accept(final Visitor<MetadataObject> visitor, final Object argument) {
-    // TODO : implement
+  public final void accept(final Visitor<MetadataObject> visitor) {
+    accept(visitor, null);
   }
 
   /**
-   * Traversal method in the visitor pattern.<br>
-   * First the preProcess method of the specified visitor is called with this in the argument. Than it is sent on to
-   * the contained collections. At the end the postProcess method is called with thihs.
+   * Navigate through this instance and possibly its children using the given visitor instance
    *
    * @param visitor visitor instance
+   * @param argument optional argument
    */
-  @SuppressWarnings("unchecked")
-  public final void traverse(final MetaDataObjectVisitor visitor) {
-    if (log.isDebugEnabled()) {
-      log.debug("traverse : enter : " + this.getId());
-    }
-    visitor.preProcess(this);
-
-    final ObjectClassType metadataObject = getClassMetaData();
-    final java.util.Collection<Collection> collections = metadataObject.getCollectionList();
-
-    List<? extends MetadataObject> objects;
-    for (Collection collection : collections) {
-      objects = (List<? extends MetadataObject>) getProperty(collection.getName());
-
-      if (!JavaUtils.isEmpty(objects)) {
-        for (MetadataObject object : objects) {
-          object.traverse(visitor);
-        }
-      }
-    }
-
-    visitor.postProcess(this);
-    if (log.isDebugEnabled()) {
-      log.debug("traverse : exit : " + this.getId());
-    }
+  public final void accept(final Visitor<MetadataObject> visitor, final Object argument) {
+    // simply call the visitor with the given arguments :
+    visitor.visit(this, argument);
   }
 
   /**

@@ -206,9 +206,9 @@ public final class ModelFactory extends SingletonSupport {
     if (source != null) {
       try {
         // object can not be null here so unmarshall References and set containerId on collections :
-        source.traverse(MarshallObjectPreProcessor.getInstance());
+        source.accept(MarshallObjectPreProcessor.getInstance());
 
-        source.traverse(MarshallReferencePreProcessor.getInstance());
+        source.accept(MarshallReferencePreProcessor.getInstance());
 
         // create an Unmarshaller
         final Marshaller m = getJaxbFactory().createMarshaller();
@@ -217,8 +217,8 @@ public final class ModelFactory extends SingletonSupport {
         // from the VO-URP-generated root package into an instance document.
         m.marshal(source, writer);
 
-        source.traverse(MarshallObjectPostProcessor.getInstance());
-        source.traverse(MarshallReferencePostProcessor.getInstance());
+        source.accept(MarshallObjectPostProcessor.getInstance());
+        source.accept(MarshallReferencePostProcessor.getInstance());
 
       } catch (final JAXBException je) {
         log.error("ModelFactory.marshallObject : JAXB Failure : ", je);
