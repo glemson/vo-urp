@@ -49,19 +49,20 @@ public final class PersistObjectPostProcessor extends MetaDataObjectVisitor {
    * Protected constructor to avoid to create instance except for singletons (stateless classes)
    */
   protected PersistObjectPostProcessor() {
-    super();
+    super(true);
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
   /**
-   * Process the specified object before its collections are being processed.</br>
+   * Process the specified object
+   *
    * @param object MetadataObject instance
    */
   @Override
-  public void preProcess(final MetadataObject object) {
-    /* no-op for now
+  public void process(final MetadataObject object) {
+    /* nothing to for now.
      * If at some point we store state on objects, here this can be updated
-     * */
+     */
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

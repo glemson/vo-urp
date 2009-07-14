@@ -8,7 +8,7 @@ package org.ivoa.bean;
  * @param <T> type of the visited class
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public class Visitor<T> extends LogSupport {
+public class Visitor<T> extends SingletonSupport {
 
   /**
    * Empty implementation of the Visitor Design pattern

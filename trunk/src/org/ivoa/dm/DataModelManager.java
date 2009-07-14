@@ -245,16 +245,16 @@ public class DataModelManager extends LogSupport {
       // TODO here we could(should?) get the current timestamp from the database, which is not necessarily in synch with the web server.
       // For now a simpler solution ...
       final Timestamp currentTimestamp = new Timestamp(Calendar.getInstance().getTimeInMillis());
-      final PersistObjectPreProcessor pre = new PersistObjectPreProcessor(username, currentTimestamp);
+      final PersistObjectPreProcessor preProcessor = new PersistObjectPreProcessor(username, currentTimestamp);
       for (MetadataRootEntityObject o : objects) {
-        o.traverse(pre);
+        o.accept(preProcessor);
       }
       for (MetadataRootEntityObject o : objects) {
         em.persist(o);
       }
-      final PersistObjectPostProcessor post = PersistObjectPostProcessor.getInstance();
+      final PersistObjectPostProcessor postProcessor = PersistObjectPostProcessor.getInstance();
       for (MetadataRootEntityObject o : objects) {
-        o.traverse(post);
+        o.accept(postProcessor);
       }
 
       // finally : commits transaction on snap database :

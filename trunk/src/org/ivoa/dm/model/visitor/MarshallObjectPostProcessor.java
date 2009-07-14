@@ -46,16 +46,17 @@ public final class MarshallObjectPostProcessor extends MetaDataObjectVisitor {
    * Protected constructor to avoid to create instance except for singletons (stateless classes)
    */
   protected MarshallObjectPostProcessor() {
-    super();
+    super(true);
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
   /**
-   * Process the specified object before its collections are being processed.</br>
+   * Process the specified object
+   *
    * @param object MetadataObject instance
    */
   @Override
-  public void preProcess(final MetadataObject object) {
+  public void process(final MetadataObject object) {
     getInternalState(object).unsetToBeMarshalled();
     setIvoId(object, null);
     setXmlId(object, null);
