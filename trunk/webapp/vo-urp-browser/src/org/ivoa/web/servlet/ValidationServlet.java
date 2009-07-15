@@ -192,6 +192,10 @@ public final class ValidationServlet extends BaseServlet {
   private String handleTemplate(final Map<String, Object> parameters) {
     final String type = (String) parameters.get(INPUT_TYPE);
 
+    if (log.isInfoEnabled()) {
+      log.info("handleTemplate : TODO implement - type : " + type);
+    }
+    
     return null;
   }
 
