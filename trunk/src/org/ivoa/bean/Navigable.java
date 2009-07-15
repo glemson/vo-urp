@@ -2,9 +2,7 @@ package org.ivoa.bean;
 
 /**
  * This interface defines an accept method with a Visitor instance
- * 
- * TODO : use the standard Visitor class
- * 
+
  * @see Visitor
  * 
  * @param <T> type of the visited class

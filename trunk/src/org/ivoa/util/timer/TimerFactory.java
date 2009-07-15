@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.ivoa.bean.LogSupport;
+import org.ivoa.util.concurrent.FastSemaphore;
 import org.ivoa.util.text.LocalStringBuilder;
 
 /**
@@ -28,8 +29,9 @@ public final class TimerFactory extends LogSupport {
   private final static String WARMUP_CATEGORY = "warmup";
   /** initial capacity = 64 */
   private final static int CAPACITY = 32;
-  /** internal lock object for synchroniz'd blocks */
-  private final static Object lock = new Object();
+
+  /** internal semaphore to protect the timer instances */
+  private static final FastSemaphore lock = new FastSemaphore(1);
   /** List[timer] */
   private static List<AbstractTimer> timerList = new ArrayList<AbstractTimer>(CAPACITY);
   /** fast Map[key - timer] */
@@ -160,9 +162,18 @@ public final class TimerFactory extends LogSupport {
     if (timer == null) {
       timer = new ThresholdTimer(category, unit, th);
 
-      synchronized (lock) {
+      try {
+        // semaphore is acquired to protect timer instances :
+        lock.acquire();
+
         timerList.add(timer);
         timerMap.put(category, timer);
+        
+      } catch (final InterruptedException ie) {
+        log.error("TimerFactory : lock interrupted : ", ie);
+      } finally {
+        // semaphore is released :
+        lock.release();
       }
     }
 
@@ -177,10 +188,19 @@ public final class TimerFactory extends LogSupport {
   public static final String dumpTimers() {
     final StringBuilder sb = LocalStringBuilder.getBuffer();
 
-    synchronized (lock) {
+    try {
+      // semaphore is acquired to protect timer instances :
+      lock.acquire();
+
       for (final AbstractTimer timer : timerList) {
         sb.append("\n").append(timer.toString());
       }
+      
+    } catch (final InterruptedException ie) {
+      log.error("TimerFactory : lock interrupted : ", ie);
+    } finally {
+      // semaphore is released :
+      lock.release();
     }
 
     return LocalStringBuilder.toString(sb);
@@ -190,14 +210,25 @@ public final class TimerFactory extends LogSupport {
    * Reset all timer instances
    */
   public static final void resetTimers() {
-    synchronized (lock) {
+
+    try {
+      // semaphore is acquired to protect timer instances :
+      lock.acquire();
+
       timerList.clear();
       timerMap.clear();
+      
+    } catch (final InterruptedException ie) {
+      log.error("TimerFactory : lock interrupted : ", ie);
+    } finally {
+      // semaphore is released :
+      lock.release();
     }
   }
 
   /**
    * Return true if there is no existing timer
+   * 
    * @return true if there is no existing timer
    */
   public static final boolean isEmpty() {

@@ -65,7 +65,7 @@ public final class LocalStringBuilder extends SingletonSupport {
    */
   public static final String concat(final String... values) {
     final StringBuilder sb = LocalStringBuilder.getBuffer();
-    for (String n : values) {
+    for (final String n : values) {
       sb.append(n);
     }
     return LocalStringBuilder.toString(sb);
