@@ -545,7 +545,7 @@ public final class XmlFactory extends LogSupport {
    * @param source xml nodes
    * @param out buffer (should be cleared before method invocation)
    *
-   * @throws RuntimeException
+   * @throws RuntimeException if TransformerException
    */
   public static void asString(final Transformer transformer, final Source source, final Writer out) {
     try {

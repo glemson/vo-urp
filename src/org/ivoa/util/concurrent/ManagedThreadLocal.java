@@ -62,7 +62,7 @@ public class ManagedThreadLocal<T> extends ThreadLocal<T> {
     T newValue = null;
     try {
       newValue = onInitialValue();
-    } catch (RuntimeException re) {
+    } catch (final RuntimeException re) {
       logB.error(this.name + ".initialValue : failure : ", re);
     }
 
@@ -90,7 +90,7 @@ public class ManagedThreadLocal<T> extends ThreadLocal<T> {
     boolean doRemove = false;
     try {
       doRemove = onRemoveValue();
-    } catch (RuntimeException re) {
+    } catch (final RuntimeException re) {
       logB.error(this.name + ".remove : failure : ", re);
       doRemove = true;
     }
