@@ -21,9 +21,9 @@ public final class TimerFactory extends LogSupport {
   // ~ Constants
   // --------------------------------------------------------------------------------------------------------
   /** warmup 1 cycles = 20000 */
-  private final static int WARMUP_CYCLES_1 = 20 * 1000;
+  public final static int WARMUP_CYCLES_1 = 10 * 1000;
   /** warmup 2 cycles = 100000 */
-  private final static int WARMUP_CYCLES_2 = 100 * 1000;
+  public final static int WARMUP_CYCLES_2 = 20 * 1000;
   /** category for the warm-up to optimize the timer code */
   private final static String WARMUP_CATEGORY = "warmup";
   /** initial capacity = 64 */

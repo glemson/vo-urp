@@ -120,8 +120,9 @@ public final class ManagerServlet extends BaseServlet {
 
       if (INPUT_ACTION_insert.equals(action)) {
         result = handleInsert(params, user.getName());
-        if(result instanceof MetadataObject)
+        if(result instanceof MetadataObject) {
           request.setAttribute(OUTPUT_NEWENTITY, result);
+        }
       }
     } catch (final Exception e) {
       error = e.getMessage();
@@ -179,8 +180,9 @@ public final class ManagerServlet extends BaseServlet {
       in = infile.getInputStream();
 
       ValidationResult valid = dataModelManager.validateStream(in);
-      if(!valid.isValid())
+      if(!valid.isValid()) {
         throw new XmlBindException("Input XML document is not valid.", valid);
+      }
 
       FileUtils.closeStream(in);
       

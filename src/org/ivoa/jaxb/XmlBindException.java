@@ -9,7 +9,7 @@ import org.ivoa.xml.validator.ValidationResult;
  * 
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public class XmlBindException extends RuntimeException {
+public final class XmlBindException extends RuntimeException {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** serial UID for Serializable interface */

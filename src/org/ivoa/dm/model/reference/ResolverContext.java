@@ -3,6 +3,7 @@ package org.ivoa.dm.model.reference;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.EntityManager;
+import org.ivoa.bean.LogSupport;
 import org.ivoa.dm.model.MetadataObject;
 
 /**
@@ -11,11 +12,14 @@ import org.ivoa.dm.model.MetadataObject;
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public final class ResolverContext {
+public final class ResolverContext extends LogSupport {
   //~ Constants ------------------------------------------------------------------------------------------------------
 
+  /** internal diagnostic FLAG */
+  public static final boolean DIAGNOSTICS = false;
+
   /** starting capacity */
-  public static final int CAPACITY = 64;
+  public static final int CAPACITY = 256;
 
   //~ Members --------------------------------------------------------------------------------------------------------
   /** JPA entity manager in use to resolve external references (ivoId) */
@@ -36,8 +40,13 @@ public final class ResolverContext {
    * Clear the context
    */
   protected void clear() {
+    if (DIAGNOSTICS && logB.isWarnEnabled()) {
+      logB.warn("ResolverContext.clear : usage : " + this.objects.size() + " / " + CAPACITY);
+    }
+
     // release the reference but do not close the entity manager :
     this.em = null;
+
     // force GC :
     this.objects.clear();
   }

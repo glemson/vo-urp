@@ -169,12 +169,12 @@ public final class DBTests extends LogSupport implements ApplicationMain {
     testLOAD_WRITE(jf, PROTOCOL_FILE_PDR);
     testLOAD_WRITE(jf, PROTOCOL_FILE_HALOMAKER);
 
-    // Batch writes : Laurent : In progress :
-    testLOAD_BATCH_WRITE(jf, PROTOCOL_FILE_PDR);
-    testLOAD_BATCH_WRITE_SINGLE_TRANSACTION(jf, PROTOCOL_FILE_PDR);
+    // Batch writes :
+    testLOAD_BATCH_WRITE(jf, PROTOCOL_FILE_GADGET2);
+    testLOAD_BATCH_WRITE_SINGLE_TRANSACTION(jf, PROTOCOL_FILE_GADGET2);
 
     // Batch writes : Laurent : In progress :
-    testLOAD_THREADS_WRITE(jf, PROTOCOL_FILE_PDR);
+    testLOAD_THREADS_WRITE(jf, PROTOCOL_FILE_GADGET2);
 
     testSQLQuery(jf);
 

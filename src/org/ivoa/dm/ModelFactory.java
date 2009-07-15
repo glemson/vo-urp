@@ -2,8 +2,6 @@ package org.ivoa.dm;
 
 import java.io.Reader;
 import java.io.Writer;
-import java.util.IdentityHashMap;
-import java.util.Map;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -22,8 +20,6 @@ import org.ivoa.jaxb.CustomUnmarshallListener;
 import org.ivoa.jaxb.JAXBFactory;
 import org.ivoa.jaxb.XmlBindException;
 import org.ivoa.json.MetadataObject2JSON;
-import org.ivoa.metamodel.Collection;
-import org.ivoa.metamodel.Reference;
 import org.ivoa.util.FileUtils;
 import org.ivoa.util.ReflectionUtils;
 import org.ivoa.util.SystemLogUtil;
@@ -39,8 +35,6 @@ public final class ModelFactory extends SingletonSupport {
 
   /** JAXB : context path */
   public static final String JAXB_PATH = RuntimeConfiguration.get().getJAXBContextClasspath();
-  /** TODO : Field Description */
-  public static final int DEFAULT_IDENTITY_CAPACITY = 128;
   /**
    * singleton instance (java 5 memory model)
    * no good in webapp context once state must be preserved ?
@@ -122,6 +116,7 @@ public final class ModelFactory extends SingletonSupport {
   }
 
   /**
+   * PUBLIC API :<br/>
    * Factory implementation : creates new instance for MetadataElement
    *
    * @param className MetadataElement short Name
@@ -139,12 +134,14 @@ public final class ModelFactory extends SingletonSupport {
   }
 
   /**
-   * Main Method : marshall an XML Document from a MetadataObject
+   * PUBLIC API :<br/>
+   * Marshall a MetadataObject instance to an XML Document
    *
    * @param filePath absolute File path to save
    * @param source MetadataObject to marshall as an XML document
+   * @throws XmlBindException if the xml marshall operation failed
    */
-  public void marshallObject(final String filePath, final MetadataObject source) {
+  public void marshallObject(final String filePath, final MetadataObject source) throws XmlBindException {
     if (source == null) {
       if (log.isInfoEnabled()) {
         log.info("ModelFactory.marshallObject : empty source !");
@@ -157,7 +154,6 @@ public final class ModelFactory extends SingletonSupport {
     }
 
     Writer writer = null;
-
     try {
       writer = FileUtils.openFile(filePath);
 
@@ -176,14 +172,16 @@ public final class ModelFactory extends SingletonSupport {
   }
 
   /**
-   * Main Method : marshall an XML Document from a MetadataObject to a String
+   * PUBLIC API :<br/>
+   * Marshall a MetadataObject instance to a String (xml)
    *
    * @param source MetadataObject to marshall as an XML document
    * @param bufferCapacity memory buffer capacity
    *
    * @return String containing XML document or null
+   * @throws XmlBindException if the xml marshall operation failed
    */
-  public String marshallObject(final MetadataObject source, final int bufferCapacity) {
+  public String marshallObject(final MetadataObject source, final int bufferCapacity) throws XmlBindException {
     String output = null;
     if (source != null) {
       // output in memory (should stay small) :
@@ -202,13 +200,12 @@ public final class ModelFactory extends SingletonSupport {
    *
    * @param source MetadataObject to marshall as an XML document
    * @param writer writer to use
+   * @throws XmlBindException if the xml marshall operation failed
    */
-  private void marshallObject(final MetadataObject source, final Writer writer) {
+  private void marshallObject(final MetadataObject source, final Writer writer) throws XmlBindException {
     if (source != null) {
       try {
-        // object can not be null here so unmarshall References and set containerId on collections :
         source.accept(MarshallObjectPreProcessor.getInstance());
-
         source.accept(MarshallReferencePreProcessor.getInstance());
 
         // create an Unmarshaller
@@ -222,19 +219,20 @@ public final class ModelFactory extends SingletonSupport {
         source.accept(MarshallReferencePostProcessor.getInstance());
 
       } catch (final JAXBException je) {
-        log.error("ModelFactory.marshallObject : JAXB Failure : ", je);
+        throw new XmlBindException("ModelFactory.marshallObject : JAXB Failure", je);
       }
     }
   }
 
   /**
-   * Main Method : unmarshall a XML Document from a specified file path
+   * PUBLIC API :<br/>
+   * Unmarshall an XML Document from the specified file path to a MetadataObject instance
    *
    * @param filePath absolute File path to load
-   *
    * @return value unmarshalled MetadataObject
+   * @throws XmlBindException if the xml unmarshall operation failed
    */
-  public MetadataObject unmarshallToObject(final String filePath) {
+  public MetadataObject unmarshallToObject(final String filePath) throws XmlBindException {
     if (log.isInfoEnabled()) {
       log.info("ModelFactory.unmarshallToObject : loading : " + filePath);
     }
@@ -251,13 +249,14 @@ public final class ModelFactory extends SingletonSupport {
   }
 
   /**
-   * Main Method : unmarshall an XML Document from a Reader
+   * PUBLIC API :<br/>
+   * Unmarshall an XML Document from the given reader to a MetadataObject instance
    *
    * @param r reader (points to an XML document)
-   *
    * @return value unmarshalled MetadataObject
+   * @throws XmlBindException if the xml unmarshall operation failed
    */
-  public MetadataObject unmarshallToObject(final Reader r) {
+  public MetadataObject unmarshallToObject(final Reader r) throws XmlBindException {
     try {
       // create an Unmarshaller
       final Unmarshaller u = getJaxbFactory().createUnMarshaller();
@@ -280,8 +279,7 @@ public final class ModelFactory extends SingletonSupport {
 
       return object;
     } catch (final JAXBException je) {
-      log.error("ModelFactory.unmarshallToObject : JAXB Failure : ", je);
-      throw new XmlBindException(je);
+      throw new XmlBindException("ModelFactory.unmarshallToObject : JAXB Failure", je);
     }
   }
 
@@ -290,11 +288,12 @@ public final class ModelFactory extends SingletonSupport {
    *
    * @return JAXBFactory for the data model
    */
-  public JAXBFactory getJaxbFactory() {
+  private JAXBFactory getJaxbFactory() {
     return jf;
   }
 
   /**
+   * PUBLIC API :<br/>
    * Return JSON serialisation of the given object.<br>
    *
    * @param object MetadataObject to serialize as a JSON string

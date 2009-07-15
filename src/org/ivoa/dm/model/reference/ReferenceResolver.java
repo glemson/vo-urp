@@ -153,11 +153,11 @@ public final class ReferenceResolver extends SingletonSupport {
    * @param object metadata object to process
    */
   public static void addInContext(final MetadataObject object) {
-    final Identity old = object.getIdentityField();
+    final Identity identity = object.getIdentityField();
 
-    if (old != null) {
+    if (identity != null) {
       // means at least xmlId or ivoId are not null :
-      final String xmlId = old.getXmlId();
+      final String xmlId = identity.getXmlId();
 
       if (!JavaUtils.isEmpty(xmlId)) {
         if (log.isInfoEnabled()) {

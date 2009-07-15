@@ -134,10 +134,6 @@ public final class MetaModelFactory extends SingletonSupport {
 
     this.model = loadModel(MODEL_FILE);
 
-    if (this.model == null) {
-      throw new IllegalStateException("Unable to load meta model : " + MODEL_FILE);
-    }
-
     // TODO check whether next is sufficient to add Identity to datatypes
     for (final org.ivoa.metamodel.Profile prof : this.model.getProfile()) {
       processProfile(prof);
@@ -199,7 +195,7 @@ public final class MetaModelFactory extends SingletonSupport {
    *
    * @return JAXBFactory
    */
-  private final JAXBFactory getJAXBFactory() {
+  private final static JAXBFactory getJAXBFactory() {
     return JAXBFactory.getInstance(JAXB_PACKAGE);
   }
 
@@ -411,7 +407,7 @@ public final class MetaModelFactory extends SingletonSupport {
    *
    * @return Model or null
    */
-  private Model unmarshallFile(final String fileName) {
+  private static Model unmarshallFile(final String fileName) {
     InputStream in = null;
 
     try {
@@ -420,15 +416,14 @@ public final class MetaModelFactory extends SingletonSupport {
       // create an Unmarshaller
       final Unmarshaller u = getJAXBFactory().createUnMarshaller();
 
-      // unmarshal a po instance document into a tree of Java content
-      // objects composed of classes from the primer.po package.
-      final Model m = (Model) u.unmarshal(in);
+      // unmarshall a Model instance document into a tree of Java content
+      // objects composed of classes from the org.ivoa.metamodel package :
+      return (Model) u.unmarshal(in);
 
-      return m;
     } catch (final JAXBException je) {
       log.error("MetaModelFactory.unmarshallFile : JAXB Failure : ", je);
-    } catch (final Exception e) {
-      log.error("MetaModelFactory.unmarshallFile : Failure : ", e);
+    } catch (final RuntimeException re) {
+      log.error("MetaModelFactory.unmarshallFile : Runtime Failure : ", re);
     } finally {
       FileUtils.closeStream(in);
     }
@@ -440,37 +435,31 @@ public final class MetaModelFactory extends SingletonSupport {
    * Loads an Xml Model instance
    *
    * @param file model to load
-   *
-   * @return Model or null
+   * @return Model
+   * @throws IllegalStateException if the model can not be loaded, unmarshalled or is empty
    */
-  private Model loadModel(final String file) {
+  private static Model loadModel(final String file) {
     if (log.isInfoEnabled()) {
       log.info("loadModel : file : " + file);
     }
+    Model model = unmarshallFile(file);
 
-    try {
-      final Model m = unmarshallFile(file);
-
-      if (m != null) {
-        // test packages :
-        if (m.getPackage().size() == 0) {
-          throw new IllegalStateException("unable to get any package !");
-        }
-
-        // create an Unmarshaller
-        getJAXBFactory().dump(m, 96 * 1024);
+    if (model == null) {
+      throw new IllegalStateException("Unable to load the model : " + file);
+    } else {
+      // check packages :
+      if (model.getPackage().size() == 0) {
+        throw new IllegalStateException("Unable to get any package from the loaded model : " + file);
       }
 
-      return m;
-    } catch (final Exception e) {
-      log.error("loadModel : failure : ", e);
+      // create an Unmarshaller
+      getJAXBFactory().dump(model, 96 * 1024);
     }
 
     if (log.isInfoEnabled()) {
       log.info("loadModel : exit");
     }
-
-    return null;
+    return model;
   }
 
   /**

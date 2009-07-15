@@ -147,12 +147,10 @@ public final class JAXBFactory extends SingletonSupport {
    * JAXBContext factory for a given path
    *
    * @param path given path
-   *
    * @return JAXBContext instance
-   *
-   * @throws IllegalStateException
+   * @throws XmlBindException if a JAXBException was caught
    */
-  private JAXBContext getContext(final String path) {
+  private JAXBContext getContext(final String path) throws XmlBindException {
     JAXBContext c = null;
 
     try {
@@ -169,8 +167,7 @@ public final class JAXBFactory extends SingletonSupport {
         }
       }
     } catch (final JAXBException je) {
-      log.error("JAXBFactory.getContext : JAXB Failure : ", je);
-      throw new IllegalStateException("unable to create JAXBContext : " + path);
+      throw new XmlBindException("JAXBFactory.getContext : Unable to create JAXBContext : " + path, je);
     }
 
     return c;
@@ -189,8 +186,9 @@ public final class JAXBFactory extends SingletonSupport {
    * Creates a JAXB Unmarshaller
    *
    * @return JAXB Unmarshaller
+   * @throws XmlBindException if a JAXBException was caught
    */
-  public Unmarshaller createUnMarshaller() {
+  public Unmarshaller createUnMarshaller() throws XmlBindException {
     Unmarshaller u = null;
 
     try {
@@ -208,7 +206,7 @@ public final class JAXBFactory extends SingletonSupport {
         u.setEventHandler(new DefaultValidationEventHandler());
       }
     } catch (final JAXBException je) {
-      log.error("JAXBFactory.createUnMarshaller : JAXB Failure : ", je);
+      throw new XmlBindException("JAXBFactory.createUnMarshaller : JAXB Failure", je);
     }
 
     return u;
@@ -218,8 +216,9 @@ public final class JAXBFactory extends SingletonSupport {
    * Creates a JAXB Marshaller
    *
    * @return JAXB Marshaller
+   * @throws XmlBindException if a JAXBException was caught
    */
-  public Marshaller createMarshaller() {
+  public Marshaller createMarshaller() throws XmlBindException {
     Marshaller m = null;
 
     try {
@@ -228,7 +227,7 @@ public final class JAXBFactory extends SingletonSupport {
 
       m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
     } catch (final JAXBException je) {
-      log.error("JAXBFactory.createMarshaller : JAXB Failure : ", je);
+      throw new XmlBindException("JAXBFactory.createMarshaller : JAXB Failure", je);
     }
 
     return m;
@@ -239,10 +238,10 @@ public final class JAXBFactory extends SingletonSupport {
    *
    * @param o object to serialize in XML
    * @param bufferCapacity memory buffer capacity
-   *
    * @return String containing XML document or null
+   * @throws XmlBindException if a JAXBException was caught
    */
-  public String toString(final Object o, final int bufferCapacity) {
+  public String toString(final Object o, final int bufferCapacity) throws XmlBindException {
     if (o != null) {
       // create an Unmarshaller
       final Marshaller m = createMarshaller();
@@ -255,7 +254,7 @@ public final class JAXBFactory extends SingletonSupport {
 
         return out.toString();
       } catch (final JAXBException je) {
-        log.error("JAXBFactory.toString : JAXB Failure : ", je);
+        throw new XmlBindException("JAXBFactory.toString : JAXB Failure", je);
       }
     }
 
