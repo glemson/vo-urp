@@ -116,7 +116,7 @@ public final class LocalStringBuilder extends SingletonSupport {
    * @return StringBuilder threadLocal instance
    */
   public final static StringBuilder getBuffer() {
-    if (isRunning()) {
+    if (SingletonSupport.isRunning()) {
       return bufferLocal.get().acquire();
     }
     if (StringBuilderContext.DIAGNOSTICS && logB.isInfoEnabled()) {
@@ -136,7 +136,7 @@ public final class LocalStringBuilder extends SingletonSupport {
    * @return StringBuilder threadLocal instance
    */
   public final static StringBuilder getCurrentBuffer() {
-    if (isRunning()) {
+    if (SingletonSupport.isRunning()) {
       final StringBuilderContext ctx = bufferLocal.get();
       StringBuilder sb = ctx.current();
       if (sb == null) {
@@ -151,7 +151,7 @@ public final class LocalStringBuilder extends SingletonSupport {
    * Free the thread local Context associated to the current thread
    */
   public final static void freeBuffer() {
-    if (isRunning()) {
+    if (SingletonSupport.isRunning()) {
       if (logB.isInfoEnabled()) {
         logB.info("LocalStringBuilder.freeBuffer : " + bufferLocal.get());
       }
@@ -167,7 +167,7 @@ public final class LocalStringBuilder extends SingletonSupport {
    */
   public final static String toString(final StringBuilder sb) {
     String s = null;
-    if (isRunning()) {
+    if (SingletonSupport.isRunning()) {
       final StringBuilderContext ctx = bufferLocal.get();
       final StringBuilder sbLocal = ctx.current();
       s = sb != null ? sb.toString() : sbLocal != null ? sbLocal.toString() : null;
@@ -188,7 +188,7 @@ public final class LocalStringBuilder extends SingletonSupport {
    * @param sbTo destination buffer
    */
   public final static void toStringBuilder(final StringBuilder sb, final StringBuilder sbTo) {
-    if (isRunning()) {
+    if (SingletonSupport.isRunning()) {
       final StringBuilderContext ctx = bufferLocal.get();
       final StringBuilder sbLocal = ctx.current();
       sbTo.append(sb != null ? sb : sbLocal);
@@ -213,7 +213,7 @@ public final class LocalStringBuilder extends SingletonSupport {
       final AbstractTimer timer = TimerFactory.getTimer("LocalStringBuilder", UNIT.ns);
 
       long start, stop;
-      for (int i = 0; i < 50000; i++) {
+      for (int i = 0; i < 20000; i++) {
         start = System.nanoTime();
 
         LocalStringBuilder.toString(LocalStringBuilder.getBuffer().append(value));
