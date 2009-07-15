@@ -446,15 +446,14 @@ public final class MetaModelFactory extends SingletonSupport {
 
     if (model == null) {
       throw new IllegalStateException("Unable to load the model : " + file);
-    } else {
-      // check packages :
-      if (model.getPackage().size() == 0) {
-        throw new IllegalStateException("Unable to get any package from the loaded model : " + file);
-      }
-
-      // create an Unmarshaller
-      getJAXBFactory().dump(model, 96 * 1024);
     }
+    // check packages :
+    if (model.getPackage().size() == 0) {
+      throw new IllegalStateException("Unable to get any package from the loaded model : " + file);
+    }
+
+    // create an Unmarshaller
+    getJAXBFactory().dump(model, 96 * 1024);
 
     if (log.isInfoEnabled()) {
       log.info("loadModel : exit");

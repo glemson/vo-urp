@@ -46,7 +46,6 @@ import org.ivoa.util.ReflectionUtils;
  * that will be removed from the thread automatically at the end of the current request.<br/>
  * 
  * @see #registerRequestThreadLocal
- *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class ThreadLocalUtils extends SingletonSupport {
@@ -55,20 +54,26 @@ public final class ThreadLocalUtils extends SingletonSupport {
 
   /** name of the attribute Thread.threadLocals */
   private final static String FIELD_THREAD_THREADLOCALS = "threadLocals";
+
   /** name of the method ThreadLocalMap.remove(ThreadLocal) */
   private final static String METHOD_THREADLOCALMAP_REMOVE = "remove";
+
   /**
    * Temporary cached Field Thread.threadLocals
    */
   static Field threadThreadLocalsField = null;
+
   /**
    * Temporary cached Method ThreadLocalMap.remove(ThreadLocal)
    */
   static Method threadLocalMapRemoveMethod;
+
   /** Name used for the default ThreadLocalManager */
   private static final String DEFAULT_MANAGER = ThreadLocalUtils.class.getName();
+
   /** singleton instance (java 5 memory model) */
   private static volatile ThreadLocalUtils instance = null;
+
   /** threadLocalGroup -> ThreadLocalManager Map */
   private static ConcurrentMap<String, ResettableThreadLocalManager> threadLocalManagers = new ConcurrentHashMap<String, ResettableThreadLocalManager>();
 
@@ -273,7 +278,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
    */
   private static final class ResettableThreadLocalManager extends ThreadLocalManager {
 
-    /** threadLocal weak references */
+    /** collection of threadLocal weak references */
     private final Collection<WeakReference<ThreadLocal<?>>> managedThreadLocals;
 
     /**
@@ -302,6 +307,11 @@ public final class ThreadLocalUtils extends SingletonSupport {
       return threadLocal;
     }
 
+    /**
+     * Return the collection of threadLocal weak references
+     * 
+     * @return collection of threadLocal weak references
+     */
     protected Collection<WeakReference<ThreadLocal<?>>> getManagedThreadLocals() {
       return managedThreadLocals;
     }
