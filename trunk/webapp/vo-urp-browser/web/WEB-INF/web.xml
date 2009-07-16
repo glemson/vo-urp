@@ -35,6 +35,23 @@
 
 
   <!-- ========================================================== -->
+  <!-- Filters -->
+  <!-- ========================================================== -->
+
+  <filter>
+    <filter-name>TimerFilter</filter-name>
+    <filter-class>org.ivoa.web.filter.TimerFilter</filter-class>
+  </filter>
+
+
+  <filter-mapping>
+      <filter-name>TimerFilter</filter-name>
+      <url-pattern>*.do</url-pattern>
+      <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+
+
+  <!-- ========================================================== -->
   <!-- Listeners -->
   <!-- ========================================================== -->
 
