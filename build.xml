@@ -361,7 +361,7 @@
 
 
 	<!-- target buildWeb : makes the vo-urp browser web application -->
-	<target name="buildWeb">
+	<target name="buildWeb" description="build web application only">
 		<ant antfile="webapp/vo-urp-browser/build.xml" target="deployTomcat" inheritAll="false">
 			<property name="input" location="${input}"/>
 		</ant>	

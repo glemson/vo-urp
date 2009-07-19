@@ -1,5 +1,8 @@
 package org.ivoa.util.timer;
 
+import org.ivoa.util.stat.StatLong;
+
+
 /**
  * This class defines an Abstract Timer Object to have statistics on time metrics
  * 
@@ -13,6 +16,8 @@ public abstract class AbstractTimer {
   private final String category;
   /** unit */
   private final TimerFactory.UNIT unit;
+  /** usage counter */
+  protected int usage = 0;
 
   // ~ Constructors
   // -----------------------------------------------------------------------------------------------------
@@ -54,11 +59,11 @@ public abstract class AbstractTimer {
   }
 
   /**
-   * Add a time value
-   * 
+   * Add a time value given in double precision
+   *
    * @param time value to add in statistics
    */
-  public abstract void add(final double time);
+  protected abstract void add(final double time);
 
   /**
    * Return the category
@@ -80,10 +85,19 @@ public abstract class AbstractTimer {
 
   /**
    * Return the usage counter
-   * 
+   *
    * @return usage counter
    */
-  public abstract int getCounter();
+  public final int getUsage() {
+    return this.usage;
+  }
+
+  /**
+   * Return the time statistics
+   *
+   * @return time statistics
+   */
+  public abstract StatLong getTimeStatistics();
 
   /**
    * Return a string representation like "Timer (#unit) [#n]"
@@ -92,8 +106,9 @@ public abstract class AbstractTimer {
    */
   @Override
   public String toString() {
-    return "Timer [" + getCategory() + " - " + getUnit() + "] [" + getCounter() + "] ";
+    return "Timer [" + getCategory() + " - " + getUnit() + "] [" + getUsage() + "] ";
   }
 }
 // ~ End of file
 // --------------------------------------------------------------------------------------------------------
+

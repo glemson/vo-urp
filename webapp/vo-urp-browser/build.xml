@@ -52,7 +52,7 @@
 
   <property name="log.file" value="${tomcat.home}/logs/${project.name}.log"/>
 
-    <!-- global filter definitions -->
+  <!-- global filter definitions -->
   <filter token="project.name" value="${project.name}"/>
   <filter token="eclipselink.jdbc.driver" value="${eclipselink.jdbc.driver}"/>
   <filter token="eclipselink.jdbc.url" value="${eclipselink.jdbc.url}"/>
@@ -478,18 +478,25 @@
   <!-- deploys war archive in tomcat if present -->
   <target name="useTomcat" if="tomcat.check">
 
-      <!-- tomcat webapps folder -->
+    <!-- tomcat webapps folder -->
     <property name="deploy.to" value="${tomcat.home}/webapps"/>
 
-      <!-- removes log file if possible -->
+    <!-- removes log file if possible -->
     <delete file="${log.file}" verbose="true"  failonerror="false" />
 
-      <!-- indicates if the file is still present = tomcat is running -->
+    <!-- indicates if the file is still present = tomcat is running -->
     <available property="tomcat.webapp.locked" file="${log.file}" />
 
     <ant target="cleanWebApp" />
 
     <copy file="${dist}/${build.war.file}" todir="${deploy.to}" verbose="true" />
+
+    <mkdir dir="${deploy.to}/${webapp.name}"/>
+    <unwar src="${deploy.to}/${build.war.file}" dest="${deploy.to}/${webapp.name}" overwrite="true"/>
+
+    <ant target="tomcatJasper" />
+    <ant target="compileJSP" />
+
   </target>
 
 
@@ -499,6 +506,70 @@
 
       <!-- removes previously deployed web application if possible -->
     <delete dir="${deploy.to}/${webapp.name}" verbose="true" failonerror="false"/>
+
+    <delete verbose="true" failonerror="false">
+        <fileset dir="${deploy.to}/${webapp.name}/WEB-INF/src"/>
+        <fileset dir="${deploy.to}/${webapp.name}/WEB-INF/classes/org/apache/jsp"/>
+  	</delete>
+
+  </target>
+
+
+
+
+  <target name="tomcatJasper" if="tomcat.precompile">
+
+    <taskdef classname="org.apache.jasper.JspC" name="jasper">
+      <classpath id="jspc.classpath">
+        <pathelement location="${java.home}/../lib/tools.jar"/>
+        <fileset dir="${tomcat.home}/bin">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${tomcat.home}/lib">
+          <include name="*.jar"/>
+        </fileset>
+      </classpath>
+    </taskdef>
+
+    <jasper validateXml="false"
+            uriroot="${deploy.to}/${webapp.name}"
+            webXmlFragment="${deploy.to}/${webapp.name}/WEB-INF/generated_web.xml"
+            addWebXmlMappings="true"
+            outputDir="${deploy.to}/${webapp.name}/WEB-INF/src"
+            failOnError="false" />
+
+  </target>
+
+
+
+
+  <target name="compileJSP" if="tomcat.precompile">
+
+    <javac sourcepath=""
+           srcdir="${deploy.to}/${webapp.name}/WEB-INF/src"
+           destdir="${deploy.to}/${webapp.name}/WEB-INF/classes"
+           listfiles="false" fork="true" verbose="false" encoding="UTF-8"
+           debug="on" deprecation="on" optimize="on" casesensitive="true" 
+           source="1.5" target="1.5">
+
+      <classpath>
+        <pathelement location="${deploy.to}/${webapp.name}/WEB-INF/classes"/>
+        <fileset dir="${deploy.to}/${webapp.name}/WEB-INF/lib">
+          <include name="*.jar"/>
+        </fileset>
+        <pathelement location="${tomcat.home}/lib"/>
+        <fileset dir="${tomcat.home}/lib">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${tomcat.home}/bin">
+          <include name="*.jar"/>
+        </fileset>
+      </classpath>
+
+      <include name="**" />
+      <exclude name="tags/**" />
+      <exclude name="**/*.smap" />
+    </javac>
 
   </target>
 

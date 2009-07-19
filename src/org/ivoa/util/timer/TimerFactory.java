@@ -7,7 +7,9 @@ import java.util.Map;
 
 import org.ivoa.bean.LogSupport;
 import org.ivoa.util.concurrent.FastSemaphore;
+import org.ivoa.util.stat.StatLong;
 import org.ivoa.util.text.LocalStringBuilder;
+
 
 /**
  * The Timer factory contains a map[key - Timer] to associate time metrics statistics to several
@@ -21,15 +23,18 @@ public final class TimerFactory extends LogSupport {
 
   // ~ Constants
   // --------------------------------------------------------------------------------------------------------
-  /** warmup 1 cycles = 20000 */
-  public final static int WARMUP_CYCLES_1 = 10 * 1000;
-  /** warmup 2 cycles = 100000 */
-  public final static int WARMUP_CYCLES_2 = 20 * 1000;
+  /** maximum number of warmup steps */
+  public final static int WARMUP_STEPS = 5;
+  /** warmup step cycles = 5000 */
+  public final static int WARMUP_STEP_CYCLES = 10 * 1000;
+  /** maximum number of calibration steps */
+  public final static int CALIBRATION_STEPS = 4;
+  /** calibration step cycles = 5000 */
+  public final static int CALIBRATION_STEP_CYCLES = 20 * 1000;
   /** category for the warm-up to optimize the timer code */
-  private final static String WARMUP_CATEGORY = "warmup";
+  private final static String CATEGORY_CALIBRATE = "calibration";
   /** initial capacity = 64 */
   private final static int CAPACITY = 32;
-
   /** internal semaphore to protect the timer instances */
   private static final FastSemaphore lock = new FastSemaphore(1);
   /** List[timer] */
@@ -38,6 +43,13 @@ public final class TimerFactory extends LogSupport {
   private static Map<String, AbstractTimer> timerMap = new HashMap<String, AbstractTimer>(CAPACITY);
   /** threshold for long time = 1s (ms) or 1 milliSeconds (ns) */
   private final static double THRESHOLD = 1 * 1000d;
+  /** conversion ratio between nanoseconds and milliseconds */
+  private final static double CONVERT_NS_INTO_MS = 1e-6d;
+  /** calibration value for milliseconds unit */
+  private static double CALIBRATION_MILLI_SECONDS = 0d;
+  /** calibration value for nanoseconds unit */
+  private static double CALIBRATION_NANO_SECONDS = 0d;
+
 
   /** timer unit constants */
   public static enum UNIT {
@@ -48,42 +60,115 @@ public final class TimerFactory extends LogSupport {
     ns
   }
 
-
   static {
-    // warm up 1 :
-    warmUp(WARMUP_CYCLES_1, WARMUP_CATEGORY);
+    StatLong stat;
+
+    final long start = System.nanoTime();
+
+    // warm up loop :
+    final StatLong globalStatNs = new StatLong();
+    final StatLong globalStatMs = new StatLong();
+    for (int i = 0; i < WARMUP_STEPS; i++) {
+      // warm up to optimize code (hot spot) :
+      stat = calibrateNanoSeconds(WARMUP_STEP_CYCLES);
+      globalStatNs.add(stat);
+
+      stat = calibrateMilliSeconds(WARMUP_STEP_CYCLES);
+      globalStatMs.add(stat);
+
+      if (logB.isInfoEnabled()) {
+        logB.info("TimerFactory : warmup [" + i + "] : " + dumpTimers());
+      }
+      resetTimers();
+    }
+    if (logB.isInfoEnabled()) {
+      logB.info("TimerFactory : global nanoseconds  statistics : " + globalStatNs.toString(true));
+      logB.info("TimerFactory : global milliseconds statistics : " + globalStatMs.toString(true));
+    }
+
+    double delta;
+    // calibration loop to get latency :
+    for (int i = 0; i < CALIBRATION_STEPS; i++) {
+      // nano :
+      stat = calibrateNanoSeconds(CALIBRATION_STEP_CYCLES);
+      delta = Math.min(stat.getMin(), stat.getAverage() - stat.getStdDevLow());
+
+      CALIBRATION_NANO_SECONDS += delta;
+
+      if (logB.isInfoEnabled()) {
+        logB.info("TimerFactory : Nanoseconds   : ");
+        logB.info("TimerFactory : calibration [" + i + "] : " + dumpTimers());
+        logB.info("TimerFactory : min           : " + stat.getMin());
+        logB.info("TimerFactory : avg - stddev  : " + (stat.getAverage() - stat.getStdDevLow()));
+        logB.info("TimerFactory : delta         : " + delta);
+        logB.info("TimerFactory : nanoseconds  calibration correction : " + CALIBRATION_NANO_SECONDS);
+      }
+
+      resetTimers();
+
+      // milli :
+      stat = calibrateMilliSeconds(CALIBRATION_STEP_CYCLES);
+      delta = Math.min(stat.getMin(), stat.getAverage() - stat.getStdDevLow());
+
+      CALIBRATION_MILLI_SECONDS += delta;
+
+      if (logB.isInfoEnabled()) {
+        logB.info("TimerFactory : Milliseconds   : ");
+        logB.info("TimerFactory : calibration [" + i + "] : " + dumpTimers());
+        logB.info("TimerFactory : min           : " + stat.getMin());
+        logB.info("TimerFactory : avg - stddev  : " + (stat.getAverage() - stat.getStdDevLow()));
+        logB.info("TimerFactory : delta         : " + delta);
+        logB.info("TimerFactory : milliseconds calibration correction : " + CALIBRATION_MILLI_SECONDS);
+      }
+
+      resetTimers();
+    }
 
     if (logB.isWarnEnabled()) {
-      logB.warn("TimerFactory : warmup 1 (ns) : " + dumpTimers());
+      logB.warn("TimerFactory : calibration time (ms) : " + TimerFactory.elapsedMilliSeconds(start, System.nanoTime()));
+      logB.warn("TimerFactory : nanoseconds  calibration correction : " + CALIBRATION_NANO_SECONDS);
+      logB.warn("TimerFactory : milliseconds calibration correction : " + CALIBRATION_MILLI_SECONDS);
     }
-    resetTimers();
-
-    // warm up 2 to get latency :
-    warmUp(WARMUP_CYCLES_2, WARMUP_CATEGORY);
-
-    if (logB.isWarnEnabled()) {
-      logB.warn("TimerFactory : warmup 2 (ns) : " + dumpTimers());
-    }
-    resetTimers();
   }
 
   /** 
-   * Warm-up timer code (hotspot)
+   * Warm-up and calibrate timer code (hotspot)
    * 
    * @param cycles empty cycles to operate
-   * @param category name of the category 
+   * @return calibration value in double precision
    */
-  private static void warmUp(final int cycles, final String category) {
-    // preallocate the timer :
-    TimerFactory.getTimer(category, UNIT.ns);
+  private static StatLong calibrateNanoSeconds(final int cycles) {
+    final String catCalibrate = CATEGORY_CALIBRATE + "-" + UNIT.ns;
 
     long start;
-
-    // EMPTY LOOP to compile the code of Timer classes  :
+    // EMPTY LOOP to force hotspot compiler to optimize the code for Timer.* classes  :
     for (int i = 0, size = cycles; i < size; i++) {
       start = System.nanoTime();
-      TimerFactory.getTimer(category, UNIT.ns).addNanoSeconds(start, System.nanoTime());
+      // ...
+      TimerFactory.getSimpleTimer(catCalibrate, UNIT.ns).addNanoSeconds(start, System.nanoTime());
     }
+
+    return TimerFactory.getTimer(catCalibrate).getTimeStatistics();
+  }
+
+  /**
+   * Warm-up and calibrate timer code (hotspot)
+   *
+   * @param cycles empty cycles to operate
+   * @return calibration value in double precision
+   */
+  private static StatLong calibrateMilliSeconds(final int cycles) {
+    final String catCalibrate = CATEGORY_CALIBRATE + "-" + UNIT.ms;
+
+    long start;
+    // EMPTY LOOP to force hotspot compiler to optimize the code for Timer.* classes  :
+    for (int i = 0, size = cycles; i < size; i++) {
+      start = System.nanoTime();
+      // ...
+      TimerFactory.getSimpleTimer(catCalibrate, UNIT.ms).addMilliSeconds(start, System.nanoTime());
+    }
+
+    return TimerFactory.getTimer(catCalibrate).getTimeStatistics();
   }
 
   // ~ Constructors
@@ -105,8 +190,8 @@ public final class TimerFactory extends LogSupport {
    * @param now t1
    * @return (t1 - t0) in milliseconds
    */
-  public static final long elapsedMilliSeconds(final long start, final long now) {
-    return (now - start) / 1000000L;
+  public static final double elapsedMilliSeconds(final long start, final long now) {
+    return CONVERT_NS_INTO_MS * (now - start) - CALIBRATION_MILLI_SECONDS;
   }
 
   /**
@@ -117,8 +202,8 @@ public final class TimerFactory extends LogSupport {
    * @param now t1
    * @return (t1 - t0) in nanoseconds
    */
-  public static final long elapsedNanoSeconds(final long start, final long now) {
-    return now - start;
+  public static final double elapsedNanoSeconds(final long start, final long now) {
+    return (now - start) - CALIBRATION_NANO_SECONDS;
   }
 
   /**
@@ -148,6 +233,18 @@ public final class TimerFactory extends LogSupport {
   }
 
   /**
+   * Return an existing or a new Timer for that category (lazy) with the given unit
+   *
+   * @see UNIT
+   * @param category a string representing the kind of operation
+   * @param unit MILLI_SECONDS or NANO_SECONDS
+   * @return timer instance
+   */
+  protected static final AbstractTimer getSimpleTimer(final String category, final UNIT unit) {
+    return getTimer(category, unit, 0d);
+  }
+
+  /**
    * Return an existing or a new Timer for that category (lazy) with the given threshold
    *
    * @see UNIT
@@ -160,7 +257,11 @@ public final class TimerFactory extends LogSupport {
     AbstractTimer timer = timerMap.get(category);
 
     if (timer == null) {
-      timer = new ThresholdTimer(category, unit, th);
+      if (th > 0d) {
+        timer = new ThresholdTimer(category, unit, th);
+      } else {
+        timer = new Timer(category, unit);
+      }
 
       try {
         // semaphore is acquired to protect timer instances :
@@ -168,7 +269,7 @@ public final class TimerFactory extends LogSupport {
 
         timerList.add(timer);
         timerMap.put(category, timer);
-        
+
       } catch (final InterruptedException ie) {
         log.error("TimerFactory : lock interrupted : ", ie);
       } finally {
@@ -195,7 +296,7 @@ public final class TimerFactory extends LogSupport {
       for (final AbstractTimer timer : timerList) {
         sb.append("\n").append(timer.toString());
       }
-      
+
     } catch (final InterruptedException ie) {
       log.error("TimerFactory : lock interrupted : ", ie);
     } finally {
@@ -217,7 +318,7 @@ public final class TimerFactory extends LogSupport {
 
       timerList.clear();
       timerMap.clear();
-      
+
     } catch (final InterruptedException ie) {
       log.error("TimerFactory : lock interrupted : ", ie);
     } finally {
@@ -227,7 +328,8 @@ public final class TimerFactory extends LogSupport {
   }
 
   /**
-   * Return true if there is no existing timer
+   * Return true if there is no existing timer.<br/>
+   * This method is not thread safe but only useful before dumpTimers()
    * 
    * @return true if there is no existing timer
    */
@@ -237,3 +339,4 @@ public final class TimerFactory extends LogSupport {
 }
 // ~ End of file
 // --------------------------------------------------------------------------------------------------------
+

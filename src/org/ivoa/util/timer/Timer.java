@@ -2,6 +2,7 @@ package org.ivoa.util.timer;
 
 import org.ivoa.util.stat.StatLong;
 
+
 /**
  * This class contains statistics for time metrics
  *
@@ -31,26 +32,14 @@ public final class Timer extends AbstractTimer {
   // ~ Methods
   // ----------------------------------------------------------------------------------------------------------
   /**
-   * Add a time value
+   * Add a time value given in double precision
    *
    * @param time value to add in statistics
    */
   @Override
-  public void add(final double time) {
-    // LINUX bug :
-    if (time >= 0) {
-      monitorTime.add(time);
-    }
-  }
-
-  /**
-   * Return the usage counter
-   *
-   * @return usage counter
-   */
-  @Override
-  public int getCounter() {
-    return this.monitorTime.getCounter();
+  protected final void add(final double time) {
+    this.usage++;
+    monitorTime.add(time);
   }
 
   /**
@@ -58,7 +47,8 @@ public final class Timer extends AbstractTimer {
    *
    * @return time statistics
    */
-  public StatLong getTimeStats() {
+  @Override
+  public final StatLong getTimeStatistics() {
     return this.monitorTime;
   }
 
@@ -68,33 +58,16 @@ public final class Timer extends AbstractTimer {
    * @return string representation
    */
   @Override
-  public String toString() {
+  public final String toString() {
     String res = super.toString();
 
-    if (getCounter() > 0) {
-      final StatLong stat = getTimeStats();
-      res += "{" +
-              "min = " + adjustValue(stat.getMin()) + ", " +
-              "avg = " + adjustValue(stat.getAverage()) + ", " +
-              "max = " + adjustValue(stat.getMax()) + ", " +
-              "acc = " + adjustValue(stat.getAccumulator()) + ", " +
-              "std = " + adjustValue(stat.getStdDev()) +
-              "}";
+    final StatLong stat = getTimeStatistics();
+    if (stat.getCounter() > 0) {
+      res += stat.toString(true);
     }
-
     return res;
-  }
-
-  /**
-   * Format the given double value to keep only 3 decimal digits
-   * @param value value to adjust
-   * @return double value with only 3 decimal digits
-   */
-  private double adjustValue(final double value) {
-    final long intValue = (long) (1000d * value);
-
-    return intValue / 1000d;
   }
 }
 // ~ End of file
 // --------------------------------------------------------------------------------------------------------
+

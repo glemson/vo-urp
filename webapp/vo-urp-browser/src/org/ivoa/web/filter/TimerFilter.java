@@ -31,26 +31,22 @@ public class TimerFilter extends BaseFilter {
   protected void onFilter(final HttpServletRequest request,
           final HttpServletResponse response, final FilterChain chain) throws IOException, ServletException {
 
-    long start, stop;
-
     try {
       if (log.isInfoEnabled()) {
         log.info("TimerFilter.doFilter : before filter");
       }
 
-      start = System.nanoTime();
+      final long start = System.nanoTime();
 
       // must call forward(chain, req, res);
       sendForward(request, response, chain);
 
-      stop = System.nanoTime();
+      // TODO : find the proper category according to the servlet name (uri pattern) :
+      TimerFactory.getTimer("TimerFilter").addMilliSeconds(start, System.nanoTime());
 
       if (log.isInfoEnabled()) {
         log.info("TimerFilter.doFilter : after filter");
       }
-
-      // TODO : find the proper category according to the servlet name (uri pattern) :
-      TimerFactory.getTimer("TimerFilter").addMilliSeconds(start, stop);
 
     } catch (Throwable th) {
       handleThrowable(th);

@@ -675,9 +675,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
     EntityManager em = null;
     Long id = null;
 
-    final AbstractTimer timer = TimerFactory.getTimer("DBTests.testLOAD_BATCH_WRITE");
-
-    long start, stop;
+    long start;
     for (int i = 0; i < WRITE_ITERATION; i++) {
 
       start = System.nanoTime();
@@ -718,8 +716,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
         ReferenceResolver.freeContext();
       }
 
-      stop = System.nanoTime();
-      timer.addMilliSeconds(start, stop);
+      TimerFactory.getTimer("DBTests.testLOAD_BATCH_WRITE").addMilliSeconds(start, System.nanoTime());
     }
 
     log.warn("DBTests.testLOAD_BATCH_WRITE : exit : " + id);
@@ -876,9 +873,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
       test.testLOAD_BATCH_WRITE(jf, xmlDocumentPath);
 
-      final long stop = System.nanoTime();
-
-      TimerFactory.getTimer("DBTests.WriteJob").addMilliSeconds(start, stop);
+      TimerFactory.getTimer("DBTests.WriteJob").addMilliSeconds(start, System.nanoTime());
 
       log.warn("WriteJob : run : OUT : " + i);
     }
