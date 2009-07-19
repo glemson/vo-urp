@@ -3,7 +3,6 @@ package org.ivoa.util.text;
 import org.ivoa.bean.SingletonSupport;
 import org.ivoa.util.SystemLogUtil;
 import org.ivoa.util.concurrent.ThreadLocalUtils;
-import org.ivoa.util.timer.AbstractTimer;
 import org.ivoa.util.timer.TimerFactory;
 import org.ivoa.util.timer.TimerFactory.UNIT;
 
@@ -210,17 +209,13 @@ public final class LocalStringBuilder extends SingletonSupport {
     if (logB.isWarnEnabled()) {
       final String value = SystemLogUtil.LOG_LINE_SEPARATOR;
 
-      final AbstractTimer timer = TimerFactory.getTimer("LocalStringBuilder", UNIT.ns);
-
-      long start, stop;
+      long start;
       for (int i = 0; i < 20000; i++) {
         start = System.nanoTime();
 
         LocalStringBuilder.toString(LocalStringBuilder.getBuffer().append(value));
 
-        stop = System.nanoTime();
-
-        timer.addNanoSeconds(start, stop);
+        TimerFactory.getTimer("LocalStringBuilder", UNIT.ns).addNanoSeconds(start, System.nanoTime());
       }
 
       logB.warn("LocalStringBuilder : micro benchmark : " + TimerFactory.dumpTimers());

@@ -1,5 +1,8 @@
 package org.ivoa.util.timer;
 
+import org.ivoa.util.stat.StatLong;
+
+
 /**
  * Special Timer with a threshold to separate low & high values
  *
@@ -9,8 +12,6 @@ public final class ThresholdTimer extends AbstractTimer {
   // ~ Members
   // ----------------------------------------------------------------------------------------------------------
 
-  /** occurence counter */
-  private int counter = 0;
   /**
    * Timer instance for the low values
    */
@@ -45,13 +46,13 @@ public final class ThresholdTimer extends AbstractTimer {
   // ~ Methods
   // ----------------------------------------------------------------------------------------------------------
   /**
-   * Add a time value
+   * Add a time value given in double precision
    *
    * @param time value to add in statistics
    */
   @Override
-  public void add(final double time) {
-    this.counter++;
+  protected final void add(final double time) {
+    this.usage++;
     if (time > threshold) {
       high.add(time);
     } else {
@@ -60,21 +61,11 @@ public final class ThresholdTimer extends AbstractTimer {
   }
 
   /**
-   * Return the usage counter
-   *
-   * @return usage counter
-   */
-  @Override
-  public int getCounter() {
-    return this.counter;
-  }
-
-  /**
    * Return the Timer instance for the high values
    *
    * @return Timer instance for the high values
    */
-  public Timer getTimerHigh() {
+  public final Timer getTimerHigh() {
     return high;
   }
 
@@ -83,8 +74,18 @@ public final class ThresholdTimer extends AbstractTimer {
    *
    * @return Timer instance for the low values
    */
-  public Timer getTimerLow() {
+  public final Timer getTimerLow() {
     return low;
+  }
+
+  /**
+   * Return the time statistics
+   *
+   * @return time statistics
+   */
+  @Override
+  public final StatLong getTimeStatistics() {
+    return this.getTimerHigh().getTimeStatistics();
   }
 
   /**
@@ -93,11 +94,12 @@ public final class ThresholdTimer extends AbstractTimer {
    * @return string representation
    */
   @Override
-  public String toString() {
-    return super.toString() + "(threshold = " + threshold + " " + getUnit() + ") {\n  " +
-            "Low  : " + getTimerLow().toString() + "\n  " +
-            "High : " + getTimerHigh().toString() + "\n}";
+  public final String toString() {
+    return super.toString() + "(threshold = " + StatLong.adjustValue(threshold) + " " + getUnit() + ") {\n  " +
+        "Low  : " + getTimerLow().toString() + "\n  " +
+        "High : " + getTimerHigh().toString() + "\n}";
   }
 }
 // ~ End of file
 // --------------------------------------------------------------------------------------------------------
+

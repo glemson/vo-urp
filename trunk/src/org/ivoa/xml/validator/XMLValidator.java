@@ -119,8 +119,7 @@ public final class XMLValidator extends SingletonSupport {
 
       s = factory.newSchema(url);
 
-      final long stop = System.nanoTime();
-      TimerFactory.getTimer("XMLValidator.getSchema[" + schemaURL + "]").addMilliSeconds(start, stop);
+      TimerFactory.getTimer("XMLValidator.getSchema[" + schemaURL + "]").addMilliSeconds(start, System.nanoTime());
 
       if (logB.isWarnEnabled()) {
         logB.warn("XMLValidator.getSchema : schema ready : " + s);

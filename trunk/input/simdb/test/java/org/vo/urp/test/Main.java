@@ -6,6 +6,7 @@ import org.ivoa.util.SystemLogUtil;
 import org.ivoa.util.timer.TimerFactory;
 import org.vo.urp.test.jaxb.XMLTests;
 
+
 /**
  * Unit Tests : JPA
  *
@@ -42,8 +43,7 @@ public final class Main {
         new DBTests().run(args);
 
       } finally {
-        final long stop = System.nanoTime();
-        TimerFactory.getTimer("Test.main").addMilliSeconds(start, stop);
+        TimerFactory.getTimer("Test.main").addMilliSeconds(start, System.nanoTime());
 
         ApplicationAdapter.stop();
       }
@@ -70,3 +70,4 @@ public final class Main {
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
+
