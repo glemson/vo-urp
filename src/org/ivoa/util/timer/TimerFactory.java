@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.ivoa.bean.LogSupport;
+import org.ivoa.util.NumberUtils;
 import org.ivoa.util.concurrent.FastSemaphore;
 import org.ivoa.util.stat.StatLong;
 import org.ivoa.util.text.LocalStringBuilder;
@@ -23,6 +24,9 @@ public final class TimerFactory extends LogSupport {
 
   // ~ Constants
   // --------------------------------------------------------------------------------------------------------
+  /** diagnostics flag for warmup sequence */
+  public final static boolean WARMUP_DIAGNOSTICS = false;
+
   /** maximum number of warmup steps */
   public final static int WARMUP_STEPS = 5;
   /** warmup step cycles = 5000 */
@@ -61,9 +65,12 @@ public final class TimerFactory extends LogSupport {
   }
 
   static {
+    final long start = System.nanoTime();
+
     StatLong stat;
 
-    final long start = System.nanoTime();
+    // Adjust threshold to high values :
+    StatLong.defineThreshold(100);
 
     // warm up loop :
     final StatLong globalStatNs = new StatLong();
@@ -76,14 +83,14 @@ public final class TimerFactory extends LogSupport {
       stat = calibrateMilliSeconds(WARMUP_STEP_CYCLES);
       globalStatMs.add(stat);
 
-      if (logB.isInfoEnabled()) {
-        logB.info("TimerFactory : warmup [" + i + "] : " + dumpTimers());
+      if (WARMUP_DIAGNOSTICS && logB.isWarnEnabled()) {
+        logB.warn("TimerFactory : warmup [" + i + "] : " + dumpTimers());
       }
       resetTimers();
     }
-    if (logB.isInfoEnabled()) {
-      logB.info("TimerFactory : global nanoseconds  statistics : " + globalStatNs.toString(true));
-      logB.info("TimerFactory : global milliseconds statistics : " + globalStatMs.toString(true));
+    if (WARMUP_DIAGNOSTICS && logB.isWarnEnabled()) {
+        logB.warn("TimerFactory : global nanoseconds  statistics : " + globalStatNs.toString(true));
+      logB.warn("TimerFactory : global milliseconds statistics : " + globalStatMs.toString(true));
     }
 
     double delta;
@@ -95,13 +102,13 @@ public final class TimerFactory extends LogSupport {
 
       CALIBRATION_NANO_SECONDS += delta;
 
-      if (logB.isInfoEnabled()) {
-        logB.info("TimerFactory : Nanoseconds   : ");
-        logB.info("TimerFactory : calibration [" + i + "] : " + dumpTimers());
-        logB.info("TimerFactory : min           : " + stat.getMin());
-        logB.info("TimerFactory : avg - stddev  : " + (stat.getAverage() - stat.getStdDevLow()));
-        logB.info("TimerFactory : delta         : " + delta);
-        logB.info("TimerFactory : nanoseconds  calibration correction : " + CALIBRATION_NANO_SECONDS);
+      if (WARMUP_DIAGNOSTICS && logB.isWarnEnabled()) {
+        logB.warn("TimerFactory : Nanoseconds   : ");
+        logB.warn("TimerFactory : calibration [" + i + "] : " + dumpTimers());
+        logB.warn("TimerFactory : min           : " + stat.getMin());
+        logB.warn("TimerFactory : avg - stddev  : " + (stat.getAverage() - stat.getStdDevLow()));
+        logB.warn("TimerFactory : delta         : " + delta);
+        logB.warn("TimerFactory : nanoseconds  calibration correction : " + CALIBRATION_NANO_SECONDS);
       }
 
       resetTimers();
@@ -112,23 +119,29 @@ public final class TimerFactory extends LogSupport {
 
       CALIBRATION_MILLI_SECONDS += delta;
 
-      if (logB.isInfoEnabled()) {
-        logB.info("TimerFactory : Milliseconds   : ");
-        logB.info("TimerFactory : calibration [" + i + "] : " + dumpTimers());
-        logB.info("TimerFactory : min           : " + stat.getMin());
-        logB.info("TimerFactory : avg - stddev  : " + (stat.getAverage() - stat.getStdDevLow()));
-        logB.info("TimerFactory : delta         : " + delta);
-        logB.info("TimerFactory : milliseconds calibration correction : " + CALIBRATION_MILLI_SECONDS);
+      if (WARMUP_DIAGNOSTICS && logB.isWarnEnabled()) {
+        logB.warn("TimerFactory : Milliseconds   : ");
+        logB.warn("TimerFactory : calibration [" + i + "] : " + dumpTimers());
+        logB.warn("TimerFactory : min           : " + stat.getMin());
+        logB.warn("TimerFactory : avg - stddev  : " + (stat.getAverage() - stat.getStdDevLow()));
+        logB.warn("TimerFactory : delta         : " + delta);
+        logB.warn("TimerFactory : milliseconds calibration correction : " + CALIBRATION_MILLI_SECONDS);
       }
 
       resetTimers();
     }
 
+    final long stop = System.nanoTime();
+
     if (logB.isWarnEnabled()) {
-      logB.warn("TimerFactory : calibration time (ms) : " + TimerFactory.elapsedMilliSeconds(start, System.nanoTime()));
-      logB.warn("TimerFactory : nanoseconds  calibration correction : " + CALIBRATION_NANO_SECONDS);
-      logB.warn("TimerFactory : milliseconds calibration correction : " + CALIBRATION_MILLI_SECONDS);
+      logB.warn("TimerFactory : nanoseconds  calibration correction : " + NumberUtils.format(CALIBRATION_NANO_SECONDS, NumberUtils.LESS_PRECISION));
+      logB.warn("TimerFactory : milliseconds calibration correction : " + NumberUtils.format(CALIBRATION_MILLI_SECONDS, NumberUtils.LESS_PRECISION));
+      logB.warn("TimerFactory : calibration time (ms) : " + TimerFactory.elapsedMilliSeconds(start, stop));
     }
+
+    // Adjust threshold to low values :
+    StatLong.defineThreshold(5);
+
   }
 
   /** 
@@ -240,7 +253,7 @@ public final class TimerFactory extends LogSupport {
    * @param unit MILLI_SECONDS or NANO_SECONDS
    * @return timer instance
    */
-  protected static final AbstractTimer getSimpleTimer(final String category, final UNIT unit) {
+  public static final AbstractTimer getSimpleTimer(final String category, final UNIT unit) {
     return getTimer(category, unit, 0d);
   }
 

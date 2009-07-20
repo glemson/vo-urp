@@ -13,14 +13,16 @@ public final class StatLong {
   // ~ Constants
   // --------------------------------------------------------------------------------------------------------
 
-  /** threshold used to start considering that the average value is correct */
-  private final static int THRESHOLD_MOY = 10;
-  /** threshold used to start computing the standard deviation */
-  private final static int THRESHOLD_SIGMA = 2 * THRESHOLD_MOY;
+  /** default value for the average threshold */
+  private final static int DEFAULT_THRESHOLD_AVG = 5;
+  /** average threshold used to start considering that the average value is correct */
+  private static int THRESHOLD_AVG = DEFAULT_THRESHOLD_AVG;
+  /** stddev threshold used to start computing the standard deviation : 2 x THRESHOLD_AVG */
+  private static int THRESHOLD_STDDEV = 2 * THRESHOLD_AVG;
   /**
-   * Fixed Divisor for std dev : THRESHOLD_SIGMA - THRESHOLD_MOY + 1
+   * Fixed Divisor for stddev : THRESHOLD_STDDEV - THRESHOLD_AVG + 1
    */
-  private final static int THRESHOLD_SIGMA_N = 1 + THRESHOLD_SIGMA - THRESHOLD_MOY;
+  private static int THRESHOLD_STDDEV_N = 1 + THRESHOLD_STDDEV - THRESHOLD_AVG;
   // ~ Members
   // ----------------------------------------------------------------------------------------------------------
   /** occurence counter */
@@ -53,6 +55,18 @@ public final class StatLong {
 
   // ~ Methods
   // ----------------------------------------------------------------------------------------------------------
+  /**
+   * Define the occurence thresholds to compute average, standard deviation ...
+   * @param thresholdAverage
+   */
+  public static void defineThreshold(final int thresholdAverage) {
+    if (thresholdAverage > 0) {
+      THRESHOLD_AVG = thresholdAverage;
+      THRESHOLD_STDDEV = 2 * THRESHOLD_AVG;
+      THRESHOLD_STDDEV_N = 1 + THRESHOLD_STDDEV - THRESHOLD_AVG;
+    }
+  }
+
   /**
    * reset values
    */
@@ -126,7 +140,7 @@ public final class StatLong {
     this.acc += value;
     this.average = this.acc / count;
 
-    if (count >= THRESHOLD_MOY) {
+    if (count >= THRESHOLD_AVG) {
       /**
        * X-       =     (1/n) * Sum (Xn)
        * stdDev^2 = (1/(n-1)) * Sum [ (Xn - * X-)^2 ]
@@ -233,8 +247,8 @@ public final class StatLong {
    */
   public final double getStdDev() {
     double stddev = 0d;
-    if (this.counter >= THRESHOLD_SIGMA) {
-      stddev = Math.sqrt((this.accDeltaHigh + this.accDeltaLow) / (this.counter - THRESHOLD_SIGMA_N));
+    if (this.counter >= THRESHOLD_STDDEV) {
+      stddev = Math.sqrt((this.accDeltaHigh + this.accDeltaLow) / (this.counter - THRESHOLD_STDDEV_N));
     }
 
     return stddev;
@@ -247,8 +261,8 @@ public final class StatLong {
    */
   public final double getStdDevHigh() {
     double stddev = 0d;
-    if (this.counterHigh >= THRESHOLD_SIGMA) {
-      stddev = Math.sqrt(this.accDeltaHigh / (this.counterHigh - THRESHOLD_SIGMA_N));
+    if (this.counterHigh >= THRESHOLD_STDDEV) {
+      stddev = Math.sqrt(this.accDeltaHigh / (this.counterHigh - THRESHOLD_STDDEV_N));
     }
 
     return stddev;
@@ -261,8 +275,8 @@ public final class StatLong {
    */
   public final double getStdDevLow() {
     double stddev = 0d;
-    if (this.counterLow >= THRESHOLD_SIGMA) {
-      stddev = Math.sqrt(this.accDeltaLow / (this.counterLow - THRESHOLD_SIGMA_N));
+    if (this.counterLow >= THRESHOLD_STDDEV) {
+      stddev = Math.sqrt(this.accDeltaLow / (this.counterLow - THRESHOLD_STDDEV_N));
     }
 
     return stddev;
@@ -282,9 +296,12 @@ public final class StatLong {
           "avg = " + adjustValue(getAverage()) + ", " +
           "max = " + adjustValue(getMax()) + ", " +
           "acc = " + adjustValue(getAccumulator()) + ", " +
-          "std = " + adjustValue(getStdDev()) + ", " +
-          "std low  = " + adjustValue(getStdDevLow()) + ", " +
+          "std = " + adjustValue(getStdDev()) + 
+          " [" + (getCounterLow() + getCounterHigh()) + "] " +
+          "std low  = " + adjustValue(getStdDevLow()) + 
+          " [" + (getCounterLow()) + "] " +
           "std high = " + adjustValue(getStdDevHigh()) +
+          " [" + (getCounterHigh()) + "] " +
           "}";
     }
     return res;
