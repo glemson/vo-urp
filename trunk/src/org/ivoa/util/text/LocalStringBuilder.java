@@ -3,6 +3,7 @@ package org.ivoa.util.text;
 import org.ivoa.bean.SingletonSupport;
 import org.ivoa.util.SystemLogUtil;
 import org.ivoa.util.concurrent.ThreadLocalUtils;
+import org.ivoa.util.stat.StatLong;
 import org.ivoa.util.timer.TimerFactory;
 import org.ivoa.util.timer.TimerFactory.UNIT;
 
@@ -16,7 +17,7 @@ public final class LocalStringBuilder extends SingletonSupport {
   // --------------------------------------------------------------------------------------------------------
 
   /** flag to execute the micro benchmark at startup */
-  private final static boolean DO_MICRO_BENCHMARK = true;
+  private final static boolean DO_MICRO_BENCHMARK = false;
   /** buffer thread Local */
   private static ThreadLocal<StringBuilderContext> bufferLocal = ThreadLocalUtils.registerRequestThreadLocal(new StringBuilderThreadLocal());
 
@@ -209,19 +210,65 @@ public final class LocalStringBuilder extends SingletonSupport {
     if (logB.isWarnEnabled()) {
       final String value = SystemLogUtil.LOG_LINE_SEPARATOR;
 
+      final StatLong globalStat = new StatLong();
+
+      final int loops = 10;
+      final int cycles = 10000;
       long start;
-      for (int i = 0; i < 20000; i++) {
-        start = System.nanoTime();
 
-        LocalStringBuilder.toString(LocalStringBuilder.getBuffer().append(value));
+      StringBuilder sb;
+      String res = null;
+      for (int k = 0; k < loops; k++) {
 
-        TimerFactory.getTimer("LocalStringBuilder", UNIT.ns).addNanoSeconds(start, System.nanoTime());
+        for (int i = 0; i < cycles; i++) {
+          start = System.nanoTime();
+
+          sb = LocalStringBuilder.getBuffer();
+
+          sb.append(value).append(i).append(value);
+
+          res = LocalStringBuilder.toString(sb);
+
+          TimerFactory.getSimpleTimer("LocalStringBuilder", UNIT.ns).addNanoSeconds(start, System.nanoTime());
+        }
+
+        if (k > 0) {
+          globalStat.add(TimerFactory.getTimer("LocalStringBuilder").getTimeStatistics());
+        }
+
+        logB.warn("LocalStringBuilder : LocalStringBuilder    micro benchmark : " + TimerFactory.dumpTimers());
+
+        TimerFactory.resetTimers();
       }
 
-      logB.warn("LocalStringBuilder : micro benchmark : " + TimerFactory.dumpTimers());
+      logB.warn("LocalStringBuilder : global LocalStringBuilder    statistics : " + globalStat.toString(true));
 
-      // TimerFactory reset :
-      TimerFactory.resetTimers();
+      globalStat.reset();
+
+      for (int k = 0; k < loops; k++) {
+
+        for (int i = 0; i < cycles; i++) {
+          start = System.nanoTime();
+
+          sb = new StringBuilder();
+
+          sb.append(value).append(i).append(value);
+
+          res = sb.toString();
+
+          TimerFactory.getSimpleTimer("StandardStringBuilder", UNIT.ns).addNanoSeconds(start, System.nanoTime());
+        }
+
+        if (k > 0) {
+          globalStat.add(TimerFactory.getTimer("StandardStringBuilder").getTimeStatistics());
+        }
+
+        logB.warn("LocalStringBuilder : StandardStringBuilder micro benchmark : " + TimerFactory.dumpTimers());
+
+        TimerFactory.resetTimers();
+      }
+
+      logB.warn("LocalStringBuilder : global StandardStringBuilder statistics : " + globalStat.toString(true));
     }
   }
 }
