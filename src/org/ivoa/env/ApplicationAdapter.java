@@ -65,10 +65,11 @@ public final class ApplicationAdapter extends LogSupport {
 
     // callback to clean resources :
 
-    // TimerFactory dump :
+    // TimerFactory dump & exit :
     if (!TimerFactory.isEmpty() && logB.isWarnEnabled()) {
       logB.warn("TimerFactory : statistics : " + TimerFactory.dumpTimers());
     }
+    TimerFactory.onExit();
 
     try {
       // last one (clear logging) :
