@@ -11,6 +11,7 @@ import javax.persistence.Persistence;
 
 import org.eclipse.persistence.config.PersistenceUnitProperties;
 import org.eclipse.persistence.config.SessionCustomizer;
+import org.eclipse.persistence.logging.CommonsLoggingSessionLog;
 import org.eclipse.persistence.sessions.Session;
 import org.ivoa.bean.SingletonSupport;
 import org.ivoa.conf.PropertyHolder;
@@ -104,6 +105,10 @@ public final class JPAFactory extends SingletonSupport {
       managedInstances.clear();
       managedInstances = null;
     }
+
+    // clean up custom logger instances :
+    CommonsLoggingSessionLog.onExit();
+
     if (logB.isInfoEnabled()) {
       logB.info("JPAFactory.clearStaticReferences : exit");
     }

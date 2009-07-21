@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.ivoa.bean.LogSupport;
 import org.ivoa.util.NumberUtils;
-import org.ivoa.util.concurrent.FastSemaphore;
 import org.ivoa.util.stat.StatLong;
 import org.ivoa.util.text.LocalStringBuilder;
 
@@ -26,7 +25,6 @@ public final class TimerFactory extends LogSupport {
   // --------------------------------------------------------------------------------------------------------
   /** diagnostics flag for warmup sequence */
   public final static boolean WARMUP_DIAGNOSTICS = false;
-
   /** maximum number of warmup steps */
   public final static int WARMUP_STEPS = 5;
   /** warmup step cycles = 5000 */
@@ -39,12 +37,6 @@ public final class TimerFactory extends LogSupport {
   private final static String CATEGORY_CALIBRATE = "calibration";
   /** initial capacity = 64 */
   private final static int CAPACITY = 32;
-  /** internal semaphore to protect the timer instances */
-  private static final FastSemaphore lock = new FastSemaphore(1);
-  /** List[timer] */
-  private static List<AbstractTimer> timerList = new ArrayList<AbstractTimer>(CAPACITY);
-  /** fast Map[key - timer] */
-  private static Map<String, AbstractTimer> timerMap = new HashMap<String, AbstractTimer>(CAPACITY);
   /** threshold for long time = 1s (ms) or 1 milliSeconds (ns) */
   private final static double THRESHOLD = 1 * 1000d;
   /** conversion ratio between nanoseconds and milliseconds */
@@ -53,6 +45,13 @@ public final class TimerFactory extends LogSupport {
   private static double CALIBRATION_MILLI_SECONDS = 0d;
   /** calibration value for nanoseconds unit */
   private static double CALIBRATION_NANO_SECONDS = 0d;
+  /* shared state */
+  /** guard lock for timer list and map to ensure thread integrity */
+  private final static Object lock = new Object();
+  /** List[timer] */
+  private static List<AbstractTimer> timerList = new ArrayList<AbstractTimer>(CAPACITY);
+  /** fast Map[key - timer] */
+  private static Map<String, AbstractTimer> timerMap = new HashMap<String, AbstractTimer>(CAPACITY);
 
 
   /** timer unit constants */
@@ -89,7 +88,7 @@ public final class TimerFactory extends LogSupport {
       resetTimers();
     }
     if (WARMUP_DIAGNOSTICS && logB.isWarnEnabled()) {
-        logB.warn("TimerFactory : global nanoseconds  statistics : " + globalStatNs.toString(true));
+      logB.warn("TimerFactory : global nanoseconds  statistics : " + globalStatNs.toString(true));
       logB.warn("TimerFactory : global milliseconds statistics : " + globalStatMs.toString(true));
     }
 
@@ -196,6 +195,16 @@ public final class TimerFactory extends LogSupport {
   // ~ Methods
   // ----------------------------------------------------------------------------------------------------------
   /**
+   * Clean up that class
+   */
+  public static final void onExit() {
+    // force GC :
+    resetTimers();
+    timerList = null;
+    timerMap = null;
+  }
+
+  /**
    * Returns elapsed time between 2 time values get from System.nanoTime() in milliseconds
    *
    * @see System#nanoTime()
@@ -276,18 +285,15 @@ public final class TimerFactory extends LogSupport {
         timer = new Timer(category, unit);
       }
 
-      try {
-        // semaphore is acquired to protect timer instances :
-        lock.acquire();
-
-        timerList.add(timer);
-        timerMap.put(category, timer);
-
-      } catch (final InterruptedException ie) {
-        log.error("TimerFactory : lock interrupted : ", ie);
-      } finally {
-        // semaphore is released :
-        lock.release();
+      synchronized (lock) {
+        final AbstractTimer old = timerMap.get(category);
+        // memory thread visibility issue :
+        if (old == null) {
+          timerMap.put(category, timer);
+          timerList.add(timer);
+        } else {
+          timer = old;
+        }
       }
     }
 
@@ -300,43 +306,29 @@ public final class TimerFactory extends LogSupport {
    * @return string representation for all timer instances
    */
   public static final String dumpTimers() {
-    final StringBuilder sb = LocalStringBuilder.getBuffer();
+    String res;
 
-    try {
-      // semaphore is acquired to protect timer instances :
-      lock.acquire();
-
-      for (final AbstractTimer timer : timerList) {
-        sb.append("\n").append(timer.toString());
+    synchronized (lock) {
+      if (timerList.isEmpty()) {
+        res = "";
+      } else {
+        final StringBuilder sb = LocalStringBuilder.getBuffer();
+        for (final AbstractTimer timer : timerList) {
+          sb.append("\n").append(timer.toString());
+        }
+        res = LocalStringBuilder.toString(sb);
       }
-
-    } catch (final InterruptedException ie) {
-      log.error("TimerFactory : lock interrupted : ", ie);
-    } finally {
-      // semaphore is released :
-      lock.release();
     }
-
-    return LocalStringBuilder.toString(sb);
+    return res;
   }
 
   /**
    * Reset all timer instances
    */
   public static final void resetTimers() {
-
-    try {
-      // semaphore is acquired to protect timer instances :
-      lock.acquire();
-
-      timerList.clear();
+    synchronized (lock) {
       timerMap.clear();
-
-    } catch (final InterruptedException ie) {
-      log.error("TimerFactory : lock interrupted : ", ie);
-    } finally {
-      // semaphore is released :
-      lock.release();
+      timerList.clear();
     }
   }
 
