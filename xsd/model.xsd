@@ -3,6 +3,7 @@
             xmlns="http://www.ivoa.net/xml/SNAP/v0.1/model"
             xmlns:base="http://www.ivoa.net/xml/dm/base/v0.1"
             targetNamespace="http://www.ivoa.net/xml/SNAP/v0.1/model">
+
    <xsd:annotation>
       <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
    </xsd:annotation>

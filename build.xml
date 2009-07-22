@@ -220,7 +220,7 @@
 	    <srcfiles dir="${res}" includes="common-xsd.xsl" />
 	    <srcfiles dir="${res}" includes="jpa.xsl" />
 	    <srcfiles dir="${res}" includes="jaxb.xsl" />
-	    <srcfiles dir="${templates}" includes="persistence.xml.template" />
+	    <srcfiles dir="${templates}" includes="persistence-template.xml" />
 
 	    <!-- check if src/ java code has changed -->
 	    <srcfiles dir="${sources}" includes="**/*" />
@@ -630,7 +630,7 @@
 
 		<mkdir dir="${sources.gen}/" />
 		<copy tofile="${properties}/persistence.xml" filtering="true" verbose="true" overwrite="true">
-			<fileset file="${templates}/persistence.xml.template" />
+			<fileset file="${templates}/persistence-template.xml" />
 			<filterset>
 	<!-- 
 	   Filters for copying runtime.properties 
