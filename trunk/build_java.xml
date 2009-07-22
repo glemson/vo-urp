@@ -165,7 +165,7 @@
   <echo >module.classpath=${jar.classpath.flat}</echo>
   
   <copy tofile="${properties}/runtime.properties" filtering="true" verbose="true" overwrite="true">
-	<fileset file="${templates}/runtime.properties.template"/>
+	<fileset file="${templates}/runtime-template.properties"/>
 	<filterset>
 	<!-- 
 	   Filters for copying runtime.properties 
@@ -738,7 +738,7 @@ Optional
 	<fail if="log.file.locked" message="Another program is still running using the log.file : ${log.file} !" />
   
   <copy tofile="${properties}/log4j.xml" filtering="true" verbose="true" overwrite="true">
-    <fileset file="${templates}/log4j.xml.template" />
+    <fileset file="${templates}/log4j-template.xml" />
     <filterset>
       <filter token="log.file" value="${log.file}" />
       <filter token="project.name" value="${project.name}" />
@@ -751,6 +751,8 @@ Optional
     <jvmarg value="-XX:+UseParallelGC"/>
     <jvmarg value="-XX:NewRatio=2"/>
     <jvmarg value="-XX:-UseAdaptiveSizePolicy"/>
+
+    <jvmarg value="-Dxml.catalog.verbosity=999"/>
 
 <!-- -->
     <jvmarg value="-verbose:gc"/>

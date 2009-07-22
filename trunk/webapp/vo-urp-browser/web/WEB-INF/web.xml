@@ -74,8 +74,8 @@
   <!-- ========================================================== -->
 
     <servlet>
+        <description>Log4j configuration Servlet</description>
         <servlet-name>Log4JServlet</servlet-name>
-        <display-name>Log4j configuration Servlet</display-name>
         <servlet-class>org.apache.log4j.servlet.ConfigurationServlet</servlet-class>
     </servlet>
 

@@ -3,6 +3,7 @@
             xmlns="http://ivoa.org/theory/datamodel/generationmetadata/v0.1"
             targetNamespace="http://ivoa.org/theory/datamodel/generationmetadata/v0.1"  
             attributeFormDefault="unqualified" elementFormDefault="unqualified">
+
 <xsd:annotation>
   <xsd:documentation>
   This schema aims to capture the UML profile we are using (implicitly so far).
