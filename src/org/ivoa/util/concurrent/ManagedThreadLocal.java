@@ -138,7 +138,9 @@ public class ManagedThreadLocal<T> extends ThreadLocal<T> {
    * Dump usage statistics
    */
   public void dumpStatistics() {
-    logB.error(this.name + ".dumpStatistics : creation = " + createCounter.get() + " - remove = " + removeCounter.get());
+    if (logB.isDebugEnabled()) {
+      logB.debug(this.name + ".dumpStatistics : creation = " + createCounter.get() + " - remove = " + removeCounter.get());
+    }
   }
 
   // ~ End of file
