@@ -6,16 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.ivoa.bean.LogSupport;
-import org.ivoa.util.NumberUtils;
 import org.ivoa.util.stat.StatLong;
 import org.ivoa.util.text.LocalStringBuilder;
 
 
 /**
  * The Timer factory contains a map[key - Timer] to associate time metrics statistics to several
- * categories of operations TODO : Use the warmup 2 values to define an estimated latency in order
- * to adjust time measure :<br/>
- * corrected elapsed time = (elapsed time - latency)
+ * categories of operations
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
@@ -132,9 +129,9 @@ public final class TimerFactory extends LogSupport {
 
     final long stop = System.nanoTime();
 
-    if (logB.isWarnEnabled()) {
-      logB.warn("TimerFactory : nanoseconds  calibration correction : " + NumberUtils.format(CALIBRATION_NANO_SECONDS, NumberUtils.LESS_PRECISION));
-      logB.warn("TimerFactory : milliseconds calibration correction : " + NumberUtils.format(CALIBRATION_MILLI_SECONDS, NumberUtils.LESS_PRECISION));
+    if (WARMUP_DIAGNOSTICS && logB.isWarnEnabled()) {
+      logB.warn("TimerFactory : nanoseconds  calibration correction : " + StatLong.adjustValue(CALIBRATION_NANO_SECONDS));
+      logB.warn("TimerFactory : milliseconds calibration correction : " + StatLong.adjustValue(CALIBRATION_MILLI_SECONDS));
       logB.warn("TimerFactory : calibration time (ms) : " + TimerFactory.elapsedMilliSeconds(start, stop));
     }
 
