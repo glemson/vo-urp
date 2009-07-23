@@ -68,6 +68,9 @@
                 <action name="test">
                     <target>run</target>
                 </action>
+                <action name="debug">
+                    <target>debug</target>
+                </action>
             </ide-actions>
             <export>
                 <type>jar</type>
@@ -127,6 +130,7 @@
                     <ide-action name="build"/>
                     <ide-action name="run"/>
                     <ide-action name="test"/>
+                    <ide-action name="debug"/>
                 </context-menu>
             </view>
             <subprojects/>

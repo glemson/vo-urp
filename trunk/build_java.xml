@@ -824,4 +824,52 @@ Optional
 </target>
 
 
+
+
+<!-- target profile : profiles test application with the NetBeans IDE -->
+<target name="debug" description="profile unit tests ...">
+  <fail unless="netbeans.home">This target can only run inside the NetBeans IDE.</fail>
+
+  <echo message="profiling ${project.title} ..."/>
+
+  <pathconvert property="log.file.path" dirsep="/">
+    <path location="${build}"/>
+  </pathconvert>
+
+  <property name="log.file" value="${log.file.path}/${project.name}.log"/>
+
+  <!-- removes log file if possible -->
+  <delete file="${log.file}" verbose="true" failonerror="false" />
+
+  <!-- indicates if the file is still present = something is running -->
+  <available property="log.file.locked" file="${log.file}" />
+
+	<fail if="log.file.locked" message="Another program is still running using the log.file : ${log.file} !" />
+
+
+  <nbjpdastart addressproperty="jpda.address" name="Virtual Observatory UML Representation Pipeline" transport="dt_socket">
+    <classpath>
+       <path refid="runtime.class.path" />
+    </classpath>
+  </nbjpdastart>
+
+
+  <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true"  inputstring="">
+
+    <jvmarg value="-Xdebug"/>
+    <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
+
+    <jvmarg value="-Xms384m"/>
+    <jvmarg value="-Xmx384m"/>
+    <jvmarg value="-XX:+UseParallelGC"/>
+    <jvmarg value="-XX:NewRatio=2"/>
+    <jvmarg value="-XX:-UseAdaptiveSizePolicy"/>
+
+    <arg value="${jpa.persistence.unit}"/>
+   </java>
+
+  <echo message="run ${project.title} : terminated."/>
+</target>
+
+
 <!-- end of build_java.xml -->  
