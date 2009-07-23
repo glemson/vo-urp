@@ -18,6 +18,15 @@ import org.ivoa.util.timer.TimerFactory;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+import com.sun.org.apache.xml.internal.resolver.CatalogManager;
+import com.sun.org.apache.xml.internal.resolver.tools.CatalogResolver;
+import com.sun.tools.xjc.reader.xmlschema.parser.LSInputSAXWrapper;
+import java.io.File;
+import org.ivoa.util.FileUtils;
+import org.w3c.dom.ls.LSInput;
+import org.w3c.dom.ls.LSResourceResolver;
+import org.xml.sax.InputSource;
+
 
 /**
  * XML Document Validator against an xml schema
@@ -29,7 +38,16 @@ public final class XMLValidator extends SingletonSupport {
 
   /** all factories */
   private static ConcurrentHashMap<String, XMLValidator> managedInstances = new ConcurrentHashMap<String, XMLValidator>(4);
+  /** XML Resource resolver {@link CatalogResolver} */
+  private static CatalogResolver entityResolver = null;
 
+  static {
+    try {
+      XMLValidator.addCatalog(FileUtils.getFile("D:/WORK/dev/vo-urp-svn/catalog.xml"));
+    } catch (IOException ioe) {
+      logB.error("XMLValidator.addCatalog : failure : ", ioe);
+    }
+  }
   //~ Members ----------------------------------------------------------------------------------------------------------
   /** XML Schema instance */
   private Schema schema;
@@ -103,8 +121,69 @@ public final class XMLValidator extends SingletonSupport {
    * @throws IllegalStateException if the schema can be retrieved or parsed
    */
   public static Schema getSchema(final String schemaURL) {
+
+    // TODO : cache the factory :
+
     // 1. Lookup a factory for the W3C XML Schema language
     final SchemaFactory factory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+
+    if (entityResolver != null) {
+      factory.setResourceResolver(new LSResourceResolver() {
+
+        /**
+         *  Allow the application to resolve external resources.
+         * <br> The <code>LSParser</code> will call this method before opening any
+         * external resource, including the external DTD subset, external
+         * entities referenced within the DTD, and external entities referenced
+         * within the document element (however, the top-level document entity
+         * is not passed to this method). The application may then request that
+         * the <code>LSParser</code> resolve the external resource itself, that
+         * it use an alternative URI, or that it use an entirely different input
+         * source.
+         * <br> Application writers can use this method to redirect external
+         * system identifiers to secure and/or local URI, to look up public
+         * identifiers in a catalogue, or to read an entity from a database or
+         * other input source (including, for example, a dialog box).
+         * @param type  The type of the resource being resolved. For XML [<a href='http://www.w3.org/TR/2004/REC-xml-20040204'>XML 1.0</a>] resources
+         *   (i.e. entities), applications must use the value
+         *   <code>"http://www.w3.org/TR/REC-xml"</code>. For XML Schema [<a href='http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/'>XML Schema Part 1</a>]
+         *   , applications must use the value
+         *   <code>"http://www.w3.org/2001/XMLSchema"</code>. Other types of
+         *   resources are outside the scope of this specification and therefore
+         *   should recommend an absolute URI in order to use this method.
+         * @param namespaceURI  The namespace of the resource being resolved,
+         *   e.g. the target namespace of the XML Schema [<a href='http://www.w3.org/TR/2001/REC-xmlschema-1-20010502/'>XML Schema Part 1</a>]
+         *    when resolving XML Schema resources.
+         * @param publicId  The public identifier of the external entity being
+         *   referenced, or <code>null</code> if no public identifier was
+         *   supplied or if the resource is not an entity.
+         * @param systemId  The system identifier, a URI reference [<a href='http://www.ietf.org/rfc/rfc2396.txt'>IETF RFC 2396</a>], of the
+         *   external resource being referenced, or <code>null</code> if no
+         *   system identifier was supplied.
+         * @param baseURI  The absolute base URI of the resource being parsed, or
+         *   <code>null</code> if there is no base URI.
+         * @return  A <code>LSInput</code> object describing the new input
+         *   source, or <code>null</code> to request that the parser open a
+         *   regular URI connection to the resource.
+         */
+        public LSInput resolveResource(final String type, final String namespaceURI, final String publicId, final String systemId, final String baseURI) {
+          if (logB.isWarnEnabled()) {
+            logB.warn("LSResourceResolver.resolveResource : type         = " + type);
+            logB.warn("LSResourceResolver.resolveResource : namespaceURI = " + namespaceURI);
+            logB.warn("LSResourceResolver.resolveResource : publicId     = " + publicId);
+            logB.warn("LSResourceResolver.resolveResource : systemId     = " + systemId);
+            logB.warn("LSResourceResolver.resolveResource : baseURI      = " + baseURI);
+          }
+
+          final InputSource is = entityResolver.resolveEntity(namespaceURI, systemId);
+          if (is == null) {
+            return null;
+          }
+          return new LSInputSAXWrapper(is);
+        }
+      });
+    }
+
 
     Schema s = null;
     try {
@@ -131,6 +210,40 @@ public final class XMLValidator extends SingletonSupport {
       throw new IllegalStateException("getSchema : unable to create a Schema for : " + schemaURL, mue);
     }
     return s;
+  }
+
+  /**
+   * Adds a new catalog file.
+   * @param catalogFile xml catalog to add
+   * @throws IOException 
+   */
+  public static void addCatalog(final File catalogFile) throws IOException {
+    if (catalogFile != null) {
+      if (entityResolver == null) {
+        final CatalogManager staticCatalogManager = CatalogManager.getStaticManager();
+        if (logB.isWarnEnabled()) {
+          logB.warn("XMLValidator.addCatalog : staticCatalogManager : " + staticCatalogManager);
+        }
+
+        // configuration :
+        staticCatalogManager.setPreferPublic(false);
+        staticCatalogManager.setUseStaticCatalog(true);
+        staticCatalogManager.setRelativeCatalogs(true);
+
+        staticCatalogManager.debug.setDebug(999);
+
+
+        staticCatalogManager.setIgnoreMissingProperties(true);
+
+        entityResolver = new CatalogResolver(true);
+      }
+/*
+      if (logB.isWarnEnabled()) {
+        logB.warn("XMLValidator.addCatalog : parsing catalog : " + catalogFile);
+      }
+      entityResolver.getCatalog().parseCatalog(catalogFile.getPath());
+ */
+    }
   }
 
   /**
@@ -180,6 +293,7 @@ public final class XMLValidator extends SingletonSupport {
   }
 
   //~ Inner Classes ----------------------------------------------------------------------------------------------------
+
   /**
    * SAX ErrorHandler implementation to add validation exception to the given ValidationResult instance
    * @see org.xml.sax.ErrorHandler
@@ -207,7 +321,7 @@ public final class XMLValidator extends SingletonSupport {
      */
     public void warning(final SAXParseException se) {
       result.getMessages().add(
-              new ErrorMessage(ErrorMessage.SEVERITY.WARNING, se.getLineNumber(), se.getColumnNumber(), se.getMessage()));
+          new ErrorMessage(ErrorMessage.SEVERITY.WARNING, se.getLineNumber(), se.getColumnNumber(), se.getMessage()));
     }
 
     /**
@@ -217,7 +331,7 @@ public final class XMLValidator extends SingletonSupport {
      */
     public void error(final SAXParseException se) {
       result.getMessages().add(
-              new ErrorMessage(ErrorMessage.SEVERITY.ERROR, se.getLineNumber(), se.getColumnNumber(), se.getMessage()));
+          new ErrorMessage(ErrorMessage.SEVERITY.ERROR, se.getLineNumber(), se.getColumnNumber(), se.getMessage()));
     }
 
     /**
@@ -227,8 +341,9 @@ public final class XMLValidator extends SingletonSupport {
      */
     public void fatalError(final SAXParseException se) {
       result.getMessages().add(
-              new ErrorMessage(ErrorMessage.SEVERITY.FATAL, se.getLineNumber(), se.getColumnNumber(), se.getMessage()));
+          new ErrorMessage(ErrorMessage.SEVERITY.FATAL, se.getLineNumber(), se.getColumnNumber(), se.getMessage()));
     }
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
+
