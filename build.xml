@@ -633,7 +633,7 @@
 			<fileset file="${templates}/persistence-template.xml" />
 			<filterset>
 	<!-- 
-	   Filters for copying runtime.properties 
+	   Filters for copying persistence.xml
 	   Check that file for the full list of required properties
 	-->
 				<filter token="jpa.persistence.unit" value="${jpa.persistence.unit}" />
