@@ -30,7 +30,6 @@
   
   <!--  output locations  -->
   <property name="web" location="${input}/web"/>
-  <mkdir dir="${web}"/>
   <property name="dist" location="${web}/dist"/>
   <property name="javadoc" location="${dist}/doc" />
   <!-- build outputs -->
@@ -128,6 +127,8 @@
     <!-- check vo-urp build.xml file -->
     <available property="vo-urp.check" file="${vo-urp.project}/build.xml" />
     <fail unless="vo-urp.check" message="vo-urp project does not exist in ${vo-urp.project} !" />
+
+    <mkdir dir="${web}"/>
 
   </target>
 
@@ -257,13 +258,7 @@
     <echo message="cleaning directory : ${build} ..." />
     
     <delete includeemptydirs="true" verbose="true" failonerror="no">
-      <fileset dir="${build.src}" includes="**/*"/>
-      <fileset dir="${build.lib}" includes="**/*"/>
-      <fileset dir="${build.meta}" includes="*"/>
-    </delete>
-
-    <delete includeemptydirs="false" verbose="true" failonerror="no">
-      <fileset dir="${build}" includes="*"/>
+      <fileset dir="${build}" includes="**/*"/>
     </delete>
 
     <echo message="cleaned directory : ${build} ." />
@@ -324,9 +319,9 @@
     <ant target="compile" />
     <ant target="makeDoc" />
     <ant target="package" />
-  	<!--
+
     <ant target="cleanup" />
-    -->
+
     <echo message="makeAllIfNeeded ${title} : done."/>
   </target>
 
