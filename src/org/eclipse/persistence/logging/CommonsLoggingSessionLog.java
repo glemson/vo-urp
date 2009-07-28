@@ -530,13 +530,11 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
   private final String getNameSpaceString(final String category) {
     if (getSession() == null) {
       return DEFAULT_ECLIPSELINK_NAMESPACE;
-    } else {
-      if ((category == null) || (category.length() == 0)) {
-        return this.sessionNameSpace;
-      } else {
-        return this.NAMESPACE_MAP.get(category);
-      }
     }
+    if ((category == null) || (category.length() == 0)) {
+      return this.sessionNameSpace;
+    }
+    return this.NAMESPACE_MAP.get(category);
   }
 
   /**
@@ -549,7 +547,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
    * @param category category
    * @return LogWrapper instance or null if not found
    */
-  private final LogWrapper getLogWrapper(final String category) {
+  protected final LogWrapper getLogWrapper(final String category) {
     LogWrapper lw = null;
 
     if (getSession() == null) {
@@ -920,7 +918,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
   /**
    * INTERNAL: LogWrapper class wraps the real apache commons logging Log instance
    */
-  private static final class LogWrapper {
+  protected static final class LogWrapper {
     // ~ Members
     // --------------------------------------------------------------------------------------------------------
 

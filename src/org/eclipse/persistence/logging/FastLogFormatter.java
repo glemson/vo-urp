@@ -18,9 +18,8 @@ import java.text.MessageFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
-import java.util.logging.SimpleFormatter;
-
 import org.eclipse.persistence.internal.security.PrivilegedAccessHelper;
+
 
 /**
  * <p>
@@ -30,74 +29,71 @@ import org.eclipse.persistence.internal.security.PrivilegedAccessHelper;
  * 
  * @author laurent bourges (voparis) : bourges.laurent@gmail.com
  */
-public final class FastLogFormatter extends SimpleFormatter {
+public final class FastLogFormatter {
   // ~ Constants
   // --------------------------------------------------------------------------------------------------------
 
+  /**
+   * internal debugger FLAG to display buffer statistics
+   */
+  public static final boolean FORCE_INTERNAL_DEBUG = false;
   /** undefined capacity */
   private static final int UNDEFINED_CAPACITY = -1;
-
   /** initial buffer capacity = 256 chars */
   private static final int INITIAL_BUFFER_CAPACITY = 256;
-
   /** date format */
   private static final String format = "{0,date} {0,time}";
-
   /** '(' character */
   public static final char PAR_OPEN_CHAR = '(';
-
   /** ')' character */
   public static final char PAR_CLOSE_CHAR = ')';
-
   /** ' ' character */
   public static final char SPACE_CHAR = ' ';
-
   /**
-   * Line separator string. This is the value of the line.separator property at the moment that the
-   * SimpleFormatter was created.
+   * Line separator string. This is the value of the line.separator property at
+   * the moment that the SimpleFormatter was created.
    */
   private static final String LINE_SEPARATOR = PrivilegedAccessHelper.getLineSeparator();
-
   // ~ Members
   // ----------------------------------------------------------------------------------------------------------
-
   /** computed buffer capacity */
   private int adaptedBufferCapacity = UNDEFINED_CAPACITY;
-
   /** date formatter */
   private MessageFormat dateFormatter;
-
   /** cached date instance */
   private final Date dateInstance = new Date();
-
   /** buffer to store formatted date */
   private final StringBuffer dateBuffer = new StringBuffer(64);
-
   /** date formatter arguments */
   private Object[] dateFormatterArgs = new Object[1];
+  /** internal debugger flag for that instance */
+  private boolean internalDebug = FORCE_INTERNAL_DEBUG;
 
   // ~ Methods
   // ----------------------------------------------------------------------------------------------------------
-
   /**
-   * Format the given LogRecord.
+   * Format the given LogRecord.<br/>
+   * Thread safe so this method is not synchroniz'd
    * 
-   * @param pRecord the log record to be formatted.
+   * @param pRecord
+   *          the log record to be formatted.
    * @return a formatted log record
    */
-  @Override
-  public String format(final LogRecord pRecord) {
+  public final String format(final LogRecord pRecord) {
     if (!(pRecord instanceof EclipseLinkLogRecord)) {
-      return super.format(pRecord);
+      return "unsupported LogRecord instance !";
     }
     final EclipseLinkLogRecord record = (EclipseLinkLogRecord) pRecord;
 
-    final String message = formatMessage(record);
+    // message was previously formatted (internationalization) :
+    final String message = record.getMessage();
 
-    final int capacity = (adaptedBufferCapacity == UNDEFINED_CAPACITY) ? INITIAL_BUFFER_CAPACITY : (adaptedBufferCapacity + message.length());
+    final int capacity = (adaptedBufferCapacity == UNDEFINED_CAPACITY) ? INITIAL_BUFFER_CAPACITY
+        : (adaptedBufferCapacity + message.length());
 
     /*
-     * Unsynchronized & sized character buffer to avoid too much array resize operations :
+     * Unsynchronized & sized character buffer to avoid too much array resize
+     * operations :
      */
     final StringBuilder sb = new StringBuilder(capacity);
 
@@ -175,11 +171,13 @@ public final class FastLogFormatter extends SimpleFormatter {
       try {
         if (record.getLevel().intValue() == Level.SEVERE.intValue()) {
           record.getThrown().printStackTrace(pw);
-        } else if (record.getLevel().intValue() <= Level.WARNING.intValue()) {
-          if (record.shouldLogExceptionStackTrace()) {
-            record.getThrown().printStackTrace(pw);
-          } else {
-            pw.write(record.getThrown().toString());
+        } else {
+          if (record.getLevel().intValue() <= Level.WARNING.intValue()) {
+            if (record.shouldLogExceptionStackTrace()) {
+              record.getThrown().printStackTrace(pw);
+            } else {
+              pw.write(record.getThrown().toString());
+            }
           }
         }
       } catch (final Exception e) {
@@ -190,7 +188,7 @@ public final class FastLogFormatter extends SimpleFormatter {
       }
     }
 
-    if (CommonsLoggingSessionLog.FORCE_INTERNAL_DEBUG) {
+    if (internalDebug) {
       final int len = sb.length();
       final int cap = sb.capacity();
 
@@ -212,3 +210,4 @@ public final class FastLogFormatter extends SimpleFormatter {
 }
 // ~ End of file
 // --------------------------------------------------------------------------------------------------------
+

@@ -271,7 +271,7 @@ public abstract class MetadataElement extends LogSupport implements Serializable
         if (isDeep && ! exists(e, ids)) {
           e.deepToString(sb, isDeep, ids);
         }
-      } else if (o instanceof Collection) {
+      } else if (o instanceof Collection<?>) {
         final Collection<?> c = (Collection<?>) o;
 
         if (c.size() > 0) {

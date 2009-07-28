@@ -1,14 +1,16 @@
 package org.ivoa.xml;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
 import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -23,8 +25,11 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.ivoa.bean.LogSupport;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import org.ivoa.bean.SingletonSupport;
 import org.ivoa.util.text.StringBuilderWriter;
+import org.ivoa.util.timer.TimerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -40,26 +45,56 @@ import org.xml.sax.SAXException;
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public final class XmlFactory extends LogSupport {
+public final class XmlFactory extends SingletonSupport {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** encoding used for XML and XSL documents */
   public static final String ENCODING = "UTF-8";
   /** default buffer size (4 ko) for XSLT result document */
   public static final int DEFAULT_BUFFER_SIZE = 2048;
-
-  /** inner factory */
-  private static DocumentBuilderFactory factory = null;
-  /** inner xslt factory */
-  private static TransformerFactory tFactory = null;
+  /** inner DOM factory */
+  private static DocumentBuilderFactory documentFactory = null;
+  /** inner XSLT factory */
+  private static TransformerFactory transformerFactory = null;
+  /** inner Schema factory */
+  private static SchemaFactory schemaFactory = null;
   /** cache for Dom instances */
-  private static Map<String, Document> m_oCacheDOM = new HashMap<String, Document>(32);
+  private static Map<String, Document> cacheDOM = new HashMap<String, Document>(32);
   /** cache for Xsl templates */
-  private static Map<String, Templates> m_oCacheXSL = new HashMap<String, Templates>(32);
+  private static Map<String, Templates> cacheXSL = new HashMap<String, Templates>(32);
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
+  /**
+   * Prepare the XmlFactory singleton instance
+   *
+   * @throws IllegalStateException if a problem occured
+   */
+  public static final void prepareInstance() {
+    prepareInstance(new XmlFactory());
+  }
 
-/**
+  /**
+   * Concrete implementations of the SingletonSupport's clearStaticReferences() method :<br/>
+   * Callback to clean up the possible static references used by this SingletonSupport instance iso
+   * clear static references
+   *
+   * @see SingletonSupport#clearStaticReferences()
+   */
+  @Override
+  protected void clearStaticReferences() {
+    // free static fields :
+    documentFactory = null;
+    transformerFactory = null;
+    schemaFactory = null;
+
+    cacheDOM.clear();
+    cacheDOM = null;
+
+    cacheXSL.clear();
+    cacheXSL = null;
+  }
+
+  /**
    * Creates a new XmlFactory object
    */
   private XmlFactory() {
@@ -67,35 +102,89 @@ public final class XmlFactory extends LogSupport {
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
-
   /**
-   * Returns a DocumentBuilderFactory (JAXB)
+   * Returns a DocumentBuilderFactory (JAXP)
    *
-   * @return DocumentBuilderFactory (JAXB)
+   * @return DocumentBuilderFactory (JAXP)
    */
   public static final DocumentBuilderFactory getFactory() {
-    if (factory == null) {
-      factory = DocumentBuilderFactory.newInstance();
+    if (documentFactory == null) {
+      documentFactory = DocumentBuilderFactory.newInstance();
     }
 
-    return factory;
+    return documentFactory;
   }
 
   /**
-   * Returns a TransformerFactory (JAXB)
+   * Returns a TransformerFactory (JAXP)
    *
-   * @return TransformerFactory (JAXB)
+   * @return TransformerFactory (JAXP)
    */
   protected static final TransformerFactory getTransformerFactory() {
-    if (tFactory == null) {
+    if (transformerFactory == null) {
       try {
-        tFactory = TransformerFactory.newInstance();
+        transformerFactory = TransformerFactory.newInstance();
       } catch (final TransformerFactoryConfigurationError tfce) {
         logB.error("XmlFactory.getTransformerFactory : failure on TransformerFactory initialisation : ", tfce);
       }
     }
 
-    return tFactory;
+    return transformerFactory;
+  }
+
+  /**
+   * Returns a SchemaFactory (JAXP)
+   *
+   * @return SchemaFactory (JAXP)
+   */
+  protected static final SchemaFactory getSchemaFactory() {
+    if (schemaFactory == null) {
+
+      // 1. Lookup a factory for the W3C XML Schema language
+      schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+
+      // 2. Set the custom XML catalog resolver :
+      schemaFactory.setResourceResolver(CustomXmlCatalogResolver.getInstance());
+    }
+
+    return schemaFactory;
+  }
+
+  /**
+   * Retrieve a schema instance from the given URL
+   *
+   * @param schemaURL schema URI
+   *
+   * @return schema instance
+   *
+   * @throws IllegalStateException if the schema can be retrieved or parsed
+   */
+  public static Schema getSchema(final String schemaURL) {
+    Schema s = null;
+    try {
+      final URL url = new URL(schemaURL);
+
+      if (logB.isInfoEnabled()) {
+        logB.info("XmlFactory.getSchema : retrieve schema and compile it : " + schemaURL);
+      }
+
+      // 2. Compile the schema.
+      final long start = System.nanoTime();
+
+      s = getSchemaFactory().newSchema(url);
+
+      TimerFactory.getTimer("XmlFactory.getSchema[" + schemaURL + "]").addMilliSeconds(start, System.nanoTime());
+
+      if (logB.isInfoEnabled()) {
+        logB.info("XmlFactory.getSchema : schema ready : " + s);
+      }
+
+    } catch (final SAXException se) {
+      throw new IllegalStateException("XmlFactory.getSchema : unable to create a Schema for : " + schemaURL, se);
+    } catch (final MalformedURLException mue) {
+      throw new IllegalStateException("XmlFactory.getSchema : unable to create a Schema for : " + schemaURL, mue);
+    }
+    return s;
   }
 
   /**
@@ -179,7 +268,7 @@ public final class XmlFactory extends LogSupport {
   }
 
   /**
-   * Parses a local xml file with JAXB
+   * Parses a local xml file with JAXP
    *
    * @param f local file
    *
@@ -196,7 +285,7 @@ public final class XmlFactory extends LogSupport {
   }
 
   /**
-   * Parses an xml stream with JAXB
+   * Parses an xml stream with JAXP
    *
    * @param is input stream
    *
@@ -209,7 +298,7 @@ public final class XmlFactory extends LogSupport {
   }
 
   /**
-   * Parses an xml stream with JAXB
+   * Parses an xml stream with JAXP
    *
    * @param is input stream
    * @param systemId absolute file or URL reference used to resolve other xml document references
@@ -225,7 +314,7 @@ public final class XmlFactory extends LogSupport {
   }
 
   /**
-   * Parses an xml stream with JAXB
+   * Parses an xml stream with JAXP
    *
    * @param input xml input source
    *
@@ -363,12 +452,12 @@ public final class XmlFactory extends LogSupport {
       return null;
     }
 
-    Document doc = m_oCacheDOM.get(absoluteFilePath);
+    Document doc = cacheDOM.get(absoluteFilePath);
 
     if (doc == null) {
       final File file = new File(absoluteFilePath);
 
-      if (! file.exists()) {
+      if (!file.exists()) {
         logB.error("XmlFactory.loadTemplate : unable to load template : no file found for : " + absoluteFilePath);
 
         return null;
@@ -381,11 +470,11 @@ public final class XmlFactory extends LogSupport {
       doc = parse(file);
 
       if (doc != null) {
-        m_oCacheDOM.put(absoluteFilePath, doc);
+        cacheDOM.put(absoluteFilePath, doc);
 
         if (logB.isDebugEnabled()) {
           logB.debug(
-            "XmlFactory.loadTemplate : template : " + Integer.toHexString(doc.hashCode()) + " : \n" + asString(doc));
+              "XmlFactory.loadTemplate : template : " + Integer.toHexString(doc.hashCode()) + " : \n" + asString(doc));
         }
       }
     }
@@ -419,13 +508,13 @@ public final class XmlFactory extends LogSupport {
       return null;
     }
 
-    Transformer tf  = null;
-    Templates   tmp = m_oCacheXSL.get(absoluteFilePath);
+    Transformer tf = null;
+    Templates tmp = cacheXSL.get(absoluteFilePath);
 
     if (tmp == null) {
       final File file = new File(absoluteFilePath);
 
-      if (! file.exists()) {
+      if (!file.exists()) {
         logB.error("XmlFactory.loadXsl : unable to load xslt : no file found for : " + absoluteFilePath);
 
         return null;
@@ -437,7 +526,7 @@ public final class XmlFactory extends LogSupport {
 
       try {
         tmp = newTemplate(new StreamSource(file));
-        m_oCacheXSL.put(absoluteFilePath, tmp);
+        cacheXSL.put(absoluteFilePath, tmp);
 
         if (logB.isDebugEnabled()) {
           logB.debug("XmlFactory.loadXsl : template : " + Integer.toHexString(tmp.hashCode()));
@@ -556,3 +645,4 @@ public final class XmlFactory extends LogSupport {
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
+
