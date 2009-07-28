@@ -1,0 +1,124 @@
+<html><head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="XMLCatalogTutorial_fichiers/default_style.css" type="text/css">
+<link rel="stylesheet" href="XMLCatalogTutorial_fichiers/wtp.css" type="text/css">
+<title>XML Catalog Tutorial</title>
+</head><body>
+<table border="0" cellpadding="2" cellspacing="5" width="100%">
+    <tbody>
+        <tr>
+            <td align="left" width="60%"><font class="indextop">XML Catalog Tutorial</font> <br>
+            <font class="indexsub">XML Catalog Tutorial</font></td>
+            <td width="40%"><img src="XMLCatalogTutorial_fichiers/wtplogosmall.jpg" alt="" align="middle" height="129" hspace="50" width="207"></td>
+        </tr>
+    </tbody>
+</table>
+<table border="0" cellpadding="2" cellspacing="5" width="100%">
+    <col width="16">
+    <col width="*">
+    <tbody>
+        <tr>
+            <td align="right" valign="top">&nbsp;</td>
+            <td valign="top">
+            <p><b>By Richard Mah</b> <br>
+            Created on December 17, 2004<br>
+            Last updated on March 24, 2008<br>
+            <br>
+            In this tutorial, we will demonstrate the use of the XML Catalog. Add the Example “Editing and
+            validating XML files”. Select File -&gt; New -&gt; Other -&gt; Examples -&gt; Editing and Validating
+            XML files. To demonstrate the XML Catalog, let’s use Invoice.dtd and Invoice.xml located in the
+            XMLExamples project.</p>
+            <ol>
+                <li>Create a new folder “Invoice2” in the project “XMLExamples”.</li>
+                <li>Move Invoice.dtd located in XMLExamples\Invoice\ to the new location XMLExamples\Invoice2.</li>
+                <li>Validate Invoice.xml. See the validating XML tutorial. Notice the validation has generated a
+                warning. This is because Invoice.dtd cannot be found. To fix this problem, we shall add an entry into
+                the XML Catalog (demonstrated below).</li>
+            </ol>
+            <p></p>
+            </td>
+        </tr>
+        <tr>
+            <td align="right" valign="top">&nbsp;</td>
+            <td valign="top">
+            <p></p>
+            <div align="right">
+            <table border="0" cellpadding="2" cellspacing="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td colspan="2" align="left" bgcolor="#0080c0" valign="top"><b><font face="Arial,Helvetica"><font color="#ffffff">Adding
+                        and Removing from the XML Catalog</font></font></b></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <br>
+            The XML Catalog can be accessed through the preferences.
+            <ol>
+                <li>Select “Window -&gt; Preferences” to launch the Preferences dialog.</li>
+                <li>Expand the “XML” heading and select “XML Catalog”.</li>
+            </ol>
+            The dialog should appear as in Figure 1.
+            <p><b>Figure 1</b> <br>
+            <img src="XMLCatalogTutorial_fichiers/XMLCatalog-Figure1.jpg" alt="" border="0"></p>
+            <h4>Adding an XML Catalog Entry</h4>
+            <ol>
+                <li>From the Preferences XML Catalog dialog, select “Add…”.</li>
+                <li>In the “New XML Catalog Entry” dialog, fill in the values as they appear Figure 2.
+                <p><b>Figure 2</b> <br>
+                <img src="XMLCatalogTutorial_fichiers/XMLCatalog-Figure2.jpg" alt="" border="0"></p>
+                </li>
+                <li>Click “OK” to finish. Notice there is a new entry, InvoiceId, under “User
+                Specified Entries”.</li>
+                <li>Validate Invoice.xml again. Notice it is now valid.</li>
+            </ol>
+            <h4>Removing and Editing an XML Catalog Entry</h4>
+            To remove or edit an entry, simply select the entry and click on “Delete” or
+            “Edit…”. <br>
+            <br>
+            <div align="right">
+            <table border="0" cellpadding="2" cellspacing="0" width="100%">
+                <tbody>
+                    <tr>
+                        <td colspan="2" align="left" bgcolor="#0080c0" valign="top"><b><font face="Arial,Helvetica"><font color="#ffffff">Importing
+                        and Exporting a Catalog</font></font></b></td>
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+            <br>
+            XML Catalog entries can be saved to a file for later use. This avoids users having to add entries to an XML
+            Catalog when they have already done so in a previous workspace.<br>
+            <h4>Exporting XML Catalog settings:</h4>
+            <ol>
+                <li>Select “File -&gt; Export...” to launch the Export dialog.</li>
+				<li>Expand the “XML” heading and select “XML Catalog” like in Figure 3.</li>
+	            <p><b>Figure 3</b> <br>
+	            <img src="XMLCatalogTutorial_fichiers/XMLCatalog-Figure3.jpg" alt="" border="0"></p>
+                <li>The “Export Existing XML Catalog” dialog will appear. See Figure 4. Select the
+                Project “Catalog” (create if ncecessary) as the location to store the XML Catalog settings
+                file. Enter “.xmlcatalog” as the file name. Click “OK” to finish. The entries
+                specified in the XML Catalog will now be saved in the file.</li>
+            </ol>
+            <p><b>Figure 4</b> <br>
+            <img src="XMLCatalogTutorial_fichiers/XMLCatalog-Figure4.jpg" alt="" border="0"></p>
+            <h4>Importing XML Catalog settings:</h4>
+            <ol>
+                <li>Select “File -&gt; Import...” to launch the Import dialog.</li>
+				<li>Expand the “XML” heading and select “XML Catalog” like in Figure 5.</li>
+	            <p><b>Figure 5</b> <br>
+	            <img src="XMLCatalogTutorial_fichiers/XMLCatalog-Figure5.jpg" alt="" border="0"></p>
+                <li>The “Import XML Catalog” dialog will appear. See Figure 6. Select the file
+                containing the XML Catalog settings (.xmlcatalog) and click “OK” to finish. The entries
+                specified in the file will now be in the XML Catalog.</li>
+            </ol>
+            <p><b>Figure 6</b> <br>
+            <img src="XMLCatalogTutorial_fichiers/XMLCatalog-Figure6.jpg" alt="" border="0"></p>
+            <p></p>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</body></html>
