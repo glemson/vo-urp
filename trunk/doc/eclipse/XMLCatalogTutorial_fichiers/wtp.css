@@ -1,0 +1,19 @@
+body {
+	color: rgb(0, 0, 0); 
+	background-color: rgb(255, 255, 255);
+	alink="#ff0000";
+	link="#0000ee";
+	vlink="#551a8b";
+}
+
+a:link {  
+	color: #0000ee;
+}
+
+a:visited {
+	color: #551a8b;
+}
+
+a:active {
+	color: #ff0000;
+}
