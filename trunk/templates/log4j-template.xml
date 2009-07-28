@@ -8,15 +8,6 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
   
   <!-- Appenders : begin -->
-  
-  <!-- async -->
-  <appender name="async" class="org.apache.log4j.AsyncAppender">
-    <param name="BufferSize" value="512"/>
-    <param name="LocationInfo" value="false"/>
-    <appender-ref ref="display" />
-    <appender-ref ref="fileRoot" />
-  </appender>
-
   <!-- display -->
   <appender name="display" class="org.apache.log4j.ConsoleAppender">
     <param name="Threshold" value="debug"/>
@@ -58,7 +49,8 @@
   <!-- Root logger -->
   <root>
     <level value="warn"/>
-    <appender-ref ref="async" />
+    <appender-ref ref="display" />
+    <appender-ref ref="fileRoot" />
   </root>
 
 </log4j:configuration>

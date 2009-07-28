@@ -147,6 +147,9 @@ public final class LogUtil {
 
       // Classloader unload problem with commons-logging :
       LogFactory.release(Thread.currentThread().getContextClassLoader());
+
+      // Release Log4J resources :
+      org.apache.log4j.LogManager.shutdown();
     }
   }
 

@@ -175,7 +175,7 @@
     </copy>
     
     <copy tofile="${properties}/log4j.xml" filtering="true" verbose="true" overwrite="true">
-      <fileset file="${vo-urp.project.path}/templates/log4j-template.xml" />
+      <fileset file="${vo-urp.project.path}/templates/log4j-webapp-template.xml" />
       <filterset>
         <filter token="log.file" value="${log.file}" />
         <filter token="project.name" value="${project.name}" />

@@ -8,18 +8,9 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
   
   <!-- Appenders : begin -->
-
-  <!-- async -->
-<!--
-  <appender name="async" class="org.apache.log4j.AsyncAppender">
-    <param name="BufferSize" value="1024"/>
-    <param name="LocationInfo" value="false"/>
-    <appender-ref ref="fileVO-URP-Browser" />
-  </appender>
--->
   <!-- vo-urp-browser.log -->
   <appender name="fileVO-URP-Browser" class="org.apache.log4j.RollingFileAppender">
-    <param name="File" value="C:/dev/apache-tomcat-6.0.20/logs/SimDB.log"/>
+    <param name="File" value="@log.file@"/>
     <param name="MaxFileSize" value="10000KB"/>
     <param name="MaxBackupIndex" value="5"/>
     <layout class="org.apache.log4j.PatternLayout">
@@ -45,9 +36,7 @@
 
   <logger name="org.eclipse.persistence">
     <level value="warn"/>
-<!--    <appender-ref ref="async" /> -->
     <appender-ref ref="fileVO-URP-Browser" />
-
   </logger>
   <!-- Loggers : end -->
   
