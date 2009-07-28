@@ -8,6 +8,15 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
   
   <!-- Appenders : begin -->
+  
+  <!-- async -->
+  <appender name="async" class="org.apache.log4j.AsyncAppender">
+    <param name="BufferSize" value="512"/>
+    <param name="LocationInfo" value="false"/>
+    <appender-ref ref="display" />
+    <appender-ref ref="fileRoot" />
+  </appender>
+
   <!-- display -->
   <appender name="display" class="org.apache.log4j.ConsoleAppender">
     <param name="Threshold" value="debug"/>
@@ -16,7 +25,7 @@
     </layout>
   </appender>
   
-  <!-- root.log -->
+  <!-- @log.file@ -->
   <appender name="fileRoot" class="org.apache.log4j.RollingFileAppender">
     <param name="File" value="@log.file@"/>
     <param name="MaxFileSize" value="10000KB"/>
@@ -31,7 +40,6 @@
   <!-- Loggers : begin -->
   <logger name="org.ivoa">
     <level value="warn"/>
-    <appender-ref ref="fileRoot"/>
   </logger>
 
   <logger name="org.ivoa.base">
@@ -44,15 +52,13 @@
 
   <logger name="org.eclipse.persistence">
     <level value="warn"/>
-    <appender-ref ref="fileRoot"/>
   </logger>
-
   <!-- Loggers : end -->
 
   <!-- Root logger -->
   <root>
     <level value="warn"/>
-    <appender-ref ref="display"/>
+    <appender-ref ref="async" />
   </root>
 
 </log4j:configuration>
