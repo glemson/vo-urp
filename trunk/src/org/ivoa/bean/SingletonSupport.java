@@ -11,6 +11,7 @@ import org.ivoa.util.JavaUtils;
 import org.ivoa.util.SystemLogUtil;
 import org.ivoa.util.concurrent.ThreadLocalUtils;
 import org.ivoa.util.text.LocalStringBuilder;
+import org.ivoa.xml.XmlFactory;
 
 /**
  * Singleton design pattern implementation for Java 5+.<br/>
@@ -58,8 +59,8 @@ public abstract class SingletonSupport extends LogSupport {
     // prepare LocalStringBuilder as the second singleton :
     LocalStringBuilder.prepareInstance();
 
-    // prepare LocalStringBuilder as the second singleton :
-    LocalStringBuilder.prepareInstance();
+    // prepare XmlFactory :
+    XmlFactory.prepareInstance();
   }
 
   /**

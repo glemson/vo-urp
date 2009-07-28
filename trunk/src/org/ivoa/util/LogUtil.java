@@ -132,8 +132,8 @@ public final class LogUtil {
   public static final void onExit() {
     isShutdown = true;
     if (instance != null) {
-      if (instance.logBase.isWarnEnabled()) {
-        instance.logBase.warn("LogUtil.getInstance : free singleton : " + SingletonSupport.getSingletonLogName(instance));
+      if (instance.logBase.isInfoEnabled()) {
+        instance.logBase.info("LogUtil.getInstance : free singleton : " + SingletonSupport.getSingletonLogName(instance));
       }
 
       // force GC :
@@ -227,15 +227,35 @@ public final class LogUtil {
   }
 
   /**
-   * Return a logger for the given key (category)
+   * Return a logger for the given key (category) for a special category.<br/>
+   * Use this method only for special categories that are not covered by the other getLogger[...]()
+   * methods
    * 
-   * @param key logger name defined in Log4J.xml
+   * @see #getLogger()
+   * @see #getLoggerBase()
+   * @see #getLoggerDev()
+   * @param key logger name defined in the log4j configuration file
    * @return Log instance or null if shutdown flag is set
    */
   public static Log getLogger(final String key) {
     Log l = null;
     if (isRunning()) {
       l = getInstance().getLog(key);
+    }
+    return l;
+  }
+
+  /**
+   * Return a logger dedicated to the given class.<br/>
+   * Warning : it creates a category per class.
+   * 
+   * @param clazz class instance
+   * @return Log instance dedicated to the given class or null if shutdown flag is set
+   */
+  public static Log getLogger(final Class<?> clazz) {
+    Log l = null;
+    if (isRunning()) {
+      l = getInstance().getLog(clazz.getName());
     }
     return l;
   }
@@ -296,7 +316,7 @@ public final class LogUtil {
   /**
    * Return a logger for the given key
    * 
-   * @param key logger name in log4j.xml
+   * @param key logger name in the log4j configuration file
    * @return Log
    * @throws IllegalStateException if the LogFactory returns no logger for the given key
    */
@@ -309,7 +329,8 @@ public final class LogUtil {
       if (l != null) {
         this.addLog(key, l);
       } else {
-        throw new IllegalStateException("LogUtil : Log4J is not initialized correctly : missing logger [" + key + "] (check log4j.xml) !");
+        throw new IllegalStateException("LogUtil : Log4J is not initialized correctly : missing logger [" + key
+            + "] = check the log4j configuration file (log4j.xml) !");
       }
     }
 

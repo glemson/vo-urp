@@ -67,8 +67,8 @@ public final class CustomThreadFactory extends LogSupport implements ThreadFacto
       t.setPriority(Thread.NORM_PRIORITY);
     }
 
-    if (logB.isWarnEnabled()) {
-      logB.warn("CustomThreadFactory.newThread : exit with thread : " + t + " with priority[" + t.getPriority() + "] for task : " + r);
+    if (logB.isInfoEnabled()) {
+      logB.info("CustomThreadFactory.newThread : exit with thread : " + t + " with priority[" + t.getPriority() + "] for task : " + r);
     }
     return t;
   }

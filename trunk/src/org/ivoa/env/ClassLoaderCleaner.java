@@ -43,8 +43,8 @@ public final class ClassLoaderCleaner {
    * clean up resource located in the classLoader like factories, singletons ...
    */
   public static void clean() {
-    if (logB.isWarnEnabled()) {
-      logB.warn("ClassLoaderCleaner.clean : enter");
+    if (logB.isInfoEnabled()) {
+      logB.info("ClassLoaderCleaner.clean : enter");
     }
 
     /* release Singleton resources */
@@ -63,8 +63,8 @@ public final class ClassLoaderCleaner {
       clearReferences(appClazzLoader, JavaUtils.asList(excludedPackages), JavaUtils.asList(includedPackages));
     }
 
-    if (logB.isWarnEnabled()) {
-      logB.warn("ClassLoaderCleaner.clean : exit");
+    if (logB.isInfoEnabled()) {
+      logB.info("ClassLoaderCleaner.clean : exit");
     }
 
     LogUtil.onExit();
@@ -272,4 +272,5 @@ public final class ClassLoaderCleaner {
     return result;
   }
 }
-// ~ En
+// ~ End of file
+// --------------------------------------------------------------------------------------------------------

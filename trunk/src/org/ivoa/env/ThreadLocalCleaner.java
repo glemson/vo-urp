@@ -52,9 +52,9 @@ public final class ThreadLocalCleaner extends LogSupport {
    * Check all threads in the current ThreadGroup
    */
   public static void cleanAndcheckThreads() {
-    if (logB.isWarnEnabled()) {
-      logB.warn("ThreadLocalCleaner.cleanAndcheckThreads : begin");
-      logB.warn("ThreadLocalCleaner.cleanAndcheckThreads : classLoader =\n" + ThreadLocalCleaner.class.getClassLoader());
+    if (logB.isInfoEnabled()) {
+      logB.info("ThreadLocalCleaner.cleanAndcheckThreads : begin");
+      logB.info("ThreadLocalCleaner.cleanAndcheckThreads : classLoader =\n" + ThreadLocalCleaner.class.getClassLoader());
     }
 
     try {
@@ -81,8 +81,8 @@ public final class ThreadLocalCleaner extends LogSupport {
     } finally {
       clearFields();
     }
-    if (logB.isWarnEnabled()) {
-      logB.warn("ThreadLocalCleaner.cleanAndcheckThreads : end");
+    if (logB.isInfoEnabled()) {
+      logB.info("ThreadLocalCleaner.cleanAndcheckThreads : end");
     }
   }
 
@@ -144,7 +144,7 @@ public final class ThreadLocalCleaner extends LogSupport {
 
             value = ReflectionUtils.getFieldValue(valueField, entry);
             if (value != null) {
-              if (value instanceof WeakHashMap<?, ?>) {
+              if (value instanceof WeakHashMap) {
                 final WeakHashMap<?, ?> wm = (WeakHashMap<?, ?>) value;
 
                 try {
@@ -214,11 +214,11 @@ public final class ThreadLocalCleaner extends LogSupport {
               sb.append("\n    + ").append(type).append("@").append(Integer.toHexString(value.hashCode()));
 
               sb.append(" value = ");
-              if (value instanceof Collection<?>) {
+              if (value instanceof Collection) {
                 CollectionUtils.toString(sb, (Collection<?>) value);
-              } else if (value instanceof Map<?, ?>) {
+              } else if (value instanceof Map) {
                 CollectionUtils.toString(sb, (Map<?, ?>) value);
-              } else if (value instanceof Reference<?>) {
+              } else if (value instanceof Reference) {
                 sb.append("{\n        ").append(((Reference<?>) value).get()).append("\n  }");
               } else if (clazz.isArray()) {
                 sb.append("{\n        ");
