@@ -414,7 +414,7 @@ public final class ThreadLocalUtils extends SingletonSupport {
    */
   protected static ManagedThreadLocal<?> getManagedThreadLocal(final ThreadLocal<?> threadLocal) {
     ManagedThreadLocal<?> managed = null;
-    if (threadLocal instanceof ManagedThreadLocal) {
+    if (threadLocal instanceof ManagedThreadLocal<?>) {
       managed = (ManagedThreadLocal<?>) threadLocal;
     }
     return managed;

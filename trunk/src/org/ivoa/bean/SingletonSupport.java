@@ -57,6 +57,9 @@ public abstract class SingletonSupport extends LogSupport {
 
     // prepare LocalStringBuilder as the second singleton :
     LocalStringBuilder.prepareInstance();
+
+    // prepare LocalStringBuilder as the second singleton :
+    LocalStringBuilder.prepareInstance();
   }
 
   /**

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry excluding="**/.svn/*" kind="src" path="src"/>
+	<classpathentry excluding="**/.svn/*" kind="src" path="webapp/vo-urp-browser/src"/>
 	<classpathentry excluding="**/.svn/*" kind="src" path="input/simdb/output/java/src"/>
 	<classpathentry excluding="**/.svn/*" kind="src" path="input/simdb/test/java"/>
 	<classpathentry kind="lib" path="libs/activation.jar"/>

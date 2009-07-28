@@ -146,7 +146,7 @@ public final class InspectorTests extends LogSupport {
 
       value = m.getProperty(propertyName);
 
-      if (value instanceof java.util.Collection) {
+      if (value instanceof java.util.Collection<?>) {
         col = (java.util.Collection<?>) value;
         size = col.size();
 

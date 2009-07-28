@@ -217,7 +217,6 @@ public final class LocalStringBuilder extends SingletonSupport {
       long start;
 
       StringBuilder sb;
-      String res = null;
       for (int k = 0; k < loops; k++) {
 
         for (int i = 0; i < cycles; i++) {
@@ -227,7 +226,7 @@ public final class LocalStringBuilder extends SingletonSupport {
 
           sb.append(value).append(i).append(value);
 
-          res = LocalStringBuilder.toString(sb);
+          LocalStringBuilder.toString(sb);
 
           TimerFactory.getSimpleTimer("LocalStringBuilder", UNIT.ns).addNanoSeconds(start, System.nanoTime());
         }
@@ -254,7 +253,7 @@ public final class LocalStringBuilder extends SingletonSupport {
 
           sb.append(value).append(i).append(value);
 
-          res = sb.toString();
+          sb.toString();
 
           TimerFactory.getSimpleTimer("StandardStringBuilder", UNIT.ns).addNanoSeconds(start, System.nanoTime());
         }
