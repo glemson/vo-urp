@@ -2,7 +2,7 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
 <!--
-  Log4J configuration file for IVOA UML Transformer
+  Log4J configuration file for VO-URP Libraries
 -->
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
@@ -21,6 +21,8 @@
     <param name="File" value="@log.file@"/>
     <param name="MaxFileSize" value="10000KB"/>
     <param name="MaxBackupIndex" value="5"/>
+    <param name="ImmediateFlush" value="false"/>
+    <param name="BufferSize" value="8192"/>
     <layout class="org.apache.log4j.PatternLayout">
       <param name="ConversionPattern" value="%d %p [%t] - %m%n"/>
     </layout>

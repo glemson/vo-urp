@@ -111,11 +111,6 @@ public class VO_URP_Facade extends LogSupport {
     // force GC :
     instance = null;
 
-    // TimerFactory dump :
-    if (!TimerFactory.isEmpty() && logB.isWarnEnabled()) {
-      logB.warn("TimerFactory : statistics : " + TimerFactory.dumpTimers());
-    }
-
     if (log != null && log.isWarnEnabled()) {
       log.warn("Application is unavailable.");
     }
@@ -128,6 +123,15 @@ public class VO_URP_Facade extends LogSupport {
     } catch (final Throwable th) {
       log.error("VO_URP_Facade.freeInstance : fatal error : ", th);
     }
+
+    // TimerFactory dump & exit :
+    if (!TimerFactory.isEmpty() && logB.isWarnEnabled()) {
+      logB.warn("TimerFactory : statistics : " + TimerFactory.dumpTimers());
+    }
+    TimerFactory.onExit();
+
+    // LogUtil.onExit must be the last thing to do :
+    LogUtil.onExit();
   }
 
   /**

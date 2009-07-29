@@ -66,8 +66,6 @@ public final class ClassLoaderCleaner {
     if (logB.isInfoEnabled()) {
       logB.info("ClassLoaderCleaner.clean : exit");
     }
-
-    LogUtil.onExit();
   }
 
   /**
