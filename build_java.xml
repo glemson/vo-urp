@@ -731,8 +731,13 @@ Optional
 
   <property name="log.file" value="${log.file.path}/${project.name}.log"/>
 
-  <!-- removes log file if possible -->
-  <delete file="${log.file}" verbose="true" failonerror="false" />
+  <!-- removes all existing log files if possible -->
+  <delete verbose="true" failonerror="false">
+    <fileset dir="${log.file.path}">
+      <include name="${project.name}.log"/>
+      <include name="${project.name}.log.*"/>
+    </fileset>
+  </delete>
 
   <!-- indicates if the file is still present = something is running -->
   <available property="log.file.locked" file="${log.file}" />
@@ -785,13 +790,26 @@ Optional
 
   <property name="log.file" value="${log.file.path}/${project.name}.log"/>
 
-  <!-- removes log file if possible -->
-  <delete file="${log.file}" verbose="true" failonerror="false" />
+  <!-- removes all existing log files if possible -->
+  <delete verbose="true" failonerror="false">
+    <fileset dir="${log.file.path}">
+      <include name="${project.name}.log"/>
+      <include name="${project.name}.log.*"/>
+    </fileset>
+  </delete>
 
   <!-- indicates if the file is still present = something is running -->
   <available property="log.file.locked" file="${log.file}" />
 
 	<fail if="log.file.locked" message="Another program is still running using the log.file : ${log.file} !" />
+
+  <copy tofile="${properties}/log4j.xml" filtering="true" verbose="true" overwrite="true">
+    <fileset file="${templates}/log4j-template.xml" />
+    <filterset>
+      <filter token="log.file" value="${log.file}" />
+      <filter token="project.name" value="${project.name}" />
+    </filterset>
+  </copy>
 
 
   <nbprofiledirect>
@@ -832,7 +850,7 @@ Optional
 <target name="debug" description="profile unit tests ...">
   <fail unless="netbeans.home">This target can only run inside the NetBeans IDE.</fail>
 
-  <echo message="profiling ${project.title} ..."/>
+  <echo message="debugging ${project.title} ..."/>
 
   <pathconvert property="log.file.path" dirsep="/">
     <path location="${build}"/>
@@ -840,13 +858,26 @@ Optional
 
   <property name="log.file" value="${log.file.path}/${project.name}.log"/>
 
-  <!-- removes log file if possible -->
-  <delete file="${log.file}" verbose="true" failonerror="false" />
+  <!-- removes all existing log files if possible -->
+  <delete verbose="true" failonerror="false">
+    <fileset dir="${log.file.path}">
+      <include name="${project.name}.log"/>
+      <include name="${project.name}.log.*"/>
+    </fileset>
+  </delete>
 
   <!-- indicates if the file is still present = something is running -->
   <available property="log.file.locked" file="${log.file}" />
 
 	<fail if="log.file.locked" message="Another program is still running using the log.file : ${log.file} !" />
+
+  <copy tofile="${properties}/log4j.xml" filtering="true" verbose="true" overwrite="true">
+    <fileset file="${templates}/log4j-template.xml" />
+    <filterset>
+      <filter token="log.file" value="${log.file}" />
+      <filter token="project.name" value="${project.name}" />
+    </filterset>
+  </copy>
 
 
   <nbjpdastart addressproperty="jpda.address" name="Virtual Observatory UML Representation Pipeline" transport="dt_socket">

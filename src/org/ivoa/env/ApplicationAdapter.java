@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import org.ivoa.bean.LogSupport;
 import org.ivoa.conf.Configuration;
+import org.ivoa.util.LogUtil;
 import org.ivoa.util.timer.TimerFactory;
 
 /**
@@ -65,12 +66,6 @@ public final class ApplicationAdapter extends LogSupport {
 
     // callback to clean resources :
 
-    // TimerFactory dump & exit :
-    if (!TimerFactory.isEmpty() && logB.isWarnEnabled()) {
-      logB.warn("TimerFactory : statistics : " + TimerFactory.dumpTimers());
-    }
-    TimerFactory.onExit();
-
     try {
       // last one (clear logging) :
       // clean up (GC) : 
@@ -81,6 +76,15 @@ public final class ApplicationAdapter extends LogSupport {
     }
 
     ApplicationLifeCycle.onEnd();
+
+    // TimerFactory dump & exit :
+    if (!TimerFactory.isEmpty() && logB.isWarnEnabled()) {
+      logB.warn("TimerFactory : statistics : " + TimerFactory.dumpTimers());
+    }
+    TimerFactory.onExit();
+
+    // LogUtil.onExit must be the last thing to do :
+    LogUtil.onExit();
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

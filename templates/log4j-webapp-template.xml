@@ -8,11 +8,21 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
   
   <!-- Appenders : begin -->
-  <!-- vo-urp-browser.log -->
-  <appender name="fileVO-URP-Browser" class="org.apache.log4j.RollingFileAppender">
+  <!-- display -->
+  <appender name="display" class="org.apache.log4j.ConsoleAppender">
+    <param name="Threshold" value="debug"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d %p [%t] - %m%n"/>
+    </layout>
+  </appender>
+
+  <!-- @log.file@ -->
+  <appender name="fileRoot" class="org.apache.log4j.RollingFileAppender">
     <param name="File" value="@log.file@"/>
     <param name="MaxFileSize" value="10000KB"/>
     <param name="MaxBackupIndex" value="5"/>
+    <param name="ImmediateFlush" value="false"/>
+    <param name="BufferSize" value="8192"/>
     <layout class="org.apache.log4j.PatternLayout">
       <param name="ConversionPattern" value="%d %p [%t] - %m%n"/>
     </layout>
@@ -23,7 +33,8 @@
   <!-- Loggers : begin -->
   <logger name="org.ivoa">
     <level value="warn"/>
-    <appender-ref ref="fileVO-URP-Browser" />
+    <appender-ref ref="display" />
+    <appender-ref ref="fileRoot" />
   </logger>
 
   <logger name="org.ivoa.base">
@@ -36,7 +47,8 @@
 
   <logger name="org.eclipse.persistence">
     <level value="warn"/>
-    <appender-ref ref="fileVO-URP-Browser" />
+    <appender-ref ref="display" />
+    <appender-ref ref="fileRoot" />
   </logger>
   <!-- Loggers : end -->
   
