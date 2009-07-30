@@ -6,7 +6,7 @@ import com.sun.tools.xjc.reader.xmlschema.parser.LSInputSAXWrapper;
 import java.io.File;
 import java.io.IOException;
 import org.ivoa.bean.SingletonSupport;
-import org.ivoa.util.FileUtils;
+import org.ivoa.util.CollectionUtils;
 import org.w3c.dom.ls.LSInput;
 import org.w3c.dom.ls.LSResourceResolver;
 import org.xml.sax.InputSource;
@@ -54,11 +54,35 @@ public final class CustomXmlCatalogResolver extends SingletonSupport implements 
    */
   @Override
   protected final void initialize() throws IllegalStateException {
-    try {
-      addCatalog(FileUtils.getFile("D:/WORK/dev/vo-urp-svn/catalog.xml"));
-    } catch (final IOException ioe) {
-      logB.error("CustomXmlCatalogResolver.initialize : IO Failure : ", ioe);
-      throw new IllegalStateException("Unable to load the xml catalog :  !");
+    if (entityResolver == null) {
+      final CatalogManager staticCatalogManager = CatalogManager.getStaticManager();
+      staticCatalogManager.setIgnoreMissingProperties(false);
+
+        // configuration :
+        staticCatalogManager.setPreferPublic(false);
+        staticCatalogManager.setUseStaticCatalog(true);
+        staticCatalogManager.setRelativeCatalogs(true);
+        staticCatalogManager.setVerbosity(999);
+
+      if (logB.isWarnEnabled()) {
+        logB.warn("CustomXmlCatalogResolver.initialize : catalog Manager : " + staticCatalogManager);
+        logB.warn("CustomXmlCatalogResolver.initialize : catalog Files : " + CollectionUtils.toString(staticCatalogManager.getCatalogFiles()));
+      }
+      entityResolver = new CatalogResolver(true);
+    }
+  }
+
+ /**
+   * Adds a new catalog file.
+   * @param catalogFile xml catalog to add
+   * @throws IOException
+   */
+  public static void addCatalog(final File catalogFile) throws IOException {
+    if (catalogFile != null) {
+      if (logB.isWarnEnabled()) {
+      logB.warn("XMLValidator.addCatalog : parsing catalog : " + catalogFile);
+      }
+      entityResolver.getCatalog().parseCatalog(catalogFile.getPath());
     }
   }
 
@@ -71,6 +95,7 @@ public final class CustomXmlCatalogResolver extends SingletonSupport implements 
    */
   @Override
   protected void clearStaticReferences() {
+    // force GC :
     entityResolver = null;
     if (instance != null) {
       instance = null;
@@ -85,40 +110,6 @@ public final class CustomXmlCatalogResolver extends SingletonSupport implements 
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
-  /**
-   * Adds a new catalog file.
-   * @param catalogFile xml catalog to add
-   * @throws IOException
-   */
-  public static void addCatalog(final File catalogFile) throws IOException {
-    if (catalogFile != null) {
-      if (entityResolver == null) {
-        final CatalogManager staticCatalogManager = CatalogManager.getStaticManager();
-        if (logB.isWarnEnabled()) {
-          logB.warn("CustomXmlCatalogResolver.addCatalog : staticCatalogManager : " + staticCatalogManager);
-        }
-
-        // configuration :
-        staticCatalogManager.setPreferPublic(false);
-        staticCatalogManager.setUseStaticCatalog(true);
-        staticCatalogManager.setRelativeCatalogs(true);
-
-        staticCatalogManager.debug.setDebug(999);
-
-
-        staticCatalogManager.setIgnoreMissingProperties(true);
-
-        entityResolver = new CatalogResolver(true);
-      }
-      /*
-      if (logB.isWarnEnabled()) {
-      logB.warn("XMLValidator.addCatalog : parsing catalog : " + catalogFile);
-      }
-      entityResolver.getCatalog().parseCatalog(catalogFile.getPath());
-       */
-    }
-  }
-
   /**
    *  Allow the application to resolve external resources.
    * <br> The <code>LSParser</code> will call this method before opening any
@@ -157,20 +148,30 @@ public final class CustomXmlCatalogResolver extends SingletonSupport implements 
    */
   public LSInput resolveResource(final String type, final String namespaceURI, final String publicId, final String systemId, final String baseURI) {
     if (logB.isWarnEnabled()) {
-      logB.warn("CustomXmlCatalogResolver.resolveResource : namespaceURI = " + namespaceURI);
-      logB.warn("CustomXmlCatalogResolver.resolveResource : baseURI      = " + baseURI);
+      logB.warn("CustomXmlCatalogResolver.resolveResource : enter    = " + namespaceURI);
+      logB.warn("CustomXmlCatalogResolver.resolveResource : baseURI  = " + baseURI);
       if (systemId != null) {
-        logB.warn("CustomXmlCatalogResolver.resolveResource : systemId     = " + systemId);
+        logB.warn("CustomXmlCatalogResolver.resolveResource : systemId = " + systemId);
       }
       if (publicId != null) {
-        logB.warn("CustomXmlCatalogResolver.resolveResource : publicId     = " + publicId);
+        logB.warn("CustomXmlCatalogResolver.resolveResource : publicId = " + publicId);
       }
     }
 
+    LSInput res = null;
+
     final InputSource is = entityResolver.resolveEntity(namespaceURI, systemId);
     if (is == null) {
-      return null;
+      if (logB.isWarnEnabled()) {
+        logB.warn("CustomXmlCatalogResolver.resolveResource : exit     = systemId not found : " + systemId);
+      }
+    } else {
+      if (logB.isWarnEnabled()) {
+        logB.warn("CustomXmlCatalogResolver.resolveResource : exit     = " + is.getSystemId());
+      }
+      res = new LSInputSAXWrapper(is);
     }
-    return new LSInputSAXWrapper(is);
+
+    return res;
   }
 }

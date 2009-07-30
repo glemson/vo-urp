@@ -170,7 +170,7 @@
     <copy todir="${properties}" preservelastmodified="true" verbose="true">
       <fileset dir="${input}/properties">
         <include name="*.properties"/>
-        <!-- keep log4j configuration different for webapp because files are stored in tomcat logs folder -->
+        <exclude name="CatalogManager.properties"/>
       </fileset>
     </copy>
     
@@ -250,7 +250,10 @@
     <echo message="cleaning directory : ${properties} ..." />
     
     <delete includeemptydirs="false" verbose="true">
-      <fileset dir="${properties}" includes="*.properties"/>
+      <fileset dir="${properties}">
+        <include name="*.properties"/>
+        <exclude name="CatalogManager.properties"/>
+      </fileset>
     </delete>
     
     <echo message="cleaned directory : ${properties} ." />
