@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+
+    <system systemId="http://volute.googlecode.com/svn/trunk/projects/theory/snapdm/xsd/base.xsd"
+            uri="../xsd/base.xsd"/>
+
+    <system systemId="http://vo-urp.googlecode.com/svn/trunk/xsd/intermediateModel.xsd"
+            uri="../xsd/intermediateModel.xsd"/>
+
+    <rewriteSystem systemIdStartString="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/"
+                   rewritePrefix="../input/simdb/xsd/" />
+
+    <nextCatalog catalog="ext-catalog.xml"/>
+
+</catalog>
+
