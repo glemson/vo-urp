@@ -22,11 +22,16 @@
 
 	
   <!-- path & files -->
+  <property name="projectHome" location="../.."/>
+
   <property name="root" location="."/>
   <property name="properties" location="./properties"/>
   <property name="sources" location="./src"/>
   <property name="web-content" location="./web"/>
   <property name="libs" location="./lib"/>
+
+  <!-- xml schema folders -->
+  <property name="schema" location="${projectHome}/schema"/>
   
   <!--  output locations  -->
   <property name="web" location="${input}/web"/>
@@ -170,7 +175,7 @@
     <copy todir="${properties}" preservelastmodified="true" verbose="true">
       <fileset dir="${input}/properties">
         <include name="*.properties"/>
-        <exclude name="CatalogManager.properties"/>
+        <exclude name="XmlCatalogManager.properties"/>
       </fileset>
     </copy>
     
@@ -252,7 +257,7 @@
     <delete includeemptydirs="false" verbose="true">
       <fileset dir="${properties}">
         <include name="*.properties"/>
-        <exclude name="CatalogManager.properties"/>
+        <exclude name="XmlCatalogManager.properties"/>
       </fileset>
     </delete>
     
@@ -384,13 +389,32 @@
   <!-- Compile java files and jar them -->
   <target name="package" depends="init" unless="build.notRequired">
 
-    <!-- move properties with compiled classes -->
+    <!-- move properties and xml schemas with compiled classes (classpath resources) -->
     <copy todir="${build.src}" preservelastmodified="true" verbose="true">
       <fileset dir="${properties}">
         <include name="*.*"/>
       </fileset>
+      <fileset dir="${schema}">
+        <include name="**/*"/>
+      </fileset>
+      <fileset dir="${projectHome}">
+        <include name="xsd/**/*"/>
+      </fileset>
+      <fileset dir="${input}">
+        <include name="xsd/**/*"/>
+      </fileset>
     </copy>
-  	
+
+    <replace file="${build.src}/vo-urp-catalog.xml" encoding="UTF-8">
+      <replacetoken>../xsd/</replacetoken>
+      <replacevalue>./xsd/</replacevalue>
+    </replace>
+
+    <replace file="${build.src}/vo-urp-catalog.xml" encoding="UTF-8">
+      <replacetoken>../input/simdb/xsd/</replacetoken>
+      <replacevalue>./xsd/</replacevalue>
+    </replace>
+
     <!-- create a tags folder to put tag files because subversion used 'tags' folders for subversion tags -->
     <mkdir dir="${web-content}/WEB-INF/tags"/>
     <copy todir="${web-content}/WEB-INF/tags" preservelastmodified="true" verbose="true">
@@ -447,9 +471,7 @@
         <include name="*.jar"/>
       </lib>
       <classes dir="${build.src}">
-        <include name="**/*.class"/>
-        <include name="**/*.properties"/>
-        <include name="log4j.*"/>
+        <include name="**/*"/>
       </classes>
     </war>
 

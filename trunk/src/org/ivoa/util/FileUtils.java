@@ -1,6 +1,5 @@
 package org.ivoa.util;
 
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -29,14 +28,12 @@ public final class FileUtils extends LogSupport {
    * default read buffer capacity : DEFAULT_READ_BUFFER_SIZE = 16K
    */
   private static final int DEFAULT_READ_BUFFER_SIZE = 16 * 1024;
-
   /**
    * default write buffer capacity : DEFAULT_WRITE_BUFFER_SIZE = 16K
    */
   private static final int DEFAULT_WRITE_BUFFER_SIZE = 16 * 1024;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
-
   /**
    * Forbidden FileUtils constructor
    */
@@ -45,6 +42,26 @@ public final class FileUtils extends LogSupport {
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
+  /**
+   * Find a file in the current classloader (application class Loader)
+   *
+   * @param fileName file name only no path included
+   * @return URL to the file or null
+   */
+  public static final URL getResource(final String fileName) {
+    // Find properties in the classpath
+    final URL url = FileUtils.class.getClassLoader().getResource(fileName);
+
+    if (url == null) {
+      throw new RuntimeException("Unable to find the file in classpath : " + fileName);
+    }
+
+    if (logB.isInfoEnabled()) {
+      logB.info("FileUtils.getSystemFileInputStream : URL : " + url);
+    }
+
+    return url;
+  }
 
   /**
    * Find a file in the current classloader (application class Loader)
@@ -54,16 +71,7 @@ public final class FileUtils extends LogSupport {
    * @throws RuntimeException if not found
    */
   public static final InputStream getSystemFileInputStream(final String fileName) {
-    // Find properties in the classpath
-    final URL url = FileUtils.class.getClassLoader().getResource(fileName);
-
-    if (url == null) {
-      throw new RuntimeException("Unable to find file in classpath : " + fileName);
-    }
-
-    if (logB.isInfoEnabled()) {
-      logB.info("FileUtils.getSystemFileInputStream : reading file : " + url);
-    }
+    final URL url = getResource(fileName);
 
     try {
       return url.openStream();
@@ -109,7 +117,7 @@ public final class FileUtils extends LogSupport {
    * @return File or null
    */
   private static File getExistingFile(final String path) {
-    if (! JavaUtils.isEmpty(path)) {
+    if (!JavaUtils.isEmpty(path)) {
       final File file = new File(path);
 
       if (file.exists()) {
@@ -171,7 +179,7 @@ public final class FileUtils extends LogSupport {
    * @return Writer (buffered) or null
    */
   public static Writer openFile(final String absoluteFilePath, final int bufferSize) {
-    if (! JavaUtils.isEmpty(absoluteFilePath)) {
+    if (!JavaUtils.isEmpty(absoluteFilePath)) {
       return openFile(new File(absoluteFilePath), bufferSize);
     }
 
@@ -291,3 +299,4 @@ public final class FileUtils extends LogSupport {
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
+

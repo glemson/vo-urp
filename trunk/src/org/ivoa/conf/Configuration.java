@@ -99,8 +99,8 @@ public class Configuration extends PropertyHolder implements Configurable {
    * Dumps System.properties in logs (info) ...
    */
   private final void dumpSystemProps() {
-    if (logB.isWarnEnabled()) {
-      logB.warn("System.properties : " + CollectionUtils.toString(System.getProperties()));
+    if (logB.isInfoEnabled()) {
+      logB.info("System.properties : " + CollectionUtils.toString(System.getProperties()));
     }
   }
 
