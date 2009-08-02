@@ -1,18 +1,27 @@
 package org.ivoa.util;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Appender;
+import org.apache.log4j.Hierarchy;
+import org.apache.log4j.spi.LoggerRepository;
 import org.eclipse.persistence.logging.CommonsLoggingSessionLog;
 import org.ivoa.bean.SingletonSupport;
+
 
 /**
  * Commons-logging & Log4J Utility class.<br/>
  *
  * This class is the first loaded class (singleton) to provide logging API.<br/>
- * It acts like SingletonSupport but can not use it because SingletonSupport has a direct reference to loggers !
+ * It acts like SingletonSupport but can not use it because SingletonSupport has a direct reference to loggers !<br/>
+ *
+ * Note : Use the System property [-Dlog4j.debug=true] to enable Log4J debug information
  *
  * @see org.ivoa.bean.SingletonSupport
  * 
@@ -22,9 +31,9 @@ public final class LogUtil {
   // ~ Constants
   // --------------------------------------------------------------------------------------------------------
 
-  /** internal diagnostic FLAG : use System.out */
+  /** internal diagnostic FLAG : use System out */
   public static final boolean LOGGING_DIAGNOSTICS = false;
-  /** internal apache commons Logging diagnostic FLAG : use System.out */
+  /** internal apache commons Logging diagnostic FLAG : use System out */
   public static final boolean FORCE_APACHE_COMMONS_LOGGING_DIAGNOSTICS = false;
   /** Main logger = org.ivoa */
   public static final String LOGGER_MAIN = "org.ivoa";
@@ -37,12 +46,10 @@ public final class LogUtil {
   /** shutdown flag to avoid singleton to be defined (java 5 memory model) */
   private static volatile boolean isShutdown = false;
 
-
   static {
     /* static Initializer to call onInit method */
     onInit();
   }
-
   // ~ Members
   // ----------------------------------------------------------------------------------------------------------
   /**
@@ -112,8 +119,8 @@ public final class LogUtil {
        * etc.
        * <p>
        * If a system property of this name is set then the value is assumed to be the name of a
-       * file. The special strings STDOUT or STDERR (case-sensitive) indicate output to System.out
-       * and System.err respectively.
+       * file. The special strings STDOUT or STDERR (case-sensitive) indicate output to System out
+       * and System err respectively.
        * <p>
        * Diagnostic logging should be used only to debug problematic configurations and should not
        * be set in normal production use.
@@ -133,8 +140,12 @@ public final class LogUtil {
     isShutdown = true;
     if (instance != null) {
       if (instance.logBase.isInfoEnabled()) {
-        instance.logBase.info("LogUtil.getInstance : free singleton : " + SingletonSupport.getSingletonLogName(instance));
+        instance.logBase.info("LogUtil.onExit : free singleton : " + SingletonSupport.getSingletonLogName(instance));
       }
+
+      // Release Log4J resources :
+      // org.apache.log4j.LogManager.shutdown();
+      log4JShutdown();
 
       // force GC :
       instance.log = null;
@@ -147,9 +158,74 @@ public final class LogUtil {
 
       // Classloader unload problem with commons-logging :
       LogFactory.release(Thread.currentThread().getContextClassLoader());
+    }
+  }
 
-      // Release Log4J resources :
-      org.apache.log4j.LogManager.shutdown();
+  /**
+   * Proper Log4J shutdown
+   */
+  public static void log4JShutdown() {
+
+    final LoggerRepository lr = LogManager.getLoggerRepository();
+
+    if (instance.logBase.isInfoEnabled()) {
+      instance.logBase.info("log4j repository = " + lr);
+    }
+
+    if (lr != null) {
+      Logger c;
+      final Logger root = lr.getRootLogger();
+
+      if (root != null) {
+        // begin by closing nested appenders :
+        //    root.closeNestedAppenders();
+        closeNestedAppenders(root);
+
+        Enumeration cats = lr.getCurrentLoggers();
+        while (cats.hasMoreElements()) {
+          c = (Logger) cats.nextElement();
+          closeNestedAppenders(c);
+        }
+
+        // then, remove all appenders
+        root.removeAllAppenders();
+
+        cats = lr.getCurrentLoggers();
+        while (cats.hasMoreElements()) {
+          c = (Logger) cats.nextElement();
+          c.removeAllAppenders();
+        }
+      }
+
+      // force GC :
+      if (lr instanceof Hierarchy) {
+        ((Hierarchy) lr).clear();
+      }
+    }
+
+  }
+
+  /**
+   * Close all attached appenders implementing the AppenderAttachable interface.
+   * @param logger logger to clean up
+   */
+  private static void closeNestedAppenders(final Logger logger) {
+    Enumeration enumeration = logger.getAllAppenders();
+    if (enumeration != null) {
+      while (enumeration.hasMoreElements()) {
+        Appender a = (Appender) enumeration.nextElement();
+
+// bug here :
+//        if (a instanceof AppenderAttachable) {
+
+        // TODO : remove log
+        if (LOGGING_DIAGNOSTICS && SystemLogUtil.isWarnEnabled()) {
+          SystemLogUtil.warn("closeNestedAppenders : closing : " + a);
+        }
+        a.close();
+
+//        }
+      }
     }
   }
 
@@ -277,7 +353,7 @@ public final class LogUtil {
    * @param logger Log4J Logger
    * @param level Log4J Level
    */
-  public static final void setLevel(final org.apache.log4j.Logger logger, final org.apache.log4j.Level level) {
+  public static final void setLevel(final Logger logger, final org.apache.log4j.Level level) {
     logger.setLevel(level);
 
     // Reset the cachedLevel for the log hierarchy :
@@ -290,7 +366,7 @@ public final class LogUtil {
    * @param l Log
    * @return Log4JLogger
    */
-  private static final org.apache.log4j.Logger getLog4JLogger(final Log l) {
+  private static final Logger getLog4JLogger(final Log l) {
     return ((org.apache.commons.logging.impl.Log4JLogger) l).getLogger();
   }
 
@@ -304,7 +380,7 @@ public final class LogUtil {
 
     if (!(this.log instanceof org.apache.commons.logging.impl.Log4JLogger)) {
       throw new IllegalStateException(
-              "LogUtil : apache Log4J library or log4j.xml file are not present in classpath !");
+          "LogUtil : apache Log4J library or log4j.xml file are not present in classpath !");
     }
 
     // TODO : check if logger has an appender (use parent hierarchy if needed)
@@ -332,8 +408,7 @@ public final class LogUtil {
       if (l != null) {
         this.addLog(key, l);
       } else {
-        throw new IllegalStateException("LogUtil : Log4J is not initialized correctly : missing logger [" + key
-            + "] = check the log4j configuration file (log4j.xml) !");
+        throw new IllegalStateException("LogUtil : Log4J is not initialized correctly : missing logger [" + key + "] = check the log4j configuration file (log4j.xml) !");
       }
     }
 
@@ -408,3 +483,4 @@ public final class LogUtil {
 }
 // ~ End of file
 // --------------------------------------------------------------------------------------------------------
+

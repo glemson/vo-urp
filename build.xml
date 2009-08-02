@@ -360,7 +360,18 @@
 
 
 
-	<!-- target buildWeb : makes the vo-urp browser web application -->
+	<!-- target buildJava : makes both java libraries and the vo-urp browser web application -->
+	<target name="buildJava" description="build both java libraries and the web application">
+		<ant target="makeOutput" />
+    <ant antfile="webapp/vo-urp-browser/build.xml" target="deployTomcat" inheritAll="false">
+			<property name="input" location="${input}"/>
+		</ant>
+	</target>
+
+
+
+
+  <!-- target buildWeb : makes the vo-urp browser web application -->
 	<target name="buildWeb" description="build web application only">
 		<ant antfile="webapp/vo-urp-browser/build.xml" target="deployTomcat" inheritAll="false">
 			<property name="input" location="${input}"/>

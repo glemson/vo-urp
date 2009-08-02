@@ -9,7 +9,7 @@ import org.ivoa.util.SystemLogUtil;
 /**
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public class ApplicationManager implements ServletContextListener {
+public final class ApplicationManager implements ServletContextListener {
   // ~ Constants
   // --------------------------------------------------------------------------------------------------------
 
@@ -67,6 +67,8 @@ public class ApplicationManager implements ServletContextListener {
      * files. Using this servlet context listener ensures that locks will be released without
      * requiring a full server shutdown.
      */
+
     InitShutdownController.shutdownLog4j(ctx);
+
   }
 }

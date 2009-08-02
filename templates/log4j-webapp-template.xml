@@ -21,7 +21,9 @@
     <param name="File" value="@log.file@"/>
     <param name="MaxFileSize" value="10000KB"/>
     <param name="MaxBackupIndex" value="5"/>
-    <param name="ImmediateFlush" value="false"/>
+    <!-- both ImmediateFlush and BufferedIO must be consistent -->
+<!--    <param name="ImmediateFlush" value="false"/> -->
+    <param name="BufferedIO" value="true"/>
     <param name="BufferSize" value="8192"/>
     <layout class="org.apache.log4j.PatternLayout">
       <param name="ConversionPattern" value="%d %p [%t] - %m%n"/>
@@ -51,5 +53,5 @@
     <appender-ref ref="fileRoot" />
   </logger>
   <!-- Loggers : end -->
-  
+
 </log4j:configuration>

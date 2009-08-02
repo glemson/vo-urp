@@ -815,6 +815,7 @@ Optional
   <nbprofiledirect>
     <classpath>
        <path refid="runtime.class.path" />
+       <path refid="project.class.path" />
     </classpath>
   </nbprofiledirect>
 
@@ -883,6 +884,7 @@ Optional
   <nbjpdastart addressproperty="jpda.address" name="Virtual Observatory UML Representation Pipeline" transport="dt_socket">
     <classpath>
        <path refid="runtime.class.path" />
+       <path refid="project.class.path" />
     </classpath>
   </nbjpdastart>
 
