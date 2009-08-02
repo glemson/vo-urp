@@ -201,7 +201,7 @@ public final class JAXBFactory extends SingletonSupport {
        */
 
       // this implementation is a part of the API and convenient for
-      // trouble-shooting, as it prints out errors to System.out
+      // trouble-shooting, as it prints out errors to System out
       if (isTest) {
         u.setEventHandler(new DefaultValidationEventHandler());
       }

@@ -8,14 +8,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
+import org.apache.commons.logging.Log;
 import org.ivoa.bean.LogSupport;
+import org.ivoa.util.LogUtil;
+
 
 /**
  * Session monitor :
  *
+ * Note : this class is the first started by tomcat so the application is not started yet.
+ *
+ * Implication : this class can not extend LogSupport !
+ *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
-public final class SessionMonitor extends LogSupport implements HttpSessionListener {
+public final class SessionMonitor implements HttpSessionListener {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** diagnostics flag */
@@ -36,9 +43,15 @@ public final class SessionMonitor extends LogSupport implements HttpSessionListe
    * TODO : Field Description
    */
   private static final long LAPSE = 10 * 60 * 1000L; // 10 minutes
+  /**
+   * Logger for the base framework
+   * @see org.ivoa.bean.LogSupport
+   */
+  protected static Log logB = null;
+  /** singleton instance (java 5 memory model) */
+  private static volatile SessionMonitor instance = null;
   /** stats thread */
   private static PollingThread pollTh = null;
-
   //~ Members ----------------------------------------------------------------------------------------------------------
 
   /* membres */
@@ -56,15 +69,20 @@ public final class SessionMonitor extends LogSupport implements HttpSessionListe
    * Public constructor
    */
   public SessionMonitor() {
-    if (ENABLE_DIAGNOSTICS && logB.isInfoEnabled()) {
-      logB.info("SessionMonitor new");
-    }
-    init();
+    instance = this;
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
+  public static void onInit() {
+    logB = LogUtil.getLoggerBase();
+
+    if (instance != null) {
+      instance.init();
+    }
+  }
+
   /**
-   * TODO : Method Description
+   * onExit callback
    */
   protected static void onExit() {
     if (logB.isInfoEnabled()) {
@@ -79,9 +97,13 @@ public final class SessionMonitor extends LogSupport implements HttpSessionListe
       pollTh = null;
     }
 
+    // force GC :
+    instance = null;
+
     if (logB.isInfoEnabled()) {
       logB.info("SessionMonitor.onExit : exit");
     }
+    logB = null;
   }
 
   /**
@@ -191,3 +213,4 @@ public final class SessionMonitor extends LogSupport implements HttpSessionListe
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
+

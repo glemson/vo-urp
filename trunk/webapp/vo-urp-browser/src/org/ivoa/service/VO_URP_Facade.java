@@ -23,6 +23,7 @@ import org.ivoa.web.model.CursorQuery;
 import org.ivoa.web.model.EntityConfig;
 import org.ivoa.web.model.EntityConfigFactory;
 
+
 /**
  * Facade pattern for the web application
  *
@@ -39,7 +40,6 @@ public class VO_URP_Facade extends LogSupport {
   private static VO_URP_Facade instance = null;
   /** EntityManager Thread Local (lazy weaving) */
   private static volatile EntityManagerThreadLocal entityLocal = null;
-
   //~ Members ----------------------------------------------------------------------------------------------------------
   /** TODO : Field Description */
   private EntityConfigFactory ecf;
@@ -200,6 +200,9 @@ public class VO_URP_Facade extends LogSupport {
     // TimerFactory warmup and reset :
     TimerFactory.resetTimers();
 
+    // Enable the session monitor :
+    SessionMonitor.onInit();
+
     if (log != null) {
       log.warn("Application is ready.");
     }
@@ -344,8 +347,8 @@ public class VO_URP_Facade extends LogSupport {
         log.debug("getCount : count : " + c);
       }
 
-    // disable global cache :
-    //      getGlobalCache().put(ec.getGlobalCountKey(), c);
+      // disable global cache :
+      //      getGlobalCache().put(ec.getGlobalCountKey(), c);
     }
 
     return c;
@@ -511,3 +514,4 @@ public class VO_URP_Facade extends LogSupport {
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
+

@@ -50,7 +50,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
   // --------------------------------------------------------------------------------------------------------
 
   /**
-   * internal debugger FLAG : use System.out
+   * internal debugger FLAG : use System out
    */
   public static final boolean FORCE_INTERNAL_DEBUG = false;
   /**
@@ -62,7 +62,7 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
    */
   public static final boolean USE_INTERNAL_CACHE = true;
   /**
-   * internal apache commons Logging diagnostic FLAG : use System.out
+   * internal apache commons Logging diagnostic FLAG : use System out
    */
   public static final boolean FORCE_APACHE_COMMONS_LOGGING_DIAGNOSTICS = false;
   /**
@@ -172,8 +172,8 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
        * etc.
        * <p>
        * If a system property of this name is set then the value is assumed to be the name of a
-       * file. The special strings STDOUT or STDERR (case-sensitive) indicate output to System.out
-       * and System.err respectively.
+       * file. The special strings STDOUT or STDERR (case-sensitive) indicate output to System out
+       * and System err respectively.
        * <p>
        * Diagnostic logging should be used only to debug problematic configurations and should not
        * be set in normal production use.
