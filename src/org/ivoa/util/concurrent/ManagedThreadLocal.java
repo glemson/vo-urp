@@ -4,6 +4,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.apache.commons.logging.Log;
 import org.ivoa.util.LogUtil;
 
+
 /**
  * This class enhances the ThreadLocal class to define initialization and shutdown events
  * 
@@ -17,22 +18,18 @@ public class ManagedThreadLocal<T> extends ThreadLocal<T> {
 
   /** Diagnostics flag to see ThreadLocal usage = initialValue() and remove() calls */
   private final boolean DIAGNOSTICS = false;
-
   /**
    * Logger for the base framework
    * 
    * @see org.ivoa.bean.LogSupport
    */
   protected static Log logB = LogUtil.getLoggerBase();
-
   // ~ Members
   // ----------------------------------------------------------------------------------------------------------
   /** ThreadLocal name */
   private final String name;
-
   /** creation counter */
   private final AtomicInteger createCounter = new AtomicInteger();
-
   /** remove counter */
   private final AtomicInteger removeCounter = new AtomicInteger();
 
@@ -87,12 +84,11 @@ public class ManagedThreadLocal<T> extends ThreadLocal<T> {
     if (logB.isDebugEnabled()) {
       logB.debug(this.name + ".remove : enter");
     }
-    boolean doRemove = false;
+    boolean doRemove = true;
     try {
-      doRemove = onRemoveValue();
+      doRemove = onRemoveValue(get());
     } catch (final RuntimeException re) {
       logB.error(this.name + ".remove : failure : ", re);
-      doRemove = true;
     }
     if (doRemove) {
       super.remove();
@@ -126,23 +122,38 @@ public class ManagedThreadLocal<T> extends ThreadLocal<T> {
    * Callback to handle the remove() event for this ManagedThreadLocal instance
    * 
    * @see ThreadLocal#remove()
+   * @param value T value to clear
    * @return true if the value can be removed from the thread local map
    * @throws IllegalStateException if a problem occurred
    */
-  protected boolean onRemoveValue() throws IllegalStateException {
+  protected boolean onRemoveValue(final T value) throws IllegalStateException {
     /* no-op */
     return true;
+  }
+
+  /**
+   * Empty method to be implemented by concrete implementations :<br/>
+   * Callback to handle the remove() event for this ManagedThreadLocal instance
+   *
+   * @see ThreadLocal#remove()
+   * @param value value to clear
+   * @return true if the value can be removed from the thread local map
+   * @throws IllegalStateException if a problem occurred
+   */
+  @SuppressWarnings("unchecked")
+  protected final boolean onRemoveObjectValue(final Object value) throws IllegalStateException {
+    removeCounter.incrementAndGet();
+    return onRemoveValue((T) value);
   }
 
   /**
    * Dump usage statistics
    */
   public void dumpStatistics() {
-    if (logB.isDebugEnabled()) {
-      logB.debug(this.name + ".dumpStatistics : creation = " + createCounter.get() + " - remove = " + removeCounter.get());
+    if (logB.isInfoEnabled()) {
+      logB.info(this.name + ".dumpStatistics : creation = " + createCounter.get() + " - remove = " + removeCounter.get());
     }
   }
-
   // ~ End of file
   // --------------------------------------------------------------------------------------------------------
 }

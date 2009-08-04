@@ -2,6 +2,7 @@ package org.ivoa.util.text;
 
 import org.ivoa.util.concurrent.ManagedThreadLocal;
 
+
 /**
  * This class uses the ThreadLocal pattern to associate a StringBuilder to the current thread
  *
@@ -30,24 +31,21 @@ public final class StringBuilderThreadLocal extends ManagedThreadLocal<StringBui
     return new StringBuilderContext();
   }
 
-
   /**
    * Empty method to be implemented by concrete implementations :<br/>
    * Callback to handle the remove() event for this StringBuilderThreadLocal instance
    *
    * @see ThreadLocal#remove()
-   *
+   * @param value T value to clear
+   * @return true if the value can be removed from the thread local map
    * @throws IllegalStateException if a problem occurred
    */
   @Override
-  protected boolean onRemoveValue() throws IllegalStateException {
-    final StringBuilderContext context = get();
-
+  protected boolean onRemoveValue(final StringBuilderContext value) throws IllegalStateException {
     // force GC :
-    context.clear();
+    value.clear();
 
     return true;
   }
-
 }
 

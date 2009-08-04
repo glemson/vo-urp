@@ -551,12 +551,19 @@
       </classpath>
     </taskdef>
 
-    <jasper validateXml="false"
+    <jasper verbose="9"
+            validateXml="false"
             uriroot="${deploy.to}/${webapp.name}"
             webXmlFragment="${deploy.to}/${webapp.name}/WEB-INF/generated_web.xml"
             addWebXmlMappings="true"
             outputDir="${deploy.to}/${webapp.name}/WEB-INF/src"
-            failOnError="false" />
+            failOnError="false"
+
+            compilerSourceVM="1.5"
+            compilerTargetVM="1.5"
+            poolingEnabled="true"
+            trimSpaces="true"
+            />
 
   </target>
 

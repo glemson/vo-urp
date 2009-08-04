@@ -2,6 +2,7 @@ package org.ivoa.dm.model.reference;
 
 import org.ivoa.util.concurrent.ManagedThreadLocal;
 
+
 /**
  * This class uses the ThreadLocal pattern to associate a ResolverContext to the current thread
  *
@@ -33,17 +34,17 @@ public final class ResolverThreadLocal extends ManagedThreadLocal<ResolverContex
    * Callback to handle the remove() event for this ResolverThreadLocal instance
    *
    * @see ThreadLocal#remove()
-   *
+   * @param value T value to clear
+   * @return true if the value can be removed from the thread local map
    * @throws IllegalStateException if a problem occurred
    */
   @Override
-  protected boolean onRemoveValue() throws IllegalStateException {
-    final ResolverContext context = get();
-    if (logB.isInfoEnabled() && context.getEm() != null && context.getEm().isOpen()) {
-      logB.info("ResolverThreadLocal : the entity manager is not closed : " + context.getEm());
+  protected boolean onRemoveValue(final ResolverContext value) throws IllegalStateException {
+    if (logB.isInfoEnabled() && value.getEm() != null && value.getEm().isOpen()) {
+      logB.info("ResolverThreadLocal : the entity manager is not closed : " + value.getEm());
     }
     // force GC :
-    context.clear();
+    value.clear();
 
     return true;
   }
