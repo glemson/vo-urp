@@ -1,5 +1,6 @@
 package org.ivoa.env;
 
+import java.beans.Introspector;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.ivoa.bean.SingletonSupport;
 import org.ivoa.util.CollectionUtils;
 import org.ivoa.util.JavaUtils;
 import org.ivoa.util.LogUtil;
+import org.ivoa.util.concurrent.ThreadLocalMapUtils;
 
 /**
  * Cleans singleton before ClassLoader gets cleared (to ensure good gc)
@@ -62,6 +64,12 @@ public final class ClassLoaderCleaner {
 
       clearReferences(appClazzLoader, JavaUtils.asList(excludedPackages), JavaUtils.asList(includedPackages));
     }
+
+    // free Reflection caches :
+    ThreadLocalMapUtils.clearFields();
+
+    // Java Beans intrspection cache :
+    Introspector.flushCaches();
 
     if (logB.isInfoEnabled()) {
       logB.info("ClassLoaderCleaner.clean : exit");
