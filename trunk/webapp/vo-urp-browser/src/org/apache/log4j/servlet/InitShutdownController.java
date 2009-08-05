@@ -29,7 +29,7 @@ import java.net.URL;
 import java.util.Properties;
 
 import javax.servlet.ServletContext;
-import org.ivoa.util.LogUtil;
+import org.apache.log4j.Log4JCleaner;
 import org.ivoa.util.SystemLogUtil;
 
 
@@ -107,8 +107,10 @@ public final class InitShutdownController {
       SystemLogUtil.warn("InitShutdownController.shutdownLog4j : now");
     }
 
-    // reset log4j configuration now :
-    LogUtil.log4JShutdown();
+    // After the Log4J shutdown, Loggers are no more usable :
+
+    // Release Log4J resources :
+    Log4JCleaner.shutdown();
   }
 
   /**

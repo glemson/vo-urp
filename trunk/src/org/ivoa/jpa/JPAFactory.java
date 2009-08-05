@@ -106,9 +106,6 @@ public final class JPAFactory extends SingletonSupport {
       managedInstances = null;
     }
 
-    // clean up custom logger instances :
-    CommonsLoggingSessionLog.onExit();
-
     if (logB.isInfoEnabled()) {
       logB.info("JPAFactory.clearStaticReferences : exit");
     }
