@@ -25,4 +25,9 @@
   <h3><a href="./Validate.do">XML Validator</a></h3>
   <h3><a href="./secure/Manager.do">XML Loader (requires a login!)</a></h3>
 
+  <p>
+    <a href="./Log4j.do">Log management (requires a login!)</a>
+  </p>
+
+
 <jsp:include page="footer.jsp" flush="false" />

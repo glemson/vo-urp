@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.commons.logging.impl.Log4JLogger;
+import org.apache.log4j.Log4JCleaner;
 import org.apache.log4j.Logger;
 import org.eclipse.persistence.sessions.Session;
 
@@ -208,6 +209,11 @@ public final class CommonsLoggingSessionLog extends AbstractSessionLog {
       managedInstances.clear();
       managedInstances = null;
     }
+
+    // After the Log4J shutdown, Loggers are no more usable :
+
+    // Release Log4J resources :
+    Log4JCleaner.shutdown();
 
     // Classloader unload problem with commons-logging :
     LogFactory.release(Thread.currentThread().getContextClassLoader());

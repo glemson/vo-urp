@@ -10,6 +10,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Appender;
 import org.apache.log4j.Hierarchy;
+import org.apache.log4j.Log4JCleaner;
 import org.apache.log4j.spi.LoggerRepository;
 import org.eclipse.persistence.logging.CommonsLoggingSessionLog;
 import org.ivoa.bean.SingletonSupport;
@@ -143,10 +144,13 @@ public final class LogUtil {
         instance.logBase.info("LogUtil.onExit : free singleton : " + SingletonSupport.getSingletonLogName(instance));
       }
 
-      // Release Log4J resources :
-      // org.apache.log4j.LogManager.shutdown();
-      log4JShutdown();
+      // After the Log4J shutdown, Loggers are no more usable :
 
+      // Release Log4J resources :
+      Log4JCleaner.shutdown();
+
+      // Classloader unload problem with commons-logging :
+      LogFactory.release(Thread.currentThread().getContextClassLoader());
       // force GC :
       instance.log = null;
       instance.logBase = null;
@@ -155,10 +159,10 @@ public final class LogUtil {
 
       // free singleton :
       instance = null;
-
-      // Classloader unload problem with commons-logging :
-      LogFactory.release(Thread.currentThread().getContextClassLoader());
     }
+
+    // clean up custom logger instances associated with eclipseLink :
+    CommonsLoggingSessionLog.onExit();
   }
 
   /**
