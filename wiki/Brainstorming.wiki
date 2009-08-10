@@ -31,7 +31,9 @@ First brainstorming on status and required work.
   * Testing, ..., look-and-feel
   * Discuss IDs and references , again !
     Example: problem with publisherDID resolver ..., need to use xmlid AND publisherDID for ...
-  * Custom metadata not represented in the public model but desired in a local implementation. Use some sterotype? Use case: extra identifiers, properties on PDR resources and components.
+  * Custom metadata not represented in the public model but desired in a local implementation. Use some sterotype? Use case: extra identifiers, properties on PDR resources and components. One way: do not gerenate these <<custom>> attributes in views.
+Or: DO generate them in views, but also add views without them, for example for publishing to VO. Alternative would be that the second set of views is written by the implementors as custom views for implementing something like SimDB/TAP.
+
   * 
 
 = Use cases for Views =
