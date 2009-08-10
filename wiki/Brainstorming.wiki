@@ -6,13 +6,6 @@ First brainstorming on status and required work.
 
 
 = VO-URP TBDs =
-  * Facade for the system to be used in applications...
-    * LB: 3 parts: 
-      * datamodelmanager, manages persist/retrieve
-      * queryfacade: IIdentity/IMetadatObject/I...
-      * transientobjectmanager (active/not-active,...): (un)marshall/register/flush etc
-  * Discuss IDs and references , again !
-    Example: problem with publisherDID resolver ..., need to use xmlid AND publisherDID for ...
 
   * UML profile
     * Constraints: refinement of container references. Simple subset of OCL?
@@ -24,7 +17,40 @@ First brainstorming on status and required work.
     * Custom metadata not represented in the public model but desired in a local implementation. Use some sterotype? Use case: extra identifiers, properties on PDR resources and components. One way: do not gerenate these <<custom>> attributes in views.
 Or: DO generate them in views, but also add views without them, for example for publishing to VO. Alternative would be that the second set of views is written by the implementors as custom views for implementing something like SimDB/TAP.
 
+  * Generated entities:
+    * XML schema: 
+      * multiple resources per document possible
+      * fragments? (Rick likes that)
+    * Database
+      * configurable? 
+      * other name for DTYPE ;)
+      * ..
+  * Infrastructure code
+    * Facade for the system to be used in applications...
+      * LB: 3 parts: 
+        * datamodelmanager, manages persist/retrieve
+        * queryfacade: IIdentity/IMetadatObject/I...
+        * transientobjectmanager (active/not-active,...): (un)marshall/register/flush etc
+    * IDs and references , again ! Example: problem with publisherDID resolver ..., need to use xmlid AND publisherDID for ...
 
+  * support IVOA features
+    * TAP 
+      * (a)sync
+      * all metadata
+    * REST
+      * get resource based on ID
+    * Denormalisation of Resources for more user-friendly registration.
+      Using XSLT, e.g. in SimDB.
+      Idea: register XSLT scripts for a resources. Readonly, or readwrite.
+
+  * Browser  
+    * sort resources by create time desc
+    * Editing resources online
+    * Pre-cooked but free ADQL queries. fix select and 1 from, rest free??
+      Use case: allow querying of HydroCluster FOFs, link result to SMac/Splotch...
+    * Query builder? (e.g. SpagoBI, others?)
+    * Look and feel
+      * Make tables behave nicer on vo-urp browser (CSS issue)
 
   * Views:
     * Support a "view framework", more generically views of the resources or parts of resources in a model. Custom JPA queries, JSP pages.
@@ -36,23 +62,13 @@ Or: DO generate them in views, but also add views without them, for example for 
       Using XSLT, e.g. in SimDB.
       Idea: register XSLT scripts for a resources. Readonly, or readwrite.
 
-
-  * Browser  
-    * sort resources by create time desc
-    * Editing resources online
-    * Pre-cooked but free ADQL queries. fix select and 1 from, rest free??
-      Use case: allow querying of HydroCluster FOFs, link result to SMac/Splotch...
-    * Query builder? (e.g. SpagoBI, others?)
-    * Look and feel
-      * Make tables behave nicer on vo-urp browser (CSS issue)
-
   * Testing  
     * unit tests
 
   * Documentation
     * Start writing documentation of whole system on the wiki.
       Including implementation choises etc. Goal is that new developers can get up to speed as well as users of the system...
-  * 
+  
 
 = More SimDB TBDs
 
