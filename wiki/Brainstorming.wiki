@@ -91,7 +91,8 @@ Or: DO generate them in views, but also add views without them, for example for 
 
 = Other things to do while Laurent is in Garching =
   * batch queue
-  * ...
+  * help configure gavosun1/2
+  * 
 
 
 
