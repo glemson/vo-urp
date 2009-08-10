@@ -9,12 +9,12 @@ First brainstorming on status and required work.
 
   * UML profile
     * Constraints: refinement of container references. Simple subset of OCL?
-      * For attributes declared uniqueInCollection, create a namedQuery or a simple method for a lookup. For example for the SimDB:Protocol.parameter collection create a simple method based on the SimDB:InputParameter?.name attribute. 
+      * For attributes declared uniqueInCollection, create a namedQuery or a simple method for a lookup. For example for the SimDB:Protocol.parameter collection create a simple method based on the SimDB:InputParameter.name attribute. 
     * Data vs Metadata.
       In metadata one could describe where the data is stored. 
       E.g. table name, column names for attributes..
       Or generate a table with a foreign key to metadata table (halos to snapshot/simulation).
-    * Custom metadata not represented in the public model but desired in a local implementation. Use some sterotype? Use case: extra identifiers, properties on PDR resources and components. One way: do not gerenate these <<custom>> attributes in views.
+    * Custom metadata not represented in the public model but desired in a local implementation. Use some sterotype? Use case: extra identifiers, properties on PDR resources and components. One way: do not generate these custom attributes (streotype?) in views.
 Or: DO generate them in views, but also add views without them, for example for publishing to VO. Alternative would be that the second set of views is written by the implementors as custom views for implementing something like SimDB/TAP.
 
   * Generated entities:
