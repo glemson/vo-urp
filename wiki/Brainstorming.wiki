@@ -25,7 +25,9 @@ First brainstorming on status and required work.
     Embed vo-urp browser insode other web application? Vice versa.
   * Make tables behave nicer on vo-urp browser (CSS issue)
   * Editing resources online
-  * ...
+  * Pre-cooked but free ADQL queries. fix select and 1 from, rest free??
+    Use case: allow querying of HydroCluster FOFs, link result to SMac/Splotch...
+  *  
 
 
 = Use cases for Views =
