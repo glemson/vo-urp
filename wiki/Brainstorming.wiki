@@ -89,7 +89,7 @@ Or: DO generate them in views, but also add views without them, for example for 
     Generate a default simulation for a given simulator.
 
 
-= Other things to do while Laurent is in Garching +
+= Other things to do while Laurent is in Garching =
   * batch queue
   * ...
 
