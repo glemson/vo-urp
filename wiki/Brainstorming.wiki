@@ -35,6 +35,8 @@ First brainstorming on status and required work.
 Or: DO generate them in views, but also add views without them, for example for publishing to VO. Alternative would be that the second set of views is written by the implementors as custom views for implementing something like SimDB/TAP.
 
   * Facade for the system to be used in applications...
+    LB: 2 parts: datamodelmanager, manages load/import/export
+                 queryfacade: IIdentity/IMetadatObject/I...
 
 = Use cases for Views =
   * PDR
