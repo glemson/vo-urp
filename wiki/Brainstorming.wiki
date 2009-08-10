@@ -15,11 +15,24 @@ First brainstorming on status and required work.
     Or generate a table with a foreign key to metadata table (halos to snapshot/simulation).
   * Generate template instance XML documents.
     Generate a default simulation for a given simulator.
-  * Support a "view framework", more generically views of the resources in a model.
-    Special case: denormalisation for user freiendly registration (e.g. in SimDB).
+  * Denormalisation of Resources for user friendly registration.
+    Using XSLT, e.g. in SimDB.
     Idea: register XSLT scripts for a resources. Readonly, or readwrite.
-  * Custom pages in vo-urp-browser.
+  * Support a "view framework", more generically views of the resources or parts of resources in a model. Custom JPA queries, JSP pages.
+  * Related: custom pages in vo-urp-browser.
+    Extend controller?
+    New cotrollers?
+    Embed vo-urp browser insode other web application? Vice versa.
+  * Make tables behave nicer on vo-urp browser (CSS issue)
+  * Editing resources online
+  * ...
 
+
+= Use cases for Views =
+  * PDR
+  * denormalisation
+  * hydrosims
+  * ...
 
 
 = Details =
