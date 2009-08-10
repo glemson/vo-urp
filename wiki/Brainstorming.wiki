@@ -77,7 +77,7 @@ Or: DO generate them in views, but also add views without them, for example for 
       Including implementation choises etc. Goal is that new developers can get up to speed as well as users of the system...
   
 
-= More SimDB TBDs
+= More SimDB TBDs =
   * SimDB: Quantity, Unit, Field redesign... 
   * Denormalisation of SimDB data model for user friendly registration.
     Using XSLT, e.g. in SimDB.
