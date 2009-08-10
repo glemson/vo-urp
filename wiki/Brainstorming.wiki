@@ -1,0 +1,30 @@
+#summary Ideas for further developments.
+
+= Introduction =
+Laurent is visiting Garching, Aug 8-16 to work on VO-URP.
+First brainstorming on status and required work.
+
+
+= What is to be done =
+  * Versioning of codes (metadata objects in general?). On one hand issue for SimDB, but may have generic solution.
+    Possibly an issue when multiple instances mirror (part of) each others resources.
+  * Constraints: refinement of container references
+  * Data vs Metadata.
+    In metadata one could describe where the data is stored. 
+    E.g. table name, column names for attributes..
+    Or generate a table with a foreign key to metadata table (halos to snapshot/simulation).
+  * Generate template instance XML documents.
+    Generate a default simulation for a given simulator.
+  * Support a "view framework", more generically views of the resources in a model.
+    Special case: denormalisation for user freiendly registration (e.g. in SimDB).
+    Idea: register XSLT scripts for a resources. Readonly, or readwrite.
+  * Custom pages in vo-urp-browser.
+
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
