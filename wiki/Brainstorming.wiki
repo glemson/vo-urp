@@ -8,7 +8,7 @@ First brainstorming on status and required work.
 = What is to be done =
   * Versioning of codes (metadata objects in general?). On one hand issue for SimDB, but may have generic solution.
     Possibly an issue when multiple instances mirror (part of) each others resources.
-  * Constraints: refinement of container references
+  * Constraints: refinement of container references. Simple subset of OCL?
   * Data vs Metadata.
     In metadata one could describe where the data is stored. 
     E.g. table name, column names for attributes..
@@ -29,12 +29,26 @@ First brainstorming on status and required work.
     Use case: allow querying of HydroCluster FOFs, link result to SMac/Splotch...
   * Query builder? (e.g. SpagoBI, others?)
   * Testing, ..., look-and-feel
-
+  * Discuss IDs and references , again !
+    Example: problem with publisherDID resolver ..., need to use xmlid AND publisherDID for ...
+  * Custom metadata not represented in the public model but desired in a local implementation. Use some sterotype? Use case: extra identifiers, properties on PDR resources and components.
+  * 
 
 = Use cases for Views =
   * PDR
   * denormalisation
   * hydrosims
+  * ...
+
+
+= Identifiers, references etc =
+
+
+
+
+
+= SimDB issues =
+  * Get rid of non-specification directories in volute/simdb
   * ...
 
 
