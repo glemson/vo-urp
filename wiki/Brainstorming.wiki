@@ -61,6 +61,13 @@ Or: DO generate them in views, but also add views without them, for example for 
     * Denormalisation of Resources for more user-friendly registration.
       Using XSLT, e.g. in SimDB.
       Idea: register XSLT scripts for a resources. Readonly, or readwrite.
+    * Use cases for Views 
+      * PDR
+      * denormalisation
+      * hydrosims
+      * ...
+
+
 
   * Testing  
     * unit tests
@@ -74,6 +81,8 @@ Or: DO generate them in views, but also add views without them, for example for 
   * SimDB: Quantity, Unit, Field redesign... 
   * Denormalisation of SimDB data model for user friendly registration.
     Using XSLT, e.g. in SimDB.
+  * Clean up
+    * Get rid of non-specification directories in volute/simdb
   * Versioning of codes (metadata objects in general?). On one hand issue for SimDB, but may have generic solution.
     Possibly an issue when multiple instances mirror (part of) each others resources.
   * Generate template instance XML documents.
@@ -84,23 +93,6 @@ Or: DO generate them in views, but also add views without them, for example for 
   * batch queue
   * ...
 
-
-= Use cases for Views =
-  * PDR
-  * denormalisation
-  * hydrosims
-  * ...
-
-
-= Identifiers, references etc =
-
-
-
-
-
-= SimDB issues =
-  * Get rid of non-specification directories in volute/simdb
-  * ...
 
 
 = Details =
