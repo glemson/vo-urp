@@ -37,7 +37,8 @@ Or: DO generate them in views, but also add views without them, for example for 
   * Facade for the system to be used in applications...
     LB: 2 parts: datamodelmanager, manages load/import/export
                  queryfacade: IIdentity/IMetadatObject/I...
-
+  * Start writing documentation of whole system on the wiki.
+Including implementaiton choises etc. Goal is that new developers can get up to speed as well as users of the system...
 = Use cases for Views =
   * PDR
   * denormalisation
