@@ -27,7 +27,8 @@ First brainstorming on status and required work.
   * Editing resources online
   * Pre-cooked but free ADQL queries. fix select and 1 from, rest free??
     Use case: allow querying of HydroCluster FOFs, link result to SMac/Splotch...
-  *  
+  * Query builder? (e.g. SpagoBI, others?)
+  * Testing, ..., look-and-feel
 
 
 = Use cases for Views =
