@@ -71,14 +71,19 @@ Or: DO generate them in views, but also add views without them, for example for 
   
 
 = More SimDB TBDs
-
+  * SimDB: Quantity, Unit, Field redesign... 
+  * Denormalisation of SimDB data model for user friendly registration.
+    Using XSLT, e.g. in SimDB.
   * Versioning of codes (metadata objects in general?). On one hand issue for SimDB, but may have generic solution.
     Possibly an issue when multiple instances mirror (part of) each others resources.
   * Generate template instance XML documents.
     Generate a default simulation for a given simulator.
-  * Denormalisation of SimDB data model for user friendly registration.
-    Using XSLT, e.g. in SimDB.
-  * SimDB: Quantity, Unit, Field redesign... 
+
+
+= Other things to do while Laurent is in Garching +
+  * batch queue
+  * ...
+
 
 = Use cases for Views =
   * PDR
