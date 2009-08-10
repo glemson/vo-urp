@@ -34,7 +34,7 @@ First brainstorming on status and required work.
   * Custom metadata not represented in the public model but desired in a local implementation. Use some sterotype? Use case: extra identifiers, properties on PDR resources and components. One way: do not gerenate these <<custom>> attributes in views.
 Or: DO generate them in views, but also add views without them, for example for publishing to VO. Alternative would be that the second set of views is written by the implementors as custom views for implementing something like SimDB/TAP.
 
-  * 
+  * Facade for the system to be used in applications...
 
 = Use cases for Views =
   * PDR
