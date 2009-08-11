@@ -15,5 +15,5 @@ Add your content here.  Format your content with:
 
 
 = Inheriting attribute data types =
-Example: SimDB.Literal base class of DoubleLiteral and StringLiteral.
+Example: SimDB.Literal base class of 'DoubleLiteral' and 'StringLiteral'.
 How do we support usage of the base class in particular for Database mapping?
