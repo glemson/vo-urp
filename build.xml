@@ -119,7 +119,7 @@
 	<presetdef name="xslt2">
 		<!-- The processor=SaxonLiaison setting causes our custom XSLTLiaison class to be used. -->
 		<!-- This works around bug #41314: http://issues.apache.org/bugzilla/show_bug.cgi?id=41314 -->
-		<xslt force="true" classpath="${libs}/saxon9.jar:${libs}/anthack/" processor="SaxonLiaison">
+		<xslt force="true" classpath="${libs}/saxon9.jar:${libs}/anthack/libs/ant-trax.jar:${libs}/anthack/" processor="SaxonLiaison">
 			<outputproperty name="{http://saxon.sf.net/}indent-spaces" value="2" />
 		</xslt>
 
