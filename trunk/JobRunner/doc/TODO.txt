@@ -1,0 +1,43 @@
+
+TBD first :
+
+- Clean up / refactoring (jsp instead of JobServlet code (actions list / detail / show)) => result page ... 
+
+- move results to persistent directory (archive)
+- show all files in result (detail) page 
+		+ download them per file  (apache directory browsing first)  
+		+ donwload all files or selected files as a zip
+
+- allow post processing runs 
+		+ same job (kind of a pipeline) 
+			- configuration to do (new PipelineRunContext)
+			- list of ProcessContext instances for gnuplots (for example) 
+		+ synchronous child job : on request process per result (regexp pattern to recognize which configuration // ProcessContext to instanciate)
+
+pages:
+- show jobqueue per session with more details per jobs
+
+- start page: start EyalsSAM,...
+              show my sessions queue
+
+- monitoring : 
+	add the kill button (kill action)
+	add a time limit for the execution ...
+	add a size limit on files like a quota management per user ....
+
+- Create a googlecode project
+
+Idea for later :
+- user management =
+		- queue priorities & restrictions (PriorityQueue class)
+		
+- queue management = 1 dedicated ThreadPool per kind of jobs (RunContext families)
+
+- persistent queue (DB) using JPA simple mapping (RunContext objects)
+
+- LegacyApplication descriptor (xml schema) to produce  both : 
+		- the input Parameter page (XSLT) (so JAXB required)
+		- RunContext instantiation (pipeline or simple jobs (JavaContext, ProcessContext ...))
+
+- REST interface (dedicated machine for the Job runner web app)
+- load balancing = support multiple executor machines
