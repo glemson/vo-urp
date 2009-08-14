@@ -25,7 +25,7 @@
     Root directory 
     <table><tr><th>File name</th><th>Size (bytes)</th><th>Modified</th></tr>
 <dir:Directory path="${requestScope.resultDir}" > 
-<tr><td> <a href="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}"><%=fileName%></a></td><td>  <%=fileSize%> </td><td><%=fileDate%> </td></tr>
+<tr><td> <a href="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/<%=fileName%>"><%=fileName%></a></td><td>  <%=fileSize%> </td><td><%=fileDate%> </td></tr>
 </dir:Directory> 
 </table>
 

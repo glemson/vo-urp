@@ -21,6 +21,7 @@ import org.ivoa.runner.FileManager;
 import org.ivoa.util.runner.LocalLauncher;
 import org.ivoa.util.runner.RootContext;
 import org.ivoa.util.runner.RunContext;
+import org.ivoa.util.runner.RunState;
 import org.ivoa.util.runner.process.ProcessContext;
 import org.ivoa.web.servlet.JobServlet;
 
@@ -140,5 +141,19 @@ public class EyalsSAM extends JobServlet{
 		   index1=index2+FREE_PARAM_DELIMITER.length();// TODO optimize
 		}
 	}
-
+    /**
+     * Perform the event from the given run context
+     * @param rootCtx root context
+     * @param runCtx  current run context
+     * @return boolean: true of the processing should continue, false if the job should be terminated
+     */
+    public boolean performTaskDone(final RootContext rootCtx, final RunContext runCtx) {
+    	boolean theresMore = false;
+    	if("main".equals(runCtx.getName()))
+    	{
+    		//TODO add plotting tasks
+        	theresMore = true;
+    	}
+    	return theresMore;
+    }
 }
