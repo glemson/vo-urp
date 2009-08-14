@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="JobRunner" default="about" basedir=".">
+  
+  <description>
+    Job Runner Web application.
+    Build file 
+  </description>
+  
+  
+  <!-- set global properties for this build -->
+
+  <!-- loads config file -->
+  <property file="build.properties"/>
+  <fail unless="build.file" message="bad configuration in build.properties !" />
+
+  <condition property="tomcat.precompile.do">
+        <equals arg1="${tomcat.precompile}" arg2="true" trim="true" />
+  </condition>
+
+  <!-- path & files -->
+  <property name="root" location="."/>
+
+  <property name="properties" location="./properties"/>
+ 
+  
+  <property name="sources" location="./src"/>
+  <property name="web-content" location="./web"/>
+
+  <property name="libs" location="./lib"/>
+  
+  <property name="dist" location="./dist"/>
+
+  <property name="javadoc" location="${dist}/doc" />
+  
+  
+  <!-- build outputs -->
+  <property name="build" location="./build"/>
+  
+  
+  <!-- classpath -->
+  <path id="project.class.path">
+
+    <fileset dir="${libs}">
+      <include name="*.jar"/>
+    </fileset>
+
+    <!-- J2EE 1.4 specifications : Servlet 2.4 / JSP 2.0 -->
+    <!-- Java API for JavaServer Pages - 2.0.public_draft -->
+    <pathelement location="${libs}/server/jsp-api.jar"/>
+    <!-- Java API for Servlets - 2.4.public_draft -->
+    <pathelement location="${libs}/server/servlet-api.jar"/>
+  </path>
+
+  
+  <!-- checks if build is necessary : java source code & libraries -->
+  <uptodate property="build.notRequired">
+    <srcfiles dir= "${sources}" includes="**/*"/>
+    <srcfiles dir= "${web-content}" includes="**/*"/>
+    <srcfiles dir= "${properties}" includes="**/*"/>
+    <srcfiles dir= "${libs}" includes="**/*.jar"/>
+    <mapper type="merge" to="${dist}/${build.file}"/>
+  </uptodate>  
+
+
+  
+  
+  <!-- targets -->
+
+  <!-- target about : -->
+  <target name="about" depends="init" description="show information for public targets">
+    <echo>available ant targets : </echo>
+    <echo>-------------------------------------------------------------------------------</echo>
+    <echo>  - makeAll            : makes all tasks (clean, compile, jar, javadoc) </echo>
+    <echo>  - forceMakeAll       : CLEANS outputs and then make all transformations (makeAll) </echo>
+    <echo>  - makeDoc            : makes javadoc only </echo>
+    <echo>-------------------------------------------------------------------------------</echo>
+  </target>
+  
+  
+  
+  
+  <!-- target init : timestamp -->
+  <target name="init">
+    <tstamp>
+      <format property="build.date" pattern="dd/MM/yyyy HH:mm:ss" />
+    </tstamp>
+    
+    <echo>-------------------------------------------------------------------------------</echo>
+    <echo>  ${vendor}  ::  ${title} - ${version} </echo>
+    <echo>-------------------------------------------------------------------------------</echo>
+    <echo> Build File </echo>
+    <echo>-------------------------------------------------------------------------------</echo>
+    <echo> contacts     : ${build.by}  </echo>
+    <echo> build date   : ${build.date} </echo>
+    <echo></echo>
+    <echo> Tomcat Home  : ${tomcat.home}</echo>
+    <echo>-------------------------------------------------------------------------------</echo>
+    
+  </target>
+
+
+
+  <!-- target cleanup : clean build files -->
+  <target name="cleanup">
+
+    <echo message="creating directories ..." />
+
+    <mkdir dir="${dist}"/>
+    <mkdir dir="${javadoc}"/>
+
+    <echo message="cleaning directory : ${build} ..." />
+    
+    <delete includeemptydirs="true" verbose="true" failonerror="false">
+      <fileset dir="${build}" includes="**/*"/>
+    </delete>
+    
+    <echo message="cleaned directory : ${build} ." />
+    
+  </target>
+
+
+
+
+  <!-- target clean : clean dist and javadoc files -->
+  <target name="clean" depends="cleanup">
+    
+    <echo message="creating directories ..." />
+    
+    <mkdir dir="${dist}"/>
+    <mkdir dir="${javadoc}"/>
+    
+    <echo message="cleaning directory : ${dist} ..." />
+    
+    <delete includeemptydirs="false" verbose="true">
+      <fileset dir="${dist}" includes="**/*"/>
+    </delete>
+    
+    <echo message="cleaned directory : ${dist} ." />
+    
+  </target>
+  
+  
+  
+  
+  <!-- target makeAll : cleans, compiles, packages -->
+  <target name="makeAll" description="make all transformations">
+    <ant target="makeAllIfNeeded" inheritAll="false" />
+    <echo message="makeAll ${title} : done."/>
+  </target>
+
+  
+  
+  
+  <!-- main target : force to makeAll -->
+  <target name="forceMakeAll" depends="clean" description="make all targets (forced)">
+    <ant target="makeAllIfNeeded" inheritAll="false" />
+    <echo>forceMakeAll ${title} : done.</echo>
+  </target>
+
+  
+  
+  
+  <target name="makeAllIfNeeded" depends="init" unless="build.notRequired">
+    <buildnumber file="build.number"/>    
+
+    <echo>-------------------------------------------------------------------------------</echo>
+    <echo> Build Number : ${build.number}</echo>
+    <echo>-------------------------------------------------------------------------------</echo>
+    
+    <ant target="compile" />
+    <ant target="cleanup" />
+    <ant target="makeDoc" />
+
+    <echo message="makeAllIfNeeded ${title} : done."/>
+  </target>
+
+  
+  
+  
+  <!-- target makeDoc : creates javadoc from source code -->
+  <target name="makeDoc">
+    
+    <echo message="making ${title} javadoc ..."/>
+    
+    <javadoc  additionalparam="-notimestamp"
+              destdir="${javadoc}"
+              access="private" 
+              author="true"
+              use="false"
+              windowtitle="${title} ${version}" >
+      
+      <classpath refid="project.class.path"/>
+      
+      <fileset dir="${sources}" includes="**/*.java" defaultexcludes="yes" />
+      
+    </javadoc>
+    
+    <echo message="${title} javadoc : done."/>
+  </target>
+  
+  
+  
+  
+  <!-- Compile java files and jar them -->
+  <target name="compile" depends="init" unless="build.notRequired">
+    
+    <echo message="compile ${title} ..."/>
+    <echo message="compile from : ${sources}"/>
+    <echo message="compile to   : ${build}"/>
+    
+    <mkdir dir="${build}"/>
+    
+    <javac sourcepath="" srcdir="${sources}" destdir="${build}" listfiles="false" 
+           fork="true" verbose="false" encoding="UTF-8"
+           debug="on" deprecation="on" optimize="on" casesensitive="true" 
+           source="1.5" target="1.5">
+      
+      <classpath refid="project.class.path" />
+      
+      <include name="**/*.java"/>
+    </javac>
+
+    <!-- move properties with compiled classes -->
+    <copy todir="${build}" preservelastmodified="true" verbose="true">
+      <fileset dir="${properties}">
+        <include name="*.*"/>
+      </fileset>
+    </copy>
+
+    <war destfile="${dist}/${build.file}" webxml="${web-content}/WEB-INF/web.xml" compress="true" roundup="true">
+      <manifest>
+        <attribute name="Built-By" value="${build.by}"/>
+        <attribute name="Built-Date" value="${build.date}"/>
+
+        <attribute name="Build-Jdk" value="${java.vm.version}"/>
+        <attribute name="Build-Os" value="${os.name} ${os.version} - ${os.arch}"/>
+
+        <section name="Common">
+          <attribute name="Specification-Title" value="${title}"/>
+          <attribute name="Specification-Version" value="${version}"/>
+          <attribute name="Specification-Vendor" value="${vendor}"/>
+          <attribute name="Implementation-Title" value="${title}"/>
+          <attribute name="Implementation-Version" value="${version} - ${build.date}"/>
+        </section>
+      </manifest>
+
+      <fileset dir="${web-content}">
+        <include name="META-INF/*.*"/>
+        <include name="WEB-INF/*.tld"/>
+        <include name="index.html"/>
+        <include name="**/*.jsp"/>
+        <include name="static/**/*.*"/>
+        <exclude name=".*"/>
+      </fileset>
+      <lib dir="${libs}">
+        <include name="*.jar"/>
+      </lib>
+      <classes dir="${build}">
+        <include name="**/*.class"/>
+        <include name="**/*.properties"/>
+        <include name="log4j.*"/>
+      </classes>
+    </war>
+
+    <delete dir="${web-content}/WEB-INF/tags"/>
+    
+    <echo message="compile ${title} : done."/>
+    
+  </target>
+  
+  
+
+
+  <!-- deploys war archive in tomcat -->
+  <target name="deployTomcat" depends="forceMakeAll" description="deploy web app in tomcat">
+
+    <!-- check tomcat home -->
+    <available property="tomcat.check" file="${tomcat.home}/conf/server.xml" />
+
+    <ant target="useTomcat" />
+
+  </target>
+
+
+
+
+  <!-- deploys war archive in tomcat if present -->
+  <target name="useTomcat" if="tomcat.check">
+
+    <!-- tomcat webapps folder -->
+    <property name="deploy.to" value="${tomcat.home}/webapps"/>
+
+    <!-- removes log file if possible -->
+    <delete file="${log.file}" verbose="true"  failonerror="false" />
+
+    <!-- indicates if the file is still present = tomcat is running -->
+    <available property="tomcat.webapp.locked" file="${log.file}" />
+
+    <ant target="cleanWebApp" />
+
+    <copy file="${dist}/${build.file}" todir="${deploy.to}" verbose="true" />
+
+    <property name="webapp.name" value="${build.name}"/>
+
+    <mkdir dir="${deploy.to}/${webapp.name}"/>
+    <unwar src="${deploy.to}/${build.file}" dest="${deploy.to}/${webapp.name}" overwrite="true"/>
+
+    <ant target="tomcatJasper" />
+    <ant target="compileJSP" />
+
+  </target>
+
+
+
+
+  <target name="cleanWebApp" unless="tomcat.webapp.locked">
+
+      <!-- removes previously deployed web application if possible -->
+    <delete dir="${deploy.to}/${webapp.name}" verbose="true" failonerror="false"/>
+
+    <delete verbose="true" failonerror="false">
+        <fileset dir="${deploy.to}/${webapp.name}/WEB-INF/src"/>
+        <fileset dir="${deploy.to}/${webapp.name}/WEB-INF/classes/org/apache/jsp"/>
+  	</delete>
+
+  </target>
+
+
+
+
+  <target name="tomcatJasper" if="tomcat.precompile.do">
+
+    <taskdef classname="org.apache.jasper.JspC" name="jasper">
+      <classpath id="jspc.classpath">
+        <pathelement location="${java.home}/../lib/tools.jar"/>
+        <fileset dir="${tomcat.home}/bin">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${tomcat.home}/lib">
+          <include name="*.jar"/>
+        </fileset>
+      </classpath>
+    </taskdef>
+
+    <jasper verbose="9"
+            validateXml="false"
+            uriroot="${deploy.to}/${webapp.name}"
+            webXmlFragment="${deploy.to}/${webapp.name}/WEB-INF/generated_web.xml"
+            addWebXmlMappings="true"
+            outputDir="${deploy.to}/${webapp.name}/WEB-INF/src"
+            failOnError="false"
+
+            compilerSourceVM="1.5"
+            compilerTargetVM="1.5"
+            poolingEnabled="true"
+            trimSpaces="true"
+            />
+
+  </target>
+
+
+
+
+  <target name="compileJSP" if="tomcat.precompile.do">
+
+    <javac sourcepath=""
+           srcdir="${deploy.to}/${webapp.name}/WEB-INF/src"
+           destdir="${deploy.to}/${webapp.name}/WEB-INF/classes"
+           listfiles="false" fork="true" verbose="false" encoding="UTF-8"
+           debug="on" deprecation="on" optimize="on" casesensitive="true"
+           source="1.5" target="1.5">
+
+      <classpath>
+        <pathelement location="${deploy.to}/${webapp.name}/WEB-INF/classes"/>
+        <fileset dir="${deploy.to}/${webapp.name}/WEB-INF/lib">
+          <include name="*.jar"/>
+        </fileset>
+        <pathelement location="${tomcat.home}/lib"/>
+        <fileset dir="${tomcat.home}/lib">
+          <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${tomcat.home}/bin">
+          <include name="*.jar"/>
+        </fileset>
+      </classpath>
+
+      <include name="**" />
+      <exclude name="tags/**" />
+      <exclude name="**/*.smap" />
+    </javac>
+
+  </target>
+
+</project>
