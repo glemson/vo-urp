@@ -150,7 +150,7 @@ public class JobServlet extends BaseServlet implements JobListener {
         final RootContext rootCtx = LocalLauncher.prepareMainJob(getName(), request.getRemoteUser(), workDir, MAX_LINES, writeLogFile);
 
         // add the first task in the root context :
-        rootCtx.addChild(LocalLauncher.prepareChildJob(rootCtx, "main", command));
+        LocalLauncher.prepareChildJob(rootCtx, "main", command);
         
         // puts the job in the job queue :
         // can throw IllegalStateException if job not queued :

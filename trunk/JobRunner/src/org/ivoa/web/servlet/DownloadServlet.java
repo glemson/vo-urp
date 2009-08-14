@@ -71,7 +71,7 @@ public class DownloadServlet extends BaseServlet {
             log.info("DownloadServlet : pathInfo = " + pathInfo);
         }
 
-        final String user = pathInfo.substring(0, pathInfo.indexOf('/'));
+        final String user = pathInfo.substring(1, pathInfo.indexOf("/",1));
 
         if ((user != null) && user.equals(request.getRemoteUser())) {
             File file = new File(FileManager.ARCHIVE + pathInfo);
