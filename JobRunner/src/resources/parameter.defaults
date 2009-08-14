@@ -1,0 +1,35 @@
+% cosmology         
+h		        0.73         
+Omega_Lambda            0.75         
+Omega_M		        0.25         
+Omega_B		        0.045         
+sigma8		        0.9         
+gamma		        -1         
+% baryonic recipes 
+f_s		        2.128  0.58  0  -0.82  0.00067  0         
+f_d		        0.64  -0.205  0  0.9494  -0.0003   0         
+f_c		        0.48  0.001  0  -1.07 -0.001   0  100 0   
+f_ac		        0.0   0   0         
+f_ah		        0.18  0   0         
+halo_thresh	        1e12         
+alpha_c		        0         
+alpha_h			0.25         
+merge_coeff		0.56 0.7 0         
+z_reion			7          
+tdyn_f			0.2         
+f_recycle		0.5         
+% run parameters         
+halo_type		0          
+first_file		0          
+last_file		0         
+volume_mpc		85.62          
+output_n		14         
+output_z		0 0.2 0.4 0.6 0.8 1.0 1.2 1.5 2.0 2.5 3.0 3.5 4.0  5.0          
+nsteps			20         
+run_mode		0
+%  BC03 directory         
+e:/data/BC03/models/Padova1994/chabrier/       
+% Trees directory         
+e:/data/millimil/treedata/         
+% Output catalogs directory         
+e:/data/eyalssam/   
