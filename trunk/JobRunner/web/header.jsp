@@ -23,5 +23,8 @@
   </h1>
 
 <c:if test="${empty requestScope.noLink}">
-  <p>Back to: <a href="${pageContext.request.contextPath}/index.jsp" title="go to Index"><b>Index</b></a> - <a href="javascript:history.go(-1)" title="go back"><b>Previous Page</b></a></p>
+  <p>Go to: <a href="${pageContext.request.contextPath}/index.jsp" title="go to Index"><b>Index</b></a> 
+  - <a href="javascript:history.go(-1)" title="go back"><b>Previous Page</b></a>
+  - <a href="Jobs.do?action=list"><b>Job Queue</b></a>
+  </p>
 </c:if>
