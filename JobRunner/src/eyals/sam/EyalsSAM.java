@@ -24,9 +24,15 @@ import org.ivoa.util.runner.RunContext;
 import org.ivoa.util.runner.RunState;
 import org.ivoa.util.runner.process.ProcessContext;
 import org.ivoa.web.servlet.JobServlet;
+import org.ivoa.web.servlet.JobStateException;
 
 public class EyalsSAM extends JobServlet{
 
+	// ~ the tasks
+	public static final String MAIN_TASK = "main";
+	public static final String PLOT_TASK = "plot";
+	
+	
 	public static final String FREE_PARAM_DELIMITER = "___";
 	public static final String FIXED_PARAM_DELIMITER = "%%%";
 	private String paramtemplate;
@@ -35,8 +41,22 @@ public class EyalsSAM extends JobServlet{
 	private String bc03Dir;
 	private String executable;
 	private String name;
+	
 	@Override
-    protected String[] prepareJobParameters(final String workDir, HttpServletRequest req) throws IOException {
+	protected void initialiseMainJob(RootContext rootCtx, HttpServletRequest request) throws JobStateException
+	{
+		try
+		{
+		String[] command = prepareMainTask(rootCtx.getWorkingDir(), request);
+        LocalLauncher.prepareChildJob(rootCtx, MAIN_TASK, command);
+		} catch(Exception e)
+		{
+			throw new JobStateException(e);
+		}
+	}
+	
+	
+    private String[] prepareMainTask(final String workDir, HttpServletRequest req) throws IOException {
 		// TODO Auto-generated method stub
 		String parameters = paramtemplate;
 		for(String param : freeParameters)
@@ -63,11 +83,6 @@ public class EyalsSAM extends JobServlet{
 		
 		return new String[]{executable};
 	}
-	@Override
-    protected String computeWorkingDirectory(final String baseWorkDir) {
-		long jobId = System.currentTimeMillis();
-		return baseWorkDir+"/"+name+"/"+jobId;
-    }
 
     /**
      * Return the job default folder default/

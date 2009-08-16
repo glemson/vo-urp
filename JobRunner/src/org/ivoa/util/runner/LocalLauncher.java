@@ -439,7 +439,7 @@ public final class LocalLauncher {
 
       } finally {
     	  
-    	  rootCtx.getRing().add("Job Ended.");
+    	  rootCtx.getRing().add("Job '"+rootCtx.getName()+"'Ended.");
     	  
         // set finished state :
     	  rootCtx.setState(ok ? RunState.STATE_FINISHED_OK : RunState.STATE_FINISHED_ERROR);
@@ -492,7 +492,7 @@ public final class LocalLauncher {
 	
 	      // ring buffer is not synchronized because threads have finished their jobs in ProcessRunner.run(runCtx) :
 	      if (status == 0) {
-	        runCtx.getRing().add("Task Ended.");
+	        runCtx.getRing().add("Task '"+runCtx.getName()+"' Ended.");
 	      } else {
 	        runCtx.getRing().add(ProcessRunner.ERR_PREFIX, "Task Ended with a failure exit code : " + status + ".");
 	      }
