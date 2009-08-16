@@ -7,10 +7,13 @@
 
 <jsp:include page="header.jsp" flush="false"/>
 
-<h3>Actions</h3>
+<h3>Available applications</h3>
 
 <p>
-    <a href="./EyalsSAM/input.jsp">Start a job running Eyals SAM</a>
+    <a href="./apps/EyalsSAM/input.jsp">Start a job running Eyals SAM</a>
+  </p>
+<p>
+    <a href="./apps/Millimil/input.jsp">Query millimil</a>
   </p>
 
 
