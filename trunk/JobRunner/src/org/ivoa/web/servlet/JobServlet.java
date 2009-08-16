@@ -181,7 +181,7 @@ public class JobServlet extends BaseServlet implements JobListener {
         
         request.setAttribute("queue", list);
         
-        return "default/queue.jsp";
+        return "./queue.jsp";
     }
 
     protected String showJob(final HttpServletRequest request, final Integer id) {

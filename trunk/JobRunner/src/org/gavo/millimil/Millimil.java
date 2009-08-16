@@ -33,9 +33,12 @@ public class Millimil extends JobServlet{
 	public static final String RUNQUERY_TASK = "runQuery";
 	public static final String RUNQUERY_RESULT_FILE = "result.csv";
 	public static final String RUNQUERY_ERROR_FILE = "error.txt";
+	public static final String RPLOT_TASK = "Rplot";
 	private String name;
 	private String executable;
 	private String baseURL;
+	private String Rcmd;
+	private String Rscript;
 
 	@Override
 	protected void initialiseMainJob(RootContext rootCtx, HttpServletRequest request) throws JobStateException
@@ -59,9 +62,14 @@ public class Millimil extends JobServlet{
 		return new String[]{executable, "-O", RUNQUERY_RESULT_FILE,"\""+url+"\""};
 	}
 	
+    private void prepareRPlotTask(RootContext rootCtx)
+    {
+       String[] cmd = new String[]{Rcmd,"BATCH","--no-save",Rscript, "Rplot.log"};
+       LocalLauncher.prepareChildJob(rootCtx, RPLOT_TASK, cmd);
+    }
 
     /**
-     * Return the job default folder default/
+     * Return the application name
      * @return
      */
     public String getName() {
@@ -97,6 +105,9 @@ public class Millimil extends JobServlet{
 		name = config.getInitParameter("name");
 		executable = config.getInitParameter("executable");
 		baseURL=config.getInitParameter("baseURL");
+		
+		Rcmd = config.getInitParameter("Rcmd");
+		Rscript = FileManager.LEGACYAPPS+"/"+name+"/"+config.getInitParameter("Rscript");
 	}
     /**
      * Perform the event from the given run context
@@ -122,14 +133,22 @@ public class Millimil extends JobServlet{
     				reader.close();
     				if(!ok)
     					FileManager.moveFile(result, new File(runCtx.getWorkingDir()+"/"+RUNQUERY_ERROR_FILE));
+    				else
+    					prepareRPlotTask(runCtx.getParent());
     			} catch(IOException e)
     			{
-    				// TODO TBD if we should throw an exception here
+    				// TODO TBD should we throw an exception here?
     				ok = false;
     			}
     		}
     		else
     			ok = false;
+    	} else if(RPLOT_TASK.equals(runCtx.getName()))
+    	{
+    		if(runCtx.getState() == RunState.STATE_FINISHED_OK)
+    		{
+    		    	
+    		}
     	}
     	return ok;
     }
