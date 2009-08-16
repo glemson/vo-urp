@@ -1,5 +1,6 @@
 package org.ivoa.web.servlet;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class JobServlet extends BaseServlet implements JobListener {
      */
     public final String getApplicationFolder()
     {
-       return getName()+"/";
+       return "apps/"+getName()+"/";
     }
     /** Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      * @param request servlet request
@@ -86,11 +87,12 @@ public class JobServlet extends BaseServlet implements JobListener {
         String view = null;
         try {
             if (ACTION_START_JOB.equals(action)) {
-                final String workDir = computeWorkingDirectory(FileManager.getSessionFolder(session.getId(), user).getAbsolutePath().replace('\\','/')) + "/";
+                final String workDir = createWorkingDirectory(FileManager.getSessionFolder(session.getId(), user).getAbsolutePath().replace('\\','/')) + "/";
 
-                final String[] command = prepareJobParameters(workDir, request);
+                // TBD next commented out, should be performed in initialisation of main job
+                // final String[] command = prepareJobParameters(workDir, request);
                 
-                final RootContext runCtx = startJob(request, workDir, command);
+                final RootContext runCtx = startJob(request, workDir);//, command);
                 if (runCtx != null) {
                     view = null; // showJob(request, runCtx.getId());
                     
@@ -137,7 +139,9 @@ public class JobServlet extends BaseServlet implements JobListener {
 
     }
 
-    private RootContext startJob(final HttpServletRequest request, final String workDir, final String[] command) {
+    private RootContext startJob(final HttpServletRequest request, final String workDir)//, final String[] command) 
+    	throws JobStateException
+    {
         if (log.isDebugEnabled()) {
             log.debug("JobServlet.startJob : enter");
         }
@@ -149,8 +153,7 @@ public class JobServlet extends BaseServlet implements JobListener {
         
         final RootContext rootCtx = LocalLauncher.prepareMainJob(getName(), request.getRemoteUser(), workDir, MAX_LINES, writeLogFile);
 
-        // add the first task in the root context :
-        LocalLauncher.prepareChildJob(rootCtx, "main", command);
+        initialiseMainJob(rootCtx, request);// includes if necessary adding first child to main and preparing 
         
         // puts the job in the job queue :
         // can throw IllegalStateException if job not queued :
@@ -189,7 +192,8 @@ public class JobServlet extends BaseServlet implements JobListener {
         return getApplicationFolder() + "detail.jsp";
     }
 
-    
+    protected void initialiseMainJob(RootContext rootCtx, HttpServletRequest request) throws JobStateException
+    {}
     
     /**
      * Perform the event from the given root context
@@ -227,19 +231,34 @@ public class JobServlet extends BaseServlet implements JobListener {
      * @param runCtx  current run context
      * @return boolean: true of the processing should continue, false if the job should be terminated
      */
-    public boolean performTaskDone(final RootContext rootCtx, final RunContext runCtx) {
+    public boolean performTaskDone(final RootContext rootCtx, final RunContext runCtx) 
+	{
     	return runCtx.getState() == RunState.STATE_FINISHED_OK;
     }
 
-    protected String computeWorkingDirectory(final String baseWorkDir) {
-    	return baseWorkDir;
+    /**
+     * 
+     * GL: changed from simply returning baseWorkDir to adding the name of the program and
+     * a random uuid. 
+     * 
+     * @param baseWorkDir
+     * @return
+     */
+    protected final String createWorkingDirectory(final String baseWorkDir) throws IOException {
+//    	return baseWorkDir;
+		String jobId = java.util.UUID.randomUUID().toString();//System.currentTimeMillis();
+		String workDir = baseWorkDir+"/"+getName()+"/"+jobId;
+		File dir = new File(workDir);
+		if(!dir.exists())
+			dir.mkdirs();
+		return workDir;
     }
     
     
     /*
-     * Write parameter files for momaf job, filled with form from momaf_downloads.jsp
+     * 
      */
-    protected String[] prepareJobParameters(final String workDir, HttpServletRequest request) throws IOException {
+    private String[] prepareJobParameters(final String workDir, HttpServletRequest request) throws IOException {
         return new String[]{
                     "/usr/bin/tail", "-10000000", "/home/lbourges/dev/dev/JobRunner/lib/apache-LICENSE-2.0.txt"
                 };

@@ -1,5 +1,7 @@
 package org.ivoa.util.runner;
 
+import org.ivoa.web.servlet.JobStateException;
+
 /**
  * This interface handle job and queue events.
  * @see RunState
