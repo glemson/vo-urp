@@ -19,7 +19,6 @@ import org.ivoa.env.ApplicationMain;
 import org.ivoa.jaxb.XmlBindException;
 import org.ivoa.jpa.JPAFactory;
 
-import org.ivoa.simdb.Quantity;
 import org.ivoa.simdb.experiment.Simulation;
 import org.ivoa.simdb.experiment.Snapshot;
 import org.ivoa.simdb.protocol.Simulator;
@@ -33,18 +32,19 @@ import org.eclipse.persistence.jpa.JpaEntityManager;
 import org.eclipse.persistence.jpa.JpaHelper;
 import org.eclipse.persistence.queries.SQLCall;
 import org.eclipse.persistence.sessions.Session;
+import org.ivoa.basic.AQuantity;
 import org.ivoa.bean.LogSupport;
-import org.ivoa.simdb.Cardinality;
+import org.ivoa.basic.Cardinality;
 import org.ivoa.simdb.Contact;
 import org.ivoa.simdb.ContactRole;
-import org.ivoa.simdb.DataType;
-import org.ivoa.simdb.experiment.Characterisation;
-import org.ivoa.simdb.experiment.CharacterisationType;
+import org.ivoa.basic.DataType;
 import org.ivoa.simdb.experiment.Experiment;
 import org.ivoa.simdb.experiment.ExperimentProperty;
 import org.ivoa.simdb.experiment.ExperimentRepresentationObject;
-import org.ivoa.simdb.experiment.NumericParameterSetting;
 import org.ivoa.simdb.experiment.ObjectCollection;
+import org.ivoa.simdb.experiment.ParameterSetting;
+import org.ivoa.simdb.experiment.Statistic;
+import org.ivoa.simdb.experiment.Statistics;
 import org.ivoa.simdb.object.Property;
 import org.ivoa.simdb.object.PropertyGroup;
 import org.ivoa.simdb.object.PropertyGroupMember;
@@ -434,11 +434,11 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       // ParameterSettings :
       for (InputParameter p : simulator.getParameter()) {
         if (p.getDatatype().equals(DataType.FLOAT)) {
-          NumericParameterSetting np = new NumericParameterSetting(simulation);
+         ParameterSetting np = new ParameterSetting(simulation);
 
           np.setInputParameter(p);
 
-          Quantity value = new Quantity();
+          AQuantity value = new AQuantity();
           value.setValue(100 * Math.random());
 
           np.setValue(value);
@@ -516,20 +516,20 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
   private void addSnapshot(final Simulation simulation, final Integer num) {
 
-    Quantity time, space;
+    AQuantity time, space;
     ExperimentProperty ep = null;
 
     final Snapshot snapshot = new Snapshot(simulation);
 
     snapshot.setPublisherDID(simulation.getPublisherDID() + "_" + num);
 
-    time = new Quantity();
+    time = new AQuantity();
 
     time.setValue(3d * num.intValue());
     time.setUnit("Gyr");
     snapshot.setTime(time);
 
-    space = new Quantity();
+    space = new AQuantity();
 
     space.setValue(100.d);
     space.setUnit("kpc");
@@ -537,7 +537,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
     snapshot.setSpatialSizePhysical(space);
 
     ObjectCollection col = null;
-    Characterisation cha = null;
+    Statistics cha = null;
     for (ExperimentRepresentationObject rep : simulation.getRepresentationObject()) {
       // for all
       col = new ObjectCollection(snapshot);
@@ -545,12 +545,14 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       col.setNumberOfObjects(num.intValue() * 113);
 
       for (ExperimentProperty prop : rep.getProperty()) {
-        cha = new Characterisation(col);
-        cha.setType(CharacterisationType.MEAN);
+        cha = new Statistics(col);
+        cha.setType(Statistic.MEAN);
         cha.setAxis(prop.getProperty());
 
-        cha.setValue(new Quantity());
-        cha.getValue().setValue(1000 * Math.random());
+        AQuantity n = new AQuantity();
+        n.setValue(1000 * Math.random());
+        cha.setValue(n);
+        
       }
     }
   }

@@ -6,7 +6,6 @@ import org.ivoa.dm.model.MetadataObject;
 
 import org.ivoa.env.ApplicationMain;
 
-import org.ivoa.simdb.DataType;
 import org.ivoa.simdb.protocol.InputParameter;
 import org.ivoa.simdb.protocol.Simulator;
 
@@ -62,12 +61,12 @@ public final class XMLTests extends LogSupport implements ApplicationMain {
     final InputParameter p1 = new InputParameter(s);
 
     p1.setName("H0");
-    p1.setDatatype(DataType.DOUBLE);
+    p1.setDatatype(org.ivoa.basic.DataType.DOUBLE);
 
     final InputParameter p2 = new InputParameter(s);
 
     p2.setName("Lambda_0");
-    p2.setDatatype(DataType.DOUBLE);
+    p2.setDatatype(org.ivoa.basic.DataType.DOUBLE);
 
     testMarshall(s);
   }

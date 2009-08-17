@@ -544,7 +544,7 @@ DROP INDEX <xsl:value-of select="$tableName"/>.ix_<xsl:value-of select="$tableNa
 
 
 <!-- Discriminator column templates -->
-  <xsl:template match="objectType" mode="discriminatorColumnDeclaration">, <xsl:value-of select="$discriminatorColumnName"/> <xsl:value-of select="$discriminatorColumnType"/>&cr;
+  <xsl:template match="objectType" mode="discriminatorColumnDeclaration">, <xsl:value-of select="$discriminatorColumnName"/>&bl;<xsl:value-of select="$discriminatorColumnType"/>&cr;
   </xsl:template>
 
       

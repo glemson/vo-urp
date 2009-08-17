@@ -79,6 +79,7 @@ Return a node-set of columns for a single attribute, which may be structured
     <xsl:param name="prefix"/>
     <xsl:param name="attrprefix"/>
     <xsl:param name="utypeprefix"/>
+    <xsl:param name="subtypeid"/>
     <xsl:variable name="utype">
       <xsl:value-of select="concat($utypeprefix,'.',name)"/>
     </xsl:variable>
@@ -103,8 +104,11 @@ Return a node-set of columns for a single attribute, which may be structured
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="type" select="key('element',datatype/@xmiidref)"/>
-
+    
+    <xsl:variable name="typeid">
+					<xsl:value-of select="datatype/@xmiidref" />
+		</xsl:variable>	
+    <xsl:variable name="type" select="key('element',$typeid)"/>
     <xsl:choose>
       <xsl:when test="name($type) = 'primitiveType' or name($type) = 'enumeration'">
         <xsl:variable name="sqltype">
@@ -130,9 +134,31 @@ Return a node-set of columns for a single attribute, which may be structured
             <xsl:with-param name="prefix" select="$columnname"/>
             <xsl:with-param name="attrprefix" select="name"/>
             <xsl:with-param name="utypeprefix" select="$utype"/>
-            
           </xsl:apply-templates>
         </xsl:for-each>
+        
+				<xsl:if test="key('element',//extends[@xmiidref = $typeid]/../@xmiid)">
+				<xsl:message>**** WARNING *** Found subclasses of datatype <xsl:value-of select="name"/>. VO-URP does currently not properly support such patterns properly.</xsl:message>
+				</xsl:if>
+<!-- reason for this is mapping to DDL which does not work properly. In theory infinite recursions may be caused.
+ Folloing code could handle this if no recursion occurs.-->
+ <!-- 
+				<xsl:for-each select="key('element',//extends[@xmiidref = $typeid]/../@xmiid)">
+
+				  <xsl:variable name="newsubtypeid" select="@xmiid"/>
+				  <xsl:variable name="newprefix" select="concat($columnname,'_',name)"/>  
+          <xsl:for-each select="attribute">
+					<xsl:apply-templates select="." mode="columns">
+						<xsl:with-param name="prefix" select="$newprefix" />
+						<xsl:with-param name="attrprefix" select="name" />
+						<xsl:with-param name="utypeprefix" select="$utype" />
+						<xsl:with-param name="subtypeid" select="$newsubtypeid" />
+					</xsl:apply-templates>
+					</xsl:for-each>
+
+				</xsl:for-each>
+ -->
+
       </xsl:when>
     </xsl:choose>
     
