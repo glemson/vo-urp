@@ -246,7 +246,7 @@ public class JobServlet extends BaseServlet implements JobListener {
      */
     protected final String createWorkingDirectory(final String baseWorkDir) throws IOException {
 //    	return baseWorkDir;
-		String jobId = java.util.UUID.randomUUID().toString();//System.currentTimeMillis();
+		long jobId = System.currentTimeMillis(); //java.util.UUID.randomUUID().toString();
 		String workDir = baseWorkDir+"/"+getName()+"/"+jobId;
 		File dir = new File(workDir);
 		if(!dir.exists())

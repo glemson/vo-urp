@@ -31,7 +31,8 @@ public final class SessionListener implements HttpSessionListener {
     }
     
     // create the session folder :
-    FileManager.getSessionFolder(sessionId);
+    // TODO rethink this. Currently turned off as we want folders to be created for users and when needed.
+//    FileManager.getSessionFolder(sessionId);
   }
 
   public void sessionDestroyed(final HttpSessionEvent se) {
