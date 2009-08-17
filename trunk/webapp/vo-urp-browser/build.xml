@@ -56,6 +56,11 @@
 
   <property name="log.file" value="${tomcat.home}/logs/${project.name}.log"/>
 
+	<!-- tomcat precompilation -->
+	<condition property="tomcat.precompile.do">
+		<equals arg1="${tomcat.precompile}" arg2="true" trim="true" />
+	</condition>	
+	
   <!-- global filter definitions -->
   <filter token="project.name" value="${project.name}"/>
   <filter token="eclipselink.jdbc.driver" value="${eclipselink.jdbc.driver}"/>
@@ -538,7 +543,7 @@
 
 
 
-  <target name="tomcatJasper" if="tomcat.precompile">
+  <target name="tomcatJasper" if="tomcat.precompile.do">
 
     <taskdef classname="org.apache.jasper.JspC" name="jasper">
       <classpath id="jspc.classpath">
@@ -571,7 +576,7 @@
 
 
 
-  <target name="compileJSP" if="tomcat.precompile">
+  <target name="compileJSP" if="tomcat.precompile.do">
 
     <javac sourcepath=""
            srcdir="${deploy.to}/${webapp.name}/WEB-INF/src"
