@@ -41,6 +41,7 @@ public class EyalsSAM extends JobServlet{
 	private String bc03Dir;
 	private String executable;
 	private String name;
+	private String[] plotCommand;
 	
 	@Override
 	protected void initialiseMainJob(RootContext rootCtx, HttpServletRequest request) throws JobStateException
@@ -73,13 +74,10 @@ public class EyalsSAM extends JobServlet{
 		parameters = parameters.replaceAll(FIXED_PARAM_DELIMITER+"workingDir"+FIXED_PARAM_DELIMITER, wd);
 
 		File f = new File(workDir+"/esam_params");
-		if(f.getParentFile().mkdirs())
-		{
-		  FileWriter w = new FileWriter(f);
-		  w.write(parameters);
-		  w.flush();
-		  w.close();
-		}
+  	    FileWriter w = new FileWriter(f);
+		w.write(parameters);
+		w.flush();
+		w.close();
 		
 		return new String[]{executable};
 	}
@@ -163,12 +161,18 @@ public class EyalsSAM extends JobServlet{
      * @return boolean: true of the processing should continue, false if the job should be terminated
      */
     public boolean performTaskDone(final RootContext rootCtx, final RunContext runCtx) {
-    	boolean theresMore = false;
-    	if("main".equals(runCtx.getName()))
+    	boolean ok = true;
+    	if(MAIN_TASK.equals(runCtx.getName()))
     	{
     		//TODO add plotting tasks
-        	theresMore = true;
+    		if(runCtx.getState() == RunState.STATE_FINISHED_OK)
+    		{
+    			ok = true;
+    			LocalLauncher.prepareChildJob(rootCtx, PLOT_TASK, plotCommand);
+    		} else {
+    			ok = false;
+    		}
     	}
-    	return theresMore;
+    	return ok;
     }
 }
