@@ -454,6 +454,23 @@
 
 
 
+  <target name="generateAll">
+		<property name="source" value="${source}" />
+		<property name="source_filtered" value="${source_filtered}" />
+
+		<ant target="run_xmi2intermediate" inheritAll="true"/>
+
+		<ant target="run_intermediate2ddl" inheritAll="true"/>
+  	<ant target="run_intermediate2gvd" inheritAll="true"/>
+  	<ant target="run_intermediate2html" inheritAll="true"/>
+		<ant target="run_intermediate2java" inheritAll="true"/>
+<!--		<ant target="run_intermediate2rdf" inheritAll="true"/>  --> 
+		<ant target="run_intermediate2tap" inheritAll="true"/>
+		<ant target="run_intermediate2xml" inheritAll="true"/>
+		<ant target="run_intermediate2xsd" inheritAll="true"/>
+
+	</target>
+	
 
 	<!-- target run_xmi2intermediate : transform the source model (xmi) to the intermediate model -->
 	<target name="run_xmi2intermediate">
@@ -572,7 +589,7 @@
 	</target>
 
 
-
+	
 
 	<!-- target run_intermediate2ddl : generates DDL script from intermediate model -->
 	<target name="run_intermediate2ddl">
