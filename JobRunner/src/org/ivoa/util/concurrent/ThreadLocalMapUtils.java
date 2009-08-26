@@ -28,8 +28,14 @@ public final class ThreadLocalMapUtils extends LogSupport {
   private final static String FIELD_THREADLOCALMAP_ENTRY_VALUE = "value";
   /** name of the method ThreadLocalMap.getEntry(ThreadLocal) */
   private final static String FIELD_THREADLOCALMAP_GET_ENTRY = "getEntry";
+  /** name of the method ThreadLocalMap.get(ThreadLocal) - Java 5 only */
+  private final static String FIELD_THREADLOCALMAP_GET = "get";
   /** name of the method ThreadLocalMap.remove(ThreadLocal) */
   private final static String METHOD_THREADLOCALMAP_REMOVE = "remove";
+  /**
+   * Java 5 flag to adapt the getThreadLocalValue() method implementation
+   */
+  private static boolean isJava5 = false;
   /**
    * Temporary cached Field Thread.threadLocals
    */
@@ -66,6 +72,8 @@ public final class ThreadLocalMapUtils extends LogSupport {
    * Prepare the necessary fields using reflection
    */
   public static void prepareFields() {
+    isJava5 = System.getProperty("java.version").startsWith("1.5");
+
     threadThreadLocalsField = ReflectionUtils.getField(Thread.class, FIELD_THREAD_THREADLOCALS);
 
     final Class<?> threadLocalMapKlazz = ReflectionUtils.findClass(CLASS_THREADLOCAL_MAP);
@@ -125,6 +133,40 @@ public final class ThreadLocalMapUtils extends LogSupport {
    * @return ThreadLocal value
    */
   public static Object getThreadLocalValue(final Object threadLocalMap, final ThreadLocal<?> threadLocal) {
+
+    /*
+     * Java 5 : ThreadLocal (1.5) private Object get(ThreadLocal key)
+     *
+     * Java 6 : ThreadLocal (1.6) private Entry getEntry(ThreadLocal key)
+     *
+     */
+    if (isJava5) {
+      return getThreadLocalValueForJava5(threadLocalMap, threadLocal);
+    } else {
+      return getThreadLocalValueForJava6(threadLocalMap, threadLocal);
+    }
+  }
+
+  /**
+   * Extract the ThreadLocal value for the given ThreadLocalMap
+   * @param threadLocalMap ThreadLocalMap to use
+   * @param threadLocal ThreadLocal to remove
+   * @return ThreadLocal value
+   */
+  private static Object getThreadLocalValueForJava5(final Object threadLocalMap, final ThreadLocal<?> threadLocal) {
+    if (threadLocalMapGetMethod == null) {
+      threadLocalMapGetMethod = ReflectionUtils.getMethod(threadLocalMap.getClass(), FIELD_THREADLOCALMAP_GET, ThreadLocal.class);
+    }
+    return ReflectionUtils.invokeMethod(threadLocalMapGetMethod, threadLocalMap, new Object[]{threadLocal});
+  }
+
+  /**
+   * Extract the ThreadLocal value for the given ThreadLocalMap
+   * @param threadLocalMap ThreadLocalMap to use
+   * @param threadLocal ThreadLocal to remove
+   * @return ThreadLocal value
+   */
+  private static Object getThreadLocalValueForJava6(final Object threadLocalMap, final ThreadLocal<?> threadLocal) {
     if (threadLocalMapGetMethod == null) {
       threadLocalMapGetMethod = ReflectionUtils.getMethod(threadLocalMap.getClass(), FIELD_THREADLOCALMAP_GET_ENTRY, ThreadLocal.class);
     }

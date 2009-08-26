@@ -84,7 +84,7 @@ public abstract class PollingThread extends Thread {
     this.stopLatch.countDown();
 
     // thread will stop now :
-    if (logB != null && logB.isWarnEnabled()) {
+    if (logB.isWarnEnabled()) {
       logB.warn("PollingThread[" + getName() + "].run() : exit");
     }
   }

@@ -1,5 +1,5 @@
 <%@page contentType="text/html" session="false" pageEncoding="UTF-8"
- import="org.ivoa.util.runner.process.ProcessContext" %>
+ import="org.ivoa.util.runner.RootContext" %>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 
 <c:set var="title" scope="request" value="Job Runner - Detail" ></c:set>
@@ -15,7 +15,7 @@
 
     Output : <br/><br/>
     
-	<%=((ctx instanceof ProcessContext) ? ((ProcessContext) ctx).getRing().getContent("", "<br/>\n") : "") %>    
+	<%= ((RootContext) request.getAttribute("runContext")).getRing().getContent("", "<br/>\n") %>
 
 </p>	
 
