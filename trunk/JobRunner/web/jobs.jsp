@@ -4,8 +4,6 @@
 <c:set var="title" scope="request" value="Job Runner - Home" ></c:set>
 <c:set var="noLink" scope="request" value="1" ></c:set>
 <jsp:include page="header.jsp" flush="false"/>
-
-<a href="Job.do?action=start">Start a new job</a> - <a href="Job.do?action=list">List jobs</a>
         
     <c:if test="${!empty requestScope.content}">
         <br/>

@@ -55,9 +55,26 @@ public final class RootContext extends RunContext implements Iterator<RunContext
     /**
      * This method can be used to release resources
      */
+    @Override
     public void close() {
         // clean up code :
     }
+
+  /**
+   * this method stops the execution of that context
+   */
+  @Override
+  public void kill() {
+    // maybe should traverse all contexts to disable their execution
+
+    // TODO : cancel a pending task
+    final RunContext ctx = getCurrentChildContext();
+
+    if (ctx != null) {
+      ctx.kill();
+    }
+
+  }
 
     /**
      * Simple toString representation : "job[id][state] duration ms."
@@ -104,6 +121,13 @@ public final class RootContext extends RunContext implements Iterator<RunContext
 
     public List<RunContext> getChildContexts() {
         return childContexts;
+    }
+
+    public RunContext getCurrentChildContext() {
+      if (currentTask > 0 && currentTask <= this.childContexts.size()) {
+        return this.childContexts.get(currentTask - 1);
+      }
+      return null;
     }
 
     public void addChild(RunContext childContext) {

@@ -47,6 +47,7 @@ public final class ProcessContext extends RunContext {
    * this method destroys the child UNIX process
    * @see ProcessRunner#stop(ProcessContext)
    */
+  @Override
   public void kill() {
     // java process is killed => unix process is killed :
     ProcessRunner.stop(this);

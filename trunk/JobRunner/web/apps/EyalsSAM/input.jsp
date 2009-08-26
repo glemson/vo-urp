@@ -38,6 +38,9 @@ Questions
 
  -->
 
+<a href="<%= request.getContextPath() %>/EyalsSAM.do?action=list">Job queue</a>
+<br/>
+
 <form action="<%= request.getContextPath() %>/EyalsSAM.do?action=start" method="POST">
 <table>
 <tr><td>

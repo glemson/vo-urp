@@ -4,14 +4,9 @@
     <configuration>
         <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
             <!-- Do not use Project Properties customizer when editing this file manually. -->
-            <name>JobRunner Web</name>
+            <name>JobRunner</name>
             <properties/>
             <folders>
-                <source-folder>
-                    <label>src</label>
-                    <type>java</type>
-                    <location>src</location>
-                </source-folder>
                 <source-folder>
                     <label>web</label>
                     <type>doc_root</type>
@@ -22,21 +17,35 @@
                     <type>web_inf</type>
                     <location>web/WEB-INF</location>
                 </source-folder>
+                <source-folder>
+                    <label>src</label>
+                    <type>java</type>
+                    <location>src</location>
+                </source-folder>
             </folders>
             <ide-actions>
                 <action name="build">
-                    <script>nbproject/nbjdk.xml</script>
+                    <target>forceMakeAll</target>
+                </action>
+                <action name="clean">
+                    <target>clean</target>
+                </action>
+                <action name="redeploy">
+                    <target>deployTomcat</target>
+                </action>
+                <action name="rebuild">
+                    <target>clean</target>
                     <target>forceMakeAll</target>
                 </action>
                 <action name="javadoc">
-                    <script>nbproject/nbjdk.xml</script>
                     <target>makeDoc</target>
                 </action>
-                <action name="redeploy">
-                    <script>nbproject/nbjdk.xml</script>
-                    <target>deployTomcat</target>
-                </action>
             </ide-actions>
+            <export>
+                <type>folder</type>
+                <location>build</location>
+                <build-target>forceMakeAll</build-target>
+            </export>
             <view>
                 <items>
                     <source-folder style="tree">
@@ -57,26 +66,27 @@
                 </items>
                 <context-menu>
                     <ide-action name="build"/>
+                    <ide-action name="rebuild"/>
+                    <ide-action name="clean"/>
                     <ide-action name="javadoc"/>
                     <ide-action name="redeploy"/>
                 </context-menu>
             </view>
             <subprojects/>
         </general-data>
-        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/2">
+        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/1">
             <compilation-unit>
                 <package-root>src</package-root>
-                <classpath mode="compile">lib/commons-logging-1.1.1.jar:lib/log4j-1.2.15.jar:lib/server/jsp-api.jar:lib/server/servlet-api.jar</classpath>
-                <built-to>dist/jobRunner.war</built-to>
-                <javadoc-built-to>dist/doc</javadoc-built-to>
+                <classpath mode="compile">lib/commons-logging-1.1.1.jar;lib/log4j-1.2.15.jar;lib/server/servlet-api.jar</classpath>
+                <built-to>build</built-to>
                 <source-level>1.5</source-level>
             </compilation-unit>
         </java-data>
         <web-data xmlns="http://www.netbeans.org/ns/freeform-project-web/1">
             <web-module>
                 <doc-root>web</doc-root>
-                <classpath>lib/jstl.jar:lib/standard.jar</classpath>
-                <context-path>/jobRunner</context-path>
+                <classpath>lib/dirtag.jar;lib/jstl.jar;lib/standard.jar;lib/server/jsp-api.jar</classpath>
+                <context-path/>
                 <j2ee-spec-level>1.4</j2ee-spec-level>
             </web-module>
         </web-data>

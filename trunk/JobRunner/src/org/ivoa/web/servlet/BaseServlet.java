@@ -118,7 +118,12 @@ public class BaseServlet extends HttpServlet {
   @Override
   protected final void doGet(final HttpServletRequest request, final HttpServletResponse response)
                       throws ServletException, IOException {
+    try {
     processRequest(request, response);
+    } catch (Throwable th) {
+      log.error("BaseServlet.doGet : fatal failure : ", th);
+      showError(request, response, "Exception occured : " + th.getMessage());
+    }
   }
 
   /**
@@ -133,7 +138,12 @@ public class BaseServlet extends HttpServlet {
   @Override
   protected final void doPost(final HttpServletRequest request, final HttpServletResponse response)
                        throws ServletException, IOException {
+    try {
     processRequest(request, response);
+    } catch (Throwable th) {
+      log.error("BaseServlet.doPost : fatal failure : ", th);
+      showError(request, response, "Exception occured : " + th.getMessage());
+    }
   }
 
   /**
@@ -328,8 +338,11 @@ public class BaseServlet extends HttpServlet {
    */
   public void showError(final HttpServletRequest request, final HttpServletResponse response, final String msg)
                  throws ServletException {
-    request.setAttribute(ERROR_MESSAGE, msg);
-    doForward(request, response, ERROR_PAGE);
+    // avoid cyclic forward loop :
+    if (request.getAttribute(ERROR_MESSAGE) != null) {
+      request.setAttribute(ERROR_MESSAGE, msg);
+      doForward(request, response, ERROR_PAGE);
+    }
   }
 
   /**
@@ -354,8 +367,7 @@ public class BaseServlet extends HttpServlet {
    * TODO : Method Description
    *
    * @param request 
-   * @param response 
-   * @param page 
+   * @param URI
    *
    * @throws ServletException 
    */
