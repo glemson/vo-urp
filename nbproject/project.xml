@@ -57,6 +57,12 @@
                     <location>deprecated-src</location>
                     <encoding>UTF-8</encoding>
                 </source-folder>
+                <source-folder>
+                    <label>JobRunner\src</label>
+                    <type>java</type>
+                    <location>JobRunner/src</location>
+                    <encoding>UTF-8</encoding>
+                </source-folder>
             </folders>
             <ide-actions>
                 <action name="run">
@@ -73,24 +79,29 @@
                 </action>
             </ide-actions>
             <export>
+                <type>folder</type>
+                <location>libs/jalopy/bin</location>
+                <build-target>makeOutput</build-target>
+            </export>
+            <export>
                 <type>jar</type>
                 <location>input/simdb/dist/SimDB-test.jar</location>
-                <build-target>forceMakeAll</build-target>
+                <build-target>makeOutput</build-target>
             </export>
             <export>
                 <type>jar</type>
                 <location>input/simdb/dist/SimDB-weave.jar</location>
-                <build-target>forceMakeAll</build-target>
+                <build-target>makeOutput</build-target>
             </export>
             <export>
                 <type>jar</type>
                 <location>input/simdb/dist/SimDB.jar</location>
-                <build-target>forceMakeAll</build-target>
+                <build-target>makeOutput</build-target>
             </export>
             <export>
                 <type>jar</type>
                 <location>input/simdb/dist/vo-urp-src.jar</location>
-                <build-target>forceMakeAll</build-target>
+                <build-target>makeOutput</build-target>
             </export>
             <view>
                 <items>
@@ -122,6 +133,10 @@
                         <label>deprecated-src</label>
                         <location>deprecated-src</location>
                     </source-folder>
+                    <source-folder style="packages">
+                        <label>JobRunner\src</label>
+                        <location>JobRunner/src</location>
+                    </source-folder>
                     <source-file>
                         <location>build.xml</location>
                     </source-file>
@@ -144,6 +159,7 @@
                 <package-root>webapp/vo-urp-browser/src</package-root>
                 <package-root>deprecated-src</package-root>
                 <package-root>test</package-root>
+                <package-root>JobRunner/src</package-root>
                 <classpath mode="compile">libs/commons-logging-1.1.1.jar;libs/activation.jar;libs/log4j-1.2.15.jar;libs/commons-dbutils-1.1.jar;libs/commons-fileupload-1.2.1.jar;libs/commons-httpclient-3.1.jar;libs/commons-io-1.3.2.jar;libs/eclipselink.jar;libs/javax.persistence_1.0.0.jar;libs/jaxb-api-2.1.jar;libs/jaxb-impl-2.1.6.jar;libs/jaxb-xjc-2.1.6.jar;libs/jsr173_1.0_api.jar;libs/saxon9-s9api.jar;libs/saxon9.jar;libs/jalopy/lib/jalopy-1.5b1.jar;webapp/vo-urp-browser/lib/commons-fileupload-1.2.1.jar;webapp/vo-urp-browser/lib/commons-io-1.3.2.jar;webapp/vo-urp-browser/lib/jstl.jar;webapp/vo-urp-browser/lib/standard.jar;webapp/vo-urp-browser/lib/server/jsp-api.jar;webapp/vo-urp-browser/lib/server/servlet-api.jar</classpath>
                 <built-to>libs/jalopy/bin</built-to>
                 <built-to>input/simdb/dist/SimDB-test.jar</built-to>
@@ -155,22 +171,7 @@
             </compilation-unit>
         </java-data>
         <preferences xmlns="http://www.netbeans.org/ns/auxiliary-configuration-preferences/1">
-            <module name="org-netbeans-modules-editor-indent">
-                <node name="CodeStyle">
-                    <property name="usedProfile" value="default"/>
-                    <node name="project">
-                        <property name="tab-size" value="8"/>
-                        <property name="text-limit-width" value="80"/>
-                    </node>
-                </node>
-                <node name="text">
-                    <node name="x-java">
-                        <node name="CodeStyle">
-                            <node name="project"/>
-                        </node>
-                    </node>
-                </node>
-            </module>
+            <module name="org-netbeans-modules-editor-indent"/>
         </preferences>
     </configuration>
 </project>

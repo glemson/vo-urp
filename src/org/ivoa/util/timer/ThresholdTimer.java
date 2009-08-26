@@ -51,7 +51,7 @@ public final class ThresholdTimer extends AbstractTimer {
    * @param time value to add in statistics
    */
   @Override
-  protected final void add(final double time) {
+  public final void add(final double time) {
     this.usage++;
     if (time > threshold) {
       high.add(time);

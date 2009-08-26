@@ -124,7 +124,12 @@ public class BaseServlet extends HttpServlet {
   @Override
   protected final void doGet(final HttpServletRequest request, final HttpServletResponse response)
                       throws ServletException, IOException {
-    processRequest(request, response);
+    try {
+      processRequest(request, response);
+    } catch (Throwable th) {
+      log.error("BaseServlet.doGet : fatal failure : ", th);
+      showError(request, response, "Exception occured : " + th.getMessage());
+    }
   }
 
   /**
@@ -139,7 +144,12 @@ public class BaseServlet extends HttpServlet {
   @Override
   protected final void doPost(final HttpServletRequest request, final HttpServletResponse response)
                        throws ServletException, IOException {
-    processRequest(request, response);
+    try {
+      processRequest(request, response);
+    } catch (Throwable th) {
+      log.error("BaseServlet.doPost : fatal failure : ", th);
+      showError(request, response, "Exception occured : " + th.getMessage());
+    }
   }
 
   /**
@@ -334,8 +344,11 @@ public class BaseServlet extends HttpServlet {
    */
   public void showError(final HttpServletRequest request, final HttpServletResponse response, final String msg)
                  throws ServletException {
+    // avoid cyclic forward loop :
+    if (request.getAttribute(ERROR_MESSAGE) != null) {
     request.setAttribute(ERROR_MESSAGE, msg);
     doForward(request, response, ERROR_PAGE);
+  }
   }
 
   /**
@@ -355,7 +368,22 @@ public class BaseServlet extends HttpServlet {
       throw new ServletException(e);
     }
   }
-
+  /**
+   * TODO : Method Description
+   *
+   * @param request 
+   * @param URI
+   *
+   * @throws ServletException 
+   */
+  public void doRedirect(final HttpServletResponse response, final String URI)
+                 throws ServletException {
+    try {
+    	response.sendRedirect(URI);
+    } catch (final Exception e) {
+      throw new ServletException(e);
+    }
+  } 
   // Getter :  
   /**
    * TODO : Method Description

@@ -32,7 +32,8 @@ import org.eclipse.persistence.jpa.JpaEntityManager;
 import org.eclipse.persistence.jpa.JpaHelper;
 import org.eclipse.persistence.queries.SQLCall;
 import org.eclipse.persistence.sessions.Session;
-import org.ivoa.basic.AQuantity;
+import org.ivoa.basic.Value;
+import org.ivoa.basic.Quantity;
 import org.ivoa.bean.LogSupport;
 import org.ivoa.basic.Cardinality;
 import org.ivoa.simdb.Contact;
@@ -160,23 +161,23 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       close(em);
     }
 
-    testWRITE(jf);
+//    testWRITE(jf);
 
     // Gerard : load XML -> JPA -> database test case :
 
     // Loads & write an xml instance :
-    testLOAD_WRITE(jf, PROTOCOL_FILE_GADGET2);
-    testLOAD_WRITE(jf, PROTOCOL_FILE_PDR);
-    testLOAD_WRITE(jf, PROTOCOL_FILE_HALOMAKER);
+//    testLOAD_WRITE(jf, PROTOCOL_FILE_GADGET2);
+//    testLOAD_WRITE(jf, PROTOCOL_FILE_PDR);
+//    testLOAD_WRITE(jf, PROTOCOL_FILE_HALOMAKER);
 
     // Batch writes :
-    testLOAD_BATCH_WRITE(jf, PROTOCOL_FILE_GADGET2);
-    testLOAD_BATCH_WRITE_SINGLE_TRANSACTION(jf, PROTOCOL_FILE_GADGET2);
+//    testLOAD_BATCH_WRITE(jf, PROTOCOL_FILE_GADGET2);
+//    testLOAD_BATCH_WRITE_SINGLE_TRANSACTION(jf, PROTOCOL_FILE_GADGET2);
 
     // Batch writes : Laurent : In progress :
     testLOAD_THREADS_WRITE(jf, PROTOCOL_FILE_GADGET2);
 
-    testSQLQuery(jf);
+//    testSQLQuery(jf);
 
     log.warn("DBTests.testJPA : exit");
   }
@@ -438,10 +439,11 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
           np.setInputParameter(p);
 
-          AQuantity value = new AQuantity();
-          value.setValue(100 * Math.random());
+          Quantity value = new Quantity();
+          value.setValue(100d * Math.random());
 
-          np.setValue(value);
+          np.setValue(new Value());
+          np.getValue().setAsQuantity(value);
 
           simulation.addParameter(np);
         }
@@ -516,20 +518,20 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
   private void addSnapshot(final Simulation simulation, final Integer num) {
 
-    AQuantity time, space;
+    Quantity time, space;
     ExperimentProperty ep = null;
 
     final Snapshot snapshot = new Snapshot(simulation);
 
     snapshot.setPublisherDID(simulation.getPublisherDID() + "_" + num);
 
-    time = new AQuantity();
+    time = new Quantity();
 
     time.setValue(3d * num.intValue());
     time.setUnit("Gyr");
     snapshot.setTime(time);
 
-    space = new AQuantity();
+    space = new Quantity();
 
     space.setValue(100.d);
     space.setUnit("kpc");
@@ -538,6 +540,9 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
     ObjectCollection col = null;
     Statistics cha = null;
+    Quantity n;
+    Value v;
+
     for (ExperimentRepresentationObject rep : simulation.getRepresentationObject()) {
       // for all
       col = new ObjectCollection(snapshot);
@@ -549,9 +554,12 @@ public final class DBTests extends LogSupport implements ApplicationMain {
         cha.setType(Statistic.MEAN);
         cha.setAxis(prop.getProperty());
 
-        AQuantity n = new AQuantity();
+        v = new Value();
+        n = new Quantity();
         n.setValue(1000 * Math.random());
-        cha.setValue(n);
+
+        v.setAsQuantity(n);
+        cha.setValue(v);
         
       }
     }

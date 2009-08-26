@@ -36,17 +36,26 @@ public final class ThreadExecutors extends LogSupport {
   /** generic thread pool name */
   public static final String GENERIC_THREAD_POOL = "GenericPool";
   
+  /** process thread pool name */
+  public static final String PROCESS_THREAD_POOL = "ProcessPool";
+  
   /** Generic thread Pool : idle thread keep alive before kill : 120s */
   public static final long GENERIC_THREAD_KEEP_ALIVE = 120L;
 
-  /** Generic thread pool : minimum threads : 1 */
-  public static final int GENERIC_THREAD_MIN = 1;
+  /** Process thread pool : maximum threads : 3 */
+  public static final int PROCESS_THREAD_MAX = getMaxConcurrentProcesses();
 
-  /** Generic thread pool : maximum threads : 3 */
-  public static final int GENERIC_THREAD_MAX = 2 * GENERIC_THREAD_MIN + 1;
+  /** Generic thread pool : minimum threads : 7 */
+  public static final int GENERIC_THREAD_MIN = (2 * PROCESS_THREAD_MAX) + 1;
+
+  /** Generic thread pool : maximum threads : 17 */
+  public static final int GENERIC_THREAD_MAX = (2 * PROCESS_THREAD_MAX) + 5;
 
   /** generic thread pool singleton */
   private static volatile ThreadExecutors genericExecutor;
+
+  /** processRunner thread pool singleton */
+  private static volatile ThreadExecutors runnerExecutor;
 
   /** single thread pool singletons : used to shutdown them */
   private static volatile Map<String, ThreadExecutors> singleExecutors = null;
@@ -78,6 +87,19 @@ public final class ThreadExecutors extends LogSupport {
 
   // ~ Methods
   // ----------------------------------------------------------------------------------------------------------
+
+  /**
+   * Return the maximum number of concurrent processes = number of cpu - 1 or 1.
+   * @return maximum number of concurrent processes
+   */
+  private static int getMaxConcurrentProcesses() {
+    final int coreNo = Runtime.getRuntime().availableProcessors();
+    if (coreNo > 1) {
+      return coreNo - 1;
+    }
+    return coreNo;
+  }
+
 
   /**
    * Calling thread sleeps for the given lapse delay
@@ -144,6 +166,11 @@ public final class ThreadExecutors extends LogSupport {
       }
     }
 
+    if (runnerExecutor != null) {
+      runnerExecutor.stop();
+      runnerExecutor = null;
+    }
+
     if (genericExecutor != null) {
       genericExecutor.stop();
       genericExecutor = null;
@@ -165,6 +192,22 @@ public final class ThreadExecutors extends LogSupport {
     return genericExecutor;
   }
 
+  /**
+   * Return the process thread pool or create it (lazy)
+   *
+   * @see #newFixedThreadPool(int, ThreadFactory)
+   *
+   * @return process thread pool
+   */
+  public static ThreadExecutors getRunnerExecutor() {
+    if (runnerExecutor == null) {
+      runnerExecutor = new ThreadExecutors(
+        newFixedThreadPool(PROCESS_THREAD_MAX, new CustomThreadFactory(PROCESS_THREAD_POOL)));
+    }
+
+    return runnerExecutor;
+  }
+  
   /**
    * Return the single-thread pool or create it (lazy) for the given name
    * 

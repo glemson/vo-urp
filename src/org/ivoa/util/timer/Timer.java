@@ -37,7 +37,7 @@ public final class Timer extends AbstractTimer {
    * @param time value to add in statistics
    */
   @Override
-  protected final void add(final double time) {
+  public final void add(final double time) {
     this.usage++;
     monitorTime.add(time);
   }

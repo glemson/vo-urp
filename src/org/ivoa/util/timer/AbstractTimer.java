@@ -63,7 +63,7 @@ public abstract class AbstractTimer {
    *
    * @param time value to add in statistics
    */
-  protected abstract void add(final double time);
+  public abstract void add(final double time);
 
   /**
    * Return the category
