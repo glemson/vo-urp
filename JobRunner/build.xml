@@ -18,6 +18,8 @@
         <equals arg1="${tomcat.precompile}" arg2="true" trim="true" />
   </condition>
 
+  <property name="log.file" value="${tomcat.home}/logs/jobRunner.log"/>
+
   <!-- path & files -->
   <property name="root" location="."/>
 
@@ -297,11 +299,11 @@
     <!-- indicates if the file is still present = tomcat is running -->
     <available property="tomcat.webapp.locked" file="${log.file}" />
 
+    <property name="webapp.name" value="${build.name}"/>
     <ant target="cleanWebApp" />
 
     <copy file="${dist}/${build.file}" todir="${deploy.to}" verbose="true" />
 
-    <property name="webapp.name" value="${build.name}"/>
 
     <mkdir dir="${deploy.to}/${webapp.name}"/>
     <unwar src="${deploy.to}/${build.file}" dest="${deploy.to}/${webapp.name}" overwrite="true"/>
