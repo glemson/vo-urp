@@ -67,10 +67,6 @@ public final class ThreadLocalMapUtils extends LogSupport {
     /* no-op */
   }
 
-  public static void main(String[] args) {
-    prepareFields();
-  }
-
   /**
    * Prepare the necessary fields using reflection
    */

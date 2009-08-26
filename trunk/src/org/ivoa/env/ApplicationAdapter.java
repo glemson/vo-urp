@@ -2,7 +2,7 @@ package org.ivoa.env;
 
 import java.util.Locale;
 
-import org.eclipse.persistence.logging.CommonsLoggingSessionLog;
+
 import org.ivoa.bean.LogSupport;
 import org.ivoa.conf.Configuration;
 import org.ivoa.util.LogUtil;

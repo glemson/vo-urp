@@ -84,8 +84,8 @@ public final class SessionMonitor implements HttpSessionListener {
   /**
    * onExit callback
    */
-  protected static void onExit() {
-    if (logB.isInfoEnabled()) {
+  public static void onExit() {
+    if (logB != null && logB.isInfoEnabled()) {
       logB.info("SessionMonitor.onExit : enter");
     }
 
@@ -100,7 +100,7 @@ public final class SessionMonitor implements HttpSessionListener {
     // force GC :
     instance = null;
 
-    if (logB.isInfoEnabled()) {
+    if (logB != null && logB.isInfoEnabled()) {
       logB.info("SessionMonitor.onExit : exit");
     }
     logB = null;
