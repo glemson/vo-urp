@@ -7,7 +7,8 @@
 ]>
 
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-								xmlns:exsl="http://exslt.org/common"
+				xmlns:exsl="http://exslt.org/common"
+				xmlns:fn="http://www.w3.org/2005/02/xpath-functions"
                 extension-element-prefixes="exsl">
 
 <!-- 
@@ -150,13 +151,19 @@
         </xsl:call-template>
       </xsl:when>
       <xsl:when test="name($type) = 'dataType'">
+        <!-- NB see comment at the common-ddl template called here for the treatment of the
+        attroverride element. This currently contains the name of this attribute as a prefix, whihc therefore
+        must be removed here. IF the attributeoverride were defined at the class level this would be the correct value.
+         -->
         <xsl:variable name="columns">
           <xsl:apply-templates select="." mode="columns"/>
         </xsl:variable>
+        <xsl:variable name="attrname" select="name"/>
     @Embedded
     @AttributeOverrides ( {
        <xsl:for-each select="exsl:node-set($columns)/column">
-         @AttributeOverride( name = "<xsl:value-of select="attrname"/>", column = @Column( name = "<xsl:value-of select="name"/>" ) )
+         <xsl:variable name="attroverride" select="substring(attroverride,string-length(string($attrname))+2)"/>
+         @AttributeOverride( name = "<xsl:value-of select="$attroverride"/>", column = @Column( name = "<xsl:value-of select="name"/>" ) )
          <xsl:if test="position() != last()"><xsl:text>,</xsl:text></xsl:if>
        </xsl:for-each>
     } )

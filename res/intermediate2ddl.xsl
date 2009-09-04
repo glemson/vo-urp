@@ -263,10 +263,20 @@ CREATE TABLE TargetObjectType (
       <xsl:apply-templates select="." mode="tableName"/>
     </xsl:variable>
     <xsl:variable name="viewName">
-      <xsl:apply-templates select="." mode="viewName"/>
+          <xsl:apply-templates select="." mode="viewName"/>
+    </xsl:variable>
+    <xsl:variable name="decl_viewName">
+      <xsl:choose>
+        <xsl:when test="$vendor = 'mssqlserver'">
+          <xsl:value-of select="concat('[',$viewName,']')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$viewName"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:variable>
     <xsl:variable name="base" select="key('element',extends/@xmiidref)"/>
-<xsl:text>CREATE VIEW </xsl:text><xsl:value-of select="$viewName"/><xsl:text> AS</xsl:text>&cr;
+<xsl:text>CREATE VIEW </xsl:text><xsl:value-of select="$decl_viewName"/><xsl:text> AS</xsl:text>&cr;
     <xsl:choose>
       <xsl:when test="extends">
         <xsl:text>  SELECT b.*</xsl:text>&cr;
@@ -325,10 +335,17 @@ CREATE TABLE TargetObjectType (
 
   <xsl:template match="objectType" mode="dropView">
     <!-- generate a single table for the whole object hierarchy below the matched objectType -->
-    <xsl:variable name="viewName">
-      <xsl:apply-templates select="." mode="viewName"/>
+    <xsl:variable name="decl_viewName">
+      <xsl:choose>
+        <xsl:when test="$vendor = 'mssqlserver'">
+          <xsl:value-of select="concat('[',name,']')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="name"/>
+        </xsl:otherwise>
+      </xsl:choose>
     </xsl:variable>
-<xsl:text>DROP VIEW </xsl:text><xsl:value-of select="$viewName"/>;&cr;&cr;
+<xsl:text>DROP VIEW </xsl:text><xsl:value-of select="$decl_viewName"/>;&cr;&cr;
   </xsl:template>
 
 
