@@ -73,11 +73,19 @@ Currently nothing special done, simply returns the name of the attribute.
 
 
 <!-- 
-Return a node-set of columns for a single attribute, which may be structured 
+Return a node-set of columns for a single attribute, which may be structured.
+when multiple columns, provide the JPA attribute override information
+
+NB this implementation does not do the whole work.
+It adds the name of the primary attribute to the attriverride variable.
+This therefore has to be removed in the jpa.xsl usage of this template.
+Should be possible to do thi differently, but TBD.
+Note, IF we'd want to add attribute overrides at the start of the class iso at the attribute level,
+this would be the appropriate value though!  
 -->
   <xsl:template match="attribute" mode="columns">
+    <xsl:param name="attroverrideprefix"/>
     <xsl:param name="prefix"/>
-    <xsl:param name="attrprefix"/>
     <xsl:param name="utypeprefix"/>
     <xsl:param name="subtypeid"/>
     <xsl:variable name="utype">
@@ -94,10 +102,11 @@ Return a node-set of columns for a single attribute, which may be structured
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-    <xsl:variable name="attrname">
+    
+    <xsl:variable name="attroverride">
       <xsl:choose>
-        <xsl:when test="attrprefix">
-          <xsl:value-of select="concat($attrprefix,'.',name)"/>
+        <xsl:when test="$attroverrideprefix">
+          <xsl:value-of select="concat($attroverrideprefix,'.',name)"/>
         </xsl:when>
         <xsl:otherwise>
           <xsl:value-of select="name"/>
@@ -106,8 +115,8 @@ Return a node-set of columns for a single attribute, which may be structured
     </xsl:variable>
     
     <xsl:variable name="typeid">
-					<xsl:value-of select="datatype/@xmiidref" />
-		</xsl:variable>	
+  	  <xsl:value-of select="datatype/@xmiidref" />
+	</xsl:variable>	
     <xsl:variable name="type" select="key('element',$typeid)"/>
     <xsl:choose>
       <xsl:when test="name($type) = 'primitiveType' or name($type) = 'enumeration'">
@@ -118,8 +127,8 @@ Return a node-set of columns for a single attribute, which may be structured
           </xsl:call-template>
         </xsl:variable>
         <column>
-          <attrname><xsl:value-of select="$attrname"/></attrname>
-        	<name><xsl:value-of select="$columnname"/></name>
+          <attroverride><xsl:value-of select="$attroverride"/></attroverride>
+          <name><xsl:value-of select="$columnname"/></name>
           <type><xsl:value-of select="$type/name"/></type>
           <sqltype><xsl:value-of select="$sqltype"/></sqltype>
           <xsl:copy-of select="constraints"/>
@@ -129,17 +138,21 @@ Return a node-set of columns for a single attribute, which may be structured
         </column> 
       </xsl:when>
       <xsl:when test="name($type) = 'dataType'">
+<!-- 
+      <xsl:message>Found datatype for <xsl:value-of select="$attrname"/></xsl:message>
+      <xsl:message>attrprefix = <xsl:value-of select="$attrprefix"/>.</xsl:message>
+-->
         <xsl:for-each select="$type/attribute">
           <xsl:apply-templates select="." mode="columns">
             <xsl:with-param name="prefix" select="$columnname"/>
-            <xsl:with-param name="attrprefix" select="name"/>
+            <xsl:with-param name="attroverrideprefix" select="$attroverride"/>
             <xsl:with-param name="utypeprefix" select="$utype"/>
           </xsl:apply-templates>
         </xsl:for-each>
         
-				<xsl:if test="key('element',//extends[@xmiidref = $typeid]/../@xmiid)">
-				<xsl:message>**** WARNING *** Found subclasses of datatype <xsl:value-of select="name"/>. VO-URP does currently not properly support such patterns properly.</xsl:message>
-				</xsl:if>
+		<xsl:if test="key('element',//extends[@xmiidref = $typeid]/../@xmiid)">
+		  <xsl:message>**** WARNING *** Found subclasses of datatype <xsl:value-of select="name"/>. VO-URP does currently not properly support such patterns properly.</xsl:message>
+		</xsl:if>
 <!-- reason for this is mapping to DDL which does not work properly. In theory infinite recursions may be caused.
  Folloing code could handle this if no recursion occurs.-->
  <!-- 
@@ -169,7 +182,7 @@ Return a node-set of columns for a single attribute, which may be structured
 
   <!-- return the column name a reference is mapped to -->
   <xsl:template match="reference" mode="columnName">
-    <xsl:value-of select="concat(name,'Id')"/>
+      <xsl:value-of select="concat(name,'Id')"/>
   </xsl:template>
 
 
