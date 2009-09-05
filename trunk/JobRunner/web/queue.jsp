@@ -13,9 +13,14 @@ import="org.ivoa.util.runner.*"%>
 
 	<c:forEach var="ctx" items="${requestScope.queue}">
 	
-		Job : ${ctx.applicationName} [${ctx.id}] - ${ctx.state}  
+		Job : ${ctx.applicationName} [${ctx.id}] - ${ctx.state} - [${ctx.creationDateFormatted} ]
 		- <a href="${ctx.applicationName}.do?action=detail&id=${ctx.id}">job detail</a>
-		- <a href="${ctx.applicationName}.do?action=kill&id=${ctx.id}">kill job</a>
+    <c:if test="${ctx.pending}">
+    - <a href="${ctx.applicationName}.do?action=cancel&id=${ctx.id}">cancel job</a>
+    </c:if>
+    <c:if test="${ctx.running}">
+    - <a href="${ctx.applicationName}.do?action=kill&id=${ctx.id}">kill job</a>
+    </c:if>
          <br/>
 		
 	</c:forEach>

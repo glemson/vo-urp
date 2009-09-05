@@ -18,5 +18,7 @@ public enum RunState {
   /** finished state */
   STATE_FINISHED_OK,  
   /** cancelled state */
-  STATE_CANCELLED  
+  STATE_CANCELLED,
+  /** killed state */
+  STATE_KILLED
   }

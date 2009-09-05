@@ -5,6 +5,7 @@ import org.ivoa.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.Future;
 
 
 /**
@@ -15,50 +16,60 @@ import java.util.List;
  * @author laurent bourges (voparis)
  */
 public final class RootContext extends RunContext implements Iterator<RunContext> {
-    /**
-     * The user who owns this run
-     */
-    private String owner;
 
-    /**
-     * Process working directory
-     */
-    private final String workingDir;
+  /** future used to be able to cancel the job */
+  private Future<?> future = null;
+  /**
+   * The user who owns this run
+   */
+  private String owner;
+  /**
+   * Process working directory
+   */
+  private final String workingDir;
+  /**
+   * Relative path to results of the job in either runner or archive
+   */
+  private String relativePath;
+  /**
+   * Child contexts
+   */
+  private final List<RunContext> childContexts = new ArrayList<RunContext>();
+  /**
+   * Current executed task position in the Child contexts
+   */
+  private int currentTask = 0;
 
-    /**
-     * Relative path to results of the job in either runner or archive
-     */
-    private String relativePath;
+  /**
+   * Creates a new RunContext object
+   *
+   * @param applicationName application identifier
+   * @param id job identifier
+   * @param workingDir user's temporary working directory
+   */
+  public RootContext(final String applicationName, final Integer id,
+                     final String workingDir) {
+    super(null, applicationName, id);
+    this.workingDir = workingDir;
+  }
 
-    /**
-     * Child contexts
-     */
-    private final List<RunContext> childContexts = new ArrayList<RunContext>();
-
-    /**
-     * Current executed task position in the Child contexts
-     */
-    private int currentTask = 0;
-
-    /**
-     * Creates a new RunContext object
-     *
-     * @param id
-     *            job identifier
-     */
-    public RootContext(final String applicationName, final Integer id,
-        final String workingDir) {
-        super(null, applicationName, id);
-        this.workingDir = workingDir;
+  /**
+   * This method can be used to release resources
+   */
+  @Override
+  public void close() {
+    // clean up code :
     }
 
-    /**
-     * This method can be used to release resources
-     */
-    @Override
-    public void close() {
-        // clean up code :
+  public void cancel() {
+    if (getState() == RunState.STATE_PENDING) {
+      if (future != null) {
+        setState(RunState.STATE_CANCELLED);
+        // cancel a pending task :
+        future.cancel(true);
+      }
     }
+  }
 
   /**
    * this method stops the execution of that context
@@ -67,82 +78,99 @@ public final class RootContext extends RunContext implements Iterator<RunContext
   public void kill() {
     // maybe should traverse all contexts to disable their execution
 
-    // TODO : cancel a pending task
-    final RunContext ctx = getCurrentChildContext();
+    if (getState() == RunState.STATE_RUNNING) {
+      final RunContext ctx = getCurrentChildContext();
 
-    if (ctx != null) {
-      ctx.kill();
+      if (ctx != null) {
+        setState(RunState.STATE_KILLED);
+        ctx.kill();
+      }
     }
-
   }
 
-    /**
-     * Simple toString representation : "job[id][state] duration ms."
-     *
-     * @return "job[id][state] duration ms."
-     */
-    @Override
-    public String toString() {
-        return "job [" + getId() + "][" + getState() + "] " +
+  /**
+   * Simple toString representation : "job[id][state] duration ms."
+   *
+   * @return "job[id][state] duration ms."
+   */
+  @Override
+  public String toString() {
+    return "job [" + getId() + "][" + getState() + "] " +
         ((getDuration() > 0L) ? (" : " + getDuration() + " ms.") : "") +
         ((getChildContexts() != null)
         ? (CollectionUtils.toString(getChildContexts())) : "");
-    }
+  }
 
-    public String getApplicationName() {
-        return getName();
-    }
+  /**
+   * Return the future associated with this root context
+   * @return future associated with this root context
+   */
+  protected Future<?> getFuture() {
+    return future;
+  }
 
-    public String getOwner() {
-        return owner;
-    }
+  /**
+   * Define the future associated to the execution of this root context
+   * @param pFuture future instance
+   */
+  protected void setFuture(Future<?> pFuture) {
+    this.future = pFuture;
+  }
 
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
+  public String getApplicationName() {
+    return getName();
+  }
 
-    /**
-     * Returns the process working directory
-     *
-     * @return process working directory
-     */
-    @Override
-    public String getWorkingDir() {
-        return workingDir;
-    }
+  public String getOwner() {
+    return owner;
+  }
 
-    public String getRelativePath() {
-        return relativePath;
-    }
+  public void setOwner(String owner) {
+    this.owner = owner;
+  }
 
-    public void setRelativePath(String relativePath) {
-        this.relativePath = relativePath;
-    }
+  /**
+   * Returns the process working directory
+   *
+   * @return process working directory
+   */
+  @Override
+  public String getWorkingDir() {
+    return workingDir;
+  }
 
-    public List<RunContext> getChildContexts() {
-        return childContexts;
-    }
+  public String getRelativePath() {
+    return relativePath;
+  }
 
-    public RunContext getCurrentChildContext() {
-      if (currentTask > 0 && currentTask <= this.childContexts.size()) {
-        return this.childContexts.get(currentTask - 1);
-      }
-      return null;
-    }
+  public void setRelativePath(String relativePath) {
+    this.relativePath = relativePath;
+  }
 
-    public void addChild(RunContext childContext) {
-        this.childContexts.add(childContext);
-    }
+  public List<RunContext> getChildContexts() {
+    return childContexts;
+  }
 
-    public boolean hasNext() {
-        return currentTask < this.childContexts.size();
+  public RunContext getCurrentChildContext() {
+    if (currentTask > 0 && currentTask <= this.childContexts.size()) {
+      return this.childContexts.get(currentTask - 1);
     }
+    return null;
+  }
 
-    public RunContext next() {
-        return this.childContexts.get(currentTask++);
-    }
+  public void addChild(RunContext childContext) {
+    this.childContexts.add(childContext);
+  }
 
-    public void remove() {
-        /* no-op */
-    }
+  public boolean hasNext() {
+    return currentTask < this.childContexts.size();
+  }
+
+  public RunContext next() {
+    return this.childContexts.get(currentTask++);
+  }
+
+  public void remove() {
+    /* no-op */
+  }
 }

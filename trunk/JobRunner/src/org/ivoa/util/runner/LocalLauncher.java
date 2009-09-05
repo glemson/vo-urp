@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.ivoa.util.JavaUtils;
@@ -163,6 +164,8 @@ public final class LocalLauncher {
   /**
    * Create a ProcessContext with the given command and arguments
    *
+   * @param appName application identifier
+   * @param owner user name
    * @param workingDir working directory to use (null indicates current directory)
    * @param bufferLines number of lines to keep in STD OUT / ERR buffer
    * @param writeLogFile absolute file path to write STD OUT / ERR streams (null indicates not to use a file dump)
@@ -191,6 +194,7 @@ public final class LocalLauncher {
   /**
    * Create a ProcessContext with the given command and arguments
    *
+   * @param parent root context of the given run context
    * @param name name of the operation
    * @param command unix command with arguments as an array
    *
@@ -208,6 +212,9 @@ public final class LocalLauncher {
     final Integer id = Integer.valueOf(JOBS_ID.incrementAndGet());
 
     final ProcessContext runCtx = new ProcessContext(parent, name, id, command);
+
+    // set pending state :
+    runCtx.setState(RunState.STATE_PENDING);
 
     runCtx.setRing(parent.getRing());
 
@@ -242,9 +249,12 @@ public final class LocalLauncher {
 
     // uses the runner thread pool to run the pdr process :
     // throws IllegalStateException if job not queued :
-    ThreadExecutors.getRunnerExecutor().execute(new JobRunner(rootCtx, listener));
+    Future future = ThreadExecutors.getRunnerExecutor().submit(new JobRunner(rootCtx, listener));
 
     // Here : job has been accepted and queued in ThreadExecutor (maybe already running) :
+
+    // define the future associated to the root context :
+    rootCtx.setFuture(future);
 
     // add in queue for monitoring :
     addInQueue(rootCtx);
@@ -402,49 +412,53 @@ public final class LocalLauncher {
         log.debug("JobRunner - thread.run : enter");
       }
 
-      // increment live counter :
-      JOBS_LIVE.incrementAndGet();
+      if (rootCtx.getState() != RunState.STATE_CANCELLED) {
+        // increment live counter :
+        JOBS_LIVE.incrementAndGet();
 
-      boolean ok = true;
-      try {
-        // set running state :
-        rootCtx.setState(RunState.STATE_RUNNING);
+        boolean ok = true;
+        try {
+          // set running state :
+          rootCtx.setState(RunState.STATE_RUNNING);
 
-        // call listener :
-        listener.performJobEvent(rootCtx);
+          // call listener :
+          listener.performJobEvent(rootCtx);
 
 
-        // Execute the tasks here :
-        int n = 0;
-        int maxn = 100;
-        RunContext child = null;
+          // Execute the tasks here :
+          int n = 0;
+          int maxn = 100;
+          RunContext child = null;
 
-        while (ok && rootCtx.hasNext() && n < maxn) {
-          child = rootCtx.next();
+          while (ok && rootCtx.hasNext() && n < maxn) {
+            child = rootCtx.next();
 
-          executeTask(child);
-          ok = listener.performTaskDone(rootCtx, child);
-          n++;
+            executeTask(child);
+            ok = listener.performTaskDone(rootCtx, child);
+            n++;
+          }
+
+        } finally {
+
+          rootCtx.getRing().add("Job '" + rootCtx.getName() + "'Ended.");
+
+          if (rootCtx.getState() != RunState.STATE_CANCELLED && rootCtx.getState() != RunState.STATE_KILLED) {
+            // set finished state :
+            rootCtx.setState(ok ? RunState.STATE_FINISHED_OK : RunState.STATE_FINISHED_ERROR);
+          }
+
+          // call listener :
+          listener.performJobEvent(rootCtx);
+
+          // remove job from queue :
+          if (!QUEUE_MANUAL_REMOVE_JOBS) {
+            removeFromQueue(rootCtx.getId());
+          }
         }
 
-      } finally {
-
-        rootCtx.getRing().add("Job '" + rootCtx.getName() + "'Ended.");
-
-        // set finished state :
-        rootCtx.setState(ok ? RunState.STATE_FINISHED_OK : RunState.STATE_FINISHED_ERROR);
-
-        // call listener :
-        listener.performJobEvent(rootCtx);
-
-        // remove job from queue :
-        if (!QUEUE_MANUAL_REMOVE_JOBS) {
-          removeFromQueue(rootCtx.getId());
-        }
+        // decrement live counter :
+        JOBS_LIVE.decrementAndGet();
       }
-
-      // decrement live counter :
-      JOBS_LIVE.decrementAndGet();
 
       if (log.isDebugEnabled()) {
         log.debug("JobRunner - thread.run : exit");
@@ -453,7 +467,7 @@ public final class LocalLauncher {
 
     /**
      * This method uses the job listener for the running & finished events and use the ProcessRunner to execute the job
-     * @return true if the execution was successful
+     * @param runCtx context to execute
      */
     private final void executeTask(final RunContext runCtx) {
       if (log.isDebugEnabled()) {
