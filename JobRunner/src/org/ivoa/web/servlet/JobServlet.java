@@ -15,7 +15,6 @@ import org.ivoa.util.runner.LocalLauncher;
 import org.ivoa.util.runner.RootContext;
 import org.ivoa.util.runner.RunContext;
 import org.ivoa.util.runner.RunState;
-import org.ivoa.util.runner.process.ProcessContext;
 
 
 /**
@@ -28,6 +27,7 @@ public class JobServlet extends BaseServlet implements JobListener {
   // actions :
   public static final String ACTION_START_JOB = "start";
   public static final String ACTION_SHOW_JOB = "detail";
+  public static final String ACTION_CANCEL_JOB = "cancel";
   public static final String ACTION_KILL_JOB = "kill";
   public static final String ACTION_SHOW_QUEUE = "list";
   // TODO : add kill action
@@ -103,8 +103,14 @@ public class JobServlet extends BaseServlet implements JobListener {
         view = showQueue(request);
       } else if (ACTION_SHOW_JOB.equals(action)) {
         view = showJob(request, getIntParameter(request, INPUT_ID, 0));
-      } else if (ACTION_KILL_JOB.equals(action)) {
-        killJob(request, getIntParameter(request, INPUT_ID, 0));
+      } else if (ACTION_KILL_JOB.equals(action) ||
+          ACTION_CANCEL_JOB.equals(action)) {
+
+        if (ACTION_KILL_JOB.equals(action)) {
+          killJob(request, getIntParameter(request, INPUT_ID, 0));
+        } else {
+          cancelJob(request, getIntParameter(request, INPUT_ID, 0));
+        }
 
         view = null;
         try {
@@ -168,6 +174,20 @@ public class JobServlet extends BaseServlet implements JobListener {
       if (runCtx instanceof RootContext) {
         // java process is killed => unix process is killed :
         ((RootContext) runCtx).kill();
+      }
+
+    } finally {
+      // clear ring buffer :
+      runCtx.close();
+    }
+  }
+
+  private void cancelJob(final HttpServletRequest request, final Integer id) {
+    final RunContext runCtx = LocalLauncher.getJob(id);
+    try {
+      if (runCtx instanceof RootContext) {
+        // cancel the root context :
+        ((RootContext) runCtx).cancel();
       }
 
     } finally {
@@ -241,7 +261,8 @@ public class JobServlet extends BaseServlet implements JobListener {
    * a random uuid.
    *
    * @param baseWorkDir
-   * @return
+   * @return working directory
+   * @throws IOException if mkdirs failed
    */
   protected final String createWorkingDirectory(final String baseWorkDir) throws IOException {
 //    	return baseWorkDir;

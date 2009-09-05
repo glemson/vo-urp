@@ -1,5 +1,7 @@
 package org.ivoa.util.runner;
 
+import java.util.Date;
+import org.ivoa.util.TypeWrapper;
 import org.ivoa.util.runner.process.RingBuffer;
 
 
@@ -150,6 +152,8 @@ public class RunContext {
 
         break;
 
+      case STATE_CANCELLED:
+      case STATE_KILLED:
       case STATE_FINISHED_ERROR:
       case STATE_FINISHED_OK:
         setEndDate(System.currentTimeMillis());
@@ -158,6 +162,22 @@ public class RunContext {
 
       default:
     }
+  }
+
+  public boolean isRunning() {
+    return getState() == RunState.STATE_RUNNING;
+  }
+
+  public boolean isPending() {
+    return getState() == RunState.STATE_PENDING;
+  }
+
+  public long getCreationDate() {
+    return creationDate;
+  }
+
+  public String getCreationDateFormatted() {
+    return TypeWrapper.getInternationalFormat(creationDate);
   }
 
   /**
@@ -178,6 +198,13 @@ public class RunContext {
     this.queueDate = queueDate;
   }
 
+  public String getQueueDateFormatted() {
+    if (queueDate == 0L) {
+      return "-";
+    }
+    return TypeWrapper.getInternationalFormat(queueDate);
+  }
+
   /**
    * Returns the job run date
    *
@@ -194,6 +221,13 @@ public class RunContext {
    */
   private final void setRunDate(final long runDate) {
     this.runDate = runDate;
+  }
+
+  public String getRunDateFormatted() {
+    if (runDate == 0L) {
+      return "-";
+    }
+    return TypeWrapper.getInternationalFormat(runDate);
   }
 
   /**
@@ -214,6 +248,13 @@ public class RunContext {
     this.endDate = endDate;
   }
 
+  public String getEndDateFormatted() {
+    if (endDate == 0L) {
+      return "-";
+    }
+    return TypeWrapper.getInternationalFormat(endDate);
+  }
+
   /**
    * Returns the job duration in ms
    *
@@ -230,10 +271,6 @@ public class RunContext {
    */
   public final void setDuration(final long duration) {
     this.duration = duration;
-  }
-
-  public long getCreationDate() {
-    return creationDate;
   }
 
   /**
