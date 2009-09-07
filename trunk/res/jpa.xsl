@@ -64,8 +64,24 @@
   <xsl:if test="$extMod = 1">
   @DiscriminatorValue( "<xsl:value-of select="$className"/>" ) <!-- TODO decide whether this should be a path -->
   </xsl:if>
-
-  @NamedQueries( {
+<!-- Once JPA 2.0 with nested embeddable mapping is supported in Eclipselink we may revisit the next code. 
+For now it is commented out. -->
+<!-- 
+  <xsl:if test="attribute[key('element', datatype/@xmiidref)/name() = 'dataType']">
+    @AttributeOverrides ( {
+        <xsl:variable name="columns">
+          <xsl:apply-templates select="." mode="columns"/>
+        </xsl:variable>
+       <xsl:for-each select="exsl:node-set($columns)/column">
+         @AttributeOverride( name = "<xsl:value-of select="attroverride"/>", column = @Column( name = "<xsl:value-of select="name"/>" ) )
+         <xsl:if test="position() != last()"><xsl:text>,</xsl:text></xsl:if>
+       </xsl:for-each>
+         <xsl:if test="position() != last()"><xsl:text>,</xsl:text></xsl:if>
+     </xsl:for-each>
+    } )
+  </xsl:if>
+ -->
+   @NamedQueries( {
     @NamedQuery( name = "<xsl:value-of select="$className"/>.findById", query = "SELECT o FROM <xsl:value-of select="$className"/> o WHERE o.id = :id"),
     @NamedQuery( name = "<xsl:value-of select="$className"/>.findByPublisherDID", query = "SELECT o FROM <xsl:value-of select="$className"/> o WHERE o.identity.publisherDID = :publisherDID")
   <xsl:if test="$hasName = 1">
@@ -113,7 +129,24 @@
 
   <xsl:template match="dataType" mode="JPAAnnotation">
     <xsl:text>@Embeddable</xsl:text>&cr;
-  </xsl:template>
+<!-- see comment for similar code concerning nested embeddables in the objectType template -->    
+<!-- 
+  <xsl:if test="attribute[key('element', datatype/@xmiidref)/name() = 'dataType']">
+    @AttributeOverrides ( {
+      <xsl:for-each select="attribute[key('element', datatype/@xmiidref)/name() = 'dataType']">
+        <xsl:variable name="columns">
+          <xsl:apply-templates select="." mode="columns"/>
+        </xsl:variable>
+       <xsl:for-each select="exsl:node-set($columns)/column">
+         @AttributeOverride( name = "<xsl:value-of select="attroverride"/>", column = @Column( name = "<xsl:value-of select="name"/>" ) )
+         <xsl:if test="position() != last()"><xsl:text>,</xsl:text></xsl:if>
+       </xsl:for-each>
+         <xsl:if test="position() != last()"><xsl:text>,</xsl:text></xsl:if>
+     </xsl:for-each>
+    } )
+  </xsl:if>
+ -->
+   </xsl:template>
 
 
 
@@ -167,7 +200,7 @@
          <xsl:if test="position() != last()"><xsl:text>,</xsl:text></xsl:if>
        </xsl:for-each>
     } )
-      </xsl:when>
+     </xsl:when>
       <xsl:otherwise>
       <xsl:message> ++++++++  ERROR  +++++++  <xsl:value-of select="name($type)"/> is not supported</xsl:message>
     [NOT_SUPPORTED_ATTRIBUTE]
@@ -412,6 +445,12 @@
       </xsl:call-template>
     </xsl:for-each>
   </xsl:template>
+
+
+  <!-- to deal wth nested datatypes there are various approaches.
+  "Simple" nested embeddables/embeddeds are formally nor supported in JPA,
+  though some implementors MAY support them. -->
+
 
 
 </xsl:stylesheet>
