@@ -127,7 +127,7 @@ public abstract class MetadataObject extends MetadataElement implements Navigabl
    * @return true if this object does not have a representation in the database yet, false otherwise
    */
   public boolean isPurelyTransient() {
-    return getId() == null;
+    return getId() == null | getId().longValue() < 0;
   }
 
   /**
