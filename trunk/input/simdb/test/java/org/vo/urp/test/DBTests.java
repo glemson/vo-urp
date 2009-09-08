@@ -161,23 +161,23 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       close(em);
     }
 
-//    testWRITE(jf);
+    testWRITE(jf);
 
     // Gerard : load XML -> JPA -> database test case :
 
     // Loads & write an xml instance :
 //    testLOAD_WRITE(jf, PROTOCOL_FILE_GADGET2);
-//    testLOAD_WRITE(jf, PROTOCOL_FILE_PDR);
-//    testLOAD_WRITE(jf, PROTOCOL_FILE_HALOMAKER);
+    testLOAD_WRITE(jf, PROTOCOL_FILE_PDR);
+    testLOAD_WRITE(jf, PROTOCOL_FILE_HALOMAKER);
 
     // Batch writes :
 //    testLOAD_BATCH_WRITE(jf, PROTOCOL_FILE_GADGET2);
-//    testLOAD_BATCH_WRITE_SINGLE_TRANSACTION(jf, PROTOCOL_FILE_GADGET2);
+    testLOAD_BATCH_WRITE_SINGLE_TRANSACTION(jf, PROTOCOL_FILE_GADGET2);
 
     // Batch writes : Laurent : In progress :
-    testLOAD_THREADS_WRITE(jf, PROTOCOL_FILE_GADGET2);
+//    testLOAD_THREADS_WRITE(jf, PROTOCOL_FILE_GADGET2);
 
-//    testSQLQuery(jf);
+    testSQLQuery(jf);
 
     log.warn("DBTests.testJPA : exit");
   }
@@ -443,7 +443,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
           value.setValue(100d * Math.random());
 
           np.setValue(new Value());
-          np.getValue().setAsQuantity(value);
+          np.getValue().setAsQuantity(value.getValue());
 
           simulation.addParameter(np);
         }
@@ -558,7 +558,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
         n = new Quantity();
         n.setValue(1000 * Math.random());
 
-        v.setAsQuantity(n);
+        v.setAsQuantity(n.getValue());
         cha.setValue(v);
         
       }
