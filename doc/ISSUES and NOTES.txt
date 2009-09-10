@@ -42,3 +42,17 @@ Note: when the targetschema changes this script should be changed !
 currently it is
 http://ivoa.org/theory/datamodel/generationmetadata/v0.1
 with xsi:schemaLocation = http://vo-urp.googlecode.com/svn/trunk/xsd/intermediateModel.xsd
+
+
+
+--=========================================================
+-- [2009-09-08, GL] Using MagicDraw16.5
+--=========================================================
+Created SimDB_DM_16.5.xml using MagicDraw CE 16.5 on a copy of the old (v 12.1) XMI file.
+Required changes to xmi2intermediate:
+- change in namespace version:   xmlns:uml="http://schema.omg.org/spec/UML/2.0" ->  xmlns:uml="http://schema.omg.org/spec/UML/2.2" 
+- <xsl:template name="multiplicity"> must now accept * iso -1 for unconstrained end of the cardinality.
+But different rules seem to be required to map to our cardinality elements.
+- ownedMember -> packagedElement
+- 
+
