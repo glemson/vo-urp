@@ -26,7 +26,7 @@ public class EyalsSAM extends JobServlet {
 
   // ~ the tasks
   public static final String MAIN_TASK = "main";
-  public static final String PLOT_TASK = "plot";
+  public static final String RPLOT_TASK = "Rplot";
   public static final String FREE_PARAM_DELIMITER = "___";
   public static final String FIXED_PARAM_DELIMITER = "%%%";
   private String paramtemplate;
@@ -36,6 +36,8 @@ public class EyalsSAM extends JobServlet {
   private String executable;
   private String name;
   private String[] plotCommand;
+  private String Rcmd;
+  private String Rscript;
 
   @Override
   protected void initialiseMainJob(RootContext rootCtx, HttpServletRequest request) throws JobStateException {
@@ -153,6 +155,9 @@ public class EyalsSAM extends JobServlet {
       freeParameters.add(param);
       index1 = index2 + FREE_PARAM_DELIMITER.length();// TODO optimize
     }
+    Rcmd = config.getInitParameter("Rcmd");
+    Rscript = FileManager.LEGACYAPPS + "/" + name + "/" + config.getInitParameter("Rscript");
+
   }
 
   /**
@@ -166,12 +171,16 @@ public class EyalsSAM extends JobServlet {
     if (MAIN_TASK.equals(runCtx.getName())) {
       //TODO add plotting tasks
       if (runCtx.getState() == RunState.STATE_FINISHED_OK) {
+         prepareRPlotTask(runCtx.getParent());
         ok = true;
-        LocalLauncher.prepareChildJob(rootCtx, PLOT_TASK, plotCommand);
       } else {
         ok = false;
       }
     }
     return ok;
   }
+  private void prepareRPlotTask(RootContext rootCtx) {
+	    String[] cmd = new String[]{Rcmd, "BATCH", "--no-save", Rscript, "Rplot.log"};
+	    LocalLauncher.prepareChildJob(rootCtx, RPLOT_TASK, cmd);
+	  }
 }

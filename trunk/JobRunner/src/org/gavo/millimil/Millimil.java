@@ -110,7 +110,7 @@ public class Millimil extends JobServlet {
    * Perform the event from the given run context
    * @param rootCtx root context
    * @param runCtx  current run context
-   * @return boolean: true of the processing should continue, false if the job should be terminated
+   * @return boolean: true if the processing should continue, false if the job should be terminated
    */
   public boolean performTaskDone(final RootContext rootCtx, final RunContext runCtx) {
     boolean ok = true;
