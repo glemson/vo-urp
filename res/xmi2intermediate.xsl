@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-This style sheet transforms a UML model, expressed ain XMI, into an
+This style sheet transforms a UML model, expressed an XMI, into an
 "intermediate" XMl representation.
 That representation follows the schema in intermediateModel.xsd.
+
+This XSLT is tested to work on XMI generated with MagicDraw Community Edition v12.1.
 
  -->
 <!DOCTYPE stylesheet [
@@ -38,7 +40,10 @@ That representation follows the schema in intermediateModel.xsd.
   <xsl:template match="/">
     <xsl:choose>
       <xsl:when test="namespace-uri(/*) != 'http://schema.omg.org/spec/XMI/2.1'">
-        <ERROR>Wrong namespace: this script can convert only XMI v2.1</ERROR>
+        <xsl:message>ERROR Wrong namespace: this script can convert only XMI v2.1</xsl:message>
+      </xsl:when>
+      <xsl:when test="not(*/uml:Model)">
+        <xsl:message>ERROR No uml:Model found. Possibly wrong version of uml namespace? Should be <xsl:value-of select="$uml_namespace"/></xsl:message>
       </xsl:when>
       <xsl:otherwise>
         <xsl:apply-templates select="*/uml:Model" />
@@ -51,6 +56,7 @@ That representation follows the schema in intermediateModel.xsd.
   
   <!-- filters uml:Model : process only uml:Package nodes -->
   <xsl:template match="uml:Model">
+  
     <xsl:comment>This XML document is generated without explicit xmlns specification as it complicates
     writing XSLT scripts against it [TBD add a link to some web dicsussions about it].
     It is understood that the XML schema in 

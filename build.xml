@@ -42,6 +42,7 @@
 	<fail unless="project.name" message="Must define name for project [project.name] !" />
 	<fail unless="project.version" message="Must define project version [project.version] !" />
 	<fail unless="source" message="Must define the source data model file (xmi 2.1) [source] !" />
+	<fail unless="xmi2intermediate" message="Must define the basic xmi2intermediate xsl file!"/>
 	<fail unless="root_package" message="Must define the root package [root_package] !" />
 	<fail unless="model_package" message="Must define the model package [model_package] !" />
 	<fail unless="targetnamespace_root" message="Must define the target namespace root [targetnamespace_root] !" />
@@ -179,7 +180,7 @@
 	    <srcfiles dir="${input}" includes="${source}" />
 	    <srcfiles dir="${res}" includes="xmiCheck.xsl" />
 	    <srcfiles dir="${res}" includes="xmiFilter.xsl" />
-	    <srcfiles dir="${res}" includes="xmi2intermediate.xsl" />
+	    <srcfiles dir="${res}" includes="${xmi2intermediate}" />
 	    <mapper type="merge" to="${output}/${source_intermediate}" />
 	  </uptodate>
 
@@ -487,7 +488,7 @@
 	<target name="xmi2intermediate">
 		<echo>xmi2intermediate : starting generate intermediate model from file ${output}/${source}</echo>
 
-		<xslt2 in="${source}" out="${output}/${source_filtered}" style="${res}/xmi2intermediate.xsl">
+		<xslt2 in="${source}" out="${output}/${source_filtered}" style="${res}/${xmi2intermediate}">
 			<param name="root_package" expression="${root_package}" />
 			<param name="model_package" expression="${model_package}" />
 		</xslt2>

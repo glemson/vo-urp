@@ -268,7 +268,7 @@ public abstract class MetadataElement extends LogSupport implements Serializable
         e.baseToString(sb).append("]");
 
         // avoid toString() duplicates :
-        if (isDeep && ! exists(e, ids)) {
+        if(!(o instanceof MetadataObject) ||( isDeep && ! exists(e, ids))) {
           e.deepToString(sb, isDeep, ids);
         }
       } else if (o instanceof Collection<?>) {
