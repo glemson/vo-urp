@@ -152,9 +152,18 @@ For now it is commented out. -->
 
 
   <!-- template attribute : adds JPA annotations for primitive types, data types & enumerations -->
+  <!-- Note: this template uses field access and should be used by objectType-s.
+  For dataType attributes we (attempt to) use property based access, as that allows a level of nesting. -->
   <xsl:template match="attribute" mode="JPAAnnotation">
+<!-- currently the choose element never gets to first element
+enable that again if we want (and are able) to use property access using get/set methods.
+Currently only for JPA 2.0 impementation of eclipselink it seems as if nested attributeoverride-s at least comppile and weave-->
+    <xsl:choose>
+      <xsl:when test="../name() = 'dataType' and 0 = 1">
+        <xsl:text>@Basic</xsl:text>
+      </xsl:when>
+      <xsl:otherwise>
     <xsl:variable name="type" select="key('element', datatype/@xmiidref)"/>
-
     <xsl:choose>
       <xsl:when test="name($type) = 'primitiveType'">
         <xsl:choose>
@@ -184,29 +193,47 @@ For now it is commented out. -->
         </xsl:call-template>
       </xsl:when>
       <xsl:when test="name($type) = 'dataType'">
-        <!-- NB see comment at the common-ddl template called here for the treatment of the
-        attroverride element. This currently contains the name of this attribute as a prefix, whihc therefore
-        must be removed here. IF the attributeoverride were defined at the class level this would be the correct value.
-         -->
-        <xsl:variable name="columns">
-          <xsl:apply-templates select="." mode="columns"/>
-        </xsl:variable>
-        <xsl:variable name="attrname" select="name"/>
-    @Embedded
-    @AttributeOverrides ( {
-       <xsl:for-each select="exsl:node-set($columns)/column">
-         <xsl:variable name="attroverride" select="substring(attroverride,string-length(string($attrname))+2)"/>
-         @AttributeOverride( name = "<xsl:value-of select="$attroverride"/>", column = @Column( name = "<xsl:value-of select="name"/>" ) )
-         <xsl:if test="position() != last()"><xsl:text>,</xsl:text></xsl:if>
-       </xsl:for-each>
-    } )
+        <xsl:choose>
+          <xsl:when test="../name() = 'dataType'">
+          @Embedded
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:apply-templates select="." mode="attroverride"/>
+          </xsl:otherwise>
+        </xsl:choose>
      </xsl:when>
       <xsl:otherwise>
       <xsl:message> ++++++++  ERROR  +++++++  <xsl:value-of select="name($type)"/> is not supported</xsl:message>
     [NOT_SUPPORTED_ATTRIBUTE]
       </xsl:otherwise>
     </xsl:choose>
+          </xsl:otherwise>
+        </xsl:choose>
   </xsl:template>
+
+
+
+  <xsl:template match="attribute" mode="attroverride">
+        <!-- NB see comment at the common-ddl template called here for the treatment of the
+        attroverride element. This currently contains the name of this attribute as a prefix, whihc therefore
+        must be removed here. IF the attributeoverride were defined at the class level this would be the correct value.
+         -->
+        <xsl:variable name="columns">
+          <xsl:apply-templates select="." mode="nested"/>
+        </xsl:variable>
+        <xsl:variable name="attrname" select="name"/>
+    @Embedded
+    @AttributeOverrides ( {
+       <xsl:for-each select="exsl:node-set($columns)/nested">
+         <xsl:variable name="attroverride" select="substring(attroverride,string-length(string($attrname))+2)"/>
+         @AttributeOverride( name = "<xsl:value-of select="$attroverride"/>", column = @Column( name = "<xsl:value-of select="name"/>" ) )
+         <xsl:if test="position() != last()"><xsl:text>,</xsl:text></xsl:if>
+       </xsl:for-each>
+    } )
+  </xsl:template>
+
+
+
 
 
 
@@ -450,6 +477,207 @@ For now it is commented out. -->
   <!-- to deal wth nested datatypes there are various approaches.
   "Simple" nested embeddables/embeddeds are formally nor supported in JPA,
   though some implementors MAY support them. -->
+
+
+
+  <!-- Create get/set methods for leaf-attributes in a nested dataType hierarchy.
+       This allows mapping such patterns as long as "nested embeddables" are not yet well treated by JPA and/or its implementations. 
+   -->
+  <xsl:template match="attribute" mode="nestedgetset">
+    <xsl:variable name="nested">
+      <xsl:apply-templates select="." mode="nested"/>
+    </xsl:variable>
+    <xsl:for-each select="exsl:node-set($nested)/nested">
+      <xsl:variable name="get_prefix">
+        <xsl:choose>
+          <xsl:when test="nestedMethod_get">
+            <xsl:value-of select="concat(nestedMethod_get,'.')"/>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="''"/>
+          </xsl:otherwise>
+        </xsl:choose>
+      </xsl:variable>
+      @Column( name = "<xsl:value-of select="name"/>", nullable = <xsl:value-of select="nullable"/> )
+      public <xsl:value-of select="javaType"/> get<xsl:value-of select="nestedMethod"/>() {
+        return <xsl:value-of select="$get_prefix"/>get<xsl:value-of select="leafName"/>();
+      }
+      public void set<xsl:value-of select="nestedMethod"/>(<xsl:value-of select="javaType"/> _pValue) {
+        <xsl:value-of select="$get_prefix"/>set<xsl:value-of select="leafName"/>(_pValue);
+      }
+    </xsl:for-each>
+  
+  </xsl:template>
+
+<!-- 
+Return a node-set of columns for a single attribute, which may be structured.
+when multiple columns, provide the JPA attribute override information and info for the JPA get/set methods.
+
+NB this implementation does not do the whole work.
+It adds the name of the primary attribute to the attriverride variable.
+This therefore has to be removed in the jpa.xsl usage of this template.
+Should be possible to do thi differently, but TBD.
+Note, IF we'd want to add attribute overrides at the start of the class iso at the attribute level,
+this would be the appropriate value though!  
+!!!!!!!
+NOTE this template must be kept in synch with the <match="attribute" mode="columns">
+template in common-ddl.xsl 
+!!!!!!!
+ -->
+  <xsl:template match="attribute" mode="nested">
+    <xsl:param name="attroverrideprefix"/>
+    <xsl:param name="nestedMethodPrefix"/>
+    <xsl:param name="nestedMethodPrefix_get"/>
+    <xsl:param name="leafName"/>
+    <xsl:param name="prefix"/>
+    <xsl:param name="utypeprefix"/>
+    <xsl:param name="nullable" select="'false'" />
+
+    <xsl:message>Entering attribute/nested, for <xsl:value-of select="name"/></xsl:message>
+
+
+    <xsl:variable name="utype">
+      <xsl:value-of select="concat($utypeprefix,'.',name)"/>
+    </xsl:variable>
+
+    <xsl:variable name="nameUpper">
+      <xsl:call-template name="upperFirst">
+        <xsl:with-param name="val" select="name"/>
+      </xsl:call-template>
+    </xsl:variable>
+
+    <xsl:variable name="columnname">
+      <xsl:choose>
+        <xsl:when test="$prefix">
+          <xsl:value-of select="concat($prefix,'_',name)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="name"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    
+    <xsl:variable name="attroverride">
+      <xsl:choose>
+        <xsl:when test="$attroverrideprefix">
+          <xsl:value-of select="concat($attroverrideprefix,'.',name)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="name"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+    
+    <xsl:variable name="nestedMethod">
+      <xsl:choose>
+        <xsl:when test="$nestedMethodPrefix">
+          <xsl:value-of select="concat($nestedMethodPrefix,$nameUpper)"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$nameUpper"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:variable name="nestedMethod_get">
+      <xsl:choose>
+        <xsl:when test="$nestedMethodPrefix_get">
+          <xsl:value-of select="concat($nestedMethodPrefix_get,'.get',$nameUpper,'()')"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="concat('get',$nameUpper,'()')"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+
+    <xsl:variable name="isnullable">
+      <xsl:choose>
+        <xsl:when test="$nullable='true'">true</xsl:when>
+        <xsl:otherwise>
+          <xsl:choose>
+            <xsl:when test="multiplicity = '1'">false</xsl:when>
+            <xsl:otherwise>true</xsl:otherwise>
+          </xsl:choose>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:variable name="typeid">
+  	  <xsl:value-of select="datatype/@xmiidref" />
+  	</xsl:variable>	
+    <xsl:variable name="type" select="key('element',$typeid)"/>
+       <xsl:message>dataype = <xsl:value-of select="name($type)"/></xsl:message>
+    <xsl:choose>
+      <xsl:when test="name($type) = 'primitiveType' or name($type) = 'enumeration'">
+        <xsl:variable name="sqltype">
+          <xsl:call-template name="sqltype">
+            <xsl:with-param name="type" select="$type"/>
+            <xsl:with-param name="constraints" select="constraints"/>
+          </xsl:call-template>
+        </xsl:variable>
+        <xsl:variable name="javaType">
+        	<xsl:call-template name="JavaType">
+        	  <xsl:with-param name="xmiid" select="$typeid"/>
+        	</xsl:call-template>
+        </xsl:variable>
+    
+        <nested>
+          <attroverride><xsl:value-of select="$attroverride"/></attroverride>
+          <nestedMethod><xsl:value-of select="$nestedMethod"/></nestedMethod>
+          <nestedMethod_get><xsl:value-of select="$nestedMethodPrefix_get"/></nestedMethod_get>
+          <name><xsl:value-of select="$columnname"/></name>
+          <type><xsl:value-of select="$type/name"/></type>
+          <sqltype><xsl:value-of select="$sqltype"/></sqltype>
+          <xsl:copy-of select="constraints"/>
+          <xsl:copy-of select="multiplicity"/>
+          <description><xsl:value-of select="description"/></description>
+          <utype><xsl:value-of select="$utype"/></utype>
+          <javaType><xsl:value-of select="$javaType"/></javaType>
+          <leafName><xsl:value-of select="$nameUpper"/></leafName>
+          <nullable><xsl:value-of select="$isnullable"/></nullable>
+        </nested> 
+      </xsl:when>
+      
+      <xsl:when test="name($type) = 'dataType'">
+        <xsl:for-each select="$type/attribute">
+          <xsl:apply-templates select="." mode="nested">
+            <xsl:with-param name="prefix" select="$columnname"/>
+            <xsl:with-param name="attroverrideprefix" select="$attroverride"/>
+            <xsl:with-param name="nestedMethodPrefix" select="$nestedMethod"/>
+            <xsl:with-param name="nestedMethodPrefix_get" select="$nestedMethod_get"/>
+            <xsl:with-param name="utypeprefix" select="$utype"/>
+            <xsl:with-param name="nullable" select="$isnullable"/>
+          </xsl:apply-templates>
+        </xsl:for-each>
+        
+    		<xsl:if test="key('element',//extends[@xmiidref = $typeid]/../@xmiid)">
+		      <xsl:message>**** WARNING *** Found subclasses of datatype <xsl:value-of select="name"/>. VO-URP does currently not properly support such patterns properly.</xsl:message>
+		    </xsl:if>
+
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:message>ERROR in attribute/nested, datatype=<xsl:value-of select="name($type)"/></xsl:message>
+      </xsl:otherwise>
+    </xsl:choose>
+    
+  </xsl:template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

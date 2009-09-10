@@ -443,7 +443,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
           value.setValue(100d * Math.random());
 
           np.setValue(new Value());
-          np.getValue().setAsQuantity(value.getValue());
+          np.getValue().setAsQuantity(value);
 
           simulation.addParameter(np);
         }
@@ -558,7 +558,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
         n = new Quantity();
         n.setValue(1000 * Math.random());
 
-        v.setAsQuantity(n.getValue());
+        v.setAsQuantity(n);
         cha.setValue(v);
         
       }
