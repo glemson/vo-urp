@@ -837,7 +837,14 @@ package <xsl:value-of select="$path"/>;
     public void set<xsl:value-of select="$name"/>(final <xsl:value-of select="$type"/> p<xsl:value-of select="$name"/>) {
     this.<xsl:value-of select="name"/> = p<xsl:value-of select="$name"/>;
     }
-  </xsl:template>
+<!-- uncomment next if we decide to try out property access for nested embeddables. -->
+<!-- 
+    <xsl:variable name="datatype" select="key('element',datatype/@xmiidref)"/>
+    <xsl:if test="../name() = 'dataType' and name($datatype) = 'dataType'">
+      <xsl:apply-templates select="." mode="nestedgetset"/>
+    </xsl:if> 
+ -->
+   </xsl:template>
 
 
 
