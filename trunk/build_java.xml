@@ -27,8 +27,14 @@
   <include name="jsr173_1.0_api.jar" />
 
   <!-- eclipselink (1.1) JPA 1.0 reference implementation -->
-  <include name="eclipselink.jar" />
+<!-- 
+  <include name="eclipselink-1.1.2.jar" />
   <include name="javax.persistence_1.0.0.jar" />
+-->
+<!-- -->
+   <include name="eclipselink-2.0.jar" />
+    <include name="javax.persistence_2.0_preview.jar" />   
+<!-- -->  
 
   <!-- saxon9 for runtime XSLT processing -->
   <include name="saxon9.jar" />
