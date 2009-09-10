@@ -9,8 +9,6 @@
 <%-- <c:set var="noLink" scope="request" value="0" ></c:set> --%>
 <jsp:include page="../../header.jsp" flush="false"/>
 
-<a href="EyalsSAM.do?action=list">list jobs</a>
-
 <c:if test="${!empty requestScope.runContext}">
 
 <c:set var="ctx" value="${requestScope.runContext}" ></c:set>
@@ -24,9 +22,11 @@
 
     Root directory 
     <table><tr><th>File name</th><th>Size (bytes)</th><th>Modified</th></tr>
+<c:if test="${!empty requestScope.resultDir}">
 <dir:Directory path="${requestScope.resultDir}" > 
 <tr><td> <a href="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/<%=fileName%>"><%=fileName%></a></td><td>  <%=fileSize%> </td><td><%=fileDate%> </td></tr>
 </dir:Directory> 
+</c:if>
 </table>
 
     
