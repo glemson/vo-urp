@@ -454,7 +454,7 @@ DROP INDEX <xsl:value-of select="$tableName"/>.ix_<xsl:value-of select="$tableNa
         <xsl:apply-templates select="." mode="columns"/>
      </xsl:variable> 
      <xsl:for-each select="exsl:node-set($columns)/column">
-       <xsl:text>, </xsl:text><xsl:value-of select="name"/>&bl;<xsl:value-of select="sqltype"/><xsl:if test="multiplicity = '1'"> NOT NULL</xsl:if>&cr;
+       <xsl:text>, </xsl:text><xsl:value-of select="name"/>&bl;<xsl:value-of select="sqltype"/><xsl:if test="nullable = 'false'"> NOT NULL</xsl:if>&cr;
      </xsl:for-each>   
   </xsl:template>
   
