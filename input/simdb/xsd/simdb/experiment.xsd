@@ -6,6 +6,7 @@
             xmlns:p4="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
             xmlns:p2="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/protocol"
             xmlns:p7="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/object"
+            xmlns:p6="http://www.ivoa.net/xml/SimDB/0.7-20090417/basic"
             targetNamespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/experiment">
    <xsd:annotation>
       <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
@@ -16,6 +17,8 @@
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/protocol.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/object"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/object.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/basic"
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/basic.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/base.xsd"/>
    <xsd:complexType name="Simulation">

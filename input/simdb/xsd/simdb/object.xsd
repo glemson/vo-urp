@@ -4,12 +4,15 @@
             xmlns="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/object"
             xmlns:base="http://www.ivoa.net/xml/dm/base/v0.1"
             xmlns:p4="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
+            xmlns:p6="http://www.ivoa.net/xml/SimDB/0.7-20090417/basic"
             targetNamespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/object">
    <xsd:annotation>
       <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
    </xsd:annotation>
    <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/basic"
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/basic.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/base.xsd"/>
    <xsd:complexType name="ChildObject">
