@@ -3,10 +3,13 @@
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
             xmlns:base="http://www.ivoa.net/xml/dm/base/v0.1"
+            xmlns:p6="http://www.ivoa.net/xml/SimDB/0.7-20090417/basic"
             targetNamespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb">
    <xsd:annotation>
       <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
    </xsd:annotation>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/basic"
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/basic.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/base.xsd"/>
    <xsd:complexType name="Resource" abstract="true">
@@ -194,147 +197,6 @@ Complete international dialing codes should be given, e.g. "+1-410-338-1234".</x
          </xsd:extension>
       </xsd:complexContent>
    </xsd:complexType>
-
-   <xsd:complexType name="Quantity">
-      <xsd:annotation>
-         <xsd:documentation>A structured data type, indicating a numerical value and corresponding unit. The latter will require some standard dictionary for a uniform usage. This is here not modelled</xsd:documentation>
-         <xsd:appinfo>
-            <vo-urp:identifier>_12_1_8e0028f_1173262283140_574350_1278</vo-urp:identifier>
-         </xsd:appinfo>
-      </xsd:annotation>
-      <xsd:sequence>
-         <xsd:element name="value" type="xsd:double">
-            <xsd:annotation>
-               <xsd:documentation>The numerical value for this quantity.</xsd:documentation>
-               <xsd:appinfo>
-                  <vo-urp:identifier>_12_1_8e0028f_1173262292437_965055_1296</vo-urp:identifier>
-               </xsd:appinfo>
-            </xsd:annotation>
-         </xsd:element>
-         <xsd:element name="unit" type="xsd:string" minOccurs="0">
-            <xsd:annotation>
-               <xsd:documentation>The unit (if applicable) for this quantity. Should correspond to a recognised unit, possibly an ontologyTerm?</xsd:documentation>
-               <xsd:appinfo>
-                  <vo-urp:identifier>_12_1_8e0028f_1173262306046_676761_1298</vo-urp:identifier>
-               </xsd:appinfo>
-            </xsd:annotation>
-         </xsd:element>
-      </xsd:sequence>
-   </xsd:complexType>
-
-   <xsd:complexType name="StringLiteral">
-      <xsd:annotation>
-         <xsd:documentation>TODO : Missing description : please, update your UML model asap.</xsd:documentation>
-         <xsd:appinfo>
-            <vo-urp:identifier>_12_1_8e0028f_1244650023265_482835_424</vo-urp:identifier>
-         </xsd:appinfo>
-      </xsd:annotation>
-      <xsd:sequence>
-         <xsd:element name="value" type="xsd:string">
-            <xsd:annotation>
-               <xsd:documentation>TODO : Missing description : please, update your UML model asap.</xsd:documentation>
-               <xsd:appinfo>
-                  <vo-urp:identifier>_12_1_8e0028f_1244650039250_637608_466</vo-urp:identifier>
-               </xsd:appinfo>
-            </xsd:annotation>
-         </xsd:element>
-      </xsd:sequence>
-   </xsd:complexType>
-
-   <xsd:simpleType name="DataType">
-      <xsd:annotation>
-         <xsd:documentation>The values of this type are to be used in the definition of metadata fields such as Property and InputParameter. These data types correspond to actual types used in computation and data representation and are slightly different from the more abstract types in the domain model in [2].
-They are clearly related to similar concepts as in the DataType defined in the XML schema for VOTable.
-
-</xsd:documentation>
-         <xsd:appinfo>
-            <vo-urp:identifier>_12_1_8e0028f_1173260658937_376469_768</vo-urp:identifier>
-         </xsd:appinfo>
-      </xsd:annotation>
-      <xsd:restriction base="xsd:string">
-         <xsd:enumeration value="boolean">
-            <xsd:annotation>
-               <xsd:documentation>A standard boolean type, with values 'true' and 'false', possibly represented differently in physical representations of the model.</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-         <xsd:enumeration value="complex">
-            <xsd:annotation>
-               <xsd:documentation>A standard complex type. Here no limits on accuracy of constituent Re and Im parts.</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-         <xsd:enumeration value="datetime">
-            <xsd:annotation>
-               <xsd:documentation>Represents an exact time on an exact, given date.</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-         <xsd:enumeration value="double">
-            <xsd:annotation>
-               <xsd:documentation>A real*8 floating point datatype.</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-         <xsd:enumeration value="float">
-            <xsd:annotation>
-               <xsd:documentation>A real*4 floating point datatype.</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-         <xsd:enumeration value="int">
-            <xsd:annotation>
-               <xsd:documentation>An integer*4 integer datatype.</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-         <xsd:enumeration value="long">
-            <xsd:annotation>
-               <xsd:documentation>An integer*8 integer datatype.</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-         <xsd:enumeration value="rational">
-            <xsd:annotation>
-               <xsd:documentation>A rational datatype, consisting of two integers representing the numerator and denominator.</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-         <xsd:enumeration value="short">
-            <xsd:annotation>
-               <xsd:documentation>an integer*2 integer datatype.</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-         <xsd:enumeration value="string">
-            <xsd:annotation>
-               <xsd:documentation>A standard string dattaype consisting of any type of character.</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-      </xsd:restriction>
-   </xsd:simpleType>
-
-   <xsd:simpleType name="Cardinality">
-      <xsd:annotation>
-         <xsd:documentation>Possible values for cardinality attribute of a Property or a Parameter</xsd:documentation>
-         <xsd:appinfo>
-            <vo-urp:identifier>_12_1_2_8e0028f_1189430872609_809189_324</vo-urp:identifier>
-         </xsd:appinfo>
-      </xsd:annotation>
-      <xsd:restriction base="xsd:string">
-         <xsd:enumeration value="0..1">
-            <xsd:annotation>
-               <xsd:documentation>Corresponds to 'Optional element'</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-         <xsd:enumeration value="1">
-            <xsd:annotation>
-               <xsd:documentation>Corresponds to 'Mandatory element'</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-         <xsd:enumeration value="0..*">
-            <xsd:annotation>
-               <xsd:documentation>Corresponds to 'Multiple but maybe Optional element'</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-         <xsd:enumeration value="1..*">
-            <xsd:annotation>
-               <xsd:documentation>Corresponds to 'Multiple with at least one element'</xsd:documentation>
-            </xsd:annotation>
-         </xsd:enumeration>
-      </xsd:restriction>
-   </xsd:simpleType>
 
    <xsd:simpleType name="ContactRole">
       <xsd:annotation>

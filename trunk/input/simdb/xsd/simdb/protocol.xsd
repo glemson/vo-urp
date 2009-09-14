@@ -4,7 +4,7 @@
             xmlns="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/protocol"
             xmlns:base="http://www.ivoa.net/xml/dm/base/v0.1"
             xmlns:p4="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
-            xmlns:p6="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/object"
+            xmlns:p7="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/object"
             targetNamespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/protocol">
    <xsd:annotation>
       <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
@@ -114,11 +114,11 @@ web page where documentation of this simulator can be obtained</xsd:documentatio
                      </xsd:appinfo>
                   </xsd:annotation>
                </xsd:element>
+               <xsd:element name="parameterGroup" type="ParameterGroup" minOccurs="0" maxOccurs="unbounded"/>
                <xsd:element name="representation" type="RepresentationObjectType" minOccurs="0"
                             maxOccurs="unbounded"/>
-               <xsd:element name="algorithm" type="Algorithm" minOccurs="0" maxOccurs="unbounded"/>
                <xsd:element name="parameter" type="InputParameter" minOccurs="0" maxOccurs="unbounded"/>
-               <xsd:element name="parameterGroup" type="ParameterGroup" minOccurs="0" maxOccurs="unbounded"/>
+               <xsd:element name="algorithm" type="Algorithm" minOccurs="0" maxOccurs="unbounded"/>
             </xsd:sequence>
          </xsd:extension>
       </xsd:complexContent>
@@ -201,7 +201,7 @@ for browsing purposes for example. As browsing is likely an important mode of ac
          </xsd:appinfo>
       </xsd:annotation>
       <xsd:complexContent>
-         <xsd:extension base="p6:ObjectType">
+         <xsd:extension base="p7:ObjectType">
             <xsd:sequence>
                <xsd:element name="type" type="RepresentationObject">
                   <xsd:annotation>
@@ -235,7 +235,7 @@ For now we use the </xsd:documentation>
          </xsd:appinfo>
       </xsd:annotation>
       <xsd:complexContent>
-         <xsd:extension base="p6:Field">
+         <xsd:extension base="p7:Field">
             <xsd:sequence>
                <xsd:element name="label" type="xsd:string" minOccurs="0">
                   <xsd:annotation>
@@ -294,7 +294,7 @@ Ex: n-body, tree, amr, ...
 
    <xsd:simpleType name="RepresentationObject">
       <xsd:annotation>
-         <xsd:documentation>Represents a standard name for the objects that can be used to represent a snapshot of the universe in SimDB data products. Examples from simulations are “n-body particle”, “SPH particle”, “mesh cell”. But also simplified representations of astronomical objects could be used here, for example in halo catalogues or semi-analytical galaxy catalogues, both results of post-processing experiments
+         <xsd:documentation>Represents a standard name for the objects that can be used to represent a snapshot of the universe in SimDB data products. Examples from simulations are n-body particle, SPH particle, mesh cell. But also simplified representations of astronomical objects could be used here, for example in halo catalogues or semi-analytical galaxy catalogues, both results of post-processing experiments
 
 NB This should be transferred to an appropriate external ontology!</xsd:documentation>
          <xsd:appinfo>

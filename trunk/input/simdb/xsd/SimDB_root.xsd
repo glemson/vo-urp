@@ -5,8 +5,9 @@
             xmlns:p4="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
             xmlns:p3="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/experiment"
             xmlns:p2="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/protocol"
-            xmlns:p6="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/object"
+            xmlns:p7="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/object"
             xmlns:p5="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/dal"
+            xmlns:p6="http://www.ivoa.net/xml/SimDB/0.7-20090417/basic"
             targetNamespace="http://www.ivoa.net/xml/SimDB/0.7-20090417">
    <xsd:annotation>
       <xsd:documentation>Root elements for the model. Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.
@@ -24,6 +25,8 @@
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/object.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/dal"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/dal.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/basic"
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/basic.xsd"/>
    <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
                schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/base.xsd"/>
    <xsd:element name="aProject" type="p4:Project">
