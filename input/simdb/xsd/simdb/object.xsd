@@ -30,7 +30,7 @@
                      </xsd:appinfo>
                   </xsd:annotation>
                </xsd:element>
-               <xsd:element name="cardinality" type="p4:Cardinality" minOccurs="0">
+               <xsd:element name="cardinality" type="p6:Cardinality" minOccurs="0">
                   <xsd:annotation>
                      <xsd:documentation>The cardinality/multiplicity of the child object in the containing object.</xsd:documentation>
                      <xsd:appinfo>
@@ -185,7 +185,7 @@ Ex: omegaLambda, particleMass, linking length
                      </xsd:appinfo>
                   </xsd:annotation>
                </xsd:element>
-               <xsd:element name="datatype" type="p4:DataType">
+               <xsd:element name="datatype" type="p6:DataType">
                   <xsd:annotation>
                      <xsd:documentation>the data type of this parameter or property</xsd:documentation>
                      <xsd:appinfo>
@@ -193,7 +193,7 @@ Ex: omegaLambda, particleMass, linking length
                      </xsd:appinfo>
                   </xsd:annotation>
                </xsd:element>
-               <xsd:element name="cardinality" type="p4:Cardinality" minOccurs="0">
+               <xsd:element name="cardinality" type="p6:Cardinality" minOccurs="0">
                   <xsd:annotation>
                      <xsd:documentation>The cardinality of this parameter or property</xsd:documentation>
                      <xsd:appinfo>
@@ -217,6 +217,14 @@ Ex: omegaLambda, particleMass, linking length
                      </xsd:appinfo>
                   </xsd:annotation>
                </xsd:element>
+               <xsd:element name="unit" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>TODO : Missing description : please, update your UML model asap.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1250172870796_515078_198</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
                <xsd:element name="validValue" type="ValidValue" minOccurs="0" maxOccurs="unbounded"/>
             </xsd:sequence>
          </xsd:extension>
@@ -233,7 +241,7 @@ Ex: omegaLambda, particleMass, linking length
       <xsd:complexContent>
          <xsd:extension base="base:MetadataObject">
             <xsd:sequence>
-               <xsd:element name="value" type="xsd:string">
+               <xsd:element name="value" type="p6:Value">
                   <xsd:annotation>
                      <xsd:documentation>the value as string : can be converted to the correct datatype of the asociated parameter or property</xsd:documentation>
                      <xsd:appinfo>
