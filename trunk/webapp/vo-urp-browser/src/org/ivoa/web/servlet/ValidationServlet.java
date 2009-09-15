@@ -278,7 +278,7 @@ public final class ValidationServlet extends BaseServlet {
       dataModelManager = new DataModelManager(RuntimeConfiguration.get().getJPAPU());
     } catch (final Exception e) {
       log.error(
-        "Unable to initiate DataModelManager for UploadServlet using JPA persistence unit " +
+        "Unable to initiate DataModelManager for ValidationServlet using JPA persistence unit " +
         RuntimeConfiguration.get().getJPAPU());
       dataModelManager = null; // TODO should we throw an exception or simply make uploads not possible?
     }
