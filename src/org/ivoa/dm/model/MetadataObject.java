@@ -53,7 +53,7 @@ public abstract class MetadataObject extends MetadataElement implements Navigabl
   /** Variable storing the life cycle status of this object */
   @Transient
   @XmlTransient
-  private final State _state = new State();
+  private State _state = null;
   /**
    * Generator for purely transient id-s, e.g. used when serializing to XML
    * an object that has no DB representation (yet).<br/>
@@ -466,6 +466,9 @@ public abstract class MetadataObject extends MetadataElement implements Navigabl
    * @return status object of this object
    */
   protected final State getInternalState() {
+    if (_state == null) {
+      _state = new State();
+    }
     return _state;
   }
 
