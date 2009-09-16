@@ -37,7 +37,7 @@
   </h1>
 
 <c:if test="${empty requestScope.noLink}">
-  <p>Back to : <a href="index.jsp" title="go to Index"><b>Index</b></a> - <a href="javascript:history.go(-1)" title="go back"><b>Previous Page</b></a></p>
+  <p>Back to : <a href="<%= request.getContextPath() %>/index.jsp" title="go to Index"><b>Index</b></a> - <a href="javascript:history.go(-1)" title="go back"><b>Previous Page</b></a></p>
 </c:if>
 
 <%--

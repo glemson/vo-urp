@@ -126,6 +126,7 @@
   <doSql onerror="abort" src="${tap.ddl.directory}/${project.name}_create_tap_schema.sql" delimiter="${create.view.sep}"/>
 
   <!-- web user rights -->
+  <!-- TBD do we want/need this here? -->
   <doSql onerror="continue" src="webapp/vo-urp-browser/ddl/admindb.sql" />
 
   <echo>createDB : done.</echo>

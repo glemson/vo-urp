@@ -196,7 +196,7 @@ public class TAPServlet extends BaseServlet implements TAP_v0_31 {
   }
 
   /**
-   * TODO : Method Description
+   * Return the TAP metadata for this service as an XML or a VOTable document, depending on FORMAT parameter.<br/> 
    *
    * @param request 
    * @param response 
@@ -205,7 +205,7 @@ public class TAPServlet extends BaseServlet implements TAP_v0_31 {
    */
   private void handleSyncGetTableMetadata(final HttpServletRequest request, final HttpServletResponse response)
                                    throws ServletException {
-    /* no-op */
+    String format = getStringParameter(request, REQUEST_PARAM);
   }
 
   /**

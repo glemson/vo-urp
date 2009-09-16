@@ -4,7 +4,7 @@ This XSLT script transforms a data model from our
 intermediate representation to a VOTable describing the metadata
 of a TAP-like service. 
 
-At the current time TAP does not exist, we make therfore certain 
+At the current time TAP does not exist, we make therefore certain 
 assumptions on the details of its metadata description.
 We take over two proposals from
 http://www.ivoa.net/internal/IVOA/TableAccess/tap-v0.2.pdf, 
@@ -16,6 +16,16 @@ http://www.ivoa.net/internal/IVOA/TableAccess/TAP-QL-0.1.pdf.
 In all cases we use the View-s that are generated in intermediate2ddl as 
 the public contents of the database for the UML data model.
 
+UPDATE: now [2009-09-16] that the TAP RFC is passed, we update the XSLT to comply with TAP 1.0 in
+http://www.ivoa.net/Documents/cover/TAP-20090607.html
+
+Requirements:
+- need to support querying for schemas, tables, columns using the metadata tables defined in 
+http://www.ivoa.net/Documents/WD/DAL/WD-TAP-1.0-20090607.html#2.6.Metadata Tables and TAP schema|outline
+In this XSLT we generate the table definitions scripts and insert statements for filling the tables.
+
+
+generate tables in the database allowing querying for metadata 
  -->
 
 <!DOCTYPE stylesheet [
@@ -687,6 +697,8 @@ Then fills these with the metadata using imsple insert statements.
 
   <xsl:template name="drop_TAP_SCHEMA_tables">
 <xsl:text>
+DROP TABLE TAP_SCHEMA.key_columns;
+DROP TABLE TAP_SCHEMA.keys;
 DROP TABLE TAP_SCHEMA.columns;
 DROP TABLE TAP_SCHEMA.tables;
 DROP TABLE TAP_SCHEMA.schemas;
@@ -735,12 +747,28 @@ CREATE TABLE TAP_SCHEMA.columns (
   ucd varchar(64),
   utype varchar(128),
   datatype varchar(64),
-  arraysize varchar(16),
+  size varchar(16),
   "primary" char(1), -- assume T or F
   indexed char(1), -- assume T or F
   std char(1), -- assume T or F
   rank integer 
 );
+<!--  for now the key_id is a varchar, using the name of the table and the reference -->
+CREATE TABLE TAP_SCHEMA.keys (
+  key_id varchar(128) not null,
+  from_table varchar(128) not null,
+  target_table varchar(128) not null,
+  utype varchar(128),
+  description </xsl:text><xsl:value-of select="$unboundedstringtype"/><xsl:text>
+  );
+
+CREATE TABLE TAP_SCHEMA.key_columns (
+  id </xsl:text><xsl:value-of select="$IDGentype"/><xsl:text>,
+  key_id varchar(128) not null,
+  from_column varchar(128) not null,
+  target_column varchar(128) not null
+  );
+  
 </xsl:text>
 <xsl:value-of select="$commit"/>
 
@@ -748,12 +776,12 @@ INSERT INTO TAP_SCHEMA.schemas (schema_name,description, utype) VALUES('<xsl:val
 
 INSERT INTO TAP_SCHEMA.schemas (schema_name,description, utype) VALUES('<xsl:value-of select="$target_database_prefix"/><xsl:value-of select="$target_schema"/>','the schema containing the data model tables and views metadata tables',null);
 
-
 INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,utype)VALUES('<xsl:value-of select="$target_database_prefix"/>TAP_SCHEMA','TAP_SCHEMA.schemas','base_table','the table storing metadata about the different schemas in this TAP service',null);
 INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,utype)VALUES('<xsl:value-of select="$target_database_prefix"/>TAP_SCHEMA','TAP_SCHEMA.tables','base_table','the table storing metadata about the tables in this TAP service',null);
 INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,utype)VALUES('<xsl:value-of select="$target_database_prefix"/>TAP_SCHEMA','TAP_SCHEMA.columns','base_table','the table storing metadata about the columns in this TAP service',null);
+INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,utype)VALUES('<xsl:value-of select="$target_database_prefix"/>TAP_SCHEMA','TAP_SCHEMA.keys','base_table','the table storing metadata about the foreign keys in this TAP service',null);
+INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,utype)VALUES('<xsl:value-of select="$target_database_prefix"/>TAP_SCHEMA','TAP_SCHEMA.key_columns','base_table','the table storing metadata about the foreign key columns in this TAP service',null);
 <!-- TAP_SCHEMA.columns entries for the TAP_SCHEMA tables -->
-
 <!-- TAP_SCHEMA.schemas -->
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:text>schema_name</xsl:text></xsl:with-param>
@@ -844,7 +872,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
         <xsl:with-param name="column_name"><xsl:text>unit</xsl:text></xsl:with-param>
         <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.columns</xsl:text></xsl:with-param>
         <xsl:with-param name="description"><xsl:text>This column stores the unit of the column represented by this row.</xsl:text></xsl:with-param>
-        <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
+        <xsl:with-param name="datatype"><xsl:text>CLOB</xsl:text></xsl:with-param>
         <xsl:with-param name="rank"><xsl:text>4</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
@@ -869,32 +897,106 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
         <xsl:with-param name="rank"><xsl:text>7</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
+        <xsl:with-param name="column_name"><xsl:text>size</xsl:text></xsl:with-param>
+        <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.columns</xsl:text></xsl:with-param>
+        <xsl:with-param name="description"><xsl:text>This column stores the size of the column represented by this row.</xsl:text></xsl:with-param>
+        <xsl:with-param name="datatype"><xsl:text>INTEGER</xsl:text></xsl:with-param>
+        <xsl:with-param name="rank"><xsl:text>8</xsl:text></xsl:with-param>
+      </xsl:call-template>
+      <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:text>primary</xsl:text></xsl:with-param>
         <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.columns</xsl:text></xsl:with-param>
         <xsl:with-param name="description"><xsl:text>This column stores whether the column represented by this row is primary.</xsl:text></xsl:with-param>
         <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
-        <xsl:with-param name="rank"><xsl:text>8</xsl:text></xsl:with-param>
+        <xsl:with-param name="rank"><xsl:text>9</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:text>indexed</xsl:text></xsl:with-param>
         <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.columns</xsl:text></xsl:with-param>
         <xsl:with-param name="description"><xsl:text>This column stores whether the column represented by this row is the first column in an index.</xsl:text></xsl:with-param>
         <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
-        <xsl:with-param name="rank"><xsl:text>9</xsl:text></xsl:with-param>
+        <xsl:with-param name="rank"><xsl:text>10</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:text>std</xsl:text></xsl:with-param>
         <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.columns</xsl:text></xsl:with-param>
         <xsl:with-param name="description"><xsl:text>This column stores whether the column represented by this row is standard.</xsl:text></xsl:with-param>
         <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
-        <xsl:with-param name="rank"><xsl:text>10</xsl:text></xsl:with-param>
+        <xsl:with-param name="rank"><xsl:text>11</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:text>rank</xsl:text></xsl:with-param>
         <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.columns</xsl:text></xsl:with-param>
         <xsl:with-param name="description"><xsl:text>This column stores the rank of the column represented by this row.</xsl:text></xsl:with-param>
         <xsl:with-param name="datatype"><xsl:text>INTEGER</xsl:text></xsl:with-param>
-        <xsl:with-param name="rank"><xsl:text>11</xsl:text></xsl:with-param>
+        <xsl:with-param name="rank"><xsl:text>12</xsl:text></xsl:with-param>
+      </xsl:call-template>
+
+<!-- TAP_SCHEMA.keys -->
+      <xsl:call-template name="insertcolumn">
+        <xsl:with-param name="column_name"><xsl:text>key_id</xsl:text></xsl:with-param>
+        <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.keys</xsl:text></xsl:with-param>
+        <xsl:with-param name="description"><xsl:text>This column stores the id of the foreign key represented by this row belongs to.</xsl:text></xsl:with-param>
+        <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
+        <xsl:with-param name="rank"><xsl:text>1</xsl:text></xsl:with-param>
+        <xsl:with-param name="indexed"><xsl:text>T</xsl:text></xsl:with-param>
+      </xsl:call-template>
+      <xsl:call-template name="insertcolumn">
+        <xsl:with-param name="column_name"><xsl:text>from_table</xsl:text></xsl:with-param>
+        <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.keys</xsl:text></xsl:with-param>
+        <xsl:with-param name="description"><xsl:text>This column stores the name of the table from which the foreign key points to the target table.</xsl:text></xsl:with-param>
+        <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
+        <xsl:with-param name="rank"><xsl:text>2</xsl:text></xsl:with-param>
+        <xsl:with-param name="indexed"><xsl:text>T</xsl:text></xsl:with-param>
+      </xsl:call-template>
+      <xsl:call-template name="insertcolumn">
+        <xsl:with-param name="column_name"><xsl:text>target_table</xsl:text></xsl:with-param>
+        <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.keys</xsl:text></xsl:with-param>
+        <xsl:with-param name="description"><xsl:text>This column stores the name of the table that is the target of this foreign key.</xsl:text></xsl:with-param>
+        <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
+        <xsl:with-param name="rank"><xsl:text>3</xsl:text></xsl:with-param>
+        <xsl:with-param name="indexed"><xsl:text>T</xsl:text></xsl:with-param>
+      </xsl:call-template>
+      <xsl:call-template name="insertcolumn">
+        <xsl:with-param name="column_name"><xsl:text>utype</xsl:text></xsl:with-param>
+        <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.keys</xsl:text></xsl:with-param>
+        <xsl:with-param name="description"><xsl:text>This column stores the Utype of the foreign key represented by the row.</xsl:text></xsl:with-param>
+        <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
+        <xsl:with-param name="size"><xsl:text>64</xsl:text></xsl:with-param>
+        <xsl:with-param name="rank"><xsl:text>4</xsl:text></xsl:with-param>
+      </xsl:call-template>
+      <xsl:call-template name="insertcolumn">
+        <xsl:with-param name="column_name"><xsl:text>description</xsl:text></xsl:with-param>
+        <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.keys</xsl:text></xsl:with-param>
+        <xsl:with-param name="description"><xsl:text>This column stores the description of the table represented by the row.</xsl:text></xsl:with-param>
+        <xsl:with-param name="datatype"><xsl:text>CLOB</xsl:text></xsl:with-param>
+        <xsl:with-param name="rank"><xsl:text>5</xsl:text></xsl:with-param>
+      </xsl:call-template>
+      
+<!-- TAP_SCHEMA.key_columns -->
+      <xsl:call-template name="insertcolumn">
+        <xsl:with-param name="column_name"><xsl:text>key_id</xsl:text></xsl:with-param>
+        <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.key_columns</xsl:text></xsl:with-param>
+        <xsl:with-param name="description"><xsl:text>This column stores the id of the foreign key in keys to which this key_columns belongs to.</xsl:text></xsl:with-param>
+        <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
+        <xsl:with-param name="rank"><xsl:text>1</xsl:text></xsl:with-param>
+        <xsl:with-param name="indexed"><xsl:text>T</xsl:text></xsl:with-param>
+      </xsl:call-template>
+      <xsl:call-template name="insertcolumn">
+        <xsl:with-param name="column_name"><xsl:text>from_column</xsl:text></xsl:with-param>
+        <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.key_columns</xsl:text></xsl:with-param>
+        <xsl:with-param name="description"><xsl:text>This column stores the name of a column that is doing the pointing.</xsl:text></xsl:with-param>
+        <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
+        <xsl:with-param name="rank"><xsl:text>2</xsl:text></xsl:with-param>
+        <xsl:with-param name="indexed"><xsl:text>T</xsl:text></xsl:with-param>
+      </xsl:call-template>
+      <xsl:call-template name="insertcolumn">
+        <xsl:with-param name="column_name"><xsl:text>target_column</xsl:text></xsl:with-param>
+        <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.key_columns</xsl:text></xsl:with-param>
+        <xsl:with-param name="description"><xsl:text>This column stores the name of the target column.</xsl:text></xsl:with-param>
+        <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
+        <xsl:with-param name="rank"><xsl:text>3</xsl:text></xsl:with-param>
+        <xsl:with-param name="indexed"><xsl:text>T</xsl:text></xsl:with-param>
       </xsl:call-template>
 
 <xsl:value-of select="$commit"/>
@@ -953,22 +1055,44 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
           <xsl:with-param name="ucd"><xsl:text>TBD</xsl:text></xsl:with-param>
           <xsl:with-param name="utype"><xsl:text>TBD</xsl:text></xsl:with-param>
           <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
-          <xsl:with-param name="arraysize"><xsl:value-of select="$discriminatorColumnLength"/></xsl:with-param>
+          <xsl:with-param name="size"><xsl:value-of select="$discriminatorColumnLength"/></xsl:with-param>
         </xsl:call-template>
       </xsl:otherwise>
     </xsl:choose>
     
     <xsl:if test="container">
+      <xsl:variable name="target_table">
+        <xsl:apply-templates select="key('element',datatype/@xmiidref)" mode="viewName"/>
+      </xsl:variable>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:value-of select="$containerColumnName"/></xsl:with-param>
         <xsl:with-param name="table_name"><xsl:value-of select="$tableName"/></xsl:with-param>
         <xsl:with-param name="description"><xsl:text>This column is a foreign key pointing to the containing object in </xsl:text>
-          <xsl:apply-templates select="key('element',container/@xmiidref)" mode="viewName"/>
+          <xsl:value-of select="$target_table"/>
         </xsl:with-param>
         <xsl:with-param name="ucd"><xsl:text>TBD</xsl:text></xsl:with-param>
-        <xsl:with-param name="utype"><xsl:value-of select="concat($utype,'.CONTAINER')"/></xsl:with-param>
+        <xsl:with-param name="utype" select="concat($utype,'.CONTAINER')"/>
         <xsl:with-param name="datatype"><xsl:text>BIGINT</xsl:text></xsl:with-param>
       </xsl:call-template>
+      
+      
+      <xsl:variable name="key_id" select="concat($tableName,'_container')"/>
+      
+      <xsl:call-template name="insertkey">
+        <xsl:with-param name="key_id" select="$key_id"/>
+        <xsl:with-param name="from_table" select="$tableName"/>
+        <xsl:with-param name="target_table" select="$target_table"/>
+        <xsl:with-param name="description" select="'Foreign key to the container of the table.'"/>
+        <xsl:with-param name="utype" select="concat($utype,'.CONTAINER')"/>
+      </xsl:call-template>
+
+      <xsl:call-template name="insertkey_column">
+        <xsl:with-param name="key_id" select="$key_id"/>
+        <xsl:with-param name="from_column" select="$containerColumnName" />
+        <xsl:with-param name="target_column" select="$primaryKeyColumnName"/>
+      </xsl:call-template>
+      
+      
     </xsl:if>        
 
     <xsl:for-each select="attribute">
@@ -991,7 +1115,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
           <xsl:with-param name="ucd"><xsl:text>TBD</xsl:text></xsl:with-param>
           <xsl:with-param name="utype"><xsl:value-of select="utype"/></xsl:with-param>
           <xsl:with-param name="datatype"><xsl:value-of select="$adqltype"/></xsl:with-param>
-          <xsl:with-param name="arraysize" >
+          <xsl:with-param name="size" >
             <xsl:choose>
               <xsl:when test="$adqltype = 'VARCHAR'">
                 <xsl:variable name ="length">
@@ -1011,17 +1135,36 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
       </xsl:for-each>
     </xsl:for-each>
     <xsl:for-each select="reference[not(subsets)]">
+      <xsl:variable name="target_table">
+        <xsl:apply-templates select="key('element',datatype/@xmiidref)" mode="viewName"/>
+      </xsl:variable>
+      <xsl:variable name="key_id" select="concat($tableName,'_',name)"/>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:apply-templates select="." mode="columnName"/></xsl:with-param>
         <xsl:with-param name="table_name"><xsl:value-of select="$tableName"/></xsl:with-param>
         <xsl:with-param name="description"><xsl:value-of select="description"/>&cr;
-        <xsl:text>[This column is a foreign key pointing to the referenced object in </xsl:text>
-        <xsl:apply-templates select="key('element',datatype/@xmiidref)" mode="viewName"/><xsl:text>].
-        </xsl:text></xsl:with-param>
+          <xsl:value-of select="concat('[This column is part of the foreign key ',$key_id,' pointing to the object in ',$target_table,'].')"/>
+        </xsl:with-param>
         <xsl:with-param name="ucd"><xsl:text>TBD</xsl:text></xsl:with-param>
         <xsl:with-param name="utype"><xsl:text>TBD</xsl:text></xsl:with-param>
         <xsl:with-param name="datatype"><xsl:text>long</xsl:text></xsl:with-param>
       </xsl:call-template>
+
+      <xsl:call-template name="insertkey">
+        <xsl:with-param name="key_id" select="$key_id"/>
+        <xsl:with-param name="from_table" select="$tableName"/>
+        <xsl:with-param name="target_table" select="$target_table"/>
+        <xsl:with-param name="description" select="description"/>
+        <xsl:with-param name="utype" select="utype"/>
+      </xsl:call-template>
+
+      <xsl:call-template name="insertkey_column">
+        <xsl:with-param name="key_id" select="$key_id"/>
+        <xsl:with-param name="from_column"><xsl:apply-templates select="." mode="columnName"/></xsl:with-param>
+        <xsl:with-param name="target_column" select="$primaryKeyColumnName"/>
+      </xsl:call-template>
+
+
     </xsl:for-each>        
 
   </xsl:template>
@@ -1034,14 +1177,14 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
     <xsl:param name="ucd"/>
     <xsl:param name="utype"/>
     <xsl:param name="datatype"/>
-    <xsl:param name="arraysize" select="'1'"/>
+    <xsl:param name="size" select="'1'"/>
     <xsl:param name="primary" select="'T'"/>
     <xsl:param name="indexed" select="'F'"/>
     <xsl:param name="std" select="'T'"/>
     <xsl:param name="rank" select="'-1'"/>
   <!-- TODO this can be simplified, the INSERT INTO ... does not have to be repeated, 
   only comma-separated list of values (within () ) is required. More efficient as well. -->
-  <xsl:text>INSERT INTO TAP_SCHEMA.Columns(column_name,table_name,description,unit,ucd,utype,datatype,arraysize,"primary",indexed,std,rank) values(</xsl:text>
+  <xsl:text>INSERT INTO TAP_SCHEMA.Columns(column_name,table_name,description,unit,ucd,utype,datatype,size,"primary",indexed,std,rank) values(</xsl:text>
    '<xsl:value-of select="$column_name"/>'
 ,  '<xsl:value-of select="$target_database_schema_prefix"/><xsl:value-of select="$table_name"/>'
 ,  '<xsl:value-of select="replace($description,&quot;'&quot;,&quot;''&quot;)"/>'
@@ -1049,13 +1192,40 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
 ,  <xsl:choose><xsl:when test="not($ucd)">null</xsl:when><xsl:otherwise>'<xsl:value-of select="$ucd"/>'</xsl:otherwise></xsl:choose>
 ,  <xsl:choose><xsl:when test="not($utype)">null</xsl:when><xsl:otherwise>'<xsl:value-of select="$utype"/>'</xsl:otherwise></xsl:choose>
 ,  '<xsl:value-of select="$datatype"/>'
-,  '<xsl:value-of select="$arraysize"/>'
+,  '<xsl:value-of select="$size"/>'
 ,  '<xsl:value-of select="$primary"/>'
 ,  '<xsl:value-of select="$indexed"/>'
 ,  '<xsl:value-of select="$std"/>'
 ,  '<xsl:value-of select="$rank"/>');&cr;
 </xsl:template>
 
+  <xsl:template name="insertkey">
+    <xsl:param name="key_id"/>
+    <xsl:param name="from_table"/>
+    <xsl:param name="target_table"/>
+    <xsl:param name="description"/>
+    <xsl:param name="utype"/>
+  <!-- TODO this can be simplified, the INSERT INTO ... does not have to be repeated, 
+  only comma-separated list of values (within () ) is required. More efficient as well. -->
+  <xsl:text>INSERT INTO TAP_SCHEMA.keys(key_id,from_table, target_table,utype,description)values(</xsl:text>
+   '<xsl:value-of select="$key_id"/>'
+,  '<xsl:value-of select="$target_database_schema_prefix"/><xsl:value-of select="$from_table"/>'
+,  '<xsl:value-of select="$target_database_schema_prefix"/><xsl:value-of select="$target_table"/>'
+,  <xsl:choose><xsl:when test="not($utype)">null</xsl:when><xsl:otherwise>'<xsl:value-of select="$utype"/>'</xsl:otherwise></xsl:choose>
+,  '<xsl:value-of select="replace($description,&quot;'&quot;,&quot;''&quot;)"/>');&cr;
+</xsl:template>
+
+  <xsl:template name="insertkey_column">
+    <xsl:param name="key_id"/>
+    <xsl:param name="from_column"/>
+    <xsl:param name="target_column"/>
+  <!-- TODO this can be simplified, the INSERT INTO ... does not have to be repeated, 
+  only comma-separated list of values (within () ) is required. More efficient as well. -->
+  <xsl:text>INSERT INTO TAP_SCHEMA.key_columns(key_id,from_column, target_column)values(</xsl:text>
+   '<xsl:value-of select="$key_id"/>'
+,  '<xsl:value-of select="$from_column"/>'
+,  '<xsl:value-of select="$target_column"/>');&cr;
+</xsl:template>
 
 
 <!-- 
