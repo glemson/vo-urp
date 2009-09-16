@@ -46,6 +46,21 @@ public class Columns {
   /**
    * TODO : Field Description
    */
+  @Column(name = "unit", nullable = true)
+  private String unit;
+  /**
+   * TODO : Field Description
+   */
+  @Column(name = "ucd", nullable = true)
+  private String ucd;
+  /**
+   * TODO : Field Description
+   */
+  @Column(name = "utype", nullable = true)
+  private String utype;
+  /**
+   * TODO : Field Description
+   */
   @Column(name = "rank", nullable = false)
   private int rank;
 

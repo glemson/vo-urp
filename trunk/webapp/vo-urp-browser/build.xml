@@ -56,6 +56,8 @@
 
   <property name="log.file" value="${tomcat.home}/logs/${project.name}.log"/>
 
+	<property name="project.output.dir" value="${input}/output"/>
+	
 	<!-- tomcat precompilation -->
 	<condition property="tomcat.precompile.do">
 		<equals arg1="${tomcat.precompile}" arg2="true" trim="true" />
@@ -196,7 +198,7 @@
   </target>
 
 
-
+	
 
   <!-- target importLibraries : get libraries from vo-urp project -->
   <target name="importLibraries">
@@ -479,6 +481,11 @@
       <classes dir="${build.src}">
         <include name="**/*"/>
       </classes>
+      <fileset dir="${project.output.dir}">
+        <include name="tap/*_tap_tableset.xml" />
+        <include name="tap/*_votable.xml"/>
+        <include name="tap/*_vodataservice.xml"/>
+      </fileset>
     </war>
 
     <delete dir="${web-content}/WEB-INF/tags"/>
