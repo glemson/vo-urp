@@ -57,11 +57,11 @@ public class Millimil extends JobServlet {
     String sql = req.getParameter("SQL");
     String url = baseURL + URLEncoder.encode(sql, "UTF-8");
 
-    return new String[]{executable, "-O", RUNQUERY_RESULT_FILE, "\"" + url + "\""};
+    return new String[]{executable, "-q","-O", RUNQUERY_RESULT_FILE, url };
   }
 
   private void prepareRPlotTask(RootContext rootCtx) {
-    String[] cmd = new String[]{Rcmd, "BATCH", "--no-save", Rscript, "Rplot.log"};
+    String[] cmd = new String[]{Rcmd, "--vanilla", Rscript};
     LocalLauncher.prepareChildJob(rootCtx, RPLOT_TASK, cmd);
   }
 

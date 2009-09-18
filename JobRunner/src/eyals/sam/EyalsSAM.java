@@ -78,6 +78,16 @@ public class EyalsSAM extends JobServlet {
     parameters = parameters.replaceAll(FIXED_PARAM_DELIMITER + "workingDir" + FIXED_PARAM_DELIMITER, wd);
 
     File f = new File(workDir + "/esam_params");
+    if(!f.getParentFile().mkdirs())
+    {
+    	if(log.isErrorEnabled())
+    	{
+           log.error("Error mkdirs on "+f.getParentFile().getAbsolutePath());
+    	}
+    }
+    if (log.isDebugEnabled()) {
+        log.debug("file = "+f.getAbsolutePath());
+      }
     FileWriter w = new FileWriter(f);
     w.write(parameters);
     w.flush();
@@ -180,7 +190,8 @@ public class EyalsSAM extends JobServlet {
     return ok;
   }
   private void prepareRPlotTask(RootContext rootCtx) {
-	    String[] cmd = new String[]{Rcmd, "BATCH", "--no-save", Rscript, "Rplot.log"};
+//	    String[] cmd = new String[]{Rcmd, "BATCH", "--no-save", Rscript, "Rplot.log"};
+	    String[] cmd = new String[]{Rcmd, "--vanilla",Rscript};
 	    LocalLauncher.prepareChildJob(rootCtx, RPLOT_TASK, cmd);
 	  }
 }
