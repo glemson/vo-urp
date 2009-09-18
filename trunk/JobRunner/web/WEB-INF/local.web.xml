@@ -86,9 +86,8 @@
     	  <param-value>Default</param-value>
     	</init-param>
   </servlet>
-<!-- ========================================================== -->
-                     <!-- Applications -->
-<!-- ========================================================== -->
+
+  <!-- Applications -->
     <servlet>
         <servlet-name>EyalsSAM</servlet-name>
         <servlet-class>eyals.sam.EyalsSAM</servlet-class>
@@ -106,19 +105,11 @@
     	</init-param>
     	<init-param>
     	  <param-name>treesDir</param-name>
-    	  <param-value>/Legacy/Data/millimil/treedata/</param-value>
+    	  <param-value>e:/data/millimil/treedata/</param-value>
     	</init-param>
     	<init-param>
     	  <param-name>bc03Dir</param-name>
-    	  <param-value>/Legacy/Data/BC03/models/Padova1994/chabrier/</param-value>
-    	</init-param>
-    	<init-param>
-    	  <param-name>Rcmd</param-name>
-    	  <param-value>/usr/bin/Rscript</param-value>
-    	</init-param>
-    	<init-param>
-    	  <param-name>Rscript</param-name>
-    	  <param-value>plot.r</param-value>
+    	  <param-value>e:/data/BC03/models/Padova1994/chabrier/</param-value>
     	</init-param>
     </servlet>
 
@@ -131,7 +122,7 @@
     	</init-param>
     	<init-param>
     	  <param-name>executable</param-name>
-    	  <param-value>/usr/bin/wget</param-value>
+    	  <param-value>c:/cygwin/bin/wget.exe</param-value>
     	</init-param>
     	<init-param>
     	  <param-name>baseURL</param-name>
@@ -139,7 +130,7 @@
     	</init-param>
     	<init-param>
     	  <param-name>Rcmd</param-name>
-    	  <param-value>/usr/bin/Rscript</param-value>
+    	  <param-value>C:/R-2.8.0/bin/Rcmd.exe</param-value>
     	</init-param>
     	<init-param>
     	  <param-name>Rscript</param-name>
@@ -147,7 +138,6 @@
     	</init-param>
     </servlet>
 
-<!-- ========================================================== -->
     <servlet>
         <servlet-name>DownloadServlet</servlet-name>
         <servlet-class>org.ivoa.web.servlet.DownloadServlet</servlet-class>
