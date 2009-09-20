@@ -288,6 +288,31 @@ public abstract class MetadataElement extends LogSupport implements Serializable
   }
 
   /**
+   * Puts the string representation of the given object in the given string buffer :
+   * key=value
+   *
+   * @param sb given string buffer to fill
+   * @param isDeep true means to call toString(sb, true) recursively for all attributes / references / collections
+   *        which are MetadataElement implementations
+   * @param o reference to represent
+   *
+   * @return the given string buffer filled with the string representation
+   */
+  public static final StringBuilder deepDataTypeToString(final StringBuilder sb, final boolean isDeep, final Object o) {
+    if (o != null) {
+      if (o instanceof MetadataDataType) {
+        final MetadataDataType d = (MetadataDataType) o;
+
+        d.deepToString(sb, isDeep, null);
+      } else {
+        sb.append(o.toString());
+      }
+    }
+
+    return sb;
+  }
+
+  /**
    * toString method for the given Collection
    *
    * @param sb given string buffer to fill
