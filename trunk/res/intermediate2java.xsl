@@ -691,6 +691,13 @@ package <xsl:value-of select="$path"/>;
         super.deepToString(sb, isDeep, ids);
       </xsl:if>
 
+      <xsl:choose>
+        <xsl:when test="name() = 'dataType'">
+        sb.append("\n[ ");
+        <xsl:apply-templates select="attribute" mode="tostringCheckNull" />
+        return sb.append("]");
+        </xsl:when>
+        <xsl:otherwise>
         sb.append("\n[ <xsl:value-of select="$className"/>");
         sb.append("={");
 
@@ -706,6 +713,11 @@ package <xsl:value-of select="$path"/>;
         <xsl:apply-templates select="attribute|reference|collection" mode="tostring" />
 
         return sb.append("} ]");
+        </xsl:otherwise>
+      </xsl:choose>
+
+
+
       }
 
     }
@@ -1052,6 +1064,22 @@ package <xsl:value-of select="$path"/>;
       MetadataElement.deepToString(sb, isDeep, ids, get<xsl:value-of select="$name"/>());
     }
     <xsl:if test="position() != last()">sb.append(", ");</xsl:if>
+  </xsl:template>
+
+
+
+
+  <xsl:template match="attribute" mode="tostringCheckNull">
+    <xsl:variable name="name">
+      <xsl:call-template name="upperFirst">
+        <xsl:with-param name="val" select="name"/>
+      </xsl:call-template>
+    </xsl:variable>
+    if (get<xsl:value-of select="$name"/>() != null) {
+      sb.append("<xsl:value-of select="name"/>=");
+      MetadataElement.deepDataTypeToString(sb, isDeep, get<xsl:value-of select="$name"/>());
+      sb.append(" ");
+    }
   </xsl:template>
 
 
