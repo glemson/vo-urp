@@ -67,6 +67,8 @@ public final class PoolThread extends Thread {
     try {
       super.run();
     } finally {
+      logB.error("THREAD STOPPPING !!");
+      
       if (logB.isInfoEnabled()) {
         logB.info(getName() + " : after run() : ");
       }

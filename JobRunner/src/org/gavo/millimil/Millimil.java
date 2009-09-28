@@ -3,39 +3,34 @@ package org.gavo.millimil;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.spi.RootCategory;
 import org.ivoa.runner.FileManager;
 import org.ivoa.util.runner.LocalLauncher;
 import org.ivoa.util.runner.RootContext;
 import org.ivoa.util.runner.RunContext;
 import org.ivoa.util.runner.RunState;
-import org.ivoa.util.runner.process.ProcessContext;
 import org.ivoa.web.servlet.JobServlet;
 import org.ivoa.web.servlet.JobStateException;
 
 
 public class Millimil extends JobServlet {
 
+  /** serial UID for Serializable interface */
+  private static final long serialVersionUID = 1L;
+
+  /* constants */
   public static final String RUNQUERY_TASK = "runQuery";
   public static final String RUNQUERY_RESULT_FILE = "result.csv";
   public static final String RUNQUERY_ERROR_FILE = "error.txt";
   public static final String RPLOT_TASK = "Rplot";
-  private String name;
+
+  /* members */
   private String executable;
   private String baseURL;
   private String Rcmd;
@@ -53,11 +48,10 @@ public class Millimil extends JobServlet {
   }
 
   private String[] prepareQueryTask(final String workDir, HttpServletRequest req) throws IOException {
-    // TODO Auto-generated method stub
     String sql = req.getParameter("SQL");
     String url = baseURL + URLEncoder.encode(sql, "UTF-8");
 
-    return new String[]{executable, "-q","-O", RUNQUERY_RESULT_FILE, url };
+    return new String[]{executable, "-q", "-O", RUNQUERY_RESULT_FILE, url};
   }
 
   private void prepareRPlotTask(RootContext rootCtx) {
@@ -65,15 +59,8 @@ public class Millimil extends JobServlet {
     LocalLauncher.prepareChildJob(rootCtx, RPLOT_TASK, cmd);
   }
 
-  /**
-   * Return the application name
-   * @return
-   */
-  public String getName() {
-    return name;
-  }
-
-  protected String showJob(final HttpServletRequest request, final Integer id) {
+  @Override
+  protected String showJob(final HttpServletRequest request, final Long id) {
     String page = super.showJob(request, id);
 
     final RootContext ctx = (RootContext) request.getAttribute("runContext");
@@ -98,6 +85,8 @@ public class Millimil extends JobServlet {
 
   @Override
   public void init(ServletConfig config) throws ServletException {
+    super.init(config);
+    
     name = config.getInitParameter("name");
     executable = config.getInitParameter("executable");
     baseURL = config.getInitParameter("baseURL");
@@ -112,6 +101,7 @@ public class Millimil extends JobServlet {
    * @param runCtx  current run context
    * @return boolean: true if the processing should continue, false if the job should be terminated
    */
+  @Override
   public boolean performTaskDone(final RootContext rootCtx, final RunContext runCtx) {
     boolean ok = true;
     if (RUNQUERY_TASK.equals(runCtx.getName())) {

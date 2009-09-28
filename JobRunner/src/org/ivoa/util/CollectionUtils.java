@@ -44,7 +44,7 @@ public final class CollectionUtils {
    * @return string
    */
   public static String toString(final Collection<?> c) {
-    return toString(c, LINE_SEPARATOR, BEGIN_SEPARATOR, END_SEPARATOR);
+    return (c != null) ? toString(c, LINE_SEPARATOR, BEGIN_SEPARATOR, END_SEPARATOR) : "";
   }
 
   /**

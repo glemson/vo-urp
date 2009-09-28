@@ -22,6 +22,11 @@
                     <type>java</type>
                     <location>src</location>
                 </source-folder>
+                <source-folder>
+                    <label>test</label>
+                    <type>java</type>
+                    <location>test</location>
+                </source-folder>
             </folders>
             <ide-actions>
                 <action name="build">
@@ -39,6 +44,9 @@
                 </action>
                 <action name="javadoc">
                     <target>makeDoc</target>
+                </action>
+                <action name="run">
+                    <target>deployTomcat</target>
                 </action>
             </ide-actions>
             <export>
@@ -60,6 +68,10 @@
                         <label>src</label>
                         <location>src</location>
                     </source-folder>
+                    <source-folder style="packages">
+                        <label>test</label>
+                        <location>test</location>
+                    </source-folder>
                     <source-file>
                         <location>build.xml</location>
                     </source-file>
@@ -69,16 +81,23 @@
                     <ide-action name="rebuild"/>
                     <ide-action name="clean"/>
                     <ide-action name="javadoc"/>
+                    <ide-action name="run"/>
                     <ide-action name="redeploy"/>
                 </context-menu>
             </view>
             <subprojects/>
         </general-data>
-        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/1">
+        <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/2">
             <compilation-unit>
                 <package-root>src</package-root>
-                <classpath mode="compile">lib/commons-logging-1.1.1.jar;lib/log4j-1.2.15.jar;lib/server/servlet-api.jar</classpath>
+                <classpath mode="compile">lib/commons-logging-1.1.1.jar;lib/log4j-1.2.15.jar;lib/server/servlet-api.jar;lib/eclipselink-1.1.2.jar;lib/javax.persistence_1.0.0.jar</classpath>
                 <built-to>build</built-to>
+                <source-level>1.5</source-level>
+            </compilation-unit>
+            <compilation-unit>
+                <package-root>test</package-root>
+                <unit-tests/>
+                <classpath mode="compile">lib/commons-logging-1.1.1.jar;lib/eclipselink-1.1.2.jar;lib/javax.persistence_1.0.0.jar;lib/log4j-1.2.15.jar</classpath>
                 <source-level>1.5</source-level>
             </compilation-unit>
         </java-data>

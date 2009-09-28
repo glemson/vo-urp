@@ -68,6 +68,19 @@ public final class TypeWrapper extends LogSupport {
   }
 
   /**
+   * International Format for date
+   *
+   * @param val date value
+   *
+   * @return String formatted
+   */
+  public static final String getInternationalFormat(final Date val) {
+    synchronized (US_INT_SDF) {
+      return US_INT_SDF.format(val);
+    }
+  }
+
+  /**
    * International format for string date value (parse and format)
    *
    * @param val String date value

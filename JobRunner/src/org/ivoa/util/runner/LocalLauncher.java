@@ -7,14 +7,17 @@ import org.ivoa.util.runner.process.ProcessRunner;
 import org.ivoa.util.runner.process.RingBuffer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.ivoa.conf.RuntimeConfiguration;
 import org.ivoa.util.JavaUtils;
 import org.ivoa.util.LogUtil;
+import org.ivoa.util.concurrent.CustomThreadPoolExecutor;
 import org.ivoa.util.concurrent.FastSemaphore;
 import org.ivoa.util.concurrent.GenericRunnable;
 import org.ivoa.util.concurrent.ThreadExecutors;
@@ -29,26 +32,34 @@ public final class LocalLauncher {
   //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** logger */
-  protected static final Log log = LogUtil.getLogger();
+  protected static Log log = LogUtil.getLogger();
   /** initial capacity for queue */
   public static final int INITIAL_QUEUE_CAPACITY = 100;
   /** job ID generator (counter) */
-  private static final AtomicInteger JOBS_ID = new AtomicInteger(0);
+  private static AtomicInteger JOBS_ID = new AtomicInteger(0);
   /** live job count */
-  private static final AtomicInteger JOBS_LIVE = new AtomicInteger(0);
+  private static AtomicInteger JOBS_LIVE = new AtomicInteger(0);
   /** total queued job count */
-  private static final AtomicInteger JOBS_QUEUED = new AtomicInteger(0);
+  private static AtomicInteger JOBS_QUEUED = new AtomicInteger(0);
   /** total job count */
-  private static final AtomicInteger JOBS_TOTAL = new AtomicInteger(0);
+  private static AtomicInteger JOBS_TOTAL = new AtomicInteger(0);
   /** remove policy for queue : default automatic remove after job finished */
   private static boolean QUEUE_MANUAL_REMOVE_JOBS = false;
   /** queue semaphore */
-  private static final FastSemaphore QUEUE_SEM = new FastSemaphore(1);
+  private static FastSemaphore QUEUE_SEM = new FastSemaphore(1);
   /** QUEUE for job management */
-  private static final Map<Integer, RootContext> JOB_QUEUE = new LinkedHashMap<Integer, RootContext>(
+  private static Map<Long, RootContext> JOB_QUEUE = new LinkedHashMap<Long, RootContext>(
       INITIAL_QUEUE_CAPACITY);
-  // ~ ----
-  public static final int ILLEGAL_STATE_ERROR_CODE = 1;
+  /** Job Listeners */
+  private static Map<String, JobListener> JOB_LISTENER = new HashMap<String, JobListener>();
+  /** Invalid executor type */
+  public static final int ILLEGAL_STATE_ERROR_CODE = -1000;
+  /** Use Persistence for Jobs */
+  private static boolean USE_PERSISTENCE = false;
+  /** limit of lines in ring buffer */
+  public final static int MAX_LINES = 25;
+  /** Use Persistence for Jobs */
+  private static JobJPAManager jm = null;
   //~ Members ----------------------------------------------------------------------------------------------------------
   /** last total logged */
   private int lastTotal = -1;
@@ -74,6 +85,11 @@ public final class LocalLauncher {
 
     ThreadExecutors.startExecutors();
 
+    USE_PERSISTENCE = RuntimeConfiguration.getInstance().getBoolean("persistent.queue");
+    if (USE_PERSISTENCE) {
+      jm = JobJPAManager.getInstance();
+    }
+
     if (log.isWarnEnabled()) {
       log.warn("LocalLauncher.startUp : exit");
     }
@@ -96,7 +112,37 @@ public final class LocalLauncher {
   }
 
   /**
-   * Purge from the queue the finished jobs (must be called by a separate thread)
+   * Register an application plugin / listener (interface) at runtime
+   * @param applicationName name of the managed application
+   * @param listener job listener
+   */
+  public static void registerJobListener(final String applicationName, final JobListener listener) {
+    log.error("registerJobListener : " + applicationName + " : " + listener);
+    JOB_LISTENER.put(applicationName, listener);
+
+    // preload pending tasks :
+    if (USE_PERSISTENCE) {
+      final List<RootContext> ctxList = jm.findContexts(applicationName, false);
+      if (!JavaUtils.isEmpty(ctxList)) {
+
+        for (RootContext ctx : ctxList) {
+          // TODO : set writeLogFile (keep file path) :
+          ctx.setRing(new RingBuffer(MAX_LINES, null));
+
+          // initialize transient fields :
+          for (RunContext child : ctx.getChildContexts()) {
+            child.setRing(ctx.getRing());
+          }
+
+          queueJob(ctx);
+        }
+      }
+    }
+
+  }
+
+  /**
+   * Purge from the memory queue the finished jobs (must be called by a separate thread)
    *
    * @param delay time in milliseconds to wait after the job has finished before removing it from the queue
    */
@@ -119,7 +165,7 @@ public final class LocalLauncher {
 
       for (final RunContext job : list) {
         if ((job.getState() == RunState.STATE_FINISHED_ERROR) || (job.getState() == RunState.STATE_FINISHED_OK)) {
-          duration = (now - job.getEndDate());
+          duration = (now - job.getEndDate().getTime());
 
           if (duration > delay) {
             removeFromQueue(job.getId());
@@ -132,6 +178,18 @@ public final class LocalLauncher {
     if (log.isWarnEnabled()) {
       log.warn("LocalLauncher.purgeTerminated : removed items : " + n);
     }
+  }
+
+  public static int getLiveJobs() {
+    return JOBS_LIVE.get();
+  }
+
+  public static int getQueuedJobs() {
+    return JOBS_QUEUED.get();
+  }
+
+  public static int getTotalJobs() {
+    return JOBS_TOTAL.get();
   }
 
   /**
@@ -167,22 +225,20 @@ public final class LocalLauncher {
    * @param appName application identifier
    * @param owner user name
    * @param workingDir working directory to use (null indicates current directory)
-   * @param bufferLines number of lines to keep in STD OUT / ERR buffer
    * @param writeLogFile absolute file path to write STD OUT / ERR streams (null indicates not to use a file dump)
    *
    * @return created job context
    */
-  public static RootContext prepareMainJob(final String appName, final String owner, final String workingDir, final int bufferLines,
-                                           final String writeLogFile) {
+  public static RootContext prepareMainJob(final String appName, final String owner, final String workingDir, final String writeLogFile) {
     if (log.isDebugEnabled()) {
       log.debug("LocalLauncher.prepareMainJob : enter");
     }
 
-    final Integer id = Integer.valueOf(JOBS_ID.incrementAndGet());
+    final Long id = Long.valueOf(JOBS_ID.decrementAndGet());
 
     final RootContext runCtx = new RootContext(appName, id, workingDir);
     runCtx.setOwner(owner);
-    runCtx.setRing(new RingBuffer(bufferLines, writeLogFile));
+    runCtx.setRing(new RingBuffer(MAX_LINES, writeLogFile));
 
     if (log.isDebugEnabled()) {
       log.debug("LocalLauncher.prepareMainJob : exit : " + runCtx);
@@ -209,7 +265,7 @@ public final class LocalLauncher {
       log.debug("LocalLauncher.prepareJob : enter");
     }
 
-    final Integer id = Integer.valueOf(JOBS_ID.incrementAndGet());
+    final Long id = Long.valueOf(JOBS_ID.decrementAndGet());
 
     final ProcessContext runCtx = new ProcessContext(parent, name, id, command);
 
@@ -226,30 +282,58 @@ public final class LocalLauncher {
   }
 
   /**
-   * Adds a job context in the queue and call the listener if job is pending.
+   * Adds a job context in the queue and call the registered listener if job is accepted in the queue (pending).
    * The job will be executed by the Process Thread pool.
    * 
    * @see JobRunner
    * @see ThreadExecutors
    *
    * @param rootCtx root context to execute
-   * @param listener job listener
    */
-  public static void startJob(final RootContext rootCtx, final JobListener listener) {
+  public static void startJob(final RootContext rootCtx) {
     if (log.isDebugEnabled()) {
       log.debug("LocalLauncher.startJob : enter");
     }
 
     if (log.isInfoEnabled()) {
-      log.info("LocalLauncher.startJob : starting job ...");
+      log.info("LocalLauncher.startJob : starting job : " + rootCtx.shortString());
     }
 
     // set pending state :
     rootCtx.setState(RunState.STATE_PENDING);
 
-    // uses the runner thread pool to run the pdr process :
-    // throws IllegalStateException if job not queued :
-    Future future = ThreadExecutors.getRunnerExecutor().submit(new JobRunner(rootCtx, listener));
+    if (USE_PERSISTENCE) {
+      jm.persist(rootCtx);
+    }
+
+    queueJob(rootCtx);
+
+    if (log.isDebugEnabled()) {
+      log.debug("LocalLauncher.startJob : exit");
+    }
+  }
+
+  /**
+   * Add a pending job to the queue
+   * @param rootCtx job to add
+   */
+  private static void queueJob(final RootContext rootCtx) {
+    // Get the registered job listener :
+    final JobListener listener = JOB_LISTENER.get(rootCtx.getName());
+
+    if (listener == null) {
+      throw new IllegalStateException("job listener is undefined for the application : " + rootCtx.getName());
+    }
+
+    // uses the runner thread pool to run the job :
+    // throws IllegalStateException if the job is not queued or the thread pool is down :
+    final ThreadExecutors e = ThreadExecutors.getRunnerExecutor();
+
+    // The executor is ready to accept new tasks :
+    final Future future = e.submit(new JobRunner(e.getExecutor(), rootCtx, listener));
+
+    // increment total counter :
+    JOBS_TOTAL.incrementAndGet();
 
     // Here : job has been accepted and queued in ThreadExecutor (maybe already running) :
 
@@ -259,14 +343,9 @@ public final class LocalLauncher {
     // add in queue for monitoring :
     addInQueue(rootCtx);
 
-    // increment total counter :
-    JOBS_TOTAL.incrementAndGet();
-
     // call listener :
-    listener.performJobEvent(rootCtx);
-
-    if (log.isDebugEnabled()) {
-      log.debug("LocalLauncher.startJob : exit");
+    if (listener != null) {
+      listener.performJobEvent(rootCtx);
     }
   }
 
@@ -285,7 +364,7 @@ public final class LocalLauncher {
    */
   protected static void addInQueue(final RootContext rootCtx) {
     if (log.isInfoEnabled()) {
-      log.info("LocalLauncher.addInQueue : job queued : " + rootCtx);
+      log.info("LocalLauncher.addInQueue : job queued : " + rootCtx.shortString());
     }
 
     try {
@@ -309,7 +388,7 @@ public final class LocalLauncher {
    *
    * @param id job identifier
    */
-  public static void removeFromQueue(final Integer id) {
+  public static void removeFromQueue(final Long id) {
     if (log.isInfoEnabled()) {
       log.info("LocalLauncher.removeFromQueue : job to remove : " + id);
     }
@@ -324,7 +403,7 @@ public final class LocalLauncher {
         log.error("LocalLauncher.removeFromQueue : job not found in queue : " + id);
       } else {
         if (log.isInfoEnabled()) {
-          log.info("LocalLauncher.removeFromQueue : job removed from queue : " + runCtx);
+          log.info("LocalLauncher.removeFromQueue : job removed from queue : " + runCtx.shortString());
         }
       }
     } catch (final InterruptedException ie) {
@@ -363,7 +442,7 @@ public final class LocalLauncher {
    *
    * @return job context or null if not present
    */
-  public static RunContext getJob(final Integer id) {
+  public static RunContext getJob(final Long id) {
     try {
       // semaphore is acquired to protect queue :
       QUEUE_SEM.acquire();
@@ -385,8 +464,11 @@ public final class LocalLauncher {
    * This class implements Runnable to run a job submitted in the queue
    */
   private static final class JobRunner extends GenericRunnable {
-    //~ Members --------------------------------------------------------------------------------------------------------
 
+    public final static int MAX_TASKS = 100;
+    //~ Members --------------------------------------------------------------------------------------------------------
+    /** thread pool running this job used to get its status (running, shutdown, terminated) */
+    private final CustomThreadPoolExecutor executor;
     /** job context */
     private final RootContext rootCtx;
     /** job listener */
@@ -395,10 +477,12 @@ public final class LocalLauncher {
     //~ Constructors ---------------------------------------------------------------------------------------------------
     /**
      * Constructor for the given job context and listener
+     * @param executorService thread pool running this job
      * @param rootCtx job context
      * @param listener job listener
      */
-    protected JobRunner(final RootContext rootCtx, final JobListener listener) {
+    protected JobRunner(final CustomThreadPoolExecutor executorService, final RootContext rootCtx, final JobListener listener) {
+      this.executor = executorService;
       this.rootCtx = rootCtx;
       this.listener = listener;
     }
@@ -409,7 +493,7 @@ public final class LocalLauncher {
      */
     public final void run() {
       if (log.isDebugEnabled()) {
-        log.debug("JobRunner - thread.run : enter");
+        log.debug("JobRunner.run : enter");
       }
 
       if (rootCtx.getState() != RunState.STATE_CANCELLED) {
@@ -421,34 +505,65 @@ public final class LocalLauncher {
           // set running state :
           rootCtx.setState(RunState.STATE_RUNNING);
 
-          // call listener :
-          listener.performJobEvent(rootCtx);
+          if (USE_PERSISTENCE) {
+            jm.persist(rootCtx);
+          }
 
+          // call listener :
+          if (listener != null) {
+            listener.performJobEvent(rootCtx);
+          }
 
           // Execute the tasks here :
           int n = 0;
-          int maxn = 100;
           RunContext child = null;
 
-          while (ok && rootCtx.hasNext() && n < maxn) {
+          while (ok && rootCtx.hasNext() && n < MAX_TASKS) {
             child = rootCtx.next();
 
+            ok = false;
+
             executeTask(child);
-            ok = listener.performTaskDone(rootCtx, child);
+
+            if (USE_PERSISTENCE) {
+              // persist state of child contexts :
+              jm.persist(rootCtx);
+            }
+
+            if (listener != null) {
+              ok = listener.performTaskDone(rootCtx, child);
+            }
+
+            // go forward in child contexts :
+            rootCtx.goNext();
             n++;
           }
 
+        } catch (RuntimeException re) {
+          log.error("JobRunner.run : runtime exception : ", re);
+          ok = false;
         } finally {
 
-          rootCtx.getRing().add("Job '" + rootCtx.getName() + "'Ended.");
+          rootCtx.getRing().add("Job '" + rootCtx.getName() + "' Ended.");
 
-          if (rootCtx.getState() != RunState.STATE_CANCELLED && rootCtx.getState() != RunState.STATE_KILLED) {
-            // set finished state :
-            rootCtx.setState(ok ? RunState.STATE_FINISHED_OK : RunState.STATE_FINISHED_ERROR);
+          // handle states :
+          if (this.executor.isShutdown()) {
+            rootCtx.setState(RunState.STATE_INTERRUPTED);
+          } else {
+            if (rootCtx.getState() != RunState.STATE_CANCELLED && rootCtx.getState() != RunState.STATE_KILLED) {
+              // set finished state :
+              rootCtx.setState(ok ? RunState.STATE_FINISHED_OK : RunState.STATE_FINISHED_ERROR);
+            }
           }
 
-          // call listener :
-          listener.performJobEvent(rootCtx);
+          // persist the context state anyway :
+          if (USE_PERSISTENCE) {
+            jm.persist(rootCtx);
+          }
+
+          if (listener != null) {
+            listener.performJobEvent(rootCtx);
+          }
 
           // remove job from queue :
           if (!QUEUE_MANUAL_REMOVE_JOBS) {
@@ -474,7 +589,7 @@ public final class LocalLauncher {
         log.debug("JobRunner.executeTask : enter : " + runCtx.getId());
       }
 
-      int status = -1;
+      int status = ProcessRunner.STATUS_UNDEFINED;
       try {
         // set running state :
         runCtx.setState(RunState.STATE_RUNNING);
@@ -496,14 +611,34 @@ public final class LocalLauncher {
         }
 
         // ring buffer is not synchronized because threads have finished their jobs in ProcessRunner.run(runCtx) :
-        if (status == 0) {
-          runCtx.getRing().add("Task '" + runCtx.getName() + "' Ended.");
-        } else {
-          runCtx.getRing().add(ProcessRunner.ERR_PREFIX, "Task Ended with a failure exit code : " + status + ".");
+        switch (status) {
+          case ProcessRunner.STATUS_NORMAL:
+            runCtx.getRing().add("Task '" + runCtx.getName() + "' Ended.");
+            break;
+          case ProcessRunner.STATUS_INTERRUPTED:
+            runCtx.getRing().add(ProcessRunner.ERR_PREFIX, "Task Interrupted.");
+            break;
+          case ProcessRunner.STATUS_UNDEFINED:
+          default:
+            runCtx.getRing().add(ProcessRunner.ERR_PREFIX, "Task Ended with an error code : " + status + ".");
+            break;
         }
+
       } finally {
+
         // set finished state :
-        runCtx.setState((status == 0) ? RunState.STATE_FINISHED_OK : RunState.STATE_FINISHED_ERROR);
+        switch (status) {
+          case ProcessRunner.STATUS_NORMAL:
+            runCtx.setState(RunState.STATE_FINISHED_OK);
+            break;
+          case ProcessRunner.STATUS_INTERRUPTED:
+            runCtx.setState(RunState.STATE_INTERRUPTED);
+            break;
+          case ProcessRunner.STATUS_UNDEFINED:
+          default:
+            runCtx.setState(RunState.STATE_FINISHED_ERROR);
+            break;
+        }
 
         // call listener :
         listener.performTaskEvent(runCtx.getParent(), runCtx);

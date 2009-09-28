@@ -24,6 +24,12 @@ public final class ProcessRunner {
   private static final Log log = LogUtil.getLoggerDev();
   /** ERROR prefix */
   public final static String ERR_PREFIX = "ERROR";
+  /** undefined process status */
+  public final static int STATUS_UNDEFINED = -1;
+  /** normal process status (ok) */
+  public final static int STATUS_NORMAL = 0;
+  /** interrupted process status */
+  public final static int STATUS_INTERRUPTED = -100;
 
   /**
    * Forbidden constructor
@@ -39,18 +45,18 @@ public final class ProcessRunner {
    * @return process status (0 to 255) or -1 if undefined
    */
   public static int execute(final ProcessContext runCtx) {
-    int status = -1;
+    int status = STATUS_UNDEFINED;
     // params :
-    
+
     final File workingDir = FileUtils.getDirectory(runCtx.getWorkingDir());
     if (workingDir == null) {
-      log.error("ProcessRunner.execute : working directory does not exist : "+ runCtx.getWorkingDir());
+      log.error("ProcessRunner.execute : working directory does not exist : " + runCtx.getWorkingDir());
     } else {
-      final String[] args = runCtx.getCommand();
+      final String[] args = runCtx.getCommandArray();
       final RingBuffer ring = runCtx.getRing();
 
       if (log.isInfoEnabled()) {
-        log.info("ProcessRunner.execute : starting process : " + Arrays.toString(args) + " in "+ workingDir);
+        log.info("ProcessRunner.execute : starting process : " + Arrays.toString(args) + " in " + workingDir);
       }
 
       // initialization :
@@ -105,24 +111,28 @@ public final class ProcessRunner {
       } catch (IllegalStateException ise) {
         log.error("ProcessRunner.execute : illegal state failure :", ise);
       } catch (InterruptedException ie) {
+        // occurs when the threadpool shutdowns or interrupts the task (future.cancel) :
         log.error("ProcessRunner.execute : interrupted failure :", ie);
+        // Interrupted status :
+        status = STATUS_INTERRUPTED;
       } catch (IOException ioe) {
         log.error("ProcessRunner.execute : unable to start process " + Arrays.toString(args) + " : ", ioe);
         ring.add(ERR_PREFIX, ioe.getMessage());
       } finally {
         // in all cases : 
-        if (status == 0) {
-          final double duration = TimerFactory.elapsedMilliSeconds(start, System.nanoTime());
-          runCtx.setDuration((long)duration);
+        final double duration = TimerFactory.elapsedMilliSeconds(start, System.nanoTime());
+
+        runCtx.setDuration((long) duration);
+        runCtx.setStatus(status);
+        if (status == STATUS_NORMAL) {
           TimerFactory.getTimer("execute-" + args[0]).add(duration);
         }
-        runCtx.setStatus(status);
         // cleanup : free process in whatever state :
         stop(runCtx);
-      }
 
-      if (log.isInfoEnabled()) {
-        log.info("ProcessRunner.execute : process status : " + runCtx.getStatus());
+        if (log.isInfoEnabled()) {
+          log.info("ProcessRunner.execute : process status : " + runCtx.getStatus());
+        }
       }
     }
     return status;

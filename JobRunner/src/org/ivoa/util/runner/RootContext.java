@@ -6,6 +6,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Future;
+import javax.persistence.Basic;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
@@ -15,30 +27,60 @@ import java.util.concurrent.Future;
  *
  * @author laurent bourges (voparis)
  */
+@Entity
+@Table(name = "root_context")
+@DiscriminatorValue("RootContext")
+@NamedQueries({
+@NamedQuery(name = "RootContext.findPendingByName", query = "SELECT o FROM RootContext o WHERE o.state = :state and o.name = :name")
+})
 public final class RootContext extends RunContext implements Iterator<RunContext> {
+  //~ Constants --------------------------------------------------------------------------------------------------------
 
+  /**
+   * serial UID for Serializable interface
+   */
+  private static final long serialVersionUID = 1L;
+  //~ Members ----------------------------------------------------------------------------------------------------------
   /** future used to be able to cancel the job */
+  @Transient
   private Future<?> future = null;
   /**
-   * The user who owns this run
+   * The user who owns this run (login)
    */
+  @Basic(optional = false)
+  @Column(name = "owner", nullable = false)
   private String owner;
   /**
    * Process working directory
    */
-  private final String workingDir;
+  @Basic(optional = false)
+  @Column(name = "workingDir", nullable = false)
+  private String workingDir;
   /**
    * Relative path to results of the job in either runner or archive
    */
+  @Basic(optional = false)
+  @Column(name = "relativePath", nullable = false)
   private String relativePath;
   /**
-   * Child contexts
+   * Child contexts (No cascade at all to have unary operation) TODO ??
    */
+  @OrderBy(value = "id")
+  @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "parent")
   private final List<RunContext> childContexts = new ArrayList<RunContext>();
   /**
    * Current executed task position in the Child contexts
    */
+  @Basic(optional = false)
+  @Column(name = "currentTask", nullable = false)
   private int currentTask = 0;
+
+  /**
+   * Creates a new RunContext object for JPA
+   */
+  public RootContext() {
+    super();
+  }
 
   /**
    * Creates a new RunContext object
@@ -47,7 +89,7 @@ public final class RootContext extends RunContext implements Iterator<RunContext
    * @param id job identifier
    * @param workingDir user's temporary working directory
    */
-  public RootContext(final String applicationName, final Integer id,
+  public RootContext(final String applicationName, final Long id,
                      final String workingDir) {
     super(null, applicationName, id);
     this.workingDir = workingDir;
@@ -95,9 +137,7 @@ public final class RootContext extends RunContext implements Iterator<RunContext
    */
   @Override
   public String toString() {
-    return "job [" + getId() + "][" + getState() + "] " +
-        ((getDuration() > 0L) ? (" : " + getDuration() + " ms.") : "") +
-        ((getChildContexts() != null)
+    return super.toString() + ((getChildContexts() != null)
         ? (CollectionUtils.toString(getChildContexts())) : "");
   }
 
@@ -113,19 +153,15 @@ public final class RootContext extends RunContext implements Iterator<RunContext
    * Define the future associated to the execution of this root context
    * @param pFuture future instance
    */
-  protected void setFuture(Future<?> pFuture) {
+  protected void setFuture(final Future<?> pFuture) {
     this.future = pFuture;
-  }
-
-  public String getApplicationName() {
-    return getName();
   }
 
   public String getOwner() {
     return owner;
   }
 
-  public void setOwner(String owner) {
+  public void setOwner(final String owner) {
     this.owner = owner;
   }
 
@@ -143,7 +179,7 @@ public final class RootContext extends RunContext implements Iterator<RunContext
     return relativePath;
   }
 
-  public void setRelativePath(String relativePath) {
+  public void setRelativePath(final String relativePath) {
     this.relativePath = relativePath;
   }
 
@@ -152,13 +188,13 @@ public final class RootContext extends RunContext implements Iterator<RunContext
   }
 
   public RunContext getCurrentChildContext() {
-    if (currentTask > 0 && currentTask <= this.childContexts.size()) {
-      return this.childContexts.get(currentTask - 1);
+    if (currentTask < this.childContexts.size()) {
+      return this.childContexts.get(currentTask);
     }
     return null;
   }
 
-  public void addChild(RunContext childContext) {
+  public void addChild(final RunContext childContext) {
     this.childContexts.add(childContext);
   }
 
@@ -167,7 +203,11 @@ public final class RootContext extends RunContext implements Iterator<RunContext
   }
 
   public RunContext next() {
-    return this.childContexts.get(currentTask++);
+    return this.childContexts.get(currentTask);
+  }
+
+  public void goNext() {
+    currentTask++;
   }
 
   public void remove() {
