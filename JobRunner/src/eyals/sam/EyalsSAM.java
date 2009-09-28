@@ -184,8 +184,8 @@ public class EyalsSAM extends JobServlet {
   }
 
   private void prepareRPlotTask(RootContext rootCtx) {
-//	    String[] cmd = new String[]{Rcmd, "BATCH", "--no-save", Rscript, "Rplot.log"};
-    String[] cmd = new String[]{Rcmd, "--vanilla", Rscript};
-    LocalLauncher.prepareChildJob(rootCtx, RPLOT_TASK, cmd);
+	String cmd = Rcmd.replaceFirst(":SCRIPT:", Rscript);
+    
+    LocalLauncher.prepareChildJob(rootCtx, RPLOT_TASK, cmd.split("[ ]"));
   }
 }
