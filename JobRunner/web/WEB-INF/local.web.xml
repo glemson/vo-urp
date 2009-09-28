@@ -113,6 +113,14 @@
       <param-name>bc03Dir</param-name>
       <param-value>e:/data/BC03/models/Padova1994/chabrier/</param-value>
     </init-param>
+    <init-param>
+      <param-name>Rcmd</param-name>
+      <param-value>C:/R-2.8.0/bin/Rcmd.exe BATCH --no-save :SCRIPT:</param-value>
+    </init-param>
+    <init-param>
+      <param-name>Rscript</param-name>
+      <param-value>plot.r</param-value>
+    </init-param>
     <load-on-startup>10</load-on-startup>
   </servlet>
 
@@ -133,7 +141,7 @@
     </init-param>
     <init-param>
       <param-name>Rcmd</param-name>
-      <param-value>C:/R-2.8.0/bin/Rcmd.exe</param-value>
+      <param-value>C:/R-2.8.0/bin/Rcmd.exe BATCH --no-save :SCRIPT:</param-value>
     </init-param>
     <init-param>
       <param-name>Rscript</param-name>
