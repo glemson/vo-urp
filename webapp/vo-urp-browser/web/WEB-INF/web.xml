@@ -77,36 +77,43 @@
         <description>Log4j configuration Servlet</description>
         <servlet-name>Log4JServlet</servlet-name>
         <servlet-class>org.apache.log4j.servlet.ConfigurationServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>FindServlet</servlet-name>
         <servlet-class>org.ivoa.web.servlet.FindServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
     </servlet>
   
     <servlet>
         <servlet-name>ListServlet</servlet-name>
         <servlet-class>org.ivoa.web.servlet.ListServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>ValidationServlet</servlet-name>
         <servlet-class>org.ivoa.web.servlet.ValidationServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>ManagerServlet</servlet-name>
         <servlet-class>org.ivoa.web.servlet.secure.ManagerServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
     </servlet>
 
     <servlet>
         <servlet-name>QueryServlet</servlet-name>
         <servlet-class>org.ivoa.web.servlet.QueryServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
     </servlet>
   
     <servlet>
         <servlet-name>TAPServlet</servlet-name>
         <servlet-class>org.ivoa.web.servlet.TAPServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
     </servlet>
 
 
