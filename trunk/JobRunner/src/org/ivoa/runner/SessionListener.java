@@ -43,7 +43,10 @@ public final class SessionListener implements HttpSessionListener {
     }
 
     // purge the session folder :
+    log.error("SKIP = cleaning session folder with ID : "+ sessionId);
+    /*
     FileManager.purgeSessionFolder(sessionId);
+     */
   }
   
 }

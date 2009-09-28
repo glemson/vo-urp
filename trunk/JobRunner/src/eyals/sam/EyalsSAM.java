@@ -24,18 +24,21 @@ import org.ivoa.web.servlet.JobStateException;
 
 public class EyalsSAM extends JobServlet {
 
-  // ~ the tasks
+  /** serial UID for Serializable interface */
+  private static final long serialVersionUID = 1L;
+  
+  /* constants */
   public static final String MAIN_TASK = "main";
   public static final String RPLOT_TASK = "Rplot";
   public static final String FREE_PARAM_DELIMITER = "___";
   public static final String FIXED_PARAM_DELIMITER = "%%%";
+
+  /* members */
   private String paramtemplate;
   private List<String> freeParameters;
   private String treesDir;
   private String bc03Dir;
   private String executable;
-  private String name;
-  private String[] plotCommand;
   private String Rcmd;
   private String Rscript;
 
@@ -50,7 +53,6 @@ public class EyalsSAM extends JobServlet {
   }
 
   private String[] prepareMainTask(final String workDir, HttpServletRequest req) throws IOException {
-    // TODO Auto-generated method stub
     String parameters = paramtemplate;
     String value;
     for (String param : freeParameters) {
@@ -78,16 +80,14 @@ public class EyalsSAM extends JobServlet {
     parameters = parameters.replaceAll(FIXED_PARAM_DELIMITER + "workingDir" + FIXED_PARAM_DELIMITER, wd);
 
     File f = new File(workDir + "/esam_params");
-    if(!f.getParentFile().mkdirs())
-    {
-    	if(log.isErrorEnabled())
-    	{
-           log.error("Error mkdirs on "+f.getParentFile().getAbsolutePath());
-    	}
+    if (!f.getParentFile().mkdirs()) {
+      if (log.isErrorEnabled()) {
+        log.error("Error mkdirs on " + f.getParentFile().getAbsolutePath());
+      }
     }
     if (log.isDebugEnabled()) {
-        log.debug("file = "+f.getAbsolutePath());
-      }
+      log.debug("file = " + f.getAbsolutePath());
+    }
     FileWriter w = new FileWriter(f);
     w.write(parameters);
     w.flush();
@@ -96,15 +96,8 @@ public class EyalsSAM extends JobServlet {
     return new String[]{executable};
   }
 
-  /**
-   * Return the job default folder default/
-   * @return
-   */
-  public String getName() {
-    return name;
-  }
-
-  protected String showJob(final HttpServletRequest request, final Integer id) {
+  @Override
+  protected String showJob(final HttpServletRequest request, final Long id) {
     String page = super.showJob(request, id);
 
     final RootContext ctx = (RootContext) request.getAttribute("runContext");
@@ -129,9 +122,8 @@ public class EyalsSAM extends JobServlet {
 
   @Override
   public void init(ServletConfig config) throws ServletException {
-    // TODO Auto-generated method stub
+    super.init(config);
     //File
-    name = config.getInitParameter("name");
     String file = FileManager.LEGACYAPPS + "/" + name + "/" + config.getInitParameter("parameterfile.template");
     executable = FileManager.LEGACYAPPS + "/" + name + "/" + config.getInitParameter("executable");
     treesDir = config.getInitParameter("treesDir");
@@ -176,12 +168,13 @@ public class EyalsSAM extends JobServlet {
    * @param runCtx  current run context
    * @return boolean: true of the processing should continue, false if the job should be terminated
    */
+  @Override
   public boolean performTaskDone(final RootContext rootCtx, final RunContext runCtx) {
     boolean ok = true;
     if (MAIN_TASK.equals(runCtx.getName())) {
       //TODO add plotting tasks
       if (runCtx.getState() == RunState.STATE_FINISHED_OK) {
-         prepareRPlotTask(runCtx.getParent());
+        prepareRPlotTask(runCtx.getParent());
         ok = true;
       } else {
         ok = false;
@@ -189,9 +182,10 @@ public class EyalsSAM extends JobServlet {
     }
     return ok;
   }
+
   private void prepareRPlotTask(RootContext rootCtx) {
 //	    String[] cmd = new String[]{Rcmd, "BATCH", "--no-save", Rscript, "Rplot.log"};
-	    String[] cmd = new String[]{Rcmd, "--vanilla",Rscript};
-	    LocalLauncher.prepareChildJob(rootCtx, RPLOT_TASK, cmd);
-	  }
+    String[] cmd = new String[]{Rcmd, "--vanilla", Rscript};
+    LocalLauncher.prepareChildJob(rootCtx, RPLOT_TASK, cmd);
+  }
 }

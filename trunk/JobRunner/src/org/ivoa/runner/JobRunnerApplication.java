@@ -27,7 +27,11 @@ public final class JobRunnerApplication extends LogSupport {
     public static void onInit() {
 
         // clean up plot folder (plots) :
-        FileManager.purgeRunnerFolder();
+
+        log.error("SKIP = cleaning runner folder");
+        /*
+          FileManager.purgeRunnerFolder();
+         */
 
         try {
             LocalLauncher.setQueueRemovePolicy(true);

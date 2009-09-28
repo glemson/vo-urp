@@ -1,6 +1,31 @@
 package org.ivoa.util.runner;
 
+import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Basic;
+import javax.persistence.Column;
+import javax.persistence.DiscriminatorColumn;
+import javax.persistence.DiscriminatorType;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+import javax.persistence.Version;
 import org.ivoa.util.TypeWrapper;
 import org.ivoa.util.runner.process.RingBuffer;
 
@@ -12,67 +37,152 @@ import org.ivoa.util.runner.process.RingBuffer;
  *
  * @author laurent bourges (voparis)
  */
-public class RunContext {
+@Entity
+@Table(name = "run_context")
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "DTYPE", discriminatorType = DiscriminatorType.STRING, length = 32)
+@DiscriminatorValue("RunContext")
+@NamedQueries({@NamedQuery(name = "RunContext.findById", query = "SELECT o FROM RunContext o WHERE o.id = :id"),
+@NamedQuery(name = "RunContext.findByName", query = "SELECT o FROM RunContext o WHERE o.name = :name")
+})
+public class RunContext implements Serializable, Cloneable {
+  //~ Constants --------------------------------------------------------------------------------------------------------
 
+  /**
+   * serial UID for Serializable interface
+   */
+  private static final long serialVersionUID = 1L;
+  //~ Members ----------------------------------------------------------------------------------------------------------
   /**
    * Job identifier
    */
-  private final Integer id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "id", unique = true, nullable = false, precision = 18, scale = 0)
+  private Long id;
+  /** jpaVersion gives the current version number for that entity (used by pessimistic / optimistic locking in JPA) */
+  @Version()
+  @Column(name = "OPTLOCK")
+  protected int jpaVersion;
   /**
-   * Root Context reference
+   * Root Context reference (No cascade at all to have unary operation)
    */
-  private final RootContext parent;
+  @ManyToOne
+  @JoinColumn(name = "parentId", referencedColumnName = "id", nullable = false)
+  private RootContext parent;
   /**
    * Name of this task (useful to process task events)
    */
-  private final String name;
+  @Basic(optional = false)
+  @Column(name = "name", nullable = false)
+  private String name;
+  /**
+   * Attribute description :
+   * A description of this context / job.
+   */
+  @Basic(fetch = FetchType.LAZY, optional = false)
+  @Lob
+  @Column(name = "description", nullable = false)
+  private String description;
   /**
    * Job creation date
    */
-  private final long creationDate;
+  @Basic(optional = false)
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "creationDate", nullable = true)
+  private Date creationDate;
   /**
    * Job queue date
    */
-  private long queueDate = 0L;
+  @Basic(optional = true)
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "queueDate", nullable = true)
+  private Date queueDate = null;
   /**
    * Job run date
    */
-  private long runDate = 0L;
+  @Basic(optional = true)
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "runDate", nullable = true)
+  private Date runDate = null;
   /**
    * Job end date
    */
-  private long endDate = 0L;
+  @Basic(optional = true)
+  @Temporal(TemporalType.TIMESTAMP)
+  @Column(name = "endDate", nullable = true)
+  private Date endDate = null;
   /**
    * Job duration
    */
+  @Basic(optional = true)
+  @Column(name = "duration", nullable = false)
   private long duration = 0L;
   /**
    * Job state
    */
+  @Basic(optional = true)
+  @Enumerated(EnumType.STRING)
+  @Column(name = "state", nullable = true)
   private RunState state;
   /**
    * Ring Buffer for logs
    */
+  @Transient
   private RingBuffer ring = null;
+
+  /**
+   * Creates a new RunContext object for JPA
+   */
+  public RunContext() {
+  }
 
   /**
    * Creates a new RunContext object
    *
    * @param parent root context
-   * @param name operation name
+   * @param applicationName operation name
    * @param id job identifier
    */
-  public RunContext(final RootContext parent, final String name, final Integer id) {
+  public RunContext(final RootContext parent, final String applicationName, final Long id) {
     this.parent = parent;
     this.id = id;
-    this.name = name;
+    this.name = applicationName;
     // init :
     this.state = RunState.STATE_UNKNOWN;
-    this.creationDate = System.currentTimeMillis();
+    this.creationDate = new Date();
 
     if (parent != null) {
       parent.addChild(this);
     }
+  }
+
+  /**
+   * Clones this instance via standard java Cloneable support
+   *
+   * @return cloned instance
+   *
+   * @throws CloneNotSupportedException
+   */
+  @Override
+  protected Object clone() throws CloneNotSupportedException {
+    return super.clone();
+  }
+
+  /**
+   * Returns Jpa version for optimistic locking
+   * @return jpa version number
+   */
+  protected int getJpaVersion() {
+    return this.jpaVersion;
+  }
+
+  /**
+   * Set Jpa version for optimistic locking
+   * @param newValue jpa version number
+   */
+  protected void setJpaVersion(final int newValue) {
+    this.jpaVersion = newValue;
   }
 
   /**
@@ -100,18 +210,28 @@ public class RunContext {
   }
 
   /**
-   * Simple toString representation : "job[id][state] duration ms."
+   * Simple toString representation : "job[id][state] duration ms. - work dir : [workingDir]"
    *
-   * @return "job[id][state] duration ms."
+   * @return "job[id][state] duration ms. - work dir : [workingDir]"
    */
   @Override
   public String toString() {
-    return "job [" + getId() + "][" + getState() + "] " +
+    return getClass().getSimpleName() + "[" + getId() + "][" + getJpaVersion() + "][" + getState() + "] " +
         ((getDuration() > 0L) ? (" : " + getDuration() + " ms.") : "") +
         " - work dir : " + getWorkingDir();
   }
 
-  public RootContext getParent() {
+  /**
+   * Simple toString representation : "job[id][state]"
+   *
+   * @return "job[id][state]"
+   */
+  public String shortString() {
+    return getClass().getSimpleName() + "[" + getId() + "][" + getJpaVersion() + "][" + getState() + "]";
+  }
+
+
+  public final RootContext getParent() {
     return parent;
   }
 
@@ -120,8 +240,17 @@ public class RunContext {
    *
    * @return identifier
    */
-  public final Integer getId() {
+  public final Long getId() {
     return id;
+  }
+
+  /**
+   * Set the job identifier
+   *
+   * @param pId identifier
+   */
+  protected final void setId(final Long pId) {
+    id = pId;
   }
 
   /**
@@ -143,20 +272,21 @@ public class RunContext {
 
     switch (state) {
       case STATE_PENDING:
-        setQueueDate(System.currentTimeMillis());
+        setQueueDate(new Date());
 
         break;
 
       case STATE_RUNNING:
-        setRunDate(System.currentTimeMillis());
+        setRunDate(new Date());
 
         break;
 
       case STATE_CANCELLED:
+      case STATE_INTERRUPTED:
       case STATE_KILLED:
       case STATE_FINISHED_ERROR:
       case STATE_FINISHED_OK:
-        setEndDate(System.currentTimeMillis());
+        setEndDate(new Date());
 
         break;
 
@@ -164,19 +294,19 @@ public class RunContext {
     }
   }
 
-  public boolean isRunning() {
+  public final boolean isRunning() {
     return getState() == RunState.STATE_RUNNING;
   }
 
-  public boolean isPending() {
+  public final boolean isPending() {
     return getState() == RunState.STATE_PENDING;
   }
 
-  public long getCreationDate() {
+  public Date getCreationDate() {
     return creationDate;
   }
 
-  public String getCreationDateFormatted() {
+  public final String getCreationDateFormatted() {
     return TypeWrapper.getInternationalFormat(creationDate);
   }
 
@@ -185,7 +315,7 @@ public class RunContext {
    *
    * @return job queue date
    */
-  public final long getQueueDate() {
+  public final Date getQueueDate() {
     return queueDate;
   }
 
@@ -194,12 +324,12 @@ public class RunContext {
    *
    * @param queueDate date to set
    */
-  private final void setQueueDate(final long queueDate) {
+  private final void setQueueDate(final Date queueDate) {
     this.queueDate = queueDate;
   }
 
-  public String getQueueDateFormatted() {
-    if (queueDate == 0L) {
+  public final String getQueueDateFormatted() {
+    if (queueDate == null) {
       return "-";
     }
     return TypeWrapper.getInternationalFormat(queueDate);
@@ -210,7 +340,7 @@ public class RunContext {
    *
    * @return job run date
    */
-  public final long getRunDate() {
+  public final Date getRunDate() {
     return runDate;
   }
 
@@ -219,12 +349,12 @@ public class RunContext {
    *
    * @param runDate run date to set
    */
-  private final void setRunDate(final long runDate) {
+  private final void setRunDate(final Date runDate) {
     this.runDate = runDate;
   }
 
-  public String getRunDateFormatted() {
-    if (runDate == 0L) {
+  public final String getRunDateFormatted() {
+    if (runDate == null) {
       return "-";
     }
     return TypeWrapper.getInternationalFormat(runDate);
@@ -235,7 +365,7 @@ public class RunContext {
    *
    * @return job end date
    */
-  public final long getEndDate() {
+  public final Date getEndDate() {
     return endDate;
   }
 
@@ -244,12 +374,12 @@ public class RunContext {
    *
    * @param endDate date to set
    */
-  private final void setEndDate(final long endDate) {
+  private final void setEndDate(final Date endDate) {
     this.endDate = endDate;
   }
 
-  public String getEndDateFormatted() {
-    if (endDate == 0L) {
+  public final String getEndDateFormatted() {
+    if (endDate == null) {
       return "-";
     }
     return TypeWrapper.getInternationalFormat(endDate);
@@ -278,7 +408,7 @@ public class RunContext {
    *
    * @return ring buffer
    */
-  public RingBuffer getRing() {
+  public final RingBuffer getRing() {
     return ring;
   }
 
@@ -287,11 +417,23 @@ public class RunContext {
    *
    * @param ring buffer to set
    */
-  public void setRing(final RingBuffer ring) {
+  public final void setRing(final RingBuffer ring) {
     this.ring = ring;
   }
 
-  public String getName() {
+  /**
+   * Return the name of this context
+   * @return name of this context
+   */
+  public final String getName() {
     return name;
+  }
+
+  /**
+   * Return the description of this context
+   * @return description of this context
+   */
+  public final String getDescription() {
+    return description;
   }
 }

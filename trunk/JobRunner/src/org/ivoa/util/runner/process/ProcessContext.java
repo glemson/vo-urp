@@ -1,9 +1,16 @@
 package org.ivoa.util.runner.process;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import org.ivoa.util.runner.RootContext;
 import org.ivoa.util.runner.RunContext;
 
-import java.util.Arrays;
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import org.ivoa.util.CollectionUtils;
+import org.ivoa.util.JavaUtils;
 
 
 /**
@@ -11,34 +18,62 @@ import java.util.Arrays;
  *
  * @author laurent bourges (voparis)
  */
+@Entity
+@Table(name = "process_context")
+@DiscriminatorValue("ProcessContext")
+
 public final class ProcessContext extends RunContext {
+  //~ Constants --------------------------------------------------------------------------------------------------------
+
+  /**
+   * serial UID for Serializable interface
+   */
+  private static final long serialVersionUID = 1L;
+
+  /** command separator '  ' */
+  private static final String DB_SEPARATOR = "  ";
+
   //~ Members ----------------------------------------------------------------------------------------------------------
 
   /**
-   * Command array [unix command, arguments]
+   * Commands [unix command, arguments]
    */
-  private final String[] command;
+  @Basic(optional = false)
+  @Column(name = "command", nullable = false)
+  private String command;
 
   /**
    * Process status
    */
+  @Basic(optional = false)
+  @Column(name = "status", nullable = false)
   private int status = -1;
 
   /** child UNIX process */
+  @Transient
   private Process process = null;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
 
   /**
+   * Creates a new ProcessContext object for JPA
+   */
+  public ProcessContext() {
+    super();
+  }
+
+  /**
    * Creates a new ProcessContext object
    *
+   * @param parent root context
+   * @param name operation name
    * @param id job identifier
    * @param cmd command array
-   * @param workingDir process working directory
    */
-  public ProcessContext(final RootContext parent, final String name, final Integer id, final String[] cmd) {
+  public ProcessContext(final RootContext parent, final String name, final Long id, final String[] cmd) {
     super(parent, name, id);
-    this.command = cmd;
+
+    this.command = CollectionUtils.toString(JavaUtils.asList(cmd), DB_SEPARATOR, "", "");
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
@@ -60,7 +95,7 @@ public final class ProcessContext extends RunContext {
    */
   @Override
   public String toString() {
-    return super.toString() + " {" + Arrays.toString(getCommand()) + "}";
+    return super.toString() + " " + getCommand();
   }
 
   /**
@@ -68,10 +103,18 @@ public final class ProcessContext extends RunContext {
    *
    * @return command array
    */
-  public String[] getCommand() {
-    return command;
+  public String[] getCommandArray() {
+    return command.split(DB_SEPARATOR);
   }
 
+  /**
+   * Returns the command string
+   *
+   * @return command string
+   */
+  public String getCommand() {
+    return command;
+  }
 
   /**
    * Returns the Unix status or -1 if undefined

@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -35,8 +37,10 @@ public class JobServlet extends BaseServlet implements JobListener {
   public static final String INPUT_ACTION = "action";
   public static final String INPUT_ID = "id";
   public static final String OUTPUT_CONTENT = "content";
-  /** limit of lines in ring buffer */
-  public final static int MAX_LINES = 25;
+
+  /* members */
+  /** application name defined in web.xml */
+  protected String name;
 
   /**
    * @return a short description of the servlet.
@@ -46,18 +50,26 @@ public class JobServlet extends BaseServlet implements JobListener {
     return "Job servlet";
   }
 
+  @Override
+  public void init(final ServletConfig config) throws ServletException {
+    this.name = config.getInitParameter("name");
+
+    LocalLauncher.registerJobListener(getName(), this);
+  }
+
   /**
-   * Return the job default folder default/
-   * @return
+   * Return the application name used for the job listener registration
+   * and the folder name to compute the working directory
+   * @return application name
    */
-  public String getName() {
-    return "default";
+  public final String getName() {
+    return this.name;
   }
 
   /**
    * Returns the folder name where the application specific input/detail/queue JSP pages are stored.
    * This MUST correspond to the name of the application
-   * @return
+   * @return application folder
    */
   public final String getApplicationFolder() {
     return "apps/" + getName() + "/";
@@ -90,7 +102,7 @@ public class JobServlet extends BaseServlet implements JobListener {
         // TBD next commented out, should be performed in initialisation of main job
         // final String[] command = prepareJobParameters(workDir, request);
 
-        final RootContext runCtx = startJob(request, workDir);//, command);
+        final RootContext runCtx = startJob(request, workDir);
         if (runCtx != null) {
           view = null;
           try {
@@ -102,14 +114,14 @@ public class JobServlet extends BaseServlet implements JobListener {
       } else if (ACTION_SHOW_QUEUE.equals(action)) {
         view = showQueue(request);
       } else if (ACTION_SHOW_JOB.equals(action)) {
-        view = showJob(request, getIntParameter(request, INPUT_ID, 0));
+        view = showJob(request, getLongParameter(request, INPUT_ID, 0l));
       } else if (ACTION_KILL_JOB.equals(action) ||
           ACTION_CANCEL_JOB.equals(action)) {
 
         if (ACTION_KILL_JOB.equals(action)) {
-          killJob(request, getIntParameter(request, INPUT_ID, 0));
+          killJob(request, getLongParameter(request, INPUT_ID, 0l));
         } else {
-          cancelJob(request, getIntParameter(request, INPUT_ID, 0));
+          cancelJob(request, getLongParameter(request, INPUT_ID, 0l));
         }
 
         view = null;
@@ -146,29 +158,26 @@ public class JobServlet extends BaseServlet implements JobListener {
 
   }
 
-  private RootContext startJob(final HttpServletRequest request, final String workDir)//, final String[] command)
+  private RootContext startJob(final HttpServletRequest request, final String workDir)
       throws JobStateException {
     if (log.isDebugEnabled()) {
       log.debug("JobServlet.startJob : enter");
     }
 
     // create the execution context :
-
-    // absolute file path to write STD OUT / ERR streams (null indicates not to use a file dump)
-    final String writeLogFile = null;
-
-    final RootContext rootCtx = LocalLauncher.prepareMainJob(getName(), request.getRemoteUser(), workDir, MAX_LINES, writeLogFile);
+    // TODO : manage the writeLogFile absolute file path :
+    final RootContext rootCtx = LocalLauncher.prepareMainJob(getName(), request.getRemoteUser(), workDir, null);
 
     initialiseMainJob(rootCtx, request);// includes if necessary adding first child to main and preparing
 
     // puts the job in the job queue :
     // can throw IllegalStateException if job not queued :
-    LocalLauncher.startJob(rootCtx, this);
+    LocalLauncher.startJob(rootCtx);
 
     return rootCtx;
   }
 
-  private void killJob(final HttpServletRequest request, final Integer id) {
+  private void killJob(final HttpServletRequest request, final Long id) {
     final RunContext runCtx = LocalLauncher.getJob(id);
     try {
       if (runCtx instanceof RootContext) {
@@ -182,7 +191,7 @@ public class JobServlet extends BaseServlet implements JobListener {
     }
   }
 
-  private void cancelJob(final HttpServletRequest request, final Integer id) {
+  private void cancelJob(final HttpServletRequest request, final Long id) {
     final RunContext runCtx = LocalLauncher.getJob(id);
     try {
       if (runCtx instanceof RootContext) {
@@ -204,7 +213,7 @@ public class JobServlet extends BaseServlet implements JobListener {
     return "./queue.jsp";
   }
 
-  protected String showJob(final HttpServletRequest request, final Integer id) {
+  protected String showJob(final HttpServletRequest request, final Long id) {
     final RunContext runCtx = LocalLauncher.getJob(id);
 
     request.setAttribute("runContext", runCtx);
