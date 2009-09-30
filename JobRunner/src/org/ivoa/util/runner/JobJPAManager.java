@@ -236,6 +236,9 @@ public final class JobJPAManager extends SingletonSupport {
    * @return list of run context
    */
   public List<RootContext> findContexts(final String name, final boolean forceRefresh) {
+    if (log.isInfoEnabled()) {
+      log.info("JobJPAManager.findContexts : enter : " + name);
+    }
 
     final List<RootContext> ctxInterrupted = findContexts(name, RunState.STATE_INTERRUPTED, forceRefresh);
     final List<RootContext> ctxPending = findContexts(name, RunState.STATE_PENDING, forceRefresh);
@@ -243,6 +246,9 @@ public final class JobJPAManager extends SingletonSupport {
     final List<RootContext> results = new ArrayList<RootContext>(ctxInterrupted);
     results.addAll(ctxPending);
     
+    if (log.isInfoEnabled()) {
+      log.info("JobJPAManager.findContexts : exit : " + results);
+    }
     return results;
   }
 
@@ -254,11 +260,7 @@ public final class JobJPAManager extends SingletonSupport {
    * @return list of run context
    */
   @SuppressWarnings("unchecked")
-  public List<RootContext> findContexts(final String name, final RunState state, boolean forceRefresh) {
-    if (log.isInfoEnabled()) {
-      log.info("JobJPAManager.findContexts : enter : " + name);
-    }
-
+  private List<RootContext> findContexts(final String name, final RunState state, boolean forceRefresh) {
     List<RootContext> ctxList = null;
     EntityManager em = null;
 
@@ -267,7 +269,7 @@ public final class JobJPAManager extends SingletonSupport {
 
       // forces to use a query to refresh data from database :
       final Query q = em.createNamedQuery("RootContext.findPendingByName")
-          .setParameter("state", RunState.STATE_PENDING)
+          .setParameter("state", state)
           .setParameter("name", name);
       if (forceRefresh) {
         q.setHint(QueryHints.REFRESH, HintValues.TRUE);
@@ -281,9 +283,6 @@ public final class JobJPAManager extends SingletonSupport {
       close(em);
     }
 
-    if (log.isInfoEnabled()) {
-      log.info("JobJPAManager.findContexts : exit : " + ctxList);
-    }
     return ctxList;
   }
 

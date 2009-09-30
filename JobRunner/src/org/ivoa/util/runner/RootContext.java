@@ -31,7 +31,7 @@ import javax.persistence.Transient;
 @Table(name = "root_context")
 @DiscriminatorValue("RootContext")
 @NamedQueries({
-@NamedQuery(name = "RootContext.findPendingByName", query = "SELECT o FROM RootContext o WHERE o.state = :state and o.name = :name")
+  @NamedQuery(name = "RootContext.findPendingByName", query = "SELECT o FROM RootContext o WHERE o.state = :state and o.name = :name")
 })
 public final class RootContext extends RunContext implements Iterator<RunContext> {
   //~ Constants --------------------------------------------------------------------------------------------------------
@@ -66,7 +66,7 @@ public final class RootContext extends RunContext implements Iterator<RunContext
    * Child contexts (No cascade at all to have unary operation) TODO ??
    */
   @OrderBy(value = "id")
-  @OneToMany(cascade=CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "parent")
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "parent")
   private final List<RunContext> childContexts = new ArrayList<RunContext>();
   /**
    * Current executed task position in the Child contexts
@@ -101,33 +101,6 @@ public final class RootContext extends RunContext implements Iterator<RunContext
   @Override
   public void close() {
     // clean up code :
-    }
-
-  public void cancel() {
-    if (getState() == RunState.STATE_PENDING) {
-      if (future != null) {
-        setState(RunState.STATE_CANCELLED);
-        // cancel a pending task :
-        future.cancel(true);
-      }
-    }
-  }
-
-  /**
-   * this method stops the execution of that context
-   */
-  @Override
-  public void kill() {
-    // maybe should traverse all contexts to disable their execution
-
-    if (getState() == RunState.STATE_RUNNING) {
-      final RunContext ctx = getCurrentChildContext();
-
-      if (ctx != null) {
-        setState(RunState.STATE_KILLED);
-        ctx.kill();
-      }
-    }
   }
 
   /**
