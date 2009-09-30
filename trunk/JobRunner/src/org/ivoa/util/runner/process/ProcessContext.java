@@ -47,7 +47,7 @@ public final class ProcessContext extends RunContext {
    */
   @Basic(optional = false)
   @Column(name = "status", nullable = false)
-  private int status = -1;
+  private int exitCode = -1;
 
   /** child UNIX process */
   @Transient
@@ -117,21 +117,21 @@ public final class ProcessContext extends RunContext {
   }
 
   /**
-   * Returns the Unix status or -1 if undefined
+   * Returns the exit code or -1 if undefined
    *
-   * @return Unix status or -1 if undefined
+   * @return exit code or -1 if undefined
    */
-  public int getStatus() {
-    return status;
+  public int getExitCode() {
+    return exitCode;
   }
 
   /**
-   * Defines the Unix status
+   * Defines the exit code
    *
-   * @param status status to set
+   * @param code exit code
    */
-  protected void setStatus(final int status) {
-    this.status = status;
+  protected void setExitCode(final int code) {
+    this.exitCode = code;
   }
 
   /**

@@ -322,7 +322,7 @@ public final class LocalLauncher {
     final JobListener listener = JOB_LISTENER.get(rootCtx.getName());
 
     if (listener == null) {
-      throw new IllegalStateException("job listener is undefined for the application : " + rootCtx.getName());
+      throw new IllegalStateException("Job listener is undefined for the application : " + rootCtx.getName());
     }
 
     // uses the runner thread pool to run the job :
@@ -344,17 +344,59 @@ public final class LocalLauncher {
     addInQueue(rootCtx);
 
     // call listener :
-    if (listener != null) {
-      listener.performJobEvent(rootCtx);
+    listener.performJobEvent(rootCtx);
+  }
+
+  public static void killJob(final Long id) {
+    final RunContext runCtx = LocalLauncher.getJob(id);
+    if (runCtx != null) {
+      try {
+        if (runCtx instanceof RootContext) {
+          // cancel the root context :
+          final RootContext ctx = ((RootContext) runCtx);
+          if (ctx.getState() == RunState.STATE_RUNNING) {
+            final RunContext child = ctx.getCurrentChildContext();
+
+            if (child != null) {
+              ctx.setState(RunState.STATE_KILLED);
+              child.kill();
+            }
+          }
+
+        }
+
+      } finally {
+        // clear ring buffer :
+        runCtx.close();
+      }
     }
   }
 
-  /**
-   * Stop a job in the queue (not implemented)
-   *
-   * @param runCtx job context
-   */
-  public static void stopJob(final RunContext runCtx) {
+  public static void cancelJob(final Long id) {
+    final RunContext runCtx = LocalLauncher.getJob(id);
+    if (runCtx != null) {
+      try {
+        if (runCtx instanceof RootContext) {
+          // cancel the root context :
+          final RootContext ctx = ((RootContext) runCtx);
+          if (ctx.getState() == RunState.STATE_PENDING) {
+            ctx.setState(RunState.STATE_CANCELLED);
+            if (ctx.getFuture() != null) {
+              // cancel a pending task :
+              ctx.getFuture().cancel(true);
+            }
+
+            if (USE_PERSISTENCE) {
+              jm.persist(runCtx);
+            }
+          }
+        }
+
+      } finally {
+        // clear ring buffer :
+        runCtx.close();
+      }
+    }
   }
 
   /**
@@ -500,6 +542,7 @@ public final class LocalLauncher {
         // increment live counter :
         JOBS_LIVE.incrementAndGet();
 
+        RunState lastState = null;
         boolean ok = true;
         try {
           // set running state :
@@ -510,9 +553,7 @@ public final class LocalLauncher {
           }
 
           // call listener :
-          if (listener != null) {
-            listener.performJobEvent(rootCtx);
-          }
+          listener.performJobEvent(rootCtx);
 
           // Execute the tasks here :
           int n = 0;
@@ -525,13 +566,18 @@ public final class LocalLauncher {
 
             executeTask(child);
 
+            lastState = child.getState();
+
+            // call listener :
+            ok = listener.performTaskDone(rootCtx, child);
+
+            if (!ok) {
+              break;
+            }
+
             if (USE_PERSISTENCE) {
               // persist state of child contexts :
               jm.persist(rootCtx);
-            }
-
-            if (listener != null) {
-              ok = listener.performTaskDone(rootCtx, child);
             }
 
             // go forward in child contexts :
@@ -547,7 +593,8 @@ public final class LocalLauncher {
           rootCtx.getRing().add("Job '" + rootCtx.getName() + "' Ended.");
 
           // handle states :
-          if (this.executor.isShutdown()) {
+          if (RunState.STATE_INTERRUPTED == lastState && this.executor.isShutdown()) {
+            // interrupted due to thread pool shutdown :
             rootCtx.setState(RunState.STATE_INTERRUPTED);
           } else {
             if (rootCtx.getState() != RunState.STATE_CANCELLED && rootCtx.getState() != RunState.STATE_KILLED) {
@@ -561,9 +608,8 @@ public final class LocalLauncher {
             jm.persist(rootCtx);
           }
 
-          if (listener != null) {
-            listener.performJobEvent(rootCtx);
-          }
+          // call listener :
+          listener.performJobEvent(rootCtx);
 
           // remove job from queue :
           if (!QUEUE_MANUAL_REMOVE_JOBS) {

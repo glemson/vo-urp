@@ -1,7 +1,5 @@
 package org.ivoa.util.runner;
 
-import org.ivoa.web.servlet.JobStateException;
-
 /**
  * This interface handle job and queue events.
  * @see RunState
@@ -11,13 +9,14 @@ import org.ivoa.web.servlet.JobStateException;
 public interface JobListener {
   
   /**
-   * Perform the event from the given root context
+   * Perform the job event from the given root context.
+   * Called when the job has the following transitions : pending / running / finished
    * @param rootCtx root context
    */
   public void performJobEvent(final RootContext rootCtx);
 
   /**
-   * Perform the event from the given run context
+   * Perform the task event from the given run context =
    * @param rootCtx root context
    * @param runCtx  current run context
    */

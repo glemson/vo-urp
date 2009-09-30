@@ -262,6 +262,14 @@ public class RunContext implements Serializable, Cloneable {
     return state;
   }
 
+  public final boolean isRunning() {
+    return getState() == RunState.STATE_RUNNING;
+  }
+
+  public final boolean isPending() {
+    return getState() == RunState.STATE_PENDING;
+  }
+
   /**
    * Defines the job state and corresponding date
    *
@@ -292,14 +300,6 @@ public class RunContext implements Serializable, Cloneable {
 
       default:
     }
-  }
-
-  public final boolean isRunning() {
-    return getState() == RunState.STATE_RUNNING;
-  }
-
-  public final boolean isPending() {
-    return getState() == RunState.STATE_PENDING;
   }
 
   public Date getCreationDate() {

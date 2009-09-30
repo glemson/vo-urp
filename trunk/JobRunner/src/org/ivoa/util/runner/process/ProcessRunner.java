@@ -112,7 +112,9 @@ public final class ProcessRunner {
         log.error("ProcessRunner.execute : illegal state failure :", ise);
       } catch (InterruptedException ie) {
         // occurs when the threadpool shutdowns or interrupts the task (future.cancel) :
-        log.error("ProcessRunner.execute : interrupted failure :", ie);
+        if (log.isInfoEnabled()) {
+          log.info("ProcessRunner.execute : interrupted failure :", ie);
+        }
         // Interrupted status :
         status = STATUS_INTERRUPTED;
       } catch (IOException ioe) {
@@ -123,7 +125,7 @@ public final class ProcessRunner {
         final double duration = TimerFactory.elapsedMilliSeconds(start, System.nanoTime());
 
         runCtx.setDuration((long) duration);
-        runCtx.setStatus(status);
+        runCtx.setExitCode(status);
         if (status == STATUS_NORMAL) {
           TimerFactory.getTimer("execute-" + args[0]).add(duration);
         }
@@ -131,7 +133,7 @@ public final class ProcessRunner {
         stop(runCtx);
 
         if (log.isInfoEnabled()) {
-          log.info("ProcessRunner.execute : process status : " + runCtx.getStatus());
+          log.info("ProcessRunner.execute : process status : " + runCtx.getExitCode());
         }
       }
     }

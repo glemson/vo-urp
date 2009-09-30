@@ -119,9 +119,9 @@ public class JobServlet extends BaseServlet implements JobListener {
           ACTION_CANCEL_JOB.equals(action)) {
 
         if (ACTION_KILL_JOB.equals(action)) {
-          killJob(request, getLongParameter(request, INPUT_ID, 0l));
+          LocalLauncher.killJob(getLongParameter(request, INPUT_ID, 0l));
         } else {
-          cancelJob(request, getLongParameter(request, INPUT_ID, 0l));
+          LocalLauncher.cancelJob(getLongParameter(request, INPUT_ID, 0l));
         }
 
         view = null;
@@ -175,34 +175,6 @@ public class JobServlet extends BaseServlet implements JobListener {
     LocalLauncher.startJob(rootCtx);
 
     return rootCtx;
-  }
-
-  private void killJob(final HttpServletRequest request, final Long id) {
-    final RunContext runCtx = LocalLauncher.getJob(id);
-    try {
-      if (runCtx instanceof RootContext) {
-        // java process is killed => unix process is killed :
-        ((RootContext) runCtx).kill();
-      }
-
-    } finally {
-      // clear ring buffer :
-      runCtx.close();
-    }
-  }
-
-  private void cancelJob(final HttpServletRequest request, final Long id) {
-    final RunContext runCtx = LocalLauncher.getJob(id);
-    try {
-      if (runCtx instanceof RootContext) {
-        // cancel the root context :
-        ((RootContext) runCtx).cancel();
-      }
-
-    } finally {
-      // clear ring buffer :
-      runCtx.close();
-    }
   }
 
   private String showQueue(final HttpServletRequest request) {
