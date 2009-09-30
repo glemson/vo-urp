@@ -29,7 +29,8 @@
   <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/cond_mass_fun.png"/>
 <% } %>
 <br/><br/>
-    Root directory 
+    Root directory : <% if(ok){ %><a href="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}">download zip</a><% } %>
+    
     <table><tr><th>File name</th><th>Size (bytes)</th><th>Modified</th></tr>
 <c:if test="${!empty requestScope.resultDir}">
 <dir:Directory path="${requestScope.resultDir}" > 

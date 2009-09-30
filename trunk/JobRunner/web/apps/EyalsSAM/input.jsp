@@ -30,7 +30,7 @@ Requirements
 
 Questions
 1. what is best architecture to accomplish this?
-2. should we use an existing (IVOA) applicaiton and job definition, XML based maybe?
+2. should we use an existing (IVOA) application and job definition, XML based maybe?
 3. shall we generate pages form a single process description XML file ?
 4. ...
 
