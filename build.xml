@@ -85,6 +85,7 @@
 	<property name="properties" location="${input}/properties"/>
 	<property name="dist.lib" location="${dist}/lib" />
 	<property name="javadoc" location="${dist}/doc" />
+	<property name="outputHTML" location="${output}/html"/>
 	<property name="outputJava" location="${output}/java"/>
 	<property name="sources.gen" location="${outputJava}" />
 	<property name="output.xsd" location="${output}/schema" />
@@ -94,6 +95,14 @@
 	<property name="build.weaving" location="${build}/weaving" />
 	<property name="test" location="${input}/${sources.test}"/>
 	<property name="build.test" location="${build}/test" />
+
+	
+	<!-- graphviz properties -->
+  <available property="graphviz.check" file="${graphviz.path}" />
+
+  <property name="graphviz.png" value="${project.name}.png"/>
+  <property name="graphviz.map" value="${project.name}.cmap"/>
+  <property name="graphviz.map.placeholder" value="___GRAPHVIZ_MAP___"/>
 
     <!-- JDBC drivers -->
     <fileset id="jdbcfiles" dir="${libs}/jdbc">
@@ -548,14 +557,25 @@
 
 
 	<!-- target run_intermediate2html : generates HTML Documentation from intermediate model -->
-	<target name="run_intermediate2html">
+	<target name="run_intermediate2html" depends="run_intermediate2gvd">
 		<echo>run_intermediate2html : starting generate HTML from file ${output}/${source_intermediate}</echo>
 
-		<xslt2 in="${output}/${source_intermediate}" out="${output}/html/${project.name}.html" style="${res}/intermediate2html.xsl"/>
+		<xslt2 in="${output}/${source_intermediate}" out="${outputHTML}/${project.name}.html" style="${res}/intermediate2html.xsl">
+			<param name="project_name" expression="${project.name}"/> 
+      <param name="graphviz_png" if="graphviz.path" expression="${graphviz.png}"/>
+      <param name="graphviz_map" if="graphviz.path" expression="${graphviz.map.placeholder}"/>
+			</xslt2>
+
+    <ant target="postGenerateHTML"/>
 
 		<echo>run_intermediate2html : done.</echo>
 	</target>
 
+  <target name="postGenerateHTML"  if="graphviz.path" >
+      <loadfile property="map" srcfile="${outputHTML}/${graphviz.map}"/>
+
+      <replace file="${outputHTML}/${project.name}.html" token="${graphviz.map.placeholder}" value="${map}"/>
+  </target>
 
 
 
@@ -573,18 +593,19 @@
 
 	<!-- target run_intermediate2gvd : generates Object Graphs (graphviz tool) from intermediate model -->
     <!-- note : this target not included in the standard pipeline : run it manually -->
-	<target name="run_intermediate2gvd">
+	<target name="run_intermediate2gvd" if="graphviz.path">
 		<echo>run_intermediate2gvd : starting generate GraphViz from file ${output}/${source_intermediate}</echo>
 
 		<xslt2 in="${output}/${source_intermediate}" out="${output}/html/${project.name}.gvd" style="${res}/intermediate2gvd.xsl" />
 
-		<exec executable="${graphviz.path}" dir="${output}/html" inputstring="">
-			<arg value="-Timap" />
-			<arg value="-o${project.name}.imap" />
-			<arg value="-Tpng" />
-			<arg value="-o${project.name}.png" />
-			<arg value="${project.name}.gvd" />
-		</exec>
+
+    <exec executable="${graphviz.path}" dir="${outputHTML}" >
+        <arg value="-Tcmapx" />
+        <arg value="-o${graphviz.map}" />
+        <arg value="-Tpng" />
+        <arg value="-o${graphviz.png}" />
+        <arg value="${project.name}.gvd" />
+    </exec>
 
 		<echo>run_intermediate2gvd : done.</echo>
 	</target>
