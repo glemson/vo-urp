@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- 
-This style sheet transforms a UML model, expressed an XMI, into an
+This style sheet transforms a UML model, expressed in XMI, into an
 "intermediate" XMl representation.
 That representation follows the schema in intermediateModel.xsd.
 
