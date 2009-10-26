@@ -659,6 +659,11 @@ For acknowledgments concerning the contents of the current model we refer the re
         <td class="feature-detail" rowspan="4"><b>
         <a><xsl:attribute name="name" select="@xmiid"/></a>
         <xsl:value-of select="name"/></b>
+        <xsl:if test="subsets">
+        <xsl:variable name="prop" select="key('element',subsets)"/>
+        <br/>{subsets <a><xsl:attribute name="href" select="concat('#',subsets)"/>
+        <xsl:value-of select="concat($prop/../name,':',$prop/name)"/></a> } 
+        </xsl:if>
         </td>
         <td class="feature-heading">type</td>
         <td class="feature-detail" >
