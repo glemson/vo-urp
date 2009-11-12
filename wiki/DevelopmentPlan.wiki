@@ -65,6 +65,22 @@
 
 
 
+= TODO 2009-11-12 =
+  * get TAP implementation from Pat (other?)
+  * merge Laurent's JobRunner with Pat's UWS implementation:
+     * external/legacy applications
+     * persistent queue
+  * TAP only web interface, i.e. no browsing part, may be useful for really large databases.
+  * implement ObsTAP use case, maybe on ROSAT images
+  * check that SimDB specification works with VO-URP
+  * incorporate XSLT generation changes from SimDB specification into VO-URP
+    * html generation
+      * graphviz map
+      * utypes
+  * complete TAP metadata generation following TAP spec
+  * user management for upload of xml
+  * flexible support for custom pages
+  * 
 
 
 
