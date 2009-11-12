@@ -73,24 +73,32 @@
        * add external/legacy applications
        * add persistent queue
        * get UWS support
-     * user management (combined with VO-URP webapp, separate module?)
-     * file store limit
-     * maximum number of jobs in queue per user
+     * user management (combined with VO-URP webapp, separate module?) (LB) X
+     * file management
+       * use job id (unguessable) for directory
+       * show jobs by querying job table, linking to archive
+       * file store limit and/or clean up functions (cron?) (LB, GL)
+     * queue
+       * maximum number of jobs in queue per user
+       * clean up queue, move finished jobs to jobs/user table (LB)
      * check use cases (Eyal, Klaus) (GL)
      * plugin concept for applications iso custom servlets. 
        Use UWS pattern from Pat, Spring? (LB, GL)
      * use remote server for job execution iso !JobRunner web app.
      * 
   * TAP only web interface, i.e. no browsing part, may be useful for really large databases. (LB, GL)
-  * implement ObsTAP use case, maybe on ROSAT images (GL)
-  * check that SimDB specification works with VO-URP (GL)
-  * incorporate XSLT generation changes from SimDB specification into VO-URP (GL)
+  * Use cases:
+    * implement ObsTAP use case, maybe on ROSAT images (GL) X
+    * check that SimDB specification works with VO-URP (GL) X
+    * support Benjamin and Franck on PDR use case (LB,GL) X
+  * incorporate XSLT generation changes from SimDB specification into VO-URP (GL) X
     * html generation
       * graphviz map
       * utypes
-  * complete TAP metadata generation following TAP spec (GL)
+  * complete TAP metadata generation following TAP spec (GL) X
   * user management for upload of xml (LB)
   * flexible support for custom pages (LB)
+  * multiple models in one context (LB)
   * 
 
 
