@@ -68,8 +68,8 @@
 = TODO 2009-11-12 =
   * Get TAP implementation from Pat (other?) (LB, GL)
     * check metadata extraction, compare to Franz's ADQL Interpreter (GL)
-  * Laurent's JobRunner (LB)
-     * merge with Pat's UWS implementation (AstroGrid's?) (LB)
+  * Laurent's !JobRunner (LB)
+     * merge with Pat's UWS implementation (!AstroGrid's?) (LB)
        * add external/legacy applications
        * add persistent queue
        * get UWS support
@@ -79,7 +79,7 @@
      * check use cases (Eyal, Klaus) (GL)
      * plugin concept for applications iso custom servlets. 
        Use UWS pattern from Pat, Spring? (LB, GL)
-     * use remote server for job execution iso JobRunner web app.
+     * use remote server for job execution iso !JobRunner web app.
      * 
   * TAP only web interface, i.e. no browsing part, may be useful for really large databases. (LB, GL)
   * implement ObsTAP use case, maybe on ROSAT images (GL)
