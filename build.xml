@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
+ 
 <!DOCTYPE project [
 <!ENTITY buildJava SYSTEM "./build_java.xml">
 <!ENTITY buildDB SYSTEM "./build_db.xml">
@@ -104,6 +104,8 @@
   <property name="graphviz.map" value="${project.name}.cmap"/>
   <property name="graphviz.map.placeholder" value="___GRAPHVIZ_MAP___"/>
 
+	
+	
     <!-- JDBC drivers -->
     <fileset id="jdbcfiles" dir="${libs}/jdbc">
       <!-- postgres 8.x driver -->
@@ -467,12 +469,12 @@
   <target name="generateAll">
 		<property name="source" value="${source}" />
 		<property name="source_filtered" value="${source_filtered}" />
-
+ 
 		<ant target="run_xmi2intermediate" inheritAll="true"/>
 
 		<ant target="run_intermediate2ddl" inheritAll="true"/>
-  	<ant target="run_intermediate2gvd" inheritAll="true"/>
-  	<ant target="run_intermediate2html" inheritAll="true"/>
+  	    <ant target="run_intermediate2gvd" inheritAll="true"/>
+  	    <ant target="run_intermediate2html" inheritAll="true"/>
 		<ant target="run_intermediate2java" inheritAll="true"/>
 <!--		<ant target="run_intermediate2rdf" inheritAll="true"/>  --> 
 		<ant target="run_intermediate2tap" inheritAll="true"/>
@@ -559,25 +561,31 @@
 	<!-- target run_intermediate2html : generates HTML Documentation from intermediate model -->
 	<target name="run_intermediate2html" depends="run_intermediate2gvd">
 		<echo>run_intermediate2html : starting generate HTML from file ${output}/${source_intermediate}</echo>
+	
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/html/${project.name}.html"
+			style="${res}/intermediate2html_v2.xsl">
+            <param name="project_name" expression="${project.name}"/>
+            <param name="graphviz_png" if="graphviz.path" expression="${graphviz.png}"/>
+            <param name="graphviz_map" if="graphviz.path" expression="${graphviz.map.placeholder}"/>
+          <param name="preamble" expression="${output}/html/preamble.html"/>
+        </xslt2> 
+        <copy todir="${output}/html">
+            <fileset dir="css">
+                <include name="*.css" />
+            </fileset>
+        </copy>
 
-		<xslt2 in="${output}/${source_intermediate}" out="${outputHTML}/${project.name}.html" style="${res}/intermediate2html.xsl">
-			<param name="project_name" expression="${project.name}"/> 
-      <param name="graphviz_png" if="graphviz.path" expression="${graphviz.png}"/>
-      <param name="graphviz_map" if="graphviz.path" expression="${graphviz.map.placeholder}"/>
-			</xslt2>
-
-    <ant target="postGenerateHTML"/>
+		<ant target="postGenerateHTML" />
 
 		<echo>run_intermediate2html : done.</echo>
 	</target>
 
   <target name="postGenerateHTML"  if="graphviz.path" >
       <loadfile property="map" srcfile="${outputHTML}/${graphviz.map}"/>
-
+	
       <replace file="${outputHTML}/${project.name}.html" token="${graphviz.map.placeholder}" value="${map}"/>
   </target>
-
-
+	
 
 	<!-- target run_intermediate2rdf : generates a RDF instance from intermediate model -->
     <target name="run_intermediate2rdf" >
@@ -598,19 +606,16 @@
 
 		<xslt2 in="${output}/${source_intermediate}" out="${output}/html/${project.name}.gvd" style="${res}/intermediate2gvd.xsl" />
 
-
     <exec executable="${graphviz.path}" dir="${outputHTML}" >
         <arg value="-Tcmapx" />
         <arg value="-o${graphviz.map}" />
-        <arg value="-Tpng" />
-        <arg value="-o${graphviz.png}" />
-        <arg value="${project.name}.gvd" />
+        <arg value="-Tpng"/>
+        <arg value="-o${graphviz.png}"/>
+        <arg value="${project.name}.gvd"/>
     </exec>
+    <echo>run_intermediate2gvd : done.</echo>
 
-		<echo>run_intermediate2gvd : done.</echo>
-	</target>
-
-
+		</target>
 	
 
 	<!-- target run_intermediate2ddl : generates DDL script from intermediate model -->
