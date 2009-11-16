@@ -56,3 +56,18 @@ But different rules seem to be required to map to our cardinality elements.
 - ownedMember -> packagedElement
 - 
 
+--========================================================
+-- [2009-11-1, GL] External model
+--========================================================
+1. external models
+add Model with <<externalmodel>> to profile
+add tags: prefix, URI, possibly other features like external classes etc
+  for use in current model
+2. add various options for mapping to database:  
+  mapping to particular database schema if desired
+  particular names for attributes, 
+  possibly <<relational>> with 'dbname' tag for each Element?
+3. constraints in the model
+  if we do not want to have to translate them from OQL, need to be able to
+  define them in particular language: XSD, Java, relational (how)
+  possibly add to <<constraint>> tags for each language, possibly 0..*?
