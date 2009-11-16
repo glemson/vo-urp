@@ -168,6 +168,9 @@ generate tables in the database allowing querying for metadata
         <xsl:element name="DESCRIPTION">
           <xsl:value-of select="description"/>
         </xsl:element>
+        <!--  first objectType-s in default package -->
+        <xsl:apply-templates select="objectType" mode="tableset"/>
+        <!--  other packages -->
         <xsl:apply-templates select="package[objectType]" mode="tableset"/>
       </xsl:element>
     </xsl:element>

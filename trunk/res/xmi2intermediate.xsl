@@ -56,22 +56,32 @@ This XSLT is tested to work on XMI generated with MagicDraw Community Edition v1
   
   <!-- filters uml:Model : process only uml:Package nodes -->
   <xsl:template match="uml:Model">
-  
     <xsl:comment>This XML document is generated without explicit xmlns specification as it complicates
     writing XSLT scripts against it [TBD add a link to some web dicsussions about it].
     It is understood that the XML schema in 
-    http://volute.googlecode.com/svn/trunk/projects/theory/snapdm/input/intermediateModel.xsd
+    http://volute.googlecode.com/svn/trunk/projects/theory/snapdm/specification/uml/intermediateModel.xsd
     is to be used for validating this generated document.</xsl:comment>&cr;
-      <xsl:element name="model">
+    <xsl:element name="model">
       <xsl:attribute name="xmiid"><xsl:value-of select="@xmi:id"></xsl:value-of></xsl:attribute> 
       <xsl:element name="name"><xsl:value-of select="@name"/></xsl:element>
     <xsl:call-template name="description">
       <xsl:with-param name="ownedComment" select="./ownedComment"/>
     </xsl:call-template>
+    <xsl:element name="utype">
+      <xsl:call-template name="otherutype">
+        <xsl:with-param name="xmiid" select="@xmi:id"/>
+      </xsl:call-template>
+    
+       <xsl:call-template name="intermediate_utype">
+         <xsl:with-param name="member" select="."/>
+       </xsl:call-template>
+    </xsl:element>
+    
     <xsl:element name="lastModifiedDate"><xsl:value-of select="$lastModified"/></xsl:element>
       <xsl:apply-templates select="." mode="model.tags"/>
       <xsl:apply-templates select="./*[@xmi:type='uml:Profile' and @name='IVOA_Profile']"/>
       <xsl:apply-templates select="./*[@xmi:type='uml:Package']"/>
+      <xsl:apply-templates select="./ownedMember[@xmi:type='uml:Class' or @xmi:type='uml:DataType' or @xmi:type='uml:Enumeration']"/>
     </xsl:element>
   </xsl:template>
   
@@ -96,9 +106,9 @@ This XSLT is tested to work on XMI generated with MagicDraw Community Edition v1
     
   </xsl:template>
   
-  
-  
-  
+
+
+
 
   <xsl:template match="*[@xmi:type='uml:Profile']">
     <xsl:element name="profile">
@@ -134,6 +144,9 @@ This XSLT is tested to work on XMI generated with MagicDraw Community Edition v1
     </xsl:call-template>
     &cr;
         <xsl:element name="utype">
+        <xsl:call-template name="otherutype">
+          <xsl:with-param name="xmiid" select="@xmi:id"/>
+        </xsl:call-template>
           <xsl:call-template name="intermediate_utype">
             <xsl:with-param name="member" select="."/>
           </xsl:call-template>
@@ -226,20 +239,20 @@ This XSLT is tested to work on XMI generated with MagicDraw Community Edition v1
       <xsl:element name="name">
         <xsl:value-of select="@name"/>
       </xsl:element>
-      <xsl:call-template name="description">
-        <xsl:with-param name="ownedComment" select="ownedComment"/>
-      </xsl:call-template>
+    <xsl:call-template name="description">
+      <xsl:with-param name="ownedComment" select="ownedComment"/>
+    </xsl:call-template>
       <xsl:variable name="utype">
-          <xsl:call-template name="intermediate_utype">
-            <xsl:with-param name="member" select="."/>
-          </xsl:call-template>
+        <xsl:call-template name="intermediate_utype">
+          <xsl:with-param name="member" select="."/>
+        </xsl:call-template>
       </xsl:variable>
       <xsl:element name="utype">
         <xsl:call-template name="otherutype">
           <xsl:with-param name="xmiid" select="@xmi:id"/>
         </xsl:call-template>
         <xsl:value-of select="$utype"/>
-        </xsl:element>
+      </xsl:element>
       <xsl:if test="*[@xmi:type='uml:Generalization']">
         <xsl:apply-templates select="*[@xmi:type='uml:Generalization']"/>
       </xsl:if>
@@ -312,10 +325,21 @@ This XSLT is tested to work on XMI generated with MagicDraw Community Edition v1
     <xsl:call-template name="description">
       <xsl:with-param name="ownedComment" select="ownedComment"/>
     </xsl:call-template>
+      <xsl:variable name="utype">
+        <xsl:call-template name="intermediate_utype">
+          <xsl:with-param name="member" select="."/>
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:element name="utype">
+        <xsl:call-template name="otherutype">
+          <xsl:with-param name="xmiid" select="@xmi:id"/>
+        </xsl:call-template>
+        <xsl:value-of select="$utype"/>
+      </xsl:element>
+      
       <xsl:if test="*[@xmi:type='uml:Generalization']">
         <xsl:apply-templates select="*[@xmi:type='uml:Generalization']"/>
       </xsl:if>
-      
       <xsl:apply-templates select=".//*[@xmi:type='uml:Property' and not(@association)]" mode="attributes"/>
       
     </xsl:element>
@@ -345,6 +369,17 @@ This XSLT is tested to work on XMI generated with MagicDraw Community Edition v1
     <xsl:call-template name="description">
       <xsl:with-param name="ownedComment" select="ownedComment"/>
     </xsl:call-template>
+      <xsl:variable name="utype">
+        <xsl:call-template name="intermediate_utype">
+          <xsl:with-param name="member" select="."/>
+        </xsl:call-template>
+      </xsl:variable>
+      <xsl:element name="utype">
+        <xsl:call-template name="otherutype">
+          <xsl:with-param name="xmiid" select="@xmi:id"/>
+        </xsl:call-template>
+        <xsl:value-of select="$utype"/>
+      </xsl:element>
       <xsl:apply-templates select="*[@xmi:type='uml:EnumerationLiteral']"/>
     </xsl:element>
     &cr;&cr;
@@ -430,6 +465,9 @@ This XSLT is tested to work on XMI generated with MagicDraw Community Edition v1
       <xsl:with-param name="ownedComment" select="ownedComment"/>
     </xsl:call-template>
     <xsl:element name="utype">
+        <xsl:call-template name="otherutype">
+          <xsl:with-param name="xmiid" select="@xmi:id"/>
+        </xsl:call-template>
       <xsl:call-template name="intermediate_utype">
         <xsl:with-param name="member" select="."/>
       </xsl:call-template>
@@ -481,6 +519,9 @@ This XSLT is tested to work on XMI generated with MagicDraw Community Edition v1
   </xsl:template>
 
 
+  
+
+  
   
   <!-- 
    only legal values: 0..1   1   0..*   1..*

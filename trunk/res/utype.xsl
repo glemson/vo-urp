@@ -33,7 +33,7 @@
 
 
   <xsl:template match="dataType|enumeration" mode="utype">
-    <xsl:text/>
+    <xsl:value-of select="utype"/>
   </xsl:template>
 
 
@@ -74,9 +74,11 @@
       <xsl:when test="$member/name() = 'uml:Model'">
         <xsl:value-of select="$member/@name"/>
       </xsl:when>
+      <!-- 
       <xsl:when test="$member/@xmi:type='uml:DataType'">
         <xsl:value-of select="''"/>
       </xsl:when>
+       -->
       <xsl:otherwise> <!--  test="$member/@xmi:type='uml:Package' or $member/@xmi:type='uml:Class'">   -->
         <xsl:variable name="prefix">
           <xsl:call-template name="intermediate_utype">
@@ -87,8 +89,10 @@
           <xsl:choose>
             <xsl:when test="$member/../name()='uml:Model'">&modelsep;</xsl:when>
             <xsl:when test="$member/../@xmi:type='uml:Package' and $member/@xmi:type='uml:Package'">&ppsep;</xsl:when>
-            <xsl:when test="$member/../@xmi:type='uml:Package' and ($member/@xmi:type='uml:Class' or $member/@xmi:type='uml:DataType')">&pcsep;</xsl:when>
+            <xsl:when test="$member/../@xmi:type='uml:Package' and ($member/@xmi:type='uml:Class' or $member/@xmi:type='uml:DataType' or $member/@xmi:type='uml:Enumeration')">&pcsep;</xsl:when>
             <xsl:when test="$member/../@xmi:type='uml:Class'">&casep;</xsl:when>
+            <xsl:when test="$member/../@xmi:type='uml:DataType'">&casep;</xsl:when>
+            <xsl:when test="$member/../@xmi:type='uml:Enumeration'">&casep;</xsl:when>
             <xsl:when test="$member/../@xmi:type='uml:Property'">&casep;</xsl:when>
             <xsl:otherwise></xsl:otherwise>
           </xsl:choose>
@@ -108,13 +112,15 @@
 
 
 
-
-
+  
+  
   <xsl:template name="otherutype">
     <xsl:param name="xmiid"/>
+    
     <xsl:variable name="modelelement" select="/xmi:XMI/IVOA_Profile:modelelement[@base_Element = $xmiid]"/>
-    <xsl:if test="$modelelement/@utype">
-      <xsl:attribute name="otherutype" select="$modelelement/@utype"/>
+    <xsl:if test="/xmi:XMI/IVOA_Profile:modelelement[@base_Element = $xmiid]">
+    <xsl:message>Found other utype</xsl:message>
+      <xsl:attribute name="otherutype" select="/xmi:XMI/IVOA_Profile:modelelement[@base_Element = $xmiid]/@utype"/>
     </xsl:if>
   </xsl:template>
   
