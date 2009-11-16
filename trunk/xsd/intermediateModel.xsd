@@ -27,7 +27,7 @@
         <xsd:element name="utype" type="xsd:string" minOccurs="0">
           <xsd:annotation>
             <xsd:documentation>
-              UTYPE of the object type. 
+              UTYPE of the element. 
               Utility element, could be obtained from data structure, but then the ObjectType UTYPE
               generation rule needs multiple locations of implementation.
               Now (in principle) only in utype.xsl.
@@ -44,6 +44,20 @@
       </xsd:documentation>
     </xsd:annotation>
   </xsd:attribute>
+        <xsd:attribute name="otherutype" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation>
+              Reference to an external UTYPE. 
+              Can be assigned to each model element.
+              Is meant to indicate that the concept represented by the element is 
+               . equivalent with
+               . imported from
+               . similar to
+               . ...
+              the concept represented by the referenced element in the external model.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
 </xsd:complexType>
 
 
