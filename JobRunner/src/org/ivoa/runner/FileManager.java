@@ -100,6 +100,7 @@ public final class FileManager extends LogSupport {
 	        	else
 	        		moveDir(file, new File(targetDir, file.getName()));
 	        }
+	  	  sourceDir.delete(); // delete after all contents have been moved.
 	  }
 	  else {} // TODO do something?
   }
@@ -132,6 +133,11 @@ public final class FileManager extends LogSupport {
     return getOrCreateFolder(getRunnerFolder() + File.separator + (user != null && user.trim().length() > 0?user+File.separator:"") +  sessionId);
   }
 
+  public static File getUserRunnerFolder(String user) {
+	    return getOrCreateFolder(getRunnerFolder() + File.separator + (user != null && user.trim().length() > 0?user+File.separator:""));
+	  }
+
+  
   public static File getArchiveUserFolder(String relativePath) {
 	    return getOrCreateFolder(ARCHIVE + relativePath);
 	  }  

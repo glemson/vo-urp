@@ -97,7 +97,8 @@ public class JobServlet extends BaseServlet implements JobListener {
     String view = null;
     try {
       if (ACTION_START_JOB.equals(action)) {
-        final String workDir = createWorkingDirectory(FileManager.getSessionFolder(session.getId(), user).getAbsolutePath().replace('\\', '/')) + "/";
+    	  String baseWorkDir = FileManager.getUserRunnerFolder(user).getAbsolutePath().replace('\\', '/');
+        final String workDir = createWorkingDirectory(baseWorkDir) + "/";
 
         // TBD next commented out, should be performed in initialisation of main job
         // final String[] command = prepareJobParameters(workDir, request);
@@ -212,6 +213,11 @@ public class JobServlet extends BaseServlet implements JobListener {
 
       FileManager.moveDir(sourceDir, targetDir);
       rootCtx.setRelativePath(relativePath);
+    } else if((rootCtx.getState() == RunState.STATE_KILLED) || (rootCtx.getState() == RunState.STATE_CANCELLED))
+    {
+    	File workingDir = new File(rootCtx.getWorkingDir());
+    	FileManager.deleteDirectoryFiles(workingDir);
+    	workingDir.delete();
     }
   }
 
@@ -249,6 +255,10 @@ public class JobServlet extends BaseServlet implements JobListener {
 //    	return baseWorkDir;
     long jobId = System.currentTimeMillis(); //java.util.UUID.randomUUID().toString();
     String workDir = baseWorkDir + "/" + getName() + "/" + jobId;
+
+    String jobUUID = java.util.UUID.randomUUID().toString();
+    workDir = baseWorkDir + "/" + jobUUID;
+    
     File dir = new File(workDir);
     if (!dir.exists()) {
       dir.mkdirs();
