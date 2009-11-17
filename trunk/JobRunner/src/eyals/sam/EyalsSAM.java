@@ -36,6 +36,7 @@ public class EyalsSAM extends JobServlet {
   /* members */
   private String paramtemplate;
   private List<String> freeParameters;
+  private String inputDir;
   private String treesDir;
   private String bc03Dir;
   private String executable;
@@ -125,6 +126,7 @@ public class EyalsSAM extends JobServlet {
     super.init(config);
     //File
     String file = FileManager.LEGACYAPPS + "/" + name + "/" + config.getInitParameter("parameterfile.template");
+    inputDir = FileManager.LEGACYAPPS + "/" + name + "/" ;
     executable = FileManager.LEGACYAPPS + "/" + name + "/" + config.getInitParameter("executable");
     treesDir = config.getInitParameter("treesDir");
     bc03Dir = config.getInitParameter("bc03Dir");
@@ -144,6 +146,7 @@ public class EyalsSAM extends JobServlet {
     paramtemplate = sb.toString();
     paramtemplate = paramtemplate.replaceAll(FIXED_PARAM_DELIMITER + "treesDir" + FIXED_PARAM_DELIMITER, treesDir);
     paramtemplate = paramtemplate.replaceAll(FIXED_PARAM_DELIMITER + "bc03Dir" + FIXED_PARAM_DELIMITER, bc03Dir);
+    paramtemplate = paramtemplate.replaceAll(FIXED_PARAM_DELIMITER + "inputDir" + FIXED_PARAM_DELIMITER, inputDir);
     int index1 = 0;
     freeParameters = new ArrayList<String>();
     while (true) {
