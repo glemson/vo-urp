@@ -59,6 +59,11 @@ img {
   vertical-align: middle;
 }
 
+
+td {
+	vertical-align:top;
+}
+
 tr.main {
 text-align: center;
 color: #564b47;
