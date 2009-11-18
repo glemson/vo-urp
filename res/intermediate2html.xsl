@@ -53,7 +53,7 @@
 <body>
 <div class="head">
 <a href="http://www.ivoa.net/"><img alt="IVOA" src="http://www.ivoa.net/pub/images/IVOA_wb_300.jpg" width="300" height="169"/></a>
-<h1>model: <xsl:value-of select="name"/><br/>
+<h1>model: <xsl:value-of select="title"/><br/>
 Version 0.x</h1>
 <h2>IVOA Theory Interest Group <br />Internal Draft <xsl:value-of select="$lastModifiedText"/> </h2>
 
@@ -123,6 +123,7 @@ For acknowledgments concerning the contents of the current model we refer the re
     <xsl:sort select="name"/>
   </xsl:apply-templates>
 </xsl:if>
+<li><a href="#utypes">Utypes</a></li>
 </ul>
 </div>
   <xsl:apply-templates select="." mode="section"/>
@@ -137,6 +138,7 @@ For acknowledgments concerning the contents of the current model we refer the re
     <xsl:sort select="name"/>
   </xsl:apply-templates>
 </xsl:if>  
+<xsl:apply-templates select="." mode="utypeslist"/>
 </body>    
 </html>
   </xsl:template>  
@@ -178,7 +180,8 @@ For acknowledgments concerning the contents of the current model we refer the re
 
   
   <xsl:template match="model" mode="section">
-  <h2><a name="model">Model: <xsl:value-of select="name"/></a></h2>
+  <xsl:variable name="xmiid" select="@xmiid"/>
+  <h2><a name="{$xmiid}"/><a name="model">Model: <xsl:value-of select="name"/></a></h2>
     <p><xsl:value-of select="description"/></p>
     <xsl:call-template name="graphviz"/>
     <xsl:apply-templates select="." mode="packages"/> 
@@ -207,10 +210,12 @@ For acknowledgments concerning the contents of the current model we refer the re
 
   
   <xsl:template match="package">
+  <xsl:variable name="utype" select="utype"/>
   <xsl:variable name="xmiid" select="@xmiid"/>
     <table border="1" cellspacing="2" width="100%">
       <tr>
         <td colspan="2" class="objecttype-name">
+          <a name="{$utype}"/> 
           <a name="{$xmiid}"><xsl:value-of select="name"/></a> 
           <xsl:if test="count(objectType|dataType|enumeration)>0">
           (<a><xsl:attribute name="href" select="concat('#',$xmiid,'_contents')"/>contents</a>)
@@ -373,6 +378,7 @@ For acknowledgments concerning the contents of the current model we refer the re
   
   
   <xsl:template match="objectType|dataType" >
+    <xsl:variable name="utype" select="utype"/>
     <xsl:variable name="xmiid" select="@xmiid"/>
     <xsl:variable name="title">
     <xsl:choose>
@@ -385,7 +391,7 @@ For acknowledgments concerning the contents of the current model we refer the re
       <tr>
         <td class="objecttype-title" width="20%"><xsl:value-of select="$title"/></td>
         <td class="objecttype-name">
-          <a name="{$xmiid}"><xsl:value-of select="name"/></a> [<xsl:value-of select="utype"/>]
+          <a name="{$utype}"/><a name="{$xmiid}"><xsl:value-of select="name"/></a> [<xsl:value-of select="utype"/>]
         </td>
       </tr>
     <tr>
@@ -550,13 +556,14 @@ For acknowledgments concerning the contents of the current model we refer the re
   
   
   <xsl:template match="enumeration">
+    <xsl:variable name="utype" select="utype"/>
     <xsl:variable name="xmiid" select="@xmiid"/>
     <div align="center">
     <table border="1" width="100%" cellspacing="2">
       <tr>
         <td class="objecttype-title" width="20%">Enumeration</td>
         <td class="objecttype-name">
-          <a name="{$xmiid}"><xsl:value-of select="name"/></a>
+          <a name="{$utype}"/><a name="{$xmiid}"><xsl:value-of select="name"/></a>[<xsl:value-of select="utype"/>]
         </td>
       </tr>
     <tr>
@@ -655,8 +662,17 @@ For acknowledgments concerning the contents of the current model we refer the re
     
 <!-- multiple rows per feature -->
   <xsl:template match="attribute|reference|collection" >
+  <xsl:variable name="utype">
+        <xsl:apply-templates select="." mode="utype">
+          <xsl:with-param name="prefix">
+            <xsl:value-of select="../utype"/>
+          </xsl:with-param>
+        </xsl:apply-templates>
+  </xsl:variable>
+  
     <tr>
         <td class="feature-detail" rowspan="4"><b>
+        <a><xsl:attribute name="name" select="$utype"/></a>
         <a><xsl:attribute name="name" select="@xmiid"/></a>
         <xsl:value-of select="name"/></b>
         <xsl:if test="subsets">
@@ -676,12 +692,7 @@ For acknowledgments concerning the contents of the current model we refer the re
      </tr>
      <tr>
         <td class="feature-heading">utype(s)</td>
-        <td class="feature-detail">
-        <xsl:apply-templates select="." mode="utype">
-          <xsl:with-param name="prefix">
-            <xsl:value-of select="../utype"/>
-          </xsl:with-param>
-        </xsl:apply-templates>
+        <td class="feature-detail"><xsl:value-of select="$utype"/>
         </td>
       </tr>
       <tr>
@@ -768,8 +779,39 @@ For acknowledgments concerning the contents of the current model we refer the re
 
 
 
+  <xsl:template match="model" mode="utypeslist">
+  <h1><a name="utypes">List of UTYPES</a></h1>
+  The following table contains all UTYPEs in the model with a description of the corresponding element and a link to their full description elsewhere in the document.
+  <table style="border-style:solid;border-width:1px;" border="1" cellspacing="0" cellpadding="0"> 
+  <tr><th>UTYPE</th><th>Description</th></tr>
+    <xsl:variable name="xmiid" select="@xmiid"/>
+  <tr><td><a href="#{$xmiid}"><xsl:value-of select="utype"/></a></td><td><xsl:value-of select="description"/></td></tr>  
+  <xsl:apply-templates select="package" mode="utypeslist">
+      <xsl:sort select="name"/>
+  </xsl:apply-templates>
+  </table>
+  </xsl:template>
 
 
+
+
+  <xsl:template match="package" mode="utypeslist">
+  <xsl:variable name="xmiid_package" select="@xmiid"/>
+  <tr><td><a href="#{$xmiid_package}"><xsl:value-of select="utype"/></a></td><td><xsl:value-of select="description"/></td></tr>  
+  <xsl:for-each select="objectType|dataType|enumeration">
+      <xsl:sort select="name"/>
+    <xsl:variable name="xmiid_class" select="@xmiid"/>
+      <tr><td><a href="#{$xmiid_class}"><xsl:value-of select="utype"/></a></td><td><xsl:value-of select="description"/></td></tr>  
+      <xsl:for-each select="attribute|reference|collection">
+          <xsl:sort select="name"/>
+        <xsl:variable name="xmiid" select="@xmiid"/>
+          <tr><td><a href="#{$xmiid}"><xsl:value-of select="utype"/></a></td><td><xsl:value-of select="description"/></td></tr>  
+      </xsl:for-each>
+  </xsl:for-each>
+    <xsl:apply-templates select="package" mode="utypeslist">
+      <xsl:sort select="name"/>
+    </xsl:apply-templates>
+  </xsl:template>
 
 
 
