@@ -34,8 +34,8 @@ import javax.xml.bind.annotation.XmlType;
     "_extends"
 })
 @XmlSeeAlso({
-    ObjectType.class,
-    ValueType.class
+    ValueType.class,
+    ObjectType.class
 })
 public abstract class Type
     extends Element

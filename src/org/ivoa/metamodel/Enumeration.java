@@ -3,7 +3,6 @@ package org.ivoa.metamodel;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -127,13 +126,13 @@ public class Enumeration
         /**
          * Sets the value of the value property.
          * 
-         * @param pValue
+         * @param value
          *     allowed object is
          *     {@link String }
          *     
          */
-        public void setValue(String pValue) {
-            this.value = pValue;
+        public void setValue(String value) {
+            this.value = value;
         }
 
         /**
@@ -151,13 +150,13 @@ public class Enumeration
         /**
          * Sets the value of the description property.
          * 
-         * @param pValue
+         * @param value
          *     allowed object is
          *     {@link String }
          *     
          */
-        public void setDescription(String pValue) {
-            this.description = pValue;
+        public void setDescription(String value) {
+            this.description = value;
         }
 
     }

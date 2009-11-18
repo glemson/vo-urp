@@ -4,7 +4,6 @@ package org.ivoa.metamodel;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -44,10 +43,10 @@ public class Constraints {
 
     @XmlElementRefs({
         @XmlElementRef(name = "maxLength", type = JAXBElement.class),
-        @XmlElementRef(name = "minLength", type = JAXBElement.class),
         @XmlElementRef(name = "uniqueInCollection", type = JAXBElement.class),
-        @XmlElementRef(name = "length", type = JAXBElement.class),
-        @XmlElementRef(name = "uniqueGlobally", type = JAXBElement.class)
+        @XmlElementRef(name = "uniqueGlobally", type = JAXBElement.class),
+        @XmlElementRef(name = "minLength", type = JAXBElement.class),
+        @XmlElementRef(name = "length", type = JAXBElement.class)
     })
     protected List<JAXBElement<? extends Serializable>> minLengthOrMaxLengthOrLength;
 

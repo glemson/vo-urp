@@ -40,8 +40,8 @@ import javax.xml.bind.annotation.XmlType;
     "subsets"
 })
 @XmlSeeAlso({
-    Reference.class,
-    Collection.class
+    Collection.class,
+    Reference.class
 })
 public abstract class Relation
     extends Element
