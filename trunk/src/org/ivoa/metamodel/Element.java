@@ -27,6 +27,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *         &lt;element name="utype" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *       &lt;attribute name="xmiid" type="{http://www.w3.org/2001/XMLSchema}ID" />
+ *       &lt;attribute name="otherutype" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -43,9 +44,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlSeeAlso({
     Profile.class,
     Package.class,
+    Type.class,
     Attribute.class,
     Relation.class,
-    Type.class,
     Model.class
 })
 public abstract class Element {
@@ -58,6 +59,8 @@ public abstract class Element {
     @XmlID
     @XmlSchemaType(name = "ID")
     protected String xmiid;
+    @XmlAttribute
+    protected String otherutype;
 
     /**
      * Gets the value of the name property.
@@ -153,6 +156,30 @@ public abstract class Element {
      */
     public void setXmiid(String value) {
         this.xmiid = value;
+    }
+
+    /**
+     * Gets the value of the otherutype property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getOtherutype() {
+        return otherutype;
+    }
+
+    /**
+     * Sets the value of the otherutype property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setOtherutype(String value) {
+        this.otherutype = value;
     }
 
 }

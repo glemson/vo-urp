@@ -25,121 +25,24 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _ConstraintsMaxLength_QNAME = new QName("", "maxLength");
-    private final static QName _ConstraintsUniqueGlobally_QNAME = new QName("", "uniqueGlobally");
-    private final static QName _ConstraintsUniqueInCollection_QNAME = new QName("", "uniqueInCollection");
     private final static QName _ConstraintsMinLength_QNAME = new QName("", "minLength");
+    private final static QName _ConstraintsUniqueGlobally_QNAME = new QName("", "uniqueGlobally");
     private final static QName _ConstraintsLength_QNAME = new QName("", "length");
+    private final static QName _ConstraintsUniqueInCollection_QNAME = new QName("", "uniqueInCollection");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: org.ivoa.metamodel
      * 
      */
     public ObjectFactory() {
-      /* no-op */
     }
 
     /**
-     * Create an instance of {@link Package }
+     * Create an instance of {@link Enumeration.Literal }
      * 
      */
-    public Package createPackage() {
-        return new Package();
-    }
-
-    /**
-     * Create an instance of {@link Constraints }
-     * 
-     */
-    public Constraints createConstraints() {
-        return new Constraints();
-    }
-
-    /**
-     * Create an instance of {@link Collection }
-     * 
-     */
-    public Collection createCollection() {
-        return new Collection();
-    }
-
-    /**
-     * Create an instance of {@link Reference }
-     * 
-     */
-    public Reference createReference() {
-        return new Reference();
-    }
-
-    /**
-     * Create an instance of {@link PackageReference }
-     * 
-     */
-    public PackageReference createPackageReference() {
-        return new PackageReference();
-    }
-
-    /**
-     * Create an instance of {@link Profile }
-     * 
-     */
-    public Profile createProfile() {
-        return new Profile();
-    }
-
-    /**
-     * Create an instance of {@link Model }
-     * 
-     */
-    public Model createModel() {
-        return new Model();
-    }
-
-    /**
-     * Create an instance of {@link TypeRef }
-     * 
-     */
-    public TypeRef createTypeRef() {
-        return new TypeRef();
-    }
-
-    /**
-     * Create an instance of {@link PrimitiveType }
-     * 
-     */
-    public PrimitiveType createPrimitiveType() {
-        return new PrimitiveType();
-    }
-
-    /**
-     * Create an instance of {@link DataType }
-     * 
-     */
-    public DataType createDataType() {
-        return new DataType();
-    }
-
-    /**
-     * Create an instance of {@link OntologyTerm }
-     * 
-     */
-    public OntologyTerm createOntologyTerm() {
-        return new OntologyTerm();
-    }
-
-    /**
-     * Create an instance of {@link ObjectType }
-     * 
-     */
-    public ObjectType createObjectType() {
-        return new ObjectType();
-    }
-
-    /**
-     * Create an instance of {@link Enumeration }
-     * 
-     */
-    public Enumeration createEnumeration() {
-        return new Enumeration();
+    public Enumeration.Literal createEnumerationLiteral() {
+        return new Enumeration.Literal();
     }
 
     /**
@@ -151,11 +54,107 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Enumeration.Literal }
+     * Create an instance of {@link Package }
      * 
      */
-    public Enumeration.Literal createEnumerationLiteral() {
-        return new Enumeration.Literal();
+    public Package createPackage() {
+        return new Package();
+    }
+
+    /**
+     * Create an instance of {@link PackageReference }
+     * 
+     */
+    public PackageReference createPackageReference() {
+        return new PackageReference();
+    }
+
+    /**
+     * Create an instance of {@link PrimitiveType }
+     * 
+     */
+    public PrimitiveType createPrimitiveType() {
+        return new PrimitiveType();
+    }
+
+    /**
+     * Create an instance of {@link Model }
+     * 
+     */
+    public Model createModel() {
+        return new Model();
+    }
+
+    /**
+     * Create an instance of {@link Collection }
+     * 
+     */
+    public Collection createCollection() {
+        return new Collection();
+    }
+
+    /**
+     * Create an instance of {@link DataType }
+     * 
+     */
+    public DataType createDataType() {
+        return new DataType();
+    }
+
+    /**
+     * Create an instance of {@link ObjectType }
+     * 
+     */
+    public ObjectType createObjectType() {
+        return new ObjectType();
+    }
+
+    /**
+     * Create an instance of {@link OntologyTerm }
+     * 
+     */
+    public OntologyTerm createOntologyTerm() {
+        return new OntologyTerm();
+    }
+
+    /**
+     * Create an instance of {@link Enumeration }
+     * 
+     */
+    public Enumeration createEnumeration() {
+        return new Enumeration();
+    }
+
+    /**
+     * Create an instance of {@link TypeRef }
+     * 
+     */
+    public TypeRef createTypeRef() {
+        return new TypeRef();
+    }
+
+    /**
+     * Create an instance of {@link Reference }
+     * 
+     */
+    public Reference createReference() {
+        return new Reference();
+    }
+
+    /**
+     * Create an instance of {@link Constraints }
+     * 
+     */
+    public Constraints createConstraints() {
+        return new Constraints();
+    }
+
+    /**
+     * Create an instance of {@link Profile }
+     * 
+     */
+    public Profile createProfile() {
+        return new Profile();
     }
 
     /**
@@ -168,24 +167,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Boolean }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "uniqueGlobally", scope = Constraints.class, defaultValue = "false")
-    public JAXBElement<Boolean> createConstraintsUniqueGlobally(Boolean value) {
-        return new JAXBElement<Boolean>(_ConstraintsUniqueGlobally_QNAME, Boolean.class, Constraints.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Boolean }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "", name = "uniqueInCollection", scope = Constraints.class, defaultValue = "false")
-    public JAXBElement<Boolean> createConstraintsUniqueInCollection(Boolean value) {
-        return new JAXBElement<Boolean>(_ConstraintsUniqueInCollection_QNAME, Boolean.class, Constraints.class, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link Integer }{@code >}}
      * 
      */
@@ -195,12 +176,30 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Boolean }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "uniqueGlobally", scope = Constraints.class, defaultValue = "false")
+    public JAXBElement<Boolean> createConstraintsUniqueGlobally(Boolean value) {
+        return new JAXBElement<Boolean>(_ConstraintsUniqueGlobally_QNAME, Boolean.class, Constraints.class, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link Integer }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "", name = "length", scope = Constraints.class)
     public JAXBElement<Integer> createConstraintsLength(Integer value) {
         return new JAXBElement<Integer>(_ConstraintsLength_QNAME, Integer.class, Constraints.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link Boolean }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "", name = "uniqueInCollection", scope = Constraints.class, defaultValue = "false")
+    public JAXBElement<Boolean> createConstraintsUniqueInCollection(Boolean value) {
+        return new JAXBElement<Boolean>(_ConstraintsUniqueInCollection_QNAME, Boolean.class, Constraints.class, value);
     }
 
 }
