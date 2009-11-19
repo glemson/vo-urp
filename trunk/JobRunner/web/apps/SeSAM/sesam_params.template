@@ -1,0 +1,49 @@
+% cosmology         
+h		        0.73
+omegaL                  0.75
+omegaM		        0.25
+omegaB		        0.045
+sigma8		        0.9
+gamma		        -1  
+% baryonic recipes 
+f_s       ___f_s_0___ ___f_s_1___ ___f_s_2___ ___f_s_3___ ___f_s_4___ ___f_s_5___
+f_d       ___f_d_0___ ___f_d_1___ ___f_d_2___ ___f_d_3___ ___f_d_4___ ___f_d_5___
+f_c       ___f_c_0___ ___f_c_1___ ___f_c_2___ ___f_c_3___ ___f_c_4___ ___f_c_5___
+f_e       ___f_e_0___ ___f_e_1___ ___f_e_2___ ___f_e_3___ ___f_e_4___ ___f_e_5___
+f_r       ___f_r_0___ ___f_r_1___ ___f_r_2___ ___f_r_3___ ___f_r_4___ ___f_r_5___
+f_ac       ___f_ac_0___ ___f_ac_1___ ___f_ac_2___
+f_ah       ___f_ah_0___ ___f_ah_1___ ___f_ah_2___
+ac_thres   ___ac_thres_0___ ___ac_thres_1___ ___ac_thres_2___ 
+mcrit_sf   ___mcrit_sf_0___ ___mcrit_sf_1___ ___mcrit_sf_2___ 
+halo_thresh  ___halo_thresh_0___ ___halo_thresh_1___
+alpha_c		        ___alpha_c___ 
+alpha_h			    ___alpha_h___
+hot2central             ___hot2central___
+negative_mass           ___negative_mass___
+merge_coeff		___merge_coeff_0___ ___merge_coeff_1___ ___merge_coeff_2___ 
+stam          ___stam_0___ ___stam_1___ ___stam_2___ ___stam_3___ 
+z_reion			___z_reion___ 
+dynf_t			___dynf_t_0___ ___dynf_t_1___ 
+dynf_r                  ___dynf_r___
+dynf_m                  ___dynf_m___
+burst_time		___burst_time_0___ ___burst_time_1___
+f_recycle		___f_recycle___
+recycle_mode            0  
+% run parameters 
+halo_type		0          
+first_file		0          
+last_file		7         
+volume_mpc		85.62  
+output_n		14         
+output_z		0 0.2 0.4 0.6 0.8 1.0 1.2 1.5 2.0 2.5 3.0 3.5 4.0  5.0          
+nsteps			20         
+run_mode		0
+%  BC03 directory         
+%%%bc03Dir%%%
+% Trees directory         
+%%%treesDir%%%
+% Output catalogs directory         
+%%%workingDir%%%  
+% Input data directory
+%%%inputDir%%%
+   
