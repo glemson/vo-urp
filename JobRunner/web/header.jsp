@@ -12,7 +12,7 @@
 <body>
 
 <div id="header">
-  <a name="topPage"></a><h1 class="banner">Job Runner</h1>
+  <a name="topPage"></a><h1 class="banner">Job Runner@GAVO</h1>
 </div>
 
 <div id="layout">

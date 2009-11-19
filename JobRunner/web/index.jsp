@@ -6,15 +6,24 @@
 <c:set var="noLink" scope="request" value="1" ></c:set>
 
 <jsp:include page="header.jsp" flush="false"/>
-
-<h3>Available applications</h3>
-
 <p>
-    <a href="./apps/EyalsSAM/input.jsp">Start a job running Eyals SAM</a>
+This web site gives access to the applications listed below.
+These applications can be run remotely and asynchronously in a common batch queue.
+The implementation is based on a version of Laurent Bourges' JobRunner, which can be found online in the
+<a href="http://code.google.com/p/vo-urp/" target="_blank">VO-URP</a> project in <a href="http://code.google.com/" target="_blank">GoogleCode</a>. 
+For descriptions of the individual applications click on the link to their pages.
+</p>
+<h3>    <a href="./apps/SeSAM/input.jsp">SeSAM</a></h3>
+<p>
+A semi-analytical galaxy formation code created by Eyal Neistein and Simone Weinmann.<br/>
+Ref: <a href="http://xxx.lanl.gov/abs/0911.3147" target="_blank">http://xxx.lanl.gov/abs/0911.3147</a>.
   </p>
+<!--  
+<h3>    <a href="./apps/EyalsSAM/input.jsp">SeSAM</a></h3>
+
 <p>
     <a href="./apps/Millimil/input.jsp">Query millimil</a>
   </p>
-
+-->
 
 <jsp:include page="footer.jsp" flush="false" />
