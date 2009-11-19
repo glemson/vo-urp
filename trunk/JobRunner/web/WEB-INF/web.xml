@@ -90,17 +90,16 @@
   </servlet>
 <!-- ========================================================== -->
   <!-- Applications -->
-<!-- ========================================================== -->
   <servlet>
-    <servlet-name>EyalsSAM</servlet-name>
-    <servlet-class>eyals.sam.EyalsSAM</servlet-class>
+    <servlet-name>SeSAM</servlet-name>
+    <servlet-class>org.gavo.sam.SeSAM</servlet-class>
     <init-param>
       <param-name>name</param-name>
-      <param-value>EyalsSAM</param-value>
+      <param-value>SeSAM</param-value>
     </init-param>
     <init-param>
       <param-name>executable</param-name>
-      <param-value>EyalsSAM.exe</param-value>
+      <param-value>SeSAM.exe</param-value>
     </init-param>
     <init-param>
       <param-name>parameterfile.template</param-name>
@@ -116,11 +115,33 @@
     </init-param>
     <init-param>
       <param-name>Rcmd</param-name>
-    	  <param-value>/usr/bin/Rscript</param-value>
+    	  <param-value>/usr/bin/Rscript --vanilla :SCRIPT:</param-value>
     </init-param>
     <init-param>
       <param-name>Rscript</param-name>
       <param-value>plot.r</param-value>
+    </init-param>
+    <load-on-startup>10</load-on-startup>
+  </servlet>
+
+  <servlet>
+    <servlet-name>Smac</servlet-name>
+    <servlet-class>dolag.Smac</servlet-class>
+    <init-param>
+      <param-name>name</param-name>
+      <param-value>Smac</param-value>
+    </init-param>
+    <init-param>
+      <param-name>executable</param-name>
+      <param-value>Smac.exe</param-value>
+    </init-param>
+    <init-param>
+      <param-name>parameterfile.template</param-name>
+      <param-value>parameterfile.template</param-value>
+    </init-param>
+    <init-param>
+      <param-name>rootDataDir</param-name>
+    	  <param-value>/Legacy/Data/dolag/</param-value>
     </init-param>
     <load-on-startup>10</load-on-startup>
   </servlet>
@@ -142,7 +163,7 @@
     </init-param>
     <init-param>
       <param-name>Rcmd</param-name>
-    	  <param-value>/usr/bin/Rscript</param-value>
+   	  <param-value>/usr/bin/Rscript --vanilla :SCRIPT:</param-value>
     </init-param>
     <init-param>
       <param-name>Rscript</param-name>
@@ -172,8 +193,8 @@
   </servlet-mapping>
 
   <servlet-mapping>
-    <servlet-name>EyalsSAM</servlet-name>
-    <url-pattern>/EyalsSAM.do</url-pattern>
+    <servlet-name>SeSAM</servlet-name>
+    <url-pattern>/SeSAM.do</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
