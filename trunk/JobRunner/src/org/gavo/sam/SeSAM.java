@@ -22,7 +22,7 @@ import org.ivoa.web.servlet.JobServlet;
 import org.ivoa.web.servlet.JobStateException;
 
 
-public class EyalsSAM extends JobServlet {
+public class SeSAM extends JobServlet {
 
   /** serial UID for Serializable interface */
   private static final long serialVersionUID = 1L;
