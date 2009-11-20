@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xmlns="http://java.sun.com/xml/ns/persistence"
+             version="1.0"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd">
+               
+  <!-- 
+    This file persistence.xml contains default properties for JPA (eclipselink provider).
+    These properties can be overriden at runtime 
+   -->
+  <persistence-unit name="@jpa.persistence.unit@" transaction-type="RESOURCE_LOCAL">
+    <description> 
+    This unit manages the persistence for the VO-URP model.
+    </description>
+    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <properties>
+      
+      <property name="eclipselink.target-server" value="None"/>
+      
+      <!-- ddl generation -->
+      <property name="eclipselink.application-location" value="."/>
+      
+      <!-- 
+        - none                    – do not generate DDL; no schema is generated.
+        - create-tables           – create DDL for non-existent tables; leave existing tables unchanged (see also eclipselink.create-ddl-jdbc-file-name).
+        - drop-and-create-tables  – create DDL for all tables; drop all existing tables (see also eclipselink.create-ddl-jdbc-file-name and eclipselink.drop-ddl-jdbc-file-name).
+                                    If you are using persistence in a Java SE environment and would like to create the DDL files without creating tables, 
+                                    additionally define a Java system property INTERACT_WITH_DB and set its value to false.       
+      -->
+      <property name="eclipselink.ddl-generation" value="none"/>
+      <property name="eclipselink.ddl-generation.output-mode" value="none"/>
+
+      <!-- weaving -->
+      <property name="persistence.tools.weaving" value="static"/> <!-- true or static -->
+      <property name="persistence.tools.weaving.lazy" value="true"/>
+      <property name="persistence.tools.weaving.changetracking" value="true"/>
+      <property name="persistence.tools.weaving.fetchgroups" value="true"/>
+
+      <!-- profiler -->
+      <!--
+      <property name="eclipselink.profiler" value="PerformanceProfiler"/>
+      -->
+      
+      <!-- jdbc options -->
+      <property name="eclipselink.jdbc.native-sql" value="true"/>
+
+      <property name="eclipselink.jdbc.cache-statements" value="true"/>
+      <property name="eclipselink.jdbc.cache-statements.size" value="100"/>
+
+      <property name="eclipselink.flush-clear.cache" value="DropInvalidate"/>
+
+      <!-- logging system generic properties -->
+      <property name="eclipselink.logging.timestamp" value="false"/>
+      <property name="eclipselink.logging.thread" value="true"/>
+      <property name="eclipselink.logging.session" value="true"/>
+      
+      <!-- debug : forces eclipselink to log exceptions before throwing them -->
+      <property name="eclipselink.logging.exceptions" value="false"/>
+
+      
+      <!-- custom SessionLog implementation to use apache commons logging 1.1 API (so log4J) -->
+      <property name="eclipselink.logging.logger" value="org.eclipse.persistence.logging.CommonsLoggingSessionLog"/>
+
+
+       <!-- cache : NONE, Full, HardWeak, SoftWeak, Weak : -->
+      <property name="eclipselink.cache.type.default" value="SoftWeak"/>
+      <property name="eclipselink.cache.size.default" value="5000"/>
+      <property name="eclipselink.cache.shared.default" value="true"/>
+
+       <!-- entity cache : NONE, Full, HardWeak, SoftWeak, Weak : -->
+    </properties>
+  </persistence-unit>
+</persistence>

@@ -1,0 +1,13 @@
+<Context path="/vo-urp.googlecode.com-browser" reloadable="true" 
+docBase="C:\workspaces\eclipse_vo-urp\vo-urp.googlecode.com-browser" 
+workDir="C:\workspaces\eclipse_vo-urp\vo-urp.googlecode.com-browser\work" >
+
+ <Realm className="org.apache.catalina.realm.JDBCRealm" debug="99"
+connectionName="vourpadmin" 
+connectionPassword="vourpadmin12345" 
+connectionURL="jdbc:sqlserver://localhost:1433;DatabaseName=VO_URP_Admin;SelectMethod=cursor" 
+driverName="com.microsoft.sqlserver.jdbc.SQLServerDriver" 
+userTable="users" userRoleTable="user_roles" userNameCol="username" userCredCol="password" roleNameCol="rolename" /> 
+ <Manager className="org.apache.catalina.session.PersistentManager" saveOnRestart="false"/>
+
+</Context>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<!--
+  Log4J configuration file for VO-URP Libraries
+-->
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+  
+  <!-- Appenders : begin -->
+  <!-- display -->
+  <appender name="display" class="org.apache.log4j.ConsoleAppender">
+    <param name="Threshold" value="debug"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d %p [%t] - %m%n"/>
+    </layout>
+  </appender>
+  
+  <!-- @log.file@ -->
+  <appender name="fileRoot" class="org.apache.log4j.RollingFileAppender">
+    <param name="File" value="@log.file@"/>
+    <param name="MaxFileSize" value="10000KB"/>
+    <param name="MaxBackupIndex" value="5"/>
+    <!-- both ImmediateFlush and BufferedIO must be consistent -->
+<!--    <param name="ImmediateFlush" value="false"/> -->
+    <param name="BufferedIO" value="true"/>
+    <param name="BufferSize" value="8192"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d %p [%t] - %m%n"/>
+    </layout>
+  </appender>
+  <!-- Appenders : end -->
+
+    
+  <!-- Loggers : begin -->
+  <logger name="org.ivoa">
+    <level value="warn"/>
+  </logger>
+
+  <logger name="org.ivoa.base">
+    <level value="warn"/>
+  </logger>
+
+  <logger name="org.ivoa.dev">
+    <level value="debug"/>
+  </logger>
+
+  <logger name="org.eclipse.persistence">
+    <level value="warn"/>
+  </logger>
+  <!-- Loggers : end -->
+
+  <!-- Root logger -->
+  <root>
+    <level value="warn"/>
+    <appender-ref ref="display" />
+    <appender-ref ref="fileRoot" />
+  </root>
+
+</log4j:configuration>

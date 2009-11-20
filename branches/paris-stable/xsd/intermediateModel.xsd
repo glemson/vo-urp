@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://ivoa.org/theory/datamodel/generationmetadata/v0.1"
+            targetNamespace="http://ivoa.org/theory/datamodel/generationmetadata/v0.1"  
+            attributeFormDefault="unqualified" elementFormDefault="unqualified">
+
+<xsd:annotation>
+  <xsd:documentation>
+  This schema aims to capture the UML profile we are using (implicitly so far).
+  Might be used as the schema for documents generated form the XMI in the first
+  step in the code generation pipeline.
+  Inspired by Laurent's .._FOR_GEN.xml file generated for use by Java code.
+  But such an intermediate representation of our models can be made much more
+  explicit than the XMI and therefore may allow easier XSLT scripts for generating 
+  the final products. 
+  Note, I have strayed from Laurent's use of &lt;bean&gt; and other java-like names. 
+  I am also using names for referring to (packages.)types defined in the document 
+  iso ID/IDREF or key/keyref constructs. I am asusming a validator will have 
+  ensured that the types exist etc.
+  </xsd:documentation>
+</xsd:annotation>
+
+<xsd:complexType name="Element" abstract="true">
+  <xsd:sequence>
+    <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+    <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+        <xsd:element name="utype" type="xsd:string" minOccurs="0">
+          <xsd:annotation>
+            <xsd:documentation>
+              UTYPE of the element. 
+              Utility element, could be obtained from data structure, but then the ObjectType UTYPE
+              generation rule needs multiple locations of implementation.
+              Now (in principle) only in utype.xsl.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+  </xsd:sequence>
+  <xsd:attribute name="xmiid" type="xsd:ID">
+    <xsd:annotation>
+      <xsd:documentation>
+      This is the xmi:id of the corresponding element in the source XMI representation.
+      It is used in xmiidref attributes in TypeRef and attributes to provide an explicit
+      lokup functionalirt when we need it and to link back to the original XMI document.
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:attribute>
+        <xsd:attribute name="otherutype" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation>
+              Reference to an external UTYPE. 
+              Can be assigned to each model element.
+              Is meant to indicate that the concept represented by the element is 
+               . equivalent with
+               . imported from
+               . similar to
+               . ...
+              the concept represented by the referenced element in the external model.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+</xsd:complexType>
+
+
+
+
+<xsd:element name="model">
+  <!-- patch so JAXB understands that this element is an XmlRootElement -->
+<xsd:complexType>
+  <xsd:complexContent>
+    <xsd:extension base="Element">
+      <xsd:sequence>
+        <xsd:element name="lastModifiedDate" type="xsd:long"/>
+        <xsd:element name="author" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="title" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        <xsd:element name="profile" type="Profile" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="package" type="Package" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+</xsd:element>
+
+
+
+
+
+<xsd:complexType name="Profile">
+  <xsd:complexContent>
+    <xsd:extension base="Element">
+      <xsd:sequence>
+        <xsd:element name="package" type="Package" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+
+
+
+<xsd:complexType name="Package">
+  <xsd:complexContent>
+    <xsd:extension base="Element">
+      <xsd:sequence>
+        <xsd:element name="depends" type="PackageReference" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="objectType" type="ObjectType" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="dataType" type="DataType" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="enumeration" type="Enumeration" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="primitiveType" type="PrimitiveType" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="package" type="Package" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+
+<xsd:complexType name="PackageReference">
+  <xsd:sequence>
+    <xsd:element name="description" type="xsd:string" minOccurs="0">
+      <xsd:annotation>
+        <xsd:documentation>
+          Describes the dependency relation, if any.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:element>
+  </xsd:sequence>
+  <xsd:attribute name="xmiidref" type="xsd:IDREF"/>
+</xsd:complexType>
+
+<xsd:complexType name="Type" abstract="true">
+  <xsd:complexContent>
+    <xsd:extension base="Element">
+      <xsd:sequence>
+        <xsd:element name="extends" type="TypeRef" minOccurs="0"/>
+      </xsd:sequence>
+      <xsd:attribute name="abstract" type="xsd:boolean" default="false" use="optional"/>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+
+
+
+<xsd:complexType name="TypeRef">
+  <xsd:sequence>
+    <xsd:element name="utype" type="xsd:string" minOccurs="0"/>
+  </xsd:sequence>
+  <xsd:attribute name="name" type="xsd:string"/>
+  <xsd:attribute name="xmiidref" type="xsd:IDREF"/>
+  <xsd:attribute name="relation" type="xsd:string" use="optional"/>
+</xsd:complexType>
+
+
+
+<xsd:complexType name="ObjectType">
+  <xsd:complexContent>
+    <xsd:extension base="Type">
+      <xsd:sequence>
+        <xsd:element name="container" type="TypeRef" minOccurs="0" maxOccurs="1">
+          <xsd:annotation>
+            <xsd:documentation>
+              Pointer to the xmiid of the type containing this type directly.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="referrer" type="TypeRef" minOccurs="0" maxOccurs="unbounded">
+          <xsd:annotation>
+            <xsd:documentation>
+              Pointer to the xmiid of a type referring to this type directly.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        <xsd:element name="attribute" type="Attribute" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="collection" type="Collection" minOccurs="0" maxOccurs="unbounded"/>
+        <xsd:element name="reference" type="Reference" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+      <xsd:attribute name="entity" type="xsd:boolean" default="false"/>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+
+
+
+<xsd:complexType name="ValueType" abstract="true">
+  <xsd:complexContent>
+    <xsd:extension base="Type">
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+
+
+<xsd:complexType name="PrimitiveType">
+  <xsd:complexContent>
+    <xsd:extension base="ValueType">
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+
+
+
+
+<xsd:complexType name="DataType">
+  <xsd:complexContent>
+    <xsd:extension base="ValueType">
+      <xsd:sequence>
+        <xsd:element name="attribute" type="Attribute" minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+
+ <xsd:complexType name="Enumeration">
+  <xsd:complexContent>
+    <xsd:extension base="ValueType">
+      <xsd:sequence>
+        <xsd:element name="literal" maxOccurs="unbounded">
+          <xsd:complexType>
+            <xsd:sequence>
+              <xsd:element name="value" type="xsd:string"/>
+              <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+            </xsd:sequence>
+          </xsd:complexType>
+        </xsd:element>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+
+<xsd:complexType name="Attribute">
+  <xsd:complexContent>
+    <xsd:extension base="Element">
+      <xsd:sequence>
+        <xsd:element name="datatype" type="TypeRef"/>
+        <xsd:element name="multiplicity" type="Multiplicity"/>
+        <!-- should next be on TypeReference? the constraints restrict the type after all. -->
+        <xsd:element name="constraints" type="Constraints" minOccurs="0"/>
+        <xsd:element name="ontologyterm" type="OntologyTerm" minOccurs="0"/>
+      </xsd:sequence>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+
+
+
+<xsd:complexType name="OntologyTerm">
+  <xsd:sequence>
+    <xsd:element name="ontologyURI" type="xsd:anyURI"/>
+  </xsd:sequence>
+</xsd:complexType>
+
+
+
+<xsd:complexType name="Relation" abstract="true">
+  <xsd:complexContent>
+    <xsd:extension base="Element">
+      <xsd:sequence>
+        <xsd:element name="datatype" type="TypeRef"/>
+        <xsd:element name="multiplicity" type="Multiplicity"/>
+        <xsd:element name="subsets" type="xsd:string" minOccurs="0"/>
+      </xsd:sequence>
+      <xsd:attribute name="xmiidref" type="xsd:IDREF"/>
+    </xsd:extension>
+  </xsd:complexContent>
+</xsd:complexType>
+
+<xsd:complexType name="Reference">
+  <xsd:complexContent>
+    <xsd:extension base="Relation"/>
+  </xsd:complexContent>
+</xsd:complexType>
+
+<xsd:complexType name="Collection">
+  <xsd:complexContent>
+    <xsd:extension base="Relation"/>
+  </xsd:complexContent>
+</xsd:complexType>
+
+
+
+<xsd:simpleType name="Multiplicity">
+  <xsd:restriction base="xsd:string">
+    <xsd:enumeration value="1"/>
+    <xsd:enumeration value="0..1"/>
+    <xsd:enumeration value="0..*"/>
+    <xsd:enumeration value="1..*"/>
+  </xsd:restriction>
+</xsd:simpleType>
+
+<xsd:complexType name="Constraints">
+  <xsd:choice minOccurs="0" maxOccurs="unbounded">
+    <xsd:element name="minLength" type="xsd:int"/>
+    <xsd:element name="maxLength" type="xsd:int"/>
+    <xsd:element name="length" type="xsd:int"/>
+    <xsd:element name="uniqueGlobally" type="xsd:boolean" default="false">
+      <xsd:annotation>
+        <xsd:documentation>
+        Indicates that the attribute is part of a global uniqueness constraint, 
+        the name of which is given by the value of the constraint.
+        This name allows multiple attributes to be part of the same constraint.
+        TBD We may want to insist that attributes with a uniqeness constraints must be non-null. 
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="uniqueInCollection" type="xsd:boolean" default="false">
+      <xsd:annotation>
+        <xsd:documentation>
+        Indicates that the attribute is part of a uniqueness constraint that pertains to the context of the collection
+        the object is in only. The name of the constraint is given by the value of the uniqueInCollection element.
+        This name allows multiple attributes to be part of the same constraint.
+        TBD We may want to insist that attributes with a uniqeness constraints must be non-null. 
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:element>
+  </xsd:choice>
+</xsd:complexType>
+
+
+
+</xsd:schema>

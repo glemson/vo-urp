@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:vo-urp="http://vo-urp.googlecode.com/"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/dal"
+            xmlns:base="http://www.ivoa.net/xml/dm/base/v0.1"
+            xmlns:p4="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
+            xmlns:p3="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/experiment"
+            xmlns:p6="http://www.ivoa.net/xml/SimDB/0.7-20090417/basic"
+            targetNamespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/dal">
+   <xsd:annotation>
+      <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
+   </xsd:annotation>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/experiment"
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/experiment.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/basic"
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/basic.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/base.xsd"/>
+   <xsd:complexType name="WebService">
+      <xsd:annotation>
+         <xsd:documentation>This class represents a web service that can be used to access resources.
+The precise way this is done is not specified in detail. 
+This may be more general than simply giving access to results of a single experiment. It may be a web service that can handle results of any experiment performed by a particular Protocol, or give access to all resources in a Project.
+
+The web service is represented by a base URL and a service type. The type may be a standard to be developed by the SimDAP specification, or a simple custom service. In the latter case the base URL should point to a web page that presents further details.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_1_8e0028f_1178634214328_979805_732</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="p4:Resource">
+            <xsd:sequence>
+               <xsd:element name="baseURL" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:documentation>The base URL of this web service.
+In case the web service has a special, SimDAP type, parameters may be added to this according to the relevant specification, to apply the web service directly to a given snapshot.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_1_8e0028f_1178636158875_594641_863</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="type" type="ServiceType">
+                  <xsd:annotation>
+                     <xsd:documentation>The type of web service. The possible values are currently defined by an enumeration. The literals there should be matched to the SimDAP specification.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_1_8e0028f_1178636173218_487987_865</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="registryId" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>The id by which this service is registered in an IVOA Resource Registry</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1224855067250_956488_697</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="resource" type="AccessibleResource" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="AccessibleResource">
+      <xsd:annotation>
+         <xsd:documentation>Class representing an association between the containing WebService and the Resources that are being made accessible by it.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1224854880765_748997_568</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="description" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Description of how the resource is made available by the web service.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1240400082078_785740_1077</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="resource" type="base:Reference">
+                  <xsd:annotation>
+                     <xsd:documentation>Indicates the Resource that the AccessibleResource class associates to the WebService</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1240400012437_227403_1070</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:simpleType name="ServiceType">
+      <xsd:annotation>
+         <xsd:documentation>This enumeration indicates a list of possible service types that can be applied to snapshots of a given simulation. The contents of this enumeration will be decided evenatually by a SimDAP protocol specification, though 'custom' is always available and not specified in SimDAP.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_1_8e0028f_1178636199937_418371_870</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="download">
+            <xsd:annotation>
+               <xsd:documentation>Represents a service that allows one to download a snapshot.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="cutout">
+            <xsd:annotation>
+               <xsd:documentation>Represents a SimDAP service that defines a cut-out operation on an existing snapshot.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="gridding">
+            <xsd:annotation>
+               <xsd:documentation>Represents a SimDAP service that defines a (re)gridding operation on an existing snapshot.
+NB This may be have to be renamed depending on SimDAP standard.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="clusterfinder">
+            <xsd:annotation>
+               <xsd:documentation>Represents a SimDAP service that defines a cluster-finder operation on an existing snapshot, supposedly of an N-body simulation.
+NB This may be have to be renamed depending on SimDAP standard.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="visualisation">
+            <xsd:annotation>
+               <xsd:documentation>Represents a SimDAP service that defines a visualisation operation on an existing snapshot, producing a 2 dimensional grid.
+NB This may be have to be renamed depending on SimDAP standard.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="custom">
+            <xsd:annotation>
+               <xsd:documentation>Thie represents a general, unspecified online operation on a simulation. It may be of any kind, no restriction on interface.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+      </xsd:restriction>
+   </xsd:simpleType>
+
+</xsd:schema>

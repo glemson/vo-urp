@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!DOCTYPE rdf:RDF [<!ENTITY xsd "http://www.w3.org/2001/XMLSchema#">]>
+<rdf:RDF   
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"  
+  xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+  xml:base="http://ivoa.org/dm/profile/rdfs">
+
+<rdf:Description rdf:ID="Element">
+  <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+</rdf:Description>
+
+<rdf:Description rdf:ID="Model">
+  <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  <rdfs:subClassOf rdf:resource="#Element"/>
+</rdf:Description>
+
+<rdf:Description rdf:ID="Package">
+  <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  <rdfs:subClassOf rdf:resource="#Element"/>
+</rdf:Description>
+
+<rdf:Description rdf:ID="Type">
+  <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  <rdfs:subClassOf rdf:resource="#Element"/>
+</rdf:Description>
+
+<rdf:Description rdf:ID="ObjectType">
+  <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  <rdfs:subClassOf rdf:resource="#Type"/>
+</rdf:Description>
+
+
+<rdf:Description rdf:ID="ValueType">
+  <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  <rdfs:subClassOf rdf:resource="#Type"/>
+</rdf:Description>
+
+
+<rdf:Description rdf:ID="PrimitiveType">
+  <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#DataType"/>
+  <rdfs:subClassOf rdf:resource="#ValueType"/>
+</rdf:Description>
+
+<rdf:Description rdf:ID="DataType">
+  <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  <rdfs:subClassOf rdf:resource="#ValueType"/>
+</rdf:Description>
+
+
+<rdf:Description rdf:ID="Enumeration">
+  <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  <rdfs:subClassOf rdf:resource="#ValueType"/>
+</rdf:Description>
+
+
+
+
+<rdf:Description rdf:ID="Relation">
+  <rdf:type rdf:resource="http://www.w3.org/2000/01/rdf-schema#Class"/>
+  <rdfs:subClassOf rdf:resource="#Element"/>
+</rdf:Description>
+
+</rdf:RDF>

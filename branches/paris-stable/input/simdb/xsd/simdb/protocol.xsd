@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:vo-urp="http://vo-urp.googlecode.com/"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/protocol"
+            xmlns:base="http://www.ivoa.net/xml/dm/base/v0.1"
+            xmlns:p4="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
+            xmlns:p7="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/object"
+            xmlns:p6="http://www.ivoa.net/xml/SimDB/0.7-20090417/basic"
+            targetNamespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/protocol">
+   <xsd:annotation>
+      <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
+   </xsd:annotation>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb/object"
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/simdb/object.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/basic"
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/basic.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/base.xsd"/>
+   <xsd:complexType name="Physics">
+      <xsd:annotation>
+         <xsd:documentation>This class represents physical processes that are taken into account by a simulation. These may correspond to equations of motion evolving the simulated system from one state to the next, but also specifications of parameters describing initial conditions belong her.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1173262198953_752563_1200</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="name" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:documentation>Name by which this physical process is referred to in the simulator code</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1173262215531_643752_1272</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="description" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Short description of the physical process represented by this class.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_2_213004e4_1193921243734_520148_273</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="texForm" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>If applicable, a more formal, TeX form of the evolution equation(s) used to represent this physical process.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_2_213004e4_1193922773984_89085_397</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="physicslabel" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>The name by which this process is (approximately) known in the IVOA ontology of physical processes.
+Ex: gravity, hydrodynamics, cosmology
+
+The name by which this process is (approximately) known in the list of subject keywords of the Astrophysical Journal, MNRAS and A&amp;A</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_2_213004e4_1207378230750_422787_1797</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="Simulator">
+      <xsd:annotation>
+         <xsd:documentation>This class represents the simulation software that is available to run a simulation.
+We do not prescribe this model in great detail here [TBD should we?]. We only add the collection of physical processes that are available.
+
+TODO one might argue we need a separate collection of numerical algorithms that implement the physical processes.
+
+</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1173260371343_174540_519</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="Protocol">
+            <xsd:sequence>
+               <xsd:element name="physicalProcess" type="Physics" maxOccurs="unbounded"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="Protocol" abstract="true">
+      <xsd:annotation>
+         <xsd:documentation>The base class of all protocols producing snapshots. These objects define how SimDB experiments can be performed, like a blue-print, template. For simulations the protocol will be the simulation code, here represented by Simulator. In the analysis model this class is more fully defined, but for the logical model for discovering SimDB experiments much of its components are moved to the Experiment itself</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1175789188406_755001_115</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="p4:Resource">
+            <xsd:sequence>
+               <xsd:element name="code" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:documentation>link where the code can be downloaded, if available
+
+web page where documentation of this simulator can be obtained</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_14_0_8e0028f_1202819920515_152058_1851</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="version" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:documentation>the version of the simulator code that was used</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_14_0_8e0028f_1202819929968_569605_1854</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="parameterGroup" type="ParameterGroup" minOccurs="0" maxOccurs="unbounded"/>
+               <xsd:element name="representation" type="RepresentationObjectType" minOccurs="0"
+                            maxOccurs="unbounded"/>
+               <xsd:element name="parameter" type="InputParameter" minOccurs="0" maxOccurs="unbounded"/>
+               <xsd:element name="algorithm" type="Algorithm" minOccurs="0" maxOccurs="unbounded"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="PostProcessor">
+      <xsd:annotation>
+         <xsd:documentation>This concrete subclass of Protocol represents protocols that deal with post-processing results of earlier experiments. We do not specify this much further in this version of the model.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_14_0_8e0028f_1202820488812_969868_2587</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="Protocol"/>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="ParameterGroup">
+      <xsd:annotation>
+         <xsd:documentation>Represents a (natural) grouping of input parameters.
+Especially in protocols with large numbers of parameters it may be useful to group these
+for browsing purposes for example. As browsing is likely an important mode of access to  SimDB resources this possibility was introduced.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_14_0_8e0028f_1202835054703_251049_3232</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="description" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Short description of the purpose of this group.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_14_0_8e0028f_1202835092843_646857_3306</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="name" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:documentation>Name given to this group.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_14_0_8e0028f_1202835086000_997902_3304</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="member" type="ParameterGroupMember" maxOccurs="unbounded"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="ParameterGroupMember">
+      <xsd:annotation>
+         <xsd:documentation>Associative class, representing a selection of a parameter in a parameter grouping.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_14_0_8e0028f_1202835113906_103077_3309</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="parameter" type="base:Reference">
+                  <xsd:annotation>
+                     <xsd:documentation>Reference to the selected input parameter.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1213803600953_419155_306</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="RepresentationObjectType">
+      <xsd:annotation>
+         <xsd:documentation>This class represents the smallest units from which a target system/object is built. It defines also the actual objects that the Snapshot-s contain. Examples are the particles in an N-body simulation, the cells in an adaptive mesh simulations, the halos in the result of a group finder</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1173260105000_913974_289</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="p7:ObjectType">
+            <xsd:sequence>
+               <xsd:element name="type" type="RepresentationObject">
+                  <xsd:annotation>
+                     <xsd:documentation>Indicates the type of representation object according to the enumeration defined in this model.
+
+TODO we need to decide whether we need this label to be an ontology term instead of getting values form an enumeraiton.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1173262133968_599567_1197</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="label" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Name that this type of particle is given in an appropriate ontology (or dictionary, or standard vocabulary, or ...).
+For now we use the </xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_1_8e0028f_1178788974093_492177_289</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="InputParameter">
+      <xsd:annotation>
+         <xsd:documentation>This class represent a parameter setting for a SimDB experiment. The parameter can be used in describing the physics (for example mass of a particle), in the initial conditions (for example cosmology), in the numerical implementation (for example mesh size)</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1213803387328_904148_265</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="p7:Field">
+            <xsd:sequence>
+               <xsd:element name="label" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>A label to be given to this input parameter.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1213803555937_756421_288</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="Algorithm">
+      <xsd:annotation>
+         <xsd:documentation>Represents the numerical algorithm representing a physical process in the simulator code</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1175674070859_180053_115</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="name" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:documentation>The name given to this algorithm.
+</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_2_213004e4_1193921189468_176786_271</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="description" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Short description of this algorithm.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_2_213004e4_1193921153031_543879_268</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="label" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Short name by which this implementation is known in the ontology of numerical implementations. 
+Ex: n-body, tree, amr, ...
+</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1175674349265_448235_342</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:simpleType name="RepresentationObject">
+      <xsd:annotation>
+         <xsd:documentation>Represents a standard name for the objects that can be used to represent a snapshot of the universe in SimDB data products. Examples from simulations are n-body particle, SPH particle, mesh cell. But also simplified representations of astronomical objects could be used here, for example in halo catalogues or semi-analytical galaxy catalogues, both results of post-processing experiments
+
+NB This should be transferred to an appropriate external ontology!</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1175855145890_581998_136</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="point particle">
+            <xsd:annotation>
+               <xsd:documentation>Represents the case where point particles are used to represent the simulated world.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="SPH particle">
+            <xsd:annotation>
+               <xsd:documentation>Represents the case where extended particles with hydro properties are used to represent the simulated world in an SPH simulation.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="extended particle">
+            <xsd:annotation>
+               <xsd:documentation>Represents the case whereextended particles are used to represent the simulated world.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="simple mesh cell">
+            <xsd:annotation>
+               <xsd:documentation>Represents the case where simple, non-structured/subdivided mesh cells are used to represent the simulated world in a regular grid.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="hierarchical mesh cell">
+            <xsd:annotation>
+               <xsd:documentation>Represents the case where mesh cells taht may be hierarchically subdivided are used to represent the simulated world in an adaptive mesh refinemenet simulation.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="model astro object">
+            <xsd:annotation>
+               <xsd:documentation>Represents the case where mock astronomical objects with their "physical" properties are used to represent the simulated world. Mainly found in results of post-processing. Examples are dark matter halos as the result of a cluster finder, synthetic galaxies as the result of semi-analytical simulations or halo occupation distributions algorithms.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="custom">
+            <xsd:annotation>
+               <xsd:documentation>Represents the case wherecustom objects, for which there is no existing term available in this enumeration, are used to represent the simulated world.
+</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+      </xsd:restriction>
+   </xsd:simpleType>
+
+</xsd:schema>

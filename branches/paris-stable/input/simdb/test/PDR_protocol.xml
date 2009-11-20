@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : PDR_protocol.xml
+    Created on : 25 avril 2008, 18:00
+    Author     : franck
+    Description:
+        This document is the first xml sample document for Protocol according to SimDB generated XML schemas (xsd).
+-->
+<s:aSimulator xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+              xmlns:s='http://www.ivoa.net/xml/SimDB/0.7-20090417'>
+                       
+  <identity publisherDID="voparis/luth/Pdr/1.0"/>
+
+  <name>PDR Code 1.2</name>
+  <description>The Meudon PDR code 1.2 includes the radiative transfer method described by Gonzalez-Garcia et al. A and A 2007 </description>
+
+  <referenceURL>http://aristote.obspm.fr/MIS</referenceURL>
+
+
+  <created>2008-04-25T12:00:00</created>
+  <updated>2008-04-25T12:00:00</updated>
+
+  <status>published</status>
+ 
+ <!--
+  <contact>
+    <role>publisher</role>
+    <party>
+      <ivoId>ivo://voparis/luth</ivoId>
+    </party>
+  </contact>
+ 
+ <contact>
+    <role>contributor</role>
+    <party>
+      <ivoId>ivo://voparis/luth/Jacques_Le_Bourlot</ivoId>
+    </party>
+  </contact>
+
+  <contact>
+    <role>contributor</role>
+    <party>
+      <ivoId>ivo://voparis/luth/Evelyne_Roueff</ivoId>
+    </party>
+  </contact>
+ -->
+ 
+ <contact>
+    <name>Franck LePetit</name>
+    <role>creator</role>
+  </contact>
+ 
+
+  <code>http://aristote.obspm.fr/MIS</code>
+  <version>1.2</version>
+    
+    
+  <!-- generated content : begin -->
+  
+  
+  <parameterGroup>
+    <name>gas parameters</name>
+<!--     <description>Parameters controling gas properties</description>
+ -->
+    <member>
+      <parameter xmlId="DU_MODPARAM_R.FD_NHINIT" />
+    </member>
+    <member>
+      <parameter xmlId="DU_MODPARAM_R.FD_RADM_INI" />
+    </member>
+<!--    <member>
+      <parameter xmlId="DU_MODPARAM_R.FD_RADP_INI" />
+    </member>
+    -->
+  </parameterGroup>
+
+<!-- to be corrected -->
+  <parameterGroup>
+    <name>grain parameters</name>
+<!--     <description>Parameters controling grain properties</description>
+ -->
+    <member>
+      <parameter xmlId="DU_MODPARAM_R.FD_CD" />
+    </member>
+    <member>
+      <parameter xmlId="DU_MODPARAM_R.FD_RV" />
+    </member>
+    <member>
+      <parameter xmlId="DU_MODPARAM_R.FD_LOSNAME" />
+    </member>
+  </parameterGroup>
+
+  <parameterGroup>
+    <name>algorithm parameters</name>
+<!--     <description>Parameters related to algorithms</description>  -->
+    <member>
+      <parameter xmlId="DU_MODPARAM_R.FD_ITFER" />
+    </member>
+    <member>
+      <parameter xmlId="DU_MODPARAM_R.FD_JFGKH2" />
+    </member>
+  </parameterGroup>
+
+    
+<!-- 
+  RepresentationObjectTypes are :
+    GAS -> has for properties: density, temperature, pressure, ionization degree, molecular fraction, heating rate, cooling rate, ... 
+       H -> has for property: density, column density
+       H2 -> has for property: density, excitation temperature, column density
+          level 1 -> has for property density
+          level 2 -> has for property density
+          level 3
+          ... (about 300 levels depends on experiment)
+       C+ -> has for property: density, column density
+          level 1
+          level 2
+          ... (Maximum 5 levels - depends on experiment)
+       C -> has for properties: density, column density
+       CO -> has for properties: density, column density
+       ... (between 100 and 400 species - depends on experiment/project) 
+    GRAINS
+       Size 1 -> has for properties: charge, temperature
+       Size 2
+       Size 3
+       ... (about 12 sizes - depends on experiment/project)
+-->
+
+
+<!-- RepresentationObject GAS -->
+
+	<!-- Should be done automatically 
+	The list can be done scanning the VO-Table produced by the code
+	Should search in the list for DU_ABUNDANCES.FD_AB_XXXXX
+	where XXXXX is the name of chemical species.
+	-->
+
+  <representation>
+    <identity xmlId="R_GAS" />
+    <name>gas</name>
+    <description>TODO</description>
+    <child>
+      <name>H</name>
+      <object xmlId="R_H"/>
+		<!-- description ????? -->
+		<!-- label ???? -->
+    </child>
+    <child>
+      <name>H2</name>
+      <object xmlId="R_H2" />
+    </child>
+    <child>
+      <name>C+</name>
+      <object xmlId="R_Cp" />
+    </child>
+    <type>simple mesh cell</type>
+    <label>ISM</label>
+  </representation>
+  
+  <representation>
+    <identity xmlId="R_H" />
+    <name>H</name>
+    <type>simple mesh cell</type>
+  </representation>
+  
+  <representation>
+    <identity xmlId="R_H2" />
+    <name>H2</name>
+    <child>
+      <name>H2 Level 1</name>
+      <object xmlId="R_H2_Level_1" />
+    </child>
+    <child>
+      <name>H2 Level 2</name>
+      <object xmlId="R_H2_Level_2" />
+    </child>
+    <type>simple mesh cell</type>
+  </representation>
+
+  <!-- 
+  Should be done automatically 
+	All species do not have levels in an experiment 
+	All species do not have the same number of levels 
+	Species with levels in an experiment can be found in the VO-Table 
+	They have a Table: ID="DU_LEVELPROP_XXX"    nrows="VALUE" 
+	     with:    XXX: name of the specy
+	             value: number of levels for this specy 
+	
+	NOTE: The notation "Level 1", "Level 2", "Level 3" means nothing for a user and is 
+	dangerous because level YY could be different from an experiment to another.
+	One should find a way to create the name automatically. The informations are in the VO-Table also.
+	But that could be better to do a correspondance table once and for all next to the Database. 
+	One should have a look to the Line DataModel too. Maybe we can do something similar
+	-->
+
+  <representation>
+    <identity xmlId="R_H2_Level_1" />
+    <name>H2 Level 1</name>
+    <type>simple mesh cell</type>
+  </representation>
+  
+  <representation>
+    <identity xmlId="R_H2_Level_2" />
+    <name>H2 Level 2</name>
+    <type>simple mesh cell</type>
+  </representation>
+
+  <representation>
+    <identity xmlId="R_Cp" />
+    <name>C+</name>
+    <type>simple mesh cell</type>
+  </representation>
+
+
+<!-- RepresentationObject GRAINS -->
+  <representation>
+    <identity xmlId="R_GRAIN" />
+    <name>grains</name>
+    <child>
+      <name>Size 1</name>
+      <object xmlId="R_GR_1" />
+    </child>
+    <child>
+      <name>Size 2</name>
+      <object xmlId="R_GR_2" />
+    </child>
+    <child>
+      <name>Size 3</name>
+      <object xmlId="R_GR_3" />
+    </child>
+	<!-- Should be done automatically 
+	The number of sizes is provided in the VO-Table in several ways
+	Way 1 - Correspond to nrows in ID="DU_GAUSSPT"   nrows="12"
+	Maybe not a good way since this may disappear in the future versions of the code. 
+	Lets do it this way for the moment.
+	-->
+    <type>simple mesh cell</type>
+  </representation>
+
+  <representation>
+    <identity xmlId="R_GR_1" />
+    <name>grains size 1 ...</name>
+    <type>simple mesh cell</type>
+  </representation>
+
+  <representation>
+    <identity xmlId="R_GR_2" />
+    <name>grains size 2 ...</name>
+    <type>simple mesh cell</type>
+  </representation>
+
+  <representation>
+    <identity xmlId="R_GR_3" />
+    <name>grains size 3 ...</name>
+    <type>simple mesh cell</type>
+  </representation>
+
+
+    <!-- Template: -->
+    <!-- <name></name> -->
+    <!-- <description></description> -->
+    <!-- In VOTable: ID="" -->
+
+    <!-- In VOTable ID="DU_MODPARAM_R.FD_NHINIT" -->
+  <parameter>
+    <identity xmlId="DU_MODPARAM_R.FD_NHINIT" />
+    <name>Initial proton density</name>
+    <datatype>float</datatype>
+    <cardinality>1</cardinality>
+    <description></description>
+  </parameter>
+  
+  <!--In VOTable: ID="DU_MODPARAM_R.FD_RADM_INI" -->
+  <parameter>
+    <identity xmlId="DU_MODPARAM_R.FD_RADM_INI" />
+    <name>Initial ISRF scaling factor (observer side)</name>
+    <datatype>float</datatype>
+    <cardinality>1</cardinality>
+    <description>Scaling factor to Draine radiation field</description>
+  </parameter>
+
+  <!--In VOTable: ID="DU_MODPARAM_R.FD_RADP_INI" -->
+  <parameter>
+    <identity xmlId="DU_MODPARAM_R.FD_RADP_INI" />
+    <name>Initial ISRF scaling factor (backside)</name>
+    <datatype>float</datatype>
+    <cardinality>1</cardinality>
+    <description>Scaling factor to Draine radiation field</description>
+  </parameter>
+
+  <!-- In VOTable ID="DU_MODPARAM_R.FD_CD" -->
+  <parameter>
+    <identity xmlId="DU_MODPARAM_R.FD_CD" />
+    <name>N(H)/E(B-V)</name>
+    <datatype>float</datatype>
+    <cardinality>1</cardinality>
+    <description>Ratio of proton column density on reddening</description>
+  </parameter>
+
+  <!-- In VOTable ID="DU_MODPARAM_R.FD_RV" -->
+  <parameter>
+    <identity xmlId="DU_MODPARAM_R.FD_RV" />
+    <name>RV</name>
+    <datatype>float</datatype>
+    <cardinality>1</cardinality>
+    <description>Rv = Av / E(B-V), Total to selective extinction ratio</description>
+  </parameter>
+
+  <!--In VOTable: ID="DU_MODPARAM_S.FD_LOSNAME" -->
+  <parameter>
+    <identity xmlId="DU_MODPARAM_R.FD_LOSNAME" />
+    <name>Line of sight</name>
+    <datatype>float</datatype>
+    <cardinality>1</cardinality>
+    <description>Line of sight dust extinction curve</description>
+  </parameter>
+
+  <!--In VOTable: ID="DU_MODPARAM_I.FD_ITFER" -->
+  <parameter>
+    <identity xmlId="DU_MODPARAM_R.FD_ITFER" />
+    <name>itrfer</name>
+    <datatype>float</datatype>
+    <cardinality>1</cardinality>
+    <description>UV radiative transfer method</description>
+  </parameter>
+
+  <!--In VOTable: ID="DU_MODPARAM_I.FD_JFGKH2" -->
+  <parameter>
+    <identity xmlId="DU_MODPARAM_R.FD_JFGKH2" />
+    <name>jfgkh2</name>
+    <datatype>float</datatype>
+    <cardinality>1</cardinality>
+    <description>H2 rotationnal level below wich exact UV radiative transfer is performed</description>
+  </parameter>
+
+  <!-- generated content : end -->
+
+
+
+
+  
+  <physicalProcess>
+    <name>radiative transfer</name>
+    <description>should be read from a vocabulary file</description>
+    <physicslabel>radiative transfer ?</physicslabel>
+  </physicalProcess>
+  
+</s:aSimulator>

@@ -1,0 +1,1983 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<ns2:aSimulator xmlns:ns2="http://www.ivoa.net/xml/SimDB/0.7-20090417">
+    <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2"/>
+    <name>Gadget2</name>
+    <description>The public version of the Gadget Simulation code.</description>
+    <referenceURL>http://www.mpa-garching.mpg.de/gadget</referenceURL>
+    <created>2009-06-05T14:57:46.047+02:00</created>
+    <updated>2009-06-05T14:57:46.047+02:00</updated>
+    <status>published</status>
+    <contact>
+        <name>Volker Springel</name>
+        <address>MPA, Garching, Germany</address>
+        <email>***@***</email>
+        <telephone>+49 (0)89 30000 ****</telephone>
+        <role>owner</role>
+    </contact>
+    <code>http://www.mpa-garching.mpg.de/gadget/gadget-2.0.3.tar.gz</code>
+    <version>2</version>
+    <parameterGroup>
+        <description>Parameters representing files</description>
+        <name>File names and file formats</name>
+        <member>
+            <parameter xmlId="PAR_OutputDir"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_SnapshotFileBase"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_SnapFormat"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_NumFilesPerSnapshot"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_InitCondFile"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_ICFormat"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_RestartFile"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_InfoFile"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_TimingsFile"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_CpuFile"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_EnergyFile"/>
+        </member>
+    </parameterGroup>
+    <parameterGroup>
+        <description>CPU-time limit and restart options</description>
+        <name>CPU-time limit and restart options</name>
+        <member>
+            <parameter xmlId="PAR_TimeLimitCPU"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_ResubmitCommand"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_ResubmitOn"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_CpuTimeBetRestartFile"/>
+        </member>
+    </parameterGroup>
+    <parameterGroup>
+        <description>Simulation specific parameters</description>
+        <name>Simulation specific parameters</name>
+        <member>
+            <parameter xmlId="PAR_TimeBegin"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_TimeMax"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_BoxSize"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_PeriodicBoundariesOn"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_ComovingIntegrationOn"/>
+        </member>
+    </parameterGroup>
+    <parameterGroup>
+        <description>Cosmological parameters</description>
+        <name>Cosmological parameters</name>
+        <member>
+            <parameter xmlId="PAR_HubbleParam"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_Omega0"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_OmegaLambda"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_OmegaBaryon"/>
+        </member>
+    </parameterGroup>
+    <parameterGroup>
+        <description>Memory allocation</description>
+        <name>Memory allocation</name>
+        <member>
+            <parameter xmlId="PAR_BufferSize"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_PartAllocFactor"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_TreeAllocFactor"/>
+        </member>
+    </parameterGroup>
+    <parameterGroup>
+        <description>Gravitational force accuracy</description>
+        <name>Gravitational force accuracy</name>
+        <member>
+            <parameter xmlId="PAR_TypeOfOpeningCriterion"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_ErrTolTheta"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_ErrTolForceAcc"/>
+        </member>
+    </parameterGroup>
+    <parameterGroup>
+        <description>Time integration accuracy</description>
+        <name>Time integration accuracy</name>
+        <member>
+            <parameter xmlId="PAR_MaxSizeTimestep"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_MinSizeTimestep"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_TypeOfTimestepCriterion"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_ErrTolIntAccuracy"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_TreeDomainUpdateFrequency"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_MaxRMSDisplacementFac"/>
+        </member>
+    </parameterGroup>
+    <parameterGroup>
+        <description>Output of snapshot files</description>
+        <name>Output of snapshot files</name>
+        <member>
+            <parameter xmlId="PAR_OutputListOn"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_OutputListFilename"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_TimeOfFirstSnapshot"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_TimeBetSnapshot"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_TimeBetStatistics"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_NumFilesWrittenInParallel"/>
+        </member>
+    </parameterGroup>
+    <parameterGroup>
+        <description>System of units</description>
+        <name>System of units</name>
+        <member>
+            <parameter xmlId="PAR_UnitVelocity_in_cm_per_s"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_UnitLength_in_cm"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_UnitMass_in_g"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_GravityConstantInternal"/>
+        </member>
+    </parameterGroup>
+    <parameterGroup>
+        <description>SPH parameters</description>
+        <name>SPH parameters</name>
+        <member>
+            <parameter xmlId="PAR_DesNumNgb"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_MaxNumNgbDeviation"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_ArtBulkViscCons"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_CourantFac"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_InitGasTemp"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_MinGasTemp"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_MinGasHsmlFractional"/>
+        </member>
+    </parameterGroup>
+    <parameterGroup>
+        <description>The code distinguishes between different particle types. Each type may have a different gravitational
+softening. As far as gravity is concerned, all the types are treated equivalently by the
+code, the names Gas, Halo, Disk, Bulge, Stars, Bndry, are just arbitrary tags,
+still reflecting GADGET-2’'s origin as a tool to study colliding galaxies. However, the particles
+of the first type (Gas) are indeed treated as SPH particles, i.e. they receive an additional hydrodynamic
+acceleration, and their internal entropy per unit mass is evolved as independent
+thermodynamic variable.
+Gravity is softened with a spline, as outlined in the code paper. The softenings quoted here
+all refer to espsilon, the roughly equivalent Plummer softening length. Note that for the spline that is
+actually used, the force will be exactly Newtonian beyond h = 2.8 espsilon. The softening lengths are
+in internal length units. For comoving integration, the softening refers to the one employed in
+comoving coordinates, which usually stays fixed during the simulation. However, employing
+the *MaxPhys parameters described below the code can also be asked to switch to a fixed
+softening in physical scale below a certain redshift.
+If particle types with different softenings are used, the UNEQUALSOFTENINGS option in
+27
+V. Springel
+the makefile needs to be set. Unlike in GADGET-1, the present code stores all particle types in a
+single tree, and this option tells the code to mark tree nodes that contain particles with different
+softenings in a special way.
+In cosmological simulations, one sometimes wants to start a simulation with a softening ²com
+that is fixed in comoving coordinates (where the physical softening, ²phys = a²com, then grows
+proportional to the scale factor a), but at a certain redshift one wants to freeze the resulting
+growth of the physical softening ²max
+phys at a maximum value. These maximum softening lengths
+are specified by the Softening*MaxPhys parameters. In the actual implementation, the
+code uses ²0
+com = min(epsilon_com epsilon^max_phys/alpha) as comoving softening. Note that this feature is only
+enabled for ComovingIntegrationOn=1, otherwise the *MaxPhys values are ignored.</description>
+        <name>Gravitational softening</name>
+        <member>
+            <parameter xmlId="PAR_SofteningGas"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_SofteningHalo"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_SofteningDisk"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_SofteningBulge"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_SofteningStars"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_SofteningBndry"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_SofteningGasMaxPhys"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_SofteningHaloMaxPhys"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_SofteningDiskMaxPhys"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_SofteningBulgeMaxPhys"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_SofteningStarsMaxPhys"/>
+        </member>
+        <member>
+            <parameter xmlId="PAR_SofteningBndryMaxPhys"/>
+        </member>
+    </parameterGroup>
+    <representation>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas" />
+        <name>Gas</name>
+        <description>TBD</description>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/X" xmlId="Gas_X"/>
+            <name>x</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.x</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/Y" xmlId="Gas_Y"/>
+            <name>y</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.y</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/Z"  xmlId="Gas_Z"/>
+            <name>z</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.z</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/VX" xmlId="Gas_VX"/>
+            <name>vx</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/VY" xmlId="Gas_VY"/>
+            <name>vy</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/VZ"  xmlId="Gas_VZ"/>
+            <name>vz</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/ID"  xmlId="Gas_ID"/>
+            <name>id</name>
+            <datatype>int</datatype>
+            <cardinality>1</cardinality>
+            <description>Identifier of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/Mass"  xmlId="Gas_Mass"/>
+            <name>mass</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Mass of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/U"  xmlId="Gas_U"/>
+            <name>u</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Internal energy of gas particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/Rho"  xmlId="Gas_RHO"/>
+            <name>rho</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>density of gas particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/Hsml"  xmlId="Gas_HSML"/>
+            <name>hsml</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Smoothing length of gas particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/Pot"  xmlId="Gas_POT"/>
+            <name>pot</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Gravitational potential of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/AccX" xmlId="Gas_AccX"/>
+            <name>accx</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>X component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/AccY"  xmlId="Gas_AccY"/>
+            <name>accy</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Y component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/AccZ"  xmlId="Gas_AccZ"/>
+            <name>accz</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Z component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/dAdt"  xmlId="Gas_dAdt"/>
+            <name>dAdt</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Rate of entropy production: of gas particle.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Gas/dt"  xmlId="Gas_dt"/>
+            <name>dt</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Individual timesteps of particle.</description>
+        </property>
+
+        <propertyGroup>
+            <identity />
+            <name>Position</name>
+            <description>X-Y-Z Coordinates</description>
+            <member>
+                <property xmlId="Gas_X"/>
+            </member>
+            <member>
+                <property xmlId="Gas_Y"/>
+            </member>
+            <member>
+                <property xmlId="Gas_Z"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Velocity</name>
+            <description>X-Y-Z components of velocity</description>
+            <member>
+                <property xmlId="Gas_VX"/>
+            </member>
+            <member>
+                <property xmlId="Gas_VY"/>
+            </member>
+            <member>
+                <property xmlId="Gas_VZ"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Acceleration</name>
+            <description>X-Y-Z components of acceleration</description>
+            <member>
+                <property xmlId="Gas_AccX"/>
+            </member>
+            <member>
+                <property xmlId="Gas_AccY"/>
+            </member>
+            <member>
+                <property xmlId="Gas_AccZ"/>
+            </member>
+        </propertyGroup>
+        <type>SPH particle</type>
+        <label></label>
+    </representation>
+    <representation>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo" />
+        <name>Halo</name>
+        <description>Dark matter particle</description>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/X" xmlId="Halo_X"/>
+            <name>x</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.x</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/Y" xmlId="Halo_Y"/>
+            <name>y</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.y</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/Z"  xmlId="Halo_Z"/>
+            <name>z</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.z</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/VX" xmlId="Halo_VX"/>
+            <name>vx</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/VY" xmlId="Halo_VY"/>
+            <name>vy</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/VZ"  xmlId="Halo_VZ"/>
+            <name>vz</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/ID"  xmlId="Halo_ID"/>
+            <name>id</name>
+            <datatype>int</datatype>
+            <cardinality>1</cardinality>
+            <description>Identifier of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/Mass"  xmlId="Halo_Mass"/>
+            <name>mass</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Mass of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/Pot"  xmlId="Halo_POT"/>
+            <name>pot</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Gravitational potential of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/AccX" xmlId="Halo_AccX"/>
+            <name>accx</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>X component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/AccY"  xmlId="Halo_AccY"/>
+            <name>accy</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Y component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/AccZ"  xmlId="Halo_AccZ"/>
+            <name>accz</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Z component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Halo/dt"  xmlId="Halo_dt"/>
+            <name>dt</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Individual timesteps of particle.</description>
+        </property>
+
+        <propertyGroup>
+            <identity />
+            <name>Position</name>
+            <description>X-Y-Z Coordinates</description>
+            <member>
+                <property xmlId="Halo_X"/>
+            </member>
+            <member>
+                <property xmlId="Halo_Y"/>
+            </member>
+            <member>
+                <property xmlId="Halo_Z"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Velocity</name>
+            <description>X-Y-Z components of velocity</description>
+            <member>
+                <property xmlId="Halo_VX"/>
+            </member>
+            <member>
+                <property xmlId="Halo_VY"/>
+            </member>
+            <member>
+                <property xmlId="Halo_VZ"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Acceleration</name>
+            <description>X-Y-Z components of acceleration</description>
+            <member>
+                <property xmlId="Halo_AccX"/>
+            </member>
+            <member>
+                <property xmlId="Halo_AccY"/>
+            </member>
+            <member>
+                <property xmlId="Halo_AccZ"/>
+            </member>
+        </propertyGroup>
+        <type>point particle</type>
+        <label></label>
+    </representation>
+    
+    
+    
+    <representation>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk" />
+        <name>Disk</name>
+        <description>A dark matter particle.</description>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/X" xmlId="Disk_X"/>
+            <name>x</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.x</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/Y" xmlId="Disk_Y"/>
+            <name>y</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.y</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/Z"  xmlId="Disk_Z"/>
+            <name>z</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.z</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/VX" xmlId="Disk_VX"/>
+            <name>vx</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/VY" xmlId="Disk_VY"/>
+            <name>vy</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/VZ"  xmlId="Disk_VZ"/>
+            <name>vz</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/ID"  xmlId="Disk_ID"/>
+            <name>id</name>
+            <datatype>int</datatype>
+            <cardinality>1</cardinality>
+            <description>Identifier of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/Mass"  xmlId="Disk_Mass"/>
+            <name>mass</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Mass of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/Pot"  xmlId="Disk_POT"/>
+            <name>pot</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Gravitational potential of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/AccX" xmlId="Disk_AccX"/>
+            <name>accx</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>X component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/AccY"  xmlId="Disk_AccY"/>
+            <name>accy</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Y component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/AccZ"  xmlId="Disk_AccZ"/>
+            <name>accz</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Z component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Disk/dt"  xmlId="Disk_dt"/>
+            <name>dt</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Individual timesteps of particle.</description>
+        </property>
+
+        <propertyGroup>
+            <identity />
+            <name>Position</name>
+            <description>X-Y-Z Coordinates</description>
+            <member>
+                <property xmlId="Disk_X"/>
+            </member>
+            <member>
+                <property xmlId="Disk_Y"/>
+            </member>
+            <member>
+                <property xmlId="Disk_Z"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Velocity</name>
+            <description>X-Y-Z components of velocity</description>
+            <member>
+                <property xmlId="Disk_VX"/>
+            </member>
+            <member>
+                <property xmlId="Disk_VY"/>
+            </member>
+            <member>
+                <property xmlId="Disk_VZ"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Acceleration</name>
+            <description>X-Y-Z components of acceleration</description>
+            <member>
+                <property xmlId="Disk_AccX"/>
+            </member>
+            <member>
+                <property xmlId="Disk_AccY"/>
+            </member>
+            <member>
+                <property xmlId="Disk_AccZ"/>
+            </member>
+        </propertyGroup>
+        <type>point particle</type>
+        <label></label>
+    </representation>
+    
+
+    <representation>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge" />
+        <name>Bulge</name>
+        <description>A dark matter particle.</description>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/X" xmlId="Bulge_X"/>
+            <name>x</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.x</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/Y" xmlId="Bulge_Y"/>
+            <name>y</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.y</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/Z"  xmlId="Bulge_Z"/>
+            <name>z</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.z</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/VX" xmlId="Bulge_VX"/>
+            <name>vx</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/VY" xmlId="Bulge_VY"/>
+            <name>vy</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/VZ"  xmlId="Bulge_VZ"/>
+            <name>vz</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/ID"  xmlId="Bulge_ID"/>
+            <name>id</name>
+            <datatype>int</datatype>
+            <cardinality>1</cardinality>
+            <description>Identifier of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/Mass"  xmlId="Bulge_Mass"/>
+            <name>mass</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Mass of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/Pot"  xmlId="Bulge_POT"/>
+            <name>pot</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Gravitational potential of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/AccX" xmlId="Bulge_AccX"/>
+            <name>accx</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>X component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/AccY"  xmlId="Bulge_AccY"/>
+            <name>accy</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Y component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/AccZ"  xmlId="Bulge_AccZ"/>
+            <name>accz</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Z component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bulge/dt"  xmlId="Bulge_dt"/>
+            <name>dt</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Individual timesteps of particle.</description>
+        </property>
+
+        <propertyGroup>
+            <identity />
+            <name>Position</name>
+            <description>X-Y-Z Coordinates</description>
+            <member>
+                <property xmlId="Bulge_X"/>
+            </member>
+            <member>
+                <property xmlId="Bulge_Y"/>
+            </member>
+            <member>
+                <property xmlId="Bulge_Z"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Velocity</name>
+            <description>X-Y-Z components of velocity</description>
+            <member>
+                <property xmlId="Bulge_VX"/>
+            </member>
+            <member>
+                <property xmlId="Bulge_VY"/>
+            </member>
+            <member>
+                <property xmlId="Bulge_VZ"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Acceleration</name>
+            <description>X-Y-Z components of acceleration</description>
+            <member>
+                <property xmlId="Bulge_AccX"/>
+            </member>
+            <member>
+                <property xmlId="Bulge_AccY"/>
+            </member>
+            <member>
+                <property xmlId="Bulge_AccZ"/>
+            </member>
+        </propertyGroup>
+        <type>point particle</type>
+        <label></label>
+    </representation>
+
+    <representation>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars" />
+        <name>Stars</name>
+        <description>A dark matter particle.</description>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/X" xmlId="Stars_X"/>
+            <name>x</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.x</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/Y" xmlId="Stars_Y"/>
+            <name>y</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.y</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/Z"  xmlId="Stars_Z"/>
+            <name>z</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.z</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/VX" xmlId="Stars_VX"/>
+            <name>vx</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/VY" xmlId="Stars_VY"/>
+            <name>vy</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/VZ"  xmlId="Stars_VZ"/>
+            <name>vz</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/ID"  xmlId="Stars_ID"/>
+            <name>id</name>
+            <datatype>int</datatype>
+            <cardinality>1</cardinality>
+            <description>Identifier of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/Mass"  xmlId="Stars_Mass"/>
+            <name>mass</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Mass of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/Pot"  xmlId="Stars_POT"/>
+            <name>pot</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Gravitational potential of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/AccX" xmlId="Stars_AccX"/>
+            <name>accx</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>X component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/AccY"  xmlId="Stars_AccY"/>
+            <name>accy</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Y component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/AccZ"  xmlId="Stars_AccZ"/>
+            <name>accz</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Z component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Stars/dt"  xmlId="Stars_dt"/>
+            <name>dt</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Individual timesteps of particle.</description>
+        </property>
+
+        <propertyGroup>
+            <identity />
+            <name>Position</name>
+            <description>X-Y-Z Coordinates</description>
+            <member>
+                <property xmlId="Stars_X"/>
+            </member>
+            <member>
+                <property xmlId="Stars_Y"/>
+            </member>
+            <member>
+                <property xmlId="Stars_Z"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Velocity</name>
+            <description>X-Y-Z components of velocity</description>
+            <member>
+                <property xmlId="Stars_VX"/>
+            </member>
+            <member>
+                <property xmlId="Stars_VY"/>
+            </member>
+            <member>
+                <property xmlId="Stars_VZ"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Acceleration</name>
+            <description>X-Y-Z components of acceleration</description>
+            <member>
+                <property xmlId="Stars_AccX"/>
+            </member>
+            <member>
+                <property xmlId="Stars_AccY"/>
+            </member>
+            <member>
+                <property xmlId="Stars_AccZ"/>
+            </member>
+        </propertyGroup>
+        <type>point particle</type>
+        <label></label>
+    </representation>
+
+
+    <representation>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry" />
+        <name>Bndry</name>
+        <description>A "boundary" dark matter particle.</description>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/X" xmlId="Bndry_X"/>
+            <name>x</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.x</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/Y" xmlId="Bndry_Y"/>
+            <name>y</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.y</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/Z"  xmlId="Bndry_Z"/>
+            <name>z</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z (cartesian) coordinate of the particle.</description>
+            <ucd>pos.cartesian.z</ucd>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/VX" xmlId="Bndry_VX"/>
+            <name>vx</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>X component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/VY" xmlId="Bndry_VY"/>
+            <name>vy</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Y component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/VZ"  xmlId="Bndry_VZ"/>
+            <name>vz</name>
+            <datatype>float</datatype>
+            <cardinality>1</cardinality>
+            <description>Z component of velocity.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/ID"  xmlId="Bndry_ID"/>
+            <name>id</name>
+            <datatype>int</datatype>
+            <cardinality>1</cardinality>
+            <description>Identifier of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/Mass"  xmlId="Bndry_Mass"/>
+            <name>mass</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Mass of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/Pot"  xmlId="Bndry_POT"/>
+            <name>pot</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Gravitational potential of particle.</description>
+        </property>        
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/AccX" xmlId="Bndry_AccX"/>
+            <name>accx</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>X component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/AccY"  xmlId="Bndry_AccY"/>
+            <name>accy</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Y component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/AccZ"  xmlId="Bndry_AccZ"/>
+            <name>accz</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Z component of acceleration.</description>
+        </property>
+        <property>
+            <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#Bndry/dt"  xmlId="Bndry_dt"/>
+            <name>dt</name>
+            <datatype>float</datatype>
+            <cardinality>0..1</cardinality>
+            <description>Individual timesteps of particle.</description>
+        </property>
+
+        <propertyGroup>
+            <identity />
+            <name>Position</name>
+            <description>X-Y-Z Coordinates</description>
+            <member>
+                <property xmlId="Bndry_X"/>
+            </member>
+            <member>
+                <property xmlId="Bndry_Y"/>
+            </member>
+            <member>
+                <property xmlId="Bndry_Z"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Velocity</name>
+            <description>X-Y-Z components of velocity</description>
+            <member>
+                <property xmlId="Bndry_VX"/>
+            </member>
+            <member>
+                <property xmlId="Bndry_VY"/>
+            </member>
+            <member>
+                <property xmlId="Bndry_VZ"/>
+            </member>
+        </propertyGroup>
+        <propertyGroup>
+            <identity />
+            <name>Acceleration</name>
+            <description>X-Y-Z components of acceleration</description>
+            <member>
+                <property xmlId="Bndry_AccX"/>
+            </member>
+            <member>
+                <property xmlId="Bndry_AccY"/>
+            </member>
+            <member>
+                <property xmlId="Bndry_AccZ"/>
+            </member>
+        </propertyGroup>
+        <type>point particle</type>
+        <label></label>
+    </representation>
+
+
+
+
+    
+    <!--  InputParameter -->
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/OutputDir" xmlId="PAR_OutputDir"/>
+        <name>OutputDir</name>
+        <datatype>string</datatype>
+        <cardinality>1</cardinality>
+        <description>This is the pathname of the directory that holds all the output generated by
+the simulation (snapshot files, restart files, diagnostic files). Note that this
+directory needs to exist, otherwise an error message will be produced.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/SnapshotFileBase" xmlId="PAR_SnapshotFileBase"/>
+        <name>SnapshotFileBase</name>
+        <datatype>string</datatype>
+        <cardinality>1</cardinality>
+        <description>From this string, the name of the snapshot files is derived by adding
+an underscore, and the number of the snapshot in a 3-digits format. If
+NumFilesPerSnapshot>1, each snapshot is distributed into several
+files, where a group of processors writes simultaneously to a file. In this
+case, the filenames are also supplemented with a tailing .n, where n designates
+the number of the file in the group of files representing the snapshot.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/SnapFormat" xmlId="PAR_SnapFormat"/>
+        <name>SnapFormat</name>
+        <datatype>int</datatype>
+        <cardinality>1</cardinality>
+        <description>A flag that specifies the file-format to be used for writing snapshot files. A
+value of 1 selects the standard file-format of GADGET-2 (which is compatible
+with the format used in GADGET-1), while a value of 2 selects a more
+convenient variant of this simple binary format. A value of 3 selects the use
+of HDF5 instead. The structure of these files will be discussed in a separate
+section below. Other values for SnapFormat could be used to select
+customised file-formats if you implement appropriate modifications and/or
+extensions of the code.</description>
+<validValue><value>1</value><description>Standard file-format of GADGET-2</description></validValue>
+<validValue><value>2</value><description>Standard file-format of GADGET-2</description></validValue>
+<validValue><value>3</value><description>HDF-5 output format</description></validValue>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/NumFilesPerSnapshot" xmlId="PAR_NumFilesPerSnapshot"/>
+        <name>NumFilesPerSnapshot</name>
+        <datatype>int</datatype>
+        <cardinality>1</cardinality>
+        <description>The code can distribute each snapshot onto several files. This
+leads to files that are easier to handle in case the simulation is
+very large, and also speeds up I/O, because these files can be written
+in parallel. The number of processors must be equal or larger
+than NumFilesPerSnapshot, because each snapshot file will hold
+the data of a group of processors. Optimum I/O throughput is
+reached if the number of processors is equal to, or a multiple of
+NumFilesPerSnapshot, and if NumFilesWrittenInParallel
+is equal to NumFilesPerSnapshot or a subdivision of it. With
+NumFilesPerSnapshot=1 it is possible to write all particle data in
+just one snapshot file.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/InitCondFile" xmlId="PAR_InitCondFile"/>
+        <name>InitCondFile</name>
+        <datatype>string</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This sets the filename of the initial conditions to be read in at start-up. Note
+that the initial conditions file (or files) does not have to reside in the output
+directory. The initial conditions can be distributed into several files, in the
+same way as snapshot files. In this case, only the basename without the
+tailing .n number should be specified as initial conditions filename. The
+code will recognise the number of files that make up the initial conditions
+from the header entries, and load all of these files accordingly. There is no
+constraint for the number of these files in relation to the processor number.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/ICFormat" xmlId="PAR_ICFormat"/>
+        <name>ICFormat</name>
+        <datatype>string</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This flag selects the file format of the initial conditions read in by the
+code upon start-up. The possible format choices are the same as for
+SnapFormat. It is therefore possible to use different formats for the initial
+conditions and the produced snapshot files. We recommend that you
+convert your IC files to one of the formats of GADGET-2. Alternatively,
+you could incorporate a customised reading routine directly into GADGET-
+2, but this requires intimate understanding of the internal workings of the
+code.</description>
+<validValue><value>1</value><description>Standard file-format of GADGET-2</description></validValue>
+<validValue><value>2</value><description>Standard file-format of GADGET-2</description></validValue>
+<validValue><value>3</value><description>HDF-5 output format</description></validValue>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/RestartFile" xmlId="PAR_RestartFile"/>
+        <name>RestartFile</name>
+        <datatype>string</datatype>
+        <cardinality>1</cardinality>
+        <description>This is the base filename of the restart files. For the given example parameter
+value, each processor will write a restart file restart.N, where N is
+the rank number of the processor.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/InfoFile" xmlId="PAR_InfoFile"/>
+        <name>InfoFile</name>
+        <datatype>string</datatype>
+        <cardinality>1</cardinality>
+        <description>This is the name of a file which will hold a list of all the timesteps. The last
+entry always holds the timestep that is currently processed. For a running
+simulation, the command ‘tail info.txt’ will then inform you about
+the current status of the simulation. The meaning of the different entries in
+the file is discussed in detail later on.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/TimingsFile" xmlId="PAR_TimingsFile"/>
+        <name>TimingsFile</name>
+        <datatype>string</datatype>
+        <cardinality>1</cardinality>
+        <description>This is the name of a log-file that measures various aspects of the performance
+of the gravitational force computation for each timestep. The meaning
+of the individual entries will be described later on.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/CpuFile" xmlId="PAR_CpuFile"/>
+        <name>CpuFile</name>
+        <datatype>string</datatype>
+        <cardinality>1</cardinality>
+        <description>This is a log-file that keeps track of the cumulative cpu-consumption of
+various parts of the code. At each timestep, one line is added to this file.
+The meaning of the individual entries will be described later on. A detailed
+analysis of them allows an assessment of the code performance, and an
+identification of potential bottlenecks.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/EnergyFile" xmlId="PAR_EnergyFile"/>
+        <name>EnergyFile</name>
+        <datatype>string</datatype>
+        <cardinality>1</cardinality>
+        <description>This is the name of a file where information about global energy statistics of
+the simulation is stored. Checking energy conservation can sometimes be a
+good proxy of time integration accuracy, but it is not a particularly stringent
+test. Because computing the gravitational energy requires extra CPU time,
+it has to be explicitly enabled with the COMPUTE POTENTIAL ENERGY
+makefile option. Note also that an accurate computation of the peculiar
+gravitational binding energy at high redshift is quite subtle, so that checking
+for energy conservation is not a good test to evaluate the accuracy of
+cosmological integrations.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/TimeLimitCPU" xmlId="PAR_TimeLimitCPU"/>
+        <name>TimeLimitCPU</name>
+        <datatype>float</datatype>
+        <cardinality>1</cardinality>
+        <description>This is the CPU-time limit for the current run (one submission to the computing
+queue) in seconds. This value should be matched to the corresponding
+limit of the queueing system, if appropriate. The run will automatically
+interrupt itself and write a restart file, if 85% of this time has been
+consumed. The extra 15% is introduced to guarantee that there is always
+enough time left to safely finish the current time step and write the restart
+file. Note that this CPU time refers to the wall-clock time on one processor
+only.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/ResubmitCommand" xmlId="PAR_ResubmitCommand"/>
+        <name>ResubmitCommand</name>
+        <datatype>string</datatype>
+        <cardinality>1</cardinality>
+        <description>If ResubmitOn=1, the code will execute the given command (xyz.sh
+in this example) when it interrupts the run because the CPU-time limit is
+about to be exhausted. Usually, xyz.sh should be set to the name of
+an executable script in which one places the necessary commands for resubmission
+of the job (with the 1-flag set for restart) to the computing
+queue. Note that this feature should be used with care – it is always advisable
+to supervise a running simulation closely.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/ResubmitOn" xmlId="PAR_ResubmitOn"/>
+        <name>ResubmitOn</name>
+        <datatype>string</datatype>
+        <cardinality>1</cardinality>
+        <description></description>
+<validValue><value>0</value><description>false</description></validValue>
+<validValue><value>1</value><description>true</description></validValue>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/CpuTimeBetRestartFile" xmlId="PAR_CpuTimeBetRestartFile"/>
+        <name>CpuTimeBetRestartFile</name>
+        <datatype>float</datatype>
+        <cardinality>1</cardinality>
+        <description>This is the maximum amount of CPU-time (wall-clock time, in seconds)
+that may be used by the code before it writes a new restart file. With this
+parameter the code can hence be asked to write a restart file every once in a
+while. This is meant to provide a precautionary measure against hardware
+or software failures, in which case one can resume a simulation from the
+last set of restart files. In the above example, a restart file would be written
+automatically every 2 hours. The old set of restart files is renamed into
+a set of .bak files before the new files are written, so that there is some
+protection against a crash during the writing of the restart files itself (quite
+typically, this may happen due to disk-full errors, for example).</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/TimeBegin" xmlId="PAR_TimeBegin"/>
+        <name>TimeBegin</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This initialises the time variable of the simulation when a run is started from
+initial conditions (in internal units). If comoving integration is selected
+(ComovingIntegrationOn= 1), the time variable is the dimensionless
+expansion factor a itself, i.e. TimeBegin= a = 1=(1 + zstart).</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/TimeMax" xmlId="PAR_TimeMax"/>
+        <name>TimeMax</name>
+        <datatype>float</datatype>
+        <cardinality>1</cardinality>
+        <description>This marks the end of the simulation. The simulation will run up to this
+point, then write a restart-file, and a snapshot file corresponding to this
+time (even if the time TimeMax is not in the normal sequence of snapshot
+files). If TimeMax is increased later on, the simulation can be simply
+continued from the last restart-file. Note that this last snapshot-file will then
+be overwritten, since it was a special dump out of the normal sequence.
+For comoving integrations, the time variable is the expansion factor, e.g.
+TimeMax= 1:0 will stop the simulation at redshift z = 0.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/BoxSize" xmlId="PAR_BoxSize"/>
+        <name>BoxSize</name>
+        <datatype>string</datatype>
+        <cardinality>0..1</cardinality>
+        <description>The size of the periodic box (in code units) encompassing the simulation
+volume. This parameter is only relevant if the PERIODIC makefile option
+is used. Particle coordinates need to lie in the interval [0, BoxSize] in
+the initial conditions file.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/PeriodicBoundariesOn" xmlId="PAR_PeriodicBoundariesOn"/>
+        <name>PeriodicBoundariesOn</name>
+        <datatype>int</datatype>
+        <cardinality>1</cardinality>
+        <description>Enables or disables the use of periodic boundaries. The code needs to be
+compiled with the PERIODIC makefile option for periodic boundaries,
+otherwise it will complain and stop. (Actually, this parameter may be
+viewed as redundant given that the same option is specified in the makefile,
+but it is kept to make sure that you run your simulation always with
+the ‘right’ executable.) When you use periodic boundary conditions for the
+first time, GADGET-2 will compute correction tables for the periodic forces
+and the periodic peculiar potential by means of Ewald summation (done in
+parallel). As this computation takes a bit of time, these tables will be stored
+on disk to speed-up the start of the code in future runs.</description>
+<validValue><value>0</value><description>false</description></validValue>
+<validValue><value>1</value><description>true</description></validValue>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/ComovingIntegrationOn" xmlId="PAR_ComovingIntegrationOn"/>
+        <name>ComovingIntegrationOn</name>
+        <datatype>string</datatype>
+        <cardinality>0..1</cardinality>
+        <description>Enables or disables the use of periodic boundaries. The code needs to be
+compiled with the PERIODIC makefile option for periodic boundaries,
+otherwise it will complain and stop. (Actually, this parameter may be
+viewed as redundant given that the same option is specified in the makefile,
+but it is kept to make sure that you run your simulation always with
+the ‘right’ executable.) When you use periodic boundary conditions for the
+first time, GADGET-2 will compute correction tables for the periodic forces
+and the periodic peculiar potential by means of Ewald summation (done in
+parallel). As this computation takes a bit of time, these tables will be stored
+on disk to speed-up the start of the code in future runs.</description>
+<validValue><value>0</value><description>false</description></validValue>
+<validValue><value>1</value><description>true</description></validValue>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/HubbleParam" xmlId="PAR_HubbleParam"/>
+        <name>HubbleParam</name>
+        <datatype>string</datatype>
+        <cardinality>0..1</cardinality>
+        <description>Value of the Hubble constant in units of 100kms¡1Mpc¡1. This is only
+used in cosmological integrations when conversions to cgs units are required
+(e.g. for radiative cooling physics). Note however that the value of
+HubbleParam is not needed (in fact, it does not enter the computation at
+all) in purely collisionless simulations. This is because of the definition of
+GADGET-2’s system of units, which eliminates an explicit appearance of
+the value of the Hubble constant in the dynamical equations.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/Omega0" xmlId="PAR_Omega0"/>
+        <name>Omega0</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>Cosmological matter density parameter in units of the critical density at
+z = 0. Relevant only for comoving integration.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/OmegaLambda" xmlId="PAR_OmegaLambda"/>
+        <name>OmegaLambda</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>Cosmological vacuum energy density (cosmological constant) in units of
+the critical density at z = 0. Relevant only for comoving integration. For
+a geometrically flat universe, one has Omega0 + OmegaLambda = 1.
+For simulations in Newtonian space, this parameter has to be set to zero.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/OmegaBaryon" xmlId="PAR_OmegaBaryon"/>
+        <name>OmegaBaryon</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>Baryon density in units of the critical density at z = 0. This is not explicitly
+used in the public version of GADGET-2, but since this paramater may be
+useful for the implementation of certain physical processes (as it is done in
+the full-physics version of GADGET-2), it has been kept in the code.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/BufferSize" xmlId="PAR_BufferSize"/>
+        <name>BufferSize</name>
+        <datatype>float</datatype>
+        <cardinality>1</cardinality>
+        <description>This specifies the size (in MByte) of a multi-purpose communication buffer
+used by the code in various parts of the parallel algorithms, for example
+during the force computation and the domain decomposition. The buffer
+should be large enough to accommodate a ‘fair’ fraction of the particle mix
+in order to minimise work-load imbalance losses. In practice, sizes between
+a few to 100 MB offer enough room. Upon start-up, the code informs about
+how many particles can be fitted into the communication structures during
+the various parts of the code that make use of them. There is no problem
+if a small BufferSize is used, except that it can lead to somewhat lower
+overall performance.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/PartAllocFactor" xmlId="PAR_PartAllocFactor"/>
+        <name>PartAllocFactor</name>
+        <datatype>float</datatype>
+        <cardinality>1</cardinality>
+        <description>Each processor allocates space for PartAllocFactor times the average
+number of particles per processor. This number needs to be larger
+than 1 to allow the simulation to achieve a good work-load balance in
+the domain decomposition, which requires that some particle-load imbalance
+is accepted for better work-load balance. The specified value for
+PartAllocFactor acts as a ceiling for the maximum allowed memory
+imbalance, and the code will observe this limit in the domain decomposition,
+trying to achieve the best work-load balance within this bound. It is
+good to make PartAllocFactor as large as possible for the available
+memory per processor, but values in excess of 3 will usually not improve
+performance any more. The recommended minimum value is » 1:05, but
+practical choices should be more like 1.5-2.0. For a value of 1:0 the code
+will not be able to succeed in the domain decomposition and crash, unless
+a single CPU is used.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/TreeAllocFactor" xmlId="PAR_TreeAllocFactor"/>
+        <name>TreeAllocFactor</name>
+        <datatype>string</datatype>
+        <cardinality>1</cardinality>
+        <description>This selects the type of cell-opening criterion used in the tree walks for
+computing gravitational forces. A value of ‘0’ results in standard Barnes
+&amp; Hut, while ‘1’ selects a relative criterion that tries to limit the absolute
+truncation error of the multipole expansion for every particle-cell interaction.
+This scheme gives usually higher accuracy at a comparable level of
+computational cost, something that makes it more costly at high redshift
+because of the small residual forces there.</description>
+<validValue><value>0</value><description>standard Barnes &amp; Hut</description></validValue>
+<validValue><value>1</value><description>relative criterion</description></validValue>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/TypeOfOpeningCriterion" xmlId="PAR_TypeOfOpeningCriterion"/>
+        <name>TypeOfOpeningCriterion</name>
+        <datatype>string</datatype>
+        <cardinality>1</cardinality>
+        <description>This selects the type of cell-opening criterion used in the tree walks for
+computing gravitational forces. A value of ‘0’ results in standard Barnes
+&amp; Hut, while ‘1’ selects a relative criterion that tries to limit the absolute
+truncation error of the multipole expansion for every particle-cell interaction.
+This scheme gives usually higher accuracy at a comparable level of
+computational cost, something that makes it more costly at high redshift
+because of the small residual forces there.</description>
+<validValue><value>0</value><description>standard Barnes &amp; Hut</description></validValue>
+<validValue><value>1</value><description>relative</description></validValue>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/ErrTolTheta" xmlId="PAR_ErrTolTheta"/>
+        <name>ErrTolTheta</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This is the accuracy criterion (the opening angle µ) of the tree algorithm
+if the standard Barnes &amp; Hut (BH) opening criterion is used. If
+TypeOfOpeningCriterion=1, theta and the BH criterion are only used
+for the first force computation. These first forces are only used as input for
+a recomputation of the forces with the relative cell opening criterion, which
+is employed thereafter for the rest of the force computations.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/ErrTolForceAcc" xmlId="PAR_ErrTolForceAcc"/>
+        <name>ErrTolForceAcc</name>
+        <datatype>float</datatype>
+        <cardinality>1</cardinality>
+        <description>This controls the accuracy of the relative cell-opening criterion (if enabled),
+where a cell is opened if M l2 &gt; alpha | alpha_old|^4. Here, alpha is set by
+ErrTolForceAcc, M is the mass inside a node, l is its cell side-length,
+and aold is the magnitude of the total acceleration of the particle. The latter
+is usually estimated based on the gravitational force on the particle in the
+previous timestep. Note that independent of this relative criterion, the code
+will always open nodes if the point of reference lies within the geometric
+boundaries of the cubical cell (enlarged by an additional 10% on each side).
+This protects against the rare occurrence of very large force errors, which
+would otherwise be possible.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/MaxSizeTimestep" xmlId="PAR_MaxSizeTimestep"/>
+        <name>MaxSizeTimestep</name>
+        <datatype>float</datatype>
+        <cardinality>1</cardinality>
+        <description>This parameter sets the maximum timestep a particle may take. This needs
+to be set to a sensible value in order to protect against too large timesteps
+for particles with very small acceleration. Usually, a few percent up to
+tens of percent of the dynamical time of the system gives sufficient accuracy.
+For cosmological simulations, the parameter MaxSizeTimestep
+has undergone an important change in its definition. Formerly, the parameter
+was specifying the maximum allowed step in terms of max(da), where
+a is the scale factor. Now, the parameter specifies max(d ln a), where ln
+is the natural logarithm. The new definition is equivalent to specifying the
+maximum allowed timestep for cosmological simulations as a fraction of
+the current Hubble time. A value of approx 0.025 is usually accurate enough for
+most cosmological runs.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/MinSizeTimestep" xmlId="PAR_MinSizeTimestep"/>
+        <name>MinSizeTimestep</name>
+        <datatype>float</datatype>
+        <cardinality>1</cardinality>
+        <description>If a particle requests a timestep smaller than the specified value, the simulation
+is terminated with a warning message. This can be used to prevent simulations
+to continue when the timestep has dropped to a very small value,
+because such behaviour typically indicates a problem of some sort. However,
+if NOSTOP WHEN BELOW MINTIMESTEP is set in the Makefile, the
+timestep is forced instead to be at least MinSizeTimestep, even if this
+means that the other timestep criteria are ignored. This option should hence
+be used with care. It can be useful however to force equal and constant
+timesteps for all particles.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/TypeOfTimestepCriterion" xmlId="PAR_TypeOfTimestepCriterion"/>
+        <name>TypeOfTimestepCriterion</name>
+        <datatype>string</datatype>
+        <cardinality>1</cardinality>
+        <description>This selects the type of timestep criterion employed by the code for collisionless
+dynamics. In GADGET-1, there have been 5 possible criteria
+for this. However, upon systematic testing with high-resolution simulations,
+none of them showed a clearly superior performance compared with
+the ‘standard’ criterion used traditionally in cosmological simulations (see
+the paper by Powers et al., 2003, MNRAS, 338, 14). Due to this result,
+the choice of timestep criteria in GADGET-2 has been reduced again,
+and only the standard criterion is offered at present. So the only possible
+value for TypeOfTimestepCriterion is ‘0’, which selects a timestep
+propto 1/sqrt(a), or more precisely, the timestep is given by dt = sqrt(2 eta epsilon/|a|),
+where eta =ErrTolIntAccuracy and epsilon is the gravitational softening
+length.</description>
+<validValue><value>0</value><description>Only valid value</description></validValue>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/ErrTolIntAccuracy" xmlId="PAR_ErrTolIntAccuracy"/>
+        <name>ErrTolIntAccuracy</name>
+        <datatype>float</datatype>
+        <cardinality>1</cardinality>
+        <description>This dimensionless parameter controls the accuracy of the timestep criterion
+selected by TypeOfTimestepCriterion.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/TreeDomainUpdateFrequency" xmlId="PAR_TreeDomainUpdateFrequency"/>
+        <name>TreeDomainUpdateFrequency</name>
+        <datatype>float</datatype>
+        <cardinality>1</cardinality>
+        <description>A domain decomposition and a full tree construction are not necessarily
+carried out every single timestep. Instead, properties of tree nodes can be
+dynamically updated as needed. This can improve the performance of the
+code if there are many timesteps that advance only a very small fraction
+of particles (below a percent or so). This parameter determines how often
+the domain decomposition and the full tree are reconstructed from scratch.
+A value of TreeUpdateFrequency= 0:05, for example, means that
+the domain decomposition and the tree are reconstructed whenever there
+have been at least 0:05N force computations since the last reconstruction,
+where N is the total particle number. A value of zero for this parameter
+will reconstruct the tree every timestep.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/MaxRMSDisplacementFac" xmlId="PAR_MaxRMSDisplacementFac"/>
+        <name>MaxRMSDisplacementFac</name>
+        <datatype>float</datatype>
+        <cardinality>1</cardinality>
+        <description>This defines an additional timestep limiter for the PM-step when the
+TreePM method is used. In this case, the code computes the 3D velocity
+dispersion sigma for all particles in the simulation, and restricts the maximum
+simulation timestep (and hence the PM timestep) such that sigma*dt is
+less than MaxRMSDisplacementFac times the mean particle separation
+d, or less than MaxRMSDisplacementFac times the scale rs of the
+short-range/long-range force split, whichever is smaller.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/OutputListOn" xmlId="PAR_OutputListOn"/>
+        <name>OutputListOn</name>
+        <datatype>string</datatype>
+        <cardinality>1</cardinality>
+        <description>A value of 1 signals that the output times are given in the file specified by
+OutputListFilename. Otherwise output times are generated automatically
+in the way described below.</description>
+<validValue><value>0</value><description>Automatically generated</description></validValue>
+<validValue><value>1</value><description>Taken from OutputListFilename</description></validValue>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/OutputListFilename" xmlId="PAR_OutputListFilename"/>
+        <name>OutputListFilename</name>
+        <datatype>string</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This specifies the name of a file that contains a list of desired output times.
+If OutputListOn is set to 1, this list will determine the times when
+snapshot-files are produced. The file given by OutputListFilename
+should just contain the floating point values of the desired output times in
+plain ASCII format. The times do not have to be ordered in time, but there
+may be at most 350 values. Output times that are in the past relative to the
+current simulation time will be ignored.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/TimeOfFirstSnapshot" xmlId="PAR_TimeOfFirstSnapshot"/>
+        <name>TimeOfFirstSnapshot</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This variable selects the time for the first snapshot (if
+OutputListOn=0). For comoving integration, the above choice
+would therefore produce the first dump at redshift z = 20.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/TimeBetSnapshot" xmlId="PAR_TimeBetSnapshot"/>
+        <name>TimeBetSnapshot</name>
+        <datatype>float</datatype>
+        <cardinality>1</cardinality>
+        <description>After a snapshot has been written, the time for the next snapshot
+is determined by either adding TimeBetSnapshot
+to TimeOfFirstSnapshot, or by multiplying
+TimeOfFirstSnapshot with TimeBetSnapshot. The latter
+is done for comoving integration, and will hence lead to a series of outputs
+that are equally spaced in log(a). The above example steps down to
+redshift z = 0 in 50 logarithmically spaced steps. Note however that if
+OutputListOn=1 this parameter is ignored.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/TimeBetStatistics" xmlId="PAR_TimeBetStatistics"/>
+        <name>TimeBetStatistics</name>
+        <datatype>float</datatype>
+        <cardinality>1</cardinality>
+        <description>This determines the interval of time between two subsequent computations
+of the total potential energy of the system. This information is then written
+to the file given by EnergyFile, together with information about the
+kinetic energies of the different particle types. A first energy statistics is
+always produced at the start of the simulation at TimeBegin.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/NumFilesWrittenInParallel" xmlId="PAR_NumFilesWrittenInParallel"/>
+        <name>NumFilesWrittenInParallel</name>
+        <datatype>int</datatype>
+        <cardinality>1</cardinality>
+        <description>This parameter determines how many files may be written (or read) simultaneously
+by the code when generating (reading) snapshot files, or
+when writing (reading) of restart files. Because each processor writes
+its own restart file, it is in principle possible to do this fully in parallel,
+with each processor writing ‘his’ file at the same time. However, for big
+runs, say with 512 processors, a very large number of simultaneous I/O requests
+for large files may cause severe problems for the operating system,
+since the number of available disk drives on the file server will likely be
+smaller than the number of processors. As a result, the I/O system may
+get congested because these requests cannot all be served efficiently at
+the same time. In order to avoid such a congestion and to reach an optimum
+overall throughput of the I/O subsystem, it is often better not to
+write too many files simultaneously. This can be achieved with the parameter
+NumFilesWrittenInParallel, which restricts the number of
+files GADGET-2 processes concurrently during restart or snapshot file reading/
+writing. Note that NumFilesWrittenInParallel must be equal
+or smaller than the number of processors used.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/UnitVelocity_in_cm_per_s" xmlId="PAR_UnitVelocity_in_cm_per_s"/>
+        <name>UnitVelocity_in_cm_per_s</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This sets the internal velocity unit in cm=sec. The above choice
+is convenient – it sets the velocity unit to km=sec. Note that
+the specification of UnitLength in cm, UnitMass in g, and
+UnitVelocity in cm per s also determines the internal unit of time.
+The definitions made above imply that in internal units the Hubble constant
+has a numerical value independent of h and hence HubbleParam. For
+the numerical examples above, the Hubble constant has always the value
+0.1 in internal units, independent of h, and the Hubble time is always 10 in
+internal units, with one internal time unit corresponding to 9:8 £ 108 yr=h.
+However, you are free to choose a different system of units if you like.
+Note also that this implies that for purely gravitational dynamics, the code
+will not need to know the value of h at all. HubbleParam is kept in
+the parameterfile only because additional physics in the hydrodynamical
+sector (which is not contained in the public distribution of GADGET-2) may
+require it.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/UnitLength_in_cm" xmlId="PAR_UnitLength_in_cm"/>
+        <name>UnitLength_in_cm</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This sets the internal length unit in cm/h, where H0 =
+100 h km s-1 Mpc-1. The default choice (3.085678e21) is convenient – it sets the
+length unit to 1.0 kpc=h.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/UnitMass_in_g" xmlId="PAR_UnitMass_in_g"/>
+        <name>UnitMass_in_g</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This sets the internal mass unit in g=h, where H0 = 100 h km/s/Mpc.
+The default choice (1.989e43) is convenient – it sets the mass unit to 10^10M_sun/h.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/GravityConstantInternal" xmlId="PAR_GravityConstantInternal"/>
+        <name>GravityConstantInternal</name>
+        <datatype>string</datatype>
+        <cardinality>0..1</cardinality>
+        <description>The numerical value of the gravitational constant G in internal
+units depends on the system of units you choose. For example,
+for the default numerical choices made i the other units, G = 43007.1 in internal
+units. For GravityConstantInternal=0 the code calculates the
+value corresponding to the physical value of G for you. Sometimes,
+you might want to set G yourself. For example, by specifying
+GravityConstantInternal=1, UnitLength in cm=1,
+UnitMass in g=1, and UnitVelocity in cm per s=1, one obtains
+a ‘natural’ system of units. Note that the code will nevertheless
+try to use the ‘correct’ value of the Hubble constant even in this case, so
+you should always set GravityConstantInternal=0 in cosmological
+integrations.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/DesNumNgb" xmlId="PAR_DesNumNgb"/>
+        <name>DesNumNgb</name>
+        <datatype>int</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This is the desired number of SPH smoothing neighbours. Normally, the effective
+number of neighbours (defined as the mass inside the kernel divided
+by the particle mass) is kept constant very close to this value. Should it ever
+try to get outside a range plus/min MaxNumNgbDeviation from DesNumNgb,
+the code will readjust the smoothing length such that the number of neighbours
+is again in this range.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/MaxNumNgbDeviation" xmlId="PAR_MaxNumNgbDeviation"/>
+        <name>MaxNumNgbDeviation</name>
+        <datatype>int</datatype>
+        <cardinality>1</cardinality>
+        <description>This sets the allowed variation of the number of neighbours around the
+target value DesNumNgb.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/ArtBulkViscCons" xmlId="PAR_ArtBulkViscCons"/>
+        <name>ArtBulkViscCons</name>
+        <datatype>float</datatype>
+        <cardinality>1</cardinality>
+        <description>This sets the value of the artificial viscosity parameter ®visc used by
+GADGET-2. See code paper for details.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/CourantFac" xmlId="PAR_CourantFac"/>
+        <name>CourantFac</name>
+        <datatype>float</datatype>
+        <cardinality>1</cardinality>
+        <description>This sets the value of the Courant parameter used in the determination of
+the hydrodynamical timestep of SPH particles. Note that GADGET-2’s definition
+of the SPH smoothing length differs by a factor of 2 from that found
+in large parts of the SPH literature. As a consequence, comparable settings
+of CourantFac are a factor of 2 smaller in GADGET-2 when compared
+with codes using the different convention.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/InitGasTemp" xmlId="PAR_InitGasTemp"/>
+        <name>InitGasTemp</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This sets the initial gas temperature in Kelvin when initial conditions are
+read. If the temperature is below 104 K, a mean molecular weight corresponding
+to neutral gas of primordial abundance is assumed, otherwise
+complete ionisation is assumed. However, the gas temperature is only set
+to a certain temperature if InitGasTemp &gt; 0 and if at the same time the
+temperature of the gas particles in the initial conditions file is zero, otherwise
+the initial gas temperature is left at the value stored in the IC file.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/MinGasTemp" xmlId="PAR_MinGasTemp"/>
+        <name>MinGasTemp</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>The minimum allowed gas temperature in Kelvin (this is converted by the
+code to a minimum thermal energy per unit mass assuming the mean molecular
+weight of neutral gas). This may be set to zero in principle, but often
+it is desirable to prevent the gas from becoming too cold, e.g. for resolution
+reasons or because of lower limits in the implemented cooling function.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/MinGasHsmlFractional" xmlId="PAR_MinGasHsmlFractional"/>
+        <name>MinGasHsmlFractional</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This parameter sets the minimum allowed SPH smoothing length in units
+of the gravitational softening length of the gas particles. The smoothing
+length will be prevented from falling below this value. When this
+bound is actually reached, the number of smoothing neighbours will instead
+be increased above DesNumNgb, even if this means that the upper
+limit DesNumNgb+MaxNumNgbDeviation is exceeded. The parameter
+MinGasHsmlFractional can be zero, allowing the smoothing radius
+to vary without bounds, which is usually adequate.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/SofteningGas" xmlId="PAR_SofteningGas"/>
+        <name>SofteningGas</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>SofteningGas specifies the (comoving) softening of the first particle
+group.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/SofteningHalo" xmlId="PAR_SofteningHalo"/>
+        <name>SofteningHalo</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This specifies the (comoving) softening of the second particle group.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/SofteningDisk" xmlId="PAR_SofteningDisk"/>
+        <name>SofteningDisk</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This specifies the (comoving) softening of the third particle group.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/SofteningBulge" xmlId="PAR_SofteningBulge"/>
+        <name>SofteningBulge</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This specifies the (comoving) softening of the fourth particle group.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/SofteningStars" xmlId="PAR_SofteningStars"/>
+        <name>SofteningStars</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This specifies the (comoving) softening of the fifth particle group</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/SofteningBndry" xmlId="PAR_SofteningBndry"/>
+        <name>SofteningBndry</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This specifies the (comoving) softening of the sixth particle group.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/SofteningGasMaxPhys" xmlId="PAR_SofteningGasMaxPhys"/>
+        <name>SofteningGasMaxPhys</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This specifies the maximum physical softening of the first particle group.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/SofteningHaloMaxPhys" xmlId="PAR_SofteningHaloMaxPhys"/>
+        <name>SofteningHaloMaxPhys</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This specifies the maximum physical softening of the second particle group.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/SofteningDiskMaxPhys" xmlId="PAR_SofteningDiskMaxPhys"/>
+        <name>SofteningDiskMaxPhys</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This specifies the maximum physical softening of the third particle group.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/SofteningBulgeMaxPhys" xmlId="PAR_SofteningBulgeMaxPhys"/>
+        <name>SofteningBulgeMaxPhys</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This specifies the maximum physical softening of the fourth particle group.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/SofteningStarsMaxPhys" xmlId="PAR_SofteningStarsMaxPhys"/>
+        <name>SofteningStarsMaxPhys</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This specifies the maximum physical softening of the fifth particle group.</description>
+    </parameter>
+    <parameter>
+        <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/SofteningBndryMaxPhys" xmlId="PAR_SofteningBndryMaxPhys"/>
+        <name>SofteningBndryMaxPhys</name>
+        <datatype>float</datatype>
+        <cardinality>0..1</cardinality>
+        <description>This specifies the maximum physical softening of the sixth particle group.</description>
+    </parameter>
+    <physicalProcess><name>gravity</name><description>Gravitational interaction between particles</description>
+    <texForm></texForm><physicslabel></physicslabel>
+    </physicalProcess>
+</ns2:aSimulator>
