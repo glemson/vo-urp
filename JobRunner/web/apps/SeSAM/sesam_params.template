@@ -13,7 +13,7 @@ f_e       ___f_e_0___ ___f_e_1___ ___f_e_2___ ___f_e_3___ ___f_e_4___ ___f_e_5__
 f_r       ___f_r_0___ ___f_r_1___ ___f_r_2___ ___f_r_3___ ___f_r_4___ ___f_r_5___
 f_ac       ___f_ac_0___ ___f_ac_1___ ___f_ac_2___
 f_ah       ___f_ah_0___ ___f_ah_1___ ___f_ah_2___
-ac_thres   ___ac_thres_0___ ___ac_thres_1___ ___ac_thres_2___ 
+ac_thres   0 0 0 0 0
 mcrit_sf   ___mcrit_sf_0___ ___mcrit_sf_1___ ___mcrit_sf_2___ 
 halo_thresh  ___halo_thresh_0___ ___halo_thresh_1___
 alpha_c		        ___alpha_c___ 
@@ -28,7 +28,7 @@ dynf_r                  ___dynf_r___
 dynf_m                  ___dynf_m___
 burst_time		___burst_time_0___ ___burst_time_1___
 f_recycle		___f_recycle___
-recycle_mode            1  
+recycle_mode            0  
 % run parameters 
 halo_type		0          
 first_file		0          
