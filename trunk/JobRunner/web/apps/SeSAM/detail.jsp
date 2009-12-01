@@ -25,15 +25,24 @@
     
 	<%= ((RootContext) request.getAttribute("runContext")).getRing().getContent("", "<br/>\n") %>    
 <% if(state==RunState.STATE_FINISHED_OK) { %>
-  <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/madau_diagram.png"/>
+  <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/fig1.png"/>
+  <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/fig2_1.png"/>
+  <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/fig2_2.png"/>
+  <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/fig2_3.png"/>
+  <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/fig2_4.png"/>
+  <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/fig3.png"/>
+  <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/fig4.png"/>
+<!-- 
+   <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/madau_diagram.png"/>
   <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/cond_mass_fun.png"/>
+  -->
 <% } %>
 <br/><br/>
     Root directory : <% if(ok){ %><a href="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}">download zip</a><% } %>
     
     <table><tr><th>File name</th><th>Size (bytes)</th><th>Modified</th></tr>
 <c:if test="${!empty requestScope.resultDir}">
-<dir:Directory path="${requestScope.resultDir}" > 
+<dir:Directory path="${requestScope.resultDir}" sort="1"> 
 <tr><td> 
 <% if(ok){ %>
 <a href="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/<%=fileName%>">
