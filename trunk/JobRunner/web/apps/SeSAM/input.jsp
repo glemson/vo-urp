@@ -3,6 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 
 
+<%@page import="org.gavo.sam.SeSAM"%>
 <c:set var="title" scope="request" value="SeSAM - Input" ></c:set>
 <%-- <c:set var="noLink" scope="request" value="0" ></c:set> --%>
 
@@ -85,6 +86,18 @@ f_d = f_d[0] (M/10<sup>10</sup>)<sup>f_d[1]</sup>  t<sup>f_d[3]</sup> </td>
 </td> 
 <td>Cooling efficiency: <br/>
 f_c = 10<sup>f_c[0]+f_c[1]*logM+f_c*(logM)<sup>2</sup></sup>  t<sup>f_c[3]</sup> </td> 
+</tr>
+<tr>
+<td>fc_file</td>
+<td> 
+<select name="<%= SeSAM.PARAM_fc_file %>">
+<option  value="<%= SeSAM.PARAM_fc_file_default %>" selected>default</option>
+</select>
+<br/>
+</td> 
+<td>(In the future:) File containing cooling efficiencies. Choosing "default" will use
+the default model.
+</td>
 </tr>
 <tr>
 <td>f_e</td>
