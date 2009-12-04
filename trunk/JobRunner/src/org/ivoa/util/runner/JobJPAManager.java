@@ -287,6 +287,38 @@ public final class JobJPAManager extends SingletonSupport {
   }
 
   /**
+   * Retrieve the run contexts for a given application name from the database
+   * @param name application name
+   * @param state matching state
+   * @param forceRefresh true indicates to load data surely from the database
+   * @return list of run context
+   */
+  @SuppressWarnings("unchecked")
+  public List<RootContext> findContextsForOwner(final String owner, boolean forceRefresh) {
+    List<RootContext> ctxList = null;
+    EntityManager em = null;
+
+    try {
+      em = jf.getEm();
+
+      // forces to use a query to refresh data from database :
+      final Query q = em.createNamedQuery("RootContext.findAllByOwner")
+          .setParameter("owner", owner);
+      if (forceRefresh) {
+        q.setHint(QueryHints.REFRESH, HintValues.TRUE);
+      }
+      ctxList = (List<RootContext>) q.getResultList();
+
+    } catch (final RuntimeException re) {
+      log.error("JobJPAManager.findContextsForOwner : runtime failure : ", re);
+      throw re;
+    } finally {
+      close(em);
+    }
+
+    return ctxList;
+  }
+  /**
    * Close the given entity manager
    *
    * @param em entity manager

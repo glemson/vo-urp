@@ -32,9 +32,17 @@ public final class FileManager extends LogSupport {
   /** legacy applications root folder */
   public static final String LEGACYAPPS = Configuration.getInstance().getProperty("legacyapps.folder") + "/";
   /** temporary folder to store runner files */
-  public static final String RUNNER = Configuration.getInstance().getProperty("runner.folder") + "/"; // TODO note the extra / !!
+  public static final String RUNNER;
   /** temporary folder to store runner files */
   public static final String ARCHIVE = Configuration.getInstance().getProperty("archive.folder") + "/";
+  static
+  {
+	  // ugly !
+	  String _RUNNER = Configuration.getInstance().getProperty("runner.folder");
+	  while(_RUNNER.endsWith("/"))
+		  _RUNNER = _RUNNER.substring(0, _RUNNER.length()-2);
+	  RUNNER = _RUNNER + "/";
+  }
   //~ Constructors -----------------------------------------------------------------------------------------------------
   /**
    * Constructor

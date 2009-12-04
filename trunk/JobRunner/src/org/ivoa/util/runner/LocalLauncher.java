@@ -21,6 +21,7 @@ import org.ivoa.util.concurrent.CustomThreadPoolExecutor;
 import org.ivoa.util.concurrent.FastSemaphore;
 import org.ivoa.util.concurrent.GenericRunnable;
 import org.ivoa.util.concurrent.ThreadExecutors;
+import org.omg.CORBA.CTX_RESTRICT_SCOPE;
 
 
 /**
@@ -605,11 +606,17 @@ public final class LocalLauncher {
 
           // persist the context state anyway :
           if (USE_PERSISTENCE) {
-            jm.persist(rootCtx);
-          }
+              jm.persist(rootCtx);
+            }
 
           // call listener :
           listener.performJobEvent(rootCtx);
+          
+          // persist the context state as the listener may have updated the state or other contents
+          // in particular relativePath 
+            if (USE_PERSISTENCE) {
+              jm.persist(rootCtx);
+            }
 
           // remove job from queue :
           if (!QUEUE_MANUAL_REMOVE_JOBS) {
@@ -695,6 +702,31 @@ public final class LocalLauncher {
       }
     }
   }
+
+  public static List<RootContext> queryHistory(final String owner) {
+	    log.error("queryHistory : " + owner );
+	    if (USE_PERSISTENCE) {
+	      final List<RootContext> ctxList = jm.findContextsForOwner(owner, false);
+	      return ctxList;
+	    }
+	    return null;
+
+	    
+	  }
+
+  public static RunContext queryJob(final long id) {
+	    log.error("queryJob : " + id );
+	    if (USE_PERSISTENCE) {
+	      final RunContext ctx = jm.get(id);
+	      return ctx;
+	    }
+	    return null;
+
+	    
+	  }
+  
+  
+  
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
 
