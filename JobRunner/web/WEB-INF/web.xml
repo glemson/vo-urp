@@ -102,6 +102,10 @@
       <param-value>SeSAM.exe</param-value>
     </init-param>
     <init-param>
+      <param-name>fc_file</param-name>
+      <param-value>fc_recipe</param-value>
+    </init-param>
+    <init-param>
       <param-name>parameterfile.template</param-name>
       <param-value>sesam_params.template</param-value>
     </init-param>

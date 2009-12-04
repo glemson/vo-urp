@@ -23,7 +23,10 @@
 
     Output : <br/><br/>
     
-	<%= ((RootContext) request.getAttribute("runContext")).getRing().getContent("", "<br/>\n") %>    
+	<% if( ((RootContext) request.getAttribute("runContext")).getRing()) != null) {
+		((RootContext) request.getAttribute("runContext")).getRing().getContent("", "<br/>\n");
+		}%>    
+	}
 <% if(state==RunState.STATE_FINISHED_OK) { %>
   <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/fig1.png"/>
   <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/fig2_1.png"/>
@@ -32,10 +35,6 @@
   <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/fig2_4.png"/>
   <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/fig3.png"/>
   <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/fig4.png"/>
-<!-- 
-   <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/madau_diagram.png"/>
-  <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/cond_mass_fun.png"/>
-  -->
 <% } %>
 <br/><br/>
     Root directory : <% if(ok){ %><a href="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}">download zip</a><% } %>

@@ -102,6 +102,10 @@
       <param-value>SeSAM.exe</param-value>
     </init-param>
     <init-param>
+      <param-name>fc_file</param-name>
+      <param-value>fc_recipe</param-value>
+    </init-param>
+    <init-param>
       <param-name>parameterfile.template</param-name>
       <param-value>sesam_params.template</param-value>
     </init-param>
@@ -114,12 +118,13 @@
       <param-value>e:/data/BC03/models/Padova1994/chabrier/</param-value>
     </init-param>
     <init-param>
-      <param-name>Rcmd</param-name>
-      <param-value>C:/R-2.8.0/bin/Rcmd.exe BATCH --no-save :SCRIPT:  Rplot.log</param-value>
+      <param-name>plotCommand</param-name>
+<!--      <param-value>C:/R-2.8.0/bin/Rcmd.exe BATCH no-save :SCRIPT:  Rplot.log</param-value>  -->
+      <param-value>C:/software/GnuPlot/gnuplot/bin/pgnuplot.exe :SCRIPT:</param-value> 
     </init-param>
     <init-param>
-      <param-name>Rscript</param-name>
-      <param-value>plot.r</param-value>
+      <param-name>plotScript</param-name>
+      <param-value>plot_all.gp</param-value>
     </init-param>
     <load-on-startup>10</load-on-startup>
   </servlet>
