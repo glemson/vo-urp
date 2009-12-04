@@ -32,6 +32,7 @@ public class JobServlet extends BaseServlet implements JobListener {
   public static final String ACTION_CANCEL_JOB = "cancel";
   public static final String ACTION_KILL_JOB = "kill";
   public static final String ACTION_SHOW_QUEUE = "list";
+  public static final String ACTION_SHOW_HISTORY = "history";
   // TODO : add kill action
   // constants :
   public static final String INPUT_ACTION = "action";
@@ -114,6 +115,8 @@ public class JobServlet extends BaseServlet implements JobListener {
         }
       } else if (ACTION_SHOW_QUEUE.equals(action)) {
         view = showQueue(request);
+      } else if (ACTION_SHOW_HISTORY.equals(action)) {
+          view = showHistory(request);
       } else if (ACTION_SHOW_JOB.equals(action)) {
         view = showJob(request, getLongParameter(request, INPUT_ID, 0l));
       } else if (ACTION_KILL_JOB.equals(action) ||
@@ -133,7 +136,8 @@ public class JobServlet extends BaseServlet implements JobListener {
         }
       }
     } catch (Exception e) {
-      log.error("failure : ", e);
+      log.error("failure : ", e); // TODO need to do more, e.g. go to an error page
+      
     }
 
     // Output parameters :
@@ -155,6 +159,12 @@ public class JobServlet extends BaseServlet implements JobListener {
       if (log.isInfoEnabled()) {
         log.info("JobServlet [" + getSessionNo(request) + "] : jsp     process : " + time + " ms. View[default]");
       }
+    } else {
+        try {
+            doForward(request, response, "./error.jsp");
+          } catch (Exception e) {
+            log.error("failure : ", e);
+          }
     }
 
   }
@@ -186,8 +196,18 @@ public class JobServlet extends BaseServlet implements JobListener {
     return "./queue.jsp";
   }
 
+  private String showHistory(final HttpServletRequest request) {
+	  String owner = request.getRemoteUser();
+	    final List<RootContext> list = LocalLauncher.queryHistory(owner);
+
+	    request.setAttribute("history", list);
+
+	    return "./history.jsp";
+	  }
   protected String showJob(final HttpServletRequest request, final Long id) {
-    final RunContext runCtx = LocalLauncher.getJob(id);
+    RunContext runCtx = LocalLauncher.getJob(id);
+    if(runCtx == null)
+    	runCtx = LocalLauncher.queryJob(id);
 
     request.setAttribute("runContext", runCtx);
 

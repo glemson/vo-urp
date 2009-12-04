@@ -2,10 +2,12 @@ package org.gavo.sam;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileFilter;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
@@ -29,19 +31,28 @@ public class SeSAM extends JobServlet {
   
   /* constants */
   public static final String MAIN_TASK = "main";
-  public static final String RPLOT_TASK = "Rplot";
+  public static final String PLOT_TASK = "plot";
+  public static final String PARAMETER_FILE ="esam_params";
   public static final String FREE_PARAM_DELIMITER = "___";
   public static final String FIXED_PARAM_DELIMITER = "%%%";
 
+  public static final String PARAM_fc_file = "fc_file";
+  public static final String PARAM_fc_file_upload = "upload";
+  public static final String PARAM_fc_file_default = "default";
+  private String DEFAULT_fc_file;
+  
+  
   /* members */
   private String paramtemplate;
   private List<String> freeParameters;
+  private Hashtable<String, String> specialParameters = new Hashtable<String, String>();
+  
   private String inputDir;
   private String treesDir;
   private String bc03Dir;
   private String executable;
-  private String Rcmd;
-  private String Rscript;
+  private String plotCommand;
+  private String plotScript;
 
   @Override
   protected void initialiseMainJob(RootContext rootCtx, HttpServletRequest request) throws JobStateException {
@@ -65,7 +76,13 @@ public class SeSAM extends JobServlet {
         }
       } else {
         // TODO validate
-        parameters = parameters.replaceAll(FREE_PARAM_DELIMITER + param + FREE_PARAM_DELIMITER, value);
+    	  
+    	if(PARAM_fc_file.equals(param))
+    	{
+    		if(PARAM_fc_file_default.equals(value))
+    			value = DEFAULT_fc_file;
+    	}
+    	parameters = parameters.replaceAll(FREE_PARAM_DELIMITER + param + FREE_PARAM_DELIMITER, value);
       }
 
     }
@@ -80,19 +97,24 @@ public class SeSAM extends JobServlet {
 
     parameters = parameters.replaceAll(FIXED_PARAM_DELIMITER + "workingDir" + FIXED_PARAM_DELIMITER, wd);
 
-    File f = new File(workDir + "/esam_params");
-    if (!f.getParentFile().mkdirs()) {
-      if (log.isErrorEnabled()) {
-        log.error("Error mkdirs on " + f.getParentFile().getAbsolutePath());
-      }
+    File w = new File(workDir);
+    if(!w.exists())
+    {
+    	if(!w.mkdirs()) {
+  	      if (log.isErrorEnabled())
+            log.error("Error mkdirs on " + workDir);
+          throw new IOException("Error mkdirs on " + workDir);
+    	}
     }
+    File f = new File(workDir + "/"+PARAMETER_FILE);
+
     if (log.isDebugEnabled()) {
       log.debug("file = " + f.getAbsolutePath());
     }
-    FileWriter w = new FileWriter(f);
-    w.write(parameters);
-    w.flush();
-    w.close();
+    FileWriter writer = new FileWriter(f);
+    writer.write(parameters);
+    writer.flush();
+    writer.close();
 
     return new String[]{executable};
   }
@@ -131,6 +153,9 @@ public class SeSAM extends JobServlet {
     treesDir = config.getInitParameter("treesDir");
     bc03Dir = config.getInitParameter("bc03Dir");
 
+    DEFAULT_fc_file = inputDir+config.getInitParameter("fc_file");
+    
+    
     StringBuilder sb = new StringBuilder();
     try {
       BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -160,8 +185,11 @@ public class SeSAM extends JobServlet {
       freeParameters.add(param);
       index1 = index2 + FREE_PARAM_DELIMITER.length();// TODO optimize
     }
-    Rcmd = config.getInitParameter("Rcmd");
-    Rscript = FileManager.LEGACYAPPS + "/" + name + "/" + config.getInitParameter("Rscript");
+    
+    
+    
+    plotCommand = config.getInitParameter("plotCommand");
+    plotScript = FileManager.LEGACYAPPS + "/" + name + "/" + config.getInitParameter("plotScript");
 
   }
 
@@ -177,18 +205,31 @@ public class SeSAM extends JobServlet {
     if (MAIN_TASK.equals(runCtx.getName())) {
       //TODO add plotting tasks
       if (runCtx.getState() == RunState.STATE_FINISHED_OK) {
-        prepareRPlotTask(runCtx.getParent());
+        preparePlotTask(runCtx.getParent());
         ok = true;
       } else {
         ok = false;
       }
+    } else if(PLOT_TASK.equals(runCtx.getName())) {
+    	// clean up files created only for plotting
+    	File dir = new File(runCtx.getWorkingDir());
+    	File[] filesToDelete = dir.listFiles(new FileFilter(){
+    		public boolean accept(File file) {
+				String name = file.getName();
+				return !(name.startsWith("catalog") || name.endsWith(".png") || PARAMETER_FILE.equals(name));
+			}
+    	});
+    	for(File file : filesToDelete)
+    	{
+    		file.delete();
+    	}
     }
     return ok;
   }
 
-  private void prepareRPlotTask(RootContext rootCtx) {
-	String cmd = Rcmd.replaceFirst(":SCRIPT:", Rscript);
+  private void preparePlotTask(RootContext rootCtx) {
+	String cmd = plotCommand.replaceFirst(":SCRIPT:", plotScript);
     
-    LocalLauncher.prepareChildJob(rootCtx, RPLOT_TASK, cmd.split("[ ]"));
+    LocalLauncher.prepareChildJob(rootCtx, PLOT_TASK, cmd.split("[ ]"));
   }
 }
