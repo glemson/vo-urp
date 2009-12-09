@@ -19,11 +19,11 @@ To view your job history click <button onclick="window.location='Jobs.do?action=
 <p>
 To view your jobs in the active queue click <button onclick="window.location='Jobs.do?action=list'">Go</button>
 </p>
-<h3>    <a href="./apps/SeSAM/input.jsp">SeSAM</a> </h3>
+<h3>    <a href="./SeSAM.do?action=input">SeSAM</a> </h3>
 <p>
 A semi-analytical galaxy formation code created by Eyal Neistein and Simone Weinmann.<br/>
 Ref: <a href="http://xxx.lanl.gov/abs/0911.3147" target="_blank">http://xxx.lanl.gov/abs/0911.3147</a>.
   </p>
-<button onclick="window.location='./apps/SeSAM/input.jsp'">Go</button>
+<button onclick="window.location='./SeSAM.do?action=input'">Go</button>
 
 <jsp:include page="footer.jsp" flush="false" />
