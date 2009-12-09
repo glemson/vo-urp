@@ -7,17 +7,17 @@ sigma8		        0.9
 gamma		        -1  
 % baryonic recipes 
 f_s       ___f_s_0___ ___f_s_1___ ___f_s_2___ ___f_s_3___ ___f_s_4___ ___f_s_5___
-fs_file 		-1      
+fs_file 		###fs_file###
 f_d       ___f_d_0___ ___f_d_1___ ___f_d_2___ ___f_d_3___ ___f_d_4___ ___f_d_5___
-fd_file			-1     
+fd_file		###fd_file###
 f_c       ___f_c_0___ ___f_c_1___ ___f_c_2___ ___f_c_3___ ___f_c_4___ ___f_c_5___
-fc_file        ___fc_file___
+fc_file        	###fc_file###
 f_e       ___f_e_0___ ___f_e_1___ ___f_e_2___ ___f_e_3___ ___f_e_4___ ___f_e_5___
 f_r       ___f_r_0___ ___f_r_1___ ___f_r_2___ ___f_r_3___ ___f_r_4___ ___f_r_5___
 f_ac       ___f_ac_0___ ___f_ac_1___ ___f_ac_2___
 f_ah       ___f_ah_0___ ___f_ah_1___ ___f_ah_2___
 ac_thres   0 0 0 0 0
-mcrit_sf   ___mcrit_sf_0___ ___mcrit_sf_1___ ___mcrit_sf_2___ 
+mcrit_sf   ___mcrit_sf_0___ ___mcrit_sf_1___ ___mcrit_sf_2___ ___mcrit_sf_3___ ___mcrit_sf_4___ 
 mcrit_file		-1   
 halo_thresh  ___halo_thresh_0___ ___halo_thresh_1___
 alpha_c		        ___alpha_c___ 
