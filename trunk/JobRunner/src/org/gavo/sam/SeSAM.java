@@ -8,7 +8,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -23,6 +25,7 @@ import org.ivoa.util.runner.RunState;
 import org.ivoa.web.servlet.JobServlet;
 import org.ivoa.web.servlet.JobStateException;
 
+import org.gavo.sam.Model.Parameter;
 
 public class SeSAM extends JobServlet {
 
@@ -33,27 +36,30 @@ public class SeSAM extends JobServlet {
   public static final String MAIN_TASK = "main";
   public static final String PLOT_TASK = "plot";
   public static final String PARAMETER_FILE ="esam_params";
-  public static final String FREE_PARAM_DELIMITER = "___";
-  public static final String FIXED_PARAM_DELIMITER = "%%%";
+//  public static final String FREE_PARAM_DELIMITER = "___";
+//  public static final String FIXED_PARAM_DELIMITER = "%%%";
 
-  public static final String PARAM_fc_file = "fc_file";
-  public static final String PARAM_fc_file_upload = "upload";
-  public static final String PARAM_fc_file_default = "default";
-  private String DEFAULT_fc_file;
-  
+  public static final String INPUT_MODEL = "model";
+  public static final String INPUT_MODEL_current = "currentmodel";
+  public static final String INPUT_PARAMETERS = "parameters";
   
   /* members */
   private String paramtemplate;
-  private List<String> freeParameters;
-  private Hashtable<String, String> specialParameters = new Hashtable<String, String>();
+  private LinkedHashMap<String, Parameter> freeParameters;
+//  private Hashtable<String, String> specialParameters = new Hashtable<String, String>();
   
   private String inputDir;
   private String treesDir;
   private String bc03Dir;
+  private String modelsDir;
   private String executable;
   private String plotCommand;
   private String plotScript;
 
+  // ~ using Model
+  private SeSAMModel model;
+  private Hashtable<String, Map<String, String>> defaultModels;
+  
   @Override
   protected void initialiseMainJob(RootContext rootCtx, HttpServletRequest request) throws JobStateException {
     try {
@@ -67,8 +73,8 @@ public class SeSAM extends JobServlet {
   private String[] prepareMainTask(final String workDir, HttpServletRequest req) throws IOException {
     String parameters = paramtemplate;
     String value;
-    for (String param : freeParameters) {
-      value = req.getParameter(param);
+    for (Parameter param : freeParameters.values()) {
+      value = req.getParameter(param.name);
 
       if (JavaUtils.isEmpty(value)) {
         if (log.isWarnEnabled()) {
@@ -77,12 +83,14 @@ public class SeSAM extends JobServlet {
       } else {
         // TODO validate
     	  
-    	if(PARAM_fc_file.equals(param))
-    	{
-    		if(PARAM_fc_file_default.equals(value))
-    			value = DEFAULT_fc_file;
-    	}
-    	parameters = parameters.replaceAll(FREE_PARAM_DELIMITER + param + FREE_PARAM_DELIMITER, value);
+          if(param.datatype == Datatype._file)
+          {
+        	  if(!"-1".equals(value))
+        		  value=modelsDir+"/"+value+"/"+param.name;
+        	  parameters = parameters.replaceAll(SeSAMModel.FILE_PARAM_DELIMITER + param.name + SeSAMModel.FILE_PARAM_DELIMITER, value);
+          } else {
+        	  parameters = parameters.replaceAll(SeSAMModel.FREE_PARAM_DELIMITER + param.name + SeSAMModel.FREE_PARAM_DELIMITER, value);
+          }
       }
 
     }
@@ -95,7 +103,7 @@ public class SeSAM extends JobServlet {
       log.debug("workDir repl :" + workDir);
     }
 
-    parameters = parameters.replaceAll(FIXED_PARAM_DELIMITER + "workingDir" + FIXED_PARAM_DELIMITER, wd);
+    parameters = parameters.replaceAll(SeSAMModel.FIXED_PARAM_DELIMITER + "workingDir" + SeSAMModel.FIXED_PARAM_DELIMITER, wd);
 
     File w = new File(workDir);
     if(!w.exists())
@@ -142,20 +150,38 @@ public class SeSAM extends JobServlet {
 
     return page;
   }
+  @Override
+  protected String showInput(final HttpServletRequest request) {
+	  String m = getStringParameter(request, INPUT_MODEL_current);
+	  if(m == null || m.trim().length() ==0)
+		  m = "standard";
+	  
+	  Map<String,String> p = this.model.getDefaultModel(m);
+	  if(p == null)
+		  p = new Hashtable<String,String>();
+	  request.setAttribute(INPUT_PARAMETERS, p);
+	  request.setAttribute(INPUT_MODEL_current, m);
+	  request.setAttribute(INPUT_MODEL, model);
+	  return getApplicationFolder() + "input.jsp";
+  }
 
   @Override
   public void init(ServletConfig config) throws ServletException {
     super.init(config);
     //File
+    try
+    {
     String file = FileManager.LEGACYAPPS + "/" + name + "/" + config.getInitParameter("parameterfile.template");
     inputDir = FileManager.LEGACYAPPS + "/" + name + "/" ;
     executable = FileManager.LEGACYAPPS + "/" + name + "/" + config.getInitParameter("executable");
     treesDir = config.getInitParameter("treesDir");
     bc03Dir = config.getInitParameter("bc03Dir");
+    modelsDir = FileManager.LEGACYAPPS + "/" + name + "/" + config.getInitParameter("models.dir");
 
-    DEFAULT_fc_file = inputDir+config.getInitParameter("fc_file");
+    model = new SeSAMModel(file);
+    model.instantiateModels(modelsDir);
     
-    
+/*    
     StringBuilder sb = new StringBuilder();
     try {
       BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -168,31 +194,37 @@ public class SeSAM extends JobServlet {
       // TODO do something or initialise differently ?
       throw new ServletException(e);
     }
-    paramtemplate = sb.toString();
-    paramtemplate = paramtemplate.replaceAll(FIXED_PARAM_DELIMITER + "treesDir" + FIXED_PARAM_DELIMITER, treesDir);
-    paramtemplate = paramtemplate.replaceAll(FIXED_PARAM_DELIMITER + "bc03Dir" + FIXED_PARAM_DELIMITER, bc03Dir);
-    paramtemplate = paramtemplate.replaceAll(FIXED_PARAM_DELIMITER + "inputDir" + FIXED_PARAM_DELIMITER, inputDir);
-    int index1 = 0;
-    freeParameters = new ArrayList<String>();
-    while (true) {
-      index1 = paramtemplate.indexOf(FREE_PARAM_DELIMITER, index1);
-      if (index1 == -1) {
-        break;
-      }
-      index1 += FREE_PARAM_DELIMITER.length(); // TODO optimize
-      int index2 = paramtemplate.indexOf(FREE_PARAM_DELIMITER, index1);
-      String param = paramtemplate.substring(index1, index2);
-      freeParameters.add(param);
-      index1 = index2 + FREE_PARAM_DELIMITER.length();// TODO optimize
+    */
+    paramtemplate = model.paramTemplate;
+    paramtemplate = paramtemplate.replaceAll(SeSAMModel.FIXED_PARAM_DELIMITER + "treesDir" + SeSAMModel.FIXED_PARAM_DELIMITER, treesDir);
+    paramtemplate = paramtemplate.replaceAll(SeSAMModel.FIXED_PARAM_DELIMITER + "bc03Dir" + SeSAMModel.FIXED_PARAM_DELIMITER, bc03Dir);
+    paramtemplate = paramtemplate.replaceAll(SeSAMModel.FIXED_PARAM_DELIMITER + "inputDir" + SeSAMModel.FIXED_PARAM_DELIMITER, inputDir);
+
+    freeParameters = new LinkedHashMap<String, Parameter>();
+    for(Parameter p : model.parameters.values()) {
+    	if(p.isGroup())
+    	{
+    		for(Parameter gp : p.group)
+    	    	if(!gp.isFixed)
+    	    		freeParameters.put(gp.name, gp);
+    	}
+    	else if(!p.isFixed)
+    		freeParameters.put(p.name, p);
     }
-    
     
     
     plotCommand = config.getInitParameter("plotCommand");
     plotScript = FileManager.LEGACYAPPS + "/" + name + "/" + config.getInitParameter("plotScript");
-
+    }
+    catch(Throwable t)
+    {
+    	t.printStackTrace();
+    }
   }
 
+
+  
+  
   /**
    * Perform the event from the given run context
    * @param rootCtx root context

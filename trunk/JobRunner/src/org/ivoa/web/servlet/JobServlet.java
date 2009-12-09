@@ -27,6 +27,7 @@ public class JobServlet extends BaseServlet implements JobListener {
   /** serial UID for Serializable interface */
   private static final long serialVersionUID = 1L;
   // actions :
+  public static final String ACTION_SHOW_INPUT = "input";
   public static final String ACTION_START_JOB = "start";
   public static final String ACTION_SHOW_JOB = "detail";
   public static final String ACTION_CANCEL_JOB = "cancel";
@@ -97,7 +98,9 @@ public class JobServlet extends BaseServlet implements JobListener {
 
     String view = null;
     try {
-      if (ACTION_START_JOB.equals(action)) {
+    	if(ACTION_SHOW_INPUT.equals(action))
+            view = showInput(request);
+        else if (ACTION_START_JOB.equals(action)) {
     	  String baseWorkDir = FileManager.getUserRunnerFolder(user).getAbsolutePath().replace('\\', '/');
         final String workDir = createWorkingDirectory(baseWorkDir) + "/";
 
@@ -212,6 +215,9 @@ public class JobServlet extends BaseServlet implements JobListener {
     request.setAttribute("runContext", runCtx);
 
     return getApplicationFolder() + "detail.jsp";
+  }
+  protected String showInput(final HttpServletRequest request) {
+	    return getApplicationFolder() + "input.jsp";
   }
 
   protected void initialiseMainJob(RootContext rootCtx, HttpServletRequest request) throws JobStateException {
