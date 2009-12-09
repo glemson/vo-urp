@@ -110,6 +110,10 @@
       <param-value>sesam_params.template</param-value>
     </init-param>
     <init-param>
+      <param-name>models.dir</param-name>
+      <param-value>models</param-value>
+    </init-param>
+    <init-param>
       <param-name>treesDir</param-name>
       <param-value>e:/data/millimil/treedata/</param-value>
     </init-param>
