@@ -23,10 +23,10 @@
 
     Output : <br/><br/>
     
-	<% if( ((RootContext) request.getAttribute("runContext")).getRing()) != null) {
+	<% if( ((RootContext) request.getAttribute("runContext")).getRing() != null) {
 		((RootContext) request.getAttribute("runContext")).getRing().getContent("", "<br/>\n");
 		}%>    
-	}
+	
 <% if(state==RunState.STATE_FINISHED_OK) { %>
   <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/fig1.png"/>
   <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/fig2_1.png"/>
