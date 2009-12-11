@@ -102,8 +102,10 @@ public class JobServlet extends BaseServlet implements JobListener {
             view = showInput(request);
         else if (ACTION_START_JOB.equals(action)) {
     	  String baseWorkDir = FileManager.getUserRunnerFolder(user).getAbsolutePath().replace('\\', '/');
-        final String workDir = createWorkingDirectory(baseWorkDir) + "/";
-
+          String workDir = createWorkingDirectory(baseWorkDir);
+          if(!workDir.endsWith("/"))
+        	  workDir = workDir+"/";
+          
         // TBD next commented out, should be performed in initialisation of main job
         // final String[] command = prepareJobParameters(workDir, request);
 
@@ -181,6 +183,10 @@ public class JobServlet extends BaseServlet implements JobListener {
     // create the execution context :
     // TODO : manage the writeLogFile absolute file path :
     final RootContext rootCtx = LocalLauncher.prepareMainJob(getName(), request.getRemoteUser(), workDir, null);
+    String relativePath = workDir.replaceFirst(FileManager.getRunnerFolder().getAbsolutePath().replace('\\', '/'), "");
+    while(relativePath.startsWith("/")) // TODO fix this hack
+      relativePath = relativePath.substring(1);
+    rootCtx.setRelativePath(relativePath);
 
     initialiseMainJob(rootCtx, request);// includes if necessary adding first child to main and preparing
 
@@ -235,10 +241,10 @@ public class JobServlet extends BaseServlet implements JobListener {
     if ((rootCtx.getState() == RunState.STATE_FINISHED_ERROR) || (rootCtx.getState() == RunState.STATE_FINISHED_OK)) {
       String sourceDir = rootCtx.getWorkingDir();
       String relativePath = sourceDir.replaceFirst(FileManager.RUNNER, "");
+      relativePath = rootCtx.getRelativePath();
       String targetDir = FileManager.ARCHIVE + relativePath;
 
       FileManager.moveDir(sourceDir, targetDir);
-      rootCtx.setRelativePath(relativePath);
     } else if((rootCtx.getState() == RunState.STATE_KILLED) || (rootCtx.getState() == RunState.STATE_CANCELLED))
     {
     	File workingDir = new File(rootCtx.getWorkingDir());
@@ -278,12 +284,9 @@ public class JobServlet extends BaseServlet implements JobListener {
    * @throws IOException if mkdirs failed
    */
   protected final String createWorkingDirectory(final String baseWorkDir) throws IOException {
-//    	return baseWorkDir;
-    long jobId = System.currentTimeMillis(); //java.util.UUID.randomUUID().toString();
-    String workDir = baseWorkDir + "/" + getName() + "/" + jobId;
 
     String jobUUID = java.util.UUID.randomUUID().toString();
-    workDir = baseWorkDir + "/" + jobUUID;
+    final String workDir = baseWorkDir + (baseWorkDir.endsWith("/")?"":"/") + jobUUID;
     
     File dir = new File(workDir);
     if (!dir.exists()) {
