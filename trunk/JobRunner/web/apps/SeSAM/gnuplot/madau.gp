@@ -26,7 +26,7 @@ set logscale y
 
 
 
-set terminal png
+set terminal png size 400,300
 #set output "madau.png"
 set output "fig3.png"
 

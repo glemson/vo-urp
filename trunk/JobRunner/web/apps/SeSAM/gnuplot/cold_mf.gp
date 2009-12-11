@@ -25,7 +25,7 @@ set xrange [8:11.5]
 # set logscale x
 
 
-set terminal png
+set terminal png size 400,300
 #set output "gas_mf.png"
 set output "fig1.png"
 
