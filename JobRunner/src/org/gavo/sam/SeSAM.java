@@ -98,7 +98,9 @@ public class SeSAM extends JobServlet {
       log.debug("workDir :" + workDir);
     }
 
-    final String wd = workDir.replace('\\', '/');
+    String wd = workDir.replace('\\', '/');
+    wd = workDir.replaceAll("[/]+","/");
+    
     if (log.isDebugEnabled()) {
       log.debug("workDir repl :" + workDir);
     }
@@ -234,6 +236,8 @@ public class SeSAM extends JobServlet {
   @Override
   public boolean performTaskDone(final RootContext rootCtx, final RunContext runCtx) {
     boolean ok = true;
+    if(log.isInfoEnabled())
+    	log.info("SeSAM.performTaskDone : "+rootCtx);
     if (MAIN_TASK.equals(runCtx.getName())) {
       //TODO add plotting tasks
       if (runCtx.getState() == RunState.STATE_FINISHED_OK) {
