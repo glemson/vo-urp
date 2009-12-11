@@ -25,7 +25,7 @@ set logscale y
 
 
 
-set terminal png
+set terminal png size 400,300
 #set output "gsmf0.png"
 set output "fig2_1.png"
 

@@ -24,7 +24,7 @@ set xrange [9:12]
 # set logscale x
 
 
-set terminal png
+set terminal png size 400,300
 # set terminal postscript eps enhanced
 #set output "ssfr.png"
 set output "fig4.png"
