@@ -1,7 +1,7 @@
 
 
 r<-read.csv("madau_diagram",col.names=c("redshift","SFR"),header=TRUE)
-png("madau_diagram.png")
+png("fig1.png")
 plot(r$redshift, r$SFR, type="l",xlab="redshift",ylab="SFR")
 dev.off()
 
