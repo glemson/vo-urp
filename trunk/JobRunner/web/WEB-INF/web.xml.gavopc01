@@ -123,12 +123,13 @@
     </init-param>
     <init-param>
       <param-name>plotCommand</param-name>
-<!--      <param-value>C:/R-2.8.0/bin/Rcmd.exe BATCH no-save :SCRIPT:  Rplot.log</param-value>  -->
-      <param-value>C:/software/GnuPlot/gnuplot/bin/pgnuplot.exe :SCRIPT:</param-value> 
+     <param-value>C:/R-2.8.0/bin/Rcmd.exe BATCH no-save :SCRIPT:  Rplot.log</param-value> 
+<!--      <param-value>C:/software/GnuPlot/gnuplot/bin/pgnuplot.exe :SCRIPT:</param-value> --> 
     </init-param>
     <init-param>
       <param-name>plotScript</param-name>
-      <param-value>plot_all.gp</param-value>
+<!--      <param-value>plot_all.gp</param-value>  -->
+      <param-value>plot.r</param-value>
     </init-param>
     <load-on-startup>10</load-on-startup>
   </servlet>
