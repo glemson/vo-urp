@@ -32,7 +32,7 @@ import javax.persistence.Transient;
 @DiscriminatorValue("RootContext")
 @NamedQueries({
   @NamedQuery(name = "RootContext.findPendingByName", query = "SELECT o FROM RootContext o WHERE o.state = :state and o.name = :name"),
-  @NamedQuery(name = "RootContext.findAllByOwner", query = "SELECT o FROM RootContext o WHERE o.owner = :owner")
+  @NamedQuery(name = "RootContext.findAllByOwner", query = "SELECT o FROM RootContext o WHERE o.owner = :owner order by o.creationDate desc")
 })
 public final class RootContext extends RunContext implements Iterator<RunContext> {
   //~ Constants --------------------------------------------------------------------------------------------------------

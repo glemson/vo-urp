@@ -11,20 +11,27 @@ import="org.ivoa.util.runner.*"%>
 	<br/><br/>
 
 <c:if test="${!empty requestScope.queue}">
-
+<table>
+<tr><th>Job</th><th>id</th><th>state</th><th>Date</th><th></th><th/><th/></tr>
 	<c:forEach var="ctx" items="${requestScope.queue}">
 	<c:if test="${user == ctx.owner}">
-		Job : ${ctx.name} [${ctx.id}] - ${ctx.state} - ${ctx.owner} - [${ctx.creationDateFormatted} ]
-		- <a href="${ctx.name}.do?action=detail&id=${ctx.id}">job detail</a>
+<tr><td>${ctx.name}</td><td>${ctx.id}</td><td>${ctx.state}</td><td>${ctx.creationDateFormatted}</td>
+<td>
+<a href="${ctx.name}.do?action=detail&id=${ctx.id}">job detail</a></td>
+<td>
     <c:if test="${ctx.pending}">
-    - <a href="${ctx.name}.do?action=cancel&id=${ctx.id}">cancel job</a>
+    <a href="${ctx.name}.do?action=cancel&id=${ctx.id}">cancel job</a>
     </c:if>
+    </td><td>
     <c:if test="${ctx.running}">
-    - <a href="${ctx.name}.do?action=kill&id=${ctx.id}">kill job</a>
+    <a href="${ctx.name}.do?action=kill&id=${ctx.id}">kill job</a>
     </c:if>
-         <br/>
-</c:if>		
+</td>
+</tr>
+</c:if>
 	</c:forEach>
+</table>
+
 
 </c:if>
 </p>	

@@ -22,7 +22,8 @@
     ${requestScope.title} :
   </h1>
 
-  <p>Go to: <a href="${pageContext.request.contextPath}/index.jsp" title="go to Index"><b>Index</b></a> 
+  <p>Go to: <a href="${pageContext.request.contextPath}/index.jsp" title="go to Main"><b>Main</b></a> 
   - <a href="javascript:history.go(-1)" title="go back"><b>Previous Page</b></a>
   - <a href="Jobs.do?action=list"><b>Job Queue</b></a>
+  - <a href="Jobs.do?action=history"><b>History</b></a>
   </p>

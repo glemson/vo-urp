@@ -66,23 +66,22 @@ Select a model :
 <table>
 <tr>
 <td >f_s</td>
-<td> 
-<input type="text" name="f_s_0" value="<%= parameters.get("f_s_0") %>"/><br/> 
-<input type="text" name="f_s_1" value="<%= parameters.get("f_s_1") %>"/><br/> 
-<input type="text" name="f_s_2" value="<%= parameters.get("f_s_2") %>"/><br/> 
-<input type="text" name="f_s_3" value="<%= parameters.get("f_s_3") %>"/><br/> 
-<input type="text" name="f_s_4" value="<%= parameters.get("f_s_4") %>"/><br/> 
-<input type="text" name="f_s_5" value="<%= parameters.get("f_s_5") %>"/>
+<td nowrap> 
+<input type="text" name="f_s_0" value="<%= parameters.get("f_s_0") %>" class="number"/>&nbsp;
+<input type="text" name="f_s_1" value="<%= parameters.get("f_s_1") %>"  class="number"/>&nbsp;
+<input type="hidden" name="f_s_2" value="<%= parameters.get("f_s_2") %>"/><!-- <br/>  --> 
+<input type="text" name="f_s_3" value="<%= parameters.get("f_s_3") %>"  class="number"/><!-- <br/>  --> 
+<input type="hidden" name="f_s_4" value="<%= parameters.get("f_s_4") %>"/><!-- <br/>  --> 
+<input type="hidden" name="f_s_5" value="<%= parameters.get("f_s_5") %>"/>
 </td> 
-<td >SF efficiency: <br/>
-f_s = 10<sup>f_s[0]+f_s[1]*logM+f_s*(logM)<sup>2</sup></sup>  t<sup>f_s[3]</sup><br/>
+<td >SF efficiency: f_s = 10<sup>f_s[0]+f_s[1]*logM+f_s*(logM)<sup>2</sup></sup>  t<sup>f_s[2]</sup><br/>
 M is in units of M<sub>sun</sub>/h <br/>
 t is in units of Gyr </td> 
 </tr>
 <tr>
 <td>fs_file</td>
 <td> 
-<select name="fs_file">
+<select name="fs_file" class="dropdown">
 <% 
 p = theModel.parameters.get("fs_file");
 if(p != null && p.datatype == Datatype._file && p.possibleValues != null) {
@@ -94,28 +93,27 @@ if(p != null && p.datatype == Datatype._file && p.possibleValues != null) {
 </select>
 <br/>
 </td> 
-<td>(In the future:) File containing cooling efficiencies. Choosing "-1" will use
+<td>File containing cooling efficiencies. Choosing "-1" will use
 the values in f_s.
 </td>
 </tr>
 <tr>
 <td>f_d</td>
-<td> 
-<input type="text" name="f_d_0" value="<%= parameters.get("f_d_0") %>"/><br/>
-<input type="text" name="f_d_1" value="<%= parameters.get("f_d_1") %>"><br/>
-<input type="text" name="f_d_2" value="<%= parameters.get("f_d_2") %>"><br/>
-<input type="text" name="f_d_4" value="<%= parameters.get("f_d_3") %>"><br/>
-<input type="text" name="f_d_3" value="<%= parameters.get("f_d_4") %>"><br/>
-<input type="text" name="f_d_5" value="<%= parameters.get("f_d_5") %>">
+<td nowrap> 
+<input type="text" name="f_d_0" value="<%= parameters.get("f_d_0") %>" class="number"/>&nbsp;
+<input type="text" name="f_d_1" value="<%= parameters.get("f_d_1") %>" class="number"/>&nbsp;
+<input type="hidden" name="f_d_2" value="<%= parameters.get("f_d_2") %>"><!-- <br/>  -->
+<input type="text" name="f_d_3" value="<%= parameters.get("f_d_3") %>" class="number"/><!-- <br/>  -->
+<input type="hidden" name="f_d_4" value="<%= parameters.get("f_d_4") %>"/><!-- <br/>  -->
+<input type="hidden" name="f_d_5" value="<%= parameters.get("f_d_5") %>"/>
 <br/>
 </td> 
-<td >Feedback efficiency: <br/>
-f_d = f_d[0] (M/10<sup>10</sup>)<sup>f_d[1]</sup>  t<sup>f_d[3]</sup> </td> 
+<td >Feedback efficiency: f_d = f_d[0] (M/10<sup>10</sup>)<sup>f_d[1]</sup>  t<sup>f_d[2]</sup> </td> 
 </tr>
 <tr>
 <td>fd_file</td>
 <td> 
-<select name="fd_file">
+<select name="fd_file" class="dropdown">
 <% 
 p = theModel.parameters.get("fd_file");
 if(p != null && p.datatype == Datatype._file && p.possibleValues != null) {
@@ -127,28 +125,27 @@ if(p != null && p.datatype == Datatype._file && p.possibleValues != null) {
 </select>
 <br/>
 </td> 
-<td>(In the future:) File containing cooling efficiencies. Choosing "-1" will use
+<td>File containing cooling efficiencies. Choosing "-1" will use
 the values in f_d.
 </td>
 </tr>
 <tr>
 <td>f_c</td>
-<td> 
-<input type="text" name="f_c_0" value="<%= parameters.get("f_c_0") %>"/><br/>
-<input type="text" name="f_c_1" value="<%= parameters.get("f_c_1") %>"/><br/>
-<input type="text" name="f_c_2" value="<%= parameters.get("f_c_2") %>"/><br/>
-<input type="text" name="f_c_3" value="<%= parameters.get("f_c_3") %>"/><br/>
-<input type="text" name="f_c_4" value="<%= parameters.get("f_c_4") %>"/><br/>
-<input type="text" name="f_c_5" value="<%= parameters.get("f_c_5") %>"/>
+<td nowrap> 
+<input type="text" name="f_c_0" value="<%= parameters.get("f_c_0") %>" class="number"/>&nbsp;
+<input type="text" name="f_c_1" value="<%= parameters.get("f_c_1") %>" class="number"/>&nbsp;
+<input type="hidden" name="f_c_2" value="<%= parameters.get("f_c_2") %>"/><!-- <br/>  -->
+<input type="text" name="f_c_3" value="<%= parameters.get("f_c_3") %>" class="number"/><!-- <br/>  -->
+<input type="hidden" name="f_c_4" value="<%= parameters.get("f_c_4") %>"/><!-- <br/>  -->
+<input type="hidden" name="f_c_5" value="<%= parameters.get("f_c_5") %>"/>
 <br/>
 </td> 
-<td>Cooling efficiency: <br/>
-f_c = 10<sup>f_c[0]+f_c[1]*logM+f_c*(logM)<sup>2</sup></sup>  t<sup>f_c[3]</sup> </td> 
+<td>Cooling efficiency: f_c = 10<sup>f_c[0]+f_c[1]*logM+f_c*(logM)<sup>2</sup></sup>  t<sup>f_c[2]</sup> </td> 
 </tr>
 <tr>
 <td>fc_file</td>
 <td> 
-<select name="fc_file">
+<select name="fc_file" class="dropdown">
 <% 
 p = theModel.parameters.get("fc_file");
 if(p != null && p.datatype == Datatype._file && p.possibleValues != null) {
@@ -160,80 +157,75 @@ if(p != null && p.datatype == Datatype._file && p.possibleValues != null) {
 </select>
 <br/>
 </td> 
-<td>(In the future:) File containing cooling efficiencies. Choosing "-1" will use
+<td>File containing cooling efficiencies. Choosing "-1" will use
 the values in f_c.
 </td>
 </tr>
 <tr>
 <td>f_e</td>
 <td> 
-<input type="text" name="f_e_0" value="<%= parameters.get("f_e_0") %>"/><br/>
-<input type="text" name="f_e_1" value="<%= parameters.get("f_e_1") %>"/><br/>
-<input type="text" name="f_e_2" value="<%= parameters.get("f_e_2") %>"/><br/>
-<input type="text" name="f_e_3" value="<%= parameters.get("f_e_3") %>"/><br/>
-<input type="text" name="f_e_4" value="<%= parameters.get("f_e_4") %>"/><br/>
-<input type="text" name="f_e_5" value="<%= parameters.get("f_e_5") %>"/>
+<input type="text" name="f_e_0" value="<%= parameters.get("f_e_0") %>" class="number"/>&nbsp;
+<input type="text" name="f_e_1" value="<%= parameters.get("f_e_1") %>" class="number"/>&nbsp;
+<input type="hidden" name="f_e_2" value="<%= parameters.get("f_e_2") %>"/><!-- <br/>  -->
+<input type="text" name="f_e_3" value="<%= parameters.get("f_e_3") %>" class="number"/>&nbsp;
+<input type="text" name="f_e_4" value="<%= parameters.get("f_e_4") %>" class="number"/><!-- <br/>  -->
+<input type="hidden" name="f_e_5" value="<%= parameters.get("f_e_5") %>"/>
 <br/>
 </td> 
-<td>Ejection efficiency: <br/>
-f_e = f_e[0] (M/10<sup>10</sup>)<sup>f_e[1]</sup>  t<sup>f_e[3]</sup> - f_e[4] <br/>
+<td>Ejection efficiency: f_e = f_e[0] (M/10<sup>10</sup>)<sup>f_e[1]</sup>  t<sup>f_e[2]</sup> - f_e[3] <br/>
 If f_e==-1 Then set f_e=f_d</td> 
 </tr>
 <tr>
 <td>f_r</td>
-<td> 
-<input type="text" name="f_r_0" value="<%= parameters.get("f_r_0") %>"/><br/>
-<input type="text" name="f_r_1" value="<%= parameters.get("f_r_1") %>"/><br/>
-<input type="text" name="f_r_2" value="<%= parameters.get("f_r_2") %>"/><br/>
-<input type="text" name="f_r_3" value="<%= parameters.get("f_r_3") %>"/><br/>
-<input type="text" name="f_r_4" value="<%= parameters.get("f_r_4") %>"/><br/>
-<input type="text" name="f_r_5" value="<%= parameters.get("f_r_5") %>"/>
+<td nowrap> 
+<input type="text" name="f_r_0" value="<%= parameters.get("f_r_0") %>" class="number"/>&nbsp;
+<input type="text" name="f_r_1" value="<%= parameters.get("f_r_1") %>" class="number"/>&nbsp;
+<input type="hidden" name="f_r_2" value="<%= parameters.get("f_r_2") %>"/><!-- <br/>  -->
+<input type="text" name="f_r_3" value="<%= parameters.get("f_r_3") %>" class="number"/><!-- <br/>  -->
+<input type="hidden" name="f_r_4" value="<%= parameters.get("f_r_4") %>"/><!-- <br/>  -->
+<input type="hidden" name="f_r_5" value="<%= parameters.get("f_r_5") %>"/>
 <br/>
 </td> 
-<td>Reincorporation efficiency: <br/>
-f_r = f_r[0] (M/10<sup>10</sup>)<sup>f_r[1]</sup>  t<sup>f_r[3]</sup> </td> 
+<td>Reincorporation efficiency: f_r = f_r[0] (M/10<sup>10</sup>)<sup>f_r[1]</sup>  t<sup>f_r[2]</sup> </td> 
 </tr>
 <tr>
 <td>f_ac</td>
-<td> 
-<input type="text" name="f_ac_0" value="<%= parameters.get("f_ac_0") %>"/><br/>
-<input type="text" name="f_ac_1" value="<%= parameters.get("f_ac_1") %>"/><br/>
-<input type="text" name="f_ac_2" value="<%= parameters.get("f_ac_2") %>"/>
+<td nowrap> 
+<input type="text" name="f_ac_0" value="<%= parameters.get("f_ac_0") %>" class="number"/>&nbsp;
+<input type="text" name="f_ac_1" value="<%= parameters.get("f_ac_1") %>" class="number"/>&nbsp;
+<input type="text" name="f_ac_2" value="<%= parameters.get("f_ac_2") %>" class="number"/>
 <br/>
 </td> 
-<td>Cold accretion: <br/>
-f_ac = f_ac[0] t<sup>f_ac[1]</sup> </td> 
+<td>Cold accretion: f_ac = f_ac[0] t<sup>f_ac[1]</sup> </td> 
 </tr>
 <tr>
 <td>f_ah</td>
-<td> 
-<input type="text" name="f_ah_0" value="<%= parameters.get("f_ah_0") %>"/><br/>
-<input type="text" name="f_ah_1" value="<%= parameters.get("f_ah_1") %>"/><br/>
-<input type="text" name="f_ah_2" value="<%= parameters.get("f_ah_2") %>"/>
+<td nowrap> 
+<input type="text" name="f_ah_0" value="<%= parameters.get("f_ah_0") %>" class="number"/>&nbsp;
+<input type="text" name="f_ah_1" value="<%= parameters.get("f_ah_1") %>" class="number"/><!-- <br/>  -->
+<input type="hidden" name="f_ah_2" value="<%= parameters.get("f_ah_2") %>"/>
 <br/>
 </td> 
-<td>Hot accretion: <br/>
-f_ah = f_ah[0] t<sup>f_ah[1]</sup></td> 
+<td>Hot accretion: f_ah = f_ah[0] t<sup>f_ah[1]</sup></td> 
 </tr>
 <tr>
 <td>mcrit_sf</td>
-<td> 
-<input type="text" name="mcrit_sf_0" value="<%= parameters.get("mcrit_sf_0") %>"/><br/>
-<input type="text" name="mcrit_sf_1" value="<%= parameters.get("mcrit_sf_1") %>"/><br/>
-<input type="text" name="mcrit_sf_2" value="<%= parameters.get("mcrit_sf_2") %>"/><br/>
-<input type="text" name="mcrit_sf_3" value="<%= parameters.get("mcrit_sf_3") %>"/><br/>
-<input type="text" name="mcrit_sf_4" value="<%= parameters.get("mcrit_sf_4") %>"/>
+<td nowrap> 
+<input type="text" name="mcrit_sf_0" value="<%= parameters.get("mcrit_sf_0") %>" class="number"/>&nbsp;
+<input type="text" name="mcrit_sf_1" value="<%= parameters.get("mcrit_sf_1") %>" class="number"/>&nbsp;
+<input type="text" name="mcrit_sf_2" value="<%= parameters.get("mcrit_sf_2") %>" class="number"/>&nbsp;
+<input type="hidden" name="mcrit_sf_3" value="<%= parameters.get("mcrit_sf_3") %>"/><!-- <br/>  -->
+<input type="text" name="mcrit_sf_4" value="<%= parameters.get("mcrit_sf_4") %>" class="number"/>
 <br/>
 </td> 
-<td>Ciritical threshold for SF: <br/>
-mcrit_sf = 10<sup>mcrit_sf[0]</sup>  M<sup>mcrit_sf[1]</sup>  t <sup>mcrit_sf[2]</sup><br/>
-only works if mcrit_sf[4]==1 </td> 
+<td>Ciritical threshold for SF: mcrit_sf = 10<sup>mcrit_sf[0]</sup>  M<sup>mcrit_sf[1]</sup>  t <sup>mcrit_sf[2]</sup><br/>
+only works if mcrit_sf[3]==1 </td> 
 </tr>
 <tr>
 <td>halo_thresh</td>
 <td> 
-<input type="text" name="halo_thresh_0" value="<%= parameters.get("halo_thresh_0") %>"/><br/>
-<input type="text" name="halo_thresh_1" value="<%= parameters.get("halo_thresh_1") %>"/>
+<input type="text" name="halo_thresh_0" value="<%= parameters.get("halo_thresh_0") %>" class="number"/>&nbsp
+<input type="text" name="halo_thresh_1" value="<%= parameters.get("halo_thresh_1") %>" class="number"/>
 <br/>
 </td>
 <td>If (M>=halo_thresh[0] & t>halo_thresh[1]) Then: NO quiescent SF</td> 
@@ -241,14 +233,14 @@ only works if mcrit_sf[4]==1 </td>
 <tr>
 <td>alpha_c</td>
 <td>
-<input type="text" name="alpha_c" value="<%= parameters.get("alpha_c") %>"/>
+<input type="text" name="alpha_c" value="<%= parameters.get("alpha_c") %>" class="number"/>
 <br/>
 </td> 
 <td>Stripping coefficient for cold gas</td> 
 </tr>
 <tr>
 <td>alpha_h</td>
-<td ><input type="text" name="alpha_h" value="<%= parameters.get("alpha_c") %>"/>
+<td ><input type="text" name="alpha_h" value="<%= parameters.get("alpha_c") %>" class="number"/>
 <br/>
 </td>
 <td>Stripping coefficient for hot gas</td> 
@@ -256,7 +248,7 @@ only works if mcrit_sf[4]==1 </td>
 <tr>
 <td>hot2central</td>
 <td> 
-<select name="hot2central">
+<select name="hot2central" class="dropdown">
 <option  value="0" <%= ("0".equals(parameters.get("hot2central"))?"selected":"") %>/>0</option>
 <option  value="1" <%= ("1".equals(parameters.get("hot2central"))?"selected":"") %>/>1</option>
 </select>
@@ -267,7 +259,7 @@ only works if mcrit_sf[4]==1 </td>
 <tr>
 <td>negative_mass</td>
 <td> 
-<select name="negative_mass">
+<select name="negative_mass" class="dropdown">
 <option  value="0" <%= ("0".equals(parameters.get("negative_mass"))?"selected":"") %>/>0</option>
 <option  value="1" <%= ("1".equals(parameters.get("negative_mass"))?"selected":"") %>/>1</option>
 <option  value="2" <%= ("2".equals(parameters.get("negative_mass"))?"selected":"") %>/>2</option>
@@ -281,9 +273,9 @@ only works if mcrit_sf[4]==1 </td>
 <tr>
 <td>merge_coeff</td>
 <td> 
-<input type="text" name="merge_coeff_0" value="<%= parameters.get("merge_coeff_0") %>"/><br/>
-<input type="text" name="merge_coeff_1" value="<%= parameters.get("merge_coeff_1") %>"/><br/>
-<input type="text" name="merge_coeff_2" value="<%= parameters.get("merge_coeff_2") %>"/>
+<input type="text" name="merge_coeff_0" value="<%= parameters.get("merge_coeff_0") %>" class="number"/>&nbsp;
+<input type="text" name="merge_coeff_1" value="<%= parameters.get("merge_coeff_1") %>" class="number"/>&nbsp
+<input type="text" name="merge_coeff_2" value="<%= parameters.get("merge_coeff_2") %>" class="number"/>
 <br/>
 </td> 
 <td>burst efficiency: merge_coeff[0] (m2/m1)<sup>merge_coeff[1]</sup> <br/>
@@ -292,10 +284,10 @@ If (merge_coeff[2]>0 & M>merge_coeff[2]) Then burst efficiency is set to zero ;<
 <tr>
 <td>stam</td>
 <td> 
-<input type="text" name="stam_0" value="<%= parameters.get("stam_0") %>"/><br/>
-<input type="text" name="stam_1" value="<%= parameters.get("stam_1") %>"/><br/>
-<input type="text" name="stam_2" value="<%= parameters.get("stam_2") %>"/><br/>
-<input type="text" name="stam_3" value="<%= parameters.get("stam_3") %>"/>
+<input type="text" name="stam_0" value="<%= parameters.get("stam_0") %>" class="number"/>&nbsp;
+<input type="text" name="stam_1" value="<%= parameters.get("stam_1") %>" class="number"/>&nbsp;
+<input type="text" name="stam_2" value="<%= parameters.get("stam_2") %>" class="number"/>&nbsp;
+<input type="text" name="stam_3" value="<%= parameters.get("stam_3") %>" class="number"/>
 <br/>
 </td> 
 <td>If [m<sub>star</sub>[sat] / m<sub>cent</sub>[sat] >stam[0] & t>stam[1] & (m<sub>cold</sub>[sat]+m<sub>cold</sub>[cent]) / (m<sub>star</sub>[sat]+m<sub>star</sub>[cent]) > stam[2] ] Then if: <br/>
@@ -305,7 +297,7 @@ stam[3]==2 Shut-down cooling </td>
 <tr>
 <td>z_reion</td>
 <td >
-<input type="text" name="z_reion" value="<%= parameters.get("z_reion") %>"/>
+<input type="text" name="z_reion" value="<%= parameters.get("z_reion") %>" class="number"/>
 <br/>
 </td>
 <td>If (z>z_reion) Then:  f_s = 0; f_d = 0; f_c = 0; f_r = 0; f_e = 0; </td> 
@@ -313,17 +305,16 @@ stam[3]==2 Shut-down cooling </td>
 <tr>
 <td>dynf_t</td>
 <td>
-<input type="text" name="dynf_t_0" value="<%= parameters.get("dynf_t_0") %>"/><br/>
-<input type="text" name="dynf_t_1" value="<%= parameters.get("dynf_t_1") %>"/>
+<input type="text" name="dynf_t_0" value="<%= parameters.get("dynf_t_0") %>" class="number"/>&nbsp;
+<input type="text" name="dynf_t_1" value="<%= parameters.get("dynf_t_1") %>" class="number"/>
 <br/>
 </td> 
-<td>Dynamical friction time is multiplied by: <br/>
-dynf_t[0] (t/13.6)<sup>dynf_t[1]</sup> </td> 
+<td>Dynamical friction time is multiplied by: dynf_t[0] (t/13.6)<sup>dynf_t[1]</sup> </td> 
 </tr>
 <tr>
 <td>dynf_r</td>
 <td>
-<select name="dynf_r">
+<select name="dynf_r" class="dropdown">
 <option  value="0"/>0</option>
 <option  value="1"/>1</option>
 </select>
@@ -335,7 +326,7 @@ If 1: satellite distance from central is maximum r<sub>vir</sub> </td>
 <tr>
 <td>dynf_m</td>
 <td>
-<select name="dynf_m">
+<select name="dynf_m" class="dropdown">
 <option  value="0" <%= ("0".equals(parameters.get("dynf_m"))?"selected":"") %>/>0</option>
 <option  value="1" <%= ("1".equals(parameters.get("dynf_m"))?"selected":"") %>/>1</option>
 <option  value="2" <%= ("2".equals(parameters.get("dynf_m"))?"selected":"") %>/>2</option>
@@ -350,16 +341,15 @@ If 1: satellite distance from central is maximum r<sub>vir</sub> </td>
 <tr>
 <td>burst_time</td>
 <td>
-<input type="text" name="burst_time_0" value="<%= parameters.get("burst_time_0") %>"/><br/>
-<input type="text" name="burst_time_1" value="<%= parameters.get("burst_time_1") %>"/>
+<input type="text" name="burst_time_0" value="<%= parameters.get("burst_time_0") %>" class="number"/>&nbsp;
+<input type="text" name="burst_time_1" value="<%= parameters.get("burst_time_1") %>" class="number"/>
 <br/>
 </td> 
-<td>Burst dependence on time is gaussian with std of: <br/>
-burst_time[0]  (t/13.6)<sup>burst_time[1]</sup> <td> 
+<td>Burst dependence on time is gaussian with std of: burst_time[0]  (t/13.6)<sup>burst_time[1]</sup> <td> 
 </tr>
 <tr>
 <td>f_recycle</td> 
-<td ><input type="text" name="f_recycle" value="<%= parameters.get("f_recycle") %>"/>
+<td ><input type="text" name="f_recycle" value="<%= parameters.get("f_recycle") %>" class="number"/>
 <br/>
 </td>
 <td>Recycling factor</td> 
@@ -368,7 +358,7 @@ burst_time[0]  (t/13.6)<sup>burst_time[1]</sup> <td>
 
 
 </table>
-<input type="submit" name="GO" valuer="GO"/>
+<input type="submit" name="Submit" value="Submit"/>
 </form>
 
     
