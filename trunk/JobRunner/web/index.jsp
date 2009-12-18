@@ -2,7 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 <%@ taglib tagdir="/WEB-INF/tags" prefix="x" %>
 
-<c:set var="title" scope="request" value="Job Runner - Home" ></c:set>
+<c:set var="title" scope="request" value="Job Runner - Main" ></c:set>
 <c:set var="noLink" scope="request" value="1" ></c:set>
 
 <jsp:include page="header.jsp" flush="false"/>
@@ -12,12 +12,6 @@ These applications can be run remotely and asynchronously in a common batch queu
 The implementation is based on a version of Laurent Bourges' JobRunner, which can be found online in the
 <a href="http://code.google.com/p/vo-urp/" target="_blank">VO-URP</a> project in <a href="http://code.google.com/" target="_blank">GoogleCode</a>. 
 For descriptions of the individual applications click on the 'Go' button.
-</p>
-<p>
-To view your job history click <button onclick="window.location='Jobs.do?action=history'">Go</button>
-</p>
-<p>
-To view your jobs in the active queue click <button onclick="window.location='Jobs.do?action=list'">Go</button>
 </p>
 <h3>    <a href="./SeSAM.do?action=input">SeSAM</a> </h3>
 <p>

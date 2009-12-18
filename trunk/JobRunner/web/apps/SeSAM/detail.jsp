@@ -6,10 +6,12 @@
 
 <%@page import="org.ivoa.util.runner.RootContext"%>
 <%@page import="org.ivoa.util.runner.RunState"%>
-<c:set var="title" scope="request" value="Job Runner - Detail" ></c:set>
+<c:set var="title" scope="request" value="SeSAM - Detail" ></c:set>
 <%-- <c:set var="noLink" scope="request" value="0" ></c:set> --%>
 <jsp:include page="../../header.jsp" flush="false"/>
-
+<h2>
+ <a href="./SeSAM.do?action=input">SeSAM</a>
+</h2>
 <c:if test="${!empty requestScope.runContext}">
 
 <c:set var="ctx" value="${requestScope.runContext}" ></c:set>
@@ -23,9 +25,9 @@
 
     Output : <br/><br/>
     
-	<% if( ((RootContext) request.getAttribute("runContext")).getRing() != null) {
-		((RootContext) request.getAttribute("runContext")).getRing().getContent("", "<br/>\n");
-		}%>    
+	<% if( ((RootContext) request.getAttribute("runContext")).getRing() != null) { %>
+<%=	((RootContext) request.getAttribute("runContext")).getRing().getContent("","<br/>")   %>
+	<%	}%>    
 	
 <% if(state==RunState.STATE_FINISHED_OK) { %>
   <img src="${pageContext.request.contextPath}/Download.do/${ctx.relativePath}/fig1.png"/>

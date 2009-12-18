@@ -123,7 +123,7 @@
     </init-param>
     <init-param>
       <param-name>plotCommand</param-name>
-     <param-value>C:/R-2.8.0/bin/Rcmd.exe BATCH no-save :SCRIPT:  Rplot.log</param-value> 
+     <param-value>C:/R-2.8.0/bin/Rcmd.exe BATCH --no-save :SCRIPT:  Rplot.log</param-value> 
 <!--      <param-value>C:/software/GnuPlot/gnuplot/bin/pgnuplot.exe :SCRIPT:</param-value> --> 
     </init-param>
     <init-param>
