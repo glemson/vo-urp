@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.ivoa.runner.FileManager;
+import org.ivoa.util.FileUtils;
 import org.ivoa.util.JavaUtils;
 import org.ivoa.util.runner.LocalLauncher;
 import org.ivoa.util.runner.RootContext;
@@ -25,6 +26,7 @@ import org.ivoa.util.runner.RunState;
 import org.ivoa.web.servlet.JobServlet;
 import org.ivoa.web.servlet.JobStateException;
 
+import org.eclipse.persistence.tools.file.FileUtil;
 import org.gavo.sam.Model.Parameter;
 
 public class SeSAM extends JobServlet {
@@ -56,6 +58,7 @@ public class SeSAM extends JobServlet {
   private String plotCommand;
   private String plotScript;
 
+  private File readme;
   // ~ using Model
   private SeSAMModel model;
   private Hashtable<String, Map<String, String>> defaultModels;
@@ -175,6 +178,10 @@ public class SeSAM extends JobServlet {
     {
     String file = FileManager.LEGACYAPPS + "/" + name + "/" + config.getInitParameter("parameterfile.template");
     inputDir = FileManager.LEGACYAPPS + "/" + name + "/" ;
+    readme = new File(inputDir+"README.txt");
+    if(!readme.exists() || readme.isDirectory())
+    	readme = null;
+    // TODO check here?
     executable = FileManager.LEGACYAPPS + "/" + name + "/" + config.getInitParameter("executable");
     treesDir = config.getInitParameter("treesDir");
     bc03Dir = config.getInitParameter("bc03Dir");
@@ -258,6 +265,17 @@ public class SeSAM extends JobServlet {
     	for(File file : filesToDelete)
     	{
     		file.delete();
+    	}
+    	// copy README.txt
+    	if(readme != null)
+    	{
+    		try
+    		{
+    			FileUtils.copyFile(readme, new File(dir.getAbsolutePath()+"/README.txt"));
+    		} catch(IOException e){
+    			if(log.isWarnEnabled())
+    				log.warn("Failed copying README.txt file to working directory.");
+    		}
     	}
     }
     return ok;

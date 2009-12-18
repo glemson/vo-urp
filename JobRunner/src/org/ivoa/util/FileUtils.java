@@ -3,6 +3,8 @@ package org.ivoa.util;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,6 +13,7 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
+import java.nio.channels.FileChannel;
 
 import org.ivoa.bean.LogSupport;
 
@@ -296,6 +299,26 @@ public final class FileUtils extends LogSupport {
     }
 
     return null;
+  }
+  
+  public static void copyFile(File in, File out) 
+      throws IOException 
+  {
+      FileChannel inChannel = new
+          FileInputStream(in).getChannel();
+      FileChannel outChannel = new
+          FileOutputStream(out).getChannel();
+      try {
+          inChannel.transferTo(0, inChannel.size(),
+                  outChannel);
+      } 
+      catch (IOException e) {
+          throw e;
+      }
+      finally {
+          if (inChannel != null) inChannel.close();
+          if (outChannel != null) outChannel.close();
+      }
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
