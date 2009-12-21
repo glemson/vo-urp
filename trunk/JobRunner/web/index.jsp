@@ -13,7 +13,7 @@ The implementation is based on a version of Laurent Bourges' JobRunner, which ca
 <a href="http://code.google.com/p/vo-urp/" target="_blank">VO-URP</a> project in <a href="http://code.google.com/" target="_blank">GoogleCode</a>. 
 For descriptions of the individual applications click on the 'Go' button.
 </p>
-<h3>    <a href="./SeSAM.do?action=input">SeSAM</a> </h3>
+<h3><a href="http://www.mpa-garching.mpg.de/galform/sesam/" target="_blank">SeSAM</a> </h3>
 <p>
 A semi-analytical galaxy formation code created by Eyal Neistein and Simone Weinmann.<br/>
 Ref: <a href="http://xxx.lanl.gov/abs/0911.3147" target="_blank">http://xxx.lanl.gov/abs/0911.3147</a>.

@@ -52,6 +52,10 @@ Questions
  -->
 
 <!-- <a href="<%= request.getContextPath() %>/SeSAM.do?action=list">Job queue</a>  -->
+<p>
+This page allows you to run the SeSAM galaxy formation model on the milli-Millennium simulation.
+Please see the <a href="http://www.mpa-garching.mpg.de/galform/sesam/" target="_blank">portal page at MPA</a> for further documentation.
+</p>
 <br/>
 <form action="<%= request.getContextPath() %>/SeSAM.do?action=input" method="POST">
 Select a model : 

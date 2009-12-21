@@ -256,16 +256,6 @@ public class SeSAM extends JobServlet {
     } else if(PLOT_TASK.equals(runCtx.getName())) {
     	// clean up files created only for plotting
     	File dir = new File(runCtx.getWorkingDir());
-    	File[] filesToDelete = dir.listFiles(new FileFilter(){
-    		public boolean accept(File file) {
-				String name = file.getName();
-				return !(name.startsWith("catalog") || name.endsWith(".png") || PARAMETER_FILE.equals(name));
-			}
-    	});
-    	for(File file : filesToDelete)
-    	{
-    		file.delete();
-    	}
     	// copy README.txt
     	if(readme != null)
     	{
@@ -277,6 +267,30 @@ public class SeSAM extends JobServlet {
     				log.warn("Failed copying README.txt file to working directory.");
     		}
     	}
+    	
+    	// ZIP up contents of directory apart from figures. 
+    	// Depend on performJobDone in JobRunner servlet to copy all files to final archive.
+    	// ...
+    	File[] filesToCompress = dir.listFiles(new FileFilter(){
+    		public boolean accept(File file) {
+				String name = file.getName();
+				return (name.startsWith("catalog") || PARAMETER_FILE.equals(name));
+			}
+    	});
+    	final File zipFile = new File(dir.getAbsolutePath()+"/result.zip");
+    	FileUtils.compress(filesToCompress, zipFile);
+    	
+    	File[] filesToDelete = dir.listFiles(new FileFilter(){
+    		public boolean accept(File file) {
+				String name = file.getName();
+				return !(name.endsWith(".png") || file.equals(zipFile));
+			}
+    	});
+    	for(File file : filesToDelete)
+    	{
+    		file.delete();
+    	}
+
     }
     return ok;
   }
