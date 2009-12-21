@@ -14,6 +14,8 @@ import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
 import java.nio.channels.FileChannel;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.ivoa.bean.LogSupport;
 
@@ -320,6 +322,41 @@ public final class FileUtils extends LogSupport {
           if (outChannel != null) outChannel.close();
       }
   }
+  
+  public static void compress(File[] files, File outFile)
+  {
+    // Create a buffer for reading the files
+    byte[] buf = new byte[1024];
+    
+    try {
+        // Create the ZIP file
+        ZipOutputStream out = new ZipOutputStream(new FileOutputStream(outFile));
+	    
+	        // Compress the files
+	        for (int i=0; i<files.length; i++) {
+	            FileInputStream in = new FileInputStream(files[i]);
+	    
+	            // Add ZIP entry to output stream.
+	            out.putNextEntry(new ZipEntry(files[i].getName()));
+	    
+	            // Transfer bytes from the file to the ZIP file
+	            int len;
+	            while ((len = in.read(buf)) > 0) {
+	                out.write(buf, 0, len);
+	            }
+	    
+	            // Complete the entry
+	            out.closeEntry();
+	            in.close();
+	        }
+	    
+	        // Complete the ZIP file
+	        out.close();
+	    } catch (IOException e) {
+	    }
+	  
+  }
+  
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
 
