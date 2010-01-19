@@ -284,7 +284,7 @@ public class SeSAM extends JobServlet {
     	File[] filesToDelete = dir.listFiles(new FileFilter(){
     		public boolean accept(File file) {
 				String name = file.getName();
-				return !(name.endsWith(".png") || file.equals(zipFile) || PARAMETER_FILE.equals(name) || name.equalsIgnoreCase("README.txt"));
+				return !(name.endsWith(".png") || file.equals(zipFile) || PARAMETER_FILE.equals(name) );
 			}
     	});
     	for(File file : filesToDelete)
