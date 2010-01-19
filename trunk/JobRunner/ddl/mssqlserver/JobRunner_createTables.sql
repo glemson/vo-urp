@@ -1,4 +1,4 @@
--- last modification date of the script : 25 09 2009
+-- last modification date of the script : 21 12 2009
 
 
 -- ------------------------------------------------------------------------------
@@ -50,5 +50,21 @@ CREATE TABLE process_context (
 GO
 
 ALTER TABLE process_context ADD CONSTRAINT pk_process_context_ID PRIMARY KEY(ID);
+GO
+
+-- ------------------------------------------------------------------------------
+--  Table ParameterSetting
+-- ------------------------------------------------------------------------------
+CREATE TABLE parameter_setting (
+  ID BIGINT identity not null
+, containerId bigint not null
+, name VARCHAR(128) NOT NULL
+, value varchar(1024) not null
+);
+GO
+
+ALTER TABLE parameter_setting ADD CONSTRAINT pk_parameter_setting_ID PRIMARY KEY(ID);
+
+create index ix_parameter_setting_container on parameter_setting(containerId);
 GO
 

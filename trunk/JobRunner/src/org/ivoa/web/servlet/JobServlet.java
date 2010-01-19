@@ -2,6 +2,7 @@ package org.ivoa.web.servlet;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Enumeration;
 import java.util.List;
 
 import javax.servlet.ServletConfig;
@@ -14,6 +15,7 @@ import org.ivoa.runner.FileManager;
 import org.ivoa.util.JavaUtils;
 import org.ivoa.util.runner.JobListener;
 import org.ivoa.util.runner.LocalLauncher;
+import org.ivoa.util.runner.ParameterSetting;
 import org.ivoa.util.runner.RootContext;
 import org.ivoa.util.runner.RunContext;
 import org.ivoa.util.runner.RunState;
@@ -232,6 +234,7 @@ public class JobServlet extends BaseServlet implements JobListener {
 		// TODO : manage the writeLogFile absolute file path :
 		final RootContext rootCtx = LocalLauncher.prepareMainJob(getName(),
 				request.getRemoteUser(), workDir, null);
+		
 		String relativePath = workDir.replaceFirst(FileManager
 				.getRunnerFolder().getAbsolutePath().replace('\\', '/'), "");
 		while (relativePath.startsWith("/"))
@@ -282,6 +285,12 @@ public class JobServlet extends BaseServlet implements JobListener {
 
 	protected void initialiseMainJob(RootContext rootCtx,
 			HttpServletRequest request) throws JobStateException {
+		Enumeration<String> e = request.getParameterNames();
+		while(e.hasMoreElements())
+		{
+			String name = e.nextElement();
+			ParameterSetting p = new ParameterSetting(rootCtx, name, request.getParameter(name));
+		}
 	}
 
 	/**

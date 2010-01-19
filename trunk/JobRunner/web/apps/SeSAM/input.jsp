@@ -244,7 +244,7 @@ only works if mcrit_sf[3]==1 </td>
 </tr>
 <tr>
 <td>alpha_h</td>
-<td ><input type="text" name="alpha_h" value="<%= parameters.get("alpha_c") %>" class="number"/>
+<td ><input type="text" name="alpha_h" value="<%= parameters.get("alpha_h") %>" class="number"/>
 <br/>
 </td>
 <td>Stripping coefficient for hot gas</td> 

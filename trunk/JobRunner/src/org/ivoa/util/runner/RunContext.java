@@ -1,8 +1,12 @@
 package org.ivoa.util.runner;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
@@ -21,6 +25,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -125,6 +130,17 @@ public class RunContext implements Serializable, Cloneable {
   @Enumerated(EnumType.STRING)
   @Column(name = "state", nullable = true)
   private RunState state;
+  
+  /**
+   * Collection result :
+   * The collection of Snapshots that are the individual results as function of time of a Simulation or other SimDB Experiment.
+   * (
+   * Multiplicity : 0..*
+   * )
+   */
+   @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "container")
+   private List<ParameterSetting> parameters = null;
+
   /**
    * Ring Buffer for logs
    */
@@ -435,5 +451,21 @@ public class RunContext implements Serializable, Cloneable {
    */
   public final String getDescription() {
     return description;
+  }
+
+  public List<ParameterSetting> getParameters() {
+	return parameters;
+  }
+
+  public void setParameters(List<ParameterSetting> parameters) {
+	this.parameters = parameters;
+  }
+  
+  public void addParameter(ParameterSetting parameter)
+  {
+	if(parameters == null)
+		parameters = new ArrayList<ParameterSetting>();
+	parameters.add(parameter);
+	parameter.setContainer(this);
   }
 }

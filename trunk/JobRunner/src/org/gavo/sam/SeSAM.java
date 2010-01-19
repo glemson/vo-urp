@@ -66,6 +66,7 @@ public class SeSAM extends JobServlet {
   @Override
   protected void initialiseMainJob(RootContext rootCtx, HttpServletRequest request) throws JobStateException {
     try {
+    	super.initialiseMainJob(rootCtx, request);
       String[] command = prepareMainTask(rootCtx.getWorkingDir(), request);
       LocalLauncher.prepareChildJob(rootCtx, MAIN_TASK, command);
     } catch (Exception e) {
@@ -274,7 +275,7 @@ public class SeSAM extends JobServlet {
     	File[] filesToCompress = dir.listFiles(new FileFilter(){
     		public boolean accept(File file) {
 				String name = file.getName();
-				return (name.startsWith("catalog") || PARAMETER_FILE.equals(name));
+				return (name.startsWith("catalog") || PARAMETER_FILE.equals(name) || name.equalsIgnoreCase("README.txt"));
 			}
     	});
     	final File zipFile = new File(dir.getAbsolutePath()+"/result.zip");
@@ -283,7 +284,7 @@ public class SeSAM extends JobServlet {
     	File[] filesToDelete = dir.listFiles(new FileFilter(){
     		public boolean accept(File file) {
 				String name = file.getName();
-				return !(name.endsWith(".png") || file.equals(zipFile));
+				return !(name.endsWith(".png") || file.equals(zipFile) || PARAMETER_FILE.equals(name) || name.equalsIgnoreCase("README.txt"));
 			}
     	});
     	for(File file : filesToDelete)
