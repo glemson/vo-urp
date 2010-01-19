@@ -33,24 +33,24 @@ Column description:
 The mass of the FoF group which includes this galaxy. This is "m_Crit200" from the
 MPAHalo database of the Millennium simulation. It is defined as the mass within the
 radius where the halo has an overdensity 200 times the critical density of the simulation.
-Units 1010 M_sun/h
+Units 10^10 M_sun/h
 
 3. Subhalomass:
 The mass of the host subhalo, corresponding to the number of simulation particles
 included in this subhalo.
-Units 1010 M_sun/h
+Units 10^10 M_sun/h
 
 4. hot_gas
 Mass of hot gas sorrounding this galaxy
-Units of 1010 M_sun/h
+Units of 10^10 M_sun/h
 
 5. cold_gas
 Mass of cold gas within this galaxy
-Units of 1010 M_sun/h
+Units of 10^10 M_sun/h
 
 6. stars
 Mass of stars within this galaxy
-Units of 1010 M_sun/h
+Units of 10^10 M_sun/h
 
 7. sfr
 Star formation rate, averaged over the last simulation snapshot (~250 Myr)

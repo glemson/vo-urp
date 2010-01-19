@@ -1,4 +1,4 @@
--- last modification date of the script : 25 09 2009
+-- last modification date of the script : 21 12 2009
 
 
 -- ------------------------------------------------------------------------------
@@ -55,5 +55,20 @@ ALTER TABLE process_context ADD CONSTRAINT pk_process_context_ID PRIMARY KEY(ID)
 ALTER TABLE process_context ADD CONSTRAINT fk_process_context_extends
     FOREIGN KEY (ID) REFERENCES run_context(ID);
 
+
+-- ------------------------------------------------------------------------------
+--  Table ParameterSetting
+-- ------------------------------------------------------------------------------
+CREATE TABLE parameter_setting (
+  ID SERIAL8
+, containerId bigint not null
+, name VARCHAR(128) NOT NULL
+, value varchar(1024) not null
+);
+
+
+ALTER TABLE parameter_setting ADD CONSTRAINT pk_parameter_setting_ID PRIMARY KEY(ID);
+
+create index ix_parameter_setting_container on parameter_setting(containerId);
 
 
