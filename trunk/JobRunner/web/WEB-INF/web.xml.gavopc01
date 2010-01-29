@@ -160,6 +160,41 @@
     <load-on-startup>10</load-on-startup>
   </servlet>
 
+  <!-- Applications -->
+  <servlet>
+    <servlet-name>Smac</servlet-name>
+    <servlet-class>org.gavo.hydrosims.Smac</servlet-class>
+    <init-param>
+      <param-name>name</param-name>
+      <param-value>Smac</param-value>
+    </init-param>
+    <init-param>
+      <param-name>executable</param-name>
+      <param-value>Smac_6.0.exe</param-value>
+    </init-param>
+    <init-param>
+      <param-name>parameterfile.template</param-name>
+      <param-value>smac.inp.template</param-value>
+    </init-param>
+    <init-param>
+      <param-name>root.data.dir</param-name>
+      <param-value>e:/data/</param-value>
+    </init-param>
+    <init-param>
+      <param-name>jaxb.path</param-name>
+      <param-value>org.vourp.runner.model</param-value>
+    </init-param>
+    <init-param>
+      <param-name>legacy.app.xml</param-name>
+      <param-value>Smac.xml</param-value>
+    </init-param>
+    <load-on-startup>10</load-on-startup>
+  </servlet>
+
+
+
+
+<!--  -->
   <servlet>
     <servlet-name>DownloadServlet</servlet-name>
     <servlet-class>org.ivoa.web.servlet.DownloadServlet</servlet-class>
@@ -182,6 +217,11 @@
   <servlet-mapping>
     <servlet-name>SeSAM</servlet-name>
     <url-pattern>/SeSAM.do</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>Smac</servlet-name>
+    <url-pattern>/Smac.do</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>

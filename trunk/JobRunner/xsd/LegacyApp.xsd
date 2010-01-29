@@ -1,0 +1,76 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://gavo.org/JobRunner/LegacyApps/v0.1"
+            targetNamespace="http://gavo.org/JobRunner/LegacyApps/v0.1"  
+            attributeFormDefault="unqualified" elementFormDefault="unqualified">
+
+<xsd:complexType name="LegacyApp">
+<xsd:sequence>
+  <xsd:element name="name" type="xsd:string"/>
+    <xsd:element name="description" type="xsd:string"/>
+  <xsd:element name="parameter" type="ParameterDeclaration" minOccurs="0" maxOccurs="unbounded"/>
+</xsd:sequence>
+
+</xsd:complexType>
+
+<xsd:complexType name="ParameterDeclaration">
+  <xsd:sequence>
+    <xsd:element name="name" type="xsd:string"/>
+    <xsd:element name="datatype" type="Datatype"/>
+    <xsd:element name="description" type="xsd:string"/>
+    <xsd:element name="validvalue" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
+    <xsd:element name="isFixed" type="xsd:boolean" default="false" minOccurs="0">
+    <xsd:annotation>
+    <xsd:documentation>If isFixed == true, the fixedValue is the only proper value.
+    It implies the parameter must be specified</xsd:documentation>
+    </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="fixedValue" type="xsd:string" minOccurs="0"/>
+  </xsd:sequence>
+</xsd:complexType>
+
+<xsd:simpleType name="Datatype">
+<xsd:restriction base="xsd:string">
+  <xsd:enumeration value="short"/>
+  <xsd:enumeration value="integer"/>
+  <xsd:enumeration value="float"/>
+  <xsd:enumeration value="double"/>
+  <xsd:enumeration value="boolean"/>
+  <xsd:enumeration value="datetime"/>
+  <xsd:enumeration value="string"/>
+  <xsd:enumeration value="anyURI"/>
+  <xsd:enumeration value="file">
+    <xsd:annotation>
+      <xsd:documentation>
+      Represents a file. This can be a local file, or a file that must be uploaded in case of a web application.
+      </xsd:documentation>
+    </xsd:annotation>
+  </xsd:enumeration>
+</xsd:restriction>
+</xsd:simpleType>
+
+
+
+
+
+<xsd:complexType name="Model">
+<xsd:sequence>
+<xsd:element name="name" type="xsd:string"/>
+<xsd:element name="legacyApp" type="xsd:string"/>
+<xsd:element name="parameter" type="ParameterSetting" minOccurs="0" maxOccurs="unbounded"/>
+</xsd:sequence>
+</xsd:complexType>
+
+
+<xsd:complexType name="ParameterSetting">
+  <xsd:sequence>
+  <xsd:element name="name" type="xsd:string"/>
+  <xsd:element name="value" type="xsd:string"/>
+  </xsd:sequence>
+</xsd:complexType>
+
+
+
+<xsd:element name="legacyApp" type="LegacyApp"/>
+<xsd:element name="model" type="Model"/>
+
+</xsd:schema>

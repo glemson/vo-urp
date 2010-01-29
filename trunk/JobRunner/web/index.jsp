@@ -20,4 +20,11 @@ Ref: <a href="http://xxx.lanl.gov/abs/0911.3147" target="_blank">http://xxx.lanl
   </p>
 <button onclick="window.location='./SeSAM.do?action=input'">Go</button>
 
+<h3><a href="" target="_blank">Smac</a> </h3>
+<p>
+A visualisation code for Gadget simulations. Copyright - Klaus Dolag.<br/>
+Ref: <a href="" target="_blank">http://xxx.yyy.zzz/...</a>.
+  </p>
+<button onclick="window.location='./Smac.do?action=input'">Go</button>
+
 <jsp:include page="footer.jsp" flush="false" />

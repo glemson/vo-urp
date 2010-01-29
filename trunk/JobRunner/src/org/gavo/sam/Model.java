@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
+/**
+ * A Model is a collection of parameter settings corresponding to a particular execution of a code.
+ * @author lemson
+ */
 public class Model {
 
 	public class Parameter
