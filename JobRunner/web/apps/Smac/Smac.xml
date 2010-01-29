@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ts:legacyApp xmlns:ts="http://gavo.org/JobRunner/LegacyApps/v0.1">
+<name>Smac</name>
+<description>Klaus' visualisation code.</description>
+<parameter>
+<name>SNAP_START</name>
+<datatype>float</datatype>
+<description>Start snapshot</description>
+</parameter>
+<parameter>
+<name>SNAP_END</name>
+<datatype>float</datatype>
+<description>End snapshot</description>
+</parameter>
+</ts:legacyApp>
