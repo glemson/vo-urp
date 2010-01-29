@@ -294,7 +294,7 @@ If (merge_coeff[2]>0 & M>merge_coeff[2]) Then burst efficiency is set to zero ;<
 <input type="text" name="stam_3" value="<%= parameters.get("stam_3") %>" class="number"/>
 <br/>
 </td> 
-<td>If [m<sub>star</sub>[sat] / m<sub>cent</sub>[sat] >stam[0] & t>stam[1] & (m<sub>cold</sub>[sat]+m<sub>cold</sub>[cent]) / (m<sub>star</sub>[sat]+m<sub>star</sub>[cent]) > stam[2] ] Then if: <br/>
+<td>If [m<sub>star</sub>[sat] / m<sub>star</sub>[cent] >stam[0] & t>stam[1] & (m<sub>cold</sub>[sat]+m<sub>cold</sub>[cent]) / (m<sub>star</sub>[sat]+m<sub>star</sub>[cent]) > stam[2] ] Then if: <br/>
 stam[3]==1 Shut-down all SF modes & cooling <br/>
 stam[3]==2 Shut-down cooling </td> 
 </tr>
@@ -356,7 +356,7 @@ If 1: satellite distance from central is maximum r<sub>vir</sub> </td>
 <td ><input type="text" name="f_recycle" value="<%= parameters.get("f_recycle") %>" class="number"/>
 <br/>
 </td>
-<td>Recycling factor</td> 
+<td>Recycling factor: fraction of stars returned into cold gas</td> 
 </tr>
 
 
