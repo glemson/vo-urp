@@ -73,12 +73,12 @@ Select a model :
 <td nowrap> 
 <input type="text" name="f_s_0" value="<%= parameters.get("f_s_0") %>" class="number"/>&nbsp;
 <input type="text" name="f_s_1" value="<%= parameters.get("f_s_1") %>"  class="number"/>&nbsp;
-<input type="hidden" name="f_s_2" value="<%= parameters.get("f_s_2") %>"/><!-- <br/>  --> 
+<input type="text" name="f_s_2" value="<%= parameters.get("f_s_2") %>" class="number"/>&nbsp; 
 <input type="text" name="f_s_3" value="<%= parameters.get("f_s_3") %>"  class="number"/><!-- <br/>  --> 
 <input type="hidden" name="f_s_4" value="<%= parameters.get("f_s_4") %>"/><!-- <br/>  --> 
 <input type="hidden" name="f_s_5" value="<%= parameters.get("f_s_5") %>"/>
 </td> 
-<td >SF efficiency: f_s = 10<sup>f_s[0]+f_s[1]*logM+f_s*(logM)<sup>2</sup></sup>  t<sup>f_s[2]</sup><br/>
+<td >SF efficiency: f_s = 10<sup>f_s[0]+f_s[1]*logM+f_s[2]*(logM)<sup>2</sup></sup>t<sup>f_s[3]</sup><br/>
 M is in units of M<sub>sun</sub>/h <br/>
 t is in units of Gyr </td> 
 </tr>
@@ -138,13 +138,13 @@ the values in f_d.
 <td nowrap> 
 <input type="text" name="f_c_0" value="<%= parameters.get("f_c_0") %>" class="number"/>&nbsp;
 <input type="text" name="f_c_1" value="<%= parameters.get("f_c_1") %>" class="number"/>&nbsp;
-<input type="hidden" name="f_c_2" value="<%= parameters.get("f_c_2") %>"/><!-- <br/>  -->
+<input type="text" name="f_c_2" value="<%= parameters.get("f_c_2") %>" class="number"/><!-- <br/>  -->
 <input type="text" name="f_c_3" value="<%= parameters.get("f_c_3") %>" class="number"/><!-- <br/>  -->
 <input type="hidden" name="f_c_4" value="<%= parameters.get("f_c_4") %>"/><!-- <br/>  -->
 <input type="hidden" name="f_c_5" value="<%= parameters.get("f_c_5") %>"/>
 <br/>
 </td> 
-<td>Cooling efficiency: f_c = 10<sup>f_c[0]+f_c[1]*logM+f_c*(logM)<sup>2</sup></sup>  t<sup>f_c[2]</sup> </td> 
+<td>Cooling efficiency: f_c = 10<sup>f_c[0]+f_c[1]*logM+f_c[2]*(logM)<sup>2</sup></sup>  t<sup>f_c[3]</sup> </td> 
 </tr>
 <tr>
 <td>fc_file</td>
@@ -177,7 +177,9 @@ the values in f_c.
 <br/>
 </td> 
 <td>Ejection efficiency: f_e = f_e[0] (M/10<sup>10</sup>)<sup>f_e[1]</sup>  t<sup>f_e[2]</sup> - f_e[3] <br/>
-If f_e==-1 Then set f_e=f_d</td> 
+If (f_e[0]=-1 and f_e[1]=f_e[2]=f_e[3]=0), then set f_e=f_d; in this case cold gas
+is ejected directly out of the halo according to f_d.
+</td> 
 </tr>
 <tr>
 <td>f_r</td>
@@ -197,7 +199,7 @@ If f_e==-1 Then set f_e=f_d</td>
 <td nowrap> 
 <input type="text" name="f_ac_0" value="<%= parameters.get("f_ac_0") %>" class="number"/>&nbsp;
 <input type="text" name="f_ac_1" value="<%= parameters.get("f_ac_1") %>" class="number"/>&nbsp;
-<input type="text" name="f_ac_2" value="<%= parameters.get("f_ac_2") %>" class="number"/>
+<input type="hidden" name="f_ac_2" value="<%= parameters.get("f_ac_2") %>" class="number"/>
 <br/>
 </td> 
 <td>Cold accretion: f_ac = f_ac[0] t<sup>f_ac[1]</sup> </td> 
@@ -318,9 +320,13 @@ stam[3]==2 Shut-down cooling </td>
 <tr>
 <td>dynf_r</td>
 <td>
+<% String dynf_r = parameters.get("dynf_r");
+  if(dynf_r != null) dynf_r = dynf_r.trim();
+  boolean is1 = "1".equals(dynf_r);
+%>
 <select name="dynf_r" class="dropdown">
-<option  value="0"/>0</option>
-<option  value="1"/>1</option>
+<option  value="0" <%= (is1?"":"SELECTED") %>/>0</option>
+<option  value="1" <%= (is1?"SELECTED":"") %>/>1</option>
 </select>
 <br/>
 </td> 
