@@ -345,6 +345,14 @@
       </fileset>
     </copy>
 
+    <!-- create a tags folder to put tag files because subversion used 'tags' folders for subversion tags -->
+    <mkdir dir="${web-content}/WEB-INF/tags"/>
+    <copy todir="${web-content}/WEB-INF/tags" preservelastmodified="true" verbose="true">
+      <fileset dir="${web-content}/WEB-INF/tagfiles">
+        <include name="**/*.tag"/>
+      </fileset>
+    </copy>
+  	
     <war destfile="${dist}/${build.file}" webxml="${web-content}/WEB-INF/web.xml" compress="true" roundup="true">
       <manifest>
         <attribute name="Built-By" value="${build.by}"/>
@@ -365,6 +373,7 @@
       <fileset dir="${web-content}">
         <include name="META-INF/*.*"/>
         <include name="WEB-INF/*.tld"/>
+        <include name="WEB-INF/tags/**/*.tag"/>
         <include name="index.html"/>
         <include name="**/*.jsp"/>
         <include name="static/**/*.*"/>
@@ -383,6 +392,9 @@
       </classes>
     </war>
     
+    <delete dir="${web-content}/WEB-INF/tags"/>
+
+  	
     <echo message="compile ${project.title} : done."/>
     
   </target>

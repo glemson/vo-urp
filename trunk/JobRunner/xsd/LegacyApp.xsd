@@ -17,16 +17,124 @@
     <xsd:element name="name" type="xsd:string"/>
     <xsd:element name="datatype" type="Datatype"/>
     <xsd:element name="description" type="xsd:string"/>
-    <xsd:element name="validvalue" type="xsd:string" minOccurs="0" maxOccurs="unbounded"/>
     <xsd:element name="isFixed" type="xsd:boolean" default="false" minOccurs="0">
     <xsd:annotation>
     <xsd:documentation>If isFixed == true, the fixedValue is the only proper value.
     It implies the parameter must be specified</xsd:documentation>
     </xsd:annotation>
     </xsd:element>
-    <xsd:element name="fixedValue" type="xsd:string" minOccurs="0"/>
+    <xsd:element name="defaultValue" type="xsd:string" minOccurs="0"/>
   </xsd:sequence>
 </xsd:complexType>
+
+<xsd:complexType name="EnumeratedParameter">
+<xsd:complexContent>
+  <xsd:extension base="ParameterDeclaration">
+    <xsd:sequence>
+      <xsd:element name="validvalues" type="Validvalues" maxOccurs="unbounded"/>
+      <xsd:element name="dependency" type="Dependency" minOccurs="0"/>
+      <xsd:element name="numSlaves" type="xsd:int" minOccurs="0" default="0">
+      <xsd:annotation>
+        <xsd:documentation>
+        Is really a convenience field that should be set by parsers based on the objects having a dependency to this parameter.
+        
+        </xsd:documentation>
+        <xsd:documentation>
+        GL 2010-02-03:
+          This is a hack. Tried using a boolean isMaster but JAXB generates that to a getter starting with is... .
+          This can not be used in JSP Expression Language )it seems).
+          In any case after parsing this must be set
+        </xsd:documentation>
+      </xsd:annotation>
+      </xsd:element> 
+    </xsd:sequence>
+    <xsd:attribute name="ID" type="xsd:ID" use="optional"/>
+  </xsd:extension>
+</xsd:complexContent>
+</xsd:complexType>
+
+
+<xsd:complexType name="Dependency">
+  <xsd:annotation>
+    <xsd:documentation>
+    An enumerated parameter (the slave) can be made to depend on another enumerated parameter (the master).
+    The implication is that a particular choice for the value of the master decides on which 
+    enumeration one can choose from for the slave.
+    </xsd:documentation>
+  </xsd:annotation>
+  <xsd:sequence>
+    <xsd:element name="master" type="xsd:IDREF"/>
+    <xsd:element name="default" type="xsd:IDREF" minOccurs="0">
+      <xsd:annotation>
+        <xsd:documentation>
+        If no default is provided, and a value comes up in the master that is not mapped, then this parameter can be ignored.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="choice" type="Choice" maxOccurs="unbounded"/>
+  </xsd:sequence>
+</xsd:complexType>
+
+<xsd:complexType name="Choice">
+  <xsd:annotation>
+    <xsd:documentation>
+    ...
+    </xsd:documentation>
+  </xsd:annotation>
+  <xsd:sequence>
+    <xsd:element name="if" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>
+          The value deciding this choice. 
+          Must correspond to the value attribute of the master enumeration.
+          TBD should this be an IDREF?
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:element>
+    <xsd:element name="choose" type="xsd:IDREF">
+      <xsd:annotation>
+        <xsd:documentation>
+        The ID of the list that must be chosen.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:element>
+  </xsd:sequence>
+</xsd:complexType>
+
+
+<xsd:complexType name="Validvalues">
+  <xsd:sequence>
+    <xsd:element name="literal" type="Literal" maxOccurs="unbounded"/>
+  </xsd:sequence>
+  <xsd:attribute name="ID" type="xsd:ID"  use="optional"/>
+</xsd:complexType>
+
+<xsd:complexType name="Literal">
+  <xsd:sequence>
+    <xsd:element name="value" type="xsd:string"/>
+    <xsd:element name="title" type="xsd:string" minOccurs="0"/>
+    <xsd:element name="description" type="xsd:string" minOccurs="0"/>
+  </xsd:sequence>
+</xsd:complexType>
+
+
+<xsd:complexType name="Model">
+<xsd:sequence>
+<xsd:element name="name" type="xsd:string"/>
+<xsd:element name="legacyApp" type="xsd:string"/>
+<xsd:element name="parameter" type="ParameterSetting" minOccurs="0" maxOccurs="unbounded"/>
+</xsd:sequence>
+</xsd:complexType>
+
+
+<xsd:complexType name="ParameterSetting">
+  <xsd:sequence>
+  <xsd:element name="name" type="xsd:string"/>
+  <xsd:element name="value" type="xsd:string"/>
+  </xsd:sequence>
+</xsd:complexType>
+
+
 
 <xsd:simpleType name="Datatype">
 <xsd:restriction base="xsd:string">
@@ -49,24 +157,6 @@
 </xsd:simpleType>
 
 
-
-
-
-<xsd:complexType name="Model">
-<xsd:sequence>
-<xsd:element name="name" type="xsd:string"/>
-<xsd:element name="legacyApp" type="xsd:string"/>
-<xsd:element name="parameter" type="ParameterSetting" minOccurs="0" maxOccurs="unbounded"/>
-</xsd:sequence>
-</xsd:complexType>
-
-
-<xsd:complexType name="ParameterSetting">
-  <xsd:sequence>
-  <xsd:element name="name" type="xsd:string"/>
-  <xsd:element name="value" type="xsd:string"/>
-  </xsd:sequence>
-</xsd:complexType>
 
 
 

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ts:legacyApp xmlns:ts="http://gavo.org/JobRunner/LegacyApps/v0.1">
+<ts:legacyApp xmlns:ts="http://gavo.org/JobRunner/LegacyApps/v0.1" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+>
 <name>Smac</name>
 <description>Klaus' visualisation code.</description>
 <parameter>
@@ -11,5 +13,760 @@
 <name>SNAP_END</name>
 <datatype>float</datatype>
 <description>End snapshot</description>
+</parameter>
+
+<parameter>
+<name>INITIAL_Z</name>
+<datatype>float</datatype>
+<description>Intial redshift</description>
+</parameter>
+<parameter>
+<name>IMAGE_Z</name>
+<datatype>float</datatype>
+<description>image redshift (set IMAGE_Z=0. to obtain it from the input data)</description>
+</parameter>
+<parameter>
+<name>PART_DISTR</name>
+<datatype>float</datatype>
+<description>
+Flag of particle distribution scheme on the image:
+         (0) NGC       -&gt;  not implemented
+         (1) CIC       -&gt;  2D-map
+         (2) HealPix   -&gt;  full-sky
+         (3) TSC       -&gt;  2D-map
+</description>
+</parameter>
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>IMG_XY_UNITS</name>
+<datatype>string</datatype>
+<description>Flag of the units of the side of image</description>
+<validvalues>
+<literal>
+  <value>1</value>
+  <title>arcmin</title>
+</literal>
+<literal>
+  <value>2</value>
+  <title>kpc</title>
+  </literal>
+</validvalues>
+</parameter>
+
+<parameter>
+<name>IMG_XY_SIZE</name>
+<datatype>float</datatype>
+<description>The size of the image</description>
+</parameter>
+
+
+
+<parameter  xsi:type="ts:EnumeratedParameter">
+<name>IMG_Z_UNITS</name>
+<datatype>float</datatype>
+<description></description>
+<validvalues>
+<literal>
+  <value>1</value>
+  <title>cubic</title>
+  <description>same value of IMG_XY_UNITS</description>
+</literal>
+<literal>
+  <value>2</value>
+  <title>kpc</title>
+</literal>
+</validvalues>
+</parameter>
+
+<parameter>
+<name>IMG_Z_SIZE</name>
+<datatype>float</datatype>
+<description>side of the third dimension</description>
+</parameter>
+
+<parameter>
+<name>FILL_CARROT</name>
+<datatype>float</datatype>
+<description>minimum filling factor of the carrot [0&lt;-&gt;100] (its a percentile)</description>
+</parameter>
+
+<parameter>
+<name>IMG_SIZE</name>
+<datatype>integer</datatype>
+<description>Number of image side pixels. if ==-1, given by smoothing</description>
+</parameter>
+
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>SMOOTH_UNITS</name>
+<datatype>float</datatype>
+<description>Flag of the smoothing (FWHM) angle</description>
+<validvalues>
+<literal>
+  <value>0</value>
+  <title>cubic</title>
+</literal>
+<literal>
+  <value>1</value>
+  <title>arcmin</title>
+</literal>
+<literal>
+  <value>2</value>
+  <title>kpc</title>
+</literal>
+<literal>
+  <value>3</value>
+  <title>given by npart</title>
+</literal>
+</validvalues>
+</parameter>
+
+<parameter>
+<name>SMOOTH_FWHM</name>
+<datatype>float</datatype>
+<description>smoothing length in the chosen units (cases (1), (2))</description>
+</parameter>
+
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>NSIDE</name>
+<datatype>integer</datatype>
+<description>HEALPix variable.
+This variable must be a power of 2 and &lt;= 8192.
+</description>
+<defaultValue>128</defaultValue>
+<validvalues>
+<literal>
+  <value>1</value>
+</literal>
+<literal>
+  <value>2</value>
+</literal>
+<literal>
+  <value>4</value>
+</literal>
+<literal>
+  <value>8</value>
+</literal>
+<literal>
+  <value>16</value>
+</literal>
+<literal>
+  <value>32</value>
+</literal>
+<literal>
+  <value>64</value>
+</literal>
+<literal>
+  <value>128</value>
+</literal>
+<literal>
+  <value>256</value>
+</literal>
+<literal>
+  <value>512</value>
+</literal>
+<literal>
+  <value>1024</value>
+</literal>
+<literal>
+  <value>2048</value>
+</literal>
+<literal>
+  <value>4096</value>
+</literal>
+<literal>
+  <value>8192</value>
+</literal>
+</validvalues>
+</parameter>
+
+<parameter>
+<name>MIN_DIST</name>
+<datatype>float</datatype>
+<description>min radius of sphere arround x0,y0,z0 to be used [kpc]</description>
+</parameter>
+
+<parameter>
+<name>MAX_DIST</name>
+<datatype>float</datatype>
+<description>max radius of sphere arround x0,y0,z0 to be used [kpc]</description>
+</parameter>
+
+<parameter xsi:type="ts:EnumeratedParameter" ID="OUTPUT_MAP">
+<name>OUTPUT_MAP</name>
+<datatype>integer</datatype>
+<description>Flag of the type of output map</description>
+<validvalues>
+<literal>
+  <value>0</value>
+  <title>3D electron density</title>
+  <description></description>
+</literal>
+<literal>
+  <value>1</value>
+  <title>2D elctron Density</title>
+  <description></description>
+</literal>
+<literal>
+  <value>2</value>
+  <title>Mass weighted temperature</title>
+  <description></description>
+</literal>
+<literal>
+  <value>3</value>
+  <title>Emission weighted temperature</title>
+  <description></description>
+</literal>
+<literal>
+  <value>4</value>
+  <title>Volume of particles</title>
+  <description></description>
+</literal>
+<literal>
+  <value>5</value>
+  <title>age of particles</title>
+  <description></description>
+</literal>
+<literal>
+  <value>6</value>
+  <title>X-ray SB of particles</title>
+  <description></description>
+</literal>
+<literal>
+  <value>7</value>
+  <title>Compton y-parameter: tSZ effect</title>
+  <description></description>
+</literal>
+<literal>
+  <value>8</value>
+  <title>Kinematical Sunjaev Zeldovich Effect of particles: kSZ efect</title>
+  <description></description>
+</literal>
+<literal>
+  <value>9</value>
+  <title>Q &amp; U Stokes parameters for transvers particles motion: kpSZ effect</title>
+  <description></description>
+</literal>
+<literal>
+  <value>10</value>
+  <title>Mass weighted velocity</title>
+  <description></description>
+</literal>
+<literal>
+  <value>11</value>
+  <title>Mass weighted squared velocity</title>
+  <description></description>
+</literal>
+<literal>
+  <value>12</value>
+  <title>Faraday Rotation Map</title>
+  <description></description>
+</literal>
+<literal>
+  <value>13</value>
+  <title>Pasquale Weighted (heavy) temperature</title>
+  <description></description>
+</literal>
+<literal>
+  <value>14</value>
+  <title>Emission temperature</title>
+  <description></description>
+</literal>
+<literal>
+  <value>15</value>
+  <title>Massweighted-Metalicity </title>
+  <description></description>
+</literal>
+<literal>
+  <value>16</value>
+  <title>Rees-Sciama Effect by mass transverse motion [phi_dot]</title>
+  <description></description>
+</literal>
+<literal>
+  <value>17</value>
+  <title>Mach-Number</title>
+  <description></description>
+</literal>
+<literal>
+  <value>18</value>
+  <title>Y_X parameter (mass weighted)</title>
+  <description></description>
+</literal>
+<literal>
+  <value>19</value>
+  <title>Y_X parameter (pasquale weighted)</title>
+  <description></description>
+</literal>
+<literal>
+  <value>100</value>
+  <title>3D DM density</title>
+  <description></description>
+</literal>
+<literal>
+  <value>101</value>
+  <title>2D DM density</title>
+  <description></description>
+</literal>
+<literal>
+  <value>102</value>
+  <title>Rees-Sciama Effect by mass transverse motion [projected momentum]</title>
+  <description></description>
+</literal>
+<literal>
+  <value>103</value>
+  <title>Gravitational lensing: Deflection angle</title>
+  <description></description>
+</literal>
+</validvalues>
+</parameter>
+
+
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>OUTPUT_SUB</name>
+<datatype>integer</datatype>
+<description></description>
+<validvalues ID="for_OUTPUT_MAP_78">
+<literal>
+  <value>0</value>
+  <title>adimensional [DI/I]</title>
+</literal>
+<literal>
+  <value>1</value>
+  <title>adimensional [DT/T]</title>
+</literal>
+</validvalues>
+<validvalues ID="for_OUTPUT_MAP_9">
+<literal>
+  <value>0</value>
+  <title>adimensional [Q_I &amp; U_I] - normalized on the CMB intensity</title>
+</literal>
+<literal>
+  <value>1</value>
+  <title>adimensional [Q_T &amp; U_T] - noramlized on the CMB temperature</title>
+</literal>
+</validvalues>
+<validvalues ID="for_OUTPUT_MAP_12">
+<literal>
+  <value>0</value>
+  <title>RM</title>
+</literal>
+<literal>
+  <value>1</value>
+  <title>&lt;B_x,y,z&gt;</title>
+</literal>
+<literal>
+  <value>2</value>
+  <title>&lt;|B|&gt;</title>
+</literal>
+<literal>
+  <value>3</value>
+  <title>Synchrotron Emission total power</title>
+</literal>
+<literal>
+  <value>31</value>
+  <title>Orthogonal Polarised Synchrotron Emission</title>
+</literal>
+<literal>
+  <value>32</value>
+  <title>Parallel Polarised Synchrotron Emission</title>
+</literal>
+<literal>
+  <value>40</value>
+  <title>Gamma Emission [# of photons / cm^2] @ E_gam</title>
+</literal>
+<literal>
+  <value>41</value>
+  <title>Gamma Emission [erg/cm^2  ] @ E_gam</title>
+</literal>
+<literal>
+  <value>42</value>
+  <title>Gamma Emission [# of photons / cm^2] integrated over [E_pi_min,E_pi_max]</title>
+</literal>
+</validvalues>
+<validvalues ID="for_OUTPUT_MAP_15">
+<literal>
+  <value>0</value>
+  <title>total</title>
+</literal>
+<literal>
+  <value>1</value>
+  <title>&gt; Fe</title>
+</literal>
+<literal>
+  <value>2</value>
+  <title>C</title>
+</literal>
+<literal>
+  <value>3</value>
+  <title>N</title>
+</literal>
+<literal>
+  <value>4</value>
+  <title>O</title>
+</literal>
+<literal>
+  <value>5</value>
+  <title>Mg</title>
+</literal>
+<literal>
+  <value>6</value>
+  <title>Si</title>
+</literal>
+<literal>
+  <value>7</value>
+  <title>Fe</title>
+</literal>
+</validvalues>
+
+<validvalues ID="for_OUTPUT_MAP_17">
+<literal>
+  <value>0</value>
+  <title>Volume weighted</title>
+</literal>
+<literal>
+  <value>1</value>
+  <title>Energy weighted</title>
+</literal>
+<literal>
+  <value>2</value>
+  <title>Mass weighted</title>
+</literal>
+</validvalues>
+
+<validvalues ID="for_OUTPUT_MAP_102">
+<literal>
+  <value>0</value>
+  <title>by integral</title>
+</literal>
+<literal>
+  <value>1</value>
+  <title>by FFT</title>
+</literal>
+</validvalues>
+
+<dependency>
+  <master>OUTPUT_MAP</master>
+<!--  <default>default_OUTPUT_MAP</default>  --> 
+  <choice>
+    <choose>for_OUTPUT_MAP_78</choose>
+    <if>7</if>
+  </choice>
+  <choice>
+    <choose>for_OUTPUT_MAP_78</choose>
+    <if>8</if>
+  </choice>
+  <choice>
+    <choose>for_OUTPUT_MAP_9</choose>
+    <if>9</if>
+  </choice>
+  <choice>
+    <choose>for_OUTPUT_MAP_12</choose>
+    <if>12</if>
+  </choice>
+  <choice>
+    <choose>for_OUTPUT_MAP_15</choose>
+    <if>15</if>
+  </choice>
+  <choice>
+    <choose>for_OUTPUT_MAP_17</choose>
+    <if>17</if>
+  </choice>
+  <choice>
+    <choose>for_OUTPUT_MAP_102</choose>
+    <if>102</if>
+  </choice>
+</dependency>
+</parameter>
+
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>TEMP_UNIT</name>
+<datatype>integer</datatype>
+<description>Unit of output Temperatures</description>
+<validvalues>
+<literal>
+  <value>0</value>
+  <title>Kelvin</title>
+</literal>
+<literal>
+  <value>1</value>
+  <title>KeV</title>
+</literal>
+</validvalues>
+</parameter>
+
+
+<parameter>
+<name>TEMP_CUT</name>
+<datatype>float</datatype>
+<description>Ignore particles below this value [in keV]</description>
+</parameter>
+
+
+<parameter>
+<name>XRAY_E0</name>
+<datatype>float</datatype>
+<description>lower energy bound for X-ray image [keV] (when OUTPUT_MAP == 6)</description>
+</parameter>
+
+
+<parameter>
+<name>XRAY_E1</name>
+<datatype>float</datatype>
+<description>upper energy bound for X-ray image [keV] (when OUTPUT_MAP == 6)</description>
+</parameter>
+
+
+<parameter>
+<name>FRQ_ZS</name>
+<datatype>float</datatype>
+<description>Input observational frequency for SZ maps [GHz]</description>
+</parameter>
+
+
+<parameter>
+<name>ECRP_MIN</name>
+<datatype>float</datatype>
+<description></description>
+</parameter>
+
+
+<parameter>
+<name>FRQ_Pnu</name>
+<datatype>float</datatype>
+<description></description>
+</parameter>
+
+<parameter>
+<name>XCRP</name>
+<datatype>float</datatype>
+<description></description>
+</parameter>
+
+<parameter>
+<name>GAM_nu</name>
+<datatype>float</datatype>
+<description></description>
+</parameter>
+
+<parameter>
+<name>E_gam</name>
+<datatype>float</datatype>
+<description>energies in GeV (for Gamma Maps)</description>
+</parameter>
+
+<parameter>
+<name>E_gam_min</name>
+<datatype>float</datatype>
+<description></description>
+</parameter>
+
+<parameter>
+<name>E_gam_max</name>
+<datatype>float</datatype>
+<description></description>
+</parameter>
+
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>GIVE_MORE_INFO</name>
+<datatype>integer</datatype>
+<description></description>
+<validvalues>
+<literal>
+<value>0</value>
+<title>disabled</title>
+</literal>
+<literal>
+<value>1</value>
+<title>enabled</title>
+</literal>
+</validvalues>
+</parameter>
+
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>START_PROJECT</name>
+<datatype>integer</datatype>
+<description></description>
+<validvalues>
+<literal>
+<value>1</value>
+<title>along z, xy plane</title>
+</literal>
+<literal>
+<value>2</value>
+<title>along y, xz plane</title>
+</literal>
+<literal>
+<value>3</value>
+<title>along x, yz plane</title>
+</literal>
+</validvalues></parameter>
+
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>PROJECT</name>
+<datatype>integer</datatype>
+<description></description>
+<validvalues>
+<literal>
+<value>1</value>
+<title>along z, xy plane</title>
+</literal>
+<literal>
+<value>2</value>
+<title>along y, xz plane</title>
+</literal>
+<literal>
+<value>3</value>
+<title>along x, yz plane</title>
+</literal>
+</validvalues>
+</parameter>
+
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>CENTER_MOTION</name>
+<datatype>integer</datatype>
+<description>Flag of the cluster baricenter motion</description>
+<validvalues>
+<literal>
+<value>0</value>
+<title>disabled</title>
+</literal>
+<literal>
+<value>1</value>
+<title>enabled: at the particles velocity is sobstituted the cluster baricenter velocity</title>
+</literal>
+<literal>
+<value>2</value>
+<title>enabled: paricles velocity in the cluster baricenter rest frame</title>
+</literal>
+</validvalues>
+</parameter>
+
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>REMOVE_LOCAL_GROUP_VEL</name>
+<datatype>integer</datatype>
+<description>Flag to subtract the velocity of the local group </description>
+<validvalues>
+<literal>
+<value>0</value>
+<title>disabled</title>
+</literal>
+<literal>
+<value>1</value>
+<title>enabled</title>
+</literal>
+</validvalues>
+</parameter>
+
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>CENTER</name>
+<datatype>integer</datatype>
+<description>Flag of the definition of the center</description>
+<validvalues>
+<literal>
+<value>0</value>
+<title>barycenter of gas particles</title>
+</literal>
+<literal>
+<value>1</value>
+<title>selected by user</title>
+</literal>
+<literal>
+<value>2</value>
+<title>read by a file</title>
+</literal>
+</validvalues></parameter>
+
+<parameter>
+<name>CENTER_X</name>
+<datatype>float</datatype>
+<description>X-coordinate of center position/Cluster data for CENTER='selected by user'</description>
+</parameter>
+
+<parameter>
+<name>CENTER_Y</name>
+<datatype>float</datatype>
+<description>Y-coordinate of center position/Cluster data for CENTER='selected by user'</description>
+</parameter>
+
+<parameter>
+<name>CENTER_Z</name>
+<datatype>float</datatype>
+<description>Z-coordinate of center position/Cluster data for CENTER='selected by user'</description>
+</parameter>
+
+<parameter>
+<name>MAIN_PROG</name>
+<datatype>file</datatype>
+<description>File of the centers of the images for CENTER='read by a file'</description>
+</parameter>
+
+
+
+
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>FILE_FORMAT</name>
+<datatype>integer</datatype>
+<description></description>
+<validvalues>
+<literal>
+<value>1</value>
+<title>binary image (IDL)</title>
+</literal>
+<literal>
+<value>2</value>
+<title>ASCII image</title>
+</literal>
+<literal>
+<value>3</value>
+<title>FITS image</title>
+</literal>
+</validvalues>
+</parameter>
+
+
+
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>FILE_HEADER</name>
+<datatype>integer</datatype>
+<description>Flag for producing HEADER. for idl /ascii FILE_FORMAT header will be created as ascii file</description>
+<validvalues>
+<literal>
+<value>0</value>
+<title>no header </title>
+</literal>
+<literal>
+<value>1</value>
+<title>header </title>
+</literal>
+</validvalues>
+</parameter>
+
+
+<parameter>
+<name>PREFIX_OUT</name>
+<datatype>string</datatype>
+<description>Prefix of the output files</description>
+</parameter>
+
+
+
+<parameter>
+<name>HUBBLE</name>
+<datatype>float</datatype>
+<description></description>
+</parameter>
+
+
+
+<parameter>
+<name>OMEGA</name>
+<datatype>float</datatype>
+<description></description>
+</parameter>
+
+
+
+<parameter>
+<name>LAMBDA</name>
+<datatype>float</datatype>
+<description></description>
 </parameter>
 </ts:legacyApp>
