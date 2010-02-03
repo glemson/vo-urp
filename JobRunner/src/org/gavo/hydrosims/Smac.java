@@ -3,6 +3,8 @@ package org.gavo.hydrosims;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.net.URL;
+import java.util.HashMap;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -18,7 +20,9 @@ import org.ivoa.util.runner.RunContext;
 import org.ivoa.util.runner.RunState;
 import org.ivoa.web.servlet.JobServlet;
 import org.ivoa.web.servlet.JobStateException;
+import org.vourp.runner.model.EnumeratedParameter;
 import org.vourp.runner.model.LegacyApp;
+import org.vourp.runner.model.ParameterDeclaration;
 
 public class Smac extends JobServlet {
 
@@ -56,7 +60,24 @@ public class Smac extends JobServlet {
 			jaxbFactory = JAXBFactory.getInstance(jaxbpath);
 			legacyApp = (LegacyApp) ((JAXBElement)jaxbFactory.createUnMarshaller().unmarshal(
 					new File(legacyAppXML))).getValue();
-
+			for(ParameterDeclaration p : legacyApp.getParameter())
+			{
+				if(p instanceof EnumeratedParameter)
+					((EnumeratedParameter)p).setNumSlaves(0);
+			}
+					
+			for(ParameterDeclaration p : legacyApp.getParameter())
+			{
+				if(p instanceof EnumeratedParameter)
+				{
+					EnumeratedParameter ep = (EnumeratedParameter)p;
+					if(ep.getDependency() != null)
+					{
+						EnumeratedParameter master = (EnumeratedParameter)ep.getDependency().getMaster();
+						master.setNumSlaves(master.getNumSlaves()+1);
+					}
+				}
+			}
 			initialiseParameterFile(file);
 
 		} catch (Throwable t) {

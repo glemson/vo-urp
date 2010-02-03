@@ -35,11 +35,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ParameterSetting }
+     * Create an instance of {@link EnumeratedParameter }
      * 
      */
-    public ParameterSetting createParameterSetting() {
-        return new ParameterSetting();
+    public EnumeratedParameter createEnumeratedParameter() {
+        return new EnumeratedParameter();
+    }
+
+    /**
+     * Create an instance of {@link Literal }
+     * 
+     */
+    public Literal createLiteral() {
+        return new Literal();
     }
 
     /**
@@ -51,11 +59,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link LegacyApp }
+     * Create an instance of {@link ParameterSetting }
      * 
      */
-    public LegacyApp createLegacyApp() {
-        return new LegacyApp();
+    public ParameterSetting createParameterSetting() {
+        return new ParameterSetting();
     }
 
     /**
@@ -64,6 +72,38 @@ public class ObjectFactory {
      */
     public ParameterDeclaration createParameterDeclaration() {
         return new ParameterDeclaration();
+    }
+
+    /**
+     * Create an instance of {@link Dependency }
+     * 
+     */
+    public Dependency createDependency() {
+        return new Dependency();
+    }
+
+    /**
+     * Create an instance of {@link LegacyApp }
+     * 
+     */
+    public LegacyApp createLegacyApp() {
+        return new LegacyApp();
+    }
+
+    /**
+     * Create an instance of {@link Choice }
+     * 
+     */
+    public Choice createChoice() {
+        return new Choice();
+    }
+
+    /**
+     * Create an instance of {@link Validvalues }
+     * 
+     */
+    public Validvalues createValidvalues() {
+        return new Validvalues();
     }
 
     /**
