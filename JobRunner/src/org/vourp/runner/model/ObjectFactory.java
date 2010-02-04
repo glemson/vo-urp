@@ -35,22 +35,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link EnumeratedParameter }
-     * 
-     */
-    public EnumeratedParameter createEnumeratedParameter() {
-        return new EnumeratedParameter();
-    }
-
-    /**
-     * Create an instance of {@link Literal }
-     * 
-     */
-    public Literal createLiteral() {
-        return new Literal();
-    }
-
-    /**
      * Create an instance of {@link Model }
      * 
      */
@@ -67,19 +51,43 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link Choice }
+     * 
+     */
+    public Choice createChoice() {
+        return new Choice();
+    }
+
+    /**
+     * Create an instance of {@link Literal }
+     * 
+     */
+    public Literal createLiteral() {
+        return new Literal();
+    }
+
+    /**
+     * Create an instance of {@link EnumeratedParameter }
+     * 
+     */
+    public EnumeratedParameter createEnumeratedParameter() {
+        return new EnumeratedParameter();
+    }
+
+    /**
+     * Create an instance of {@link Validvalues }
+     * 
+     */
+    public Validvalues createValidvalues() {
+        return new Validvalues();
+    }
+
+    /**
      * Create an instance of {@link ParameterDeclaration }
      * 
      */
     public ParameterDeclaration createParameterDeclaration() {
         return new ParameterDeclaration();
-    }
-
-    /**
-     * Create an instance of {@link Dependency }
-     * 
-     */
-    public Dependency createDependency() {
-        return new Dependency();
     }
 
     /**
@@ -91,19 +99,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Choice }
+     * Create an instance of {@link Dependency }
      * 
      */
-    public Choice createChoice() {
-        return new Choice();
-    }
-
-    /**
-     * Create an instance of {@link Validvalues }
-     * 
-     */
-    public Validvalues createValidvalues() {
-        return new Validvalues();
+    public Dependency createDependency() {
+        return new Dependency();
     }
 
     /**

@@ -15,7 +15,7 @@
 SIM_FORMAT = 4
 
 #**** Input file
-SNAP_FILE = %%%SNAP_FILE%%% 
+SNAP_FILE = @@@root.data.dir@@@/___SNAP_FILE___/snap_
 
 #**** Halo ID
 HALO_ID = a
@@ -24,8 +24,8 @@ HALO_ID = a
 #        disabled if SNAP_START = -1 else enabled
 #        first input
 #        last input  (=first_input if not given)
-SNAP_START = ___SNAP_START___
-SNAP_END   = ___SNAP_END___
+SNAP_START = ___SNAPNUM___
+SNAP_END   = ___SNAPNUM___
 
 #**** Intial redshift and image redshift (set IMAGE_Z=0. to obtain it from the input data)
 INITIAL_Z = ___INITIAL_Z___
@@ -236,7 +236,7 @@ CENTER_Y =___CENTER_Y___
 CENTER_Z =___CENTER_Z___
 
 #**** File of the centers of the images for 'read by a file':
-MAIN_PROG =___MAIN_PROG___
+MAIN_PROG =@@@root.data.dir@@@/___SNAP_FILE___/Post/___MAIN_PROG___
 
 #=============================================================
 # OUTPUT FILE

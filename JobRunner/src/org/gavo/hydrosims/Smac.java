@@ -1,16 +1,23 @@
 package org.gavo.hydrosims;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Hashtable;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.xml.bind.JAXBElement;
 
+import org.gavo.sam.Datatype;
+import org.gavo.sam.Model.Parameter;
 import org.ivoa.jaxb.JAXBFactory;
 import org.ivoa.runner.FileManager;
 import org.ivoa.util.FileUtils;
@@ -28,8 +35,9 @@ public class Smac extends JobServlet {
 
 	public static final String COMMENT_PREFIX = "#";
 	public static final String FREE_PARAM_DELIMITER = "___";
-	public static final String FIXED_PARAM_DELIMITER = "%%%";
-	public static final String FILE_PARAM_DELIMITER = "###";
+	public static final String CONFIG_PARAM_DELIMITER = "@@@"; // are to be set
+	// using data
+	// from web.xml
 
 	/* constants */
 	public static final String MAIN_TASK = "main";
@@ -38,10 +46,11 @@ public class Smac extends JobServlet {
 	private String executable;
 	private JAXBFactory jaxbFactory;
 	private LegacyApp legacyApp;
+	private Hashtable<String, ParameterDeclaration> params;
+	private String parametersTemplate = null;
 
 	public static final String INPUT_PARAMETERS = "parameters";
-	public static final String SIMULATION = "simulation";
-	public static final String SNAPSHOT = "snapshot";
+	public static final String LEGACY_APP = "legacyApp";
 
 	@Override
 	public void init(ServletConfig config) throws ServletException {
@@ -53,40 +62,92 @@ public class Smac extends JobServlet {
 					+ config.getInitParameter("legacy.app.xml");
 			String file = FileManager.LEGACYAPPS + "/" + name + "/"
 					+ config.getInitParameter("parameterfile.template");
+
 			rootDataDir = config.getInitParameter("root.data.dir");
 			executable = FileManager.LEGACYAPPS + "/" + name + "/"
 					+ config.getInitParameter("executable");
 
 			jaxbFactory = JAXBFactory.getInstance(jaxbpath);
-			legacyApp = (LegacyApp) ((JAXBElement)jaxbFactory.createUnMarshaller().unmarshal(
-					new File(legacyAppXML))).getValue();
-			for(ParameterDeclaration p : legacyApp.getParameter())
-			{
-				if(p instanceof EnumeratedParameter)
-					((EnumeratedParameter)p).setNumSlaves(0);
-			}
-					
-			for(ParameterDeclaration p : legacyApp.getParameter())
-			{
-				if(p instanceof EnumeratedParameter)
-				{
-					EnumeratedParameter ep = (EnumeratedParameter)p;
-					if(ep.getDependency() != null)
-					{
-						EnumeratedParameter master = (EnumeratedParameter)ep.getDependency().getMaster();
-						master.setNumSlaves(master.getNumSlaves()+1);
-					}
-				}
-			}
-			initialiseParameterFile(file);
+			legacyApp = (LegacyApp) ((JAXBElement) jaxbFactory
+					.createUnMarshaller().unmarshal(new File(legacyAppXML)))
+					.getValue();
+			parametersTemplate = initialiseParameters(file, config);
 
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
 	}
 
-	private void initialiseParameterFile(String file) {
+	private String initialiseParameters(String parameterTemplateFile,
+			ServletConfig config) throws Exception {
 
+		params = new Hashtable<String, ParameterDeclaration>();
+		Hashtable<String, ParameterDeclaration> freeParams = new Hashtable<String, ParameterDeclaration>();
+		for (ParameterDeclaration p : legacyApp.getParameter()) {
+			params.put(p.getName(), p);
+			if (p instanceof EnumeratedParameter)
+				((EnumeratedParameter) p).setNumSlaves(0);
+		}
+
+		for (ParameterDeclaration p : legacyApp.getParameter()) {
+			if (p instanceof EnumeratedParameter) {
+				EnumeratedParameter ep = (EnumeratedParameter) p;
+				if (ep.getDependency() != null) {
+					EnumeratedParameter master = (EnumeratedParameter) ep
+							.getDependency().getMaster();
+					if(master == null)
+						System.out.println("help");
+					master.setNumSlaves(master.getNumSlaves() + 1);
+				}
+			}
+		}
+
+		File f = new File(parameterTemplateFile);
+		StringBuffer sb = new StringBuffer();
+		if (f.exists() && f.isFile()) {
+
+			BufferedReader reader = new BufferedReader(new FileReader(f));
+			String l;
+			while ((l = reader.readLine()) != null) {
+				String lt = l.trim();
+				if (lt.startsWith(COMMENT_PREFIX)) {
+					sb.append(lt).append("\n");
+					continue;
+				}
+				// check for existence of config parameters
+				int index = -1;
+				int length = lt.length();
+				int fromIndex = 0;
+				while (true) {
+					index = lt.indexOf(CONFIG_PARAM_DELIMITER, fromIndex);
+					if (index == -1)
+						break;
+					fromIndex = index;
+					index = lt.indexOf(CONFIG_PARAM_DELIMITER, fromIndex+CONFIG_PARAM_DELIMITER.length());
+					String configParamName = lt.substring(fromIndex+CONFIG_PARAM_DELIMITER.length(), index);
+					String configParamValue = config.getInitParameter(configParamName);
+					lt = lt.replaceAll(CONFIG_PARAM_DELIMITER+configParamName+CONFIG_PARAM_DELIMITER, configParamValue);
+				}
+				fromIndex = 0;
+				while (true) {
+					index = lt.indexOf(FREE_PARAM_DELIMITER, fromIndex);
+					if (index == -1)
+						break;
+					fromIndex = index;
+					index = lt.indexOf(FREE_PARAM_DELIMITER, fromIndex+ FREE_PARAM_DELIMITER.length());
+					String freeParamName = lt.substring(fromIndex+ FREE_PARAM_DELIMITER.length(), index);
+					ParameterDeclaration param = params.get(freeParamName);
+					if(param == null)
+						throw new Exception(String.format(
+								"Free parameter %s detected in paramater template file which does not occur in configuraiton XML file.",freeParamName));
+					else
+						freeParams.put(freeParamName, param);
+					fromIndex=index + FREE_PARAM_DELIMITER.length();
+				}
+				sb.append(lt).append("\n");
+			}
+		}
+		return sb.toString();
 	}
 
 	@Override
@@ -125,9 +186,29 @@ public class Smac extends JobServlet {
 		return ok;
 	}
 
-	private String[] prepareMainTask(final String workDir,
+	private String[] prepareMainTask(String workDir,
 			HttpServletRequest req) throws IOException {
-		return new String[] { executable };
+		
+		if(!workDir.endsWith("/"))
+			workDir = workDir+"/";
+		// create a parameters file, write it to workDir
+		String f = parametersTemplate;
+		for(ParameterDeclaration p: legacyApp.getParameter())
+		{
+			String v = req.getParameter(p.getName());
+			if(v == null)
+				v = p.getDefaultValue();
+		  f = f.replaceAll(FREE_PARAM_DELIMITER+p.getName()+FREE_PARAM_DELIMITER, v);
+		}
+		File params = new File(workDir+"smac.inp");
+		FileWriter w = new FileWriter(params);
+		w.write(f);
+		w.flush();
+		w.close();
+		
+		
+//		return new String[] { executable };
+		return new String[]{"c:/cygwin/usr/bin/cp",params.getAbsolutePath(),params.getAbsolutePath()+".copy"};
 	}
 
 	@Override
