@@ -24,6 +24,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
+ *         &lt;element name="defaultValue" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="literal" type="{http://gavo.org/JobRunner/LegacyApps/v0.1}Literal" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *       &lt;attribute name="ID" type="{http://www.w3.org/2001/XMLSchema}ID" />
@@ -36,10 +37,12 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "Validvalues", propOrder = {
+    "defaultValue",
     "literal"
 })
 public class Validvalues {
 
+    protected String defaultValue;
     @XmlElement(required = true)
     protected List<Literal> literal;
     @XmlAttribute(name = "ID")
@@ -47,6 +50,30 @@ public class Validvalues {
     @XmlID
     @XmlSchemaType(name = "ID")
     protected String id;
+
+    /**
+     * Gets the value of the defaultValue property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getDefaultValue() {
+        return defaultValue;
+    }
+
+    /**
+     * Sets the value of the defaultValue property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setDefaultValue(String value) {
+        this.defaultValue = value;
+    }
 
     /**
      * Gets the value of the literal property.

@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="name" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="datatype" type="{http://gavo.org/JobRunner/LegacyApps/v0.1}Datatype"/>
  *         &lt;element name="description" type="{http://www.w3.org/2001/XMLSchema}string"/>
- *         &lt;element name="isFixed" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+ *         &lt;element name="isFixed" type="{http://www.w3.org/2001/XMLSchema}int" minOccurs="0"/>
  *         &lt;element name="defaultValue" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
@@ -50,8 +50,8 @@ public class ParameterDeclaration {
     protected Datatype datatype;
     @XmlElement(required = true)
     protected String description;
-    @XmlElement(defaultValue = "false")
-    protected Boolean isFixed;
+    @XmlElement(defaultValue = "0")
+    protected Integer isFixed;
     protected String defaultValue;
 
     /**
@@ -131,10 +131,10 @@ public class ParameterDeclaration {
      * 
      * @return
      *     possible object is
-     *     {@link Boolean }
+     *     {@link Integer }
      *     
      */
-    public Boolean isIsFixed() {
+    public Integer getIsFixed() {
         return isFixed;
     }
 
@@ -143,10 +143,10 @@ public class ParameterDeclaration {
      * 
      * @param value
      *     allowed object is
-     *     {@link Boolean }
+     *     {@link Integer }
      *     
      */
-    public void setIsFixed(Boolean value) {
+    public void setIsFixed(Integer value) {
         this.isFixed = value;
     }
 

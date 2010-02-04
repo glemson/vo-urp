@@ -170,7 +170,7 @@
     </init-param>
     <init-param>
       <param-name>executable</param-name>
-      <param-value>Smac_6.0.exe</param-value>
+      <param-value>c:/cygdrive/bin/cp.exe</param-value>
     </init-param>
     <init-param>
       <param-name>parameterfile.template</param-name>
