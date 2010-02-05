@@ -170,7 +170,7 @@
     </init-param>
     <init-param>
       <param-name>executable</param-name>
-      <param-value>c:/cygdrive/bin/cp.exe</param-value>
+      <param-value>cp.exe smac.inp smac.inp.copy</param-value>
     </init-param>
     <init-param>
       <param-name>parameterfile.template</param-name>
@@ -178,7 +178,7 @@
     </init-param>
     <init-param>
       <param-name>root.data.dir</param-name>
-      <param-value>e:/data/</param-value>
+      <param-value>/afs/mpa/project/hydrosims/</param-value>
     </init-param>
     <init-param>
       <param-name>jaxb.path</param-name>

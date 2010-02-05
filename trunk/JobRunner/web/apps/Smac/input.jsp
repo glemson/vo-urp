@@ -16,17 +16,6 @@ Please see <a href="" target="_blank">here</a> for further documentation about t
 </p>
 <br/>
 <form action="<%= request.getContextPath() %>/Smac.do?action=start" method="POST" >
-Select a simulation : 
-<select name="SIMULATION">
-<option selected>Hutt/g676/csf</option>
-<option >Hutt/g676/dm</option>
-<option >Hutt/g676/ovisc</option>
-<option >Hutt/g676/ovisc</option>
-</select>&nbsp;
-<select name="SNAPSHOT">
-<option selected>92</option>
-<% for(int i = 91; i >= 0 ; i--){ %><option><%= i %></option><% } %>
-</select>
 <hr/>
 <table>
 <c:set var="app" value="${requestScope.LEGACY_APP}" ></c:set>

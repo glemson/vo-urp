@@ -207,8 +207,7 @@ public class Smac extends JobServlet {
 		w.close();
 		
 		
-//		return new String[] { executable };
-		return new String[]{"c:/cygwin/usr/bin/cp",params.getAbsolutePath(),params.getAbsolutePath()+".copy"};
+		return executable.split("[ \t]+");
 	}
 
 	@Override
