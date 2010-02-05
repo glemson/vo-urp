@@ -18,7 +18,7 @@ SIM_FORMAT = 4
 SNAP_FILE = @@@root.data.dir@@@/___SNAP_FILE___/snap_
 
 #**** Halo ID
-HALO_ID = a
+HALO_ID = ___HALO_ID___
 
 #**** Flag of the loop on the input files (integers):
 #        disabled if SNAP_START = -1 else enabled
@@ -236,7 +236,7 @@ CENTER_Y =___CENTER_Y___
 CENTER_Z =___CENTER_Z___
 
 #**** File of the centers of the images for 'read by a file':
-MAIN_PROG =@@@root.data.dir@@@/___SNAP_FILE___/Post/___MAIN_PROG___
+MAIN_PROG =@@@root.data.dir@@@/___SNAP_FILE___/Post/main_prog.___HALO_ID____gas.gv
 
 #=============================================================
 # OUTPUT FILE

@@ -127,29 +127,37 @@
     </init-param>
     <load-on-startup>10</load-on-startup>
   </servlet>
-<!--
+
   <servlet>
     <servlet-name>Smac</servlet-name>
-    <servlet-class>dolag.Smac</servlet-class>
+    <servlet-class>org.gavo.hydrosims.Smac</servlet-class>
     <init-param>
       <param-name>name</param-name>
       <param-value>Smac</param-value>
     </init-param>
     <init-param>
       <param-name>executable</param-name>
-      <param-value>Smac.exe</param-value>
+      <param-value>Smac_6.0 smac.inp</param-value>
     </init-param>
     <init-param>
       <param-name>parameterfile.template</param-name>
-      <param-value>parameterfile.template</param-value>
+      <param-value>smac.inp.template</param-value>
     </init-param>
     <init-param>
-      <param-name>rootDataDir</param-name>
-    	  <param-value>/Legacy/Data/dolag/</param-value>
+      <param-name>root.data.dir</param-name>
+      <param-value>/afs/mpa/project/hydrosims/</param-value>
+    </init-param>
+    <init-param>
+      <param-name>jaxb.path</param-name>
+      <param-value>org.vourp.runner.model</param-value>
+    </init-param>
+    <init-param>
+      <param-name>legacy.app.xml</param-name>
+      <param-value>Smac.xml</param-value>
     </init-param>
     <load-on-startup>10</load-on-startup>
   </servlet>
--->
+  
   <servlet>
     <servlet-name>Millimil</servlet-name>
     <servlet-class>org.gavo.millimil.Millimil</servlet-class>
@@ -199,6 +207,11 @@
   <servlet-mapping>
     <servlet-name>SeSAM</servlet-name>
     <url-pattern>/SeSAM.do</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>Smac</servlet-name>
+    <url-pattern>/Smac.do</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>

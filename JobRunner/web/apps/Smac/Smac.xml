@@ -20,6 +20,15 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   <literal>
   <value>Hutt/g676/ovisc</value>
   </literal>
+  <literal>
+  <value>Hutt/g51/csf</value>
+  </literal>
+  <literal>
+  <value>Hutt/g51/dm</value>
+  </literal>
+  <literal>
+  <value>Hutt/g51/ovisc</value>
+  </literal>
   </validvalues>
 </parameter>
 
@@ -1136,30 +1145,29 @@ This variable must be a power of 2 and &lt;= 8192.
 </parameter>
 
 
-<!-- TODO dependency on CENTER 2  -->
 <parameter  xsi:type="ts:EnumeratedParameter">
-<name>MAIN_PROG</name>
+<name>HALO_ID</name>
 <datatype>string</datatype>
-<description>File of the centers of the images for CENTER='read by a file'</description>
-<defaultValue>main_prog.a_gas.gv</defaultValue>
-<validvalues ID="MAIN_PROG_for_CENTER_2">
+<description>ID of few most massive halos to center the images on for CENTER='read by a file'</description>
+<defaultValue>1</defaultValue>
+<validvalues ID="HALO_ID_for_CENTER_2">
 <literal>
-  <value>main_prog.a_gas.gv</value>
+  <value>a</value>
 </literal>
 <literal>
-  <value>main_prog.b_gas.gv</value>
+  <value>b</value>
 </literal>
 <literal>
-  <value>main_prog.c_gas.gv</value>
+  <value>c</value>
 </literal>
 <literal>
-  <value>main_prog.d_gas.gv</value>
+  <value>d</value>
 </literal>
 </validvalues>
 <dependency>
   <master>CENTER</master>
   <choice>
-    <choose>MAIN_PROG_for_CENTER_2</choose>
+    <choose>HALO_ID_for_CENTER_2</choose>
     <if>2</if>
   </choice>
 </dependency>
