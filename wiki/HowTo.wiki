@@ -1,0 +1,11 @@
+#summary How to start a new modelling project.
+= Introduction =
+Here we describe how one can use the VO-URP infrastructure to create a database etc for one's own data model.
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
