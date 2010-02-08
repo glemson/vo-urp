@@ -250,18 +250,49 @@
   <security-role>
     <role-name>JobRunner-member</role-name>
   </security-role>
+  <security-role>
+    <role-name>JobRunner-sesam</role-name>
+  </security-role>
+  <security-role>
+    <role-name>JobRunner-smac</role-name>
+  </security-role>
+  
   <!--  Define a constraint to restrict access to /secure/* 
   --> 
   <security-constraint>
-    <display-name>Security constraint for the web app</display-name>
+    <display-name>Security constraint for the Smac.do part of the JobRunner web app.</display-name>
     <web-resource-collection>
-      <web-resource-name>Protected Area = Administration Web Interface</web-resource-name>
+      <web-resource-name>Protected Area = JobRunner members</web-resource-name>
+      <description>Accessible by authorised users</description>
+      <url-pattern>/Smac.do/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <description>These are the roles who have access</description>
+      <role-name>JobRunner-smac</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+  <security-constraint>
+    <display-name>Security constraint for the SeSAM.do part of the JobRunner web app.</display-name>
+    <web-resource-collection>
+      <web-resource-name>Protected Area = JobRunner members</web-resource-name>
+      <description>Accessible by authorised users</description>
+      <url-pattern>/SeSAM.do/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <description>These are the roles who have access</description>
+      <role-name>JobRunner-sesam</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+  <security-constraint>
+    <display-name>Security constraint for the JobRunner web app.</display-name>
+    <web-resource-collection>
+      <web-resource-name>Protected Area = JobRunner members</web-resource-name>
       <description>Accessible by authorised users</description>
       <url-pattern>/*</url-pattern>
     </web-resource-collection>
     <auth-constraint>
-  <!--  Only administrator can access this area 
-  --> 
       <description>These are the roles who have access</description>
       <role-name>JobRunner-member</role-name>
     </auth-constraint>

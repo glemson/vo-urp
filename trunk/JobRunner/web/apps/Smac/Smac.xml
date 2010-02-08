@@ -5,32 +5,56 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 <name>Smac</name>
 <description>Klaus' visualisation code.</description>
 
-<parameter xsi:type="ts:EnumeratedParameter">
-  <name>SNAP_FILE</name>
+<parameter xsi:type="ts:EnumeratedParameter" ID="CLUSTER_ID">
+  <name>CLUSTER_ID</name>
   <datatype>string</datatype>
-  <description>Simulation ID</description>
-  <defaultValue>Hutt/g676/csf</defaultValue>
+  <description>The cluster that was re-simulated.</description>
+  <defaultValue>g676</defaultValue>
   <validvalues>
   <literal>
-  <value>Hutt/g676/csf</value>
+  <value>g676</value>
   </literal>
   <literal>
-  <value>Hutt/g676/dm</value>
+  <value>g914</value>
   </literal>
   <literal>
-  <value>Hutt/g676/ovisc</value>
+  <value>g1542</value>
   </literal>
   <literal>
-  <value>Hutt/g51/csf</value>
+  <value>g3344</value>
   </literal>
   <literal>
-  <value>Hutt/g51/dm</value>
+  <value>g6212</value>
   </literal>
   <literal>
-  <value>Hutt/g51/ovisc</value>
+  <value>g1</value>
+  </literal>
+  <literal>
+  <value>g8</value>
+  </literal>
+  <literal>
+  <value>g51</value>
+  </literal>
+  <literal>
+  <value>g72</value>
   </literal>
   </validvalues>
 </parameter>
+
+<parameter  xsi:type="ts:EnumeratedParameter">
+  <name>PHYSICS</name>
+  <datatype>string</datatype>
+  <description>The physics included in the simulation.</description>
+  <defaultValue>csf</defaultValue>
+  <validvalues>
+  <literal><value>dm</value></literal>
+  <literal><value>ovisc</value></literal>
+  <literal><value>lvisc</value></literal>
+  <literal><value>csf</value></literal>
+  <literal><value>csfc</value></literal>
+  </validvalues>
+</parameter>
+
 
 <parameter xsi:type="ts:EnumeratedParameter">
 <name>SNAPNUM</name>
@@ -1150,7 +1174,7 @@ This variable must be a power of 2 and &lt;= 8192.
 <datatype>string</datatype>
 <description>ID of few most massive halos to center the images on for CENTER='read by a file'</description>
 <defaultValue>1</defaultValue>
-<validvalues ID="HALO_ID_for_CENTER_2">
+<validvalues ID="HALO_ID_for_g8">
 <literal>
   <value>a</value>
 </literal>
@@ -1163,12 +1187,86 @@ This variable must be a power of 2 and &lt;= 8192.
 <literal>
   <value>d</value>
 </literal>
+<literal>
+  <value>e</value>
+</literal>
+<literal>
+  <value>f</value>
+</literal>
+<literal>
+  <value>g</value>
+</literal>
+</validvalues>
+<validvalues ID="HALO_ID_for_g1">
+<literal>
+  <value>a</value>
+</literal>
+<literal>
+  <value>b</value>
+</literal>
+<literal>
+  <value>c</value>
+</literal>
+<literal>
+  <value>d</value>
+</literal>
+<literal>
+  <value>e</value>
+</literal>
+<literal>
+  <value>f</value>
+</literal>
+</validvalues>
+<validvalues ID="HALO_ID_for_g72">
+<literal>
+  <value>a</value>
+</literal>
+<literal>
+  <value>b</value>
+</literal>
+</validvalues>
+<validvalues ID="HALO_ID_for_rest">
+<literal>
+  <value>a</value>
+</literal>
 </validvalues>
 <dependency>
-  <master>CENTER</master>
+  <master>CLUSTER_ID</master>
   <choice>
-    <choose>HALO_ID_for_CENTER_2</choose>
-    <if>2</if>
+    <choose>HALO_ID_for_g8</choose>
+    <if>g8</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_g1</choose>
+    <if>g1</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_g72</choose>
+    <if>g72</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_rest</choose>
+    <if>g676</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_rest</choose>
+    <if>g914</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_rest</choose>
+    <if>g1542</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_rest</choose>
+    <if>g3344</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_rest</choose>
+    <if>g6212</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_rest</choose>
+    <if>g51</if>
   </choice>
 </dependency>
 </parameter>

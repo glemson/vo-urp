@@ -30,7 +30,7 @@ function set_${p.name}() {
   if(v == '${ch.if}') {
     found = 1;
     <c:forEach var="literal" items="${validvalues.literal}">
-      x.options[count++] = new Option('${literal.value} - ${literal.title}','${literal.value}'<c:if test="${literal.value == p.defaultValue}">, true, true</c:if>);
+      x.options[count++] = new Option('${literal.value}<c:if test="${not empty literal.title}"> - ${literal.title}</c:if>','${literal.value}'<c:if test="${literal.value == p.defaultValue}">, true, true</c:if>);
     </c:forEach>
   }
 </c:forEach>

@@ -15,7 +15,7 @@
 SIM_FORMAT = 4
 
 #**** Input file
-SNAP_FILE = @@@root.data.dir@@@/___SNAP_FILE___/snap_
+SNAP_FILE = @@@root.data.dir@@@/Hutt/___CLUSTER_ID___/___PHYSICS___/snap_
 
 #**** Halo ID
 HALO_ID = ___HALO_ID___
@@ -236,7 +236,7 @@ CENTER_Y =___CENTER_Y___
 CENTER_Z =___CENTER_Z___
 
 #**** File of the centers of the images for 'read by a file':
-MAIN_PROG =@@@root.data.dir@@@/___SNAP_FILE___/Post/main_prog.___HALO_ID____gas.gv
+MAIN_PROG =@@@root.data.dir@@@/Hutt/___CLUSTER_ID___/___PHYSICS___/Post/main_prog.___HALO_ID____gas.gv
 
 #=============================================================
 # OUTPUT FILE
