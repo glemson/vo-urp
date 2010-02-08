@@ -114,7 +114,9 @@ public class JobServlet extends BaseServlet implements JobListener {
 		final String action = getStringParameter(request, INPUT_ACTION);
 
 		final String user = request.getRemoteUser();
-
+		
+		
+		
 		// Process Session (creates a new one on first time) :
 		final HttpSession session = createSession(request);
 
