@@ -80,7 +80,7 @@ Select a model :
 </td> 
 <td >SF efficiency: f_s = 10<sup>f_s[0]+f_s[1]*logM+f_s[2]*(logM)<sup>2</sup></sup>t<sup>f_s[3]</sup><br/>
 M is in units of M<sub>sun</sub>/h <br/>
-t is in units of Gyr </td> 
+t is the time since the big-bang in units of Gyr</td> 
 </tr>
 <tr>
 <td>fs_file</td>
