@@ -11,8 +11,9 @@
 
 <!-- <a href="<%= request.getContextPath() %>/SeSAM.do?action=list">Job queue</a>  -->
 <p>
-This page allows you to visualise a hydrodynamical simulation using Smac.
-Please see <a href="" target="_blank">here</a> for further documentation about the Smac visualisation code.
+This page allows you to visualise hydrodynamical simulations using Smac.
+Please see <a href="http://www.mpa-garching.mpg.de/~kdolag/Hutt" target="_blank">here</a> for further information about the simulations.
+Please see <a href="http://www.mpa-garching.mpg.de/~kdolag/Smac" target="_blank">here</a> for documentation about the Smac visualisation code.
 </p>
 <br/>
 <form action="<%= request.getContextPath() %>/Smac.do?action=start" method="POST" >
