@@ -46,13 +46,63 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   <datatype>string</datatype>
   <description>The physics included in the simulation.</description>
   <defaultValue>csf</defaultValue>
-  <validvalues>
+  <validvalues ID="PHYSICS_DEFAULT">
   <literal><value>dm</value></literal>
   <literal><value>ovisc</value></literal>
   <literal><value>lvisc</value></literal>
   <literal><value>csf</value></literal>
   <literal><value>csfc</value></literal>
   </validvalues>
+  <validvalues ID="PHYSICS_g51">
+  <literal><value>dm</value></literal>
+  <literal><value>ovisc</value></literal>
+  <literal><value>lvisc</value></literal>
+  <literal><value>csf</value></literal>
+  <literal><value>csfc</value></literal>
+  <literal><value>csfnw</value></literal>
+  <literal><value>csfsw</value></literal>
+  <literal><value>mhd_z</value></literal>
+  <literal><value>m1</value></literal>
+  </validvalues>
+<dependency>
+<master>CLUSTER_ID</master>
+<choice>
+<choose>PHYSICS_DEFAULT</choose>
+<if>g676</if>
+</choice>
+<choice>
+<choose>PHYSICS_DEFAULT</choose>
+<if>g914</if>
+</choice>
+<choice>
+<choose>PHYSICS_DEFAULT</choose>
+<if>g1542</if>
+</choice>
+<choice>
+<choose>PHYSICS_DEFAULT</choose>
+<if>g3344</if>
+</choice>
+<choice>
+<choose>PHYSICS_DEFAULT</choose>
+<if>g6212</if>
+</choice>
+<choice>
+<choose>PHYSICS_DEFAULT</choose>
+<if>g1</if>
+</choice>
+<choice>
+<choose>PHYSICS_DEFAULT</choose>
+<if>g8</if>
+</choice>
+<choice>
+<choose>PHYSICS_DEFAULT</choose>
+<if>g72</if>
+</choice>
+<choice>
+<choose>PHYSICS_g51</choose>
+<if>g51</if>
+</choice>
+</dependency>
 </parameter>
 
 
@@ -60,295 +110,381 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 <name>SNAPNUM</name>
 <datatype>integer</datatype>
 <description>Start snapshot</description>
-<defaultValue>92</defaultValue>
+<defaultValue>85</defaultValue>
 <validvalues>
 <literal>
-<value>92</value>
-</literal>
-<literal>
-<value>91</value>
-</literal>
-<literal>
-<value>90</value>
-</literal>
-<literal>
-<value>89</value>
-</literal>
-<literal>
-<value>88</value>
-</literal>
-<literal>
-<value>87</value>
-</literal>
-<literal>
-<value>86</value>
-</literal>
-<literal>
-<value>85</value>
-</literal>
-<literal>
-<value>84</value>
-</literal>
-<literal>
-<value>83</value>
-</literal>
-<literal>
-<value>82</value>
-</literal>
-<literal>
-<value>81</value>
-</literal>
-<literal>
-<value>80</value>
-</literal>
-<literal>
-<value>79</value>
-</literal>
-<literal>
-<value>78</value>
-</literal>
-<literal>
-<value>77</value>
-</literal>
-<literal>
-<value>76</value>
-</literal>
-<literal>
-<value>75</value>
-</literal>
-<literal>
-<value>74</value>
-</literal>
-<literal>
-<value>73</value>
-</literal>
-<literal>
-<value>72</value>
-</literal>
-<literal>
-<value>71</value>
-</literal>
-<literal>
-<value>70</value>
-</literal>
-<literal>
-<value>69</value>
-</literal>
-<literal>
-<value>68</value>
-</literal>
-<literal>
-<value>67</value>
-</literal>
-<literal>
-<value>66</value>
-</literal>
-<literal>
-<value>65</value>
-</literal>
-<literal>
-<value>64</value>
-</literal>
-<literal>
-<value>63</value>
-</literal>
-<literal>
-<value>62</value>
-</literal>
-<literal>
-<value>61</value>
-</literal>
-<literal>
-<value>60</value>
-</literal>
-<literal>
-<value>59</value>
-</literal>
-<literal>
-<value>58</value>
-</literal>
-<literal>
-<value>57</value>
-</literal>
-<literal>
-<value>56</value>
-</literal>
-<literal>
-<value>55</value>
-</literal>
-<literal>
-<value>54</value>
-</literal>
-<literal>
-<value>53</value>
-</literal>
-<literal>
-<value>52</value>
-</literal>
-<literal>
-<value>51</value>
-</literal>
-<literal>
-<value>50</value>
-</literal>
-<literal>
-<value>49</value>
-</literal>
-<literal>
-<value>48</value>
-</literal>
-<literal>
-<value>47</value>
-</literal>
-<literal>
-<value>46</value>
-</literal>
-<literal>
-<value>45</value>
-</literal>
-<literal>
-<value>44</value>
-</literal>
-<literal>
-<value>43</value>
-</literal>
-<literal>
-<value>42</value>
-</literal>
-<literal>
-<value>41</value>
-</literal>
-<literal>
-<value>40</value>
-</literal>
-<literal>
-<value>39</value>
-</literal>
-<literal>
-<value>38</value>
-</literal>
-<literal>
-<value>37</value>
-</literal>
-<literal>
-<value>36</value>
-</literal>
-<literal>
-<value>35</value>
-</literal>
-<literal>
-<value>34</value>
-</literal>
-<literal>
-<value>33</value>
-</literal>
-<literal>
-<value>32</value>
-</literal>
-<literal>
-<value>31</value>
-</literal>
-<literal>
-<value>30</value>
-</literal>
-<literal>
-<value>29</value>
-</literal>
-<literal>
-<value>28</value>
-</literal>
-<literal>
-<value>27</value>
-</literal>
-<literal>
-<value>26</value>
-</literal>
-<literal>
-<value>25</value>
-</literal>
-<literal>
-<value>24</value>
-</literal>
-<literal>
-<value>23</value>
-</literal>
-<literal>
-<value>22</value>
-</literal>
-<literal>
-<value>21</value>
-</literal>
-<literal>
-<value>20</value>
-</literal>
-<literal>
-<value>19</value>
-</literal>
-<literal>
-<value>18</value>
-</literal>
-<literal>
-<value>17</value>
-</literal>
-<literal>
-<value>16</value>
-</literal>
-<literal>
-<value>15</value>
-</literal>
-<literal>
-<value>14</value>
-</literal>
-<literal>
-<value>13</value>
-</literal>
-<literal>
-<value>12</value>
-</literal>
-<literal>
-<value>11</value>
-</literal>
-<literal>
-<value>10</value>
-</literal>
-<literal>
-<value>9</value>
-</literal>
-<literal>
-<value>8</value>
-</literal>
-<literal>
-<value>7</value>
-</literal>
-<literal>
-<value>6</value>
-</literal>
-<literal>
-<value>5</value>
-</literal>
-<literal>
-<value>4</value>
-</literal>
-<literal>
-<value>3</value>
-</literal>
-<literal>
-<value>2</value>
+<value>0</value>
+<title>60.0</title>
 </literal>
 <literal>
 <value>1</value>
+<title>50.0</title>
 </literal>
 <literal>
-<value>0</value>
+<value>2</value>
+<title>40.0</title>
+</literal>
+<literal>
+<value>3</value>
+<title>30.0</title>
+</literal>
+<literal>
+<value>4</value>
+<title>20.0</title>
+</literal>
+<literal>
+<value>5</value>
+<title>10.0</title>
+</literal>
+<literal>
+<value>6</value>
+<title>9.4849</title>
+</literal>
+<literal>
+<value>7</value>
+<title>8.9939</title>
+</literal>
+<literal>
+<value>8</value>
+<title>8.5260</title>
+</literal>
+<literal>
+<value>9</value>
+<title>8.0799</title>
+</literal>
+<literal>
+<value>10</value>
+<title>7.6547</title>
+</literal>
+<literal>
+<value>11</value>
+<title>7.2495</title>
+</literal>
+<literal>
+<value>12</value>
+<title>6.8632</title>
+</literal>
+<literal>
+<value>13</value>
+<title>6.4950</title>
+</literal>
+<literal>
+<value>14</value>
+<title>6.1440</title>
+</literal>
+<literal>
+<value>15</value>
+<title>5.8095</title>
+</literal>
+<literal>
+<value>16</value>
+<title>5.4906</title>
+</literal>
+<literal>
+<value>17</value>
+<title>5.1867</title>
+</literal>
+<literal>
+<value>18</value>
+<title>4.8970</title>
+</literal>
+<literal>
+<value>19</value>
+<title>4.6209</title>
+</literal>
+<literal>
+<value>20</value>
+<title>4.3577</title>
+</literal>
+<literal>
+<value>21</value>
+<title>4.1068</title>
+</literal>
+<literal>
+<value>22</value>
+<title>3.8676</title>
+</literal>
+<literal>
+<value>23</value>
+<title>3.6397</title>
+</literal>
+<literal>
+<value>24</value>
+<title>3.4225</title>
+</literal>
+<literal>
+<value>25</value>
+<title>3.2154</title>
+</literal>
+<literal>
+<value>26</value>
+<title>3.0180</title>
+</literal>
+<literal>
+<value>27</value>
+<title>2.8298</title>
+</literal>
+<literal>
+<value>28</value>
+<title>2.6505</title>
+</literal>
+<literal>
+<value>29</value>
+<title>2.4795</title>
+</literal>
+<literal>
+<value>30</value>
+<title>2.3166</title>
+</literal>
+<literal>
+<value>31</value>
+<title>2.1613</title>
+</literal>
+<literal>
+<value>32</value>
+<title>2.0133</title>
+</literal>
+<literal>
+<value>33</value>
+<title>1.8722</title>
+</literal>
+<literal>
+<value>34</value>
+<title>1.7377</title>
+</literal>
+<literal>
+<value>35</value>
+<title>1.6095</title>
+</literal>
+<literal>
+<value>36</value>
+<title>1.4873</title>
+</literal>
+<literal>
+<value>37</value>
+<title>1.3708</title>
+</literal>
+<literal>
+<value>38</value>
+<title>1.2598</title>
+</literal>
+<literal>
+<value>39</value>
+<title>1.1540</title>
+</literal>
+<literal>
+<value>40</value>
+<title>1.0531</title>
+</literal>
+<literal>
+<value>41</value>
+<title>1.0000</title>
+</literal>
+<literal>
+<value>42</value>
+<title>0.9618</title>
+</literal>
+<literal>
+<value>43</value>
+<title>0.9254</title>
+</literal>
+<literal>
+<value>44</value>
+<title>0.8901</title>
+</literal>
+<literal>
+<value>45</value>
+<title>0.8564</title>
+</literal>
+<literal>
+<value>46</value>
+<title>0.8238</title>
+</literal>
+<literal>
+<value>47</value>
+<title>0.7923</title>
+</literal>
+<literal>
+<value>48</value>
+<title>0.7620</title>
+</literal>
+<literal>
+<value>49</value>
+<title>0.7327</title>
+</literal>
+<literal>
+<value>50</value>
+<title>0.7044</title>
+</literal>
+<literal>
+<value>51</value>
+<title>0.6771</title>
+</literal>
+<literal>
+<value>52</value>
+<title>0.6505</title>
+</literal>
+<literal>
+<value>53</value>
+<title>0.6248</title>
+</literal>
+<literal>
+<value>54</value>
+<title>0.5999</title>
+</literal>
+<literal>
+<value>55</value>
+<title>0.5758</title>
+</literal>
+<literal>
+<value>56</value>
+<title>0.5523</title>
+</literal>
+<literal>
+<value>57</value>
+<title>0.5294</title>
+</literal>
+<literal>
+<value>58</value>
+<title>0.5073</title>
+</literal>
+<literal>
+<value>59</value>
+<title>0.4857</title>
+</literal>
+<literal>
+<value>60</value>
+<title>0.4646</title>
+</literal>
+<literal>
+<value>61</value>
+<title>0.4442</title>
+</literal>
+<literal>
+<value>62</value>
+<title>0.4243</title>
+</literal>
+<literal>
+<value>63</value>
+<title>0.4048</title>
+</literal>
+<literal>
+<value>64</value>
+<title>0.3858</title>
+</literal>
+<literal>
+<value>65</value>
+<title>0.3673</title>
+</literal>
+<literal>
+<value>66</value>
+<title>0.3492</title>
+</literal>
+<literal>
+<value>67</value>
+<title>0.3315</title>
+</literal>
+<literal>
+<value>68</value>
+<title>0.3143</title>
+</literal>
+<literal>
+<value>69</value>
+<title>0.2975</title>
+</literal>
+<literal>
+<value>70</value>
+<title>0.2810</title>
+</literal>
+<literal>
+<value>71</value>
+<title>0.2648</title>
+</literal>
+<literal>
+<value>72</value>
+<title>0.2490</title>
+</literal>
+<literal>
+<value>73</value>
+<title>0.2335</title>
+</literal>
+<literal>
+<value>74</value>
+<title>0.2184</title>
+</literal>
+<literal>
+<value>75</value>
+<title>0.2035</title>
+</literal>
+<literal>
+<value>76</value>
+<title>0.1889</title>
+</literal>
+<literal>
+<value>77</value>
+<title>0.1747</title>
+</literal>
+<literal>
+<value>78</value>
+<title>0.1607</title>
+</literal>
+<literal>
+<value>79</value>
+<title>0.1470</title>
+</literal>
+<literal>
+<value>80</value>
+<title>0.1335</title>
+</literal>
+<literal>
+<value>81</value>
+<title>0.1202</title>
+</literal>
+<literal>
+<value>82</value>
+<title>0.1073</title>
+</literal>
+<literal>
+<value>83</value>
+<title>0.09449</title>
+</literal>
+<literal>
+<value>84</value>
+<title>0.08199</title>
+</literal>
+<literal>
+<value>85</value>
+<title>0.06963</title>
+</literal>
+<literal>
+<value>86</value>
+<title>0.05754</title>
+</literal>
+<literal>
+<value>87</value>
+<title>0.04566</title>
+</literal>
+<literal>
+<value>88</value>
+<title>0.03398</title>
+</literal>
+<literal>
+<value>89</value>
+<title>0.02243</title>
+</literal>
+<literal>
+<value>90</value>
+<title>0.01114</title>
+</literal>
+<literal>
+<value>91</value>
+<title>0.00003</title>
+</literal>
+<literal>
+<value>92</value>
+<title>0.0</title>
 </literal>
 </validvalues>
-</parameter>
-
-<parameter>
-<name>INITIAL_Z</name>
-<datatype>float</datatype>
-<description>Intial redshift</description>
-<defaultValue>0</defaultValue>
 </parameter>
 
 <parameter>
@@ -621,12 +757,7 @@ This variable must be a power of 2 and &lt;= 8192.
 </literal>
 <literal>
   <value>2</value>
-  <title>Mass weighted temperature</title>
-  <description></description>
-</literal>
-<literal>
-  <value>3</value>
-  <title>Emission weighted temperature</title>
+  <title>Temperature</title>
   <description></description>
 </literal>
 <literal>
@@ -636,12 +767,12 @@ This variable must be a power of 2 and &lt;= 8192.
 </literal>
 <literal>
   <value>5</value>
-  <title>age of particles</title>
+  <title>Age of particles</title>
   <description></description>
 </literal>
 <literal>
   <value>6</value>
-  <title>X-ray SB of particles</title>
+  <title>X-ray surface brightness</title>
   <description></description>
 </literal>
 <literal>
@@ -651,12 +782,12 @@ This variable must be a power of 2 and &lt;= 8192.
 </literal>
 <literal>
   <value>8</value>
-  <title>Kinematical Sunjaev Zeldovich Effect of particles: kSZ efect</title>
+  <title>Kinematical SZ Effect</title>
   <description></description>
 </literal>
 <literal>
   <value>9</value>
-  <title>Q &amp; U Stokes parameters for transvers particles motion: kpSZ effect</title>
+  <title>Q &amp; U Stokes parameters for transverse particle motion: kpSZ effect</title>
   <description></description>
 </literal>
 <literal>
@@ -672,11 +803,6 @@ This variable must be a power of 2 and &lt;= 8192.
 <literal>
   <value>12</value>
   <title>Faraday Rotation Map</title>
-  <description></description>
-</literal>
-<literal>
-  <value>13</value>
-  <title>Pasquale Weighted (heavy) temperature</title>
   <description></description>
 </literal>
 <literal>
@@ -736,8 +862,48 @@ This variable must be a power of 2 and &lt;= 8192.
 <parameter xsi:type="ts:EnumeratedParameter">
 <name>OUTPUT_SUB</name>
 <datatype>integer</datatype>
-<description></description>
+<description>Flavor of OUTPUT_MAP ...</description>
 <defaultValue>0</defaultValue>
+
+<validvalues ID="OUTPUT_SUB_for_OUTPUT_MAP_2">
+<literal>
+  <value>0</value>
+  <title>mass weighted</title>
+</literal>
+<literal>
+  <value>1</value>
+  <title>Emission weighted</title>
+</literal>
+<literal>
+  <value>2</value>
+  <title>Spectroscopic</title>
+</literal>
+</validvalues>
+
+<validvalues ID="OUTPUT_SUB_for_OUTPUT_MAP_6">
+<literal>
+  <value>0</value>
+  <title>simple sqrt(T)</title>
+</literal>
+<literal>
+  <value>1</value>
+  <title>with cooling function from tables - energy band [0.1-10] keV (bolometric)</title>
+</literal>
+<literal>
+  <value>2</value>
+  <title>with cooling function from tables - energy band [0.1-2.4] keV </title>
+</literal>
+<literal>
+  <value>3</value>
+  <title>with cooling function from tables - energy band [0.3 - 3.5] keV </title>
+</literal>
+<literal>
+  <value>4</value>
+  <title>with cooling function from tables - user defined energy band [XRAY_E0 - XRAY_E1] keV </title>
+</literal>
+</validvalues>
+
+
 <validvalues ID="OUTPUT_SUB_for_OUTPUT_MAP_78">
 <literal>
   <value>0</value>
@@ -758,6 +924,7 @@ This variable must be a power of 2 and &lt;= 8192.
   <title>adimensional [Q_T &amp; U_T] - noramlized on the CMB temperature</title>
 </literal>
 </validvalues>
+
 <validvalues ID="OUTPUT_SUB_for_OUTPUT_MAP_12">
 <literal>
   <value>0</value>
@@ -796,38 +963,15 @@ This variable must be a power of 2 and &lt;= 8192.
   <title>Gamma Emission [# of photons / cm^2] integrated over [E_pi_min,E_pi_max]</title>
 </literal>
 </validvalues>
+
 <validvalues ID="OUTPUT_SUB_for_OUTPUT_MAP_15">
 <literal>
   <value>0</value>
-  <title>total</title>
+  <title>Mass weighted</title>
 </literal>
 <literal>
   <value>1</value>
-  <title>&gt; Fe</title>
-</literal>
-<literal>
-  <value>2</value>
-  <title>C</title>
-</literal>
-<literal>
-  <value>3</value>
-  <title>N</title>
-</literal>
-<literal>
-  <value>4</value>
-  <title>O</title>
-</literal>
-<literal>
-  <value>5</value>
-  <title>Mg</title>
-</literal>
-<literal>
-  <value>6</value>
-  <title>Si</title>
-</literal>
-<literal>
-  <value>7</value>
-  <title>Fe</title>
+  <title>Emission weighted</title>
 </literal>
 </validvalues>
 
@@ -861,6 +1005,14 @@ This variable must be a power of 2 and &lt;= 8192.
   <master>OUTPUT_MAP</master>
 <!--  <default>default_OUTPUT_MAP</default>  --> 
   <choice>
+    <choose>OUTPUT_SUB_for_OUTPUT_MAP_2</choose>
+    <if>2</if>
+  </choice>
+  <choice>
+    <choose>OUTPUT_SUB_for_OUTPUT_MAP_6</choose>
+    <if>6</if>
+  </choice>
+  <choice>
     <choose>OUTPUT_SUB_for_OUTPUT_MAP_78</choose>
     <if>7</if>
   </choice>
@@ -890,6 +1042,63 @@ This variable must be a power of 2 and &lt;= 8192.
   </choice>
 </dependency>
 </parameter>
+
+
+<parameter xsi:type="ts:EnumeratedParameter" ID="METAL_SPECIES">
+  <name>METAL_SPECIES</name>
+  <datatype>integer</datatype>
+  <description>Define metal species</description>
+  <defaultValue>0</defaultValue>
+  <validvalues ID="METAL_SPECIES_for_OUTPUT_MAP_6_15">
+  <literal>
+  <value>0</value>
+  <title>total</title>
+  </literal>
+  <literal>
+  <value>1</value>
+  <title>&gt; Fe</title>
+  </literal>
+  <literal>
+  <value>2</value>
+  <title>C</title>
+  </literal>
+  <literal>
+  <value>3</value>
+  <title>N</title>
+  </literal>
+  <literal>
+  <value>4</value>
+  <title>O</title>
+  </literal>
+  <literal>
+  <value>5</value>
+  <title>Mg</title>
+  </literal>
+  <literal>
+  <value>6</value>
+  <title>Si</title>
+  </literal>
+  <literal>
+  <value>7</value>
+  <title>Fe</title>
+  </literal>
+  </validvalues>
+  <dependency>
+  <master>OUTPUT_MAP</master>
+  <choice>
+    <choose>METAL_SPECIES_for_OUTPUT_MAP_6_15</choose>
+    <if>6</if>
+  </choice>
+  <choice>
+    <choose>METAL_SPECIES_for_OUTPUT_MAP_6_15</choose>
+    <if>15</if>
+  </choice>
+  </dependency>
+</parameter>
+
+
+
+
 
 <parameter xsi:type="ts:EnumeratedParameter">
 <name>TEMP_UNIT</name>
@@ -1018,40 +1227,7 @@ This variable must be a power of 2 and &lt;= 8192.
 </validvalues>
 </parameter>
 
-<!-- TODO dependency on PART_DISTR 1 and 3  -->
-<parameter xsi:type="ts:EnumeratedParameter">
-<name>START_PROJECT</name>
-<datatype>integer</datatype>
-<description>First direction to project along</description>
-<defaultValue>1</defaultValue>
-<validvalues ID="START_PROJECT_for_PART_DISTR_13">
-<literal>
-<value>1</value>
-<title>along z, xy plane</title>
-</literal>
-<literal>
-<value>2</value>
-<title>along y, xz plane</title>
-</literal>
-<literal>
-<value>3</value>
-<title>along x, yz plane</title>
-</literal>
-</validvalues>
-<dependency>
-  <master>PART_DISTR</master>
-  <choice>
-    <choose>START_PROJECT_for_PART_DISTR_13</choose>
-    <if>1</if>
-  </choice>
-  <choice>
-    <choose>START_PROJECT_for_PART_DISTR_13</choose>
-    <if>3</if>
-  </choice>
-</dependency>
-</parameter>
 
-<!-- TODO dependency on PART_DISTR 1 and 3  -->
 <parameter xsi:type="ts:EnumeratedParameter">
 <name>PROJECT</name>
 <datatype>integer</datatype>
@@ -1069,6 +1245,10 @@ This variable must be a power of 2 and &lt;= 8192.
 <literal>
 <value>3</value>
 <title>along x, yz plane</title>
+</literal>
+<literal>
+<value>4</value>
+<title>along all directions</title>
 </literal>
 </validvalues>
 <dependency>

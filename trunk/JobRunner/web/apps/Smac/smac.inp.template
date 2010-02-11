@@ -28,7 +28,7 @@ SNAP_START = ___SNAPNUM___
 SNAP_END   = ___SNAPNUM___
 
 #**** Intial redshift and image redshift (set IMAGE_Z=0. to obtain it from the input data)
-INITIAL_Z = ___INITIAL_Z___
+INITIAL_Z = 60
 IMAGE_Z   = ___IMAGE_Z___
 
 #**** Rvir in kpc/h and Mvir in Msol/h
@@ -100,11 +100,19 @@ MAX_DIST =___MAX_DIST___
 #**** Flag of the type of output map (integers):
 #         (0)  3D electron density
 #         (1)  2D elctron Density
-#         (2)  Mass weighted temperature
-#         (3)  Emission weighted temperature
+#         (2)  Temperature
+#	       (0) mass weighted
+#              (1) Emission weighted temperature (e.g. former (3))    !!!! TO BE CHANGED!!! 
+#	       (2) Spectroscopic (e.g. former (13))                   !!!! TO BE CHANGED !!!
 #         (4)  Volume of particles
 #         (5)  age of particles
 #         (6)  X-ray SB of particles
+#	       (0) simple sqrt(T)
+#	        or  with cooling function from tables
+#              (1)       - energy band [0.1-10] keV (bolometric)
+#	       (2)       - energy band [0.1-2.4] keV
+#              (3)       - energy band [0.3-3.5] keV
+#              (4)       - user defined energy band [ XRAY_E0 - XRAY_E1 ] keV (define below)
 #         (7)  Compton y-parameter: tSZ effect
 #	 	flag of the subtype of output map:
 #		(0) adimensional [DI/I]
@@ -119,29 +127,22 @@ MAX_DIST =___MAX_DIST___
 #		(1) adimensional [Q_T & U_T] - noramlized on the CMB temperature
 #	 (10) Mass weighted velocity
 #	 (11) Mass weighted squared velocity
-#   (12) Faraday Rotation Map
-#         flag of the subtype of output map:
-#         (0) RM
-#         (1) <B_x,y,z>
-#         (2) <|B|>
-#         (3) Synchrotron Emission total power
-#         (31) Orthogonal Polarised Synchrotron Emission 
-#         (32) Parallel Polarised Synchrotron Emission 
-#         (40) Gamma Emission [# of photons / cm^2] @ E_gam
-#         (41) Gamma Emission [erg/cm^2  ]			 @ E_gam
-#         (42) Gamma Emission [# of photons / cm^2] integrated over [E_pi_min,E_pi_max]
-#    (13) Pasquale Weighted (heavy) temperature
-#    (14) Emission temperature
-#    (15) Massweighted-Metalicity 
+#        (12) Magnetic field related maps
+#               flag of the subtype of output map:
+#               (0) RM
+#               (1) <B_x,y,z>
+#               (2) <|B|>
+#               (3) Synchrotron Emission
+#               (10) RM with relativistic corrections
+#               (40) Gamma Emission [# of photons / cm^2] @ E_gam
+#               (41) Gamma Emission [erg/cm^2  ]			 @ E_gam
+#               (42) Gamma Emission [# of photons / cm^2] integrated over [E_pi_min,E_pi_max]
+#  (remove)      (13) Pasquale Weighted (heavy) temperature
+#        (14) Emission temperature
+#        (15) Metalicity map (of METAL_SPECIES)
 #	 	flag of the subtype of output map:
-#		(0) total
-#               (1) > Fe
-#               (2) C
-#               (3) N
-#               (4) O
-#               (5) Mg
-#               (6) Si
-#               (7) Fe
+#               (0) Mass weighted
+#               (1) Emission weigthed 
 #        (16) Rees-Sciama Effect by mass transverse motion [phi_dot]
 #        (17) Mach-Number
 #	 	flag of the subtype of output map:
@@ -160,6 +161,20 @@ MAX_DIST =___MAX_DIST___
 OUTPUT_MAP =___OUTPUT_MAP___
 OUTPUT_SUB =___OUTPUT_SUB___
 
+# Define metal species 
+#	 	flag of the subtype of output map:
+#		(0) total
+#               (1) > Fe
+#               (2) C
+#               (3) N
+#               (4) O
+#               (5) Mg
+#               (6) Si
+#               (7) Fe
+METAL_SPECIES = ___METAL_SPECIES___
+
+
+
 #**** Unit of output Temperatures
 #        (0) Kelvin
 #        (1) KeV
@@ -174,6 +189,9 @@ TEMP_CUT =___TEMP_CUT___
 XRAY_E0 =___XRAY_E0___
 XRAY_E1 =___XRAY_E1___
 
+X_TABLES = @@@TABLE_PATH@@@
+
+
 #**** Input observational frequency for SZ maps [GHz] (real):
 FRQ_ZS =___FRQ_ZS___
 
@@ -182,9 +200,9 @@ FRQ_ZS =___FRQ_ZS___
 ECRP_MIN =___ECRP_MIN___
 FRQ_Pnu =___FRQ_Pnu___
 XCRP =___XCRP___
-XCRP_TABLE_PATH = %%%XCRP_TABLE_PATH%%%
-B_TABLE_PATH =%%%B_TABLE_PATH%%%
-KERNEL_TABLE_PATH =%%%KERNEL_TABLE_PATH%%%
+XCRP_TABLE_PATH = @@@TABLE_PATH@@@
+B_TABLE_PATH = @@@TABLE_PATH@@@
+KERNEL_TABLE_PATH = @@@TABLE_PATH@@@synchro_kernel.dat
 GAM_nu =___GAM_nu___
 #XCRP_TABLE_FILE_FMT = (1F8.6,2X,1F14.6)
 
@@ -210,7 +228,7 @@ GIVE_MORE_INFO =___GIVE_MORE_INFO___
 #         (1) along z, xy plane
 #         (2) along y, xz plane
 #         (3) along x, yz plane
-START_PROJECT =___START_PROJECT___
+#         (4) along all directions
 PROJECT       =___PROJECT___
 
 #**** Flag of the cluster baricenter motion (integer):
