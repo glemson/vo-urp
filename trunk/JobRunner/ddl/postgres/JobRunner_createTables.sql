@@ -72,3 +72,28 @@ ALTER TABLE parameter_setting ADD CONSTRAINT pk_parameter_setting_ID PRIMARY KEY
 create index ix_parameter_setting_container on parameter_setting(containerId);
 
 
+
+-- ---------------------------------------------------
+-- tables holding roles, users and user-role combinations.
+-- ---------------------------------------------------
+CREATE TABLE roles (
+  rolename varchar(32) not null
+)
+
+create table users (
+  userName varchar(32) not null,
+  password varchar(32) not null,
+  partyName varchar(64),
+  email varchar(128)
+)
+
+create table user_roles (
+  username varchar(32) not null,
+  rolename varchar(32) not null
+)
+
+insert into roles values('JobRunner-member');
+insert into roles values('JobRunner-sesam');
+insert into roles values('JobRunner-smac');
+
+
