@@ -6,3 +6,9 @@ DROP TABLE process_context;
 DROP TABLE root_context;
 
 DROP TABLE run_context;
+
+drop table userroles;
+
+drop table roles;
+
+drop table users;
