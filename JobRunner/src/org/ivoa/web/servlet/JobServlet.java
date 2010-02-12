@@ -2,15 +2,19 @@ package org.ivoa.web.servlet;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.NotSerializableException;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 
+import javax.naming.OperationNotSupportedException;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.eclipse.persistence.internal.libraries.asm.tree.MethodNode;
 import org.ivoa.runner.FileManager;
 import org.ivoa.util.JavaUtils;
 import org.ivoa.util.runner.JobListener;
@@ -19,6 +23,7 @@ import org.ivoa.util.runner.ParameterSetting;
 import org.ivoa.util.runner.RootContext;
 import org.ivoa.util.runner.RunContext;
 import org.ivoa.util.runner.RunState;
+import org.ivoa.util.runner.Validator;
 
 /**
  * The servlet class to list Experiment from SNAP database
@@ -130,6 +135,9 @@ public class JobServlet extends BaseServlet implements JobListener {
 				view = showInput(request);
 			else if (ACTION_START_JOB.equals(action)) {
 
+				// validate
+				// TODO if invalid request, send back to input with error messages.
+				
 				// check # of jobs user has on queue, if more than MAX_JOBS do
 				// not allow new one.
 				if (LocalLauncher.queryActiveQueuedJobs(user) >= MAX_JOBS) {
@@ -185,6 +193,8 @@ public class JobServlet extends BaseServlet implements JobListener {
 				} catch (Exception e) {
 					log.error("failure : ", e);
 				}
+			} else { // if action is unknown, assume it is implemented by a subclass
+				view = performAction(action, request, response);
 			}
 		} catch (Exception e) {
 			log.error("failure : ", e); // TODO need to do more, e.g. go to an
@@ -385,4 +395,19 @@ public class JobServlet extends BaseServlet implements JobListener {
 		return new String[] { "/usr/bin/tail", "-10000000",
 				"/home/lbourges/dev/dev/JobRunner/lib/apache-LICENSE-2.0.txt" };
 	}
+	/**
+	 * Method supporting a custom action, not covered by the standard actions defined on this servlet.<br/>
+	 * Should be implemented by subclass, hence an exception is thrown if this method is reached.
+	 * @param action
+	 * @param request
+	 * @param response
+	 * @return
+	 */
+	protected String performAction(String action, HttpServletRequest request, HttpServletResponse response)
+	{
+		throw new UnsupportedOperationException("This method must be implemented on a subclass");
+	}
+	
+	
 }
+

@@ -8,9 +8,9 @@
 function ${p.name}_Change() {
   var x = document.getElementById("${p.name}");
   var v= x.options[x.selectedIndex].value;
+  //alert("chose "+v);
 <c:forEach var="slave" items="${params}"><c:if test="${slave.class.name == 'org.vourp.runner.model.EnumeratedParameter' && not empty slave.dependency && slave.dependency.master.name == p.name}">
   set_${slave.name}();
-  //alert("clicked "+v);
 </c:if></c:forEach>
 }
 </c:if></c:forEach>

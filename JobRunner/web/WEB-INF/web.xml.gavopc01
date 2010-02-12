@@ -188,6 +188,10 @@
       <param-name>legacy.app.xml</param-name>
       <param-value>Smac.xml</param-value>
     </init-param>
+    <init-param>
+    <param-name>TABLE_PATH</param-name>
+    <param-value>/store2/Legacy/Apps/Smac/Tables/</param-value>
+    </init-param>
     <load-on-startup>10</load-on-startup>
   </servlet>
 

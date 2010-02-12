@@ -1,7 +1,11 @@
 package org.ivoa.util.runner;
 
 import java.io.Serializable;
+import java.net.URI;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.regex.Matcher;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
@@ -20,6 +24,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.vourp.runner.model.Choice;
+import org.vourp.runner.model.Datatype;
+import org.vourp.runner.model.EnumeratedParameter;
+import org.vourp.runner.model.Literal;
+import org.vourp.runner.model.ParameterDeclaration;
+import org.vourp.runner.model.Validvalues;
+
 
 /**
  * Generic parameter setting: name and value. Context must be provided by the
@@ -60,7 +73,7 @@ public class ParameterSetting implements Serializable, Cloneable {
 	@Basic(optional = false)
 	@Column(name = "value", nullable = false)
 	private String value;
-
+	
 	public ParameterSetting(){}
 	public ParameterSetting(RunContext run, String name, String value)
 	{
@@ -94,4 +107,5 @@ public class ParameterSetting implements Serializable, Cloneable {
 	public void setContainer(RunContext container) {
 		this.container = container;
 	}
+
 }
