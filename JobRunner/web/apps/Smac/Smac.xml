@@ -38,6 +38,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   <literal>
   <value>g72</value>
   </literal>
+  <literal>
+  <value>g696</value>
+  </literal>
   </validvalues>
 </parameter>
 
@@ -61,6 +64,13 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   <literal><value>csfc</value></literal>
   <literal><value>csfnw</value></literal>
   <literal><value>csfsw</value></literal>
+  <literal><value>mhd_z</value></literal>
+  <literal><value>m1</value></literal>
+  </validvalues>
+  <validvalues ID="PHYSICS_g696">
+  <literal><value>ovisc</value></literal>
+  <literal><value>csf</value></literal>
+  <literal><value>csfc</value></literal>
   <literal><value>mhd_z</value></literal>
   <literal><value>m1</value></literal>
   </validvalues>
@@ -102,8 +112,202 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 <choose>PHYSICS_g51</choose>
 <if>g51</if>
 </choice>
+<choice>
+<choose>PHYSICS_g696</choose>
+<if>g696</if>
+</choice>
 </dependency>
 </parameter>
+
+<parameter  xsi:type="ts:EnumeratedParameter">
+<name>HALO_ID</name>
+<datatype>string</datatype>
+<description>ID of few most massive halos to center the images on for CENTER='read by a file'</description>
+<defaultValue>1</defaultValue>
+<validvalues ID="HALO_ID_for_g8">
+<literal>
+  <value>a</value>
+</literal>
+<literal>
+  <value>b</value>
+</literal>
+<literal>
+  <value>c</value>
+</literal>
+<literal>
+  <value>d</value>
+</literal>
+<literal>
+  <value>e</value>
+</literal>
+<literal>
+  <value>f</value>
+</literal>
+<literal>
+  <value>g</value>
+</literal>
+</validvalues>
+<validvalues ID="HALO_ID_for_g1">
+<literal>
+  <value>a</value>
+</literal>
+<literal>
+  <value>b</value>
+</literal>
+<literal>
+  <value>c</value>
+</literal>
+<literal>
+  <value>d</value>
+</literal>
+<literal>
+  <value>e</value>
+</literal>
+<literal>
+  <value>f</value>
+</literal>
+</validvalues>
+<validvalues ID="HALO_ID_for_g696">
+<literal>
+  <value>a</value>
+</literal>
+<literal>
+  <value>b</value>
+</literal>
+<literal>
+  <value>c</value>
+</literal>
+<literal>
+  <value>d</value>
+</literal>
+<literal>
+  <value>e</value>
+</literal>
+<literal>
+  <value>f</value>
+</literal>
+<literal>
+  <value>g</value>
+</literal>
+<literal>
+  <value>h</value>
+</literal>
+<literal>
+  <value>i</value>
+</literal>
+<literal>
+  <value>j</value>
+</literal>
+<literal>
+  <value>k</value>
+</literal>
+<literal>
+  <value>l</value>
+</literal>
+<literal>
+  <value>m</value>
+</literal>
+<literal>
+  <value>n</value>
+</literal>
+<literal>
+  <value>o</value>
+</literal>
+<literal>
+  <value>p</value>
+</literal>
+<literal>
+  <value>q</value>
+</literal>
+<literal>
+  <value>r</value>
+</literal>
+<literal>
+  <value>s</value>
+</literal>
+<literal>
+  <value>t</value>
+</literal>
+<literal>
+  <value>u</value>
+</literal>
+<literal>
+  <value>v</value>
+</literal>
+<literal>
+  <value>w</value>
+</literal>
+<literal>
+  <value>x</value>
+</literal>
+<literal>
+  <value>y</value>
+</literal>
+<literal>
+  <value>z</value>
+</literal>
+<literal>
+  <value>#</value>
+</literal>
+</validvalues>
+<validvalues ID="HALO_ID_for_g72">
+<literal>
+  <value>a</value>
+</literal>
+<literal>
+  <value>b</value>
+</literal>
+</validvalues>
+<validvalues ID="HALO_ID_for_rest">
+<literal>
+  <value>a</value>
+</literal>
+</validvalues>
+<dependency>
+  <master>CLUSTER_ID</master>
+  <choice>
+    <choose>HALO_ID_for_g8</choose>
+    <if>g8</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_g1</choose>
+    <if>g1</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_g72</choose>
+    <if>g72</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_rest</choose>
+    <if>g676</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_rest</choose>
+    <if>g914</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_rest</choose>
+    <if>g1542</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_rest</choose>
+    <if>g3344</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_rest</choose>
+    <if>g6212</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_rest</choose>
+    <if>g51</if>
+  </choice>
+  <choice>
+    <choose>HALO_ID_for_g696</choose>
+    <if>g696</if>
+  </choice>
+</dependency>
+</parameter>
+
 
 
 <parameter xsi:type="ts:EnumeratedParameter">
@@ -487,257 +691,392 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 </validvalues>
 </parameter>
 
-<parameter>
-<name>IMAGE_Z</name>
-<datatype>float</datatype>
-<description>image redshift (set IMAGE_Z=0. to obtain it from the input data)</description>
-<defaultValue>0</defaultValue>
-</parameter>
 
-<parameter xsi:type="ts:EnumeratedParameter" ID="PART_DISTR">
-<name>PART_DISTR</name>
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>SNAP_END</name>
 <datatype>integer</datatype>
-<description>
-Flag of particle distribution scheme on the image.
-</description>
+<description>Ending snapshot to loop to from SNAPNUM. '-1 - ***' indicates no loop</description>
+<defaultValue>-1</defaultValue>
 <validvalues>
 <literal>
-  <value>1</value>
-  <title>SPH (flat 2D-map)</title>
+<value>0</value>
+<title>60.0</title>
 </literal>
 <literal>
-  <value>2</value>
-  <title>SPH (full-sky HealPix map)</title>
+<value>1</value>
+<title>50.0</title>
 </literal>
 <literal>
-  <value>3</value>
-  <title>TSC (flat 2D-map)</title>
+<value>2</value>
+<title>40.0</title>
+</literal>
+<literal>
+<value>3</value>
+<title>30.0</title>
+</literal>
+<literal>
+<value>4</value>
+<title>20.0</title>
+</literal>
+<literal>
+<value>5</value>
+<title>10.0</title>
+</literal>
+<literal>
+<value>6</value>
+<title>9.4849</title>
+</literal>
+<literal>
+<value>7</value>
+<title>8.9939</title>
+</literal>
+<literal>
+<value>8</value>
+<title>8.5260</title>
+</literal>
+<literal>
+<value>9</value>
+<title>8.0799</title>
+</literal>
+<literal>
+<value>10</value>
+<title>7.6547</title>
+</literal>
+<literal>
+<value>11</value>
+<title>7.2495</title>
+</literal>
+<literal>
+<value>12</value>
+<title>6.8632</title>
+</literal>
+<literal>
+<value>13</value>
+<title>6.4950</title>
+</literal>
+<literal>
+<value>14</value>
+<title>6.1440</title>
+</literal>
+<literal>
+<value>15</value>
+<title>5.8095</title>
+</literal>
+<literal>
+<value>16</value>
+<title>5.4906</title>
+</literal>
+<literal>
+<value>17</value>
+<title>5.1867</title>
+</literal>
+<literal>
+<value>18</value>
+<title>4.8970</title>
+</literal>
+<literal>
+<value>19</value>
+<title>4.6209</title>
+</literal>
+<literal>
+<value>20</value>
+<title>4.3577</title>
+</literal>
+<literal>
+<value>21</value>
+<title>4.1068</title>
+</literal>
+<literal>
+<value>22</value>
+<title>3.8676</title>
+</literal>
+<literal>
+<value>23</value>
+<title>3.6397</title>
+</literal>
+<literal>
+<value>24</value>
+<title>3.4225</title>
+</literal>
+<literal>
+<value>25</value>
+<title>3.2154</title>
+</literal>
+<literal>
+<value>26</value>
+<title>3.0180</title>
+</literal>
+<literal>
+<value>27</value>
+<title>2.8298</title>
+</literal>
+<literal>
+<value>28</value>
+<title>2.6505</title>
+</literal>
+<literal>
+<value>29</value>
+<title>2.4795</title>
+</literal>
+<literal>
+<value>30</value>
+<title>2.3166</title>
+</literal>
+<literal>
+<value>31</value>
+<title>2.1613</title>
+</literal>
+<literal>
+<value>32</value>
+<title>2.0133</title>
+</literal>
+<literal>
+<value>33</value>
+<title>1.8722</title>
+</literal>
+<literal>
+<value>34</value>
+<title>1.7377</title>
+</literal>
+<literal>
+<value>35</value>
+<title>1.6095</title>
+</literal>
+<literal>
+<value>36</value>
+<title>1.4873</title>
+</literal>
+<literal>
+<value>37</value>
+<title>1.3708</title>
+</literal>
+<literal>
+<value>38</value>
+<title>1.2598</title>
+</literal>
+<literal>
+<value>39</value>
+<title>1.1540</title>
+</literal>
+<literal>
+<value>40</value>
+<title>1.0531</title>
+</literal>
+<literal>
+<value>41</value>
+<title>1.0000</title>
+</literal>
+<literal>
+<value>42</value>
+<title>0.9618</title>
+</literal>
+<literal>
+<value>43</value>
+<title>0.9254</title>
+</literal>
+<literal>
+<value>44</value>
+<title>0.8901</title>
+</literal>
+<literal>
+<value>45</value>
+<title>0.8564</title>
+</literal>
+<literal>
+<value>46</value>
+<title>0.8238</title>
+</literal>
+<literal>
+<value>47</value>
+<title>0.7923</title>
+</literal>
+<literal>
+<value>48</value>
+<title>0.7620</title>
+</literal>
+<literal>
+<value>49</value>
+<title>0.7327</title>
+</literal>
+<literal>
+<value>50</value>
+<title>0.7044</title>
+</literal>
+<literal>
+<value>51</value>
+<title>0.6771</title>
+</literal>
+<literal>
+<value>52</value>
+<title>0.6505</title>
+</literal>
+<literal>
+<value>53</value>
+<title>0.6248</title>
+</literal>
+<literal>
+<value>54</value>
+<title>0.5999</title>
+</literal>
+<literal>
+<value>55</value>
+<title>0.5758</title>
+</literal>
+<literal>
+<value>56</value>
+<title>0.5523</title>
+</literal>
+<literal>
+<value>57</value>
+<title>0.5294</title>
+</literal>
+<literal>
+<value>58</value>
+<title>0.5073</title>
+</literal>
+<literal>
+<value>59</value>
+<title>0.4857</title>
+</literal>
+<literal>
+<value>60</value>
+<title>0.4646</title>
+</literal>
+<literal>
+<value>61</value>
+<title>0.4442</title>
+</literal>
+<literal>
+<value>62</value>
+<title>0.4243</title>
+</literal>
+<literal>
+<value>63</value>
+<title>0.4048</title>
+</literal>
+<literal>
+<value>64</value>
+<title>0.3858</title>
+</literal>
+<literal>
+<value>65</value>
+<title>0.3673</title>
+</literal>
+<literal>
+<value>66</value>
+<title>0.3492</title>
+</literal>
+<literal>
+<value>67</value>
+<title>0.3315</title>
+</literal>
+<literal>
+<value>68</value>
+<title>0.3143</title>
+</literal>
+<literal>
+<value>69</value>
+<title>0.2975</title>
+</literal>
+<literal>
+<value>70</value>
+<title>0.2810</title>
+</literal>
+<literal>
+<value>71</value>
+<title>0.2648</title>
+</literal>
+<literal>
+<value>72</value>
+<title>0.2490</title>
+</literal>
+<literal>
+<value>73</value>
+<title>0.2335</title>
+</literal>
+<literal>
+<value>74</value>
+<title>0.2184</title>
+</literal>
+<literal>
+<value>75</value>
+<title>0.2035</title>
+</literal>
+<literal>
+<value>76</value>
+<title>0.1889</title>
+</literal>
+<literal>
+<value>77</value>
+<title>0.1747</title>
+</literal>
+<literal>
+<value>78</value>
+<title>0.1607</title>
+</literal>
+<literal>
+<value>79</value>
+<title>0.1470</title>
+</literal>
+<literal>
+<value>80</value>
+<title>0.1335</title>
+</literal>
+<literal>
+<value>81</value>
+<title>0.1202</title>
+</literal>
+<literal>
+<value>82</value>
+<title>0.1073</title>
+</literal>
+<literal>
+<value>83</value>
+<title>0.09449</title>
+</literal>
+<literal>
+<value>84</value>
+<title>0.08199</title>
+</literal>
+<literal>
+<value>85</value>
+<title>0.06963</title>
+</literal>
+<literal>
+<value>86</value>
+<title>0.05754</title>
+</literal>
+<literal>
+<value>87</value>
+<title>0.04566</title>
+</literal>
+<literal>
+<value>88</value>
+<title>0.03398</title>
+</literal>
+<literal>
+<value>89</value>
+<title>0.02243</title>
+</literal>
+<literal>
+<value>90</value>
+<title>0.01114</title>
+</literal>
+<literal>
+<value>91</value>
+<title>0.00003</title>
+</literal>
+<literal>
+<value>92</value>
+<title>0.0</title>
+</literal>
+<literal>
+<value>-1</value>
+<title>***</title>
 </literal>
 </validvalues>
 </parameter>
 
-<!-- TODO dependent on values 1 and 3 of  PART_DISTR -->
-<parameter xsi:type="ts:EnumeratedParameter">
-<name>IMG_XY_UNITS</name>
-<datatype>string</datatype>
-<description>Flag of the units of the side of image</description>
-<defaultValue>2</defaultValue>
-<validvalues ID="IMG_XY_UNITS_for_PART_DISTR_13">
-<literal>
-  <value>1</value>
-  <title>arcmin</title>
-</literal>
-<literal>
-  <value>2</value>
-  <title>kpc</title>
-  </literal>
-</validvalues>
-
-<dependency>
-  <master>PART_DISTR</master>
-  <choice>
-    <choose>IMG_XY_UNITS_for_PART_DISTR_13</choose>
-    <if>1</if>
-  </choice>
-  <choice>
-    <choose>IMG_XY_UNITS_for_PART_DISTR_13</choose>
-    <if>3</if>
-  </choice>
-</dependency>
-
-</parameter>
-
-<!-- TODO dependent on values 1 and 3 of  PART_DISTR -->
-<parameter>
-<name>IMG_XY_SIZE</name>
-<datatype>float</datatype>
-<description>The size of the image (in units given by IMG_XY_UNITS) (default value assummes kpc as units!)</description>
-<defaultValue>2000</defaultValue>
-</parameter>
-
-
-<!-- TODO dependent on values 1 and 3 of  PART_DISTR -->
-<parameter  xsi:type="ts:EnumeratedParameter">
-<name>IMG_Z_UNITS</name>
-<datatype>integer</datatype>
-<description></description>
-<defaultValue>2</defaultValue>
-<validvalues ID="IMG_Z_UNITS_for_PART_DISTR_13">
-<literal>
-  <value>1</value>
-  <title>cubic</title>
-  <description>same value of IMG_XY_UNITS</description>
-</literal>
-<literal>
-  <value>2</value>
-  <title>kpc</title>
-</literal>
-</validvalues>
-
-<dependency>
-  <master>PART_DISTR</master>
-  <choice>
-    <choose>IMG_Z_UNITS_for_PART_DISTR_13</choose>
-    <if>1</if>
-  </choice>
-  <choice>
-    <choose>IMG_Z_UNITS_for_PART_DISTR_13</choose>
-    <if>3</if>
-  </choice>
-</dependency>
-
-</parameter>
-
-<!-- TODO dependent on values 1 and 3 of  PART_DISTR -->
-<parameter>
-<name>IMG_Z_SIZE</name>
-<datatype>float</datatype>
-<description>side of the third dimension (default assumes kpc as units).</description>
-<defaultValue>2000</defaultValue>
-</parameter>
-
-<!-- TODO dependent on values 1 and 3 of  PART_DISTR -->
-<parameter>
-<name>FILL_CARROT</name>
-<datatype>float</datatype>
-<description>minimum filling factor of the carrot [0&lt;-&gt;100] (its a percentile)</description>
-<isFixed>1</isFixed>
-<defaultValue>100</defaultValue>
-</parameter>
-
-<!-- TODO dependent on values 1 and 3 of  PART_DISTR -->
-<parameter>
-<name>IMG_SIZE</name>
-<datatype>integer</datatype>
-<description>Number of image side pixels. if ==-1, given by smoothing</description>
-<defaultValue>256</defaultValue>
-</parameter>
-
-<!-- TODO dependent on values 1 and 3 of  PART_DISTR -->
-<parameter xsi:type="ts:EnumeratedParameter">
-<name>SMOOTH_UNITS</name>
-<datatype>integer</datatype>
-<description>Flag of the smoothing (FWHM) angle</description>
-<defaultValue>2</defaultValue>
-<isFixed>1</isFixed>
-<validvalues ID="SMOOTH_UNITS_for_PART_DISTR_13">
-<literal>
-  <value>0</value>
-  <title>cubic</title>
-</literal>
-<literal>
-  <value>1</value>
-  <title>arcmin</title>
-</literal>
-<literal>
-  <value>2</value>
-  <title>kpc</title>
-</literal>
-<literal>
-  <value>3</value>
-  <title>given by npart</title>
-</literal>
-
-<dependency>
-  <master>PART_DISTR</master>
-  <choice>
-    <choose>SMOOTH_UNITS_for_PART_DISTR_13</choose>
-    <if>1</if>
-  </choice>
-  <choice>
-    <choose>SMOOTH_UNITS_for_PART_DISTR_13</choose>
-    <if>3</if>
-  </choice>
-</dependency>
-</validvalues>
-
-</parameter>
-
-<!-- TODO dependent on values 1 and 3 of  PART_DISTR -->
-<parameter>
-<name>SMOOTH_FWHM</name>
-<datatype>float</datatype>
-<description>smoothing length in the chosen units (cases (1), (2))</description>
-<isFixed>1</isFixed>
-<defaultValue>0</defaultValue>
-</parameter>
-
-<!-- TODO dependent on values 2 of  PART_DISTR -->
-<parameter xsi:type="ts:EnumeratedParameter">
-<name>NSIDE</name>
-<datatype>integer</datatype>
-<description>HEALPix variable.
-This variable must be a power of 2 and &lt;= 8192.
-</description>
-<defaultValue>128</defaultValue>
-<validvalues ID="NSIDE_for_PART_DISTR_2">
-<literal>
-  <value>1</value>
-</literal>
-<literal>
-  <value>2</value>
-</literal>
-<literal>
-  <value>4</value>
-</literal>
-<literal>
-  <value>8</value>
-</literal>
-<literal>
-  <value>16</value>
-</literal>
-<literal>
-  <value>32</value>
-</literal>
-<literal>
-  <value>64</value>
-</literal>
-<literal>
-  <value>128</value>
-</literal>
-<literal>
-  <value>256</value>
-</literal>
-<literal>
-  <value>512</value>
-</literal>
-<literal>
-  <value>1024</value>
-</literal>
-<literal>
-  <value>2048</value>
-</literal>
-<literal>
-  <value>4096</value>
-</literal>
-<literal>
-  <value>8192</value>
-</literal>
-</validvalues>
-<dependency>
-  <master>PART_DISTR</master>
-  <choice>
-    <choose>NSIDE_for_PART_DISTR_2</choose>
-    <if>2</if>
-  </choice>
-</dependency>
-</parameter>
-
-<!-- TODO dependent on value 2 of  PART_DISTR -->
-<parameter>
-<name>MIN_DIST</name>
-<datatype>float</datatype>
-<description>min radius of sphere arround x0,y0,z0 to be used [kpc]</description>
-<defaultValue>2000</defaultValue>
-</parameter>
-
-<!-- TODO dependent on value 2 of  PART_DISTR -->
-<parameter>
-<name>MAX_DIST</name>
-<datatype>float</datatype>
-<description>max radius of sphere arround x0,y0,z0 to be used [kpc]</description>
-<defaultValue>10000</defaultValue>
-</parameter>
 
 <parameter xsi:type="ts:EnumeratedParameter" ID="OUTPUT_MAP">
 <name>OUTPUT_MAP</name>
@@ -1044,6 +1383,341 @@ This variable must be a power of 2 and &lt;= 8192.
 </parameter>
 
 
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>PROJECT</name>
+<datatype>integer</datatype>
+<description>Last direction to project along</description>
+<defaultValue>1</defaultValue>
+<validvalues ID="PROJECT_for_PART_DISTR_13">
+<literal>
+<value>1</value>
+<title>along z, xy plane</title>
+</literal>
+<literal>
+<value>2</value>
+<title>along y, xz plane</title>
+</literal>
+<literal>
+<value>3</value>
+<title>along x, yz plane</title>
+</literal>
+<literal>
+<value>4</value>
+<title>along all directions</title>
+</literal>
+</validvalues>
+<dependency>
+  <master>PART_DISTR</master>
+  <choice>
+    <choose>PROJECT_for_PART_DISTR_13</choose>
+    <if>1</if>
+  </choice>
+  <choice>
+    <choose>PROJECT_for_PART_DISTR_13</choose>
+    <if>3</if>
+  </choice>
+</dependency>
+</parameter>
+
+
+<parameter xsi:type="ts:EnumeratedParameter" ID="CENTER">
+<name>CENTER</name>
+<datatype>integer</datatype>
+<description>Flag of the definition of the center</description>
+<defaultValue>2</defaultValue>
+<validvalues>
+<literal>
+<value>0</value>
+<title>barycenter of gas particles</title>
+</literal>
+<literal>
+<value>1</value>
+<title>selected by user</title>
+</literal>
+<literal>
+<value>2</value>
+<title>read by a file</title>
+</literal>
+</validvalues></parameter>
+
+<!-- TODO dependency on CENTER 1  -->
+<parameter>
+<name>CENTER_X</name>
+<datatype>float</datatype>
+<description>X-coordinate of center position/Cluster data for CENTER='selected by user'</description>
+<defaultValue>0</defaultValue>
+</parameter>
+
+<!-- TODO dependency on CENTER 1  -->
+<parameter>
+<name>CENTER_Y</name>
+<datatype>float</datatype>
+<description>Y-coordinate of center position/Cluster data for CENTER='selected by user'</description>
+<defaultValue>0</defaultValue>
+</parameter>
+
+<!-- TODO dependency on CENTER 1  -->
+<parameter>
+<name>CENTER_Z</name>
+<datatype>float</datatype>
+<description>Z-coordinate of center position/Cluster data for CENTER='selected by user'</description>
+<defaultValue>0</defaultValue>
+</parameter>
+
+
+<parameter>
+<name>IMAGE_Z</name>
+<datatype>float</datatype>
+<description>image redshift (set IMAGE_Z=0. to obtain it from the input data)</description>
+<defaultValue>0</defaultValue>
+</parameter>
+
+<parameter xsi:type="ts:EnumeratedParameter" ID="PART_DISTR">
+<name>PART_DISTR</name>
+<datatype>integer</datatype>
+<description>
+Flag of particle distribution scheme on the image.
+</description>
+<validvalues>
+<literal>
+  <value>1</value>
+  <title>SPH (flat 2D-map)</title>
+</literal>
+<literal>
+  <value>2</value>
+  <title>SPH (full-sky HealPix map)</title>
+</literal>
+<literal>
+  <value>3</value>
+  <title>TSC (flat 2D-map)</title>
+</literal>
+</validvalues>
+</parameter>
+
+<!-- TODO dependent on values 1 and 3 of  PART_DISTR -->
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>IMG_XY_UNITS</name>
+<datatype>string</datatype>
+<description>Flag of the units of the side of image</description>
+<defaultValue>2</defaultValue>
+<validvalues ID="IMG_XY_UNITS_for_PART_DISTR_13">
+<literal>
+  <value>1</value>
+  <title>arcmin</title>
+</literal>
+<literal>
+  <value>2</value>
+  <title>kpc</title>
+  </literal>
+</validvalues>
+
+
+<dependency>
+  <master>PART_DISTR</master>
+  <choice>
+    <choose>IMG_XY_UNITS_for_PART_DISTR_13</choose>
+    <if>1</if>
+  </choice>
+  <choice>
+    <choose>IMG_XY_UNITS_for_PART_DISTR_13</choose>
+    <if>3</if>
+  </choice>
+</dependency>
+
+</parameter>
+
+<!-- TODO dependent on values 1 and 3 of  PART_DISTR -->
+<parameter>
+<name>IMG_XY_SIZE</name>
+<datatype>float</datatype>
+<description>The size of the image (in units given by IMG_XY_UNITS) (default value assummes kpc as units!)</description>
+<defaultValue>2000</defaultValue>
+</parameter>
+
+
+<!-- TODO dependent on values 1 and 3 of  PART_DISTR -->
+<parameter  xsi:type="ts:EnumeratedParameter">
+<name>IMG_Z_UNITS</name>
+<datatype>integer</datatype>
+<description></description>
+<defaultValue>2</defaultValue>
+<validvalues ID="IMG_Z_UNITS_for_PART_DISTR_13">
+<literal>
+  <value>1</value>
+  <title>cubic</title>
+  <description>same value of IMG_XY_UNITS</description>
+</literal>
+<literal>
+  <value>2</value>
+  <title>kpc</title>
+</literal>
+</validvalues>
+
+<dependency>
+  <master>PART_DISTR</master>
+  <choice>
+    <choose>IMG_Z_UNITS_for_PART_DISTR_13</choose>
+    <if>1</if>
+  </choice>
+  <choice>
+    <choose>IMG_Z_UNITS_for_PART_DISTR_13</choose>
+    <if>3</if>
+  </choice>
+</dependency>
+
+</parameter>
+
+<!-- TODO dependent on values 1 and 3 of  PART_DISTR -->
+<parameter>
+<name>IMG_Z_SIZE</name>
+<datatype>float</datatype>
+<description>side of the third dimension (default assumes kpc as units).</description>
+<defaultValue>2000</defaultValue>
+</parameter>
+
+<!-- TODO dependent on values 1 and 3 of  PART_DISTR -->
+<parameter>
+<name>FILL_CARROT</name>
+<datatype>float</datatype>
+<description>minimum filling factor of the carrot [0&lt;-&gt;100] (its a percentile)</description>
+<isFixed>1</isFixed>
+<defaultValue>100</defaultValue>
+</parameter>
+
+<!-- TODO dependent on values 1 and 3 of  PART_DISTR -->
+<parameter>
+<name>IMG_SIZE</name>
+<datatype>integer</datatype>
+<description>Number of image side pixels. if ==-1, given by smoothing</description>
+<defaultValue>256</defaultValue>
+</parameter>
+
+<!-- TODO dependent on values 1 and 3 of  PART_DISTR -->
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>SMOOTH_UNITS</name>
+<datatype>integer</datatype>
+<description>Flag of the smoothing (FWHM) angle</description>
+<defaultValue>0</defaultValue>
+<isFixed>1</isFixed>
+<validvalues ID="SMOOTH_UNITS_for_PART_DISTR_13">
+<literal>
+  <value>0</value>
+  <title>cubic</title>
+</literal>
+<literal>
+  <value>1</value>
+  <title>arcmin</title>
+</literal>
+<literal>
+  <value>2</value>
+  <title>kpc</title>
+</literal>
+<literal>
+  <value>3</value>
+  <title>given by npart</title>
+</literal>
+
+<dependency>
+  <master>PART_DISTR</master>
+  <choice>
+    <choose>SMOOTH_UNITS_for_PART_DISTR_13</choose>
+    <if>1</if>
+  </choice>
+  <choice>
+    <choose>SMOOTH_UNITS_for_PART_DISTR_13</choose>
+    <if>3</if>
+  </choice>
+</dependency>
+</validvalues>
+
+</parameter>
+
+<!-- TODO dependent on values 1 and 3 of  PART_DISTR -->
+<parameter>
+<name>SMOOTH_FWHM</name>
+<datatype>float</datatype>
+<description>smoothing length in the chosen units (cases (1), (2))</description>
+<isFixed>1</isFixed>
+<defaultValue>0</defaultValue>
+</parameter>
+
+<!-- TODO dependent on values 2 of  PART_DISTR -->
+<parameter xsi:type="ts:EnumeratedParameter">
+<name>NSIDE</name>
+<datatype>integer</datatype>
+<description>HEALPix variable.
+This variable must be a power of 2 and &lt;= 8192.
+</description>
+<defaultValue>128</defaultValue>
+<validvalues ID="NSIDE_for_PART_DISTR_2">
+<literal>
+  <value>1</value>
+</literal>
+<literal>
+  <value>2</value>
+</literal>
+<literal>
+  <value>4</value>
+</literal>
+<literal>
+  <value>8</value>
+</literal>
+<literal>
+  <value>16</value>
+</literal>
+<literal>
+  <value>32</value>
+</literal>
+<literal>
+  <value>64</value>
+</literal>
+<literal>
+  <value>128</value>
+</literal>
+<literal>
+  <value>256</value>
+</literal>
+<literal>
+  <value>512</value>
+</literal>
+<literal>
+  <value>1024</value>
+</literal>
+<literal>
+  <value>2048</value>
+</literal>
+<literal>
+  <value>4096</value>
+</literal>
+<literal>
+  <value>8192</value>
+</literal>
+</validvalues>
+<dependency>
+  <master>PART_DISTR</master>
+  <choice>
+    <choose>NSIDE_for_PART_DISTR_2</choose>
+    <if>2</if>
+  </choice>
+</dependency>
+</parameter>
+
+<!-- TODO dependent on value 2 of  PART_DISTR -->
+<parameter>
+<name>MIN_DIST</name>
+<datatype>float</datatype>
+<description>min radius of sphere arround x0,y0,z0 to be used [kpc]</description>
+<defaultValue>2000</defaultValue>
+</parameter>
+
+<!-- TODO dependent on value 2 of  PART_DISTR -->
+<parameter>
+<name>MAX_DIST</name>
+<datatype>float</datatype>
+<description>max radius of sphere arround x0,y0,z0 to be used [kpc]</description>
+<defaultValue>10000</defaultValue>
+</parameter>
+
 <parameter xsi:type="ts:EnumeratedParameter" ID="METAL_SPECIES">
   <name>METAL_SPECIES</name>
   <datatype>integer</datatype>
@@ -1229,42 +1903,6 @@ This variable must be a power of 2 and &lt;= 8192.
 
 
 <parameter xsi:type="ts:EnumeratedParameter">
-<name>PROJECT</name>
-<datatype>integer</datatype>
-<description>Last direction to project along</description>
-<defaultValue>1</defaultValue>
-<validvalues ID="PROJECT_for_PART_DISTR_13">
-<literal>
-<value>1</value>
-<title>along z, xy plane</title>
-</literal>
-<literal>
-<value>2</value>
-<title>along y, xz plane</title>
-</literal>
-<literal>
-<value>3</value>
-<title>along x, yz plane</title>
-</literal>
-<literal>
-<value>4</value>
-<title>along all directions</title>
-</literal>
-</validvalues>
-<dependency>
-  <master>PART_DISTR</master>
-  <choice>
-    <choose>PROJECT_for_PART_DISTR_13</choose>
-    <if>1</if>
-  </choice>
-  <choice>
-    <choose>PROJECT_for_PART_DISTR_13</choose>
-    <if>3</if>
-  </choice>
-</dependency>
-</parameter>
-
-<parameter xsi:type="ts:EnumeratedParameter">
 <name>CENTER_MOTION</name>
 <datatype>integer</datatype>
 <description>Flag of the cluster baricenter motion</description>
@@ -1304,152 +1942,6 @@ This variable must be a power of 2 and &lt;= 8192.
 </validvalues>
 </parameter>
 
-<parameter xsi:type="ts:EnumeratedParameter" ID="CENTER">
-<name>CENTER</name>
-<datatype>integer</datatype>
-<description>Flag of the definition of the center</description>
-<defaultValue>2</defaultValue>
-<validvalues>
-<literal>
-<value>0</value>
-<title>barycenter of gas particles</title>
-</literal>
-<literal>
-<value>1</value>
-<title>selected by user</title>
-</literal>
-<literal>
-<value>2</value>
-<title>read by a file</title>
-</literal>
-</validvalues></parameter>
-
-<!-- TODO dependency on CENTER 1  -->
-<parameter>
-<name>CENTER_X</name>
-<datatype>float</datatype>
-<description>X-coordinate of center position/Cluster data for CENTER='selected by user'</description>
-<defaultValue>0</defaultValue>
-</parameter>
-
-<!-- TODO dependency on CENTER 1  -->
-<parameter>
-<name>CENTER_Y</name>
-<datatype>float</datatype>
-<description>Y-coordinate of center position/Cluster data for CENTER='selected by user'</description>
-<defaultValue>0</defaultValue>
-</parameter>
-
-<!-- TODO dependency on CENTER 1  -->
-<parameter>
-<name>CENTER_Z</name>
-<datatype>float</datatype>
-<description>Z-coordinate of center position/Cluster data for CENTER='selected by user'</description>
-<defaultValue>0</defaultValue>
-</parameter>
-
-
-<parameter  xsi:type="ts:EnumeratedParameter">
-<name>HALO_ID</name>
-<datatype>string</datatype>
-<description>ID of few most massive halos to center the images on for CENTER='read by a file'</description>
-<defaultValue>1</defaultValue>
-<validvalues ID="HALO_ID_for_g8">
-<literal>
-  <value>a</value>
-</literal>
-<literal>
-  <value>b</value>
-</literal>
-<literal>
-  <value>c</value>
-</literal>
-<literal>
-  <value>d</value>
-</literal>
-<literal>
-  <value>e</value>
-</literal>
-<literal>
-  <value>f</value>
-</literal>
-<literal>
-  <value>g</value>
-</literal>
-</validvalues>
-<validvalues ID="HALO_ID_for_g1">
-<literal>
-  <value>a</value>
-</literal>
-<literal>
-  <value>b</value>
-</literal>
-<literal>
-  <value>c</value>
-</literal>
-<literal>
-  <value>d</value>
-</literal>
-<literal>
-  <value>e</value>
-</literal>
-<literal>
-  <value>f</value>
-</literal>
-</validvalues>
-<validvalues ID="HALO_ID_for_g72">
-<literal>
-  <value>a</value>
-</literal>
-<literal>
-  <value>b</value>
-</literal>
-</validvalues>
-<validvalues ID="HALO_ID_for_rest">
-<literal>
-  <value>a</value>
-</literal>
-</validvalues>
-<dependency>
-  <master>CLUSTER_ID</master>
-  <choice>
-    <choose>HALO_ID_for_g8</choose>
-    <if>g8</if>
-  </choice>
-  <choice>
-    <choose>HALO_ID_for_g1</choose>
-    <if>g1</if>
-  </choice>
-  <choice>
-    <choose>HALO_ID_for_g72</choose>
-    <if>g72</if>
-  </choice>
-  <choice>
-    <choose>HALO_ID_for_rest</choose>
-    <if>g676</if>
-  </choice>
-  <choice>
-    <choose>HALO_ID_for_rest</choose>
-    <if>g914</if>
-  </choice>
-  <choice>
-    <choose>HALO_ID_for_rest</choose>
-    <if>g1542</if>
-  </choice>
-  <choice>
-    <choose>HALO_ID_for_rest</choose>
-    <if>g3344</if>
-  </choice>
-  <choice>
-    <choose>HALO_ID_for_rest</choose>
-    <if>g6212</if>
-  </choice>
-  <choice>
-    <choose>HALO_ID_for_rest</choose>
-    <if>g51</if>
-  </choice>
-</dependency>
-</parameter>
 
 
 
@@ -1502,7 +1994,7 @@ This variable must be a power of 2 and &lt;= 8192.
 <datatype>string</datatype>
 <description>Prefix of the output files</description>
 <isFixed>1</isFixed>
-<defaultValue>smacout_</defaultValue>
+<defaultValue>smacout</defaultValue>
 </parameter>
 
 

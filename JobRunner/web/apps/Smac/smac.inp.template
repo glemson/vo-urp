@@ -25,7 +25,7 @@ HALO_ID = ___HALO_ID___
 #        first input
 #        last input  (=first_input if not given)
 SNAP_START = ___SNAPNUM___
-SNAP_END   = ___SNAPNUM___
+SNAP_END   = ___SNAP_END___
 
 #**** Intial redshift and image redshift (set IMAGE_Z=0. to obtain it from the input data)
 INITIAL_Z = 60
