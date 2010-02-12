@@ -3,6 +3,7 @@ package org.ivoa.util.runner;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Hashtable;
 import java.util.List;
 
 import javax.persistence.Basic;
@@ -33,6 +34,8 @@ import javax.persistence.Transient;
 import javax.persistence.Version;
 import org.ivoa.util.TypeWrapper;
 import org.ivoa.util.runner.process.RingBuffer;
+import org.vourp.runner.model.LegacyApp;
+import org.vourp.runner.model.ParameterDeclaration;
 
 
 /**
@@ -468,4 +471,6 @@ public class RunContext implements Serializable, Cloneable {
 	parameters.add(parameter);
 	parameter.setContainer(this);
   }
+
+
 }
