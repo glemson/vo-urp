@@ -29,7 +29,9 @@ Please see <a href="http://www.mpa-garching.mpg.de/~kdolag/Smac" target="_blank"
 <x:parameter p="${p}"/><br/>
 </td> 
 <td ><x:lineending item="${p.description}"/> </td> 
-</tr></c:if></c:forEach>
+</tr></c:if>
+<c:if test="${p.name == 'SNAP_END' or p.name == 'OUTPUT_SUB' or p.name == 'CENTER_Z' or p.name == 'IMG_SIZE' or p.name == 'MAX_DIST'}"><tr><td colspan='3'><hr/></td></tr></c:if>
+</c:forEach>
 </table>
 <input type="submit" name="Submit" value="Submit"/>
 </form>
