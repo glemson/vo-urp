@@ -29,7 +29,9 @@ import org.ivoa.web.servlet.JobServlet;
 import org.ivoa.web.servlet.JobStateException;
 import org.vourp.runner.model.EnumeratedParameter;
 import org.vourp.runner.model.LegacyApp;
+import org.vourp.runner.model.Literal;
 import org.vourp.runner.model.ParameterDeclaration;
+import org.vourp.runner.model.Validvalues;
 
 public class Smac extends JobServlet {
 
@@ -76,6 +78,8 @@ public class Smac extends JobServlet {
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
+		
+		
 	}
 
 	private String initialiseParameters(String parameterTemplateFile,
@@ -98,6 +102,18 @@ public class Smac extends JobServlet {
 					if(master == null)
 						System.out.println("help");
 					master.setNumSlaves(master.getNumSlaves() + 1);
+				}
+				// ensure that literal values and titles are single line strings
+				for(Validvalues vvs: ep.getValidvalues())
+				{
+					for(Literal l : vvs.getLiteral())
+					{
+						if(l.getValue() != null)
+							l.setValue(l.getValue().trim().replaceAll("[\n\r]"," "));
+						if(l.getTitle() != null)
+							l.setTitle(l.getTitle().trim().replaceAll("[\n\r]"," "));
+					}
+						
 				}
 			}
 		}
