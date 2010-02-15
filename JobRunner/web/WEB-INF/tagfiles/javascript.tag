@@ -4,6 +4,7 @@
 
 <c:set var="params" value="${app.parameter}" ></c:set>
 
+
 <c:forEach var="p" items="${params}"><c:if test="${p.class.name == 'org.vourp.runner.model.EnumeratedParameter' && p.numSlaves > 0}">
 function ${p.name}_Change() {
   var x = document.getElementById("${p.name}");
@@ -30,7 +31,11 @@ function set_${p.name}() {
   if(v == '${ch.if}') {
     found = 1;
     <c:forEach var="literal" items="${validvalues.literal}">
-      x.options[count++] = new Option('${literal.value}<c:if test="${not empty literal.title}"> - ${literal.title}</c:if>','${literal.value}'<c:if test="${literal.value == p.defaultValue}">, true, true</c:if>);
+      var title = '${literal.value}';
+      <c:if test="${not empty literal.title }">
+      title= title + ' - ${literal.title}';
+      </c:if>
+      x.options[count++] = new Option(title,'${literal.value}'<c:if test="${literal.value == p.defaultValue}">, true, true</c:if>);
     </c:forEach>
   }
 </c:forEach>
