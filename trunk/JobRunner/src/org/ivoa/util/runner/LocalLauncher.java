@@ -478,6 +478,31 @@ public final class LocalLauncher {
     return null;
   }
 
+  /**
+   * Return a copy of the current queue (used to display its state)
+   *
+   * @return List of job present in the queue when this method is called
+   */
+  public static int queryActiveQueuedJobs() {
+	  int count = 0;
+    try {
+      // semaphore is acquired to protect queue :
+      QUEUE_SEM.acquire();
+      
+      for(RootContext c :JOB_QUEUE.values())
+      {
+    	  if((c.getState() == RunState.STATE_PENDING || c.getState() == RunState.STATE_RUNNING))
+    		  count++;
+      }
+    } catch (final InterruptedException ie) {
+      log.error("LocalLauncher.getQueue : interrupted : ", ie);
+    } finally {
+      // semaphore is released :
+      QUEUE_SEM.release();
+    }
+
+    return count;
+  }
   
   /**
    * Return a copy of the current queue (used to display its state)

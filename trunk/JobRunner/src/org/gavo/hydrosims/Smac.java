@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBElement;
+import javax.xml.bind.UnmarshalException;
 
 import org.gavo.sam.Datatype;
 import org.gavo.sam.Model.Parameter;
@@ -279,7 +280,8 @@ public class Smac extends JobServlet {
 			default:
 				path = null;
 			}
-			request.setAttribute("resultDir", path);
+			if(path != null && path.exists())
+				request.setAttribute("resultDir", path);
 		}
 
 		return page;
@@ -287,7 +289,7 @@ public class Smac extends JobServlet {
 
 	@Override
 	protected String performAction(String action, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+			HttpServletResponse response) throws Throwable {
 		if(RELOAD_TASK.equals(action))
 		{
 			if(request.isUserInRole(SMACADMIN_ROLE)) 
@@ -303,12 +305,22 @@ public class Smac extends JobServlet {
 			return super.performAction(action, request, response);
 	}
 
-	private void loadLegacyApp() throws Exception
+	private void loadLegacyApp() throws Throwable
 	{
+		LegacyApp old_legacyApp = legacyApp;
+		String old_parametersTemplate = parametersTemplate;
+		try
+		{
 		legacyApp = (LegacyApp) ((JAXBElement) jaxbFactory
 				.createUnMarshaller().unmarshal(new File(legacyAppXML)))
 				.getValue();
 		parametersTemplate = initialiseParameters(parametersTemplateFile);
+		} catch(UnmarshalException e)
+		{
+		  legacyApp = old_legacyApp;
+		  parametersTemplate = old_parametersTemplate;
+		  throw e.getLinkedException();
+		}
 	}
 	
 }

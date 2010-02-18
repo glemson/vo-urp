@@ -2,6 +2,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> 
 <%@ taglib tagdir="/WEB-INF/tags" prefix="x" %>
 
+<%@page import="org.gavo.hydrosims.Smac"%>
 <c:set var="title" scope="request" value="Job Runner - Main" ></c:set>
 <c:set var="noLink" scope="request" value="1" ></c:set>
 
@@ -22,12 +23,12 @@ Ref: <a href="http://xxx.lanl.gov/abs/0911.3147" target="_blank">http://xxx.lanl
 <button onclick="window.location='./SeSAM.do?action=input'">Go</button>
 <% } %>
 
-<% if(request.isUserInRole("JobRunner-smac")) { %>
+<% if(request.isUserInRole(Smac.SMAC_ROLE)) { %>
 <h3><a href="" target="_blank">Smac</a> </h3>
 <p>
 A visualisation code for Gadget simulations. Copyright - Klaus Dolag.<br/>
 Ref: <a href="" target="_blank">http://xxx.yyy.zzz/...</a>.
   </p>
-<button onclick="window.location='./Smac.do?action=input'">Go</button>
+<button onclick="window.location='./Smac.do?action=input'">Go</button><% if(request.isUserInRole(Smac.SMACADMIN_ROLE)){ %>&nbsp;<button onclick="window.location='./Smac.do?action=reload'">Reload</button><%} %>
 <%} %>
 <jsp:include page="footer.jsp" flush="false" />

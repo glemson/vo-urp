@@ -30,8 +30,9 @@
 	<%	}%>    
 	
 <br/><br/>
+<c:choose>
+<c:when test="${!empty requestScope.resultDir}">
     <table><tr><th>File name</th><th>Size (bytes)</th><th>Modified</th></tr>
-<c:if test="${!empty requestScope.resultDir}">
 <dir:Directory path="${requestScope.resultDir}" sort="1"> 
 <tr><td> 
 <% if(ok){ %>
@@ -43,8 +44,18 @@
  <%} %>
  </td><td>  <%=fileSize%> </td><td><%=fileDate%> </td></tr>
 </dir:Directory> 
-</c:if>
 </table>
+</c:when>
+<c:otherwise>
+The working directory has been removed. The input parameters of the job were:
+<table>
+<tr><th>Parameter name</th><th>Value</th></tr>
+<c:forEach var="p" items="${ctx.parameters }">
+<tr><td>${p.name}</td><td>${p.value }</td></tr>
+</c:forEach>
+</table>
+</c:otherwise>
+</c:choose>
 
     
 </p>	
