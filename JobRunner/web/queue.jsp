@@ -7,15 +7,23 @@ import="org.ivoa.util.runner.*"%>
 <%-- <c:set var="noLink" scope="request" value="1" ></c:set> --%>
 <jsp:include page="./header.jsp" flush="false"/>
 
-<p> Job List :
+<c:set var="livecount" value="${requestScope.livecount }"/>
+There are currently ${livecount} live jobs on the queue.
+<c:if test="${livecount > 0 }">
+<hr/>
+<p> Your Jobs:
 	<br/><br/>
 
+<% 
+int index = 0;
+%>
 <c:if test="${!empty requestScope.queue}">
 <table>
-<tr><th>Job</th><th>id</th><th>state</th><th>Date</th><th></th><th/><th/></tr>
+<tr><th>Rank</th><th>Job</th><th>id</th><th>state</th><th>Date</th><th></th><th/><th/></tr>
 	<c:forEach var="ctx" items="${requestScope.queue}">
+	<c:if test="${ ctx.pending || ctx.running}"><% index++; %>
 	<c:if test="${user == ctx.owner}">
-<tr><td>${ctx.name}</td><td>${ctx.id}</td><td>${ctx.state}</td><td>${ctx.creationDateFormatted}</td>
+<tr><td><%= index %></td><td> ${ctx.name}</td><td>${ctx.id}</td><td>${ctx.state}</td><td>${ctx.creationDateFormatted}</td>
 <td>
 <a href="${ctx.name}.do?action=detail&id=${ctx.id}">job detail</a></td>
 <td>
@@ -29,11 +37,11 @@ import="org.ivoa.util.runner.*"%>
 </td>
 </tr>
 </c:if>
+</c:if>
 	</c:forEach>
 </table>
-
-
+<hr/>
 </c:if>
 </p>	
-    
+</c:if>    
 <jsp:include page="./footer.jsp" flush="false" />

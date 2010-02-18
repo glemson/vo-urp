@@ -8,12 +8,14 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Hashtable;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.bind.JAXBElement;
 
 import org.gavo.sam.Datatype;
@@ -43,26 +45,34 @@ public class Smac extends JobServlet {
 
 	/* constants */
 	public static final String MAIN_TASK = "main";
+	public static final String RELOAD_TASK = "reload";
 	/** The root directory wrt which the file paths in the database are defined */
+    private Hashtable<String,String> initParams;
 	private String rootDataDir;
 	private String executable;
+	private String legacyAppXML;
 	private JAXBFactory jaxbFactory;
 	private LegacyApp legacyApp;
 	private Hashtable<String, ParameterDeclaration> params;
+	private String parametersTemplateFile;
 	private String parametersTemplate = null;
 
 	public static final String INPUT_PARAMETERS = "parameters";
 	public static final String LEGACY_APP = "legacyApp";
 
+	// relevant user roles
+	public static final String SMAC_ROLE = "JobRunner-smac";
+	public static final String SMACADMIN_ROLE = "JobRunner-smacadmin";
+	
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config); // sets name etc
 		// File
 		try {
 			String jaxbpath = config.getInitParameter("jaxb.path");
-			String legacyAppXML = FileManager.LEGACYAPPS + "/" + name + "/"
+			legacyAppXML = FileManager.LEGACYAPPS + "/" + name + "/"
 					+ config.getInitParameter("legacy.app.xml");
-			String file = FileManager.LEGACYAPPS + "/" + name + "/"
+			parametersTemplateFile = FileManager.LEGACYAPPS + "/" + name + "/"
 					+ config.getInitParameter("parameterfile.template");
 
 			rootDataDir = config.getInitParameter("root.data.dir");
@@ -70,10 +80,17 @@ public class Smac extends JobServlet {
 					+ config.getInitParameter("executable");
 
 			jaxbFactory = JAXBFactory.getInstance(jaxbpath);
-			legacyApp = (LegacyApp) ((JAXBElement) jaxbFactory
-					.createUnMarshaller().unmarshal(new File(legacyAppXML)))
-					.getValue();
-			parametersTemplate = initialiseParameters(file, config);
+
+			// for later use need to store init variables
+			// TODO seems as if the getServletConfig method does not do so
+			initParams = new Hashtable<String,String>();
+			Enumeration<String> l = config.getInitParameterNames();
+			while(l.hasMoreElements())
+			{
+				String v = l.nextElement();
+				initParams.put(v,config.getInitParameter(v));
+			}
+			loadLegacyApp();
 
 		} catch (Throwable t) {
 			t.printStackTrace();
@@ -82,8 +99,7 @@ public class Smac extends JobServlet {
 		
 	}
 
-	private String initialiseParameters(String parameterTemplateFile,
-			ServletConfig config) throws Exception {
+	private String initialiseParameters(String parameterTemplateFile) throws Exception {
 
 		params = new Hashtable<String, ParameterDeclaration>();
 		Hashtable<String, ParameterDeclaration> freeParams = new Hashtable<String, ParameterDeclaration>();
@@ -141,7 +157,8 @@ public class Smac extends JobServlet {
 					fromIndex = index;
 					index = lt.indexOf(CONFIG_PARAM_DELIMITER, fromIndex+CONFIG_PARAM_DELIMITER.length());
 					String configParamName = lt.substring(fromIndex+CONFIG_PARAM_DELIMITER.length(), index);
-					String configParamValue = config.getInitParameter(configParamName);
+					String configParamValue = initParams.get(configParamName);
+					
 					lt = lt.replaceAll(CONFIG_PARAM_DELIMITER+configParamName+CONFIG_PARAM_DELIMITER, configParamValue);
 				}
 				fromIndex = 0;
@@ -236,7 +253,7 @@ public class Smac extends JobServlet {
 		 * request.setAttribute(INPUT_MODEL, model);
 		 */
 		java.util.Map<String, String> p = null;
-		if (p == null)
+		if (p == null) // TODO sort out this weird code. likely intended to set parameters to ones set in previous request ...
 			p = new java.util.Hashtable<String, String>();
 		request.setAttribute(INPUT_PARAMETERS, p);
 		request.setAttribute("LEGACY_APP", legacyApp);
@@ -268,4 +285,30 @@ public class Smac extends JobServlet {
 		return page;
 	}
 
+	@Override
+	protected String performAction(String action, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		if(RELOAD_TASK.equals(action))
+		{
+			if(request.isUserInRole(SMACADMIN_ROLE)) 
+			{
+				synchronized (ERROR_MESSAGE) {
+				loadLegacyApp();
+				}
+			}
+			// else throw error?
+			return showInput(request);
+		}
+		else		
+			return super.performAction(action, request, response);
+	}
+
+	private void loadLegacyApp() throws Exception
+	{
+		legacyApp = (LegacyApp) ((JAXBElement) jaxbFactory
+				.createUnMarshaller().unmarshal(new File(legacyAppXML)))
+				.getValue();
+		parametersTemplate = initialiseParameters(parametersTemplateFile);
+	}
+	
 }
