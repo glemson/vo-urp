@@ -1141,17 +1141,12 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 </literal>
 <literal>
   <value>12</value>
-  <title>Faraday Rotation Map</title>
-  <description></description>
-</literal>
-<literal>
-  <value>14</value>
-  <title>Emission temperature</title>
+  <title>Non-thermal Maps</title>
   <description></description>
 </literal>
 <literal>
   <value>15</value>
-  <title>Massweighted-Metalicity </title>
+  <title>Metalicity </title>
   <description></description>
 </literal>
 <literal>
@@ -1211,11 +1206,19 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 </literal>
 <literal>
   <value>1</value>
-  <title>Emission weighted</title>
+  <title>Emission weighted temperature (simple sqrt(T))</title>
 </literal>
 <literal>
   <value>2</value>
-  <title>Spectroscopic</title>
+  <title>Emission weighted temperature (tabulated cooling function)</title>
+</literal>
+<literal>
+  <value>3</value>
+  <title>Spectroscopic like   (e.g. Mazotta et al.)</title>
+</literal>
+<literal>
+  <value>4</value>
+  <title>Emission temperature (e.g. Rasia et al.)</title>
 </literal>
 </validvalues>
 

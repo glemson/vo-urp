@@ -10,37 +10,36 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import org.ivoa.runner.apps.Workflow;
-import org.ivoa.runner.apps.Workflow;
 import org.ivoa.web.servlet.JobServlet;
+import org.vourp.runner.model.LegacyApp;
 
 public class LegacyAppRunner  {
 
-	private Workflow workflow;
+	private LegacyApp legacyApp;
 	
 	/**
 	 * Constructor that accepts a LegacyApp describing the legacy application.<br/>
 	 * @param configFile
 	 */
-	public LegacyAppRunner(Workflow _workflow)
+	public LegacyAppRunner(LegacyApp _legacyApp)
 	{
-		this.workflow = _workflow;
+		this.legacyApp = _legacyApp;
 	}
 	public LegacyAppRunner(String _legacyAppFile)
 	{
     	try
     	{
-        	this.workflow = null;
+        	this.legacyApp = null;
         	JAXBContext jc = JAXBContext.newInstance("org.ivoa.runner.apps");
         	//Create unmarshaller
         	Unmarshaller um = jc.createUnmarshaller();
         	Object o = um.unmarshal(new java.io.FileInputStream(_legacyAppFile));
-        	if(o instanceof Workflow )
-        		this.workflow = (Workflow)o;
+        	if(o instanceof LegacyApp )
+        		this.legacyApp = (LegacyApp)o;
         	else if(o instanceof JAXBElement)
         	{
-        		JAXBElement<Workflow> je = (JAXBElement<Workflow>)o;
-        		this.workflow =  je.getValue();
+        		JAXBElement<LegacyApp> je = (JAXBElement<LegacyApp>)o;
+        		this.legacyApp =  je.getValue();
         	}
     	} catch(Exception e)
     	{

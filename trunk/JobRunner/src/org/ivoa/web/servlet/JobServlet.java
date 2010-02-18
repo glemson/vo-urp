@@ -268,6 +268,7 @@ public class JobServlet extends BaseServlet implements JobListener {
 		final List<RootContext> list = LocalLauncher.getQueue();
 
 		request.setAttribute("queue", list);
+		request.setAttribute("livecount", LocalLauncher.queryActiveQueuedJobs());
 
 		return "./queue.jsp";
 	}
@@ -403,7 +404,7 @@ public class JobServlet extends BaseServlet implements JobListener {
 	 * @param response
 	 * @return
 	 */
-	protected String performAction(String action, HttpServletRequest request, HttpServletResponse response)
+	protected String performAction(String action, HttpServletRequest request, HttpServletResponse response) throws Exception
 	{
 		throw new UnsupportedOperationException("This method must be implemented on a subclass");
 	}
