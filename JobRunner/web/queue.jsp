@@ -7,9 +7,9 @@ import="org.ivoa.util.runner.*"%>
 <%-- <c:set var="noLink" scope="request" value="1" ></c:set> --%>
 <jsp:include page="./header.jsp" flush="false"/>
 
-<c:set var="livecount" value="${requestScope.livecount }"/>
-There are currently ${livecount} live jobs on the queue.
-<c:if test="${livecount > 0 }">
+<% int livecount = LocalLauncher.queryActiveQueuedJobs(); %>
+There are currently  <%= livecount %> live jobs on the queue.
+
 <hr/>
 <p> Your Jobs:
 	<br/><br/>
@@ -43,5 +43,4 @@ int index = 0;
 <hr/>
 </c:if>
 </p>	
-</c:if>    
 <jsp:include page="./footer.jsp" flush="false" />

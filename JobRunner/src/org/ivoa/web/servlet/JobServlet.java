@@ -196,10 +196,10 @@ public class JobServlet extends BaseServlet implements JobListener {
 			} else { // if action is unknown, assume it is implemented by a subclass
 				view = performAction(action, request, response);
 			}
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			log.error("failure : ", e); // TODO need to do more, e.g. go to an
 										// error page
-
+			request.setAttribute(ERROR_MESSAGE,e.getMessage());
 		}
 
 		if (wasForwarded)
@@ -268,7 +268,6 @@ public class JobServlet extends BaseServlet implements JobListener {
 		final List<RootContext> list = LocalLauncher.getQueue();
 
 		request.setAttribute("queue", list);
-		request.setAttribute("livecount", LocalLauncher.queryActiveQueuedJobs());
 
 		return "./queue.jsp";
 	}
@@ -404,7 +403,7 @@ public class JobServlet extends BaseServlet implements JobListener {
 	 * @param response
 	 * @return
 	 */
-	protected String performAction(String action, HttpServletRequest request, HttpServletResponse response) throws Exception
+	protected String performAction(String action, HttpServletRequest request, HttpServletResponse response) throws Throwable
 	{
 		throw new UnsupportedOperationException("This method must be implemented on a subclass");
 	}
