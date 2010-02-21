@@ -20,9 +20,8 @@ A way to handle the following scenario in xml schema.
 
 And identifierURI is used as a type like
 
-- <xs:element name="identifier" type="vr:IdentifierURI"> - <xs:annotation> - <xs:appinfo>
-
-    <vm:dcterm>Identifier</vm:dcterm> </xs:appinfo> <xs:documentation>Unambiguous reference to the resource conforming to the IVOA standard for identifiers</xs:documentation> </xs:annotation> </xs:element> 
+- <xs:element name="identifier" type="vr:IdentifierURI"> 
+</xs:element> 
 
 
 
