@@ -4,6 +4,30 @@
 
 Here we list suggestions for VO-URP.
 
+[JK 2010-02-21]:
+
+A way to handle the following scenario in xml schema.
+
+<xs:simpleType name="IdentifierURI">
+
+    <xs:restriction base="xs:anyURI">
+
+        <xs:pattern value="............"/> 
+
+    </xs:restriction> 
+
+<xs:simpleType>
+
+And identifierURI is used as a type like
+
+- <xs:element name="identifier" type="vr:IdentifierURI"> - <xs:annotation> - <xs:appinfo>
+
+    <vm:dcterm>Identifier</vm:dcterm> </xs:appinfo> <xs:documentation>Unambiguous reference to the resource conforming to the IVOA standard for identifiers</xs:documentation> </xs:annotation> </xs:element> 
+
+
+
+
+
 [GL 2009-06-09]: 
 
 For attributes declared uniqueInCollection, create a namedQuery
