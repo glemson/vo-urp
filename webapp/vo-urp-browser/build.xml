@@ -13,6 +13,8 @@
   
   <!-- set global properties for this build -->
   <fail unless="input" message="Must provide 'input' property, indicating project directory"/>
+  <fail unless="webapp.member.role" message="Must provide 'webapp.member.role' property"/>
+  <fail unless="webapp.admin.role" message="Must provide 'webapp.admin.role' property"/>
 	
   <!-- first load local config file -->
   <property file="build.properties"/>
@@ -69,6 +71,8 @@
   <filter token="eclipselink.jdbc.url" value="${eclipselink.jdbc.url}"/>
   <filter token="eclipselink.jdbc.user" value="${eclipselink.jdbc.user}"/>
   <filter token="eclipselink.jdbc.password" value="${eclipselink.jdbc.password}"/>
+	<filter token="webapp.member.role" value="${webapp.member.role}"/>
+	<filter token="webapp.admin.role" value="${webapp.admin.role}"/>
 
   
   <!-- classpath -->
@@ -453,7 +457,13 @@
     <echo message="copying context.xml"/>
 
     <mkdir dir="${build.meta}"/>
-    <copy todir="${build.meta}" file="${web-content}/META-INF/context.xml" filtering="true" overwrite="true"/>
+    <copy todir="${build.meta}" file="${web-content}/META-INF/context.xml" filtering="true" overwrite="true">
+    		<filterset>
+    				<filter token="tomcat.realm.url" value="${tomcat.realm.url}" />
+    				<filter token="tomcat.realm.dbuser" value="${tomcat.realm.dbuser}" />
+    				<filter token="tomcat.realm.password" value="${tomcat.realm.password}" />
+    			</filterset>
+    	</copy>
 
     <!-- make web application archive -->
     <war destfile="${dist}/${build.war.file}" webxml="${build}/web.xml" compress="true" roundup="true">

@@ -16,7 +16,7 @@
 
 </presetdef>
 
-  
+ 
 
 
 <!-- targets -->
@@ -33,23 +33,23 @@
 
   <fail unless="eclipselink.jdbc.user" message="missing eclipselink.jdbc.user in jpa-config.properties !" />
   <fail unless="eclipselink.jdbc.password" message="missing eclipselink.jdbc.password in jpa-config.properties !" />
+
+
+  <property name="tomcat.realm.url" value="${eclipselink.jdbc.url}"/>
+  <property name="tomcat.realm.dbuser" value="${eclipselink.jdbc.user}"/>
+  <property name="tomcat.realm.password" value="${eclipselink.jdbc.password}"/>
+
   
   <!-- sets SQL script directory -->
-  <condition property="ddl.directory" value="${output}/ddl/postgres/">
+  <condition property="db.vendor" value="postgres/">
     <equals arg1="${eclipselink.target-database}" arg2="PostgreSQL" trim="true"/>
   </condition>
-
-  <condition property="ddl.directory" value="${output}/ddl/mssqlserver/">
+  <condition property="db.vendor" value="mssqlserver">
     <equals arg1="${eclipselink.target-database}" arg2="SQLServer" trim="true"/>
   </condition>
 
-  <condition property="tap.ddl.directory" value="${output}/tap/postgres/">
-    <equals arg1="${eclipselink.target-database}" arg2="PostgreSQL" trim="true"/>
-  </condition>
-
-  <condition property="tap.ddl.directory" value="${output}/tap/mssqlserver/">
-    <equals arg1="${eclipselink.target-database}" arg2="SQLServer" trim="true"/>
-  </condition>
+  <property name="ddl.directory" value="${output}/ddl/${db.vendor}/"/>
+  <property name="tap.ddl.directory" value="${output}/tap/${db.vendor}/"/>
 
 <!--  no need to check for tap.ddl.directory -->
   <condition property="ddl.directory.set">
@@ -116,19 +116,37 @@
 
 
 
-
 <!-- target createDB : creates tables then views -->
 <target name="createDB" depends="cleanDB" if="target.db.do">
   <echo>createDB : create tables then views ...</echo>
 
+	
   <doSql onerror="abort" src="${ddl.directory}/${project.name}_createTables.sql" />
   <doSql onerror="abort" src="${ddl.directory}/${project.name}_createViews.sql" delimiter="${create.view.sep}"/>
   <doSql onerror="abort" src="${tap.ddl.directory}/${project.name}_create_tap_schema.sql" delimiter="${create.view.sep}"/>
 
   <!-- web user rights -->
-  <!-- TBD do we want/need this here? -->
-  <doSql onerror="continue" src="webapp/vo-urp-browser/ddl/admindb.sql" />
+  <copy verbose="true" todir="${output}/ddl" preservelastmodified="true" filtering="true">
+		<fileset dir="./webapp/vo-urp-browser/ddl/">
+		  <include name="*/admindb.sql"/> 
+		</fileset>
+		<filterset>
+				<filter token="webapp.member.role" value="${webapp.member.role}" />
+				<filter token="webapp.admin.role" value="${webapp.admin.role}" />
+				<filter token="webapp.admin.user" value="${webapp.admin.user}" />
+				<filter token="webapp.admin.password" value="${webapp.admin.password}" />
+			</filterset>
+	</copy>
 
+<echo>Writing user/role data to ${tomcat.realm.url}</echo>
+  <sql classpathref="jdbc-drivers.class.path" 
+       driver="${eclipselink.jdbc.driver}"
+       url="${tomcat.realm.url}"
+       userid="${tomcat.realm.dbuser}"
+       password="${tomcat.realm.password}" onerror="continue" src="${output}/ddl/${db.vendor}/admindb.sql"/>
+<!--         
+  <doSql onerror="continue" src="${output}/ddl/${db.vendor}/admindb.sql" />
+-->
   <echo>createDB : done.</echo>
 </target>
 

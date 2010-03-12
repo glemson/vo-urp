@@ -864,7 +864,7 @@ TBD check they are the same -->
           <xsl:value-of select="$graphviz_png"/>
         </xsl:attribute>
         <xsl:if test="$graphviz_map">
-          <xsl:attribute name="usemap" select="concat('#',$project_name)"/>
+          <xsl:attribute name="usemap" select="'#GVmap'"/>
         </xsl:if>
       </xsl:element>
       <xsl:if test="$graphviz_map">

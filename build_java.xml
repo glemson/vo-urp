@@ -488,13 +488,33 @@ Optional
     <fileset dir="${sources.gen}/src">
       <include name="**/*.java"/>
     </fileset>
+  
+  </javadoc>
+  <ant target="makeJavaDocForTest"/>
+  <echo>generated Java classes javadoc : done.</echo>
+</target>
+
+
+<target name="makeJavaDocForTest" if="has.test">
+  <javadoc  additionalparam="-notimestamp"
+            destdir="${javadoc}"
+            access="private" 
+            author="true"
+            encoding="UTF-8"
+            source="1.5"
+            use="true"
+            windowtitle="${source} : ${project.title}">
+    
+    <classpath>
+      <path refid="project.class.path" />
+    </classpath>
+    
     <fileset dir="${test}">
       <include name="**/*.java"/>
     </fileset>
   
   </javadoc>
-  
-  <echo>generated Java classes javadoc : done.</echo>
+
 </target>
 
 
