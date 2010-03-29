@@ -393,11 +393,12 @@
   <!-- target buildWeb : makes the vo-urp browser web application -->
 	<target name="buildWeb" description="build web application only">
 		<ant antfile="webapp/vo-urp-browser/build.xml" target="deployTomcat" inheritAll="false">
-			<property name="input" location="${input}"/>
+	 		<property name="input" location="${input}"/>
+			<property name="schemalocation_root" value="${schemalocation_root}"/>
     	<property name="webapp.member.role" value="${webapp.member.role}"/>
     	<property name="webapp.admin.role" value="${webapp.admin.role}"/>
 		</ant>	
-	</target>
+	</target> 
 	
 	
 
