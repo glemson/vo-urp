@@ -280,6 +280,8 @@ public final class ValidationServlet extends BaseServlet {
       log.error(
         "Unable to initiate DataModelManager for ValidationServlet using JPA persistence unit " +
         RuntimeConfiguration.get().getJPAPU());
+      // TO ADD to get root exception :
+      log.error("exception = ", e);
       dataModelManager = null; // TODO should we throw an exception or simply make uploads not possible?
     }
   }
