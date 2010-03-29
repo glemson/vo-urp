@@ -15,7 +15,8 @@
   <fail unless="input" message="Must provide 'input' property, indicating project directory"/>
   <fail unless="webapp.member.role" message="Must provide 'webapp.member.role' property"/>
   <fail unless="webapp.admin.role" message="Must provide 'webapp.admin.role' property"/>
-	
+  <fail unless="schemalocation_root" message="Must provide 'schemalocation_root' propert, indicating where schema files are to be found"/>	
+
   <!-- first load local config file -->
   <property file="build.properties"/>
 
@@ -339,9 +340,9 @@
     <ant target="compile" />
     <ant target="makeDoc" />
     <ant target="package" />
-
+<!--
     <ant target="cleanup" />
-
+-->
     <echo message="makeAllIfNeeded ${title} : done."/>
   </target>
 
@@ -402,7 +403,7 @@
   <target name="package" depends="init" unless="build.notRequired">
 
     <!-- move properties and xml schemas with compiled classes (classpath resources) -->
-    <copy todir="${build.src}" preservelastmodified="true" verbose="true">
+    <copy todir="${build.src}" preservelastmodified="true" verbose="true" filtering="true">
       <fileset dir="${properties}">
         <include name="*.*"/>
       </fileset>
@@ -412,9 +413,16 @@
       <fileset dir="${projectHome}">
         <include name="xsd/**/*"/>
       </fileset>
-      <fileset dir="${input}">
+    	<filterset><filter token="schemalocation_root" value="${schemalocation_root}"/></filterset>
+    </copy>
+  	<copy todir="${build.src}/xsd" preservelastmodified="true" verbose="true">
+        <fileset dir="${input}/output/schema">
+          <include name="**/*.xsd"/>
+        </fileset>
+     <fileset dir="${input}">
         <include name="xsd/**/*"/>
       </fileset>
+
     </copy>
 
     <replace file="${build.src}/vo-urp-catalog.xml" encoding="UTF-8">
@@ -422,9 +430,10 @@
       <replacevalue>./xsd/</replacevalue>
     </replace>
 
+  	<!-- TODO this is wrong, hardcoded simdb/bologna whatever -->
     <replace file="${build.src}/vo-urp-catalog.xml" encoding="UTF-8">
       <replacetoken>../input/simdb/xsd/</replacetoken>
-      <replacevalue>./xsd/</replacevalue>
+      <replacevalue>./xsd/</replacevalue> 
     </replace>
 
     <!-- create a tags folder to put tag files because subversion used 'tags' folders for subversion tags -->

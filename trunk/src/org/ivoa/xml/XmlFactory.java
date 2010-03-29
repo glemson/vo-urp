@@ -28,10 +28,12 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import org.ivoa.bean.SingletonSupport;
+import org.ivoa.util.FileUtils;
 import org.ivoa.util.text.StringBuilderWriter;
 import org.ivoa.util.timer.TimerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
+import org.w3c.dom.ls.LSInput;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -162,7 +164,10 @@ public final class XmlFactory extends SingletonSupport {
   public static Schema getSchema(final String schemaURL) {
     Schema s = null;
     try {
-      final URL url = new URL(schemaURL);
+      final URL url = FileUtils.getResource(schemaURL);
+    	
+      final File file = FileUtils.getFile(schemaURL);
+      
 
       if (logB.isInfoEnabled()) {
         logB.info("XmlFactory.getSchema : retrieve schema and compile it : " + schemaURL);
@@ -171,7 +176,9 @@ public final class XmlFactory extends SingletonSupport {
       // 2. Compile the schema.
       final long start = System.nanoTime();
 
-      s = getSchemaFactory().newSchema(url);
+      SchemaFactory sf = getSchemaFactory();
+      s = sf.newSchema(url);
+      
 
       TimerFactory.getTimer("XmlFactory.getSchema[" + schemaURL + "]").addMilliSeconds(start, System.nanoTime());
 
@@ -181,9 +188,9 @@ public final class XmlFactory extends SingletonSupport {
 
     } catch (final SAXException se) {
       throw new IllegalStateException("XmlFactory.getSchema : unable to create a Schema for : " + schemaURL, se);
-    } catch (final MalformedURLException mue) {
+/*    } catch (final MalformedURLException mue) {
       throw new IllegalStateException("XmlFactory.getSchema : unable to create a Schema for : " + schemaURL, mue);
-    }
+*/    }
     return s;
   }
 
