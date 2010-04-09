@@ -1,0 +1,145 @@
+STCshould be redone as it is deepley flawed. It may not be flawed in its overall contents.
+Possibly all contents has some relevenace in some contexts.
+However in many contexts it is impossible to use the required concepts, without getting overladed with irrelevant details.
+We also feel that there are important concepts missing from the model, though implicitly they are assumed.
+For example there are many contexts where one will be interested in using spatial coordinates.
+But the details of these context may put many different requirements on the features that should be included.
+
+Currently this is "corrected for" by simply adding all possible features to some generic types.
+It is then understood that many of these features are optional. This is bad design. 
+For any use of it must be able to deal with alll these irrelevant features, again one can not validate 
+For example take the astroCoordsSystemType.
+It contains all possible explicit reference frames: space, time, spectral, doppler.
+In many cases one will want to leave at least some of these out.
+Why then define this object? Any model that might want to use reference frames can easily create its own explicit aggregation.
+Now one can validate for the existence of the required ones, here nothing is required.
+ 
+As example of some contexts: 
+1. 
+A source observed in a broad band image can be given an angular position.
+Especially for nearby sources it may be important to know the location from which the source was observed, the time of observations etc.
+But to know how to correct for example from earth centered (topo or geocentric), to helio centric, one would need to know the distance
+to the source. if that does not exist one cannot correct.
+At a later point in time, say half a year later, the source may be observed at a different direction.
+This may be because of parallax and/or peculiar motion, to disentangle this requires more observations, possibly of different type.
+If no spectroscopy is preformed a redshift is irrelevant
+ 
+Without knowing peculiar velocities one can not correct for a different epoch of the position of the observed object. 
+ 
+2.
+A image is taken in a particular direction on the sky.
+should not depend on the time of year.
+The positions of sources inside the image may depend on it ofcourse, but that is a different issue.
+The angular coordinates defining the observation dorection should not be transformed.
+
+
+So without knowning what the context is for a position, i.e. to what concept a position is assigned, one can not know
+what one may want to do with it or what metadata is relevant.
+To simply create big containers containing all features that may possibly be relevant in a context is bad design and makes the 
+model very hard to work with.
+
+And if this seems like a subjective statement, why not look at the difficulty with which the model was accepted,
+the frequent calls for simplification already before its acceptance, or cries of desperation coming from people
+trying to implement the model. 
+And implement means really implement, write code that does something with STC objects.
+It does mean simply creating a Java library that can create instances of it or parse an xml document.
+The latter is the domain of JAXB, XMLBeans or whatevr tool. 
+
+
+Apart from the contents which is too "comprehenmsive" (we'll later propose cutting out certain types etc),
+also the way it has been implemented in XSD is extremely ugly and unworkable, a clear example of XML schema run wild.
+
+The use for example of substitutionGroups and the <element ref="..."> pattern means that it is extremely hard work to 
+create a mapping to any model representation that lacks such concepts. 
+Moreover it makes it in practice impossible to rely on simple schema-based validation to test for semantic validity of XML documents. 
+E.g. a document containing only the following element
+
+<MARS_G>blabla</MARS_G> 
+
+is valid STC. 
+Clearly, after first importing the complete schema, any application using it should immediately create restrictions on allowable elements.
+
+The Registry and VOTable schemas have moved away from that design pattern, relying on the type extension and <element name="..." type="...">
+only. Granted this requires an occasional xsi:type="..." in an element, but that is completely compatible with common object-oriented polymorphism 
+such as in Java. It also leads to much more explicit XML documents, where an element has child-elements with a fixed name, the value of which gives
+information. For querying validation etc etc this is so much easier.
+
+Also the schema documents decrease in size, and it does not require one to create bogus copies of certain elements if to elenments
+of the same type must be used.
+Take the exceedingly ugly way in which the diffType is implemented.
+A Diff needs two regions. In any OO approach this would be implemented with two attributes of the same type, say Region, and different
+attribute names, say region1 and region2. Standard polymorphism will allow one to initialise these with any concrete subclass of Region.
+In the STC design two separate hierarchies of Region substitutionGroup-s must be defined. All as root elements!
+So we have 
+
+  <xs:element name="Region" type="regionType" substitutionGroup="PositionInterval" nillable="true"/>
+  <xs:element name="Circle" type="circleType" substitutionGroup="Region" nillable="true"/>
+  <xs:element name="Ellipse" type="ellipseType" substitutionGroup="Region" nillable="true"/>
+
+
+But also 
+
+  <xs:element name="Region2" type="regionType" substitutionGroup="PositionInterval" nillable="true">
+    <xs:annotation>
+      <xs:documentation>Head element of the Region2 substitution group; a Region is a Shape or the result of a Region Operation on one or more Regions</xs:documentation>
+    </xs:annotation>
+  </xs:element>
+  <xs:element name="Circle2" type="circleType" substitutionGroup="Region2" nillable="true"/>
+  <xs:element name="Ellipse2" type="ellipseType" substitutionGroup="Region2" nillable="true"/>
+
+
+And all this to be able to write sometimes
+
+<Diff>
+<Sphere>...</Sphere>
+<Sphere2>...</Sphere2>
+</Diff>
+, sometimes
+<Diff>
+<Box>...</Box>
+<Ellipse2>...</Ellipse2>
+</Diff>
+
+whereas the alternative would be 
+
+<diff>
+<region1 xsi:type="Sphere">...</region1>
+<region2 xsi:type="Sphere">...</region2>
+</diff>
+
+and
+
+<diff>
+<region1 xsi:type="Box">...</region1>
+<region2 xsi:type="Ellipse">...</region2>
+</diff>
+
+
+
+3.
+I see no use for the (astro)CoordSystemType being an aggregation of reference frames.
+Similar for astroCoords, being an aggregation of coordinates.
+These will not always come together and in different contexts will have different usages.
+
+I am also tempted to get rid of all aggregations defining values with resolution, error etc. 
+The individual components may have a place, but values will always always be represented in a different way.
+
+
+4.
+What are the important concepts then? A first list
+We want to be able to give meaning to one or more values that should represent particular observables:
+- position (of an object, a telescope, a source on the sky, a telescope pointing, ...)
+- velocity (of an object in 3d, on the sky, a movnig observational platform, ...)
+- time (of en event, of an observation, of an equinox (= ?? something having to do with coordinate system), representing
+  a calculated position of an object when taking into account peculiar velocity, ...)
+- spectral coordinate (...) NB is this really needed in STC
+- doppler shift (of a spectrum associated to a source, caused by a motion of observer/source).
+
+
+
+
+
+
+
+
+
