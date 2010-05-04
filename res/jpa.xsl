@@ -120,7 +120,7 @@ For now it is commented out. -->
     /** rank : position in the container collection  */
     @Basic( optional = false )
     @Column( name = "rank", nullable = false )
-    protected int rank = 0;
+    protected int rank = -1;
     </xsl:if>
   </xsl:template>
 
