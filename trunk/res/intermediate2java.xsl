@@ -462,6 +462,29 @@ package <xsl:value-of select="$path"/>;
         super();
         this.setContainer(pContainer);
       }
+
+      /**
+       * Creates a new <xsl:value-of select="$className"/> for the given Container Entity. &lt;br&gt;
+       *
+       * The Parent Container CAN NOT BE NULL.
+       * The rank value is the collection index position used by 'order by' clause only.
+       *
+      <xsl:variable name="collection">
+        <xsl:call-template name="upperFirst">
+          <xsl:with-param name="val" select="container/@relation"/>
+        </xsl:call-template>
+      </xsl:variable>
+       * This constructor must be used to add items in a big collection.
+       * see <xsl:value-of select="$type"/>#add<xsl:value-of select="$collection"/>(<xsl:value-of select="$collection"/>)
+       *
+       * @param pContainer the parent container CAN NOT BE NULL
+       * @param pRank the parent container CAN NOT BE NULL
+       */
+      public <xsl:value-of select="$className"/>(final <xsl:value-of select="$type"/> pContainer, final int pRank) {
+        super();
+        this.setRank(pRank);
+        this.setContainer(pContainer);
+      }
         </xsl:when>
         <xsl:otherwise>
           <xsl:variable name="parentContainer"><xsl:call-template name="findParentContainer"><xsl:with-param name="xmiid" select="@xmiid"/></xsl:call-template></xsl:variable>
@@ -478,6 +501,27 @@ package <xsl:value-of select="$path"/>;
        */
       public <xsl:value-of select="$className"/>(final <xsl:value-of select="$type"/> pContainer) {
         super(pContainer);
+      }
+
+      /**
+       * Creates a new <xsl:value-of select="$className"/> for the given Container Entity. &lt;br&gt;
+       *
+       * The Parent Container CAN NOT BE NULL.
+       * The rank value is the collection index position used by 'order by' clause only.
+       *
+      <xsl:variable name="collection">
+        <xsl:call-template name="upperFirst">
+          <xsl:with-param name="val" select="container/@relation"/>
+        </xsl:call-template>
+      </xsl:variable>
+       * This constructor must be used to add items in a big collection :
+       * @see <xsl:value-of select="$type"/>.<xsl:value-of select="$collection"/>
+       *
+       * @param pContainer the parent container CAN NOT BE NULL
+       * @param pRank the parent container CAN NOT BE NULL
+       */
+      public <xsl:value-of select="$className"/>(final <xsl:value-of select="$type"/> pContainer, final int pRank) {
+        super(pContainer, pRank);
       }
           </xsl:if>
         </xsl:otherwise>
@@ -532,11 +576,13 @@ package <xsl:value-of select="$path"/>;
         } 
 
         /** 
-         * Sets the Rank
-         * @param pRank rank in the parent collection
+         * Sets the Rank i.e. the collection index position used by 'order by' clause only.
+         * @param pRank rank in the parent collection (must be >= 0)
          */
         public void setRank(final int pRank) {
-          this.rank = pRank;
+          if (pRank >= 0) {
+            this.rank = pRank;
+          }
         }
       </xsl:if>
 
@@ -917,14 +963,24 @@ package <xsl:value-of select="$path"/>;
     }
     /**
     * Add a <xsl:value-of select="$type"/> to the collection
+    * Note: if the collection is big, set the rank value before adding the item to the collection
     * @param p<xsl:value-of select="$type"/>&bl;<xsl:value-of select="$type"/> to add
     */
     public void add<xsl:value-of select="$name"/>(final <xsl:value-of select="$type"/> p<xsl:value-of select="$type"/>) {
       if(this.<xsl:value-of select="name"/> == null) {
         this.<xsl:value-of select="name"/> = new ArrayList&lt;<xsl:value-of select="$type"/>&gt;();
       }
-      final int idx = this.<xsl:value-of select="name"/>.size();
-      p<xsl:value-of select="$type"/>.setRank(idx);
+      /* define the rank value (collection ordering position) if undefined */
+      if (p<xsl:value-of select="$type"/>.getRank() == -1) {
+        /* the call to size() method on lazy collection has the side effect
+         * to fetch the complete collection : it is a performance problem
+         * if the collection is really big.
+         * Workaround : set the rank value before adding the item to the collection
+         */
+        final int idx = this.<xsl:value-of select="name"/>.size();
+        p<xsl:value-of select="$type"/>.setRank(idx);
+      }
+
       this.<xsl:value-of select="name"/>.add(p<xsl:value-of select="$type"/>);
     }
   </xsl:template>
