@@ -289,7 +289,7 @@ generate tables in the database allowing querying for metadata
               </xsl:call-template>
             </xsl:variable>
             <xsl:choose>
-              <xsl:when test="number($length) &lt;= 0"><xsl:text>*</xsl:text></xsl:when>
+              <xsl:when test="number($length) &lt;= 0"><xsl:text>null</xsl:text></xsl:when>
               <xsl:otherwise><xsl:value-of select="$length"/></xsl:otherwise>
             </xsl:choose>
           </xsl:attribute>
@@ -486,7 +486,7 @@ In a single VOTable document, represents the TAP_SCHEMA tables with as content t
     <xsl:attribute name="arraysize" select="'*'"/>
     </xsl:element>
     <xsl:element name="FIELD">
-    <xsl:attribute name="name" select="'primary'"/>
+    <xsl:attribute name="name" select="'principal'"/>
     <xsl:attribute name="datatype" select="'boolean'"/>
     </xsl:element>
     <xsl:element name="FIELD">
@@ -603,7 +603,7 @@ In a single VOTable document, represents the TAP_SCHEMA tables with as content t
                   </xsl:call-template>
                 </xsl:variable>
                 <xsl:choose>
-                  <xsl:when test="number($length) &lt;= 0"><xsl:text>*</xsl:text></xsl:when>
+                  <xsl:when test="number($length) &lt;= 0"><xsl:text>NULL</xsl:text></xsl:when>
                   <xsl:otherwise><xsl:value-of select="$length"/></xsl:otherwise>
                 </xsl:choose>
               </xsl:when>
@@ -639,10 +639,10 @@ In a single VOTable document, represents the TAP_SCHEMA tables with as content t
     <xsl:param name="ucd" select="''"/>
     <xsl:param name="utype" select="''"/>
     <xsl:param name="datatype"/>
-    <xsl:param name="arraysize" select="'1'"/>
-    <xsl:param name="primary" select="'T'"/>
-    <xsl:param name="indexed" select="'T'"/>
-    <xsl:param name="std" select="'T'"/>
+    <xsl:param name="arraysize" select="1"/>
+    <xsl:param name="principal" select="1"/>
+    <xsl:param name="indexed" select="0"/>
+    <xsl:param name="std" select="0"/>
   <!-- TODO this can be simplieified, the INSERT INTO ... does not have to be repeated, 
   only comma-separated list of values (within () ) is required. More efficient as well. -->
 <xsl:element name="TR">
@@ -654,7 +654,7 @@ In a single VOTable document, represents the TAP_SCHEMA tables with as content t
 <xsl:element name="TD"><xsl:value-of select="$utype"/></xsl:element>
 <xsl:element name="TD"><xsl:value-of select="$datatype"/></xsl:element>
 <xsl:element name="TD"><xsl:value-of select="$arraysize"/></xsl:element>
-<xsl:element name="TD"><xsl:value-of select="$primary"/></xsl:element>
+<xsl:element name="TD"><xsl:value-of select="$principal"/></xsl:element>
 <xsl:element name="TD"><xsl:value-of select="$indexed"/></xsl:element>
 <xsl:element name="TD"><xsl:value-of select="$std"/></xsl:element>
 </xsl:element> 
@@ -743,17 +743,17 @@ CREATE TABLE TAP_SCHEMA.tables (
 
 CREATE TABLE TAP_SCHEMA.columns (
   id </xsl:text><xsl:value-of select="$IDGentype"/><xsl:text>,
-  column_name varchar(128) not null,
   table_name varchar(128) not null,
+  column_name varchar(128) not null,
   description </xsl:text><xsl:value-of select="$unboundedstringtype"/><xsl:text>,
   unit varchar(64),
   ucd varchar(64),
   utype varchar(128),
   datatype varchar(64),
-  size varchar(16),
-  "primary" char(1), -- assume T or F
-  indexed char(1), -- assume T or F
-  std char(1), -- assume T or F
+  size integer,
+  principal integer,
+  indexed integer, -- assume T or F
+  std integer, -- assume T or F
   rank integer 
 );
 <!--  for now the key_id is a varchar, using the name of the table and the reference -->
@@ -792,7 +792,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
         <xsl:with-param name="description"><xsl:text>This column stores the name of the schema</xsl:text></xsl:with-param>
         <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
         <xsl:with-param name="rank"><xsl:text>1</xsl:text></xsl:with-param>
-        <xsl:with-param name="indexed"><xsl:text>T</xsl:text></xsl:with-param>
+        <xsl:with-param name="indexed"><xsl:text>1</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:text>description</xsl:text></xsl:with-param>
@@ -816,7 +816,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
         <xsl:with-param name="description"><xsl:text>This column stores the name of the schema the table represented by this row belongs to.</xsl:text></xsl:with-param>
         <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
         <xsl:with-param name="rank"><xsl:text>1</xsl:text></xsl:with-param>
-        <xsl:with-param name="indexed"><xsl:text>T</xsl:text></xsl:with-param>
+        <xsl:with-param name="indexed"><xsl:text>1</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:text>table_name</xsl:text></xsl:with-param>
@@ -824,7 +824,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
         <xsl:with-param name="description"><xsl:text>This column stores the name of the table represented by the row.</xsl:text></xsl:with-param>
         <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
         <xsl:with-param name="rank"><xsl:text>2</xsl:text></xsl:with-param>
-        <xsl:with-param name="indexed"><xsl:text>T</xsl:text></xsl:with-param>
+        <xsl:with-param name="indexed"><xsl:text>1</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:text>table_type</xsl:text></xsl:with-param>
@@ -855,7 +855,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
         <xsl:with-param name="description"><xsl:text>This column stores the name of the column represented by this row.</xsl:text></xsl:with-param>
         <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
         <xsl:with-param name="rank"><xsl:text>1</xsl:text></xsl:with-param>
-        <xsl:with-param name="indexed"><xsl:text>T</xsl:text></xsl:with-param>
+        <xsl:with-param name="indexed"><xsl:text>1</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:text>table_name</xsl:text></xsl:with-param>
@@ -907,24 +907,24 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
         <xsl:with-param name="rank"><xsl:text>8</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
-        <xsl:with-param name="column_name"><xsl:text>primary</xsl:text></xsl:with-param>
+        <xsl:with-param name="column_name"><xsl:text>principal</xsl:text></xsl:with-param>
         <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.columns</xsl:text></xsl:with-param>
         <xsl:with-param name="description"><xsl:text>This column stores whether the column represented by this row is primary.</xsl:text></xsl:with-param>
-        <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
+        <xsl:with-param name="datatype"><xsl:text>INTEGER</xsl:text></xsl:with-param>
         <xsl:with-param name="rank"><xsl:text>9</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:text>indexed</xsl:text></xsl:with-param>
         <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.columns</xsl:text></xsl:with-param>
         <xsl:with-param name="description"><xsl:text>This column stores whether the column represented by this row is the first column in an index.</xsl:text></xsl:with-param>
-        <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
+        <xsl:with-param name="datatype"><xsl:text>INTEGER</xsl:text></xsl:with-param>
         <xsl:with-param name="rank"><xsl:text>10</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:text>std</xsl:text></xsl:with-param>
         <xsl:with-param name="table_name"><xsl:text>TAP_SCHEMA.columns</xsl:text></xsl:with-param>
         <xsl:with-param name="description"><xsl:text>This column stores whether the column represented by this row is standard.</xsl:text></xsl:with-param>
-        <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
+        <xsl:with-param name="datatype"><xsl:text>INTEGER</xsl:text></xsl:with-param>
         <xsl:with-param name="rank"><xsl:text>11</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
@@ -942,7 +942,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
         <xsl:with-param name="description"><xsl:text>This column stores the id of the foreign key represented by this row belongs to.</xsl:text></xsl:with-param>
         <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
         <xsl:with-param name="rank"><xsl:text>1</xsl:text></xsl:with-param>
-        <xsl:with-param name="indexed"><xsl:text>T</xsl:text></xsl:with-param>
+        <xsl:with-param name="indexed"><xsl:text>1</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:text>from_table</xsl:text></xsl:with-param>
@@ -950,7 +950,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
         <xsl:with-param name="description"><xsl:text>This column stores the name of the table from which the foreign key points to the target table.</xsl:text></xsl:with-param>
         <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
         <xsl:with-param name="rank"><xsl:text>2</xsl:text></xsl:with-param>
-        <xsl:with-param name="indexed"><xsl:text>T</xsl:text></xsl:with-param>
+        <xsl:with-param name="indexed"><xsl:text>1</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:text>target_table</xsl:text></xsl:with-param>
@@ -958,7 +958,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
         <xsl:with-param name="description"><xsl:text>This column stores the name of the table that is the target of this foreign key.</xsl:text></xsl:with-param>
         <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
         <xsl:with-param name="rank"><xsl:text>3</xsl:text></xsl:with-param>
-        <xsl:with-param name="indexed"><xsl:text>T</xsl:text></xsl:with-param>
+        <xsl:with-param name="indexed"><xsl:text>1</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:text>utype</xsl:text></xsl:with-param>
@@ -983,7 +983,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
         <xsl:with-param name="description"><xsl:text>This column stores the id of the foreign key in keys to which this key_columns belongs to.</xsl:text></xsl:with-param>
         <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
         <xsl:with-param name="rank"><xsl:text>1</xsl:text></xsl:with-param>
-        <xsl:with-param name="indexed"><xsl:text>T</xsl:text></xsl:with-param>
+        <xsl:with-param name="indexed"><xsl:text>1</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:text>from_column</xsl:text></xsl:with-param>
@@ -991,7 +991,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
         <xsl:with-param name="description"><xsl:text>This column stores the name of a column that is doing the pointing.</xsl:text></xsl:with-param>
         <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
         <xsl:with-param name="rank"><xsl:text>2</xsl:text></xsl:with-param>
-        <xsl:with-param name="indexed"><xsl:text>T</xsl:text></xsl:with-param>
+        <xsl:with-param name="indexed"><xsl:text>1</xsl:text></xsl:with-param>
       </xsl:call-template>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:text>target_column</xsl:text></xsl:with-param>
@@ -999,7 +999,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
         <xsl:with-param name="description"><xsl:text>This column stores the name of the target column.</xsl:text></xsl:with-param>
         <xsl:with-param name="datatype"><xsl:text>VARCHAR</xsl:text></xsl:with-param>
         <xsl:with-param name="rank"><xsl:text>3</xsl:text></xsl:with-param>
-        <xsl:with-param name="indexed"><xsl:text>T</xsl:text></xsl:with-param>
+        <xsl:with-param name="indexed"><xsl:text>1</xsl:text></xsl:with-param>
       </xsl:call-template>
 
 <xsl:value-of select="$commit"/>
@@ -1127,7 +1127,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
                   </xsl:call-template>
                 </xsl:variable>
                 <xsl:choose>
-                  <xsl:when test="number($length) &lt;= 0"><xsl:text>*</xsl:text></xsl:when>
+                  <xsl:when test="number($length) &lt;= 0"><xsl:text>NULL</xsl:text></xsl:when>
                   <xsl:otherwise><xsl:value-of select="$length"/></xsl:otherwise>
                 </xsl:choose>
               </xsl:when>
@@ -1180,14 +1180,14 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
     <xsl:param name="ucd"/>
     <xsl:param name="utype"/>
     <xsl:param name="datatype"/>
-    <xsl:param name="size" select="'1'"/>
-    <xsl:param name="primary" select="'T'"/>
-    <xsl:param name="indexed" select="'F'"/>
-    <xsl:param name="std" select="'T'"/>
-    <xsl:param name="rank" select="'-1'"/>
+    <xsl:param name="size" select="'null'"/>
+    <xsl:param name="principal" select="1"/>
+    <xsl:param name="indexed" select="0"/>
+    <xsl:param name="std" select="0"/>
+    <xsl:param name="rank" select="-1"/>
   <!-- TODO this can be simplified, the INSERT INTO ... does not have to be repeated, 
   only comma-separated list of values (within () ) is required. More efficient as well. -->
-  <xsl:text>INSERT INTO TAP_SCHEMA.Columns(column_name,table_name,description,unit,ucd,utype,datatype,size,"primary",indexed,std,rank) values(</xsl:text>
+  <xsl:text>INSERT INTO TAP_SCHEMA.Columns(column_name,table_name,description,unit,ucd,utype,datatype,size,principal,indexed,std,rank) values(</xsl:text>
    '<xsl:value-of select="$column_name"/>'
 ,  '<xsl:value-of select="$target_database_schema_prefix"/><xsl:value-of select="$table_name"/>'
 ,  '<xsl:value-of select="replace($description,&quot;'&quot;,&quot;''&quot;)"/>'
@@ -1195,11 +1195,11 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
 ,  <xsl:choose><xsl:when test="not($ucd)">null</xsl:when><xsl:otherwise>'<xsl:value-of select="$ucd"/>'</xsl:otherwise></xsl:choose>
 ,  <xsl:choose><xsl:when test="not($utype)">null</xsl:when><xsl:otherwise>'<xsl:value-of select="$utype"/>'</xsl:otherwise></xsl:choose>
 ,  '<xsl:value-of select="$datatype"/>'
-,  '<xsl:value-of select="$size"/>'
-,  '<xsl:value-of select="$primary"/>'
-,  '<xsl:value-of select="$indexed"/>'
-,  '<xsl:value-of select="$std"/>'
-,  '<xsl:value-of select="$rank"/>');&cr;
+,  <xsl:value-of select="$size"/>
+,  <xsl:value-of select="$principal"/>
+,  <xsl:value-of select="$indexed"/>
+,  <xsl:value-of select="$std"/>
+,  <xsl:value-of select="$rank"/>);&cr;
 </xsl:template>
 
   <xsl:template name="insertkey">
