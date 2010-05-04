@@ -44,8 +44,13 @@
       <!-- jdbc options -->
       <property name="eclipselink.jdbc.native-sql" value="true"/>
 
+      <!-- batch writing seems slightly slower on postgres (10%) -->
+<!--
+      <property name="eclipselink.jdbc.batch-writing" value="JDBC"/>
+  -->
+
       <property name="eclipselink.jdbc.cache-statements" value="true"/>
-      <property name="eclipselink.jdbc.cache-statements.size" value="100"/>
+      <property name="eclipselink.jdbc.cache-statements.size" value="500"/>
 
       <property name="eclipselink.flush-clear.cache" value="DropInvalidate"/>
 
@@ -63,7 +68,7 @@
 
 
        <!-- cache : NONE, Full, HardWeak, SoftWeak, Weak : -->
-      <property name="eclipselink.cache.type.default" value="SoftWeak"/>
+      <property name="eclipselink.cache.type.default" value="Weak"/>
       <property name="eclipselink.cache.size.default" value="5000"/>
       <property name="eclipselink.cache.shared.default" value="true"/>
 
