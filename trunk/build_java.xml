@@ -26,15 +26,9 @@
   <include name="activation.jar" />
   <include name="jsr173_1.0_api.jar" />
 
-  <!-- eclipselink (1.1) JPA 1.0 reference implementation -->
-<!-- 
-  <include name="eclipselink-1.1.2.jar" />
-  <include name="javax.persistence_1.0.0.jar" />
--->
-<!-- -->
-   <include name="eclipselink-2.0.jar" />
-    <include name="javax.persistence_2.0_preview.jar" />   
-<!-- -->  
+  <!-- eclipselink (2.0.2) JPA 2.0 reference implementation -->
+  <include name="eclipselink-2.0.2.jar" />
+  <include name="javax.persistence_2.0.0.jar" />
 
   <!-- saxon9 for runtime XSLT processing -->
   <include name="saxon9.jar" />
@@ -507,6 +501,7 @@ Optional
             windowtitle="${source} : ${project.title}">
     
     <classpath>
+      <path refid="runtime.class.path" />
       <path refid="project.class.path" />
     </classpath>
     
@@ -786,7 +781,8 @@ Optional
     <jvmarg value="-XX:NewRatio=2"/>
     <jvmarg value="-XX:-UseAdaptiveSizePolicy"/>
 
-    <jvmarg value="-Dxml.catalog.verbosity=999"/>
+    <jvmarg value="-XX:+HeapDumpOnOutOfMemoryError"/>
+    <jvmarg value="-XX:+PerfBypassFileSystemCheck"/>
 
 <!-- -->
     <jvmarg value="-verbose:gc"/>
@@ -843,6 +839,7 @@ Optional
     <classpath>
        <path refid="runtime.class.path" />
        <path refid="project.class.path" />
+      <pathelement location="${dist}/${build.test.file}" />
     </classpath>
   </nbprofiledirect>
 
@@ -857,18 +854,10 @@ Optional
     <jvmarg value="-XX:NewRatio=2"/>
     <jvmarg value="-XX:-UseAdaptiveSizePolicy"/>
 
-<!--
-    <jvmarg value="-verbose:gc"/>
-    <jvmarg value="-XX:+PrintGCDetails"/>
-    <jvmarg value="-XX:+PrintGCTimeStamps"/>
-    <jvmarg value="-XX:+TraceClassUnloading"/>
-    <jvmarg value="-XX:+PrintTenuringDistribution"/>
-  -->
-
     <arg value="${jpa.persistence.unit}"/>
    </java>
 
-  <echo message="run ${project.title} : terminated."/>
+  <echo message="profile ${project.title} : terminated."/>
 </target>
 
 
