@@ -684,9 +684,9 @@ For acknowledgments concerning the contents of the current model we refer the re
         <td class="feature-heading">type</td>
         <td class="feature-detail" >
         <a><xsl:attribute name="href" select="concat('#',datatype/@xmiidref)"/> <xsl:apply-templates select="datatype/@xmiidref" mode="classifier"/></a>
-        <xsl:if test="ontologyterm">
-        <br/>Valid values from semantic vocabulary at:<br/><a><xsl:attribute name="href" select="ontologyterm/ontologyURI"/>
-        <xsl:value-of select="ontologyterm/ontologyURI"/></a>
+        <xsl:if test="skosconcept">
+        <br/>Valid values from semantic vocabulary at:<br/><a><xsl:attribute name="href" select="skosconcept/vocabularyURI"/>
+        <xsl:value-of select="skosconcept/vocabularyURI"/></a>
         </xsl:if>
         </td>
      </tr>

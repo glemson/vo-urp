@@ -423,7 +423,7 @@ This XSLT is tested to work on XMI generated with MagicDraw Community Edition v1
       <xsl:call-template name="attributestereotype">
         <xsl:with-param name="xmiid" select="@xmi:id"/>
       </xsl:call-template>
-      <xsl:call-template name="ontologytermstereotype">
+      <xsl:call-template name="skosconceptstereotype">
         <xsl:with-param name="xmiid" select="@xmi:id"/>
       </xsl:call-template>
     </xsl:element>
@@ -506,13 +506,13 @@ This XSLT is tested to work on XMI generated with MagicDraw Community Edition v1
 
 
 
-  <xsl:template name="ontologytermstereotype">
+  <xsl:template name="skosconceptstereotype">
     <xsl:param name="xmiid"/>
-    <xsl:variable name="attribute" select="/xmi:XMI/IVOA_Profile:ontologyterm[@base_Property = $xmiid]"/>
+    <xsl:variable name="attribute" select="/xmi:XMI/IVOA_Profile:skosconcept[@base_Property = $xmiid]"/>
     <xsl:if test="$attribute">
-      <xsl:element name="ontologyterm">
-        <xsl:if test="$attribute/@ontologyURI">
-          <xsl:element name="ontologyURI"><xsl:value-of select="$attribute/@ontologyURI"/></xsl:element>
+      <xsl:element name="skosconcept">
+        <xsl:if test="$attribute/@vocabularyURI">
+          <xsl:element name="vocabularyURI"><xsl:value-of select="$attribute/@vocabularyURI"/></xsl:element>
         </xsl:if>
       </xsl:element>
     </xsl:if>
