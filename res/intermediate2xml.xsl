@@ -184,8 +184,8 @@ but that would imply none of the contained elements could have comments.
      <xsl:variable name="datatype" select="key('element',./datatype/@xmiidref)"/>
      <xsl:apply-templates select="$datatype" mode="comment"/>
      <xsl:comment>Cardinality : <xsl:value-of select="multiplicity"/></xsl:comment>
-     <xsl:if test="ontologyterm">
-     <xsl:comment>This attribute gets its values from the SKOS list of concepts in <xsl:value-of select="ontologyterm/ontologyURI"/>.</xsl:comment>
+     <xsl:if test="skosconcept">
+     <xsl:comment>This attribute gets its values from the SKOS list of concepts in <xsl:value-of select="skosconcept/vocabularyURI"/>.</xsl:comment>
      </xsl:if>
      <xsl:element name="{$name}">    
       <xsl:apply-templates select="$datatype"/>

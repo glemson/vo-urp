@@ -7,11 +7,11 @@
 <!ENTITY dotsep "<xsl:text>.</xsl:text>">
 <!ENTITY colonsep "<xsl:text>:</xsl:text>">
 <!ENTITY slashsep "<xsl:text>/</xsl:text>">
-<!ENTITY modelsep "<xsl:text>:</xsl:text>"> <!-- separatot between model and child -->
-<!ENTITY ppsep "<xsl:text>/</xsl:text>"> <!-- separatot between packages -->
-<!ENTITY pcsep "<xsl:text>/</xsl:text>"> <!-- separatot between package and class -->
-<!ENTITY casep "<xsl:text>.</xsl:text>"> <!-- separatot between class and attribute -->
-<!ENTITY aasep "<xsl:text>.</xsl:text>"> <!-- separatot between attributes -->
+<!ENTITY modelsep "<xsl:text>:</xsl:text>"> <!-- separator between model and child -->
+<!ENTITY ppsep "<xsl:text>/</xsl:text>"> <!-- separator between packages -->
+<!ENTITY pcsep "<xsl:text>/</xsl:text>"> <!-- separator between package and class -->
+<!ENTITY casep "<xsl:text>.</xsl:text>"> <!-- separator between class and attribute -->
+<!ENTITY aasep "<xsl:text>.</xsl:text>"> <!-- separator between attributes -->
 ]>
 
 <xsl:stylesheet version="2.0" 
