@@ -1,12 +1,12 @@
 
 
 r<-read.csv("madau_diagram",col.names=c("redshift","SFR"),header=TRUE)
-png("madau_diagram.png")
+png("fig1.png")
 plot(r$redshift, r$SFR, type="l",xlab="redshift",ylab="SFR")
 dev.off()
 
 r<-read.csv("cond_mass_fun",col.names=c("mgal","mhalo","nhalo","ngal"),header=TRUE)
-png("cond_mass_fun.png")
+png("fig3.png")
 i=0
 xlim=c(min(r$mgal),max(r$mgal))
 for(m in unique(r$mhalo))

@@ -39,6 +39,7 @@ import org.ivoa.basic.Cardinality;
 import org.ivoa.simdb.Contact;
 import org.ivoa.simdb.ContactRole;
 import org.ivoa.basic.DataType;
+import org.ivoa.jpa.JPAHelper;
 import org.ivoa.simdb.experiment.Experiment;
 import org.ivoa.simdb.experiment.ExperimentProperty;
 import org.ivoa.simdb.experiment.ExperimentRepresentationObject;
@@ -56,9 +57,9 @@ import org.ivoa.simdb.protocol.Protocol;
 import org.ivoa.simdb.protocol.RepresentationObject;
 import org.ivoa.simdb.protocol.RepresentationObjectType;
 import org.ivoa.util.CollectionUtils;
-import org.ivoa.util.timer.AbstractTimer;
 import org.ivoa.util.timer.TimerFactory;
 import org.vo.urp.test.jaxb.XMLTests;
+
 
 /**
  * Database Tests
@@ -76,6 +77,8 @@ public final class DBTests extends LogSupport implements ApplicationMain {
   private final static int POOL_THREADS = 10;
   /** testLOAD_BATCH_WRITE jobs wait */
   private final static int WRITE_WAIT_SECONDS = 120;
+  /** number of Snapshot tp create in testHUGESnapshotCollection() */
+  private final static int SNAPSHOT_LEN = 30 * 1000;
   /** XMLTests */
   private XMLTests xmlTest = new XMLTests();
   /** InspectorTests */
@@ -92,7 +95,6 @@ public final class DBTests extends LogSupport implements ApplicationMain {
    * test PDR protocol file
    */
   public static final String PROTOCOL_FILE_PDR = XMLTests.TEST_PATH + "PDR_protocol" + XMLTests.XML_EXT;
-
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
   /**
@@ -161,7 +163,12 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       close(em);
     }
 
-    testWRITE(jf);
+    final Long simId = testWRITE(jf);
+
+    if (false) {
+      // test the creation (batch) of a very big snapshot collection :
+      testHUGESnapshotCollection(jf, simId);
+    }
 
     // Gerard : load XML -> JPA -> database test case :
 
@@ -186,8 +193,9 @@ public final class DBTests extends LogSupport implements ApplicationMain {
    * TODO : Method Description
    *
    * @param jf
+   * @return experiment id or null if failure
    */
-  public void testWRITE(final JPAFactory jf) {
+  public Long testWRITE(final JPAFactory jf) {
     log.warn("DBTests.testWRITE : enter");
 
     EntityManager em = null;
@@ -435,7 +443,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       // ParameterSettings :
       for (InputParameter p : simulator.getParameter()) {
         if (p.getDatatype().equals(DataType.FLOAT)) {
-         ParameterSetting np = new ParameterSetting(simulation);
+          ParameterSetting np = new ParameterSetting(simulation);
 
           np.setInputParameter(p);
 
@@ -461,11 +469,9 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       }
 
       // Snapshots :
-      addSnapshot(simulation, Integer.valueOf(1));
-      addSnapshot(simulation, Integer.valueOf(2));
-      addSnapshot(simulation, Integer.valueOf(3));
-      addSnapshot(simulation, Integer.valueOf(4));
-      addSnapshot(simulation, Integer.valueOf(5));
+      for (int i = 0; i < 5; i++) {
+        addSnapshot(simulation, i);
+      }
 
       log.error("DBTests.testWRITE : Simulation : " + simulation.deepToString());
 
@@ -514,20 +520,97 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       final Experiment loadedObject = (Simulation) testREAD(jf, Experiment.class, id);
       xmlTest.saveMarshall(loadedObject, XMLTests.TEST_PATH + "testSim-out" + XMLTests.XML_EXT);
     }
+
+    return id;
   }
 
-  private void addSnapshot(final Simulation simulation, final Integer num) {
+  private void testHUGESnapshotCollection(final JPAFactory jf, final Long expId) {
+
+    log.warn("DBTests.testHUGESnapshots : enter");
+
+    EntityManager em = null;
+    Long id = null;
+
+    try {
+      em = jf.getEm();
+      // starts TX :
+      // starts transaction on snap database :
+      log.warn("DBTests.testHUGESnapshots : starting TX ...");
+      em.getTransaction().begin();
+
+      long start = System.nanoTime();
+
+      Simulation experiment = (Simulation) JPAHelper.findSingleByNamedQuery(
+          em,
+          "Experiment.findById",
+          "id",
+          expId);
+
+      // Snapshots :
+      int i;
+      for (i = 1; i < SNAPSHOT_LEN; i++) {
+        if (i % 100 == 0) {
+          log.warn("DBTests.testHUGESnapshots : " + i);
+
+          em.getTransaction().commit();
+          em.close();
+
+          log.warn("DBTests.testHUGESnapshots : " + i + " = " + ((System.nanoTime() - start) / 1000000L) + " ms.");
+
+          em = jf.getEm();
+          em.getTransaction().begin();
+
+          start = System.nanoTime();
+
+          experiment = (Simulation) JPAHelper.findSingleByNamedQuery(
+          em,
+          "Experiment.findById",
+          "id",
+          expId);
+        }
+        addSnapshot(experiment, i);
+      }
+
+        log.warn("DBTests.testHUGESnapshots : " + i);
+
+        em.getTransaction().commit();
+
+        log.warn("DBTests.testHUGESnapshots : " + i + " = " + ((System.nanoTime() - start) / 1000000L) + " ms.");
+
+    } catch (final RuntimeException re) {
+      log.error("DBTests.testHUGESnapshots : runtime failure : ", re);
+
+      // if connection failure => em is null :
+      if (em.getTransaction().isActive()) {
+        log.warn("DBTests.testHUGESnapshots : rollbacking TX ...");
+        em.getTransaction().rollback();
+        log.warn("DBTests.testHUGESnapshots : TX rollbacked.");
+      }
+
+      throw re;
+    } finally {
+      close(em);
+    }
+
+    log.warn("DBTests.testHUGESnapshots : exit : " + id);
+
+  }
+
+  private void addSnapshot(final Simulation simulation, final int position) {
 
     Quantity time, space;
-    ExperimentProperty ep = null;
 
-    final Snapshot snapshot = new Snapshot(simulation);
+    /*
+     * To avoid performance problems due to collection size i.e. avoid fetch all collection items (out of memory),
+     * set the rank value manually (collection index position) to keep the collection ordered
+     */
+    final Snapshot snapshot = new Snapshot(simulation, position);
 
-    snapshot.setPublisherDID(simulation.getPublisherDID() + "_" + num);
+    snapshot.setPublisherDID(simulation.getPublisherDID() + "_" + position);
 
     time = new Quantity();
 
-    time.setValue(3d * num.intValue());
+    time.setValue(3d * position);
     time.setUnit("Gyr");
     snapshot.setTime(time);
 
@@ -547,7 +630,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       // for all
       col = new ObjectCollection(snapshot);
       col.setObjectType(rep.getType());
-      col.setNumberOfObjects(num.intValue() * 113);
+      col.setNumberOfObjects(position * 113);
 
       for (ExperimentProperty prop : rep.getProperty()) {
         cha = new Statistics(col);
@@ -560,7 +643,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
         v.setAsQuantity(n);
         cha.setValue(v);
-        
+
       }
     }
   }
@@ -662,7 +745,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       throw re;
     } finally {
       close(em);
-      
+
       // free resolver context (thread local) :
       ReferenceResolver.freeContext();
     }
@@ -862,6 +945,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
     log.warn("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION : exit");
   }
 
+
   private static final class WriteJob implements Runnable {
 
     private final DBTests test;
@@ -890,3 +974,4 @@ public final class DBTests extends LogSupport implements ApplicationMain {
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
+

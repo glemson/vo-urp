@@ -102,8 +102,16 @@
       <param-value>SeSAM.exe</param-value>
     </init-param>
     <init-param>
+      <param-name>fc_file</param-name>
+      <param-value>fc_recipe</param-value>
+    </init-param>
+    <init-param>
       <param-name>parameterfile.template</param-name>
       <param-value>sesam_params.template</param-value>
+    </init-param>
+    <init-param>
+      <param-name>models.dir</param-name>
+      <param-value>models</param-value>
     </init-param>
     <init-param>
       <param-name>treesDir</param-name>
@@ -114,11 +122,13 @@
       <param-value>e:/data/BC03/models/Padova1994/chabrier/</param-value>
     </init-param>
     <init-param>
-      <param-name>Rcmd</param-name>
-      <param-value>C:/R-2.8.0/bin/Rcmd.exe BATCH --no-save :SCRIPT:  Rplot.log</param-value>
+      <param-name>plotCommand</param-name>
+     <param-value>C:/R-2.8.0/bin/Rcmd.exe BATCH --no-save :SCRIPT:  Rplot.log</param-value> 
+<!--      <param-value>C:/software/GnuPlot/gnuplot/bin/pgnuplot.exe :SCRIPT:</param-value> --> 
     </init-param>
     <init-param>
-      <param-name>Rscript</param-name>
+      <param-name>plotScript</param-name>
+<!--      <param-value>plot_all.gp</param-value>  -->
       <param-value>plot.r</param-value>
     </init-param>
     <load-on-startup>10</load-on-startup>
@@ -150,6 +160,45 @@
     <load-on-startup>10</load-on-startup>
   </servlet>
 
+  <!-- Applications -->
+  <servlet>
+    <servlet-name>Smac</servlet-name>
+    <servlet-class>org.gavo.hydrosims.Smac</servlet-class>
+    <init-param>
+      <param-name>name</param-name>
+      <param-value>Smac</param-value>
+    </init-param>
+    <init-param>
+      <param-name>executable</param-name>
+      <param-value>cp.exe smac.inp smac.inp.copy</param-value>
+    </init-param>
+    <init-param>
+      <param-name>parameterfile.template</param-name>
+      <param-value>smac.inp.template</param-value>
+    </init-param>
+    <init-param>
+      <param-name>root.data.dir</param-name>
+      <param-value>/afs/mpa/project/hydrosims/</param-value>
+    </init-param>
+    <init-param>
+      <param-name>jaxb.path</param-name>
+      <param-value>org.vourp.runner.model</param-value>
+    </init-param>
+    <init-param>
+      <param-name>legacy.app.xml</param-name>
+      <param-value>Smac.xml</param-value>
+    </init-param>
+    <init-param>
+    <param-name>TABLE_PATH</param-name>
+    <param-value>/store2/Legacy/Apps/Smac/Tables/</param-value>
+    </init-param>
+    <load-on-startup>10</load-on-startup>
+  </servlet>
+
+
+
+
+<!--  -->
   <servlet>
     <servlet-name>DownloadServlet</servlet-name>
     <servlet-class>org.ivoa.web.servlet.DownloadServlet</servlet-class>
@@ -172,6 +221,11 @@
   <servlet-mapping>
     <servlet-name>SeSAM</servlet-name>
     <url-pattern>/SeSAM.do</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>Smac</servlet-name>
+    <url-pattern>/Smac.do</url-pattern>
   </servlet-mapping>
 
   <servlet-mapping>
@@ -200,18 +254,49 @@
   <security-role>
     <role-name>JobRunner-member</role-name>
   </security-role>
+  <security-role>
+    <role-name>JobRunner-sesam</role-name>
+  </security-role>
+  <security-role>
+    <role-name>JobRunner-smac</role-name>
+  </security-role>
+  
   <!--  Define a constraint to restrict access to /secure/* 
   --> 
   <security-constraint>
-    <display-name>Security constraint for the web app</display-name>
+    <display-name>Security constraint for the Smac.do part of the JobRunner web app.</display-name>
     <web-resource-collection>
-      <web-resource-name>Protected Area = Administration Web Interface</web-resource-name>
+      <web-resource-name>Protected Area = JobRunner members</web-resource-name>
+      <description>Accessible by authorised users</description>
+      <url-pattern>/Smac.do/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <description>These are the roles who have access</description>
+      <role-name>JobRunner-smac</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+  <security-constraint>
+    <display-name>Security constraint for the SeSAM.do part of the JobRunner web app.</display-name>
+    <web-resource-collection>
+      <web-resource-name>Protected Area = JobRunner members</web-resource-name>
+      <description>Accessible by authorised users</description>
+      <url-pattern>/SeSAM.do/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <description>These are the roles who have access</description>
+      <role-name>JobRunner-sesam</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+  <security-constraint>
+    <display-name>Security constraint for the JobRunner web app.</display-name>
+    <web-resource-collection>
+      <web-resource-name>Protected Area = JobRunner members</web-resource-name>
       <description>Accessible by authorised users</description>
       <url-pattern>/*</url-pattern>
     </web-resource-collection>
     <auth-constraint>
-  <!--  Only administrator can access this area 
-  --> 
       <description>These are the roles who have access</description>
       <role-name>JobRunner-member</role-name>
     </auth-constraint>

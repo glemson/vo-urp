@@ -278,6 +278,7 @@ public final class ManagerServlet extends BaseServlet {
       log.error(
         "Unable to initiate DataModelManager for UploadServlet using JPA persistence unit " +
         RuntimeConfiguration.get().getJPAPU());
+      log.error("exception = ", e);
       dataModelManager = null; // TODO should we throw an exception or simply make uploads not possible?
     }
   }

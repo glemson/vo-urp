@@ -3,6 +3,8 @@ package org.ivoa.util;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,6 +13,9 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URL;
+import java.nio.channels.FileChannel;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.ivoa.bean.LogSupport;
 
@@ -297,6 +302,61 @@ public final class FileUtils extends LogSupport {
 
     return null;
   }
+  
+  public static void copyFile(File in, File out) 
+      throws IOException 
+  {
+      FileChannel inChannel = new
+          FileInputStream(in).getChannel();
+      FileChannel outChannel = new
+          FileOutputStream(out).getChannel();
+      try {
+          inChannel.transferTo(0, inChannel.size(),
+                  outChannel);
+      } 
+      catch (IOException e) {
+          throw e;
+      }
+      finally {
+          if (inChannel != null) inChannel.close();
+          if (outChannel != null) outChannel.close();
+      }
+  }
+  
+  public static void compress(File[] files, File outFile)
+  {
+    // Create a buffer for reading the files
+    byte[] buf = new byte[1024];
+    
+    try {
+        // Create the ZIP file
+        ZipOutputStream out = new ZipOutputStream(new FileOutputStream(outFile));
+	    
+	        // Compress the files
+	        for (int i=0; i<files.length; i++) {
+	            FileInputStream in = new FileInputStream(files[i]);
+	    
+	            // Add ZIP entry to output stream.
+	            out.putNextEntry(new ZipEntry(files[i].getName()));
+	    
+	            // Transfer bytes from the file to the ZIP file
+	            int len;
+	            while ((len = in.read(buf)) > 0) {
+	                out.write(buf, 0, len);
+	            }
+	    
+	            // Complete the entry
+	            out.closeEntry();
+	            in.close();
+	        }
+	    
+	        // Complete the ZIP file
+	        out.close();
+	    } catch (IOException e) {
+	    }
+	  
+  }
+  
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
 

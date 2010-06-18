@@ -1,0 +1,288 @@
+
+#=============================================================
+# Input file
+#=============================================================
+
+#**** Flag of the data format (integer - reals):
+#         (1) Navarro, 
+#         (2) GADGET   
+#             intial redshift, (case (1))   
+#             omega matter,    (case (1))   
+#             Hubble parameter (case (1))  
+#             image redshift (set to 0. if obtained from the input data)
+#        (3) TOY-MODELS
+#        (4) GADGET2
+SIM_FORMAT = 4
+
+#**** Input file
+SNAP_FILE = @@@root.data.dir@@@/Hutt/___CLUSTER_ID___/___PHYSICS___/snap_
+
+#**** Halo ID
+HALO_ID = ___HALO_ID___
+
+#**** Flag of the loop on the input files (integers):
+#        disabled if SNAP_START = -1 else enabled
+#        first input
+#        last input  (=first_input if not given)
+SNAP_START = ___SNAPNUM___
+SNAP_END   = ___SNAP_END___
+
+#**** Intial redshift and image redshift (set IMAGE_Z=0. to obtain it from the input data)
+INITIAL_Z = 60
+IMAGE_Z   = ___IMAGE_Z___
+
+#**** Rvir in kpc/h and Mvir in Msol/h
+#R_VIR = 2300.
+#M_VIR = 1.0e15
+
+#=============================================================
+# DISTRIBUTION SCHEME
+#=============================================================
+
+#**** Flag of particle distribution scheme on the image (integer):
+#         (0) NGC       ->  not implemented
+#         (1) CIC       ->  2D-map
+#         (2) HealPix   ->  full-sky
+#         (3) TSC       ->  2D-map
+PART_DISTR = ___PART_DISTR___
+
+#=============================================================
+# 2D-MAP SETUP
+#=============================================================
+
+#**** Flag of the units of the side of image (integer-real):
+#         (1) arcmin 
+#         (2) kpc  
+#         side of image in the chosen units  
+IMG_XY_UNITS =___IMG_XY_UNITS___
+IMG_XY_SIZE  =___IMG_XY_SIZE___
+
+#**** Flag of the third dimension of the image:
+#        (1) cubic,  same value of the preciding point
+#	 (2) if the value is chosen by the man
+#         side of the third dimension in kpc (case(2))
+#	  minimum filling factor of the carrot [0<->100] (its a percentile)
+IMG_Z_UNITS =___IMG_Z_UNITS___
+IMG_Z_SIZE  =___IMG_Z_SIZE___
+FILL_CARROT =___FILL_CARROT___
+
+#**** Flag of the number of image side pixels (integers):
+#         nr of pixel
+#         if (=-1) -> given by smoothing
+IMG_SIZE =___IMG_SIZE___
+
+#**** Flag of the smoothing (FWHM) angle (integer - real):
+#         (0) no smoothing
+#         (1) in arcmin 
+#         (2) in kpc 
+#         (3) given by npart
+#       smoothing lenght in the choosen units (cases (1), (2))
+SMOOTH_UNITS =___SMOOTH_UNITS___
+SMOOTH_FWHM  =___SMOOTH_FWHM___
+
+#=============================================================
+# FULL-SKY MAP SETUP
+#=============================================================
+
+#**** nside HEALPix variable (Mauro)
+#           This variable must be a power of 2 and <= 8192
+#           nside = ( 1 2 4 8 16 32 64 128 256 512 1024 2048 4096 8192)
+NSIDE =___NSIDE___
+
+#**** min/max radius of sphere arround x0,y0,z0 to be used [kpc]
+MIN_DIST =___MIN_DIST___
+MAX_DIST =___MAX_DIST___
+
+#=============================================================
+# OUTPUT EFFECT
+#=============================================================
+
+#**** Flag of the type of output map (integers):
+#         (0)  3D electron density
+#         (1)  2D elctron Density
+#         (2)  Temperature
+#	       (0) mass weighted
+#              (1) Emission weighted temperature (e.g. former (3))    !!!! TO BE CHANGED!!! 
+#	       (2) Spectroscopic (e.g. former (13))                   !!!! TO BE CHANGED !!!
+#         (4)  Volume of particles
+#         (5)  age of particles
+#         (6)  X-ray SB of particles
+#	       (0) simple sqrt(T)
+#	        or  with cooling function from tables
+#              (1)       - energy band [0.1-10] keV (bolometric)
+#	       (2)       - energy band [0.1-2.4] keV
+#              (3)       - energy band [0.3-3.5] keV
+#              (4)       - user defined energy band [ XRAY_E0 - XRAY_E1 ] keV (define below)
+#         (7)  Compton y-parameter: tSZ effect
+#	 	flag of the subtype of output map:
+#		(0) adimensional [DI/I]
+#		(1) adimensional [DT/T]
+#         (8)  Kinematical Sunjaev Zeldovich Effect of particles: kSZ efect
+#	 	flag of the subtype of output map:
+#		(0) adimensional [DI/I]
+#		(1) adimensional [DT/T]
+#         (9)  Q & U Stokes parameters for transvers particles motion: kpSZ effect
+#	 	flag of the subtype of output map:
+#		(0) adimensional [Q_I & U_I] - noramlized on the CMB intensity
+#		(1) adimensional [Q_T & U_T] - noramlized on the CMB temperature
+#	 (10) Mass weighted velocity
+#	 (11) Mass weighted squared velocity
+#        (12) Magnetic field related maps
+#               flag of the subtype of output map:
+#               (0) RM
+#               (1) <B_x,y,z>
+#               (2) <|B|>
+#               (3) Synchrotron Emission
+#               (10) RM with relativistic corrections
+#               (40) Gamma Emission [# of photons / cm^2] @ E_gam
+#               (41) Gamma Emission [erg/cm^2  ]			 @ E_gam
+#               (42) Gamma Emission [# of photons / cm^2] integrated over [E_pi_min,E_pi_max]
+#  (remove)      (13) Pasquale Weighted (heavy) temperature
+#        (14) Emission temperature
+#        (15) Metalicity map (of METAL_SPECIES)
+#	 	flag of the subtype of output map:
+#               (0) Mass weighted
+#               (1) Emission weigthed 
+#        (16) Rees-Sciama Effect by mass transverse motion [phi_dot]
+#        (17) Mach-Number
+#	 	flag of the subtype of output map:
+#		(0) Volume weighted
+#               (1) Energy weighted
+#               (2) Mass weighted
+#        (18) Y_X parameter (mass weighted)
+#        (19) Y_X parameter (pasquale weighted)
+#        (100) 3D DM density
+#        (101) 2D DM density
+#        (102) Rees-Sciama Effect by mass transverse motion [projected momentum]
+#	 	flag of the subtype of output map:
+#		(0) by integral
+#               (1) by FFT
+#        (103) Gravitational lensing: Deflection angle
+OUTPUT_MAP =___OUTPUT_MAP___
+OUTPUT_SUB =___OUTPUT_SUB___
+
+# Define metal species 
+#	 	flag of the subtype of output map:
+#		(0) total
+#               (1) > Fe
+#               (2) C
+#               (3) N
+#               (4) O
+#               (5) Mg
+#               (6) Si
+#               (7) Fe
+METAL_SPECIES = ___METAL_SPECIES___
+
+
+
+#**** Unit of output Temperatures
+#        (0) Kelvin
+#        (1) KeV
+TEMP_UNIT =___TEMP_UNIT___
+
+#**** Ignore particles below this value [in keV] 
+TEMP_CUT =___TEMP_CUT___
+
+#**** Energy cut-off for X-ray (Flag of the type = 6): 
+#        ene_a, (case(6)) lower energy bound for X-ray image [keV]
+#        ene_b, (case(6)) upper energy bound for X-ray image [keV]
+XRAY_E0 =___XRAY_E0___
+XRAY_E1 =___XRAY_E1___
+
+X_TABLES = @@@TABLE_PATH@@@
+
+
+#**** Input observational frequency for SZ maps [GHz] (real):
+FRQ_ZS =___FRQ_ZS___
+
+#**** Input for Radio Maps
+#XCRP_TABLE_PATH gives the change of XCRP over radius.
+ECRP_MIN =___ECRP_MIN___
+FRQ_Pnu =___FRQ_Pnu___
+XCRP =___XCRP___
+XCRP_TABLE_PATH = @@@TABLE_PATH@@@
+B_TABLE_PATH = @@@TABLE_PATH@@@
+KERNEL_TABLE_PATH = @@@TABLE_PATH@@@synchro_kernel.dat
+GAM_nu =___GAM_nu___
+#XCRP_TABLE_FILE_FMT = (1F8.6,2X,1F14.6)
+
+
+#**** Input for Gamma Maps
+#energies in GeV
+E_gam =___E_gam___
+E_gam_min =___E_gam_min___
+E_gam_max =___E_gam_max___
+
+
+#**** Set to 1 if you want additional statistical informations (L_x,T,...). 
+#         Printed on screen (integer):
+#         (0) disabled
+#         (1) enabled
+GIVE_MORE_INFO =___GIVE_MORE_INFO___
+
+#=============================================================
+# REAST FRAME - PROJECTION
+#=============================================================
+
+#**** Flag of the image projection (integer), from - to:
+#         (1) along z, xy plane
+#         (2) along y, xz plane
+#         (3) along x, yz plane
+#         (4) along all directions
+PROJECT       =___PROJECT___
+
+#**** Flag of the cluster baricenter motion (integer):
+#         (0) disabled
+#         (1) enabled: at the particles velocity is sobstituted the cluster baricenter velocity
+#         (2) enabled: paricles velocity in the cluster baricenter rest frame
+CENTER_MOTION =___CENTER_MOTION___
+
+#**** Flag to subtract the velocity of the local group (integer):
+#         (0) disabled
+#         (1) enabled
+REMOVE_LOCAL_GROUP_VEL =___REMOVE_LOCAL_GROUP_VEL___
+
+#**** Flag of the definition of the center (integer):
+#         (0) barycenter of gas particles
+#         (1) selected by user
+#         (2) read by a file
+CENTER =___CENTER___
+
+#**** Center position/Cluster data for 'select by user' (reals [Mpc]):
+CENTER_X =___CENTER_X___
+CENTER_Y =___CENTER_Y___
+CENTER_Z =___CENTER_Z___
+
+#**** File of the centers of the images for 'read by a file':
+MAIN_PROG =@@@root.data.dir@@@/Hutt/___CLUSTER_ID___/___PHYSICS___/Post/main_prog.___HALO_ID____gas.gv
+
+#=============================================================
+# OUTPUT FILE
+#=============================================================
+
+#**** Flag string of output file selection:
+#         (1) binary image (IDL)
+#             flag of the subtype of output map:'
+#             (1) header in txt format'
+#             (2) header in FITS format'
+#         (2) ASCII image 
+#         (3) FITS image
+FILE_FORMAT =___FILE_FORMAT___
+
+#**** Flag for producing HEADER
+#         (0) no header 
+#         (1) header 
+#             for idl /asi format header will be created as ascii file
+FILE_HEADER =___FILE_HEADER___
+
+#**** Prefix of the output files:
+PREFIX_OUT =___PREFIX_OUT___
+
+#=============================================================
+# COSMOLOGY (for distances computations)
+#=============================================================
+
+#**** Cosmology to use
+HUBBLE =___HUBBLE___
+OMEGA  =___OMEGA___
+LAMBDA =___LAMBDA___

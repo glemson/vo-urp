@@ -71,6 +71,21 @@ color:white;
 background-color: #90897a;
 }
 
+input.number
+{
+	width:50px;
+	text-align: right;
+	}
+
+
+select.dropdown
+{
+	width:125px;
+	text-align: right;
+	}
+
+
+
 tr:hover>th{ background-color:#B9CFFF; }
 tr:hover>td{ background-color:#B9CFFF; }
 

@@ -22,12 +22,18 @@
     <equals arg1="${tomcat.precompile}" arg2="true" trim="true" />
   </condition>
 
+	
+	
+	
+	<property name="ecl" value="${eclipselink.jdbc.driver}"/>
+	
   <property name="log.file" value="${tomcat.home}/logs/jobRunner.log"/>
 
   <!-- path & files -->
   <property name="root" location="."/>
 
   <property name="properties" location="./properties"/>
+	<property file="${properties}/jpa-config.properties" />
  
   
   <property name="sources" location="./src"/>
@@ -44,7 +50,13 @@
   
   <!-- build outputs -->
   <property name="build" location="./build"/>
+	<property name="build.meta" location = "${build}/META-INF"/>
   
+  <filter token="eclipselink.jdbc.driver" value="${eclipselink.jdbc.driver}"/>
+  <filter token="eclipselink.jdbc.url" value="${eclipselink.jdbc.url}"/>
+  <filter token="eclipselink.jdbc.user" value="${eclipselink.jdbc.user}"/>
+  <filter token="eclipselink.jdbc.password" value="${eclipselink.jdbc.password}"/>
+
 
   <!-- JDBC drivers -->
   <fileset id="jdbcfiles" dir="${libs}/jdbc">
@@ -116,6 +128,7 @@
     <echo> build date   : ${build.date} </echo>
     <echo></echo>
     <echo> Tomcat Home  : ${tomcat.home}</echo>
+  	<echo> JDBC Driver  : ${eclipselink.jdbc.driver}</echo>
     <echo>-------------------------------------------------------------------------------</echo>
     
   </target>
@@ -292,7 +305,14 @@
     <echo message="${project.title} javadoc : done."/>
   </target>
   
-  
+  <target name="test" depends="init">
+    <mkdir dir="${build.meta}"/>
+  	
+  	<echo message="driver = ${eclipselink.jdbc.driver}"/>
+  	
+    <copy todir="${build.meta}" 
+    	file="${web-content}/META-INF/context.xml" filtering="true" overwrite="true"/>
+	</target>
   
   
   <!-- Compile java files and war them -->
@@ -345,6 +365,28 @@
       </fileset>
     </copy>
 
+    <!-- copy context.xml to enable filtering -->
+    <echo message="copying context.xml"/>
+
+    <mkdir dir="${build.meta}"/>
+    <copy todir="${build.meta}" file="${web-content}/META-INF/context.xml" filtering="true" overwrite="true"/>
+
+
+    <copy todir="${build}" preservelastmodified="true" verbose="true">
+      <fileset dir="${properties}">
+        <include name="*.*"/>
+      </fileset>
+    </copy>
+
+  	
+  	<!-- create a tags folder to put tag files because subversion used 'tags' folders for subversion tags -->
+    <mkdir dir="${web-content}/WEB-INF/tags"/>
+    <copy todir="${web-content}/WEB-INF/tags" preservelastmodified="true" verbose="true">
+      <fileset dir="${web-content}/WEB-INF/tagfiles">
+        <include name="**/*.tag"/>
+      </fileset>
+    </copy>
+  	
     <war destfile="${dist}/${build.file}" webxml="${web-content}/WEB-INF/web.xml" compress="true" roundup="true">
       <manifest>
         <attribute name="Built-By" value="${build.by}"/>
@@ -362,9 +404,13 @@
         </section>
       </manifest>
 
-      <fileset dir="${web-content}">
-        <include name="META-INF/*.*"/>
+      <fileset dir="${build}" >
+      	<include name="META-INF/*"/>
+      </fileset>
+    	
+      <fileset dir="${web-content}" >
         <include name="WEB-INF/*.tld"/>
+        <include name="WEB-INF/tags/**/*.tag"/>
         <include name="index.html"/>
         <include name="**/*.jsp"/>
         <include name="static/**/*.*"/>
@@ -383,6 +429,9 @@
       </classes>
     </war>
     
+    <delete dir="${web-content}/WEB-INF/tags"/>
+
+  	
     <echo message="compile ${project.title} : done."/>
     
   </target>

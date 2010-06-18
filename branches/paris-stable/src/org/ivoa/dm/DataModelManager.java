@@ -37,6 +37,8 @@ public class DataModelManager extends LogSupport {
 
   /** The URL where the schema can be found.<br> */
   public static final String SCHEMA_URL = RuntimeConfiguration.get().getRootSchemaURL();
+  /** The location of a local file containing the schema.<br> */
+  public static final String SCHEMA_LOCATION = RuntimeConfiguration.get().getRootSchemaLocation();
 
   //~ Members ----------------------------------------------------------------------------------------------------------
   /** TODO : Field Description */
@@ -54,7 +56,7 @@ public class DataModelManager extends LogSupport {
    */
   public DataModelManager(final String jpaPU) {
     this.jpa_pu = jpaPU;
-    this.validator = XMLValidator.getInstance(SCHEMA_URL);
+    this.validator = XMLValidator.getInstance(SCHEMA_LOCATION);
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------

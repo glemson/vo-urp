@@ -118,6 +118,15 @@ public final class RuntimeConfiguration extends Configuration {
     return getProperty("root.schema.url");
   }
 
+
+  /**
+   * Gives the property value for the key [root.schema.url]
+   *
+   * @return property value for the key [root.schema.url] or null if not found or contains only white spaces
+   */
+  public String getRootSchemaLocation() {
+    return getProperty("root.schema.location");
+  }
   /**
    * Gives the property value for the key [jaxb.context.classpath]
    *

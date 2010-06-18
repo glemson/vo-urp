@@ -14,7 +14,8 @@
     <class>org.ivoa.util.runner.RunContext</class>
     <class>org.ivoa.util.runner.RootContext</class>
     <class>org.ivoa.util.runner.process.ProcessContext</class>
-
+    <class>org.ivoa.util.runner.ParameterSetting</class>
+ 
     <!--JPA Properties-->
     <properties>
       <property name="eclipselink.target-server" value="None"/>
