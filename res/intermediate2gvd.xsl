@@ -33,7 +33,7 @@ intermediate representation to a GraphViz dot file.
   </xsl:template>
   
   <xsl:template match="model">  
-digraph <xsl:value-of select="name"/> {
+digraph GVmap {  <!-- name must not be too long. the cmap that is generated uses this name and that must not be too long to work apparently -->
 	label = "\n\n<xsl:value-of select="name"/> data model"
 	rankdir=TB
 	node [ 

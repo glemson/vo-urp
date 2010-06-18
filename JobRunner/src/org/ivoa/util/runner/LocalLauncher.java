@@ -21,6 +21,7 @@ import org.ivoa.util.concurrent.CustomThreadPoolExecutor;
 import org.ivoa.util.concurrent.FastSemaphore;
 import org.ivoa.util.concurrent.GenericRunnable;
 import org.ivoa.util.concurrent.ThreadExecutors;
+import org.omg.CORBA.CTX_RESTRICT_SCOPE;
 
 
 /**
@@ -478,6 +479,64 @@ public final class LocalLauncher {
   }
 
   /**
+   * Return a copy of the current queue (used to display its state)
+   *
+   * @return List of job present in the queue when this method is called
+   */
+  public static int queryActiveQueuedJobs() {
+	  int count = 0;
+    try {
+      // semaphore is acquired to protect queue :
+      QUEUE_SEM.acquire();
+      
+      for(RootContext c :JOB_QUEUE.values())
+      {
+    	  if((c.getState() == RunState.STATE_PENDING || c.getState() == RunState.STATE_RUNNING))
+    		  count++;
+      }
+    } catch (final InterruptedException ie) {
+      log.error("LocalLauncher.getQueue : interrupted : ", ie);
+    } finally {
+      // semaphore is released :
+      QUEUE_SEM.release();
+    }
+
+    return count;
+  }
+  
+  /**
+   * Return a copy of the current queue (used to display its state)
+   *
+   * @return List of job present in the queue when this method is called
+   */
+  public static int queryActiveQueuedJobs(String user) {
+	  if(user == null)
+		  return 0;
+	  user=user.trim();
+	  int count = 0;
+    try {
+      // semaphore is acquired to protect queue :
+      QUEUE_SEM.acquire();
+      
+      for(RootContext c :JOB_QUEUE.values())
+      {
+    	  if(user.equals(c.getOwner()) 
+    		&& (c.getState() == RunState.STATE_PENDING || c.getState() == RunState.STATE_PENDING))
+    		  count++;
+      }
+    } catch (final InterruptedException ie) {
+      log.error("LocalLauncher.getQueue : interrupted : ", ie);
+    } finally {
+      // semaphore is released :
+      QUEUE_SEM.release();
+    }
+
+    return count;
+  }
+  
+  
+  
+  /**
    * Return a job context for the given identifier
    *
    * @param id job identifier
@@ -605,11 +664,17 @@ public final class LocalLauncher {
 
           // persist the context state anyway :
           if (USE_PERSISTENCE) {
-            jm.persist(rootCtx);
-          }
+              jm.persist(rootCtx);
+            }
 
           // call listener :
           listener.performJobEvent(rootCtx);
+          
+          // persist the context state as the listener may have updated the state or other contents
+          // in particular relativePath 
+            if (USE_PERSISTENCE) {
+              jm.persist(rootCtx);
+            }
 
           // remove job from queue :
           if (!QUEUE_MANUAL_REMOVE_JOBS) {
@@ -695,6 +760,31 @@ public final class LocalLauncher {
       }
     }
   }
+
+  public static List<RootContext> queryHistory(final String owner) {
+	    log.error("queryHistory : " + owner );
+	    if (USE_PERSISTENCE) {
+	      final List<RootContext> ctxList = jm.findContextsForOwner(owner, false);
+	      return ctxList;
+	    }
+	    return null;
+
+	    
+	  }
+
+  public static RunContext queryJob(final long id) {
+	    log.error("queryJob : " + id );
+	    if (USE_PERSISTENCE) {
+	      final RunContext ctx = jm.get(id);
+	      return ctx;
+	    }
+	    return null;
+
+	    
+	  }
+  
+  
+  
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
 

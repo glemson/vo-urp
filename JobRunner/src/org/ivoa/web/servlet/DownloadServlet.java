@@ -87,6 +87,8 @@ public class DownloadServlet extends BaseServlet {
             } else {
                 downloadDirectory(request, response, file);
             }
+        } else {
+        	showError(request, response, "User "+request.getRemoteUser() +" is not alllowed to retrieve results created by "+user);
         }
     }
 

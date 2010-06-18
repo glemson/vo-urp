@@ -32,9 +32,17 @@ public final class FileManager extends LogSupport {
   /** legacy applications root folder */
   public static final String LEGACYAPPS = Configuration.getInstance().getProperty("legacyapps.folder") + "/";
   /** temporary folder to store runner files */
-  public static final String RUNNER = Configuration.getInstance().getProperty("runner.folder") + "/"; // TODO note the extra / !!
+  public static final String RUNNER;
   /** temporary folder to store runner files */
   public static final String ARCHIVE = Configuration.getInstance().getProperty("archive.folder") + "/";
+  static
+  {
+	  // ugly !
+	  String _RUNNER = Configuration.getInstance().getProperty("runner.folder");
+	  while(_RUNNER.endsWith("/"))
+		  _RUNNER = _RUNNER.substring(0, _RUNNER.length()-2);
+	  RUNNER = _RUNNER + "/";
+  }
   //~ Constructors -----------------------------------------------------------------------------------------------------
   /**
    * Constructor
@@ -76,6 +84,9 @@ public final class FileManager extends LogSupport {
 
   public static void moveDir(String s_sourceDir, String s_targetDir)
   {
+	    if (log.isInfoEnabled()) {
+	        log.info("FileManager.moveDir : " + s_sourceDir + " to " + s_targetDir);
+	      }
 	  File sourceDir = new File(s_sourceDir);
 	  File targetDir = new File(s_targetDir);
 	  if(!targetDir.exists())
@@ -83,7 +94,11 @@ public final class FileManager extends LogSupport {
 	  if(sourceDir.isDirectory() && targetDir.isDirectory())
 		  moveDir(sourceDir, targetDir);
 	  else
-	  {} // TODO do something
+	  {
+		    if (log.isErrorEnabled()) {
+		        log.error("FileManager.moveDir : " + s_sourceDir + " or " + s_targetDir + " is not a valid directory.");
+		      }
+	  } // TODO do something
 		  
   }
   

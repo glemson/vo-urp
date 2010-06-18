@@ -4,8 +4,9 @@
 <c:set var="title" scope="request" value="An Error occured" ></c:set>
 <jsp:include page="header.jsp" flush="false" />
 
-<h2>
-  ${requestScope.errorMessage}
-</h2>
+<h4>
+  ${request.errorMessage}
+error =   <%= request.getAttribute("errorMessage") %>
+</h4>
     
 <jsp:include page="footer.jsp" flush="false" />

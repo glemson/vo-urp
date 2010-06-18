@@ -10,6 +10,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.Validator;
 
 import org.ivoa.bean.SingletonSupport;
+import org.ivoa.xml.CustomXmlCatalogResolver;
 import org.ivoa.xml.XmlFactory;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;

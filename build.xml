@@ -53,16 +53,23 @@
 	<fail unless="target.run.active" message="Must define if run target should run [target.run.active] !" />
 	<fail unless="target.weaving.active" message="Must define if weaving target should run [target.weaving.active] !" />
 
+	<condition property="has.test">
+		<isset property="sources.test"/>
+	</condition>
 	<condition property="target.db.do">
 		<equals arg1="${target.db.active}" arg2="true" trim="true" />
 	</condition>
 	<condition property="target.run.do">
-		<equals arg1="${target.run.active}" arg2="true" trim="true" />
+		<and>
+			<equals arg1="${target.run.active}" arg2="true" trim="true" />
+			<isset property="sources.test"/>
+		</and>
 	</condition>
 	<condition property="target.weaving.do">
 		<equals arg1="${target.weaving.active}" arg2="true" trim="true" />
 	</condition>
 
+	
 
 	<!-- output files -->
 	<property name="source_checked" value="${project.name}_CHECK.xml" />
@@ -97,11 +104,17 @@
 	<property name="build.test" location="${build}/test" />
 
 	
+  <property name="webapp.member.role" value="${project.name}-member"/>
+	<property name="webapp.admin.role" value="${project.name}-admin"/>
+  
+
+	
 	<!-- graphviz properties -->
   <available property="graphviz.check" file="${graphviz.path}" />
 
   <property name="graphviz.png" value="${project.name}.png"/>
   <property name="graphviz.map" value="${project.name}.cmap"/>
+  <!-- <property name="graphviz.map" value="${project.name}.cmap"/> -->
   <property name="graphviz.map.placeholder" value="___GRAPHVIZ_MAP___"/>
 
 	
@@ -309,7 +322,7 @@
 
 
 	<!-- target process : xslt pipeline + DB + test cases -->
-    <target name="process">
+  <target name="process">
 		<property name="source" value="${source}" />
 		<property name="source_filtered" value="${source_filtered}" />
 
@@ -357,15 +370,7 @@
         <!-- build web app -->
 		<ant target="buildWeb" />
 
-<!--
-    	<condition property="what.to.run" value="run" else="doNothing">
-				<isset property="sources.test"/>
-			</condition>
-
-		<ant target="${what.to.run}" />
--->
-
-        <!-- run test cases if needed -->
+    <!-- run test cases if needed -->
 		<ant target="run" />
 	</target>
 
@@ -377,6 +382,8 @@
 		<ant target="makeOutput" />
     <ant antfile="webapp/vo-urp-browser/build.xml" target="deployTomcat" inheritAll="false">
 			<property name="input" location="${input}"/>
+    	<property name="webapp.member.role" value="${webapp.member.role}"/>
+    	<property name="webapp.admin.role" value="${webapp.admin.role}"/>
 		</ant>
 	</target>
 
@@ -386,9 +393,12 @@
   <!-- target buildWeb : makes the vo-urp browser web application -->
 	<target name="buildWeb" description="build web application only">
 		<ant antfile="webapp/vo-urp-browser/build.xml" target="deployTomcat" inheritAll="false">
-			<property name="input" location="${input}"/>
+	 		<property name="input" location="${input}"/>
+			<property name="schemalocation_root" value="${schemalocation_root}"/>
+    	<property name="webapp.member.role" value="${webapp.member.role}"/>
+    	<property name="webapp.admin.role" value="${webapp.admin.role}"/>
 		</ant>	
-	</target>
+	</target> 
 	
 	
 
@@ -504,7 +514,7 @@
 			<param name="model_package" expression="${model_package}" />
 		</xslt2>
 
-		<echo>xmi2intermediate : done.</echo>
+		<echo>xmi2intermediate : done.</echo> 
 	</target>
 
 

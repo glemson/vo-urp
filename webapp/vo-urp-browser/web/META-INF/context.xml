@@ -6,9 +6,9 @@
 
 <Realm className="org.apache.catalina.realm.JDBCRealm" debug="0"
       driverName="@eclipselink.jdbc.driver@"
-      connectionURL="@eclipselink.jdbc.url@"
-      connectionName="@eclipselink.jdbc.user@"
-      connectionPassword="@eclipselink.jdbc.password@"
+      connectionURL="@tomcat.realm.url@"
+      connectionName="@tomcat.realm.dbuser@"
+      connectionPassword="@tomcat.realm.password@"
       userTable="users" userNameCol="username" userCredCol="password"
       userRoleTable="user_roles" roleNameCol="rolename" />
 

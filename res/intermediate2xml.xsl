@@ -11,7 +11,6 @@ Generates a template XML document conforming to the XML schema.
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
                 xmlns:exsl="http://exslt.org/common"
                 extension-element-prefixes="exsl"
-                xmlns:p0="http://www.ivoa.net/xml/SNAP/v0.1/SimDB"
                 xmlns:vo-urp="http://vo-urp.googlecode.com/"
                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   
@@ -32,7 +31,7 @@ Generates a template XML document conforming to the XML schema.
 
   <xsl:param name="targetnamespace_root"/> 
   <xsl:variable name="targetschema">
-    <xsl:value-of select="concat($targetnamespace_root,'/',//model/name)"/>
+    <xsl:value-of select="$targetnamespace_root"/>
   </xsl:variable>
   
   <xsl:param name="ivoIdHost" select="'ivo://some.vo.host/'"/>
@@ -185,8 +184,8 @@ but that would imply none of the contained elements could have comments.
      <xsl:variable name="datatype" select="key('element',./datatype/@xmiidref)"/>
      <xsl:apply-templates select="$datatype" mode="comment"/>
      <xsl:comment>Cardinality : <xsl:value-of select="multiplicity"/></xsl:comment>
-     <xsl:if test="ontologyterm">
-     <xsl:comment>This attribute gets its values from the SKOS list of concepts in <xsl:value-of select="ontologyterm/ontologyURI"/>.</xsl:comment>
+     <xsl:if test="skosconcept">
+     <xsl:comment>This attribute gets its values from the SKOS list of concepts in <xsl:value-of select="skosconcept/vocabularyURI"/>.</xsl:comment>
      </xsl:if>
      <xsl:element name="{$name}">    
       <xsl:apply-templates select="$datatype"/>
