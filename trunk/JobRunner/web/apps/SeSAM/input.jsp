@@ -97,7 +97,7 @@ if(p != null && p.datatype == Datatype._file && p.possibleValues != null) {
 </select>
 <br/>
 </td> 
-<td>File containing cooling efficiencies. Choosing "-1" will use
+<td>File containing SF efficiencies. Choosing "-1" will use
 the values in f_s.
 </td>
 </tr>
@@ -129,7 +129,7 @@ if(p != null && p.datatype == Datatype._file && p.possibleValues != null) {
 </select>
 <br/>
 </td> 
-<td>File containing cooling efficiencies. Choosing "-1" will use
+<td>File containing feedback efficiencies. Choosing "-1" will use
 the values in f_d.
 </td>
 </tr>
