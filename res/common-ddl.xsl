@@ -160,13 +160,25 @@ template in jpa.xsl
   </xsl:template>
 
 
-
-
   
-  <!-- We need lengths for (var)char datatypes -->
+  <!-- We MUST have lengths for (var)char datatypes, if not provided use a default.
+  For numerical datatypes we will interpret a possible length constraint as size in bytes.
+  Default there is 8 bytes-->
   <xsl:template name="sqltype">
     <xsl:param name="type"/>
     <xsl:param name="constraints"/>
+
+    <xsl:variable name="length">
+      <xsl:choose>
+        <xsl:when test="$constraints/length">
+          <xsl:value-of select="$constraints/length"/>
+          <xsl:message>type = <xsl:value-of select="$type/name"/> length = $constraints/length</xsl:message> 
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="'-1'"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
     
     <!--
     Primitive types :
@@ -195,29 +207,40 @@ template in jpa.xsl
           <xsl:otherwise>[VENDOR_NOT_SUPPORTED]</xsl:otherwise>
         </xsl:choose>
       </xsl:when>
-      <xsl:when test="$type/name = 'short'">INTEGER</xsl:when>
-      <xsl:when test="$type/name = 'integer'">INTEGER</xsl:when>
-      <xsl:when test="$type/name = 'long'">BIGINT</xsl:when>
-      <xsl:when test="$type/name = 'float'">FLOAT</xsl:when>
-      <xsl:when test="$type/name = 'real' or $type/name = 'double'">
-        <xsl:choose>
-          <xsl:when test="$vendor = 'mssqlserver'">FLOAT</xsl:when>
-          <xsl:when test="$vendor = 'postgres'">DOUBLE PRECISION</xsl:when>
-          <xsl:otherwise>[VENDOR_NOT_SUPPORTED]</xsl:otherwise>
-        </xsl:choose>
+      <xsl:when test="$type/name = 'short'">SMALLINT</xsl:when> <!-- 2010-06-17 GL: short does not exists in Profile (yet) -->
+      <xsl:when test="$type/name = 'integer'">
+	      <xsl:choose>
+  		    <xsl:when test="$length = '2'">SMALLINT</xsl:when>
+      		<xsl:when test="$length = '8'">BIGINT</xsl:when>
+      		<xsl:otherwise>INTEGER</xsl:otherwise>
+      	</xsl:choose>
+      </xsl:when>
+      <xsl:when test="$type/name = 'long'">BIGINT</xsl:when><!-- 2010-06-17 GL: long does not exists in Profile (yet) -->
+      <xsl:when test="$type/name = 'float'">FLOAT</xsl:when><!-- 2010-06-17 GL: float does not exists in Profile (yet) -->
+      <xsl:when test="$type/name = 'real' or $type/name = 'double' or $type/name = 'float'">
+	      <xsl:choose>
+      		<xsl:when test="$length = '4'">REAL</xsl:when> <!--  only valid length taht does not produce a double precision -->
+      		<xsl:otherwise>            
+      		  <xsl:choose>
+              <xsl:when test="$vendor = 'mssqlserver'">FLOAT</xsl:when>
+              <xsl:when test="$vendor = 'postgres'">DOUBLE PRECISION</xsl:when>
+              <xsl:otherwise>[VENDOR_NOT_SUPPORTED]</xsl:otherwise>
+            </xsl:choose>
+          </xsl:otherwise>
+      	</xsl:choose>
       </xsl:when>
       <xsl:when test="$type/name = 'datetime'">
         <xsl:call-template name="datetimeType"/>
       </xsl:when>
       <xsl:otherwise>
-        <xsl:variable name="length">
+        <xsl:variable name="strlength">
           <xsl:call-template name="stringlength">
             <xsl:with-param name="constraints" select="constraints"/>
           </xsl:call-template>
         </xsl:variable>
         <xsl:choose>
           <xsl:when test="number($length) &lt;= 0"><xsl:value-of select="$unboundedstringtype"/></xsl:when>
-          <xsl:otherwise>VARCHAR(<xsl:value-of select="$length"/>)</xsl:otherwise>
+          <xsl:otherwise>VARCHAR(<xsl:value-of select="$strlength"/>)</xsl:otherwise>
       </xsl:choose></xsl:otherwise>
     </xsl:choose>
   </xsl:template>

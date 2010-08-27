@@ -493,6 +493,9 @@ This XSLT is tested to work on XMI generated with MagicDraw Community Edition v1
         <xsl:if test="$attribute/@maxLength">
           <xsl:element name="maxLength"><xsl:value-of select="$attribute/@maxLength"/></xsl:element>
         </xsl:if>
+        <xsl:if test="$attribute/@length">
+          <xsl:element name="length"><xsl:value-of select="$attribute/@length"/></xsl:element>
+        </xsl:if>
         <xsl:if test="$attribute[@uniqueGlobally = 'true']">
           <xsl:element name="uniqueGlobally">true</xsl:element>
         </xsl:if>
