@@ -68,9 +68,23 @@
 
 
 
-
+<!-- Return a javatype for the type indicated with the given xmiid and having the specified length.
+The length is used to decide on which numerical type to use. It is interpreted as number of bytes. -->
   <xsl:template name="JavaType">
     <xsl:param name="xmiid"/>
+    <xsl:param name="length" select="''"/> 
+<!-- 
+    <xsl:variable name="length">
+      <xsl:choose>
+        <xsl:when test="$constraints/length">
+          <xsl:value-of select="$constraints/length"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="'-1'"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+ -->
 <!--
     Primitive types :
         boolean
@@ -93,6 +107,7 @@
     <xsl:variable name="type" select="key('element',$xmiid)"/>
     <xsl:choose>
       <xsl:when test="name($type) = 'primitiveType'">
+<!-- 
         <xsl:choose>
           <xsl:when test="$type/name = 'boolean'">Boolean</xsl:when>
           <xsl:when test="$type/name = 'short'">Short</xsl:when>
@@ -105,6 +120,25 @@
           <xsl:when test="$type/name = 'string'">String</xsl:when>
           <xsl:otherwise>String</xsl:otherwise>
         </xsl:choose>
+-->
+        <xsl:choose>
+      <xsl:when test="$type/name = 'boolean'">Boolean</xsl:when>
+      <xsl:when test="$type/name = 'integer' or $type/name = 'long' or $type/name = 'short'">
+	      <xsl:choose> <!-- all integral types can represent 2, 4 or (default) 8 byte integers-->
+  		    <xsl:when test="$length = '2'">Short</xsl:when>
+      		<xsl:when test="$length = '4'">Integer</xsl:when>
+      		<xsl:otherwise>Long</xsl:otherwise>
+      	</xsl:choose>
+      </xsl:when>
+      <xsl:when test="$type/name = 'real' or $type/name = 'double' or $type/name = 'float'">
+	      <xsl:choose> <!-- all floating types can represent 4 or (default) 8 byte float -->
+      		<xsl:when test="$length = '4'">Float</xsl:when>
+      		<xsl:otherwise>Double</xsl:otherwise>
+      	</xsl:choose>
+      </xsl:when>
+      <xsl:when test="$type/name = 'datetime'">Date</xsl:when>
+      <xsl:otherwise>String</xsl:otherwise>
+    </xsl:choose>
       </xsl:when>
       <xsl:otherwise>
         <xsl:variable name="val">
