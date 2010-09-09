@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : PDR_protocol.xml
+    Created on : 25 avril 2008, 18:00
+    Author     : franck
+    Description:
+        This document is the first xml sample document for Protocol according to SimDB generated XML schemas (xsd).
+-->
+<s:aPostProcessor xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+              xmlns:s='http://www.ivoa.net/xml/SimDB_Spec/0.8-20100908'>
+
+<!-- ++++++++++++++++++++++++++++++++++++++++++ -->
+<!-- HaloMaker + TreeMaker                      -->
+<!-- ++++++++++++++++++++++++++++++++++++++++++ -->
+  <identity publisherDID="horizon/haloMaker/1.0"/>
+
+  <name>HaloMaker</name>
+  <description>The HaloMaker code finds halo in a dark matter particle simulation ...</description>
+
+  <referenceURL>http://projet-horizon.fr</referenceURL>
+
+
+  <created>2008-01-01T12:00:00</created>
+  <updated>2008-06-26T12:00:00</updated>
+
+  <status>published</status>
+ 
+  <contact>
+    <role>publisher</role>
+    <party publisherDID="ivo://obs.paris.fr/quelqueun@paris"/>
+  </contact>
+ 
+  <code>http://projet-horizon.fr</code>
+  <version>1.0</version>
+
+
+<!-- RepresentationObjectType HALO -->
+
+  <representation>
+    <identity xmlId="HALO" />
+    <name>halo</name>
+    <description>halo objects found in raw simulation data</description>
+
+    <property>
+      <identity xmlId="HALO_X" />
+
+      <name>x</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>X (cartesian) coordinate of the halo in the cubic box</description>
+      <label>pos.cartesian.x</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_Y" />
+
+      <name>y</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>Y (cartesian) coordinate of the halo in the cubic box</description>
+      <label>pos.cartesian.y</label>
+    </property>
+
+
+    <property>
+      <identity xmlId="HALO_Z" />
+
+      <name>z</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>Z (cartesian) coordinate of the halo in the cubic box</description>
+      <label>pos.cartesian.z</label>
+    </property>
+
+
+    <property>
+      <identity xmlId="HALO_ID" />
+
+      <name>halo id</name>
+      <datatype>integer</datatype>
+      <cardinality>1</cardinality>
+      <description>Unique identifier of the halo that can be compared with the halo identifier present in galaxies</description>
+      <label>meta.id</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_VX" />
+
+      <name>velocity x</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>X-coordinate of the velocity of the center of mass of the halo</description>
+      <label>phys.veloc</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_VY" />
+
+      <name>velocity y</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>Y-coordinate of the velocity of the center of mass of the halo</description>
+      <label>phys.veloc</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_VZ" />
+
+      <name>velocity z</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>Z-coordinate of the velocity of the center of mass of the halo</description>
+      <label>phys.veloc</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_ANGULAR_MOMENTUM_X" />
+
+      <name>angular momentum x</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>X-coordinate of angular momentum of the halo</description>
+      <label>phys.angMomentum</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_ANGULAR_MOMENTUM_Y" />
+
+      <name>angular momentum y</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>Y-coordinate of angular momentum of the halo</description>
+      <label>phys.angMomentum</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_ANGULAR_MOMENTUM_Z" />
+
+      <name>angular momentum z</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>Z-coordinate of angular momentum of the halo</description>
+      <label>phys.angMomentum</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_NB_OF_GALAXIES" />
+
+      <name>number of galaxies</name>
+      <datatype>integer</datatype>
+      <cardinality>1</cardinality>
+      <description>Number of galaxies in the halo</description>
+      <label>meta.number</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_VIRIAL_MASS" />
+
+      <name>virial mass</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>Virial mass of the halo (i.e. by definition here the sum of the masses of all particles belonging to the halo. Units are 10^11 solar masses</description>
+      <label>phys.mass</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_VIRIAL_RADIUS" />
+
+      <name>virial radius</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>Virial radius of the halo, in physical Mpc</description>
+      <label>phys.size.radius</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_VIRIAL_TEMPERATURE" />
+
+      <name>virial temperature</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>Virial temperature of the halo, in Kelvin</description>
+      <label>phys.temperature</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_MASS_OF_COLD_GAS" />
+
+      <name>mass of cold gas</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>Mass of cold gas (including metals and stars) in the halo, i.e. mass of the galaxies, in 10^11 M_sun</description>
+      <label>phys.mass</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_MASS_OF_METAL_IN_COLD_GAS" />
+
+      <name>mass of metals in cold gas</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>Mass of metals in the cold gas of the halo, in 10^11 M_sun</description>
+      <label>phys.mass</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_MASS_OF_HOT_GAS" />
+
+      <name>mass of hot gas</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>
+      Mass of hot gas in the halo (including metals), in 10^11 M_sun
+      </description>
+      <label>phys.mass</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_MASS_OF_METALS_IN_HOT_GAS" />
+
+      <name>mass of metals in hot gas</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>
+        Mass of metals in the hot gas of the halo, in 10^11 M_sun
+      </description>
+      <label>phys.mass</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_MASS_OF_STARS" />
+
+      <name>mass of stars</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>
+      Mass of stars in the halo
+      </description>
+      <label>phys.mass</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_MASS_OF_METALS_IN_STARS" />
+
+      <name>mass of metals in stars</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>
+      Mass of metals in the stars of the halo
+      </description>
+      <label>phys.mass</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_POTENTIAL_ENERGY" />
+
+      <name>potential energy</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>
+      Potential energy of the halo
+      </description>
+      <label>phys.energy</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_KINETIC_ENERGY" />
+
+      <name>kinetic energy</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>
+      Kinetic energy of the halo
+      </description>
+      <label>phys.energy</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_TOTAL_ENERGY" />
+
+      <name>total energy</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>
+      Total energy of the halo
+      </description>
+      <label>phys.energy</label>
+    </property>
+
+    <property>
+      <identity xmlId="HALO_SPIN_PARAMETER" />
+
+      <name>spin parameter</name>
+      <datatype>real</datatype>
+      <cardinality>1</cardinality>
+      <description>
+      Spin parameter of the halo
+      </description>
+      <label>phys.veloc.ang</label>
+    </property>
+
+
+    <type>model astro object</type>
+    <label>halo</label>
+  </representation>
+
+
+
+
+
+
+  <!-- Parameters -->
+
+  <parameter>
+    <identity xmlId="HALOMAKER_MIN_NUMBER_OF_PARTS" />
+
+    <name>NPart</name>
+    <datatype>integer</datatype>
+    <cardinality>1</cardinality>
+    <description>Minimum number of particles per halo. Any group found with less than this is discarded.</description>
+    <label></label>
+  </parameter>
+  
+  <parameter>
+    <identity xmlId="HALOMAKER_METHOD" />
+
+    <name>Method</name>
+    <datatype>string</datatype>
+    <cardinality>1</cardinality>
+    <description>The algorithm used to find groups of particles. FOF stands for friends-of-friends.</description>
+    <isEnumerated>true</isEnumerated>
+    <validValue>
+      <value>FOF</value>
+      <title>friends-of-friends</title>
+    </validValue>
+    <label></label>
+  </parameter>
+  
+  <parameter>
+    <identity xmlId="HALOMAKER_FOF_LINKING_LENGTH" />
+
+    <name>b</name>
+    <datatype>real</datatype>
+    <cardinality>1</cardinality>
+    <description>The linking length parameter used for the FOF algorithm.</description>
+  </parameter>
+  
+  <parameter>
+    <identity xmlId="HALOMAKER_CENTER_METHOD" />
+
+    <name>centerMethod</name>
+    <datatype>string</datatype>
+    <cardinality>1</cardinality>
+    <description>Method used to determine the center of halos. CDM for center of mass.</description>
+    <isEnumerated>true</isEnumerated>
+    <validValue>
+      <value>CDM</value>
+      <title>center of mass</title>
+    </validValue>
+    <label></label>
+  </parameter>
+  
+  <parameter>
+    <identity xmlId="TREEMAKER_METHOD" />
+
+    <name>treeMethod</name>
+    <datatype>string</datatype>
+    <cardinality>1</cardinality>
+    <description>Method used to construct merger trees.</description>
+  </parameter>
+
+
+</s:aPostProcessor>
