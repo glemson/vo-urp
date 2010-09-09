@@ -230,7 +230,7 @@
         <xsd:element name="multiplicity" type="Multiplicity"/>
         <!-- should next be on TypeReference? the constraints restrict the type after all. -->
         <xsd:element name="constraints" type="Constraints" minOccurs="0"/>
-        <xsd:element name="ontologyterm" type="OntologyTerm" minOccurs="0"/>
+        <xsd:element name="skosconcept" type="SKOSConcept" minOccurs="0"/>
       </xsd:sequence>
     </xsd:extension>
   </xsd:complexContent>
@@ -238,9 +238,9 @@
 
 
 
-<xsd:complexType name="OntologyTerm">
+<xsd:complexType name="SKOSConcept">
   <xsd:sequence>
-    <xsd:element name="ontologyURI" type="xsd:anyURI"/>
+    <xsd:element name="vocabularyURI" type="xsd:anyURI"/>
   </xsd:sequence>
 </xsd:complexType>
 
