@@ -34,7 +34,6 @@
 	  Should only contain the location of the directory where input properties and data model can be found.
 	-->
 	<property file="build.properties" />
-	<property name="input" location="./input"/>
 
 	
 	<!-- read pipeline configuration properties -->
@@ -100,8 +99,9 @@
 	<property name="build.src" location="${build}/src" />
 	<property name="build.gen" location="${build}/gen" />
 	<property name="build.weaving" location="${build}/weaving" />
-	<property name="test" location="${input}/${sources.test}"/>
 	<property name="build.test" location="${build}/test" />
+	<property name="build.xsd" location="${build}/xsd" />
+	<property name="test" location="${input}/${sources.test}"/>
 
 	
   <property name="webapp.member.role" value="${project.name}-member"/>
