@@ -280,7 +280,7 @@
     
     <include name="**/*.java"/>
   </javac>
-  
+
   <jar jarfile="${dist}/${build.gen.file}" compress="true" roundup="true">
     <fileset dir="${build.gen}" />
     <fileset dir="${build.src}">
@@ -295,9 +295,6 @@
     </fileset>
     <fileset dir="${outputJava}/src">
       <include name="**/jaxb.index" />
-    </fileset>
-    <fileset dir="${output.xsd}">
-      <include name="**/*.xsd" />
     </fileset>
 
     <manifest>
@@ -705,9 +702,18 @@ Optional
     <path refid="runtime.class.path"/>
     <map from="${dist}/" to=""/>
     <map from="${libs}" to="lib"/>
-    <map from="${properties}" to="..${file.separator}properties"/>
+    <map from="${properties}" to="../properties/"/>
   </pathconvert>
 
+  <!-- copy generated xsd schemas in build/xsd -->
+  <!-- this folder is used by test classpath to find root schemas -->
+  <mkdir dir="${build.xsd}"/>
+
+  <copy verbose="true" todir="${build.xsd}" preservelastmodified="true">
+    <fileset dir="${output.xsd}">
+      <include name="**/*.xsd" />
+    </fileset>
+  </copy>
 
   <jar jarfile="${dist}/${build.test.file}" compress="true" roundup="true">
     <fileset dir="${build.test}" />
@@ -721,7 +727,9 @@ Optional
       
       <!-- last / is used to consider property directory correctly : properties/ to load configuration files -->
       <attribute name="Main-Class" value="${test.class}"/>
-      <attribute name="Class-Path" value="${jar.test.classpath}/"/>
+
+      <!-- the build folder is used in classpath to find root schemas like ./xsd/Model_root.xsd -->
+      <attribute name="Class-Path" value="${jar.test.classpath} ../build/"/>
 
       <section name="Common">
         <attribute name="Specification-Title" value="${project.title}"/>
@@ -773,7 +781,7 @@ Optional
       <filter token="project.name" value="${project.name}" />
     </filterset>
   </copy>
-  
+
   <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true"  inputstring="">
     <jvmarg value="-Xms384m"/>
     <jvmarg value="-Xmx384m"/>
