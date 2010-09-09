@@ -20,7 +20,7 @@ import javax.xml.bind.annotation.XmlType;
  *         &lt;element name="datatype" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}TypeRef"/>
  *         &lt;element name="multiplicity" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Multiplicity"/>
  *         &lt;element name="constraints" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Constraints" minOccurs="0"/>
- *         &lt;element name="ontologyterm" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}OntologyTerm" minOccurs="0"/>
+ *         &lt;element name="skosconcept" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}SKOSConcept" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
@@ -34,7 +34,7 @@ import javax.xml.bind.annotation.XmlType;
     "datatype",
     "multiplicity",
     "constraints",
-    "ontologyterm"
+    "skosconcept"
 })
 public class Attribute
     extends Element
@@ -45,7 +45,7 @@ public class Attribute
     @XmlElement(required = true)
     protected String multiplicity;
     protected Constraints constraints;
-    protected OntologyTerm ontologyterm;
+    protected SKOSConcept skosconcept;
 
     /**
      * Gets the value of the datatype property.
@@ -120,27 +120,27 @@ public class Attribute
     }
 
     /**
-     * Gets the value of the ontologyterm property.
+     * Gets the value of the skosconcept property.
      * 
      * @return
      *     possible object is
-     *     {@link OntologyTerm }
+     *     {@link SKOSConcept }
      *     
      */
-    public OntologyTerm getOntologyterm() {
-        return ontologyterm;
+    public SKOSConcept getSkosconcept() {
+        return skosconcept;
     }
 
     /**
-     * Sets the value of the ontologyterm property.
+     * Sets the value of the skosconcept property.
      * 
      * @param value
      *     allowed object is
-     *     {@link OntologyTerm }
+     *     {@link SKOSConcept }
      *     
      */
-    public void setOntologyterm(OntologyTerm value) {
-        this.ontologyterm = value;
+    public void setSkosconcept(SKOSConcept value) {
+        this.skosconcept = value;
     }
 
 }

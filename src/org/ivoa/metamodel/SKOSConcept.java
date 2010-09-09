@@ -9,16 +9,16 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for OntologyTerm complex type.
+ * <p>Java class for SKOSConcept complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="OntologyTerm">
+ * &lt;complexType name="SKOSConcept">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="ontologyURI" type="{http://www.w3.org/2001/XMLSchema}anyURI"/>
+ *         &lt;element name="vocabularyURI" type="{http://www.w3.org/2001/XMLSchema}anyURI"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -28,37 +28,37 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "OntologyTerm", propOrder = {
-    "ontologyURI"
+@XmlType(name = "SKOSConcept", propOrder = {
+    "vocabularyURI"
 })
-public class OntologyTerm {
+public class SKOSConcept {
 
     @XmlElement(required = true)
     @XmlSchemaType(name = "anyURI")
-    protected String ontologyURI;
+    protected String vocabularyURI;
 
     /**
-     * Gets the value of the ontologyURI property.
+     * Gets the value of the vocabularyURI property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getOntologyURI() {
-        return ontologyURI;
+    public String getVocabularyURI() {
+        return vocabularyURI;
     }
 
     /**
-     * Sets the value of the ontologyURI property.
+     * Sets the value of the vocabularyURI property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setOntologyURI(String value) {
-        this.ontologyURI = value;
+    public void setVocabularyURI(String value) {
+        this.vocabularyURI = value;
     }
 
 }

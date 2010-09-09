@@ -25,10 +25,10 @@ import javax.xml.namespace.QName;
 public class ObjectFactory {
 
     private final static QName _ConstraintsMaxLength_QNAME = new QName("", "maxLength");
-    private final static QName _ConstraintsMinLength_QNAME = new QName("", "minLength");
-    private final static QName _ConstraintsUniqueGlobally_QNAME = new QName("", "uniqueGlobally");
-    private final static QName _ConstraintsLength_QNAME = new QName("", "length");
     private final static QName _ConstraintsUniqueInCollection_QNAME = new QName("", "uniqueInCollection");
+    private final static QName _ConstraintsUniqueGlobally_QNAME = new QName("", "uniqueGlobally");
+    private final static QName _ConstraintsMinLength_QNAME = new QName("", "minLength");
+    private final static QName _ConstraintsLength_QNAME = new QName("", "length");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: org.ivoa.metamodel
@@ -38,43 +38,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Enumeration.Literal }
+     * Create an instance of {@link Constraints }
      * 
      */
-    public Enumeration.Literal createEnumerationLiteral() {
-        return new Enumeration.Literal();
+    public Constraints createConstraints() {
+        return new Constraints();
     }
 
     /**
-     * Create an instance of {@link Attribute }
+     * Create an instance of {@link SKOSConcept }
      * 
      */
-    public Attribute createAttribute() {
-        return new Attribute();
-    }
-
-    /**
-     * Create an instance of {@link Package }
-     * 
-     */
-    public Package createPackage() {
-        return new Package();
-    }
-
-    /**
-     * Create an instance of {@link PackageReference }
-     * 
-     */
-    public PackageReference createPackageReference() {
-        return new PackageReference();
-    }
-
-    /**
-     * Create an instance of {@link PrimitiveType }
-     * 
-     */
-    public PrimitiveType createPrimitiveType() {
-        return new PrimitiveType();
+    public SKOSConcept createSKOSConcept() {
+        return new SKOSConcept();
     }
 
     /**
@@ -86,11 +62,43 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Collection }
+     * Create an instance of {@link Reference }
      * 
      */
-    public Collection createCollection() {
-        return new Collection();
+    public Reference createReference() {
+        return new Reference();
+    }
+
+    /**
+     * Create an instance of {@link TypeRef }
+     * 
+     */
+    public TypeRef createTypeRef() {
+        return new TypeRef();
+    }
+
+    /**
+     * Create an instance of {@link Enumeration.Literal }
+     * 
+     */
+    public Enumeration.Literal createEnumerationLiteral() {
+        return new Enumeration.Literal();
+    }
+
+    /**
+     * Create an instance of {@link Profile }
+     * 
+     */
+    public Profile createProfile() {
+        return new Profile();
+    }
+
+    /**
+     * Create an instance of {@link Package }
+     * 
+     */
+    public Package createPackage() {
+        return new Package();
     }
 
     /**
@@ -110,11 +118,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link OntologyTerm }
+     * Create an instance of {@link PrimitiveType }
      * 
      */
-    public OntologyTerm createOntologyTerm() {
-        return new OntologyTerm();
+    public PrimitiveType createPrimitiveType() {
+        return new PrimitiveType();
+    }
+
+    /**
+     * Create an instance of {@link Attribute }
+     * 
+     */
+    public Attribute createAttribute() {
+        return new Attribute();
     }
 
     /**
@@ -126,35 +142,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link TypeRef }
+     * Create an instance of {@link Collection }
      * 
      */
-    public TypeRef createTypeRef() {
-        return new TypeRef();
+    public Collection createCollection() {
+        return new Collection();
     }
 
     /**
-     * Create an instance of {@link Reference }
+     * Create an instance of {@link PackageReference }
      * 
      */
-    public Reference createReference() {
-        return new Reference();
-    }
-
-    /**
-     * Create an instance of {@link Constraints }
-     * 
-     */
-    public Constraints createConstraints() {
-        return new Constraints();
-    }
-
-    /**
-     * Create an instance of {@link Profile }
-     * 
-     */
-    public Profile createProfile() {
-        return new Profile();
+    public PackageReference createPackageReference() {
+        return new PackageReference();
     }
 
     /**
@@ -167,12 +167,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Integer }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link Boolean }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "minLength", scope = Constraints.class)
-    public JAXBElement<Integer> createConstraintsMinLength(Integer value) {
-        return new JAXBElement<Integer>(_ConstraintsMinLength_QNAME, Integer.class, Constraints.class, value);
+    @XmlElementDecl(namespace = "", name = "uniqueInCollection", scope = Constraints.class, defaultValue = "false")
+    public JAXBElement<Boolean> createConstraintsUniqueInCollection(Boolean value) {
+        return new JAXBElement<Boolean>(_ConstraintsUniqueInCollection_QNAME, Boolean.class, Constraints.class, value);
     }
 
     /**
@@ -188,18 +188,18 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link Integer }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "length", scope = Constraints.class)
-    public JAXBElement<Integer> createConstraintsLength(Integer value) {
-        return new JAXBElement<Integer>(_ConstraintsLength_QNAME, Integer.class, Constraints.class, value);
+    @XmlElementDecl(namespace = "", name = "minLength", scope = Constraints.class)
+    public JAXBElement<Integer> createConstraintsMinLength(Integer value) {
+        return new JAXBElement<Integer>(_ConstraintsMinLength_QNAME, Integer.class, Constraints.class, value);
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link Boolean }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link Integer }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "uniqueInCollection", scope = Constraints.class, defaultValue = "false")
-    public JAXBElement<Boolean> createConstraintsUniqueInCollection(Boolean value) {
-        return new JAXBElement<Boolean>(_ConstraintsUniqueInCollection_QNAME, Boolean.class, Constraints.class, value);
+    @XmlElementDecl(namespace = "", name = "length", scope = Constraints.class)
+    public JAXBElement<Integer> createConstraintsLength(Integer value) {
+        return new JAXBElement<Integer>(_ConstraintsLength_QNAME, Integer.class, Constraints.class, value);
     }
 
 }
