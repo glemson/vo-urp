@@ -163,9 +163,9 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       close(em);
     }
 
-    final Long simId = testWRITE(jf);
 
     if (false) {
+      final Long simId = testWRITE(jf);
       // test the creation (batch) of a very big snapshot collection :
       testHUGESnapshotCollection(jf, simId);
     }
@@ -563,19 +563,19 @@ public final class DBTests extends LogSupport implements ApplicationMain {
           start = System.nanoTime();
 
           experiment = (Simulation) JPAHelper.findSingleByNamedQuery(
-          em,
-          "Experiment.findById",
-          "id",
-          expId);
+              em,
+              "Experiment.findById",
+              "id",
+              expId);
         }
         addSnapshot(experiment, i);
       }
 
-        log.warn("DBTests.testHUGESnapshots : " + i);
+      log.warn("DBTests.testHUGESnapshots : " + i);
 
-        em.getTransaction().commit();
+      em.getTransaction().commit();
 
-        log.warn("DBTests.testHUGESnapshots : " + i + " = " + ((System.nanoTime() - start) / 1000000L) + " ms.");
+      log.warn("DBTests.testHUGESnapshots : " + i + " = " + ((System.nanoTime() - start) / 1000000L) + " ms.");
 
     } catch (final RuntimeException re) {
       log.error("DBTests.testHUGESnapshots : runtime failure : ", re);
@@ -630,7 +630,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       // for all
       col = new ObjectCollection(snapshot);
       col.setObjectType(rep.getType());
-      col.setNumberOfObjects(position * 113);
+      col.setNumberOfObjects(new Long(position * 113));
 
       for (ExperimentProperty prop : rep.getProperty()) {
         cha = new Statistics(col);
