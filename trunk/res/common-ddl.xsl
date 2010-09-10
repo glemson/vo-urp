@@ -172,11 +172,23 @@ template in jpa.xsl
       <xsl:choose>
         <xsl:when test="$constraints/length">
           <xsl:value-of select="$constraints/length"/>
-          <xsl:message>type = <xsl:value-of select="$type/name"/> length = $constraints/length</xsl:message> 
+          <!-- 
+          <xsl:message>type = <xsl:value-of select="$type/name"/> length = $constraints/length</xsl:message>
+           --> 
         </xsl:when>
         <xsl:otherwise>
-          <xsl:value-of select="'-1'"/>
+      <xsl:choose>
+        <xsl:when test="$constraints/maxLength">
+          <xsl:value-of select="$constraints/maxLength"/>
+<!-- 
+          <xsl:message>type = <xsl:value-of select="$type/name"/> length = <xsl:value-of select="$constraints/maxLength"/></xsl:message>
+ --> 
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="$defaultVarcharLength"/>
         </xsl:otherwise>
+      </xsl:choose>
+      </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
     

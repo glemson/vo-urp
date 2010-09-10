@@ -97,6 +97,10 @@ public final class DBTests extends LogSupport implements ApplicationMain {
    * test Party-from-Paris file
    */
   public static final String PARTY_FROM_PARIS = XMLTests.TEST_PATH + "PartyFromParis" + XMLTests.XML_EXT;
+  /**
+   * test VolkerSpringel file
+   */
+  public static final String PARTY_VOLKER_SPRINGEL = XMLTests.TEST_PATH + "VolkerSpringel" + XMLTests.XML_EXT;
 
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
@@ -171,13 +175,14 @@ public final class DBTests extends LogSupport implements ApplicationMain {
     // Gerard : load XML -> JPA -> database test case :
 
     // Loads & write an xml instance :
-//    testLOAD_WRITE(jf, PROTOCOL_FILE_GADGET2);
+
+    //    testLOAD_WRITE(jf, PROTOCOL_FILE_GADGET2);
     testLOAD_WRITE(jf, PARTY_FROM_PARIS, PROTOCOL_FILE_PDR);
     testLOAD_WRITE(jf, null,PROTOCOL_FILE_HALOMAKER);
 
     // Batch writes :
 //    testLOAD_BATCH_WRITE(jf, PROTOCOL_FILE_GADGET2);
-//    testLOAD_BATCH_WRITE_SINGLE_TRANSACTION(jf, PROTOCOL_FILE_GADGET2);
+    testLOAD_BATCH_WRITE_SINGLE_TRANSACTION(jf, PROTOCOL_FILE_GADGET2);
 
     // Batch writes : Laurent : In progress :
 //    testLOAD_THREADS_WRITE(jf, PROTOCOL_FILE_GADGET2);
@@ -855,6 +860,11 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
       ReferenceResolver.initContext(em);
 
+      final List<MetadataRootEntityObject> partyList = new ArrayList<MetadataRootEntityObject>();
+      partyList.add((MetadataRootEntityObject) xmlTest.testUnMashall(PARTY_VOLKER_SPRINGEL));
+
+      dm.persist(partyList, "testuser");
+      
       final List<MetadataRootEntityObject> simList = new ArrayList<MetadataRootEntityObject>();
       for (int i = 0; i < WRITE_ITERATION; i++) {
         simList.add((MetadataRootEntityObject) xmlTest.testUnMashall(xmlDocumentPath));
