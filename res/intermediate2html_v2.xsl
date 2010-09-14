@@ -784,7 +784,7 @@ ensure all classes are here, but not those form any profile
         
 
 <!-- check whether the datatype is a structured, then create hierarchy of possible UTYPEs  -->
-        <xsl:if test="key('element',datatype/@xmiidref)/attribute"> 
+        <xsl:if test="name()='attribute' and key('element',datatype/@xmiidref)/attribute"> 
           <br/>[datatype is structured, utype can be extended]         
         </xsl:if>
         </td>
