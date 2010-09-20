@@ -143,8 +143,10 @@ For object and data types these features are (where applicable) :
 <li>Description</li>
 </ul>
 </li>
-<li>For attributes which have been assigned the &lt;&lt;skosconcept&gt;&gt; sterotype, 
-an indication is given of the URI where the corresponding vocabulary can be found.</li>
+<li>For attributes which have been assigned the &lt;&lt;skosconcept&gt;&gt; stereotype, 
+the URI is given identifying the "broadest" concept.
+Such attributes must be given a value, which itself identifies a SKOS concept in some vocabulary,
+and which must be narrower than the indicated broadest concept.</li>
 </ul>
 </p>
 <p>
@@ -769,9 +771,9 @@ ensure all classes are here, but not those form any profile
         <td class="feature-detail" >
         <a><xsl:attribute name="href" select="concat('#',datatype/@xmiidref)"/> <xsl:apply-templates select="datatype/@xmiidref" mode="classifier"/></a>
         <xsl:if test="skosconcept">
-        <br/><br/>&lt;&lt;skosconcept&gt;&gt; with SKOS vocabulary at 
-        <a><xsl:attribute name="href" select="skosconcept/vocabularyURI"/><xsl:attribute name="target" select="'_blank'"/>
-        <xsl:value-of select="skosconcept/vocabularyURI"/></a>
+        <br/><br/>&lt;&lt;skosconcept&gt;&gt;, value of this attribute must be narrower than the concept at 
+        <a><xsl:attribute name="href" select="skosconcept/broadestSKOSConcept"/><xsl:attribute name="target" select="'_blank'"/>
+        <xsl:value-of select="skosconcept/broadestSKOSConcept"/></a>
         </xsl:if>
         </td>
      </tr>
