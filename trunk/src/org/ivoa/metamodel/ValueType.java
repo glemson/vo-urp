@@ -27,8 +27,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType(name = "ValueType")
 @XmlSeeAlso({
     DataType.class,
-    PrimitiveType.class,
-    Enumeration.class
+    Enumeration.class,
+    PrimitiveType.class
 })
 public abstract class ValueType
     extends Type
