@@ -240,7 +240,17 @@
 
 <xsd:complexType name="SKOSConcept">
   <xsd:sequence>
-    <xsd:element name="vocabularyURI" type="xsd:anyURI"/>
+    <xsd:element name="broadestSKOSConcept" type="xsd:anyURI" minOccurs="1" maxOccurs="unbounded">
+      <xsd:annotation>
+        <xsd:documentation>
+        A URI identifiying a SKOS concept that corresponds to the concept in the model. 
+        Values of a corresponding attributes must be URI-s identifiying objects that are narrower than the identified concept.
+        In case it is not possible to find a single, unique predefined "braodest" SKOS concept, 
+        it is possible to assign more than one. 
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:element>
+<!--     <xsd:element name="vocabularyURI" type="xsd:anyURI"/>  -->
   </xsd:sequence>
 </xsd:complexType>
 
