@@ -18,7 +18,7 @@
    <email>volker@...</email>
    <!--A(n) string-->
    <!--Cardinality : 0..1-->
-   <address>..., Heidelberg</address>
+   <address>..., Heidelberg, Germany</address>
    <!--A(n) string-->
    <!--Cardinality : 0..1-->
    <telephone>+49 (0)...</telephone>

@@ -216,7 +216,7 @@
         <description>The code distinguishes between different particle types. Each type may have a different gravitational
 softening. As far as gravity is concerned, all the types are treated equivalently by the
 code, the names Gas, Halo, Disk, Bulge, Stars, Bndry, are just arbitrary tags,
-still reflecting GADGET-2’'s origin as a tool to study colliding galaxies. However, the particles
+still reflecting GADGET-2's origin as a tool to study colliding galaxies. However, the particles
 of the first type (Gas) are indeed treated as SPH particles, i.e. they receive an additional hydrodynamic
 acceleration, and their internal entropy per unit mass is evolved as independent
 thermodynamic variable.
@@ -233,8 +233,8 @@ V. Springel
 the makefile needs to be set. Unlike in GADGET-1, the present code stores all particle types in a
 single tree, and this option tells the code to mark tree nodes that contain particles with different
 softenings in a special way.
-In cosmological simulations, one sometimes wants to start a simulation with a softening ²com
-that is fixed in comoving coordinates (where the physical softening, ²phys = a²com, then grows
+In cosmological simulations, one sometimes wants to start a simulation with a softening com
+that is fixed in comoving coordinates (where the physical softening, phys = a*com, then grows
 proportional to the scale factor a), but at a certain redshift one wants to freeze the resulting
 growth of the physical softening ²max
 phys at a maximum value. These maximum softening lengths
@@ -1287,8 +1287,7 @@ the rank number of the processor.</description>
         <datatype>string</datatype>
         <cardinality>1</cardinality>
         <description>This is the name of a file which will hold a list of all the timesteps. The last
-entry always holds the timestep that is currently processed. For a running
-simulation, the command ‘tail info.txt’ will then inform you about
+entry always holds the timestep that is currently processed. For a running simulation, the command 'tail info.txt' will then inform you about
 the current status of the simulation. The meaning of the different entries in
 the file is discussed in detail later on.</description>
     </parameter>
@@ -1351,7 +1350,7 @@ in this example) when it interrupts the run because the CPU-time limit is
 about to be exhausted. Usually, xyz.sh should be set to the name of
 an executable script in which one places the necessary commands for resubmission
 of the job (with the 1-flag set for restart) to the computing
-queue. Note that this feature should be used with care – it is always advisable
+queue. Note that this feature should be used with care - it is always advisable
 to supervise a running simulation closely.</description>
     </parameter>
     <parameter>
@@ -1423,7 +1422,7 @@ compiled with the PERIODIC makefile option for periodic boundaries,
 otherwise it will complain and stop. (Actually, this parameter may be
 viewed as redundant given that the same option is specified in the makefile,
 but it is kept to make sure that you run your simulation always with
-the ‘right’ executable.) When you use periodic boundary conditions for the
+the 'right' executable.) When you use periodic boundary conditions for the
 first time, GADGET-2 will compute correction tables for the periodic forces
 and the periodic peculiar potential by means of Ewald summation (done in
 parallel). As this computation takes a bit of time, these tables will be stored
@@ -1441,7 +1440,7 @@ compiled with the PERIODIC makefile option for periodic boundaries,
 otherwise it will complain and stop. (Actually, this parameter may be
 viewed as redundant given that the same option is specified in the makefile,
 but it is kept to make sure that you run your simulation always with
-the ‘right’ executable.) When you use periodic boundary conditions for the
+the 'right' executable.) When you use periodic boundary conditions for the
 first time, GADGET-2 will compute correction tables for the periodic forces
 and the periodic peculiar potential by means of Ewald summation (done in
 parallel). As this computation takes a bit of time, these tables will be stored
@@ -1454,12 +1453,12 @@ on disk to speed-up the start of the code in future runs.</description>
         <name>HubbleParam</name>
         <datatype>string</datatype>
         <cardinality>0..1</cardinality>
-        <description>Value of the Hubble constant in units of 100kms¡1Mpc¡1. This is only
+        <description>Value of the Hubble constant in units of 100kms/1Mpc/1. This is only
 used in cosmological integrations when conversions to cgs units are required
 (e.g. for radiative cooling physics). Note however that the value of
 HubbleParam is not needed (in fact, it does not enter the computation at
 all) in purely collisionless simulations. This is because of the definition of
-GADGET-2’s system of units, which eliminates an explicit appearance of
+GADGET-2's system of units, which eliminates an explicit appearance of
 the value of the Hubble constant in the dynamical equations.</description>
     </parameter>
     <parameter>
@@ -1498,7 +1497,7 @@ the full-physics version of GADGET-2), it has been kept in the code.</descriptio
         <description>This specifies the size (in MByte) of a multi-purpose communication buffer
 used by the code in various parts of the parallel algorithms, for example
 during the force computation and the domain decomposition. The buffer
-should be large enough to accommodate a ‘fair’ fraction of the particle mix
+should be large enough to accommodate a "fair" fraction of the particle mix
 in order to minimise work-load imbalance losses. In practice, sizes between
 a few to 100 MB offer enough room. Upon start-up, the code informs about
 how many particles can be fitted into the communication structures during
@@ -1521,7 +1520,7 @@ imbalance, and the code will observe this limit in the domain decomposition,
 trying to achieve the best work-load balance within this bound. It is
 good to make PartAllocFactor as large as possible for the available
 memory per processor, but values in excess of 3 will usually not improve
-performance any more. The recommended minimum value is » 1:05, but
+performance any more. The recommended minimum value is 1.5, but
 practical choices should be more like 1.5-2.0. For a value of 1:0 the code
 will not be able to succeed in the domain decomposition and crash, unless
 a single CPU is used.</description>
@@ -1532,8 +1531,8 @@ a single CPU is used.</description>
         <datatype>string</datatype>
         <cardinality>1</cardinality>
         <description>This selects the type of cell-opening criterion used in the tree walks for
-computing gravitational forces. A value of ‘0’ results in standard Barnes
-&amp; Hut, while ‘1’ selects a relative criterion that tries to limit the absolute
+computing gravitational forces. A value of 0 results in standard Barnes
+&amp; Hut, while 1 selects a relative criterion that tries to limit the absolute
 truncation error of the multipole expansion for every particle-cell interaction.
 This scheme gives usually higher accuracy at a comparable level of
 computational cost, something that makes it more costly at high redshift
@@ -1547,8 +1546,8 @@ because of the small residual forces there.</description>
         <datatype>string</datatype>
         <cardinality>1</cardinality>
         <description>This selects the type of cell-opening criterion used in the tree walks for
-computing gravitational forces. A value of ‘0’ results in standard Barnes
-&amp; Hut, while ‘1’ selects a relative criterion that tries to limit the absolute
+computing gravitational forces. A value of 0 results in standard Barnes
+&amp; Hut, while 1 selects a relative criterion that tries to limit the absolute
 truncation error of the multipole expansion for every particle-cell interaction.
 This scheme gives usually higher accuracy at a comparable level of
 computational cost, something that makes it more costly at high redshift
@@ -1561,7 +1560,7 @@ because of the small residual forces there.</description>
         <name>ErrTolTheta</name>
         <datatype>real</datatype>
         <cardinality>0..1</cardinality>
-        <description>This is the accuracy criterion (the opening angle µ) of the tree algorithm
+        <description>This is the accuracy criterion (the opening angle mu) of the tree algorithm
 if the standard Barnes &amp; Hut (BH) opening criterion is used. If
 TypeOfOpeningCriterion=1, theta and the BH criterion are only used
 for the first force computation. These first forces are only used as input for
@@ -1626,11 +1625,11 @@ timesteps for all particles.</description>
 dynamics. In GADGET-1, there have been 5 possible criteria
 for this. However, upon systematic testing with high-resolution simulations,
 none of them showed a clearly superior performance compared with
-the ‘standard’ criterion used traditionally in cosmological simulations (see
+the "standard" criterion used traditionally in cosmological simulations (see
 the paper by Powers et al., 2003, MNRAS, 338, 14). Due to this result,
 the choice of timestep criteria in GADGET-2 has been reduced again,
 and only the standard criterion is offered at present. So the only possible
-value for TypeOfTimestepCriterion is ‘0’, which selects a timestep
+value for TypeOfTimestepCriterion is "0", which selects a timestep
 propto 1/sqrt(a), or more precisely, the timestep is given by dt = sqrt(2 eta epsilon/|a|),
 where eta =ErrTolIntAccuracy and epsilon is the gravitational softening
 length.</description>
@@ -1741,7 +1740,7 @@ always produced at the start of the simulation at TimeBegin.</description>
 by the code when generating (reading) snapshot files, or
 when writing (reading) of restart files. Because each processor writes
 its own restart file, it is in principle possible to do this fully in parallel,
-with each processor writing ‘his’ file at the same time. However, for big
+with each processor writing "his" file at the same time. However, for big
 runs, say with 512 processors, a very large number of simultaneous I/O requests
 for large files may cause severe problems for the operating system,
 since the number of available disk drives on the file server will likely be
@@ -1761,14 +1760,14 @@ or smaller than the number of processors used.</description>
         <datatype>real</datatype>
         <cardinality>0..1</cardinality>
         <description>This sets the internal velocity unit in cm=sec. The above choice
-is convenient – it sets the velocity unit to km=sec. Note that
+is convenient - it sets the velocity unit to km=sec. Note that
 the specification of UnitLength in cm, UnitMass in g, and
 UnitVelocity in cm per s also determines the internal unit of time.
 The definitions made above imply that in internal units the Hubble constant
 has a numerical value independent of h and hence HubbleParam. For
 the numerical examples above, the Hubble constant has always the value
 0.1 in internal units, independent of h, and the Hubble time is always 10 in
-internal units, with one internal time unit corresponding to 9:8 £ 108 yr=h.
+internal units, with one internal time unit corresponding to 9.8 10^8 yr=h.
 However, you are free to choose a different system of units if you like.
 Note also that this implies that for purely gravitational dynamics, the code
 will not need to know the value of h at all. HubbleParam is kept in
@@ -1782,7 +1781,7 @@ require it.</description>
         <datatype>real</datatype>
         <cardinality>0..1</cardinality>
         <description>This sets the internal length unit in cm/h, where H0 =
-100 h km s-1 Mpc-1. The default choice (3.085678e21) is convenient – it sets the
+100 h km s-1 Mpc-1. The default choice (3.085678e21) is convenient - it sets the
 length unit to 1.0 kpc=h.</description>
     </parameter>
     <parameter>
@@ -1791,7 +1790,7 @@ length unit to 1.0 kpc=h.</description>
         <datatype>real</datatype>
         <cardinality>0..1</cardinality>
         <description>This sets the internal mass unit in g=h, where H0 = 100 h km/s/Mpc.
-The default choice (1.989e43) is convenient – it sets the mass unit to 10^10M_sun/h.</description>
+The default choice (1.989e43) is convenient - it sets the mass unit to 10^10M_sun/h.</description>
     </parameter>
     <parameter>
         <identity publisherDID="ivo://www.mpa-garching.mpg.de/gadget2#param/GravityConstantInternal" xmlId="PAR_GravityConstantInternal"/>
@@ -1806,8 +1805,8 @@ value corresponding to the physical value of G for you. Sometimes,
 you might want to set G yourself. For example, by specifying
 GravityConstantInternal=1, UnitLength in cm=1,
 UnitMass in g=1, and UnitVelocity in cm per s=1, one obtains
-a ‘natural’ system of units. Note that the code will nevertheless
-try to use the ‘correct’ value of the Hubble constant even in this case, so
+a "natural" system of units. Note that the code will nevertheless
+try to use the "correct" value of the Hubble constant even in this case, so
 you should always set GravityConstantInternal=0 in cosmological
 integrations.</description>
     </parameter>
@@ -1836,7 +1835,7 @@ target value DesNumNgb.</description>
         <name>ArtBulkViscCons</name>
         <datatype>real</datatype>
         <cardinality>1</cardinality>
-        <description>This sets the value of the artificial viscosity parameter ®visc used by
+        <description>This sets the value of the artificial viscosity parameter visc used by
 GADGET-2. See code paper for details.</description>
     </parameter>
     <parameter>
@@ -1845,7 +1844,7 @@ GADGET-2. See code paper for details.</description>
         <datatype>real</datatype>
         <cardinality>1</cardinality>
         <description>This sets the value of the Courant parameter used in the determination of
-the hydrodynamical timestep of SPH particles. Note that GADGET-2’s definition
+the hydrodynamical timestep of SPH particles. Note that GADGET-2's definition
 of the SPH smoothing length differs by a factor of 2 from that found
 in large parts of the SPH literature. As a consequence, comparable settings
 of CourantFac are a factor of 2 smaller in GADGET-2 when compared
