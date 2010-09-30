@@ -75,6 +75,7 @@ CREATE TABLE TargetObjectType (
   
 <!--  Topological sort/depth first ordering of input objectType-s -->
 <!--  From http://www.biglist.com/lists/xsl-list/archives/200101/msg00161.html -->
+<!--  NB does not work with self references in original form, needed to add extra  -->
   <xsl:template name="topsort">
     <xsl:param name="nodes"/>
     <xsl:param name="finished"/>
@@ -126,7 +127,7 @@ CREATE TABLE TargetObjectType (
       </xsl:for-each>
       <xsl:call-template name="topsort">
       <!-- need to add the value types as well as the objecttypes, otherwise when in the context -->
-        <xsl:with-param name="nodes" select="//objectType[not(reference|extends|container)]"/>
+        <xsl:with-param name="nodes" select="//objectType[not(reference[datatype/@xmiidref != ../@xmiid]|extends|container)]"/>
         <xsl:with-param name="finished" select="/.."/>
       </xsl:call-template>    
     </xsl:variable>
