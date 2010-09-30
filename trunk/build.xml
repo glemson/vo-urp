@@ -642,6 +642,11 @@
 			<param name="project_name" expression="${project.name}" />
 		</xslt2>
 
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/ddl/ddl-gen.log" style="${res}/intermediate2ddl.xsl" >
+			<param name="vendor" expression="mysql" />
+			<param name="project_name" expression="${project.name}" />
+		</xslt2>
+		
 		<echo>run_intermediate2ddl : done.</echo>
 	</target>
 
