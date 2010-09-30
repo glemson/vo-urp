@@ -88,7 +88,7 @@ CREATE TABLE TargetObjectType (
     <xsl:if test="count(//objectType)>count($processed)">
       <xsl:variable name="nextnodes"
          select="//objectType[not($processed/@xmiid=@xmiid)
-                 and count(reference)=count(reference[datatype/@xmiidref = $processed/@xmiid])
+                 and count(reference[datatype/@xmiidref != ../@xmiid])=count(reference[datatype/@xmiidref != ../@xmiid and datatype/@xmiidref = $processed/@xmiid])
                  and count(container)=count(container[@xmiidref=$processed/@xmiid])
                  and count(extends)=count(extends[@xmiidref=$processed/@xmiid])]"/>
                  
