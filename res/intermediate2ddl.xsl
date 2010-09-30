@@ -44,7 +44,7 @@ CREATE TABLE TargetObjectType (
   <xsl:import href="common-ddl.xsl"/>
   <xsl:import href="utype.xsl"/>
 
-<!-- possible values: postgres, mssqlserver -->  
+<!-- possible values: postgres, mssqlserver, mysql -->  
   <xsl:param name="vendor"/>
   <xsl:param name="project_name"/>
   
@@ -400,7 +400,9 @@ DROP FOREIGN KEY fk_<xsl:value-of select="$tableName"/>_<xsl:value-of select="na
     <xsl:variable name="tableName">
       <xsl:apply-templates select="." mode="tableName"/>
     </xsl:variable>
+    <xsl:if test="$vendor != 'mysql'">
 ALTER TABLE <xsl:value-of select="$tableName"/> ADD CONSTRAINT pk_<xsl:value-of select="$tableName"/>_<xsl:value-of select="$primaryKeyColumnName"/> PRIMARY KEY(<xsl:value-of select="$primaryKeyColumnName"/>);&cr;&cr;
+</xsl:if>
     
     <xsl:for-each select="reference[not(subsets)]">
 CREATE INDEX ix_<xsl:value-of select="$tableName"/>_<xsl:value-of select="name"/> ON <xsl:value-of select="$tableName"/>(<xsl:apply-templates select="." mode="columnName"/>);&cr;&cr;

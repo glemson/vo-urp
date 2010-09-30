@@ -9,7 +9,7 @@
   
   <xsl:import href="utype.xsl"/>
 
-<!-- possible values: postgres, mssqlserver, sql92 (default) -->  
+<!-- possible values: postgres, mssqlserver, mysql, sql92 (default) -->  
   <xsl:param name="vendor"/>
 
 <!-- Define parameters/variables that can be reused in this script an in others using it (JPA) -->
@@ -31,6 +31,7 @@
     <xsl:choose>
       <xsl:when test="$vendor = 'mssqlserver'">BIGINT IDENTITY NOT NULL</xsl:when>
       <xsl:when test="$vendor = 'postgres'">SERIAL8</xsl:when>
+      <xsl:when test="$vendor = 'mysql'">BIGINT PRIMARY KEY auto_increment NOT NULL</xsl:when>
       <xsl:otherwise>NUMERIC(18)</xsl:otherwise><!-- use SQL92 standard -->
     </xsl:choose>
   </xsl:variable>
@@ -40,6 +41,7 @@
     <xsl:choose>
       <xsl:when test="$vendor = 'mssqlserver'">BIGINT</xsl:when>
       <xsl:when test="$vendor = 'postgres'">BIGINT</xsl:when>
+      <xsl:when test="$vendor = 'mysql'">BIGINT</xsl:when> <!-- MySQL does not get a separate priaray key command -->
       <xsl:otherwise>NUMERIC(18)</xsl:otherwise><!-- use SQL92 standard -->
     </xsl:choose>
   </xsl:variable>
@@ -216,6 +218,7 @@ template in jpa.xsl
         <xsl:choose>
           <xsl:when test="$vendor = 'mssqlserver'">BIT</xsl:when>
           <xsl:when test="$vendor = 'postgres'">BOOLEAN</xsl:when>
+          <xsl:when test="$vendor = 'mysql'">BOOLEAN</xsl:when>
           <xsl:otherwise>[VENDOR_NOT_SUPPORTED]</xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -236,6 +239,7 @@ template in jpa.xsl
       		  <xsl:choose>
               <xsl:when test="$vendor = 'mssqlserver'">FLOAT</xsl:when>
               <xsl:when test="$vendor = 'postgres'">DOUBLE PRECISION</xsl:when>
+              <xsl:when test="$vendor = 'mysql'">DOUBLE</xsl:when>
               <xsl:otherwise>[VENDOR_NOT_SUPPORTED]</xsl:otherwise>
             </xsl:choose>
           </xsl:otherwise>
@@ -262,6 +266,7 @@ template in jpa.xsl
     <xsl:choose>
       <xsl:when test="$vendor = 'mssqlserver'">DATETIME</xsl:when>
       <xsl:when test="$vendor = 'postgres'">TIMESTAMP</xsl:when>
+      <xsl:when test="$vendor = 'mysql'">DATETIME</xsl:when>
       <xsl:otherwise>[VENDOR_NOT_SUPPORTED]</xsl:otherwise>
     </xsl:choose>
   </xsl:template>
