@@ -493,6 +493,9 @@ This XSLT is tested to work on XMI generated with MagicDraw Community Edition v1
         <xsl:if test="$attribute/@maxLength">
           <xsl:element name="maxLength"><xsl:value-of select="$attribute/@maxLength"/></xsl:element>
         </xsl:if>
+        <xsl:if test="$attribute/@length">
+          <xsl:element name="length"><xsl:value-of select="$attribute/@length"/></xsl:element>
+        </xsl:if>
         <xsl:if test="$attribute[@uniqueGlobally = 'true']">
           <xsl:element name="uniqueGlobally">true</xsl:element>
         </xsl:if>
@@ -510,10 +513,18 @@ This XSLT is tested to work on XMI generated with MagicDraw Community Edition v1
     <xsl:param name="xmiid"/>
     <xsl:variable name="attribute" select="/xmi:XMI/IVOA_Profile:skosconcept[@base_Property = $xmiid]"/>
     <xsl:if test="$attribute">
-      <xsl:element name="skosconcept">
+      <xsl:element name="skosconcept" > 
+<!-- 
         <xsl:if test="$attribute/@vocabularyURI">
           <xsl:element name="vocabularyURI"><xsl:value-of select="$attribute/@vocabularyURI"/></xsl:element>
         </xsl:if>
+ -->
+         <xsl:if test="$attribute/@broadestSKOSConcept">
+          <xsl:element name="broadestSKOSConcept"><xsl:value-of select="$attribute/@broadestSKOSConcept"/></xsl:element>
+        </xsl:if>
+         <xsl:for-each select="$attribute/broadestSKOSConcept">
+          <xsl:element name="broadestSKOSConcept"><xsl:value-of select="."/></xsl:element>
+        </xsl:for-each>
       </xsl:element>
     </xsl:if>
   </xsl:template>

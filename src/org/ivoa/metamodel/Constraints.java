@@ -43,9 +43,9 @@ public class Constraints {
 
     @XmlElementRefs({
         @XmlElementRef(name = "maxLength", type = JAXBElement.class),
+        @XmlElementRef(name = "minLength", type = JAXBElement.class),
         @XmlElementRef(name = "uniqueInCollection", type = JAXBElement.class),
         @XmlElementRef(name = "uniqueGlobally", type = JAXBElement.class),
-        @XmlElementRef(name = "minLength", type = JAXBElement.class),
         @XmlElementRef(name = "length", type = JAXBElement.class)
     })
     protected List<JAXBElement<? extends Serializable>> minLengthOrMaxLengthOrLength;
@@ -70,9 +70,9 @@ public class Constraints {
      * Objects of the following type(s) are allowed in the list
      * {@link JAXBElement }{@code <}{@link Boolean }{@code >}
      * {@link JAXBElement }{@code <}{@link Integer }{@code >}
+     * {@link JAXBElement }{@code <}{@link Integer }{@code >}
+     * {@link JAXBElement }{@code <}{@link Integer }{@code >}
      * {@link JAXBElement }{@code <}{@link Boolean }{@code >}
-     * {@link JAXBElement }{@code <}{@link Integer }{@code >}
-     * {@link JAXBElement }{@code <}{@link Integer }{@code >}
      * 
      * 
      */

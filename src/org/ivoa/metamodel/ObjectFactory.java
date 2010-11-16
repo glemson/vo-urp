@@ -38,27 +38,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link SKOSConcept }
+     * 
+     */
+    public SKOSConcept createSKOSConcept() {
+        return new SKOSConcept();
+    }
+
+    /**
+     * Create an instance of {@link Profile }
+     * 
+     */
+    public Profile createProfile() {
+        return new Profile();
+    }
+
+    /**
      * Create an instance of {@link Enumeration.Literal }
      * 
      */
     public Enumeration.Literal createEnumerationLiteral() {
         return new Enumeration.Literal();
-    }
-
-    /**
-     * Create an instance of {@link Attribute }
-     * 
-     */
-    public Attribute createAttribute() {
-        return new Attribute();
-    }
-
-    /**
-     * Create an instance of {@link Package }
-     * 
-     */
-    public Package createPackage() {
-        return new Package();
     }
 
     /**
@@ -78,27 +78,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Model }
+     * Create an instance of {@link Reference }
      * 
      */
-    public Model createModel() {
-        return new Model();
+    public Reference createReference() {
+        return new Reference();
     }
 
     /**
-     * Create an instance of {@link Collection }
+     * Create an instance of {@link Constraints }
      * 
      */
-    public Collection createCollection() {
-        return new Collection();
-    }
-
-    /**
-     * Create an instance of {@link DataType }
-     * 
-     */
-    public DataType createDataType() {
-        return new DataType();
+    public Constraints createConstraints() {
+        return new Constraints();
     }
 
     /**
@@ -110,11 +102,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link OntologyTerm }
+     * Create an instance of {@link Package }
      * 
      */
-    public OntologyTerm createOntologyTerm() {
-        return new OntologyTerm();
+    public Package createPackage() {
+        return new Package();
+    }
+
+    /**
+     * Create an instance of {@link Attribute }
+     * 
+     */
+    public Attribute createAttribute() {
+        return new Attribute();
+    }
+
+    /**
+     * Create an instance of {@link DataType }
+     * 
+     */
+    public DataType createDataType() {
+        return new DataType();
+    }
+
+    /**
+     * Create an instance of {@link Collection }
+     * 
+     */
+    public Collection createCollection() {
+        return new Collection();
     }
 
     /**
@@ -134,27 +150,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Reference }
+     * Create an instance of {@link Model }
      * 
      */
-    public Reference createReference() {
-        return new Reference();
-    }
-
-    /**
-     * Create an instance of {@link Constraints }
-     * 
-     */
-    public Constraints createConstraints() {
-        return new Constraints();
-    }
-
-    /**
-     * Create an instance of {@link Profile }
-     * 
-     */
-    public Profile createProfile() {
-        return new Profile();
+    public Model createModel() {
+        return new Model();
     }
 
     /**

@@ -412,7 +412,8 @@ public final class MetaModelFactory extends SingletonSupport {
 
     try {
       in = FileUtils.getSystemFileInputStream(fileName);
-
+          
+     
       // create an Unmarshaller
       final Unmarshaller u = getJAXBFactory().createUnMarshaller();
 
@@ -438,7 +439,7 @@ public final class MetaModelFactory extends SingletonSupport {
    * @return Model
    * @throws IllegalStateException if the model can not be loaded, unmarshalled or is empty
    */
-  private static Model loadModel(final String file) {
+  public static Model loadModel(final String file) {
     if (log.isInfoEnabled()) {
       log.info("loadModel : file : " + file);
     }
