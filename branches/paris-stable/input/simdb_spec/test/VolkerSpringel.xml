@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p0:aParty xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:p1="http://www.ivoa.net/xml/SimDB_Spec/0.8-20100908/IVOAValueTypes"
+           xmlns:p4="http://www.ivoa.net/xml/SimDB_Spec/0.8-20100908/simdb"
+           xmlns:p3="http://www.ivoa.net/xml/SimDB_Spec/0.8-20100908/simdb/experiment"
+           xmlns:p2="http://www.ivoa.net/xml/SimDB_Spec/0.8-20100908/simdb/protocol"
+           xmlns:p6="http://www.ivoa.net/xml/SimDB_Spec/0.8-20100908/simdb/object"
+           xmlns:p5="http://www.ivoa.net/xml/SimDB_Spec/0.8-20100908/simdb/dal"
+           xmlns:p0="http://www.ivoa.net/xml/SimDB_Spec/0.8-20100908">
+ 
+ 
+   <identity publisherDID="ivo://mpa-garching.mpg.de/volkerspringel"/>
+   <!--A(n) string-->
+   <!--Cardinality : 1-->
+   <name>Volker Springel</name>
+   <!--A(n) string-->
+   <!--Cardinality : 1-->
+   <email>volker@...</email>
+   <!--A(n) string-->
+   <!--Cardinality : 0..1-->
+   <address>..., Heidelberg, Germany</address>
+   <!--A(n) string-->
+   <!--Cardinality : 0..1-->
+   <telephone>+49 (0)...</telephone>
+</p0:aParty>

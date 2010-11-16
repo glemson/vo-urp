@@ -324,6 +324,19 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
         import <xsl:value-of select="$qualifiedtype"/>;
       </xsl:if>
     </xsl:for-each>
+    
+    <!-- special case, import container inherited from base class -->
+    <xsl:variable name="parentContainer"><xsl:call-template name="findParentContainer"><xsl:with-param name="xmiid" select="@xmiid"/></xsl:call-template></xsl:variable>
+    <xsl:if test="string-length($parentContainer) > 0">
+      <xsl:for-each select="key('element',$parentContainer)" >
+        <xsl:if test="./../@xmiid != $thispackageid"> 
+          <xsl:variable name="qualifiedtype">
+            <xsl:call-template name="QualifiedJavaType"><xsl:with-param name="type" select="."/></xsl:call-template>
+          </xsl:variable>
+        import <xsl:value-of select="$qualifiedtype"/>;
+        </xsl:if>
+      </xsl:for-each>
+    </xsl:if>    
   </xsl:template>
 
 

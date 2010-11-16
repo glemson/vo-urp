@@ -32,21 +32,21 @@ import org.eclipse.persistence.jpa.JpaEntityManager;
 import org.eclipse.persistence.jpa.JpaHelper;
 import org.eclipse.persistence.queries.SQLCall;
 import org.eclipse.persistence.sessions.Session;
-import org.ivoa.basic.Value;
-import org.ivoa.basic.Quantity;
+//import org.ivoa.simdb.Value;
+import org.ivoa.simdb.Quantity;
 import org.ivoa.bean.LogSupport;
-import org.ivoa.basic.Cardinality;
+import org.ivoa.simdb.Cardinality;
 import org.ivoa.simdb.Contact;
 import org.ivoa.simdb.ContactRole;
-import org.ivoa.basic.DataType;
-import org.ivoa.jpa.JPAHelper;
+import org.ivoa.simdb.DataType;
+import org.ivoa.simdb.Party;
 import org.ivoa.simdb.experiment.Experiment;
 import org.ivoa.simdb.experiment.ExperimentProperty;
 import org.ivoa.simdb.experiment.ExperimentRepresentationObject;
-import org.ivoa.simdb.experiment.ObjectCollection;
 import org.ivoa.simdb.experiment.ParameterSetting;
+import org.ivoa.simdb.experiment.Product;
 import org.ivoa.simdb.experiment.Statistic;
-import org.ivoa.simdb.experiment.Statistics;
+import org.ivoa.simdb.experiment.StatisticalSummary;
 import org.ivoa.simdb.object.Property;
 import org.ivoa.simdb.object.PropertyGroup;
 import org.ivoa.simdb.object.PropertyGroupMember;
@@ -57,9 +57,9 @@ import org.ivoa.simdb.protocol.Protocol;
 import org.ivoa.simdb.protocol.RepresentationObject;
 import org.ivoa.simdb.protocol.RepresentationObjectType;
 import org.ivoa.util.CollectionUtils;
+import org.ivoa.util.timer.AbstractTimer;
 import org.ivoa.util.timer.TimerFactory;
 import org.vo.urp.test.jaxb.XMLTests;
-
 
 /**
  * Database Tests
@@ -77,8 +77,6 @@ public final class DBTests extends LogSupport implements ApplicationMain {
   private final static int POOL_THREADS = 10;
   /** testLOAD_BATCH_WRITE jobs wait */
   private final static int WRITE_WAIT_SECONDS = 120;
-  /** number of Snapshot tp create in testHUGESnapshotCollection() */
-  private final static int SNAPSHOT_LEN = 30 * 1000;
   /** XMLTests */
   private XMLTests xmlTest = new XMLTests();
   /** InspectorTests */
@@ -95,6 +93,15 @@ public final class DBTests extends LogSupport implements ApplicationMain {
    * test PDR protocol file
    */
   public static final String PROTOCOL_FILE_PDR = XMLTests.TEST_PATH + "PDR_protocol" + XMLTests.XML_EXT;
+  /**
+   * test Party-from-Paris file
+   */
+  public static final String PARTY_FROM_PARIS = XMLTests.TEST_PATH + "PartyFromParis" + XMLTests.XML_EXT;
+  /**
+   * test VolkerSpringel file
+   */
+  public static final String PARTY_VOLKER_SPRINGEL = XMLTests.TEST_PATH + "VolkerSpringel" + XMLTests.XML_EXT;
+
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
   /**
@@ -163,19 +170,15 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       close(em);
     }
 
-
-    if (false) {
-      final Long simId = testWRITE(jf);
-      // test the creation (batch) of a very big snapshot collection :
-      testHUGESnapshotCollection(jf, simId);
-    }
+    testWRITE(jf);
 
     // Gerard : load XML -> JPA -> database test case :
 
     // Loads & write an xml instance :
-//    testLOAD_WRITE(jf, PROTOCOL_FILE_GADGET2);
-    testLOAD_WRITE(jf, PROTOCOL_FILE_PDR);
-    testLOAD_WRITE(jf, PROTOCOL_FILE_HALOMAKER);
+
+    //    testLOAD_WRITE(jf, PROTOCOL_FILE_GADGET2);
+    testLOAD_WRITE(jf, PARTY_FROM_PARIS, PROTOCOL_FILE_PDR);
+    testLOAD_WRITE(jf, null,PROTOCOL_FILE_HALOMAKER);
 
     // Batch writes :
 //    testLOAD_BATCH_WRITE(jf, PROTOCOL_FILE_GADGET2);
@@ -193,9 +196,8 @@ public final class DBTests extends LogSupport implements ApplicationMain {
    * TODO : Method Description
    *
    * @param jf
-   * @return experiment id or null if failure
    */
-  public Long testWRITE(final JPAFactory jf) {
+  public void testWRITE(final JPAFactory jf) {
     log.warn("DBTests.testWRITE : enter");
 
     EntityManager em = null;
@@ -229,12 +231,14 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       simulator.setVersion("v1.2.3");
 
       // Resource references : set main contact party
-      Contact me = new Contact(simulator);
+      Party me = new Party();
       me.setAddress("Somewhere in the world");
       me.setName("Its Me");
       me.setEmail("me@cool.simulators");
       me.setTelephone("+1 234 567 890");
-      me.setRole(ContactRole.OWNER);
+      Contact cme = new Contact(simulator);
+      cme.setRole(ContactRole.OWNER);
+      cme.setParty(me);
 
       // Protocol references : none
 
@@ -259,7 +263,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       // Field attributes :
       param.setName("box size");
       param.setDescription("size of the cubic box");
-      param.setDatatype(DataType.FLOAT);
+      param.setDatatype(DataType.REAL);
       param.setCardinality(Cardinality.ONE);
       param.setIsEnumerated(false);
 
@@ -277,7 +281,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       // Field attributes :
       param.setName("lambda");
       param.setDescription("lambda");
-      param.setDatatype(DataType.FLOAT);
+      param.setDatatype(DataType.REAL);
       param.setCardinality(Cardinality.ONE);
       param.setIsEnumerated(false);
 
@@ -295,7 +299,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       // Field attributes :
       param.setName("hubble constant");
       param.setDescription("hubble constant");
-      param.setDatatype(DataType.FLOAT);
+      param.setDatatype(DataType.REAL);
       param.setCardinality(Cardinality.ONE);
       param.setIsEnumerated(false);
 
@@ -336,12 +340,12 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       // Field attributes :
       propDM.setName("x");
       propDM.setDescription("X (cartesian) coordinate of the particle in the cubic box");
-      propDM.setDatatype(DataType.DOUBLE);
+      propDM.setDatatype(DataType.REAL);
       propDM.setCardinality(Cardinality.ONE);
       propDM.setIsEnumerated(false);
 
       // Property attributes :
-      propDM.setUcd("pos.cartesian.x");
+      propDM.setLabel("pos.cartesian.x");
 
       ppgm = new PropertyGroupMember(propGroup);
       ppgm.setProperty(propDM);
@@ -355,12 +359,12 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       // Field attributes :
       propDM.setName("y");
       propDM.setDescription("Y (cartesian) coordinate of the particle in the cubic box");
-      propDM.setDatatype(DataType.DOUBLE);
+      propDM.setDatatype(DataType.REAL);
       propDM.setCardinality(Cardinality.ONE);
       propDM.setIsEnumerated(false);
 
       // Property attributes :
-      propDM.setUcd("pos.cartesian.y");
+      propDM.setLabel("pos.cartesian.y");
 
       ppgm = new PropertyGroupMember(propGroup);
       ppgm.setProperty(propDM);
@@ -374,12 +378,12 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       // Field attributes :
       propDM.setName("z");
       propDM.setDescription("Z (cartesian) coordinate of the particle in the cubic box");
-      propDM.setDatatype(DataType.DOUBLE);
+      propDM.setDatatype(DataType.REAL);
       propDM.setCardinality(Cardinality.ONE);
       propDM.setIsEnumerated(false);
 
       // Property attributes :
-      propDM.setUcd("pos.cartesian.z");
+      propDM.setLabel("pos.cartesian.z");
 
       ppgm = new PropertyGroupMember(propGroup);
       ppgm.setProperty(propDM);
@@ -393,12 +397,12 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       // Field attributes :
       propDM.setName("virial mass");
       propDM.setDescription("Virial mass of the local dark matter");
-      propDM.setDatatype(DataType.DOUBLE);
+      propDM.setDatatype(DataType.REAL);
       propDM.setCardinality(Cardinality.ONE);
       propDM.setIsEnumerated(false);
 
       // Property attributes :
-      propDM.setUcd("phys.mass");
+      propDM.setLabel("phys.mass");
 
 
       log.error("DBTests.testWRITE : Simulator : " + simulator.deepToString());
@@ -442,16 +446,16 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
       // ParameterSettings :
       for (InputParameter p : simulator.getParameter()) {
-        if (p.getDatatype().equals(DataType.FLOAT)) {
-          ParameterSetting np = new ParameterSetting(simulation);
+        if (p.getDatatype().equals(DataType.REAL)) {
+         ParameterSetting np = new ParameterSetting(simulation);
 
           np.setInputParameter(p);
 
           Quantity value = new Quantity();
           value.setValue(100d * Math.random());
 
-          np.setValue(new Value());
-          np.getValue().setAsQuantity(value);
+          np.setNumericValue(value);//Value( (new Value());
+          //np.getValue().setAsQuantity(value);
 
           simulation.addParameter(np);
         }
@@ -469,9 +473,11 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       }
 
       // Snapshots :
-      for (int i = 0; i < 5; i++) {
-        addSnapshot(simulation, i);
-      }
+      addSnapshot(simulation, Integer.valueOf(1));
+      addSnapshot(simulation, Integer.valueOf(2));
+      addSnapshot(simulation, Integer.valueOf(3));
+      addSnapshot(simulation, Integer.valueOf(4));
+      addSnapshot(simulation, Integer.valueOf(5));
 
       log.error("DBTests.testWRITE : Simulation : " + simulation.deepToString());
 
@@ -520,97 +526,20 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       final Experiment loadedObject = (Simulation) testREAD(jf, Experiment.class, id);
       xmlTest.saveMarshall(loadedObject, XMLTests.TEST_PATH + "testSim-out" + XMLTests.XML_EXT);
     }
-
-    return id;
   }
 
-  private void testHUGESnapshotCollection(final JPAFactory jf, final Long expId) {
-
-    log.warn("DBTests.testHUGESnapshots : enter");
-
-    EntityManager em = null;
-    Long id = null;
-
-    try {
-      em = jf.getEm();
-      // starts TX :
-      // starts transaction on snap database :
-      log.warn("DBTests.testHUGESnapshots : starting TX ...");
-      em.getTransaction().begin();
-
-      long start = System.nanoTime();
-
-      Simulation experiment = (Simulation) JPAHelper.findSingleByNamedQuery(
-          em,
-          "Experiment.findById",
-          "id",
-          expId);
-
-      // Snapshots :
-      int i;
-      for (i = 1; i < SNAPSHOT_LEN; i++) {
-        if (i % 100 == 0) {
-          log.warn("DBTests.testHUGESnapshots : " + i);
-
-          em.getTransaction().commit();
-          em.close();
-
-          log.warn("DBTests.testHUGESnapshots : " + i + " = " + ((System.nanoTime() - start) / 1000000L) + " ms.");
-
-          em = jf.getEm();
-          em.getTransaction().begin();
-
-          start = System.nanoTime();
-
-          experiment = (Simulation) JPAHelper.findSingleByNamedQuery(
-              em,
-              "Experiment.findById",
-              "id",
-              expId);
-        }
-        addSnapshot(experiment, i);
-      }
-
-      log.warn("DBTests.testHUGESnapshots : " + i);
-
-      em.getTransaction().commit();
-
-      log.warn("DBTests.testHUGESnapshots : " + i + " = " + ((System.nanoTime() - start) / 1000000L) + " ms.");
-
-    } catch (final RuntimeException re) {
-      log.error("DBTests.testHUGESnapshots : runtime failure : ", re);
-
-      // if connection failure => em is null :
-      if (em.getTransaction().isActive()) {
-        log.warn("DBTests.testHUGESnapshots : rollbacking TX ...");
-        em.getTransaction().rollback();
-        log.warn("DBTests.testHUGESnapshots : TX rollbacked.");
-      }
-
-      throw re;
-    } finally {
-      close(em);
-    }
-
-    log.warn("DBTests.testHUGESnapshots : exit : " + id);
-
-  }
-
-  private void addSnapshot(final Simulation simulation, final int position) {
+  private void addSnapshot(final Simulation simulation, final Integer num) {
 
     Quantity time, space;
+    ExperimentProperty ep = null;
 
-    /*
-     * To avoid performance problems due to collection size i.e. avoid fetch all collection items (out of memory),
-     * set the rank value manually (collection index position) to keep the collection ordered
-     */
-    final Snapshot snapshot = new Snapshot(simulation, position);
+    final Snapshot snapshot = new Snapshot(simulation);
 
-    snapshot.setPublisherDID(simulation.getPublisherDID() + "_" + position);
+    snapshot.setPublisherDID(simulation.getPublisherDID() + "_" + num);
 
     time = new Quantity();
 
-    time.setValue(3d * position);
+    time.setValue(3d * num.intValue());
     time.setUnit("Gyr");
     snapshot.setTime(time);
 
@@ -621,29 +550,29 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
     snapshot.setSpatialSizePhysical(space);
 
-    ObjectCollection col = null;
-    Statistics cha = null;
+    Product col = null;
+    StatisticalSummary cha = null;
     Quantity n;
-    Value v;
+    //Value v;
 
     for (ExperimentRepresentationObject rep : simulation.getRepresentationObject()) {
       // for all
-      col = new ObjectCollection(snapshot);
+      col = new Product(snapshot);
       col.setObjectType(rep.getType());
-      col.setNumberOfObjects(new Long(position * 113));
+      col.setNumberOfObjects((long)num.intValue() * 113);
 
       for (ExperimentProperty prop : rep.getProperty()) {
-        cha = new Statistics(col);
-        cha.setType(Statistic.MEAN);
+        cha = new StatisticalSummary(col);
+        cha.setStatistic(Statistic.MEAN);
         cha.setAxis(prop.getProperty());
 
-        v = new Value();
+        //v = new Value();
         n = new Quantity();
         n.setValue(1000 * Math.random());
 
-        v.setAsQuantity(n);
-        cha.setValue(v);
-
+        //v.setAsQuantity(n);
+        cha.setNumericValue(n);
+        
       }
     }
   }
@@ -686,7 +615,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
    * @param jf
    * @param xmlDocumentPath
    */
-  public void testLOAD_WRITE(final JPAFactory jf, final String xmlDocumentPath) {
+  public void testLOAD_WRITE(final JPAFactory jf, final String partyXMLDocumentPath, final String xmlDocumentPath) {
     log.warn("DBTests.testLOAD_WRITE : enter");
 
     EntityManager em = null;
@@ -701,6 +630,21 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
       ReferenceResolver.initContext(em);
 
+      if (partyXMLDocumentPath != null) {
+        log.warn("DBTests.testLOAD_WRITE on party@ " + partyXMLDocumentPath);
+        final MetadataObject partyFromParis = xmlTest
+            .testUnMashall(partyXMLDocumentPath);
+
+        log.error("DBTests.testLOAD_WRITE : partyFromParis after unmarshall : "
+            + partyFromParis.deepToString());
+
+        em.persist(partyFromParis);
+        em.getTransaction().commit();
+        em.getTransaction().begin();
+
+      }
+      
+      log.warn("DBTests.testLOAD_WRITE on document@ "+xmlDocumentPath);
       final MetadataObject simulator = xmlTest.testUnMashall(xmlDocumentPath);
 
       log.error("DBTests.testLOAD_WRITE : Simulator after unmarshall : " + simulator.deepToString());
@@ -745,7 +689,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       throw re;
     } finally {
       close(em);
-
+      
       // free resolver context (thread local) :
       ReferenceResolver.freeContext();
     }
@@ -916,6 +860,11 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
       ReferenceResolver.initContext(em);
 
+      final List<MetadataRootEntityObject> partyList = new ArrayList<MetadataRootEntityObject>();
+      partyList.add((MetadataRootEntityObject) xmlTest.testUnMashall(PARTY_VOLKER_SPRINGEL));
+
+      dm.persist(partyList, "testuser");
+      
       final List<MetadataRootEntityObject> simList = new ArrayList<MetadataRootEntityObject>();
       for (int i = 0; i < WRITE_ITERATION; i++) {
         simList.add((MetadataRootEntityObject) xmlTest.testUnMashall(xmlDocumentPath));
@@ -945,7 +894,6 @@ public final class DBTests extends LogSupport implements ApplicationMain {
     log.warn("DBTests.testLOAD_BATCH_WRITE_SINGLE_TRANSACTION : exit");
   }
 
-
   private static final class WriteJob implements Runnable {
 
     private final DBTests test;
@@ -974,4 +922,3 @@ public final class DBTests extends LogSupport implements ApplicationMain {
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
-

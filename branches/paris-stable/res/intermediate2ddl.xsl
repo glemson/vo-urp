@@ -44,7 +44,7 @@ CREATE TABLE TargetObjectType (
   <xsl:import href="common-ddl.xsl"/>
   <xsl:import href="utype.xsl"/>
 
-<!-- possible values: postgres, mssqlserver -->  
+<!-- possible values: postgres, mssqlserver, mysql -->  
   <xsl:param name="vendor"/>
   <xsl:param name="project_name"/>
   
@@ -75,6 +75,7 @@ CREATE TABLE TargetObjectType (
   
 <!--  Topological sort/depth first ordering of input objectType-s -->
 <!--  From http://www.biglist.com/lists/xsl-list/archives/200101/msg00161.html -->
+<!--  NB does not work with self references in original form, needed to add extra  -->
   <xsl:template name="topsort">
     <xsl:param name="nodes"/>
     <xsl:param name="finished"/>
@@ -87,7 +88,7 @@ CREATE TABLE TargetObjectType (
     <xsl:if test="count(//objectType)>count($processed)">
       <xsl:variable name="nextnodes"
          select="//objectType[not($processed/@xmiid=@xmiid)
-                 and count(reference)=count(reference[datatype/@xmiidref = $processed/@xmiid])
+                 and count(reference[datatype/@xmiidref != ../@xmiid])=count(reference[datatype/@xmiidref != ../@xmiid and datatype/@xmiidref = $processed/@xmiid])
                  and count(container)=count(container[@xmiidref=$processed/@xmiid])
                  and count(extends)=count(extends[@xmiidref=$processed/@xmiid])]"/>
                  
@@ -126,7 +127,7 @@ CREATE TABLE TargetObjectType (
       </xsl:for-each>
       <xsl:call-template name="topsort">
       <!-- need to add the value types as well as the objecttypes, otherwise when in the context -->
-        <xsl:with-param name="nodes" select="//objectType[not(reference|extends|container)]"/>
+        <xsl:with-param name="nodes" select="//objectType[not(reference[datatype/@xmiidref != ../@xmiid]|extends|container)]"/>
         <xsl:with-param name="finished" select="/.."/>
       </xsl:call-template>    
     </xsl:variable>
@@ -400,7 +401,9 @@ DROP FOREIGN KEY fk_<xsl:value-of select="$tableName"/>_<xsl:value-of select="na
     <xsl:variable name="tableName">
       <xsl:apply-templates select="." mode="tableName"/>
     </xsl:variable>
+    <xsl:if test="$vendor != 'mysql'">
 ALTER TABLE <xsl:value-of select="$tableName"/> ADD CONSTRAINT pk_<xsl:value-of select="$tableName"/>_<xsl:value-of select="$primaryKeyColumnName"/> PRIMARY KEY(<xsl:value-of select="$primaryKeyColumnName"/>);&cr;&cr;
+</xsl:if>
     
     <xsl:for-each select="reference[not(subsets)]">
 CREATE INDEX ix_<xsl:value-of select="$tableName"/>_<xsl:value-of select="name"/> ON <xsl:value-of select="$tableName"/>(<xsl:apply-templates select="." mode="columnName"/>);&cr;&cr;

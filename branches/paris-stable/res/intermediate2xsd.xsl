@@ -38,7 +38,7 @@
   
   <xsl:variable name="base-prefix">base</xsl:variable>
   <xsl:variable name="base-schemanamespace" select="'http://www.ivoa.net/xml/dm/base/v0.1'"/>
-  <xsl:variable name="base-schemalocation" select="concat($schemalocation_root,'base.xsd')"/>
+  <xsl:variable name="base-schemalocation" select="'http://vo-urp.googlecode.com/svn/trunk/xsd/base.xsd'"/>
   
   <xsl:variable name="referenceType" select="concat($base-prefix,':Reference')"/>
 
