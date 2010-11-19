@@ -612,6 +612,7 @@ Should do a tranformation if the nameis not suite for this (spaces etc).
           <xsl:when test="$type/name = 'double'">xsd:double</xsl:when>
           <xsl:when test="$type/name = 'datetime'">xsd:dateTime</xsl:when>
           <xsl:when test="$type/name = 'string'">xsd:string</xsl:when>
+          <xsl:when test="$type/name = 'anyURI'">xsd:anyURI</xsl:when>
           <xsl:otherwise>xsd:string</xsl:otherwise>
         </xsl:choose>
       </xsl:when>
