@@ -46,19 +46,7 @@
                     <encoding>UTF-8</encoding>
                 </source-folder>
                 <source-folder>
-                    <label>libs\jalopy\src</label>
-                    <type>java</type>
-                    <location>libs/jalopy/src</location>
-                    <encoding>UTF-8</encoding>
-                </source-folder>
-                <source-folder>
-                    <label>deprecated-src</label>
-                    <type>java</type>
-                    <location>deprecated-src</location>
-                    <encoding>UTF-8</encoding>
-                </source-folder>
-                <source-folder>
-                    <label>JobRunner\src</label>
+                    <label>JobRunner/src</label>
                     <type>java</type>
                     <location>JobRunner/src</location>
                     <encoding>UTF-8</encoding>
@@ -78,11 +66,6 @@
                     <target>debug</target>
                 </action>
             </ide-actions>
-            <export>
-                <type>folder</type>
-                <location>libs/jalopy/bin</location>
-                <build-target>makeOutput</build-target>
-            </export>
             <export>
                 <type>jar</type>
                 <location>input/simdb/dist/SimDB-test.jar</location>
@@ -126,15 +109,7 @@
                         <location>input/simdb/test/java</location>
                     </source-folder>
                     <source-folder style="packages">
-                        <label>libs\jalopy\src</label>
-                        <location>libs/jalopy/src</location>
-                    </source-folder>
-                    <source-folder style="packages">
-                        <label>deprecated-src</label>
-                        <location>deprecated-src</location>
-                    </source-folder>
-                    <source-folder style="packages">
-                        <label>JobRunner\src</label>
+                        <label>JobRunner/src</label>
                         <location>JobRunner/src</location>
                     </source-folder>
                     <source-file>
@@ -153,15 +128,12 @@
         <java-data xmlns="http://www.netbeans.org/ns/freeform-project-java/2">
             <compilation-unit>
                 <package-root>src</package-root>
-                <package-root>libs/jalopy/src</package-root>
                 <package-root>input/simdb/output/java/src</package-root>
                 <package-root>input/simdb/test/java</package-root>
                 <package-root>webapp/vo-urp-browser/src</package-root>
-                <package-root>deprecated-src</package-root>
                 <package-root>test</package-root>
                 <package-root>JobRunner/src</package-root>
-                <classpath mode="compile">libs/commons-logging-1.1.1.jar;libs/activation.jar;libs/log4j-1.2.15.jar;libs/commons-dbutils-1.1.jar;libs/commons-fileupload-1.2.1.jar;libs/commons-httpclient-3.1.jar;libs/commons-io-1.3.2.jar;libs/jaxb-api-2.1.jar;libs/jaxb-impl-2.1.6.jar;libs/jaxb-xjc-2.1.6.jar;libs/jsr173_1.0_api.jar;libs/saxon9-s9api.jar;libs/saxon9.jar;libs/jalopy/lib/jalopy-1.5b1.jar;webapp/vo-urp-browser/lib/commons-fileupload-1.2.1.jar;webapp/vo-urp-browser/lib/commons-io-1.3.2.jar;webapp/vo-urp-browser/lib/jstl.jar;webapp/vo-urp-browser/lib/standard.jar;webapp/vo-urp-browser/lib/server/jsp-api.jar;webapp/vo-urp-browser/lib/server/servlet-api.jar;libs/eclipselink-2.0.2.jar;libs/javax.persistence_2.0.0.jar</classpath>
-                <built-to>libs/jalopy/bin</built-to>
+                <classpath mode="compile">libs/commons-logging-1.1.1.jar:libs/log4j-1.2.16.jar:libs/activation.jar:libs/jaxb-api.jar:libs/jaxb-impl.jar:libs/jsr173_1.0_api.jar:libs/eclipselink.jar:libs/javax.persistence_2.0.3.jar:libs/saxon9-s9api.jar:libs/saxon9.jar:webapp/vo-urp-browser/lib/commons-fileupload-1.2.1.jar:webapp/vo-urp-browser/lib/commons-io-1.3.2.jar:webapp/vo-urp-browser/lib/jstl.jar:webapp/vo-urp-browser/lib/standard.jar:webapp/vo-urp-browser/lib/server/jsp-api.jar:webapp/vo-urp-browser/lib/server/servlet-api.jar</classpath>
                 <built-to>input/simdb/dist/SimDB-test.jar</built-to>
                 <built-to>input/simdb/dist/SimDB-weave.jar</built-to>
                 <built-to>input/simdb/dist/SimDB.jar</built-to>
