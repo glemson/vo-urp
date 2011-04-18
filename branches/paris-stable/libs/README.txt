@@ -1,4 +1,4 @@
-Laurent Bourges - May 12, 2008
+Laurent Bourges - March 13, 2011
 
 ---------------------------------------
    Distributed librairies
@@ -9,7 +9,8 @@ This folder and sub folders contains java libraries used by ant build file and j
 
 * Saxon B : 
       - saxon9.jar
-      - saxonb9-0-0-4j.zip
+      - saxon9-s9api.jar
+      (saxonb9-0-0-4j.zip)
 
     "The latest open-source implementation of XSLT 2.0 and XPath 2.0, and XQuery 1.0. 
     This provides the "basic" conformance level of these languages: in effect, this provides all the features 
@@ -32,19 +33,6 @@ This folder and sub folders contains java libraries used by ant build file and j
     License agreement : see ./apache_LICENSE-2.0.txt
 
 
-    - Apache Commons DbUtils: JDBC Utility Component
-
-      "DbUtils is a small set of classes designed to make working with JDBC easier. 
-      
-      JDBC resource cleanup code is mundane, error prone work so these classes abstract out all of the cleanup tasks 
-      from your code leaving you with what you really wanted to do with JDBC in the first place: query and update data.
-      ..."
-
-      Usage : this library may be useful to make SQL queries for TAP (soon) ...
-
-      http://commons.apache.org/dbutils/
-
-
     - Jakarta Commons Logging 1.1.1 :
       - commons-logging-1.1.1.jar
 
@@ -63,8 +51,8 @@ This folder and sub folders contains java libraries used by ant build file and j
       http://commons.apache.org/logging/
 
 
-    - Log4j 1.2.15 :
-      - log4j-1.2.15.jar
+    - Log4j 1.2.16 :
+      - log4j-1.2.16.jar
 
       "Welcome to Apache Logging Services
 
@@ -82,28 +70,21 @@ This folder and sub folders contains java libraries used by ant build file and j
 
 
 
-* Eclipselink - 1.1 :
-    License agreement : see ./eclipselink_license.html
+* Eclipselink - 2.2 :
+	Specification-Title: Eclipse Persistence Services
+	Specification-Vendor: Eclipse.org - EclipseLink Project
+	Specification-Version: 2.2.0
+	Implementation-Title: org.eclipse.persistence
+	Implementation-Vendor: Eclipse.org - EclipseLink Project
+	Implementation-Version: 2.2.0.v20110202-r8913
+	Release-Designation: EclipseLink 2.2.0
 
-      - eclipselink.jar (1.1.1)
-      - javax.persistence_1.0.0.jar
+    License agreement : see eclipselink_license.html
 
-      "The  Eclipse Persistence Services Project (EclipseLink)  project's goal is to provide a complete persistence framework 
-      that is both comprehensive and universal. It will run in any Java environment and read and write objects to virtually any 
-      type of data source, including relational databases, XML, or EIS systems. EclipseLink will focus on providing leading edge
-      support, including advanced feature extensions, for the dominant persistence standards for each target data source; 
-      Java Persistence API (JPA) for relational databases, Java API for XML Binding (JAXB) for XML, Java Connector Architecture 
-      (JCA) for EIS and other types of legacy systems, and Service Data Objects (SDO).
-      ..."
+      - eclipselink.jar (2.2.0)
+      - javax.persistence_2.0.3.jar
 
-      "Eclipse Announces EclipseLink Project to Deliver JPA 2.0 Reference Implementation
-        Open Source Persistence Framework Builds on Contribution from Oracle
-        EclipseCon 2008, SANTA CLARA, CA � March 17, 2008 � The Eclipse Foundation today announced that Sun, the lead for the 
-      Java(TM) Persistence API (JPA) 2.0, JSR 317 standard has selected the EclipseLink project as the reference implementation. 
-      The Eclipse Persistence Services Project (EclipseLink), led by Oracle, delivers an open source runtime framework supporting 
-      key persistence standards. The EclipseLink project provides a rich set of services that address complex mapping, performance 
-      and scalability and advanced functionality required for enterprise Java applications.
-      ..."
+     "The EclipseLink project's goal is to provide a complete persistence framework that is both comprehensive and universal. It will run in any Java environment and read and write objects to virtually any type of data source, including relational databases, and XML. EclipseLink will focus on providing leading edge support, including advanced feature extensions, for the dominant persistence standards for each target data source; Java Persistence API (JPA) for relational databases, Java API for XML Binding (JAXB) for XML, Service Data Objects (SDO), and Database Web services (DBWS)."
 
       Usage : this library is used as the persistence layer in Java code.
 
@@ -112,12 +93,21 @@ This folder and sub folders contains java libraries used by ant build file and j
 
 
 
-* Java Architecture for XML Binding 2.1 = JAXB Reference Implementation 2.1.6
-    License agreement : see ./JAXB-RI-CDDL+GPL.html
+* Java Architecture for XML Binding 2.2 = JAXB Reference Implementation 2.2.3
+	Specification-Title: Java Architecture for XML Binding
+	Specification-Version: 2.2.2
+	Specification-Vendor: Oracle Corporation
+	Implementation-Title: JAXB Reference Implementation 
+	Implementation-Version: 2.2.3
+	Implementation-Vendor: Oracle Corporation
+	Implementation-Vendor-Id: com.sun
+	Extension-Name: com.sun.xml.bind
+	Build-Id: hudson-jaxb-ri-2.2.3-3
 
-      - jaxb-api-2.1.jar          : JAXB 2.1 API
-      - jaxb-impl-2.1.6.jar       : JAXB 2.1.6 RI Implementation
-      - jaxb-xjc-2.1.6.jar        : JAXB XJC
+    License agreement : see JAXB-RI-License.txt and JAXB-RI-ThirdPartyLicenseReadme.txt
+
+      - jaxb-api.jar              : JAXB 2.2 API
+      - jaxb-impl.jar             : JAXB 2.2.3 RI Implementation
 
       - activation.jar            : JavaBeans(TM) Activation Framework Specification
       - jsr173_1.0_api.jar (StaX) : Streaming API for XML
@@ -138,11 +128,12 @@ This folder and sub folders contains java libraries used by ant build file and j
       Usage : this library is used as the XML Marshaller / Unmarshaller for XML documents in Java code.
 
       https://jaxb.dev.java.net/
-      https://jaxb.dev.java.net/nonav/2.1.6/docs/ReleaseNotes.html
+
+
 
 
 * jalopy-1.5b1.jar 
-			Built from Jalopy source code obtained from http://sourceforge.net/projects/jalopy/
+      Built from Jalopy source code obtained from http://sourceforge.net/projects/jalopy/
 			
 
 
