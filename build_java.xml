@@ -536,7 +536,7 @@ Optional
     <arg value="${jalopyConvention}"/>
     
     <classpath>
-      <pathelement location="${libs}/log4j-1.2.15.jar" />
+      <pathelement location="${libs}/log4j-1.2.16.jar" />
       <pathelement location="${libs}/jalopy/bin"/>
       <!-- use gerard patched 1.5.b1 version (enum problem present) -->
       <pathelement location="${libs}/jalopy/lib/jalopy-1.5b1.jar"/>
@@ -564,7 +564,7 @@ Optional
     <arg value="${jalopyConvention_1.5c3}"/>
 
     <classpath>
-      <pathelement location="${libs}/log4j-1.2.15.jar" />
+      <pathelement location="${libs}/log4j-1.2.16.jar" />
       <pathelement location="${libs}/jalopy/bin"/>
       <!-- use standard 1.5.c3 version (no enum problem present) -->
       <pathelement location="${libs}/jalopy/lib/jalopy.jar"/>
@@ -592,7 +592,7 @@ Optional
     <arg value="${jalopyConvention_1.5c3_skipJavaDoc}"/>
 
     <classpath>
-      <pathelement location="${libs}/log4j-1.2.15.jar" />
+      <pathelement location="${libs}/log4j-1.2.16.jar" />
       <pathelement location="${libs}/jalopy/bin"/>
       <!-- use standard 1.5.c3 version (no enum problem present) -->
       <pathelement location="${libs}/jalopy/lib/jalopy.jar"/>
@@ -620,7 +620,7 @@ Optional
     <arg value="${jalopyConvention_1.5c3}"/>
 
     <classpath>
-      <pathelement location="${libs}/log4j-1.2.15.jar" />
+      <pathelement location="${libs}/log4j-1.2.16.jar" />
       <pathelement location="${libs}/jalopy/bin"/>
       <!-- use standard 1.5.c3 version (no enum problem present) -->
       <pathelement location="${libs}/jalopy/lib/jalopy.jar"/>
@@ -647,7 +647,7 @@ Optional
 
         <classpath>
           <pathelement location="${libs}/jalopy/lib/jalopy-1.5b1.jar"/>
-          <pathelement location="${libs}/log4j-1.2.15.jar" />
+          <pathelement location="${libs}/log4j-1.2.16.jar" />
         </classpath>
 
         <include name="**/*.java"/>
@@ -666,7 +666,7 @@ Optional
     <jvmarg value="-Xmx64m"/>
 
     <classpath>
-      <pathelement location="${libs}/log4j-1.2.15.jar" />
+      <pathelement location="${libs}/log4j-1.2.16.jar" />
       <!-- use standard 1.5.c3 version (no enum problem present) -->
       <pathelement location="${libs}/jalopy/lib/jalopy.jar"/>
     </classpath>
