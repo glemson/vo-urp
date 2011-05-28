@@ -2,6 +2,18 @@
     build_java.xml file : specific targets for java code
 -->  
 
+	<condition property="target.javadoc.do">
+		<equals arg1="${target.javadoc.active}" arg2="true" trim="true" />
+	</condition>
+
+	<condition property="target.test.javadoc.do">
+    <and>
+      <equals arg1="${target.javadoc.active}" arg2="true" trim="true" />
+      <isset property="has.test"/>
+    </and>
+	</condition>
+
+
 <!-- jalopy code formatter configuration -->
 <property name="jalopyConvention" location="${libs}/jalopy/jalopy-java-laurent.xml" />
 <property name="jalopyConvention_1.5c3" location="${libs}/jalopy/jalopy-java-laurent_1.5c3.xml" />
@@ -454,7 +466,7 @@ Optional
 
 
 <!-- target makeJavaDoc : creates javadoc from source code -->
-<target name="makeJavaDoc">
+<target name="makeJavaDoc" if="target.javadoc.do">
   <echo>making generated Java classes javadoc ...</echo>
   
   <mkdir dir="${javadoc}"/>
@@ -485,7 +497,7 @@ Optional
 </target>
 
 
-<target name="makeJavaDocForTest" if="has.test">
+<target name="makeJavaDocForTest" if="target.test.javadoc.do">
   <javadoc  additionalparam="-notimestamp"
             destdir="${javadoc}"
             access="private" 
