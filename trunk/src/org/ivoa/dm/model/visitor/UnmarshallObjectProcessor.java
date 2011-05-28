@@ -136,7 +136,7 @@ public final class UnmarshallObjectProcessor extends MetaDataObjectVisitor {
     // check getRank() value :
     final Integer rank = (Integer) childItem.getProperty(MetadataObject.PROPERTY_RANK);
 
-    if (rank.intValue() == 0) {
+    if (rank.intValue() <= 0) {
       if (log.isInfoEnabled()) {
         log.info("UnmarshallObjectProcessor.checkContainer : setRank to : " + position);
       }
