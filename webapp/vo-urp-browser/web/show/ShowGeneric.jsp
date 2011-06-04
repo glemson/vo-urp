@@ -43,7 +43,12 @@
 <c:forEach var="entry" begin="0" items="${meta.attributeList}">
   <tr>
     <th><span class="tooltipTrigger" title="&lt;h4&gt;${entry.name}&lt;/h4&gt;${entry.description}">${entry.name}</span></th>
-    <td><x:getProperty item="${item}" name="${entry.name}" var="value">${value}</x:getProperty></td>
+    <td><x:getProperty item="${item}" name="${entry.name}" var="value">
+    <c:if test="${entry.datatype.name == 'anyURI'}">
+    <a href="${value}" target="blank"></c:if>${value}
+    <c:if test="${entry.datatype.name=='anyURI'}"></a></c:if>
+   
+    </x:getProperty></td>
   </tr>
 </c:forEach>
 
