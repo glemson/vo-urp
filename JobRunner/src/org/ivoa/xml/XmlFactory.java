@@ -144,7 +144,7 @@ public final class XmlFactory extends SingletonSupport {
       schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 
       // 2. Set the custom XML catalog resolver :
-//      schemaFactory.setResourceResolver(CustomXmlCatalogResolver.getInstance());
+      schemaFactory.setResourceResolver(CustomXmlCatalogResolver.getInstance());
     }
 
     return schemaFactory;
