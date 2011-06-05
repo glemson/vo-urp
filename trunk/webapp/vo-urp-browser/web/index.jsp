@@ -23,6 +23,7 @@
 
   <h3><a href="./Query.do">ADQL (well, SQL) query</a></h3>
   <h3><a href="./Validate.do">XML Validator</a></h3>
+  <h3><a href="./SKOS.do">SKOS Concepts</a></h3>
   <h3><a href="./secure/Manager.do">XML Loader (requires a login!)</a></h3>
 
   <p>

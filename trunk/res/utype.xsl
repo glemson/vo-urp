@@ -7,9 +7,10 @@
 <!ENTITY dotsep "<xsl:text>.</xsl:text>">
 <!ENTITY colonsep "<xsl:text>:</xsl:text>">
 <!ENTITY slashsep "<xsl:text>/</xsl:text>">
-<!ENTITY modelsep "<xsl:text>:</xsl:text>"> <!-- separator between model and child -->
-<!ENTITY ppsep "<xsl:text>/</xsl:text>"> <!-- separator between packages -->
-<!ENTITY pcsep "<xsl:text>/</xsl:text>"> <!-- separator between package and class -->
+<!ENTITY modelsep "<xsl:text>:/</xsl:text>"> <!-- separator between model and child -->
+<!ENTITY ppsep "<xsl:text></xsl:text>"> <!-- separator between packages -->
+<!ENTITY packagesuffix "<xsl:text>/</xsl:text>"> <!-- separator between packages -->
+<!ENTITY pcsep "<xsl:text></xsl:text>"> <!-- separator between package and class -->
 <!ENTITY casep "<xsl:text>.</xsl:text>"> <!-- separator between class and attribute -->
 <!ENTITY aasep "<xsl:text>.</xsl:text>"> <!-- separator between attributes -->
 ]>
@@ -97,7 +98,13 @@
             <xsl:otherwise></xsl:otherwise>
           </xsl:choose>
         </xsl:variable>
-        <xsl:value-of select="concat($prefix,$sep,$member/@name)"/>
+        <xsl:variable name="suffix">
+          <xsl:choose>
+            <xsl:when test="$member/@xmi:type='uml:Package'">&packagesuffix;</xsl:when>
+            <xsl:otherwise></xsl:otherwise>
+          </xsl:choose>
+        </xsl:variable>
+        <xsl:value-of select="concat($prefix,$sep,$member/@name, $suffix)"/>
       </xsl:otherwise>
     </xsl:choose>
 

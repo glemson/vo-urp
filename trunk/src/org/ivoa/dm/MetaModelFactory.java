@@ -1,6 +1,7 @@
 package org.ivoa.dm;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -17,6 +18,7 @@ import org.ivoa.conf.RuntimeConfiguration;
 import org.ivoa.dm.model.MetadataElement;
 import org.ivoa.jaxb.JAXBFactory;
 import org.ivoa.jpa.JPAFactory;
+import org.ivoa.metamodel.Attribute;
 import org.ivoa.metamodel.DataType;
 import org.ivoa.metamodel.Element;
 import org.ivoa.metamodel.Enumeration;
@@ -80,6 +82,8 @@ public final class MetaModelFactory extends SingletonSupport {
   private final Map<String, Enumeration> enumerations = new HashMap<String, Enumeration>();
   /** objectTypes in the model */
   private final Map<String, ObjectType> objectTypes = new LinkedHashMap<String, ObjectType>();
+  /** skosconcepts used in the model. This Map is keyed by the utype of the skosconcept and the ObjectTYpe where it appears */
+  private final Map<Attribute, ObjectType> skosConcepts = new LinkedHashMap<Attribute, ObjectType>();
   /** classTypes in the model */
   private final Map<String, ClassType> classTypes = new HashMap<String, ClassType>();
   /** objectClassTypes in the model */
@@ -240,6 +244,9 @@ public final class MetaModelFactory extends SingletonSupport {
       ot.init();
 
       getObjectClassTypes().put(o.getName(), ot);
+      for(Attribute atr : o.getAttribute())
+    	  if(atr.getSkosconcept() != null)
+    		  skosConcepts.put(atr, o);
     }
 
     if (log.isInfoEnabled()) {
@@ -672,5 +679,9 @@ public final class MetaModelFactory extends SingletonSupport {
   public LinkedHashMap<String, Schemas> getTap() {
     return tap;
   }
+
+public Map<Attribute, ObjectType> getSkosConcepts() {
+	return skosConcepts;
+}
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
