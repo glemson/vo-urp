@@ -87,6 +87,12 @@
     </servlet>
   
     <servlet>
+        <servlet-name>SKOSServlet</servlet-name>
+        <servlet-class>org.ivoa.web.servlet.SKOSServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
+    </servlet>
+
+    <servlet>
         <servlet-name>ListServlet</servlet-name>
         <servlet-class>org.ivoa.web.servlet.ListServlet</servlet-class>
         <load-on-startup>10</load-on-startup>
@@ -129,6 +135,11 @@
         <url-pattern>/Show.do</url-pattern>
     </servlet-mapping>
   
+    <servlet-mapping>
+        <servlet-name>SKOSServlet</servlet-name>
+        <url-pattern>/SKOS.do</url-pattern>
+    </servlet-mapping>
+
     <servlet-mapping>
         <servlet-name>ListServlet</servlet-name>
         <url-pattern>/List.do</url-pattern>
