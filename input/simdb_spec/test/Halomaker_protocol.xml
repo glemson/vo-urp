@@ -8,7 +8,7 @@
         This document is the first xml sample document for Protocol according to SimDB generated XML schemas (xsd).
 -->
 <s:aPostProcessor xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-              xmlns:s='http://www.ivoa.net/xml/SimDB_Spec/0.8-20100908'>
+              xmlns:s='http://www.ivoa.net/xml/SimDM/v1.0'>
 
 <!-- ++++++++++++++++++++++++++++++++++++++++++ -->
 <!-- HaloMaker + TreeMaker                      -->
@@ -301,7 +301,6 @@
     </property>
 
 
-    <type>model astro object</type>
     <label>halo</label>
   </representation>
 
