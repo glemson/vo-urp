@@ -326,6 +326,19 @@ public final class ObjectClassType extends ClassType {
   public final java.util.Collection<Collection> getCollectionList() {
     return collections.values();
   }
+  /**
+   * Return the attribute with the utype corresponding to the specified value.<br/>
+   * If this class does not contains such an attribute, return null.
+   * @param utype
+   * @return
+   */
+  public final Attribute getAttributeForUtype(String utype)
+  {
+	  for(Attribute atr: this.getAttributeList())
+		  if(atr.getUtype().equals(utype))
+			  return atr;
+	  return null;
+  }
 
   /**
    * Add the specified subclass to this' subclasses collection.<br>
