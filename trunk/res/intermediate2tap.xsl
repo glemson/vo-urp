@@ -77,7 +77,14 @@ generate tables in the database allowing querying for metadata
     <xsl:value-of select="normalize-space($target_database)"/><xsl:if test="string-length(normalize-space($target_database)) > 0">&dot;</xsl:if>
   </xsl:variable>
   <xsl:variable name="target_schema_prefix">
-    <xsl:value-of select="normalize-space($target_schema)"/><xsl:if test="string-length(normalize-space($target_schema)) > 0">&dot;</xsl:if>
+	  <xsl:choose>
+  		<xsl:when test="string-length(normalize-space($target_schema)) = 0 or normalize-space($target_schema) = 'default'">
+  		  <xsl:text/>
+  		</xsl:when>
+      <xsl:otherwise>
+    	  <xsl:value-of select="normalize-space($target_schema)"/><xsl:if test="string-length(normalize-space($target_schema)) > 0">&dot;</xsl:if>
+	    </xsl:otherwise>
+  	</xsl:choose>
   </xsl:variable>     
   <xsl:variable name="target_database_schema_prefix">
     <xsl:choose>
@@ -88,13 +95,13 @@ generate tables in the database allowing querying for metadata
           <xsl:choose>
             <xsl:when test="string-length(normalize-space($target_schema)) > 0">
               <xsl:value-of select="normalize-space($target_schema)"/>&dot;
-            </xsl:when>
-            <xsl:otherwise>
+      </xsl:when>
+      <xsl:otherwise>
               <xsl:text/>
             </xsl:otherwise>
           </xsl:choose>
-        </xsl:otherwise>
-      </xsl:choose>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:variable>
 
   <xsl:param name="lastModifiedText"/>
@@ -1045,7 +1052,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
       <xsl:otherwise>
         <xsl:call-template name="insertcolumn">
           <xsl:with-param name="column_name"><xsl:value-of select="$primaryKeyColumnName"/></xsl:with-param>
-          <xsl:with-param name="table_name"><xsl:value-of select="$tableName"/></xsl:with-param>
+          <xsl:with-param name="table_name"><xsl:value-of select="$target_database_schema_prefix"/><xsl:value-of select="$tableName"/></xsl:with-param>
           <xsl:with-param name="description"><xsl:text>The unique, primary key column on this table.</xsl:text></xsl:with-param>
           <xsl:with-param name="ucd"><xsl:text>TBD</xsl:text></xsl:with-param>
           <xsl:with-param name="utype"><xsl:value-of select="concat($utype,'.',$primaryKeyColumnName)"/></xsl:with-param>
@@ -1053,7 +1060,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
         </xsl:call-template>
         <xsl:call-template name="insertcolumn">
           <xsl:with-param name="column_name"><xsl:value-of select="$discriminatorColumnName"/></xsl:with-param>
-          <xsl:with-param name="table_name"><xsl:value-of select="$tableName"/></xsl:with-param>
+          <xsl:with-param name="table_name"><xsl:value-of select="$target_database_schema_prefix"/><xsl:value-of select="$tableName"/></xsl:with-param>
           <xsl:with-param name="description"><xsl:text>This column stores the name of the object type from the data model stored in the row.</xsl:text></xsl:with-param>
           <xsl:with-param name="ucd"><xsl:text>TBD</xsl:text></xsl:with-param>
           <xsl:with-param name="utype"><xsl:text>TBD</xsl:text></xsl:with-param>
@@ -1069,7 +1076,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
       </xsl:variable>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:value-of select="$containerColumnName"/></xsl:with-param>
-        <xsl:with-param name="table_name"><xsl:value-of select="$tableName"/></xsl:with-param>
+        <xsl:with-param name="table_name"><xsl:value-of select="$target_database_schema_prefix"/><xsl:value-of select="$tableName"/></xsl:with-param>
         <xsl:with-param name="description"><xsl:text>This column is a foreign key pointing to the containing object in </xsl:text>
           <xsl:value-of select="$target_table"/>
         </xsl:with-param>
@@ -1083,8 +1090,12 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
       
       <xsl:call-template name="insertkey">
         <xsl:with-param name="key_id" select="$key_id"/>
-        <xsl:with-param name="from_table" select="$tableName"/>
-        <xsl:with-param name="target_table" select="$target_table"/>
+        <xsl:with-param name="from_table">
+        <xsl:value-of select="$target_database_schema_prefix"/><xsl:value-of select="$tableName"/>
+        </xsl:with-param>
+        <xsl:with-param name="target_table">
+        <xsl:value-of select="$target_database_schema_prefix"/><xsl:value-of select="$target_table"/>
+        </xsl:with-param>
         <xsl:with-param name="description" select="'Foreign key to the container of the table.'"/>
         <xsl:with-param name="utype" select="concat($utype,'.CONTAINER')"/>
       </xsl:call-template>
@@ -1113,7 +1124,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
       
         <xsl:call-template name="insertcolumn">
           <xsl:with-param name="column_name"><xsl:value-of select="name"/></xsl:with-param>
-          <xsl:with-param name="table_name"><xsl:value-of select="$tableName"/></xsl:with-param>
+          <xsl:with-param name="table_name"><xsl:value-of select="$target_database_schema_prefix"/><xsl:value-of select="$tableName"/></xsl:with-param>
           <xsl:with-param name="description"><xsl:value-of select="description"/></xsl:with-param>
           <xsl:with-param name="ucd"><xsl:text>TBD</xsl:text></xsl:with-param>
           <xsl:with-param name="utype"><xsl:value-of select="utype"/></xsl:with-param>
@@ -1144,7 +1155,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
       <xsl:variable name="key_id" select="concat($tableName,'_',name)"/>
       <xsl:call-template name="insertcolumn">
         <xsl:with-param name="column_name"><xsl:apply-templates select="." mode="columnName"/></xsl:with-param>
-        <xsl:with-param name="table_name"><xsl:value-of select="$tableName"/></xsl:with-param>
+        <xsl:with-param name="table_name"><xsl:value-of select="$target_database_schema_prefix"/><xsl:value-of select="$tableName"/></xsl:with-param>
         <xsl:with-param name="description"><xsl:value-of select="description"/>&cr;
           <xsl:value-of select="concat('[This column is part of the foreign key ',$key_id,' pointing to the object in ',$target_table,'].')"/>
         </xsl:with-param>
@@ -1189,7 +1200,7 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
   only comma-separated list of values (within () ) is required. More efficient as well. -->
   <xsl:text>INSERT INTO TAP_SCHEMA.Columns(column_name,table_name,description,unit,ucd,utype,datatype,size,principal,indexed,std,rank) values(</xsl:text>
    '<xsl:value-of select="$column_name"/>'
-,  '<xsl:value-of select="$target_database_schema_prefix"/><xsl:value-of select="$table_name"/>'
+,  '<xsl:value-of select="$table_name"/>'
 ,  '<xsl:value-of select="replace($description,&quot;'&quot;,&quot;''&quot;)"/>'
 ,  <xsl:choose><xsl:when test="not($unit)">null</xsl:when><xsl:otherwise>'<xsl:value-of select="$unit"/>'</xsl:otherwise></xsl:choose>
 ,  <xsl:choose><xsl:when test="not($ucd)">null</xsl:when><xsl:otherwise>'<xsl:value-of select="$ucd"/>'</xsl:otherwise></xsl:choose>
@@ -1212,8 +1223,8 @@ INSERT INTO TAP_SCHEMA.tables (schema_name,table_name,table_type,description,uty
   only comma-separated list of values (within () ) is required. More efficient as well. -->
   <xsl:text>INSERT INTO TAP_SCHEMA.keys(key_id,from_table, target_table,utype,description)values(</xsl:text>
    '<xsl:value-of select="$key_id"/>'
-,  '<xsl:value-of select="$target_database_schema_prefix"/><xsl:value-of select="$from_table"/>'
-,  '<xsl:value-of select="$target_database_schema_prefix"/><xsl:value-of select="$target_table"/>'
+,  '<xsl:value-of select="$from_table"/>'
+,  '<xsl:value-of select="$target_table"/>'
 ,  <xsl:choose><xsl:when test="not($utype)">null</xsl:when><xsl:otherwise>'<xsl:value-of select="$utype"/>'</xsl:otherwise></xsl:choose>
 ,  '<xsl:value-of select="replace($description,&quot;'&quot;,&quot;''&quot;)"/>');&cr;
 </xsl:template>
