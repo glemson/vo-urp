@@ -6,8 +6,8 @@ import org.ivoa.dm.model.MetadataObject;
 
 import org.ivoa.env.ApplicationMain;
 
-import org.ivoa.simdb.protocol.InputParameter;
-import org.ivoa.simdb.protocol.Simulator;
+import org.ivoa.resource.protocol.InputParameter;
+import org.ivoa.resource.protocol.Simulator;
 
 /**
  * This class tests the ModelFactory marshall / unmarshall functions
@@ -61,12 +61,12 @@ public final class XMLTests extends LogSupport implements ApplicationMain {
     final InputParameter p1 = new InputParameter(s);
 
     p1.setName("H0");
-    p1.setDatatype(org.ivoa.simdb.DataType.REAL);
+    p1.setDatatype(org.ivoa.meta.DataType.REAL);
 
     final InputParameter p2 = new InputParameter(s);
 
     p2.setName("Lambda_0");
-    p2.setDatatype(org.ivoa.simdb.DataType.REAL);
+    p2.setDatatype(org.ivoa.meta.DataType.REAL);
 
     testMarshall(s);
   }

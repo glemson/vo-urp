@@ -18,10 +18,11 @@ import org.ivoa.env.ApplicationMain;
 
 import org.ivoa.jaxb.XmlBindException;
 import org.ivoa.jpa.JPAFactory;
+import org.ivoa.jpa.JPAHelper;
 
-import org.ivoa.simdb.experiment.Simulation;
-import org.ivoa.simdb.experiment.Snapshot;
-import org.ivoa.simdb.protocol.Simulator;
+import org.ivoa.resource.experiment.Simulation;
+import org.ivoa.resource.experiment.Snapshot;
+import org.ivoa.resource.protocol.Simulator;
 
 
 import javax.persistence.EntityManager;
@@ -32,33 +33,32 @@ import org.eclipse.persistence.jpa.JpaEntityManager;
 import org.eclipse.persistence.jpa.JpaHelper;
 import org.eclipse.persistence.queries.SQLCall;
 import org.eclipse.persistence.sessions.Session;
-
-import org.ivoa.simdb.Quantity;
+//import org.ivoa.simdb.Value;
+import org.ivoa.meta.Quantity;
 import org.ivoa.bean.LogSupport;
-import org.ivoa.jpa.JPAHelper;
-import org.ivoa.simdb.Cardinality;
-import org.ivoa.simdb.Contact;
-import org.ivoa.simdb.ContactRole;
-import org.ivoa.simdb.DataType;
-import org.ivoa.simdb.Party;
-import org.ivoa.simdb.experiment.Experiment;
-import org.ivoa.simdb.experiment.ExperimentProperty;
-import org.ivoa.simdb.experiment.ExperimentRepresentationObject;
-import org.ivoa.simdb.experiment.ParameterSetting;
-import org.ivoa.simdb.experiment.Product;
-import org.ivoa.simdb.experiment.Statistic;
-import org.ivoa.simdb.experiment.StatisticalSummary;
-import org.ivoa.simdb.object.ObjectType;
-import org.ivoa.simdb.object.Property;
-import org.ivoa.simdb.object.PropertyGroup;
-import org.ivoa.simdb.object.PropertyGroupMember;
-import org.ivoa.simdb.protocol.InputParameter;
-import org.ivoa.simdb.protocol.ParameterGroup;
-import org.ivoa.simdb.protocol.ParameterGroupMember;
-import org.ivoa.simdb.protocol.Protocol;
-import org.ivoa.simdb.protocol.RepresentationObject;
-import org.ivoa.simdb.protocol.RepresentationObjectType;
+import org.ivoa.meta.Cardinality;
+import org.ivoa.resource.Contact;
+import org.ivoa.resource.ContactRole;
+import org.ivoa.meta.DataType;
+import org.ivoa.resource.Party;
+import org.ivoa.resource.experiment.Experiment;
+import org.ivoa.resource.experiment.GenericOutuptDataset;
+import org.ivoa.resource.experiment.ParameterSetting;
+import org.ivoa.resource.experiment.OutputDataset;
+import org.ivoa.resource.experiment.Snapshot;
+import org.ivoa.resource.experiment.Statistic;
+import org.ivoa.resource.experiment.StatisticalSummary;
+import org.ivoa.object.ObjectType;
+import org.ivoa.object.Property;
+import org.ivoa.object.PropertyGroup;
+import org.ivoa.object.PropertyGroupMember;
+import org.ivoa.resource.protocol.InputParameter;
+import org.ivoa.resource.protocol.OutputDataObjectType;
+import org.ivoa.resource.protocol.ParameterGroup;
+import org.ivoa.resource.protocol.ParameterGroupMember;
+import org.ivoa.resource.protocol.Protocol;
 import org.ivoa.util.CollectionUtils;
+import org.ivoa.util.timer.AbstractTimer;
 import org.ivoa.util.timer.TimerFactory;
 import org.vo.urp.test.jaxb.XMLTests;
 
@@ -181,16 +181,17 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
     // Loads & write an xml instance :
 
-//    testLOAD_WRITE(jf, PROTOCOL_FILE_GADGET2);
-    testLOAD_WRITE(jf, PARTY_FROM_PARIS, PROTOCOL_FILE_PDR);
-    testLOAD_WRITE(jf, null,PROTOCOL_FILE_HALOMAKER);
+    //    testLOAD_WRITE(jf, PROTOCOL_FILE_GADGET2);
+    testLOAD_WRITE(jf, PARTY_FROM_PARIS, PROTOCOL_FILE_PDR, true);
+    testLOAD_WRITE(jf, null,PROTOCOL_FILE_HALOMAKER, true);
+    // do not write Gadget to console, as it has weird characters that can nto be dealt with nicely in eclipse console.
+    testLOAD_WRITE(jf, PARTY_VOLKER_SPRINGEL, PROTOCOL_FILE_GADGET2, false);
 
     // Batch writes :
-//    testLOAD_BATCH_WRITE(jf, PROTOCOL_FILE_GADGET2);
-    testLOAD_BATCH_WRITE_SINGLE_TRANSACTION(jf, PROTOCOL_FILE_GADGET2);
+    testLOAD_BATCH_WRITE_SINGLE_TRANSACTION(jf, PROTOCOL_FILE_HALOMAKER);
 
     // Batch writes : Laurent : In progress :
-//    testLOAD_THREADS_WRITE(jf, PROTOCOL_FILE_GADGET2);
+//    testLOAD_THREADS_WRITE(jf, PROTOCOL_FILE_HALOMAKER);
 
     testSQLQuery(jf);
 
@@ -316,7 +317,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       pgm.setParameter(param);
 
       // Representation objects :
-      final RepresentationObjectType repDM = new RepresentationObjectType(simulator);
+      final OutputDataObjectType repDM = new OutputDataObjectType(simulator);
 
       // Identity attributes :
       repDM.getIdentity().setPublisherDID("ivo://cool.simulators/SoCool/v1.2.3/darkMatter");
@@ -324,8 +325,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       // Representation attributes :
       repDM.setName("dark Matter");
       repDM.setDescription("dark Matter particles");
-      repDM.setType(RepresentationObject.POINT_PARTICLE);
-      repDM.setLabel("dark matter");
+      repDM.setLabel("dark matter particle");
 
 
       // Property Group :
@@ -482,15 +482,6 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
       // ExperimentRepresentationObject with ExperimentProperties :
 
-      final ExperimentRepresentationObject erep = new ExperimentRepresentationObject(simulation);
-      erep.setType(repDM);
-
-      ExperimentProperty ep = null;
-      for (Property prop : repDM.getProperty()) {
-        ep = new ExperimentProperty(erep);
-        ep.setProperty(prop);
-      }
-
       // Snapshots :
       for (int i = 0; i < 5; i++) {
         addSnapshot(simulation, i);
@@ -638,13 +629,14 @@ public final class DBTests extends LogSupport implements ApplicationMain {
   private void addSnapshot(final Simulation simulation, final Integer num) {
 
     Quantity time, space;
-    ExperimentProperty ep = null;
 
     /*
      * To avoid performance problems due to collection size i.e. avoid fetch all collection items (out of memory),
      * set the rank value manually (collection index position) to keep the collection ordered
      */
     final Snapshot snapshot = new Snapshot(simulation, num);
+    
+    simulation.getProtocol().getOutputType();
 
     snapshot.setPublisherDID(simulation.getPublisherDID() + "_" + num);
 
@@ -661,21 +653,21 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
     snapshot.setSpatialSizePhysical(space);
 
-    Product col = null;
+    OutputDataset col = null;
     StatisticalSummary cha = null;
     Quantity n;
     //Value v;
 
-    for (ExperimentRepresentationObject rep : simulation.getRepresentationObject()) {
+    for (OutputDataObjectType rep : simulation.getProtocol().getOutputType()) {
       // for all
-      col = new Product(snapshot);
-      col.setObjectType(rep.getType());
+      col = new GenericOutuptDataset(simulation);
+      col.setObjectType(rep);
       col.setNumberOfObjects((long)num.intValue() * 113);
 
-      for (ExperimentProperty prop : rep.getProperty()) {
+      for (Property prop : rep.getProperty()) {
         cha = new StatisticalSummary(col);
         cha.setStatistic(Statistic.MEAN);
-        cha.setAxis(prop.getProperty());
+        cha.setAxis(prop);
 
         //v = new Value();
         n = new Quantity();
@@ -726,7 +718,8 @@ public final class DBTests extends LogSupport implements ApplicationMain {
    * @param jf
    * @param xmlDocumentPath
    */
-  public void testLOAD_WRITE(final JPAFactory jf, final String partyXMLDocumentPath, final String xmlDocumentPath) {
+  public void testLOAD_WRITE(final JPAFactory jf, final String partyXMLDocumentPath, final String xmlDocumentPath
+      , boolean writeSimulator) {
     log.warn("DBTests.testLOAD_WRITE : enter");
 
     EntityManager em = null;
@@ -743,13 +736,13 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
       if (partyXMLDocumentPath != null) {
         log.warn("DBTests.testLOAD_WRITE on party@ " + partyXMLDocumentPath);
-        final MetadataObject partyFromParis = xmlTest
+        final MetadataObject party = xmlTest
             .testUnMashall(partyXMLDocumentPath);
 
         log.error("DBTests.testLOAD_WRITE : partyFromParis after unmarshall : "
-            + partyFromParis.deepToString());
+            + party.deepToString());
 
-        em.persist(partyFromParis);
+        em.persist(party);
         em.getTransaction().commit();
         em.getTransaction().begin();
 
@@ -758,18 +751,21 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       log.warn("DBTests.testLOAD_WRITE on document@ "+xmlDocumentPath);
       final MetadataObject simulator = xmlTest.testUnMashall(xmlDocumentPath);
 
-      log.error("DBTests.testLOAD_WRITE : Simulator after unmarshall : " + simulator.deepToString());
+      if(writeSimulator)
+        log.error("DBTests.testLOAD_WRITE : Simulator after unmarshall : " + simulator.deepToString());
 
       em.persist(simulator);
 
-      log.error("DBTests.testLOAD_WRITE : Simulator after persist : " + simulator.deepToString());
+      if(writeSimulator)
+        log.error("DBTests.testLOAD_WRITE : Simulator after persist : " + simulator.deepToString());
 
       // force transaction to be flushed in database :
       log.warn("DBTests.testLOAD_WRITE : flushing TX");
       em.flush();
       log.warn("DBTests.testLOAD_WRITE : TX flushed.");
 
-      log.error("DBTests.testLOAD_WRITE : Simulator after flush : " + simulator.deepToString());
+      if(writeSimulator)
+        log.error("DBTests.testLOAD_WRITE : Simulator after flush : " + simulator.deepToString());
 
       // finally : commits transaction on snap database :
       log.warn("DBTests.testLOAD_WRITE : committing TX");
@@ -804,7 +800,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       // free resolver context (thread local) :
       ReferenceResolver.freeContext();
     }
-    if (id != null) {
+    if (id != null && writeSimulator) {
       final Protocol loadedObject = (Protocol) testREAD(jf, Protocol.class, id);
       xmlTest.saveMarshall(loadedObject, xmlDocumentPath.replace(XMLTests.XML_EXT, "-out-afterLoad" + XMLTests.XML_EXT));
     }
@@ -971,11 +967,6 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
       ReferenceResolver.initContext(em);
 
-      final List<MetadataRootEntityObject> partyList = new ArrayList<MetadataRootEntityObject>();
-      partyList.add((MetadataRootEntityObject) xmlTest.testUnMashall(PARTY_VOLKER_SPRINGEL));
-
-      dm.persist(partyList, "testuser");
-      
       final List<MetadataRootEntityObject> simList = new ArrayList<MetadataRootEntityObject>();
       for (int i = 0; i < WRITE_ITERATION; i++) {
         simList.add((MetadataRootEntityObject) xmlTest.testUnMashall(xmlDocumentPath));
@@ -1031,5 +1022,5 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       log.warn("WriteJob : run : OUT : " + i);
     }
   }
-        }
+}
 //~ End of file --------------------------------------------------------------------------------------------------------
