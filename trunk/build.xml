@@ -68,7 +68,6 @@
 		<equals arg1="${target.weaving.active}" arg2="true" trim="true" />
 	</condition>
 
-	
 
 	<!-- output files -->
 	<property name="source_checked" value="${project.name}_CHECK.xml" />
@@ -103,8 +102,11 @@
 	<property name="build.xsd" location="${build}/xsd" />
 	<property name="test" location="${input}/${sources.test}"/>
 
+	<!-- preamble file, may be set in project.properties --> 
+    <property name="html.preamble.file" value="output/html/preamble.html"/>
+    <property name="html.preamble" location="${input}/${html.preamble.file}"/>
 	
-  <property name="webapp.member.role" value="${project.name}-member"/>
+    <property name="webapp.member.role" value="${project.name}-member"/>
 	<property name="webapp.admin.role" value="${project.name}-admin"/>
   
 
@@ -573,7 +575,7 @@
             <param name="project_name" expression="${project.name}"/>
             <param name="graphviz_png" if="graphviz.path" expression="${graphviz.png}"/>
             <param name="graphviz_map" if="graphviz.path" expression="${graphviz.map.placeholder}"/>
-          <param name="preamble" expression="${output}/html/preamble.html"/>
+          <param name="preamble" expression="${html.preamble}"/>
         </xslt2> 
         <copy todir="${output}/html">
             <fileset dir="css">
@@ -583,7 +585,7 @@
 
 		<ant target="postGenerateHTML" />
 
-		<echo>run_intermediate2html : done.</echo>
+		<echo>run_intermediate2html : done.</echo>  
 	</target>
 
   <target name="postGenerateHTML"  if="graphviz.path" >
