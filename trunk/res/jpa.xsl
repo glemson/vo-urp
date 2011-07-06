@@ -23,12 +23,10 @@
   <xsl:output name="persistenceInfo" method="xml" encoding="UTF-8" indent="yes"  />
 
   <xsl:param name="persistence.xml"/>
+  <xsl:param name="schemaPrefix" select="''"/>
 
 
   <xsl:key name="element" match="*//*" use="@xmiid"/>
-
-
-
 
   <xsl:template match="objectType" mode="JPAAnnotation">
     <xsl:variable name="className" select="name" />

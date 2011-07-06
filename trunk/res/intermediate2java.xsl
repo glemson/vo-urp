@@ -39,11 +39,16 @@
   <xsl:param name="model_package"/>
   <xsl:param name="targetnamespace_root"/> 
   <xsl:param name="persistence.xml"/>
+  <xsl:param name="databaseSchema" select="''"/>
 
   <!-- next could be parameters -->
   <xsl:variable name="root_package_dir" select="replace($root_package,'[.]','/')"/>
 
-
+  <xsl:variable name="schemaPrefix">
+    <xsl:call-template name="schemaPrefix">
+    <xsl:with-param name="dbschema" select="$databaseSchema"/> 
+    </xsl:call-template>
+  </xsl:variable>
   <!-- 
     Use '{NOTE/TODO} [JPA_COMPLIANCE] :' to indicate a violated rule and explain why.
 
@@ -349,7 +354,7 @@ NOTE [JPA_COMPLIANCE] : FIELD-BASES ACCESS is the strategy chosen for persistent
     <xsl:variable name="className" select="name" />
 
     <xsl:variable name="xmiid" select="@xmiid" />
-    <xsl:variable name="hasChild">
+    <xsl:variable name="hasChild"> <!-- indicates whether this class has subclass(es) -->
       <xsl:choose>
         <xsl:when test="count(//extends[@xmiidref = $xmiid]) > 0">1</xsl:when>
         <xsl:otherwise>0</xsl:otherwise>
