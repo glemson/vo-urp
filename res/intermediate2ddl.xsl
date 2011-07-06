@@ -47,6 +47,7 @@ CREATE TABLE TargetObjectType (
 <!-- possible values: postgres, mssqlserver, mysql -->  
   <xsl:param name="vendor"/>
   <xsl:param name="project_name"/>
+  <xsl:param name="schema" select="null"/>
   
   
   <xsl:output method="text" encoding="UTF-8" indent="no" />
@@ -63,7 +64,11 @@ CREATE TABLE TargetObjectType (
   
   <xsl:variable name="header">&rem;last modification date of the UML model <xsl:value-of select="$lastModifiedText"/>&cr;</xsl:variable>
   
- 
+  <xsl:variable name="schemaPrefix">
+    <xsl:call-template name="schemaPrefix">
+    <xsl:with-param name="dbschema" select="$schema"/> 
+    </xsl:call-template>
+  </xsl:variable>
   
   
   <!-- start -->
@@ -118,7 +123,7 @@ CREATE TABLE TargetObjectType (
     <xsl:message>Model = <xsl:value-of select="name"></xsl:value-of></xsl:message>
 &rem;Generating DDLs for model <xsl:value-of select="name"/> and DB vendor <xsl:value-of select="$vendor"/>.
 <xsl:value-of select="$header"/>
-    
+      
   <!-- create object types sorted according to foreign key graph derived from container, inheritance and reference -->
     <xsl:variable name="sortedObjectTypes">
     <!--  add non-object types separately -->
@@ -138,6 +143,12 @@ CREATE TABLE TargetObjectType (
     <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
     <xsl:result-document href="{$file}">
       <xsl:value-of select="$header"/>&cr;&cr;
+
+    <xsl:if test="string-length(normalize-space($schema)) > 0">
+    <xsl:message>Found a DB schema: <xsl:value-of select="$schema"/>|<xsl:value-of select="$schemaPrefix"/></xsl:message>
+    <xsl:text>CREATE SCHEMA </xsl:text><xsl:value-of select="normalize-space($schema)"/>
+    <xsl:text>;</xsl:text>&cr;
+    </xsl:if>
  
       <xsl:for-each select="exsl:node-set($sortedObjectTypes)/node/objectType">   
         <xsl:sort select="position()" data-type="number" order="ascending"/> 
@@ -199,6 +210,13 @@ CREATE TABLE TargetObjectType (
         <xsl:apply-templates select="." mode="dropTable"/>
 
       </xsl:for-each>
+      
+          <xsl:if test="string-length(normalize-space($schema)) > 0">
+    <xsl:message>Found a DB schema: <xsl:value-of select="$schema"/>|<xsl:value-of select="$schemaPrefix"/></xsl:message>
+    <xsl:text>DROP SCHEMA </xsl:text><xsl:value-of select="normalize-space($schema)"/>
+    <xsl:text>;</xsl:text>&cr;
+    </xsl:if>
+      
     </xsl:result-document>
 
   </xsl:template>  
@@ -267,16 +285,9 @@ CREATE TABLE TargetObjectType (
           <xsl:apply-templates select="." mode="viewName"/>
     </xsl:variable>
     <xsl:variable name="decl_viewName">
-      <xsl:choose>
-        <xsl:when test="$vendor = 'mssqlserver'">
-          <xsl:value-of select="concat('[',$viewName,']')"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="$viewName"/>
-        </xsl:otherwise>
-      </xsl:choose>
+    <xsl:apply-templates select="." mode="viewName_declaration"/>
     </xsl:variable>
-    <xsl:variable name="base" select="key('element',extends/@xmiidref)"/>
+     <xsl:variable name="base" select="key('element',extends/@xmiidref)"/>
 <xsl:text>CREATE VIEW </xsl:text><xsl:value-of select="$decl_viewName"/><xsl:text> AS</xsl:text>&cr;
     <xsl:choose>
       <xsl:when test="extends">
@@ -335,16 +346,9 @@ CREATE TABLE TargetObjectType (
 
 
   <xsl:template match="objectType" mode="dropView">
-    <!-- generate a single table for the whole object hierarchy below the matched objectType -->
+    <!-- generate a single view for the whole object hierarchy below the matched objectType -->
     <xsl:variable name="decl_viewName">
-      <xsl:choose>
-        <xsl:when test="$vendor = 'mssqlserver'">
-          <xsl:value-of select="concat('[',name,']')"/>
-        </xsl:when>
-        <xsl:otherwise>
-          <xsl:value-of select="name"/>
-        </xsl:otherwise>
-      </xsl:choose>
+    <xsl:apply-templates select="." mode="viewName_declaration"/>
     </xsl:variable>
 <xsl:text>DROP VIEW </xsl:text><xsl:value-of select="$decl_viewName"/>;&cr;&cr;
   </xsl:template>
@@ -357,25 +361,28 @@ CREATE TABLE TargetObjectType (
     <xsl:variable name="tableName">
       <xsl:apply-templates select="." mode="tableName"/>
     </xsl:variable>
+    <xsl:variable name="tableName_ns">
+      <xsl:apply-templates select="." mode="tableName_noschema"/>
+    </xsl:variable>
     <xsl:if test="container">
     <xsl:variable name="otherTable">
       <xsl:apply-templates select="key('element',container/@xmiidref)" mode="tableName"/>
     </xsl:variable>
-<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> ADD CONSTRAINT fk_<xsl:value-of select="$tableName"/>_container&cr; 
+<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> ADD CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_container&cr; 
 <xsl:text>    FOREIGN KEY (containerId) REFERENCES </xsl:text><xsl:value-of select="$otherTable"/>(<xsl:value-of select="$primaryKeyColumnName"/>);&cr;&cr;
     </xsl:if>
     <xsl:if test="extends">
     <xsl:variable name="otherTable">
       <xsl:apply-templates select="key('element',extends/@xmiidref)" mode="tableName"/>
     </xsl:variable>
-<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> ADD CONSTRAINT fk_<xsl:value-of select="$tableName"/>_extends&cr; 
+<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> ADD CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_extends&cr; 
 <xsl:text>    FOREIGN KEY (</xsl:text><xsl:value-of select="$primaryKeyColumnName"/><xsl:text>) REFERENCES </xsl:text><xsl:value-of select="$otherTable"/>(<xsl:value-of select="$primaryKeyColumnName"/>);&cr;&cr;
     </xsl:if>
     <xsl:for-each select="reference[not(subsets)]">
     <xsl:variable name="otherTable">
       <xsl:apply-templates select="key('element',datatype/@xmiidref)" mode="tableName"/>
     </xsl:variable>
-<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> ADD CONSTRAINT fk_<xsl:value-of select="$tableName"/>_<xsl:value-of select="name"/>&cr; 
+<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> ADD CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_<xsl:value-of select="name"/>&cr; 
 <xsl:text>    FOREIGN KEY (</xsl:text><xsl:apply-templates select="." mode="columnName"/>) REFERENCES <xsl:value-of select="$otherTable"/>(<xsl:value-of select="$primaryKeyColumnName"/>);&cr;&cr;
 </xsl:for-each>
   </xsl:template>
@@ -398,15 +405,18 @@ DROP FOREIGN KEY fk_<xsl:value-of select="$tableName"/>_<xsl:value-of select="na
   
   <xsl:template match="objectType" mode="createIndexes">
     <!-- generate a foreign key for each relation -->
+    <xsl:variable name="tableName_ns">
+      <xsl:apply-templates select="." mode="tableName_noschema"/>
+    </xsl:variable>
     <xsl:variable name="tableName">
       <xsl:apply-templates select="." mode="tableName"/>
     </xsl:variable>
     <xsl:if test="$vendor != 'mysql'">
-ALTER TABLE <xsl:value-of select="$tableName"/> ADD CONSTRAINT pk_<xsl:value-of select="$tableName"/>_<xsl:value-of select="$primaryKeyColumnName"/> PRIMARY KEY(<xsl:value-of select="$primaryKeyColumnName"/>);&cr;&cr;
+ALTER TABLE <xsl:value-of select="$tableName"/> ADD CONSTRAINT pk_<xsl:value-of select="$tableName_ns"/>_<xsl:value-of select="$primaryKeyColumnName"/> PRIMARY KEY(<xsl:value-of select="$primaryKeyColumnName"/>);&cr;&cr;
 </xsl:if>
     
     <xsl:for-each select="reference[not(subsets)]">
-CREATE INDEX ix_<xsl:value-of select="$tableName"/>_<xsl:value-of select="name"/> ON <xsl:value-of select="$tableName"/>(<xsl:apply-templates select="." mode="columnName"/>);&cr;&cr;
+CREATE INDEX ix_<xsl:value-of select="$tableName_ns"/>_<xsl:value-of select="name"/> ON <xsl:value-of select="$tableName"/>(<xsl:apply-templates select="." mode="columnName"/>);&cr;&cr;
 </xsl:for-each>
   </xsl:template>
 
@@ -414,12 +424,15 @@ CREATE INDEX ix_<xsl:value-of select="$tableName"/>_<xsl:value-of select="name"/
 
 
   <xsl:template match="objectType" mode="dropIndexes">
-    <!-- generate a foreign key for each relation -->
+    <!-- generate an index for each foreign key for a reference -->
     <xsl:variable name="tableName">
       <xsl:apply-templates select="." mode="tableName"/>
     </xsl:variable>
+    <xsl:variable name="tableName_ns">
+      <xsl:apply-templates select="." mode="tableName_noschema"/>
+    </xsl:variable>
     <xsl:for-each select="reference">
-DROP INDEX <xsl:value-of select="$tableName"/>.ix_<xsl:value-of select="$tableName"/>_<xsl:value-of select="name"/> (<xsl:apply-templates select="." mode="columnName"/>);&cr;&cr;
+DROP INDEX <xsl:value-of select="$tableName"/>.ix_<xsl:value-of select="$tableName_ns"/>_<xsl:value-of select="name"/> (<xsl:apply-templates select="." mode="columnName"/>);&cr;&cr;
 </xsl:for-each>
   </xsl:template>  
   

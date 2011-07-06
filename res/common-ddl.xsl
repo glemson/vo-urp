@@ -11,6 +11,7 @@
 
 <!-- possible values: postgres, mssqlserver, mysql, sql92 (default) -->  
   <xsl:param name="vendor"/>
+  <xsl:param name="schemaPrefix"/>
 
 <!-- Define parameters/variables that can be reused in this script an in others using it (JPA) -->
   <!-- next two might also be parameters, or obtained from a config file -->
@@ -49,9 +50,26 @@
   <xsl:variable name="containerColumnName" select="'containerId'"/>
 
 
+  <xsl:template name="schemaPrefix">
+  <xsl:param name="dbschema"/>
+    <xsl:choose>
+      <xsl:when test="$dbschema = null or normalize-space($dbschema) = ''" >
+        <xsl:value-of select="''"/></xsl:when>
+      <xsl:otherwise>
+      <xsl:value-of select="concat(normalize-space($dbschema),'.')"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
   <!-- for now no special camelcase 2 '_' transformation -->
   <xsl:template match="objectType" mode="tableName">
+    <xsl:variable name="tablename">
+      <xsl:apply-templates select="." mode="tableName_noschema"/>
+    </xsl:variable>
+    <xsl:value-of select="concat($schemaPrefix,$tablename)"/>
+  </xsl:template>
+
+  <xsl:template match="objectType" mode="tableName_noschema">
     <xsl:value-of select="concat('t_',name)"/>
   </xsl:template>
 
@@ -59,11 +77,32 @@
 
   <!-- for now no special camelcase 2 '_' transformation -->
   <xsl:template match="objectType" mode="viewName">
+    <xsl:variable name="viewname">
+      <xsl:apply-templates select="." mode="viewName_noschema"/>
+    </xsl:variable>
+    <xsl:value-of select="concat($schemaPrefix,$viewname)"/>
+  </xsl:template>
+
+  <!-- for now no special camelcase 2 '_' transformation -->
+  <xsl:template match="objectType" mode="viewName_noschema">
     <xsl:value-of select="name"/>
   </xsl:template>
 
-
-
+<!-- name to usein viewname declarations.
+TODO remember why we introduced this ... -->
+  <xsl:template match="objectType" mode="viewName_declaration">
+    <xsl:variable name="viewname">
+      <xsl:apply-templates select="." mode="viewName_noschema"/>
+    </xsl:variable>
+    <xsl:choose>
+      <xsl:when test="$vendor = 'mssqlserver'">
+        <xsl:value-of select="concat($schemaPrefix,'[',$viewname,']')"/>
+      </xsl:when>
+      <xsl:otherwise>
+      <xsl:apply-templates select="." mode="viewName"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 <!-- 
 Return the column name for a single attribute, assumed to be primitive 
 Currently nothing special done, simply returns the name of the attribute.
