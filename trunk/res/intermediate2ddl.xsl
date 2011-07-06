@@ -354,6 +354,20 @@ CREATE TABLE TargetObjectType (
   </xsl:template>
 
 
+<!-- 
+calculates the target table for a foreign key
+This is the root entity table for the referenced class
+ -->
+  <xsl:template match="objectType" mode="FKTargetTable">
+    <xsl:choose>
+      <xsl:when test="extends">
+      <xsl:apply-templates select="key('element',extends/@xmiidref)" mode="FKTargetTable"/>
+      </xsl:when>
+      <xsl:otherwise>
+        <xsl:apply-templates select="." mode="tableName"/>
+      </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>
 
 
   <xsl:template match="objectType" mode="createFKs">
@@ -366,7 +380,7 @@ CREATE TABLE TargetObjectType (
     </xsl:variable>
     <xsl:if test="container">
     <xsl:variable name="otherTable">
-      <xsl:apply-templates select="key('element',container/@xmiidref)" mode="tableName"/>
+      <xsl:apply-templates select="key('element',container/@xmiidref)" mode="FKTargetTable"/>
     </xsl:variable>
 <xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> ADD CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_container&cr; 
 <xsl:text>    FOREIGN KEY (containerId) REFERENCES </xsl:text><xsl:value-of select="$otherTable"/>(<xsl:value-of select="$primaryKeyColumnName"/>);&cr;&cr;
@@ -380,7 +394,7 @@ CREATE TABLE TargetObjectType (
     </xsl:if>
     <xsl:for-each select="reference[not(subsets)]">
     <xsl:variable name="otherTable">
-      <xsl:apply-templates select="key('element',datatype/@xmiidref)" mode="tableName"/>
+      <xsl:apply-templates select="key('element',datatype/@xmiidref)" mode="FKTargetTable"/>
     </xsl:variable>
 <xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> ADD CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_<xsl:value-of select="name"/>&cr; 
 <xsl:text>    FOREIGN KEY (</xsl:text><xsl:apply-templates select="." mode="columnName"/>) REFERENCES <xsl:value-of select="$otherTable"/>(<xsl:value-of select="$primaryKeyColumnName"/>);&cr;&cr;
