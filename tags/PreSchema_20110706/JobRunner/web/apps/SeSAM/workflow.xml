@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<workflow xmlns="http://vo-urp.googlecode.com/LegacyApps">
+	<name>Eyals-SAM</name>
+	<legacyApp ID="EyalsSAM">
+		<name>Eyals-SAM</name>
+		<description>TBD</description>
+		<documentationURL>
+			http://www.mpa-garching.mpg.de/galform/EyalsSAM
+		</documentationURL>
+		<executable>/LegacyApps/EyalsSAM/EyalsSAM.exe</executable>
+		<parameterFile>
+			<name>esam_params</name>
+    	<templateFile>/LegacyApps/EyalsSAM/parameters.template</templateFile>
+    	
+		</parameterFile>
+	</legacyApp>
+	<legacyApp ID="Rcmd">
+		<name>R</name>
+		<description>TBD</description>
+		<documentationURL>
+			http://cran
+		</documentationURL>
+		<executable>/usr/bin/Rscript.exe</executable>
+		<commandLineParameter >--vanilla</commandLineParameter>
+		<commandLineParameter >/LegacyApps/EyalsSAM/plot.r</commandLineParameter>
+		</parameterFile>
+	</legacyApp>
+</workflow>
+

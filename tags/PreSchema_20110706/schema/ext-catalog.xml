@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+
+<!-- ivoa -->
+    <system systemId="http://www.ivoa.net/xml/STC/stc-v1.30.xsd" uri="www.ivoa.net/xml/STC/stc-v1.30.xsd"/>
+
+    <system systemId="http://www.ivoa.net/xml/VODataService/v1.1" uri="www.ivoa.net/xml/VODataService/v1.1/VODataService_1_1.xsd"/>
+    <system systemId="http://www.ivoa.net/xml/VOResource/v1.0" uri="www.ivoa.net/xml/VOResource/v1.0/VOResource_1_0.xsd"/>
+
+    <system systemId="http://www.ivoa.net/xml/VOTable/v1.1" uri="www.ivoa.net/xml/VOTable/v1.1/VOTable_1_1.xsd"/>
+
+    <system systemId="http://www.ivoa.net/xml/Xlink/xlink.xsd" uri="www.w3.org/1999/xlink.xsd"/>
+
+
+<!-- sun JPA -->
+    <system systemId="http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd" uri="java.sun.com/xml/ns/persistence/persistence_1_0.xsd"/>
+
+
+<!-- sun J2EE -->
+    <system systemId="http://java.sun.com/xml/ns/j2ee/j2ee_1_4.xsd" uri="java.sun.com/xml/ns/j2ee/j2ee_1_4.xsd"/>
+    <system systemId="http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" uri="java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"/>
+    <system systemId="http://java.sun.com/xml/ns/j2ee/jsp_2_0.xsd" uri="java.sun.com/xml/ns/j2ee/jsp_2_0.xsd"/>
+
+
+<!-- ibm -->
+    <system systemId="http://www.ibm.com/webservices/xsd/j2ee_web_services_client_1_1.xsd" uri="www.ibm.com/webservices/xsd/j2ee_web_services_client_1_1.xsd"/>
+
+
+<!-- w3c -->
+    <system systemId="http://www.w3.org/2001/xml.xsd" uri="www.w3.org/2001/xml.xsd"/>
+
+    <system systemId="http://www.w3.org/1999/xlink" uri="www.w3.org/1999/xlink.xsd"/>
+
+</catalog>

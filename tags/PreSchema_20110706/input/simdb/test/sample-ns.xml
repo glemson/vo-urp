@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    Document   : sample-ns.xml
+    Created on : 22 juillet 2009, 07:52
+    Author     : laurent
+    Description:
+        This document is an sample document to illustrate how the SimDB xml schema must be declared.
+-->
+
+<s:aSimulator xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+
+              xmlns:s='http://www.ivoa.net/xml/SimDB/0.7-20090417'
+              xsi:schemaLocation="
+                http://www.ivoa.net/xml/SimDB/0.7-20090417 http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/SimDB_root.xsd
+              ">
+
+<!-- empty invalid document -->
+
+</s:aSimulator>

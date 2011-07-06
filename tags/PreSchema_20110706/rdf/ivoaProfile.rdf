@@ -1,0 +1,22 @@
+
+ivoa:Element			rdf:type					rdfs:Class
+
+ivoa:Model				rdf:type					rdfs:Class
+ivoa:Model				rdfs:subClassOf		ivoa:Element
+
+
+ivoa:Package			rdf:type					rdfs:Class
+ivoa:Package			rdfs:subClassOf		ivoa:Element
+
+
+ivoa:ObjectType		rdf:Type					rdfs:Class
+ivoa:ObjectType		rdfs:subClassOf		ivoa:Element
+
+
+ivoa:ValueType			rdf:Type					rdfs:Class
+ivoa:ValueType			rdfs:subClassOf		ivoa:Element
+
+
+
+ivoa:DataType			rdf:Type					rdfs:Class
+ivoa:DataType			rdfs:subClassOf		ivoa:ValueType

@@ -1,0 +1,743 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<!DOCTYPE project [
+<!ENTITY buildJava SYSTEM "./build_java.xml">
+<!ENTITY buildDB SYSTEM "./build_db.xml">
+]>
+
+<project name="Virtual Observatory UML Representation Pipeline" default="about" basedir=".">
+
+	<description>
+    This build file can be considered as the transformer tool for any Data Model in XMI format to other documents : 
+    - XML schemas (xsd)
+    - documentation (html)
+    - java formatted code (JPA / JAXB compliant) + javadoc
+    - DDL script (microsoft sql server / postgresql databases / oracle soon ?)
+    - TAP VOTABLEs
+     
+    Authors : laurent.bourges@obspm.fr, gerard.lemson@mpe.mpg.de
+    
+    This Version : 2009-05-19
+    Previous Version (SimDB) : 16/06/2008
+  	</description>
+
+
+
+
+	<!-- set global properties for this build -->
+    <property name="vo-urp.title" value="VO-URP"/> 
+    <property name="vo-urp.vendor" value="Gerard Lemson, Laurent Bourges"/>
+    <property name="vo-urp.version" value="0.x"/>
+	
+	<!--
+      Get build properties (general).
+	  Should only contain the location of the directory where input properties and data model can be found.
+	-->
+	<property file="build.properties" />
+
+	
+	<!-- read pipeline configuration properties -->
+	<property file="${input}/project.properties"/>
+	<fail unless="project.name" message="Must define name for project [project.name] !" />
+	<fail unless="project.version" message="Must define project version [project.version] !" />
+	<fail unless="source" message="Must define the source data model file (xmi 2.1) [source] !" />
+	<fail unless="xmi2intermediate" message="Must define the basic xmi2intermediate xsl file!"/>
+	<fail unless="root_package" message="Must define the root package [root_package] !" />
+	<fail unless="model_package" message="Must define the model package [model_package] !" />
+	<fail unless="targetnamespace_root" message="Must define the target namespace root [targetnamespace_root] !" />
+	<fail unless="schemalocation_root" message="Must define the schema location root [schemalocation_root] !" />
+
+	<!-- convert target switches to ant conditionnal properties -->
+	<fail unless="target.db.active" message="Must define if db targets should run [target.db.active] !" />
+	<fail unless="target.run.active" message="Must define if run target should run [target.run.active] !" />
+	<fail unless="target.weaving.active" message="Must define if weaving target should run [target.weaving.active] !" />
+
+	<condition property="has.test">
+		<isset property="sources.test"/>
+	</condition>
+	<condition property="target.db.do">
+		<equals arg1="${target.db.active}" arg2="true" trim="true" />
+	</condition>
+	<condition property="target.run.do">
+		<and>
+			<equals arg1="${target.run.active}" arg2="true" trim="true" />
+			<isset property="sources.test"/>
+		</and>
+	</condition>
+	<condition property="target.weaving.do">
+		<equals arg1="${target.weaving.active}" arg2="true" trim="true" />
+	</condition>
+
+
+	<!-- output files -->
+	<property name="source_checked" value="${project.name}_CHECK.xml" />
+	<property name="source_filtered" value="${project.name}_FILTER.xml" />
+	<property name="source_intermediate" value="${project.name}_INTERMEDIATE.xml" />
+
+
+	<!-- vo-urp paths -->
+	<property name="root" location="." />
+	<property name="res" location="./res" />
+	<property name="templates" location="./templates" />
+	<property name="libs" location="./libs" />
+	<property name="sources" location="./src" />
+	
+
+	<!-- define and instantiate output directories -->
+	<property name="output" location="${input}/output"/>
+	<property name="build" location="${input}/build"/>
+	<property name="dist" location="${input}/dist"/>
+	<property name="properties" location="${input}/properties"/>
+	<property name="dist.lib" location="${dist}/lib" />
+	<property name="javadoc" location="${dist}/doc" />
+	<property name="outputHTML" location="${output}/html"/>
+	<property name="outputJava" location="${output}/java"/>
+	<property name="sources.gen" location="${outputJava}" />
+	<property name="output.xsd" location="${output}/schema" />
+	<property name="build" location="./build" />
+	<property name="build.src" location="${build}/src" />
+	<property name="build.gen" location="${build}/gen" />
+	<property name="build.weaving" location="${build}/weaving" />
+	<property name="build.test" location="${build}/test" />
+	<property name="build.xsd" location="${build}/xsd" />
+	<property name="test" location="${input}/${sources.test}"/>
+
+	<!-- preamble file, may be set in project.properties --> 
+    <property name="html.preamble.file" value="output/html/preamble.html"/>
+    <property name="html.preamble" location="${input}/${html.preamble.file}"/>
+	
+    <property name="webapp.member.role" value="${project.name}-member"/>
+	<property name="webapp.admin.role" value="${project.name}-admin"/>
+  
+
+	
+	<!-- graphviz properties -->
+  <available property="graphviz.check" file="${graphviz.path}" />
+
+  <property name="graphviz.png" value="${project.name}.png"/>
+  <property name="graphviz.map" value="${project.name}.cmap"/>
+  <!-- <property name="graphviz.map" value="${project.name}.cmap"/> -->
+  <property name="graphviz.map.placeholder" value="___GRAPHVIZ_MAP___"/>
+
+	
+	
+    <!-- JDBC drivers -->
+    <fileset id="jdbcfiles" dir="${libs}/jdbc">
+      <!-- postgres 8.x driver -->
+      <include name="postgresql-8.3-603.jdbc3.jar"/>
+      <!-- sql server 2005 driver -->
+      <include name="sqljdbc-2005-1.2.jar"/>
+    </fileset>
+
+	<!-- class path for JDBC drivers -->
+	<path id="jdbc-drivers.class.path">
+        <fileset refid="jdbcfiles"/>
+	</path>
+
+	<!-- adds README.txt to default excludes -->
+	<defaultexcludes echo="false" add="**/README.txt" />
+
+
+
+	
+	<!-- presets -->
+
+	<!-- Performs an XSL translation of an XML file using the Saxon processor. -->
+	<presetdef name="xslt2">
+		<!-- The processor=SaxonLiaison setting causes our custom XSLTLiaison class to be used. -->
+		<!-- This works around bug #41314: http://issues.apache.org/bugzilla/show_bug.cgi?id=41314 -->
+		<xslt force="true" classpath="${libs}/saxon9.jar:${libs}/anthack/libs/ant-trax.jar:${libs}/anthack/" processor="SaxonLiaison">
+			<outputproperty name="{http://saxon.sf.net/}indent-spaces" value="2" />
+		</xslt>
+
+	</presetdef>
+
+
+
+
+	<!-- targets -->
+
+	<!-- target init : timestamp -->
+	<target name="init">
+        
+        <!-- define and instantiate output directories -->
+        <mkdir dir="${output}"/>
+        <mkdir dir="${build}"/>
+        <mkdir dir="${dist}"/>
+        <mkdir dir="${properties}"/>
+        <mkdir dir="${dist.lib}"/>
+        <mkdir dir="${javadoc}"/>
+        <mkdir dir="${outputJava}"/>
+        <mkdir dir="${build}"/>
+        <mkdir dir="${build.src}"/>
+        <mkdir dir="${build.gen}"/>
+        <mkdir dir="${build.weaving}"/>
+	  
+	      <mkdir dir="${libs}/jalopy/bin"/>
+
+        <tstamp>
+            <format property="build.date" pattern="dd/MM/yyyy HH:mm:ss" />
+        </tstamp>
+
+		<echo>-------------------------------------------------------------------------------</echo>
+		<echo>  ${project.vendor} </echo>
+		<echo>  ${project.title} - ${project.version} </echo>
+		<echo>-------------------------------------------------------------------------------</echo>
+		<echo> Build File </echo>
+		<echo>-------------------------------------------------------------------------------</echo>
+		<echo> Contacts    : ${project.authors}  </echo>
+		<echo> Build date  : ${build.date} </echo>
+		<echo>-------------------------------------------------------------------------------</echo>
+		<echo> project name     : ${project.name} </echo>
+		<echo> source           : ${source} </echo>
+		<echo> root package     : ${root_package} </echo>
+		<echo> model package    : ${model_package} </echo>
+		<echo> schema location  : ${schemalocation_root} </echo>
+		<echo> target namespace : ${targetnamespace_root} </echo>
+		<echo>-------------------------------------------------------------------------------</echo>
+
+		<echo> target.run.active    : ${target.run.active} </echo>
+		<echo>-------------------------------------------------------------------------------</echo>
+	  
+	  <!-- up to date checks -->
+
+	  <!-- checks if input & xslt are modified compare to intermediate document -->
+	  <uptodate property="intermediate.notRequired">
+	    <srcfiles dir="${input}" includes="${source}" />
+	    <srcfiles dir="${res}" includes="xmiCheck.xsl" />
+	    <srcfiles dir="${res}" includes="xmiFilter.xsl" />
+	    <srcfiles dir="${res}" includes="${xmi2intermediate}" />
+	    <mapper type="merge" to="${output}/${source_intermediate}" />
+	  </uptodate>
+
+	  <!-- checks if intermediate & xslt documents are modified compare to xsd-gen.log -->
+	  <uptodate property="xsd.notRequired">
+	    <srcfiles dir="${output}" includes="${source_intermediate}" />
+	    <srcfiles dir="${res}" includes="intermediate2xsd.xsl" />
+	    <srcfiles dir="${res}" includes="common.xsl" />
+	    <srcfiles dir="${res}" includes="common-xsd.xsl" />
+	    <mapper type="merge" to="${output}/schema/xsd-gen.log" />
+	  </uptodate>
+
+	  <!-- checks if intermediate & xslt documents are modified compare to ddl-gen.log -->
+	  <uptodate property="ddl.notRequired">
+	    <srcfiles dir="${output}" includes="${source_intermediate}" />
+	    <srcfiles dir="${res}" includes="intermediate2ddl.xsl" />
+	    <srcfiles dir="${res}" includes="common-ddl.xsl" />
+	    <srcfiles dir="${res}" includes="utype.xsl" />
+	    <mapper type="merge" to="${output}/ddl/ddl-gen.log" />
+	  </uptodate>
+
+	  <!-- checks if intermediate & xslt documents are modified compare to tap-gen.log -->
+	  <uptodate property="tap.notRequired">
+	    <srcfiles dir="${output}" includes="${source_intermediate}" />
+	    <srcfiles dir="${res}" includes="intermediate2tap.xsl" />
+	    <srcfiles dir="${res}" includes="intermediate2ddl.xsl" />
+	    <srcfiles dir="${res}" includes="common-ddl.xsl" />
+	    <srcfiles dir="${res}" includes="utype.xsl" />
+	    <mapper type="merge" to="${output}/tap/tap-gen.log" />
+	  </uptodate>
+
+	  <!-- checks if intermediate & xslt documents are modified compare to  java-gen.log -->
+	  <uptodate property="java.notRequired">
+	    <srcfiles dir="${output}" includes="${source_intermediate}" />
+	    <srcfiles dir="${res}" includes="intermediate2java.xsl" />
+	    <srcfiles dir="${res}" includes="common.xsl" />
+	    <srcfiles dir="${res}" includes="common-ddl.xsl" />
+	    <srcfiles dir="${res}" includes="common-xsd.xsl" />
+	    <srcfiles dir="${res}" includes="jpa.xsl" />
+	    <srcfiles dir="${res}" includes="jaxb.xsl" />
+	    <srcfiles dir="${templates}" includes="persistence-template.xml" />
+
+	    <!-- check if src/ java code has changed -->
+	    <srcfiles dir="${sources}" includes="**/*" />
+
+	    <srcfiles dir="${output}" includes="${source_intermediate}" />
+	    <mapper type="merge" to="${sources.gen}/java-gen.log" />
+	  </uptodate>	  
+	</target>
+
+
+	
+	
+	<!-- target about : -->
+	<target name="about" depends="init" description="show information for public targets">
+		<echo>available ant targets : </echo>
+		<echo>-------------------------------------------------------------------------------</echo>
+		<echo>  - makeAll       : make all transformations (uml -> metaModel -> others) </echo>
+		<echo>  - forceMakeAll  : CLEANS outputs and then make all transformations (makeAll) </echo>
+		<echo>-------------------------------------------------------------------------------</echo>
+	</target>
+	
+	
+	
+
+	<!-- main target : generates all documents -->
+	<target name="makeAll" depends="init, process" description="make all transformations">
+		<echo>makeAll : done.</echo>
+	</target>
+
+
+
+
+	<!-- main target : force to generate all documents -->
+	<target name="forceMakeAll"  depends="init, cleanOutput, cleanJava" description="CLEANS outputs and make all transformations (forced)">
+		<ant target="makeAll" inheritAll="false" />
+		<echo>forceMakeAll : done.</echo>
+	</target>
+
+
+
+
+	<!-- target cleanOutput : clean all output files (ddl, java, schema ...) -->
+	<target name="cleanOutput">
+
+		<echo>cleaning directory : ${output} ...</echo>
+
+		<!-- do not remove directories to have respect for .svn directories -->
+		<delete includeemptydirs="false" verbose="true">
+			<fileset dir="${output}">
+				<exclude name="java/**/*" />
+			</fileset>
+		</delete>
+
+		<echo>cleaned directory : ${output} : done.</echo>
+	</target>
+
+
+
+
+	<!-- target cleanOutput : clean java output files -->
+	<target name="cleanJavaOutput">
+
+		<echo>cleaning directory : ${outputJava} ...</echo>
+
+		<!-- do not remove directories to have respect for .svn directories -->
+		<delete includeemptydirs="false" verbose="true">
+			<fileset dir="${outputJava}" />
+		</delete>
+
+		<echo>cleaned directory : ${outputJava} : done.</echo>
+	</target>
+
+
+
+
+	<!-- target process : xslt pipeline + DB + test cases -->
+  <target name="process">
+		<property name="source" value="${source}" />
+		<property name="source_filtered" value="${source_filtered}" />
+
+		<ant target="processXMI2Intermediate" inheritAll="false">
+			<propertyset>
+				<propertyref prefix="source" />
+				<propertyref prefix="source_filtered" />
+			</propertyset>
+		</ant>
+
+		<ant target="processIntermediate2XSD" inheritAll="false">
+			<propertyset>
+				<propertyref prefix="source" />
+				<propertyref prefix="source_filtered" />
+			</propertyset>
+		</ant>
+
+		<ant target="processIntermediate2DDL" inheritAll="false">
+			<propertyset>
+				<propertyref prefix="source" />
+				<propertyref prefix="source_filtered" />
+			</propertyset>
+		</ant>
+
+		<ant target="processIntermediate2TAP" inheritAll="false">
+			<propertyset>
+				<propertyref prefix="source" />
+				<propertyref prefix="source_filtered" />
+			</propertyset>
+		</ant>
+
+		<ant target="processIntermediate2Java" inheritAll="false">
+			<propertyset>
+				<propertyref prefix="source" />
+				<propertyref prefix="source_filtered" />
+			</propertyset>
+		</ant>
+
+        <!-- update DB if needed -->
+		<ant target="checkDB" />
+
+		<ant target="createDB" />
+
+
+        <!-- build web app -->
+		<ant target="buildWeb" />
+
+    <!-- run test cases if needed -->
+		<ant target="run" />
+	</target>
+
+
+
+
+	<!-- target buildJava : makes both java libraries and the vo-urp browser web application -->
+	<target name="buildJava" description="build both java libraries and the web application">
+		<ant target="makeOutput" />
+    <ant target="buildWeb" />
+	</target>
+
+
+
+
+  <!-- target buildWeb : makes the vo-urp browser web application -->
+	<target name="buildWeb" description="build web application only">
+		<ant antfile="webapp/vo-urp-browser/build.xml" target="deployTomcat" inheritAll="false">
+	 		<property name="input" location="${input}"/>
+			<property name="schemalocation_root" value="${schemalocation_root}"/>
+    	<property name="webapp.member.role" value="${webapp.member.role}"/>
+    	<property name="webapp.admin.role" value="${webapp.admin.role}"/>
+		</ant>	
+	</target> 
+	
+	
+
+
+	<!-- target processXMI2Intermediate : check the XMI model, filter it and generate the intermediate model -->
+	<target name="processXMI2Intermediate" unless="intermediate.notRequired">
+		<ant target="checkSource">
+			<property name="source_checked" value="${source_checked}" />
+		</ant>
+		<ant target="filterSource" />
+		<ant target="run_xmi2intermediate" />
+	</target>
+
+
+
+
+	<!-- target processIntermediate2XSD : generates XML Schemas, XML samples and HTML documentation -->
+	<target name="processIntermediate2XSD" unless="xsd.notRequired">
+		<ant target="run_intermediate2xsd" />
+		<ant target="run_intermediate2html" />
+		<ant target="run_intermediate2xml" />
+	</target>
+
+
+
+
+	<!-- target processIntermediate2DDL : generates DDL scripts -->
+	<target name="processIntermediate2DDL" unless="ddl.notRequired">
+		<ant target="run_intermediate2ddl" />
+	</target>
+
+
+
+
+	<!-- target processIntermediate2TAP : generates TAP model -->
+	<target name="processIntermediate2TAP" unless="tap.notRequired">
+		<ant target="run_intermediate2tap" />
+	</target>
+
+
+
+
+	<!-- target processIntermediate2Java : clean java outputs, generates java code from intermediate model and compiles java codes -->
+	<target name="processIntermediate2Java" unless="java.notRequired">
+		<ant target="cleanJavaOutput" />
+		<ant target="run_intermediate2java" />
+		<ant target="makeOutput" />
+	</target>
+
+
+
+
+	<!-- generic targets -->
+
+	<!-- target checkSource : check xmi well formed tags in source document -->
+	<target name="checkSource">
+		<echo>checkSource : starting checks on file ${input}/${source}</echo>
+
+		<xslt2 in="${input}/${source}" out="${output}/${source_checked}" style="${res}/xmiCheck.xsl" />
+
+		<echo>checkSource : done.</echo>
+	</target>
+
+
+
+
+	<!-- target filterSource : remove all xmi:Extension tags in source document -->
+	<target name="filterSource">
+		<echo>filterSource : starting filter on file ${input}/${source}</echo>
+
+		<xslt2 in="${input}/${source}" out="${output}/${source_filtered}" style="${res}/xmiFilter.xsl" />
+
+		<echo>filterSource : done.</echo>
+	</target>
+
+
+
+  <target name="generateAll">
+		<property name="source" value="${source}" />
+		<property name="source_filtered" value="${source_filtered}" />
+ 
+		<ant target="run_xmi2intermediate" inheritAll="true"/>
+
+		<ant target="run_intermediate2ddl" inheritAll="true"/>
+  	    <ant target="run_intermediate2gvd" inheritAll="true"/>
+  	    <ant target="run_intermediate2html" inheritAll="true"/>
+		<ant target="run_intermediate2java" inheritAll="true"/>
+<!--		<ant target="run_intermediate2rdf" inheritAll="true"/>  --> 
+		<ant target="run_intermediate2tap" inheritAll="true"/>
+		<ant target="run_intermediate2xml" inheritAll="true"/>
+		<ant target="run_intermediate2xsd" inheritAll="true"/>
+
+	</target>
+	
+
+	<!-- target run_xmi2intermediate : transform the source model (xmi) to the intermediate model -->
+	<target name="run_xmi2intermediate">
+		<ant target="xmi2intermediate">
+			<property name="source" value="${input}/${source}" />
+			<property name="source_filtered" value="${source_intermediate}" />
+		</ant>
+	</target>
+
+
+
+
+	<!-- target xmi2intermediate : GenTool preprocessor generating according to ivoaDMMetamodel.xsd -->
+	<target name="xmi2intermediate">
+		<echo>xmi2intermediate : starting generate intermediate model from file ${output}/${source}</echo>
+
+		<xslt2 in="${source}" out="${output}/${source_filtered}" style="${res}/${xmi2intermediate}">
+			<param name="root_package" expression="${root_package}" />
+			<param name="model_package" expression="${model_package}" />
+		</xslt2>
+
+		<echo>xmi2intermediate : done.</echo> 
+	</target>
+
+
+
+
+	<!-- target run_intermediate2xsd : generates XML schemas from intermediate model -->
+	<target name="run_intermediate2xsd">
+		<echo>run_intermediate2xsd : starting generate XSD files from file ${output}/${source_intermediate}</echo>
+
+		<xslt2 in="${output}/${source_intermediate}" out="${output.xsd}/xsd-gen.log" style="${res}/intermediate2xsd.xsl">
+			<param name="targetnamespace_root" expression="${targetnamespace_root}" />
+			<param name="schemalocation_root" expression="${schemalocation_root}" />
+			<param name="generateAppinfo" expression="true" />
+			<param name="project_name" expression="${project.name}" />
+		</xslt2>
+
+		<copy verbose="true" todir="${output}/schema" preservelastmodified="true">
+			<fileset file="./xsd/base.xsd" />
+		</copy>
+
+		<echo>run_intermediate2xsd : done.</echo>
+	</target>
+
+
+
+
+	<!-- generate template XML docs for each of the root elements -->
+	<target name="run_intermediate2xml">
+		<echo>run_intermediate2xml : starting generate XML sample documents from file ${output}/${source_intermediate}</echo>
+
+        <xslt2 in="${output}/${source_intermediate}" out="${output}/xml-samples/xml-gen.log" style="${res}/intermediate2xml.xsl">
+			<param name="targetnamespace_root" expression="${targetnamespace_root}" />
+		</xslt2>
+
+		<echo>run_intermediate2xml : done.</echo>
+    </target>
+
+
+
+
+	<!-- target run_readSKOS : generates SKOS vocabularie and trasforms them -->
+    <!-- note : this target not included in the standard pipeline : run it manually -->
+	<target name="run_readSKOS">
+		<echo>run_intermediateSKOS2simpleSKOS : starting generate Simple SKOS files from SKOS URIs in ${output}/${source_intermediate}</echo>
+
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/skos/skos-gen.log" style="${res}/readSKOS.xsl"/>
+
+		<echo>run_intermediate2xsd : done.</echo>
+	</target>
+
+
+
+
+	<!-- target run_intermediate2html : generates HTML Documentation from intermediate model -->
+	<target name="run_intermediate2html" depends="run_intermediate2gvd">
+		<echo>run_intermediate2html : starting generate HTML from file ${output}/${source_intermediate}</echo>
+	
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/html/${project.name}.html"
+			style="${res}/intermediate2html_v2.xsl">
+            <param name="project_name" expression="${project.name}"/>
+            <param name="graphviz_png" if="graphviz.path" expression="${graphviz.png}"/>
+            <param name="graphviz_map" if="graphviz.path" expression="${graphviz.map.placeholder}"/>
+          <param name="preamble" expression="${html.preamble}"/>
+        </xslt2> 
+        <copy todir="${output}/html">
+            <fileset dir="css">
+                <include name="*.css" />
+            </fileset>
+        </copy>
+
+		<ant target="postGenerateHTML" />
+
+		<echo>run_intermediate2html : done.</echo>  
+	</target>
+
+  <target name="postGenerateHTML"  if="graphviz.path" >
+      <loadfile property="map" srcfile="${outputHTML}/${graphviz.map}"/>
+	
+      <replace file="${outputHTML}/${project.name}.html" token="${graphviz.map.placeholder}" value="${map}"/>
+  </target>
+	
+
+	<!-- target run_intermediate2rdf : generates a RDF instance from intermediate model -->
+    <target name="run_intermediate2rdf" >
+		<echo>run_intermediate2rdf : starting generate RDF from file ${output}/${source_intermediate}</echo>
+
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/rdf/{project.name}.rdf" style="${res}/intermediate2rdf.xsl"/>
+
+		<echo>run_intermediate2rdf : done.</echo>
+	</target>
+
+
+
+
+	<!-- target run_intermediate2gvd : generates Object Graphs (graphviz tool) from intermediate model -->
+    <!-- note : this target not included in the standard pipeline : run it manually -->
+	<target name="run_intermediate2gvd" if="graphviz.path">
+		<echo>run_intermediate2gvd : starting generate GraphViz from file ${output}/${source_intermediate}</echo>
+
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/html/${project.name}.gvd" style="${res}/intermediate2gvd.xsl" />
+
+    <exec executable="${graphviz.path}" dir="${outputHTML}" >
+        <arg value="-Tcmapx" />
+        <arg value="-o${graphviz.map}" />
+        <arg value="-Tpng"/>
+        <arg value="-o${graphviz.png}"/>
+        <arg value="${project.name}.gvd"/>
+    </exec>
+    <echo>run_intermediate2gvd : done.</echo>
+
+		</target>
+	
+
+	<!-- target run_intermediate2ddl : generates DDL script from intermediate model -->
+	<target name="run_intermediate2ddl">
+		<echo>run_intermediate2ddl : starting generate DDL from file ${output}/${source_intermediate}</echo>
+
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/ddl/ddl-gen.log" style="${res}/intermediate2ddl.xsl">
+			<param name="vendor" expression="mssqlserver" />
+			<param name="project_name" expression="${project.name}" />
+		</xslt2>
+
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/ddl/ddl-gen.log" style="${res}/intermediate2ddl.xsl">
+			<param name="vendor" expression="postgres" />
+			<param name="project_name" expression="${project.name}" />
+		</xslt2>
+
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/ddl/ddl-gen.log" style="${res}/intermediate2ddl.xsl" >
+			<param name="vendor" expression="mysql" />
+			<param name="project_name" expression="${project.name}" />
+		</xslt2>
+		
+		<echo>run_intermediate2ddl : done.</echo>
+	</target>
+
+
+
+
+	<!-- target run_intermediate2tap : generates TAP metadata VOTables from intermediate model -->
+	<target name="run_intermediate2tap">
+		<echo>run_intermediate2tap : starting generate TAP metadata VOTables from file ${output}/${source_intermediate}</echo>
+
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/tap/tap-gen.log" style="${res}/intermediate2tap.xsl">
+			<param name="mode" expression="tableset" />
+			<param name="project_name" expression="${project.name}" />
+		</xslt2>
+
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/tap/mssqlserver/tap-gen.log" style="${res}/intermediate2tap.xsl">
+			<param name="mode" expression="tap_schema" />
+			<param name="vendor" expression="mssqlserver" />
+			<param name="target_database" expression="${tap.target_database}" />
+			<param name="target_schema" expression="${tap.target_schema}" />
+			<param name="project_name" expression="${project.name}" />
+		</xslt2>
+
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/tap/postgres/tap-gen.log" style="${res}/intermediate2tap.xsl">
+			<param name="mode" expression="tap_schema" />
+			<param name="vendor" expression="postgres" />
+			<param name="target_database" expression="${tap.target_database}" />
+			<param name="target_schema" expression="${tap.target_schema}" />
+			<param name="project_name" expression="${project.name}" />
+		</xslt2>
+
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/tap/tap-gen.log" style="${res}/intermediate2tap.xsl">
+			<param name="mode" expression="vodataservice" />
+			<param name="project_name" expression="${project.name}" />
+		</xslt2>
+
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/tap/tap-gen.log" style="${res}/intermediate2tap.xsl">
+			<param name="mode" expression="votable" />
+			<param name="project_name" expression="${project.name}" />
+		</xslt2>
+
+		<echo>run_intermediate2tap : done.</echo>
+	</target>
+
+
+
+
+	<!-- target run_intermediate2java : generates java classes from intermediate model -->
+	<target name="run_intermediate2java">
+		<echo>run_intermediate2java : starting filter on file ${output}/${source}</echo>
+
+		<mkdir dir="${sources.gen}/" />
+		<copy tofile="${properties}/persistence.xml" filtering="true" verbose="true" overwrite="true">
+			<fileset file="${templates}/persistence-template.xml" />
+			<filterset>
+	<!-- 
+	   Filters for copying persistence.xml
+	   Check that file for the full list of required properties
+	-->
+				<filter token="jpa.persistence.unit" value="${jpa.persistence.unit}" />
+			</filterset>
+		</copy> 
+		<xslt2 in="${output}/${source_intermediate}" out="${sources.gen}/java-gen.log" style="${res}/intermediate2java.xsl">
+			<param name="root_package" expression="${root_package}" />
+			<param name="model_package" expression="${model_package}" />
+			<param name="targetnamespace_root" expression="${targetnamespace_root}" />
+			<param name="persistence.xml" expression="${properties}/persistence.xml"/>
+		</xslt2>
+
+		<echo>run_intermediate2java : done.</echo>
+	</target>
+
+
+	<!-- include db targets -->
+
+  &buildDB; 
+
+  <!-- include java code targets -->
+
+  &buildJava; 
+
+
+
+
+    <!-- target echo : echos properties -->
+    <target name="echo" depends="init">
+      <echoproperties />
+    </target>
+
+
+    <target name="doNothing" >
+      <echo>Doing nothing ......................................</echo>
+    </target>
+	
+	
+</project>
