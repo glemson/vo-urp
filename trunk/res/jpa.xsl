@@ -50,28 +50,28 @@
       </xsl:choose>
     </xsl:variable>
 
-  @Entity
-  @Table( name = "<xsl:apply-templates select="." mode="tableName"/>" )
+  @javax.persistence.Entity
+  @javax.persistence.Table( name = "<xsl:apply-templates select="." mode="tableName"/>" )
 <!--  always generate discriminator column, looks nicer in the database. -->
 &cr;    
   <!-- JOINED strategy for inheritance -->
-  @Inheritance( strategy = InheritanceType.JOINED )
-  @DiscriminatorColumn( name = "<xsl:value-of select="$discriminatorColumnName"/>", discriminatorType = DiscriminatorType.STRING, length = <xsl:value-of select="$discriminatorColumnLength"/>)
+  @javax.persistence.Inheritance( strategy = javax.persistence.InheritanceType.JOINED )
+  @javax.persistence.DiscriminatorColumn( name = "<xsl:value-of select="$discriminatorColumnName"/>", discriminatorType = javax.persistence.DiscriminatorType.STRING, length = <xsl:value-of select="$discriminatorColumnLength"/>)
 &cr;    
 
   <xsl:if test="$extMod = 1">
-  @DiscriminatorValue( "<xsl:value-of select="$className"/>" ) <!-- TODO decide whether this should be a path -->
+  @javax.persistence.DiscriminatorValue( "<xsl:value-of select="$className"/>" ) <!-- TODO decide whether this should be a path -->
   </xsl:if>
 <!-- Once JPA 2.0 with nested embeddable mapping is supported in Eclipselink we may revisit the next code. 
 For now it is commented out. -->
 <!-- 
   <xsl:if test="attribute[key('element', datatype/@xmiidref)/name() = 'dataType']">
-    @AttributeOverrides ( {
+    @javax.persistence.AttributeOverrides ( {
         <xsl:variable name="columns">
           <xsl:apply-templates select="." mode="columns"/>
         </xsl:variable>
        <xsl:for-each select="exsl:node-set($columns)/column">
-         @AttributeOverride( name = "<xsl:value-of select="attroverride"/>", column = @Column( name = "<xsl:value-of select="name"/>" ) )
+         @javax.persistence.AttributeOverride( name = "<xsl:value-of select="attroverride"/>", column = @javax.persistence.Column( name = "<xsl:value-of select="name"/>" ) )
          <xsl:if test="position() != last()"><xsl:text>,</xsl:text></xsl:if>
        </xsl:for-each>
          <xsl:if test="position() != last()"><xsl:text>,</xsl:text></xsl:if>
@@ -79,11 +79,11 @@ For now it is commented out. -->
     } )
   </xsl:if>
  -->
-   @NamedQueries( {
-    @NamedQuery( name = "<xsl:value-of select="$className"/>.findById", query = "SELECT o FROM <xsl:value-of select="$className"/> o WHERE o.id = :id"),
-    @NamedQuery( name = "<xsl:value-of select="$className"/>.findByPublisherDID", query = "SELECT o FROM <xsl:value-of select="$className"/> o WHERE o.identity.publisherDID = :publisherDID")
+   @javax.persistence.NamedQueries( {
+    @javax.persistence.NamedQuery( name = "<xsl:value-of select="$className"/>.findById", query = "SELECT o FROM <xsl:value-of select="$className"/> o WHERE o.id = :id"),
+    @javax.persistence.NamedQuery( name = "<xsl:value-of select="$className"/>.findByPublisherDID", query = "SELECT o FROM <xsl:value-of select="$className"/> o WHERE o.identity.publisherDID = :publisherDID")
   <xsl:if test="$hasName = 1">
-,     @NamedQuery( name = "<xsl:value-of select="$className"/>.findByName", query = "SELECT o FROM <xsl:value-of select="$className"/> o WHERE o.name = :name") 
+,     @javax.persistence.NamedQuery( name = "<xsl:value-of select="$className"/>.findByName", query = "SELECT o FROM <xsl:value-of select="$className"/> o WHERE o.name = :name") 
   </xsl:if>
   } )
   </xsl:template>
@@ -97,27 +97,27 @@ For now it is commented out. -->
 
     <xsl:if test="name() = 'objectType' and $hasExtends = 0 and $hasChild = 1">
     /** classType gives the discriminator value stored in the database for an inheritance hierarchy */
-    @Column( name = "<xsl:value-of select="$discriminatorColumnName"/>", insertable = false, updatable = false, nullable = false )
+    @javax.persistence.Column( name = "<xsl:value-of select="$discriminatorColumnName"/>", insertable = false, updatable = false, nullable = false )
     protected String classType;
     </xsl:if>
 
     <xsl:if test="name() = 'objectType' and $hasExtends = 0">
     /** jpaVersion gives the current version number for that entity (used by pessimistic / optimistic locking in JPA) */
-    @Version()
-    @Column( name = "OPTLOCK" )
+    @javax.persistence.Version()
+    @javax.persistence.Column( name = "OPTLOCK" )
     protected int jpaVersion;
     </xsl:if>
 
     <xsl:if test="container">
       <xsl:variable name="type"><xsl:call-template name="JavaType"><xsl:with-param name="xmiid" select="container/@xmiidref"/></xsl:call-template></xsl:variable>
     /** container gives the parent entity which owns a collection containing instances of this class */
-    @ManyToOne( cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH } )
-    @JoinColumn( name = "containerId", referencedColumnName = "id", nullable = false )
+    @javax.persistence.ManyToOne( cascade = { javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE, javax.persistence.CascadeType.REFRESH } )
+    @javax.persistence.JoinColumn( name = "containerId", referencedColumnName = "id", nullable = false )
     protected <xsl:value-of select="$type"/> container;
 
     /** rank : position in the container collection  */
-    @Basic( optional = false )
-    @Column( name = "rank", nullable = false )
+    @javax.persistence.Basic( optional = false )
+    @javax.persistence.Column( name = "rank", nullable = false )
     protected int rank = -1;
     </xsl:if>
   </xsl:template>
@@ -126,17 +126,17 @@ For now it is commented out. -->
 
 
   <xsl:template match="dataType" mode="JPAAnnotation">
-    <xsl:text>@Embeddable</xsl:text>&cr;
+    <xsl:text>@javax.persistence.Embeddable</xsl:text>&cr;
 <!-- see comment for similar code concerning nested embeddables in the objectType template -->    
 <!-- 
   <xsl:if test="attribute[key('element', datatype/@xmiidref)/name() = 'dataType']">
-    @AttributeOverrides ( {
+    @javax.persistence.AttributeOverrides ( {
       <xsl:for-each select="attribute[key('element', datatype/@xmiidref)/name() = 'dataType']">
         <xsl:variable name="columns">
           <xsl:apply-templates select="." mode="columns"/>
         </xsl:variable>
        <xsl:for-each select="exsl:node-set($columns)/column">
-         @AttributeOverride( name = "<xsl:value-of select="attroverride"/>", column = @Column( name = "<xsl:value-of select="name"/>" ) )
+         @javax.persistence.AttributeOverride( name = "<xsl:value-of select="attroverride"/>", column = @javax.persistence.Column( name = "<xsl:value-of select="name"/>" ) )
          <xsl:if test="position() != last()"><xsl:text>,</xsl:text></xsl:if>
        </xsl:for-each>
          <xsl:if test="position() != last()"><xsl:text>,</xsl:text></xsl:if>
@@ -158,7 +158,7 @@ enable that again if we want (and are able) to use property access using get/set
 Currently only for JPA 2.0 impementation of eclipselink it seems as if nested attributeoverride-s at least comppile and weave-->
     <xsl:choose>
       <xsl:when test="../name() = 'dataType' and 0 = 1">
-        <xsl:text>@Basic</xsl:text>
+        <xsl:text>@javax.persistence.Basic</xsl:text>
       </xsl:when>
       <xsl:otherwise>
     <xsl:variable name="type" select="key('element', datatype/@xmiidref)"/>
@@ -166,22 +166,22 @@ Currently only for JPA 2.0 impementation of eclipselink it seems as if nested at
       <xsl:when test="name($type) = 'primitiveType'">
         <xsl:choose>
           <xsl:when test="number(constraints/maxLength) = -1">
-    @Basic( fetch = FetchType.LAZY, optional = <xsl:apply-templates select="." mode="nullable"/> )
-    @Lob
-    @Column( name = "<xsl:apply-templates select="." mode="columnName"/>", nullable = <xsl:apply-templates select="." mode="nullable"/> )
+    @javax.persistence.Basic( fetch = javax.persistence.FetchType.LAZY, optional = <xsl:apply-templates select="." mode="nullable"/> )
+    @javax.persistence.Lob
+    @javax.persistence.Column( name = "<xsl:apply-templates select="." mode="columnName"/>", nullable = <xsl:apply-templates select="." mode="nullable"/> )
           </xsl:when>
           <xsl:when test="number(constraints/maxLength) > 0">
-    @Basic( optional = <xsl:apply-templates select="." mode="nullable"/> )
-    @Column( name = "<xsl:apply-templates select="." mode="columnName"/>", nullable = <xsl:apply-templates select="." mode="nullable"/>, length = <xsl:value-of select="constraints/maxLength"/> )
+    @javax.persistence.Basic( optional = <xsl:apply-templates select="." mode="nullable"/> )
+    @javax.persistence.Column( name = "<xsl:apply-templates select="." mode="columnName"/>", nullable = <xsl:apply-templates select="." mode="nullable"/>, length = <xsl:value-of select="constraints/maxLength"/> )
           </xsl:when>
           <xsl:when test="$type/name = 'datetime'">
-    @Basic( optional = <xsl:apply-templates select="." mode="nullable"/> )
-    @Temporal( TemporalType.TIMESTAMP )
-    @Column( name = "<xsl:apply-templates select="." mode="columnName"/>", nullable = <xsl:apply-templates select="." mode="nullable"/> )
+    @javax.persistence.Basic( optional = <xsl:apply-templates select="." mode="nullable"/> )
+    @javax.persistence.Temporal( javax.persistence.TemporalType.TIMESTAMP )
+    @javax.persistence.Column( name = "<xsl:apply-templates select="." mode="columnName"/>", nullable = <xsl:apply-templates select="." mode="nullable"/> )
           </xsl:when>
           <xsl:otherwise>
-    @Basic( optional = <xsl:apply-templates select="." mode="nullable"/> )
-    @Column( name = "<xsl:apply-templates select="." mode="columnName"/>", nullable = <xsl:apply-templates select="." mode="nullable"/> )
+    @javax.persistence.Basic( optional = <xsl:apply-templates select="." mode="nullable"/> )
+    @javax.persistence.Column( name = "<xsl:apply-templates select="." mode="columnName"/>", nullable = <xsl:apply-templates select="." mode="nullable"/> )
           </xsl:otherwise>
         </xsl:choose>
       </xsl:when>
@@ -193,7 +193,7 @@ Currently only for JPA 2.0 impementation of eclipselink it seems as if nested at
       <xsl:when test="name($type) = 'dataType'">
         <xsl:choose>
           <xsl:when test="../name() = 'dataType'">
-          @Embedded
+          @javax.persistence.Embedded
           </xsl:when>
           <xsl:otherwise>
             <xsl:apply-templates select="." mode="attroverride"/>
@@ -202,7 +202,7 @@ Currently only for JPA 2.0 impementation of eclipselink it seems as if nested at
      </xsl:when>
       <xsl:otherwise>
       <xsl:message> ++++++++  ERROR  +++++++  <xsl:value-of select="name($type)"/> is not supported</xsl:message>
-    [NOT_SUPPORTED_ATTRIBUTE]
+// TODO    [NOT_SUPPORTED_ATTRIBUTE]
       </xsl:otherwise>
     </xsl:choose>
           </xsl:otherwise>
@@ -220,11 +220,11 @@ Currently only for JPA 2.0 impementation of eclipselink it seems as if nested at
           <xsl:apply-templates select="." mode="nested"/>
         </xsl:variable>
         <xsl:variable name="attrname" select="name"/>
-    @Embedded
-    @AttributeOverrides ( {
+    @javax.persistence.Embedded
+    @javax.persistence.AttributeOverrides ( {
        <xsl:for-each select="exsl:node-set($columns)/nested">
          <xsl:variable name="attroverride" select="substring(attroverride,string-length(string($attrname))+2)"/>
-         @AttributeOverride( name = "<xsl:value-of select="$attroverride"/>", column = @Column( name = "<xsl:value-of select="name"/>" ) )
+         @javax.persistence.AttributeOverride( name = "<xsl:value-of select="$attroverride"/>", column = @javax.persistence.Column( name = "<xsl:value-of select="name"/>" ) )
          <xsl:if test="position() != last()"><xsl:text>,</xsl:text></xsl:if>
        </xsl:for-each>
     } )
@@ -251,12 +251,12 @@ Currently only for JPA 2.0 impementation of eclipselink it seems as if nested at
 
     <xsl:choose>
       <xsl:when test="name($type) = 'primitiveType' or name($type) = 'enumeration'">
-    [NOT_SUPPORTED_REFERENCE]
+// TODO    [NOT_SUPPORTED_REFERENCE]
       </xsl:when>
       <xsl:otherwise>
     <!-- do not remove referenced entity : do not cascade delete -->
-    @ManyToOne( cascade = { CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH } )
-    @JoinColumn( name = "<xsl:apply-templates select="." mode="columnName"/>", referencedColumnName = "id", nullable = <xsl:apply-templates select="." mode="nullable"/> )
+    @javax.persistence.ManyToOne( cascade = { javax.persistence.CascadeType.PERSIST, javax.persistence.CascadeType.MERGE, javax.persistence.CascadeType.REFRESH } )
+    @javax.persistence.JoinColumn( name = "<xsl:apply-templates select="." mode="columnName"/>", referencedColumnName = "id", nullable = <xsl:apply-templates select="." mode="nullable"/> )
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -265,7 +265,7 @@ Currently only for JPA 2.0 impementation of eclipselink it seems as if nested at
 
 
   <xsl:template match="reference" mode="JPAAnnotation_reference">
-  @Transient
+  @javax.persistence.Transient
   </xsl:template>
 
 
@@ -276,11 +276,11 @@ Currently only for JPA 2.0 impementation of eclipselink it seems as if nested at
 
     <xsl:choose>
       <xsl:when test="name($type) = 'primitiveType' or name($type) = 'enumeration' or name($type) = 'dataType'">
-    [NOT_SUPPORTED_COLLECTION]
+//TODO    [NOT_SUPPORTED_COLLECTION]
       </xsl:when>
       <xsl:otherwise>
-    @OrderBy( value = "rank" )
-    @OneToMany( cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy="container" )
+    @javax.persistence.OrderBy( value = "rank" )
+    @javax.persistence.OneToMany( cascade = javax.persistence.CascadeType.ALL, fetch = javax.persistence.FetchType.LAZY, mappedBy="container" )
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
@@ -291,9 +291,9 @@ Currently only for JPA 2.0 impementation of eclipselink it seems as if nested at
   <xsl:template name="enumPattern">
     <xsl:param name="columnName"/>
 
-    @Basic( optional=<xsl:apply-templates select="." mode="nullable"/> )
-    @Enumerated( EnumType.STRING )
-    @Column( name = "<xsl:apply-templates select="." mode="columnName"/>", nullable = <xsl:apply-templates select="." mode="nullable"/> )
+    @javax.persistence.Basic( optional=<xsl:apply-templates select="." mode="nullable"/> )
+    @javax.persistence.Enumerated( javax.persistence.EnumType.STRING )
+    @javax.persistence.Column( name = "<xsl:apply-templates select="." mode="columnName"/>", nullable = <xsl:apply-templates select="." mode="nullable"/> )
   </xsl:template>
 
 
@@ -496,7 +496,7 @@ Currently only for JPA 2.0 impementation of eclipselink it seems as if nested at
           </xsl:otherwise>
         </xsl:choose>
       </xsl:variable>
-      @Column( name = "<xsl:value-of select="name"/>", nullable = <xsl:value-of select="nullable"/> )
+      @javax.persistence.Column( name = "<xsl:value-of select="name"/>", nullable = <xsl:value-of select="nullable"/> )
       public <xsl:value-of select="javaType"/> get<xsl:value-of select="nestedMethod"/>() {
         return <xsl:value-of select="$get_prefix"/>get<xsl:value-of select="leafName"/>();
       }

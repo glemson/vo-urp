@@ -409,7 +409,6 @@ package <xsl:value-of select="$path"/>;
     </xsl:if>
     import java.util.Map;
 
-    import javax.persistence.*;
     import javax.xml.bind.annotation.*;
 
     import static <xsl:value-of select="$root_package"/>.ModelVersion.LAST_MODIFICATION_DATE;

@@ -4,26 +4,33 @@ This XSLT script transforms a data model from our
 intermediate representation to a relational database 
 Data Definition Language script.
 
-By default we use the "joined" object-relational mapping strategy.
-That is, each objectType has a table of its own, in which only those features defined on
-the objectType are mapped to columns, the  inherited are mapped by base classes.
+In contrast to the intermediat2ddl.xsl script, which uses the "joined" 
+object-relational mapping strategy, this script uses the "table-per-class" approach.
+We create a separate table for each concrete class only, containing all columns required,
+both defined on the class itself and inherited from the base classes.
+
+For documentation about the different mapping strategies supported by JPA, see for example:
+- http://en.wikibooks.org/wiki/Java_Persistence/Inheritance
+- ...
+
+The main problem (GL's opinion as of 20110703) with this strategy is how to resolve
+references to base classes. See also discussion of MappedSuperclass in
+http://en.wikibooks.org/wiki/Java_Persistence/Inheritance#Mapped_Superclasses
+
+
 
 We also generate view definitions representing each objectType.
 
 We assume that all tables are in a single schema.
-For now we assume that objectType's names are unique over the complete model.
+For now we assume therefore that objectType's names are unique over the complete model.
 TODO We need to check this explicitly and modify the generation if not.
+TODO alternatively we could add a stereotype for packages with a tag indicating DB schema.
 
+IMPORTANT
+In general in VO-URP data models we support that 
+"concrete classes should(must?) be final".
+But we try to avoid using this assumption in our mapping and most of our generation.
 
-LAURENT : TODO : add foreign key on PK for inheritance :
-
-CREATE TABLE TargetObjectType (
-  id integer NOT NULL,     // inheritance
-...
-  CONSTRAINT TargetObjectType_pk PRIMARY KEY (id),
-  CONSTRAINT TargetObjectType_ObjectType_fk          FOREIGN KEY (id)       REFERENCES ObjectType       (id), // inheritance
-...
-)
 
  -->
 
@@ -31,7 +38,6 @@ CREATE TABLE TargetObjectType (
 <!ENTITY cr  "<xsl:text>
 </xsl:text>">
 <!ENTITY bl  "<xsl:text> </xsl:text>">
-<!ENTITY tab  "<xsl:text>	</xsl:text>">
 <!ENTITY rem "<xsl:text>-- </xsl:text>">
 ]>
 
@@ -64,6 +70,13 @@ CREATE TABLE TargetObjectType (
   <xsl:param name="lastModifiedText"/>
   
   <xsl:variable name="header">&rem;last modification date of the UML model <xsl:value-of select="$lastModifiedText"/>&cr;</xsl:variable>
+  
+  <xsl:variable name="hasSchema">
+  <xsl:choose>
+    <xsl:when test="string-length(normalize-space($schema)) > 0">1</xsl:when>
+    <xsl:otherwise>0</xsl:otherwise>
+  </xsl:choose> 
+  </xsl:variable>
   
   <xsl:variable name="schemaPrefix">
     <xsl:call-template name="schemaPrefix">
@@ -140,12 +153,12 @@ CREATE TABLE TargetObjectType (
 
         
 <!-- CREATE TABLES -->
-    <xsl:variable name="file" select="concat($vendor,'/',$project_name,'_createTables.sql')"/>
+    <xsl:variable name="file" select="concat($vendor,'/',$project_name,'_createTables_TPC.sql')"/>
     <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
     <xsl:result-document href="{$file}">
       <xsl:value-of select="$header"/>&cr;&cr;
 
-    <xsl:if test="string-length(normalize-space($schema)) > 0">
+    <xsl:if test="$hasSchema > 0">
     <xsl:message>Found a DB schema: <xsl:value-of select="$schema"/>|<xsl:value-of select="$schemaPrefix"/></xsl:message>
     <xsl:text>CREATE SCHEMA </xsl:text><xsl:value-of select="normalize-space($schema)"/>
     <xsl:text>;</xsl:text>&cr;
@@ -301,7 +314,7 @@ CREATE TABLE TargetObjectType (
             <xsl:apply-templates select="." mode="columns"/>
           </xsl:variable> 
           <xsl:for-each select="exsl:node-set($columns)/column">
-            <xsl:text>  ,      t.</xsl:text><xsl:apply-templates select="name" mode="safecolumnname"/>&cr;
+            <xsl:text>  ,      t.</xsl:text><xsl:value-of select="name"/>&cr;
           </xsl:for-each>   
         </xsl:for-each>
         <xsl:for-each select="reference[not(subsets)]">
@@ -323,13 +336,13 @@ CREATE TABLE TargetObjectType (
             <xsl:apply-templates select="." mode="columns"/>
           </xsl:variable> 
           <xsl:for-each select="exsl:node-set($columns)/column">
-          <xsl:text>  ,      </xsl:text><xsl:apply-templates select="name" mode="safecolumnname"/>&cr;
+            <xsl:text>  ,      </xsl:text><xsl:value-of select="name"/>&cr;
           </xsl:for-each>   
         </xsl:for-each>
         <xsl:for-each select="reference[not(subsets)]">
           <xsl:text>  ,      </xsl:text><xsl:apply-templates select="." mode="columnName"/>&cr;
         </xsl:for-each>        
-<xsl:text>    FROM </xsl:text><xsl:value-of select="$tableName"/> 
+<xsl:text>    FROM </xsl:text><xsl:value-of select="$tableName"/>
       </xsl:otherwise>
     </xsl:choose>
     <xsl:choose>
@@ -355,20 +368,6 @@ CREATE TABLE TargetObjectType (
   </xsl:template>
 
 
-<!-- 
-calculates the target table for a foreign key
-This is the root entity table for the referenced class
- -->
-  <xsl:template match="objectType" mode="FKTargetTable">
-    <xsl:choose>
-      <xsl:when test="extends">
-      <xsl:apply-templates select="key('element',extends/@xmiidref)" mode="FKTargetTable"/>
-      </xsl:when>
-      <xsl:otherwise>
-        <xsl:apply-templates select="." mode="tableName"/>
-      </xsl:otherwise>
-    </xsl:choose>
-  </xsl:template>
 
 
   <xsl:template match="objectType" mode="createFKs">
@@ -381,7 +380,7 @@ This is the root entity table for the referenced class
     </xsl:variable>
     <xsl:if test="container">
     <xsl:variable name="otherTable">
-      <xsl:apply-templates select="key('element',container/@xmiidref)" mode="FKTargetTable"/>
+      <xsl:apply-templates select="key('element',container/@xmiidref)" mode="tableName"/>
     </xsl:variable>
 <xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> ADD CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_container&cr; 
 <xsl:text>    FOREIGN KEY (containerId) REFERENCES </xsl:text><xsl:value-of select="$otherTable"/>(<xsl:value-of select="$primaryKeyColumnName"/>);&cr;&cr;
@@ -395,7 +394,7 @@ This is the root entity table for the referenced class
     </xsl:if>
     <xsl:for-each select="reference[not(subsets)]">
     <xsl:variable name="otherTable">
-      <xsl:apply-templates select="key('element',datatype/@xmiidref)" mode="FKTargetTable"/>
+      <xsl:apply-templates select="key('element',datatype/@xmiidref)" mode="tableName"/>
     </xsl:variable>
 <xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> ADD CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_<xsl:value-of select="name"/>&cr; 
 <xsl:text>    FOREIGN KEY (</xsl:text><xsl:apply-templates select="." mode="columnName"/>) REFERENCES <xsl:value-of select="$otherTable"/>(<xsl:value-of select="$primaryKeyColumnName"/>);&cr;&cr;
@@ -485,10 +484,11 @@ DROP INDEX <xsl:value-of select="$tableName"/>.ix_<xsl:value-of select="$tableNa
         <xsl:apply-templates select="." mode="columns"/>
      </xsl:variable> 
      <xsl:for-each select="exsl:node-set($columns)/column">
-       <xsl:text>, </xsl:text><xsl:call-template name="safecolumnname"><xsl:with-param name="name" select="name"/></xsl:call-template>&bl;<xsl:value-of select="sqltype"/><xsl:if test="nullable = 'false'"> NOT NULL</xsl:if>&cr;
+       <xsl:text>, </xsl:text><xsl:if test="$vendor = 'mssqlserver'">[</xsl:if><xsl:value-of select="name"/><xsl:if test="$vendor = 'mssqlserver'">]</xsl:if>&bl;<xsl:value-of select="sqltype"/><xsl:if test="nullable = 'false'"> NOT NULL</xsl:if>&cr;
      </xsl:for-each>   
   </xsl:template>
-
+  
+  
   
   
   <xsl:template match="attribute" mode="old">

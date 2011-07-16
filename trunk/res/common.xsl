@@ -26,9 +26,15 @@
   <xsl:template name="constant">
     <xsl:param name="text"/>
 
-    <xsl:variable name="v0" select="replace($text, '0', 'ZERO')"/>
+    <xsl:variable name="v" select="replace($text, '-', '_')"/>
+    <xsl:variable name="v0" select="replace($v, '0', 'ZERO')"/>
     <xsl:variable name="v1" select="replace($v0,   '1', 'ONE')"/>
-    <xsl:value-of select="translate(upper-case($v1),' .:*','___N')"/>
+    <xsl:variable name="v2" select="replace($v1,   '2', 'TWO')"/>
+    <xsl:variable name="v3" select="replace($v2,   '3', 'THREE')"/>
+    <xsl:variable name="v4" select="replace($v3,   '4', 'FOUR')"/>
+    <xsl:variable name="v5" select="replace($v4,   '5', 'FIVE')"/>
+    <xsl:variable name="v6" select="replace($v5,   '-', '_')"/>
+    <xsl:value-of select="translate(upper-case($v6),' .','___N')"/>
   </xsl:template>
 
 
