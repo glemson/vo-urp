@@ -133,7 +133,7 @@ template in jpa.xsl
     </xsl:variable>
 
     <xsl:variable name="columnname">
-      <xsl:choose>
+          <xsl:choose>
         <xsl:when test="$prefix">
           <xsl:value-of select="concat($prefix,'_',name)"/>
         </xsl:when>
@@ -141,9 +141,9 @@ template in jpa.xsl
           <xsl:value-of select="name"/>
         </xsl:otherwise>
       </xsl:choose>
-      
     </xsl:variable>
-        <xsl:variable name="isnullable">
+    
+    <xsl:variable name="isnullable">
       <xsl:choose>
         <xsl:when test="$nullable='true'">true</xsl:when>
         <xsl:otherwise>
@@ -201,6 +201,15 @@ template in jpa.xsl
   </xsl:template>
 
 
+  
+  <xsl:template name="safecolumnname">
+    <xsl:param name="name"/>
+    <xsl:if test="$vendor = 'mssqlserver'">[</xsl:if><xsl:value-of select="$name"/><xsl:if test="$vendor = 'mssqlserver'">]</xsl:if>
+  </xsl:template>
+  
+  <xsl:template match="*" mode="safecolumnname">
+    <xsl:if test="$vendor = 'mssqlserver'">[</xsl:if><xsl:value-of select="."/><xsl:if test="$vendor = 'mssqlserver'">]</xsl:if>
+  </xsl:template>
   
   <!-- We MUST have lengths for (var)char datatypes, if not provided use a default.
   For numerical datatypes we will interpret a possible length constraint as size in bytes.
