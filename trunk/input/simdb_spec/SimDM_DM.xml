@@ -2,7 +2,7 @@
 <!-- This xmi file is optimized for MagicDraw UML. Some references are not saved. -->
 <!-- Change MagicDraw UML environment options property General->.Save Rich XMI -->
 
-<xmi:XMI xmi:version='2.1' xmlns:uml='http://schema.omg.org/spec/UML/2.0' xmlns:xmi='http://schema.omg.org/spec/XMI/2.1' xmlns:UML_Standard_Profile='http://www.magicdraw.com/schemas/UML_Standard_Profile.xmi' xmlns:IVOA_Profile='http://www.magicdraw.com/schemas/IVOA_Profile.xmi' xmlns:DSL_Customization='http://www.magicdraw.com/schemas/DSL_Customization.xmi' xmlns:Validation_Profile='http://www.magicdraw.com/schemas/Validation_Profile.xmi' xmlns:MagicDraw_Profile='http://www.magicdraw.com/schemas/MagicDraw_Profile.xmi'>
+<xmi:XMI xmi:version='2.1' xmlns:uml='http://schema.omg.org/spec/UML/2.0' xmlns:xmi='http://schema.omg.org/spec/XMI/2.1' xmlns:DSL_Customization='http://www.magicdraw.com/schemas/DSL_Customization.xmi' xmlns:UML_Standard_Profile='http://www.magicdraw.com/schemas/UML_Standard_Profile.xmi' xmlns:MagicDraw_Profile='http://www.magicdraw.com/schemas/MagicDraw_Profile.xmi' xmlns:IVOA_Profile='http://www.magicdraw.com/schemas/IVOA_Profile.xmi' xmlns:Validation_Profile='http://www.magicdraw.com/schemas/Validation_Profile.xmi'>
 	<xmi:Documentation exporter='MagicDraw UML' exporterVersion='12.1'/>
 	<xmi:Extension extender='MagicDraw UML 12.1' extenderID='MagicDraw UML 12.1'>
 		<shareTable/>
@@ -186,10 +186,10 @@
 				<xmi:Extension extender='MagicDraw UML 12.1' extenderID='MagicDraw UML 12.1'>
 					<modelExtension>
 						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132845380859_982905_153'/>
-						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132845827796_830210_158'/>
-						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132845667578_575161_157'/>
 						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132845498046_941955_155'/>
 						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132845914406_950831_161'/>
+						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132845667578_575161_157'/>
+						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132845827796_830210_158'/>
 						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1131365182078_292489_320'/>
 					</modelExtension>
 				</xmi:Extension>
@@ -222,12 +222,12 @@
 			<ownedStereotype xmi:type='uml:Stereotype' xmi:id='_10_0_42c01ac_1131366285031_872062_323' name='composition' visibility='public'>
 				<xmi:Extension extender='MagicDraw UML 12.1' extenderID='MagicDraw UML 12.1'>
 					<modelExtension>
-						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132847676828_497215_167'/>
+						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132847767812_460156_169'/>
+						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132847844812_105212_171'/>
+						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1131366344515_556703_399'/>
 						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132847476390_978378_165'/>
 						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132847407703_762183_163'/>
-						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1131366344515_556703_399'/>
-						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132847844812_105212_171'/>
-						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132847767812_460156_169'/>
+						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132847676828_497215_167'/>
 					</modelExtension>
 				</xmi:Extension>
 				<ownedComment xmi:type='uml:Comment' xmi:id='_12_1_213004e4_1274709598328_389506_452' body='This stereotype indicates that a particular Binary Association End has composition semantics. This is assumed by default for such assiciation ends that are navigable and are not shared. However assigning this stereotype allows one to add some attributes to the relation using tags. To this end the stereotype has tag definitions.'>
@@ -262,9 +262,9 @@
 			<ownedStereotype xmi:type='uml:Stereotype' xmi:id='_10_0_42c01ac_1131367417546_779179_402' name='usage' visibility='public'>
 				<xmi:Extension extender='MagicDraw UML 12.1' extenderID='MagicDraw UML 12.1'>
 					<modelExtension>
-						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1131967734390_691101_72'/>
 						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1131967807296_792443_75'/>
 						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1131375791218_891320_275'/>
+						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1131967734390_691101_72'/>
 					</modelExtension>
 				</xmi:Extension>
 				<ownedRule xmi:type='uml:Constraint' xmi:id='_10_0_42c01ac_1131375791218_891320_275' name='c_usage_isOnlyBetweenPackages' visibility='public'>
@@ -287,8 +287,8 @@
 			<ownedStereotype xmi:type='uml:Stereotype' xmi:id='_10_0_42c01ac_1131543684109_281537_147' name='model' visibility='public'>
 				<xmi:Extension extender='MagicDraw UML 12.1' extenderID='MagicDraw UML 12.1'>
 					<modelExtension>
-						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1131544262000_603899_225'/>
 						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1131543726703_769968_223'/>
+						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1131544262000_603899_225'/>
 					</modelExtension>
 				</xmi:Extension>
 				<ownedRule xmi:type='uml:Constraint' xmi:id='_10_0_42c01ac_1131543726703_769968_223' name='c_model_hasNo CyclesBetweenContainmentTrees' visibility='public'>
@@ -358,9 +358,9 @@
 			<ownedStereotype xmi:type='uml:Stereotype' xmi:id='_10_0_42c01ac_1131553904578_746195_597' name='generalization' visibility='public'>
 				<xmi:Extension extender='MagicDraw UML 12.1' extenderID='MagicDraw UML 12.1'>
 					<modelExtension>
+						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132844531656_756815_151'/>
 						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1131553944406_322225_618'/>
 						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132844388343_974158_149'/>
-						<_constraintOfConstrainedElement xmi:idref='_10_0_42c01ac_1132844531656_756815_151'/>
 					</modelExtension>
 				</xmi:Extension>
 				<ownedRule xmi:type='uml:Constraint' xmi:id='_10_0_42c01ac_1131553944406_322225_618' name='c_generalization_concreteObjecttypeIsFinal' visibility='public'>
@@ -391,10 +391,13 @@
 						</xmi:Extension>
 					</type>
 				</ownedAttribute>
-				<ownedAttribute xmi:type='uml:Property' xmi:id='_14_0_8e0028f_1207395202125_975881_2667' name='vocabularyURI' visibility='private' type='_10_0_42c01ac_1131110104125_206884_2089'/>
+				<ownedAttribute xmi:type='uml:Property' xmi:id='_14_0_8e0028f_1207395202125_975881_2667' name='vocabularyURI' visibility='private' type='_10_0_42c01ac_1131110104125_206884_2089'>
+					<upperValue xmi:type='uml:LiteralUnlimitedNatural' xmi:id='_12_1_8e0028f_1307464852515_786781_219' visibility='public' value='1'/>
+					<lowerValue xmi:type='uml:LiteralInteger' xmi:id='_12_1_8e0028f_1307464852515_440497_218' visibility='public'/>
+				</ownedAttribute>
 				<ownedAttribute xmi:type='uml:Property' xmi:id='_12_1_213004e4_1284707055515_295347_206' name='broadestSKOSConcept' visibility='private' type='_10_0_42c01ac_1131110104125_206884_2089'>
-					<upperValue xmi:type='uml:LiteralUnlimitedNatural' xmi:id='_12_1_213004e4_1284718062734_653264_375' visibility='public' value='-1'/>
-					<lowerValue xmi:type='uml:LiteralInteger' xmi:id='_12_1_213004e4_1284718062468_700705_374' visibility='public' value='1'/>
+					<upperValue xmi:type='uml:LiteralUnlimitedNatural' xmi:id='_12_1_8e0028f_1307464840843_982907_217' visibility='public' value='1'/>
+					<lowerValue xmi:type='uml:LiteralInteger' xmi:id='_12_1_8e0028f_1307464840843_787531_216' visibility='public' value='1'/>
 				</ownedAttribute>
 			</ownedStereotype>
 			<ownedStereotype xmi:type='uml:Stereotype' xmi:id='_12_1_8e0028f_1208274999328_838530_392' name='attribute' visibility='public'>
@@ -1958,7 +1961,7 @@
 					<umlType>Class Diagram</umlType>
 					<zoomFactor xmi:value='1.0'/>
 					<diagramOpened xmi:value='true'/>
-					<diagramWindowBounds>3, 25, 898, 763</diagramWindowBounds>
+					<diagramWindowBounds>3, 25, 1379, 1032</diagramWindowBounds>
 					<diagramScrollPositionX xmi:value='0'/>
 					<diagramScrollPositionY xmi:value='1140'/>
 					<maximized xmi:value='false'/>
@@ -9427,7 +9430,7 @@
 					<umlType>Class Diagram</umlType>
 					<zoomFactor xmi:value='1.0'/>
 					<diagramOpened xmi:value='true'/>
-					<diagramWindowBounds>3, 25, 898, 763</diagramWindowBounds>
+					<diagramWindowBounds>3, 25, 1379, 1032</diagramWindowBounds>
 					<diagramScrollPositionX xmi:value='0'/>
 					<diagramScrollPositionY xmi:value='0'/>
 					<maximized xmi:value='false'/>
@@ -9930,9 +9933,9 @@ The IVOAValueTypes package is imported from the profile.
 					<umlType>Class Diagram</umlType>
 					<zoomFactor xmi:value='1.0'/>
 					<diagramOpened xmi:value='true'/>
-					<diagramWindowBounds>3, 25, 898, 763</diagramWindowBounds>
-					<diagramScrollPositionX xmi:value='447'/>
-					<diagramScrollPositionY xmi:value='505'/>
+					<diagramWindowBounds>3, 25, 1379, 1032</diagramWindowBounds>
+					<diagramScrollPositionX xmi:value='921'/>
+					<diagramScrollPositionY xmi:value='0'/>
 					<maximized xmi:value='false'/>
 					<active xmi:value='true'/>
 					<mdOwnedViews>
@@ -19675,18 +19678,12 @@ The IVOAValueTypes package is imported from the profile.
 		</mdOwnedDiagrams>
 		<proxies/>
 		<privateProxies>
-			<proxy xmi:type='uml:Profile' xmi:id='_10_0_42c01ac_1131096191234_590105_2' name='IVOA_Profile' visibility='public'>
-				<ownedStereotype xmi:type='uml:Stereotype' xmi:id='_12_1_8e0028f_1240404066437_479098_1088' name='modelelement' visibility='public'>
-					<ownedAttribute xmi:type='uml:Property' xmi:id='_12_1_8e0028f_1240404066437_199996_1090' name='base_Element' visibility='private' type='_9_0_62a020a_1105704884807_371561_7741'/>
-					<ownedAttribute xmi:type='uml:Property' xmi:id='_12_1_8e0028f_1240404082296_35729_1094' name='utype' visibility='private'/>
-				</ownedStereotype>
-			</proxy>
 			<proxy xmi:type='uml:Package' xmi:id='_12_1_8e0028f_1175528694453_777349_729' name='resource' visibility='public'>
 				<ownedMember xmi:type='uml:Class' xmi:id='_12_1_1_8e0028f_1178789094562_459260_296' name='Resource' visibility='public'/>
 			</proxy>
 			<proxy xmi:type='uml:Package' xmi:id='magicdraw_uml_standard_profile_v_0001' name='UML Standard Profile' visibility='public'>
 				<xmi:Extension extender='MagicDraw UML 12.1' extenderID='MagicDraw UML 12.1'>
-					<moduleExtension moduleRoot='::UML Standard Profile' moduleName='UML_Standard_Profile.xml' remoteProjectID='' remoteModuleVersion='1268482333296' moduleUsedByProject='true'/>
+					<moduleExtension moduleRoot='::UML Standard Profile' moduleName='UML_Standard_Profile.xml' remoteProjectID='' remoteModuleVersion='1208272293437' moduleUsedByProject='true'/>
 				</xmi:Extension>
 				<ownedMember xmi:type='uml:Model' xmi:id='_9_0_be00301_1108053761194_467635_11463' name='UML2.0 Metamodel' visibility='public'>
 					<ownedMember xmi:type='uml:Package' xmi:id='_9_0_62a020a_1105705080802_729520_11402' name='AuxiliaryConstructs' visibility='public'>
@@ -19729,29 +19726,35 @@ The IVOAValueTypes package is imported from the profile.
 					</ownedStereotype>
 				</ownedMember>
 			</proxy>
+			<proxy xmi:type='uml:Profile' xmi:id='_10_0_42c01ac_1131096191234_590105_2' name='IVOA_Profile' visibility='public'>
+				<ownedStereotype xmi:type='uml:Stereotype' xmi:id='_12_1_8e0028f_1240404066437_479098_1088' name='modelelement' visibility='public'>
+					<ownedAttribute xmi:type='uml:Property' xmi:id='_12_1_8e0028f_1240404066437_199996_1090' name='base_Element' visibility='private' type='_9_0_62a020a_1105704884807_371561_7741'/>
+					<ownedAttribute xmi:type='uml:Property' xmi:id='_12_1_8e0028f_1240404082296_35729_1094' name='utype' visibility='private'/>
+				</ownedStereotype>
+			</proxy>
 		</privateProxies>
 		<stereotypeApplicationForProxies>
 			<IVOA_Profile:modelelement xmi:id='_12_1_2_213004e4_1243272018046_164613_214' base_Element='_12_1_1_8e0028f_1178789094562_459260_296' utype='Reg:VOResource'/>
 			<UML_Standard_Profile:metamodel xmi:id='_10_0EAPbeta_be00301_1123081771126_233373_95' base_Model='_9_0_be00301_1108053761194_467635_11463'/>
 		</stereotypeApplicationForProxies>
 		<stereotypesIDS>
-			<stereotype name='MagicDraw_Profile:DiagramInfo' stereotypeID='_9_0_be00301_1108044380615_150487_0'/>
-			<tag name='MagicDraw_Profile:DiagramInfo:Creation_date' tagID='_be00301_1073306188629_537791_2'/>
-			<tag name='MagicDraw_Profile:DiagramInfo:Author' tagID='_be00301_1077726770128_871366_1'/>
-			<tag name='MagicDraw_Profile:DiagramInfo:Modification_date' tagID='_be00301_1073394345322_922552_1'/>
 			<stereotype name='IVOA_Profile:skosconcept' stereotypeID='_12_1_2_213004e4_1207375864125_522331_1775'/>
 			<tag name='IVOA_Profile:skosconcept:vocabularyURI' tagID='_14_0_8e0028f_1207395202125_975881_2667'/>
 			<tag name='IVOA_Profile:skosconcept:broadestSKOSConcept' tagID='_12_1_213004e4_1284707055515_295347_206'/>
-			<stereotype name='IVOA_Profile:model' stereotypeID='_10_0_42c01ac_1131543684109_281537_147'/>
-			<tag name='IVOA_Profile:model:author' tagID='_12_1_8e0028f_1209131230703_142587_212'/>
-			<tag name='IVOA_Profile:model:title' tagID='_12_1_8e0028f_1209140136140_516857_353'/>
-			<tag name='IVOA_Profile:model:subject' tagID='_12_1_8e0028f_1241787098671_927622_312'/>
 			<stereotype name='IVOA_Profile:attribute' stereotypeID='_12_1_8e0028f_1208274999328_838530_392'/>
 			<tag name='IVOA_Profile:attribute:maxLength' tagID='_12_1_8e0028f_1208275038578_891813_406'/>
 			<tag name='IVOA_Profile:attribute:length' tagID='_12_1_8e0028f_1210679845359_819576_635'/>
 			<tag name='IVOA_Profile:attribute:uniqueInCollection' tagID='_12_1_bd102fc_1214578832692_683741_418'/>
 			<tag name='IVOA_Profile:attribute:uniqueGlobally' tagID='_12_1_bd102fc_1214579195136_552393_441'/>
 			<stereotype name='UML_Standard_Profile:metamodel' stereotypeID='magicdraw_1046861421236_601240_36'/>
+			<stereotype name='MagicDraw_Profile:DiagramInfo' stereotypeID='_9_0_be00301_1108044380615_150487_0'/>
+			<tag name='MagicDraw_Profile:DiagramInfo:Creation_date' tagID='_be00301_1073306188629_537791_2'/>
+			<tag name='MagicDraw_Profile:DiagramInfo:Author' tagID='_be00301_1077726770128_871366_1'/>
+			<tag name='MagicDraw_Profile:DiagramInfo:Modification_date' tagID='_be00301_1073394345322_922552_1'/>
+			<stereotype name='IVOA_Profile:model' stereotypeID='_10_0_42c01ac_1131543684109_281537_147'/>
+			<tag name='IVOA_Profile:model:author' tagID='_12_1_8e0028f_1209131230703_142587_212'/>
+			<tag name='IVOA_Profile:model:title' tagID='_12_1_8e0028f_1209140136140_516857_353'/>
+			<tag name='IVOA_Profile:model:subject' tagID='_12_1_8e0028f_1241787098671_927622_312'/>
 			<stereotype name='IVOA_Profile:modelelement' stereotypeID='_12_1_8e0028f_1240404066437_479098_1088'/>
 			<tag name='IVOA_Profile:modelelement:utype' tagID='_12_1_8e0028f_1240404082296_35729_1094'/>
 		</stereotypesIDS>
@@ -19762,7 +19765,7 @@ The IVOAValueTypes package is imported from the profile.
 				<default xmi:value='false'/>
 				<mdElement elementClass='PropertyManager'>
 					<name>PROJECT_GENERAL_PROPERTIES</name>
-					<propertyManagerID>_12_1_213004e4_1307168022046_254673_213</propertyManagerID>
+					<propertyManagerID>_12_1_8e0028f_1307464857531_108017_220</propertyManagerID>
 					<mdElement elementClass='ElementProperty'>
 						<propertyID>DEFAULT_PROFILE_PACKAGE</propertyID>
 						<displayableTypes xmi:value='Profile^Model^Package'/>
@@ -19801,7 +19804,7 @@ The IVOAValueTypes package is imported from the profile.
 				</mdElement>
 				<mdElement elementClass='PropertyManager'>
 					<name>PROJECT_INVISIBLE_PROPERTIES</name>
-					<propertyManagerID>_12_1_213004e4_1307168022046_278235_214</propertyManagerID>
+					<propertyManagerID>_12_1_8e0028f_1307464857531_852969_221</propertyManagerID>
 					<mdElement elementClass='NumberProperty'>
 						<propertyID>TOOL_TIP_STYLE</propertyID>
 						<propertyDescriptionID>TOOL_TIP_STYLE_DESCRIPTION</propertyDescriptionID>
@@ -19853,7 +19856,7 @@ The IVOAValueTypes package is imported from the profile.
 					<mdElement elementClass='StringProperty'>
 						<propertyID>BROWSER_LAYOUT</propertyID>
 						<propertyDescriptionID>BROWSER_LAYOUT_DESCRIPTION</propertyDescriptionID>
-						<value>0 14 0 0 0 2b 0 0 0 30 0 0 4 a1 0 0 3 86 0 0 0 0 0 0 0 9 0 0 0 14 0 53 0 45 0 41 0 52 0 43 0 48 0 5f 0 52 0 45 0 53 0 55 0 4c 0 54 0 53 0 5f 0 54 0 52 0 45 0 45 0 31 0 0 17 84 0 0 0 8 0 0 0 0 0 0 0 1 0 0 0 f 0 0 0 4 0 0 0 4 0 0 0 8 0 0 0 c8 0 0 1 ec 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 4 0 0 17 84 0 0 0 2 0 0 0 0 0 0 0 0 0 0 4 97 0 0 3 1b 0 0 0 8 0 0 0 0 0 0 33 34 0 0 0 5 0 0 53 fc 0 0 fc b1 0 0 84 3f 0 0 91 5 0 0 17 84 0 0 0 2 0 0 16 10 0 0 33 34 0 0 0 0 0 0 0 2 0 0 33 34 0 0 a7 62 0 0 de f1 0 0 16 10 0 0 0 1 0 0 0 2 0 0 16 10 ff ff ff ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 d 0 44 0 4f 0 43 0 55 0 4d 0 45 0 4e 0 54 0 41 0 54 0 49 0 4f 0 4e 0 0 e5 23 0 0 0 8 0 0 0 1 0 0 0 1 0 0 0 f 0 0 0 4 0 0 0 4 0 0 0 8 0 0 0 c8 0 0 0 f4 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 4 0 0 e5 23 0 0 0 2 0 0 0 0 0 0 0 0 0 0 4 97 0 0 3 1b 0 0 0 8 0 0 0 0 0 0 a7 62 0 0 0 3 0 0 12 bb 0 0 e5 23 0 0 3 ef 0 0 0 2 0 0 16 10 0 0 a7 62 0 0 0 0 0 0 0 2 0 0 33 34 0 0 a7 62 0 0 de f1 0 0 16 10 0 0 0 1 0 0 0 2 0 0 16 10 ff ff ff ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 d 0 44 0 49 0 41 0 47 0 52 0 41 0 4d 0 53 0 5f 0 54 0 52 0 45 0 45 0 0 84 3f 0 0 0 8 0 0 0 0 0 0 0 1 0 0 0 f 0 0 0 4 0 0 0 4 0 0 0 8 0 0 0 c8 0 0 1 ec 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 4 0 0 84 3f 0 0 0 2 0 0 0 0 0 0 0 0 0 0 4 97 0 0 3 1b 0 0 0 8 0 0 0 0 0 0 33 34 0 0 0 5 0 0 53 fc 0 0 fc b1 0 0 84 3f 0 0 91 5 0 0 17 84 0 0 0 2 0 0 16 10 0 0 33 34 0 0 0 0 0 0 0 2 0 0 33 34 0 0 a7 62 0 0 de f1 0 0 16 10 0 0 0 1 0 0 0 2 0 0 16 10 ff ff ff ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 c 0 5a 0 4f 0 4f 0 4d 0 5f 0 43 0 4f 0 4e 0 54 0 52 0 4f 0 4c 0 0 12 bb 0 0 0 8 0 0 0 1 0 0 0 1 0 0 0 f 0 0 0 4 0 0 0 4 0 0 0 8 0 0 0 c8 0 0 0 f4 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 4 0 0 12 bb 0 0 0 2 0 0 0 0 0 0 0 0 0 0 4 97 0 0 3 1b 0 0 0 8 0 0 0 0 0 0 a7 62 0 0 0 3 0 0 12 bb 0 0 e5 23 0 0 3 ef 0 0 0 2 0 0 16 10 0 0 a7 62 0 0 0 0 0 0 0 2 0 0 33 34 0 0 a7 62 0 0 de f1 0 0 16 10 0 0 0 1 0 0 0 2 0 0 16 10 ff ff ff ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 f 0 45 0 58 0 54 0 45 0 4e 0 53 0 49 0 4f 0 4e 0 53 0 5f 0 54 0 52 0 45 0 45 0 0 91 5 0 0 0 8 0 0 0 0 0 0 0 1 0 0 0 f 0 0 0 4 0 0 0 4 0 0 0 8 0 0 0 c8 0 0 1 ec 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 4 0 0 91 5 0 0 0 2 0 0 0 0 0 0 0 0 0 0 4 97 0 0 3 1b 0 0 0 8 0 0 0 0 0 0 33 34 0 0 0 5 0 0 53 fc 0 0 fc b1 0 0 84 3f 0 0 91 5 0 0 17 84 0 0 0 2 0 0 16 10 0 0 33 34 0 0 0 0 0 0 0 2 0 0 33 34 0 0 a7 62 0 0 de f1 0 0 16 10 0 0 0 1 0 0 0 2 0 0 16 10 ff ff ff ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 10 0 49 0 4e 0 48 0 45 0 52 0 49 0 54 0 41 0 4e 0 43 0 45 0 5f 0 54 0 52 0 45 0 45 0 0 fc b1 0 0 0 8 0 0 0 0 0 0 0 1 0 0 0 f 0 0 0 4 0 0 0 4 0 0 0 8 0 0 0 c8 0 0 1 ec 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 4 0 0 fc b1 0 0 0 2 0 0 0 0 0 0 0 0 0 0 4 97 0 0 3 1b 0 0 0 8 0 0 0 0 0 0 33 34 0 0 0 5 0 0 53 fc 0 0 fc b1 0 0 84 3f 0 0 91 5 0 0 17 84 0 0 0 2 0 0 16 10 0 0 33 34 0 0 0 0 0 0 0 2 0 0 33 34 0 0 a7 62 0 0 de f1 0 0 16 10 0 0 0 1 0 0 0 2 0 0 16 10 ff ff ff ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 f 0 4d 0 45 0 53 0 53 0 41 0 47 0 45 0 53 0 5f 0 57 0 49 0 4e 0 44 0 4f 0 57 0 0 65 4c 0 0 0 2 0 0 0 0 0 0 0 1 0 0 0 f 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 c8 0 0 0 c8 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 0 0 0 65 4c 0 0 0 0 0 0 0 3c 0 0 0 3c 0 0 0 c8 0 0 0 c8 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 a 0 50 0 52 0 4f 0 50 0 45 0 52 0 54 0 49 0 45 0 53 0 0 3 ef 0 0 0 8 0 0 0 1 0 0 0 1 0 0 0 f 0 0 0 4 0 0 0 4 0 0 0 8 0 0 0 c8 0 0 0 f4 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 4 0 0 3 ef 0 0 0 2 0 0 0 0 0 0 0 0 0 0 4 97 0 0 3 1b 0 0 0 8 0 0 0 0 0 0 a7 62 0 0 0 3 0 0 12 bb 0 0 e5 23 0 0 3 ef 0 0 0 2 0 0 16 10 0 0 a7 62 0 0 0 0 0 0 0 2 0 0 33 34 0 0 a7 62 0 0 de f1 0 0 16 10 0 0 0 1 0 0 0 2 0 0 16 10 ff ff ff ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 10 0 43 0 4f 0 4e 0 54 0 41 0 49 0 4e 0 4d 0 45 0 4e 0 54 0 5f 0 54 0 52 0 45 0 45 0 0 53 fc 0 0 0 8 0 0 0 0 0 0 0 1 0 0 0 f 0 0 0 4 0 0 0 4 0 0 0 8 0 0 0 c8 0 0 1 ec 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 4 0 0 53 fc 0 0 0 2 0 0 0 0 0 0 0 0 0 0 4 97 0 0 3 1b 0 0 0 8 0 0 0 0 0 0 33 34 0 0 0 5 0 0 53 fc 0 0 fc b1 0 0 84 3f 0 0 91 5 0 0 17 84 0 0 0 2 0 0 16 10 0 0 33 34 0 0 0 0 0 0 0 2 0 0 33 34 0 0 a7 62 0 0 de f1 0 0 16 10 0 0 0 1 0 0 0 2 0 0 16 10 ff ff ff ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 63 0 0 0 0 0 0 c4 6b 0 0 0 0 1 0 0 4 63 0 0 0 1 0 0 de f1 0 0 0 0 2 0 0 4 63 0 0 0 0 0 0 16 10 0 0 0 0 2 0 0 4 64 0 0 33 34 0 0 0 5 0 0 4 65 0 0 0 10 0 43 0 4f 0 4e 0 54 0 41 0 49 0 4e 0 4d 0 45 0 4e 0 54 0 5f 0 54 0 52 0 45 0 45 0 0 4 65 0 0 0 10 0 49 0 4e 0 48 0 45 0 52 0 49 0 54 0 41 0 4e 0 43 0 45 0 5f 0 54 0 52 0 45 0 45 0 0 4 65 0 0 0 d 0 44 0 49 0 41 0 47 0 52 0 41 0 4d 0 53 0 5f 0 54 0 52 0 45 0 45 0 0 4 65 0 0 0 f 0 45 0 58 0 54 0 45 0 4e 0 53 0 49 0 4f 0 4e 0 53 0 5f 0 54 0 52 0 45 0 45 0 0 4 65 0 0 0 14 0 53 0 45 0 41 0 52 0 43 0 48 0 5f 0 52 0 45 0 53 0 55 0 4c 0 54 0 53 0 5f 0 54 0 52 0 45 0 45 0 31 0 0 1 91 0 0 2 55 0 0 0 0 0 0 4 64 0 0 a7 62 0 0 0 3 0 0 4 65 0 0 0 c 0 5a 0 4f 0 4f 0 4d 0 5f 0 43 0 4f 0 4e 0 54 0 52 0 4f 0 4c 0 0 4 65 0 0 0 d 0 44 0 4f 0 43 0 55 0 4d 0 45 0 4e 0 54 0 41 0 54 0 49 0 4f 0 4e 0 0 4 65 0 0 0 a 0 50 0 52 0 4f 0 50 0 45 0 52 0 54 0 49 0 45 0 53 0 0 1 91 0 0 1 2c 0 0 0 0 0 0 1 8 0 0 3 11 0 0 4 66 0 0 3 16 0 0 0 e8 0 0 0 0 0 0 2 66 0 0 3 11 0 0 2 66 0 0 3 11 0 0 0 3 0 0 0 0 0 0 0 7 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 5 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 f 0 4d 0 45 0 53 0 53 0 41 0 47 0 45 0 53 0 5f 0 57 0 49 0 4e 0 44 0 4f 0 57 </value>
+						<value>0 14 0 0 0 44 0 0 0 a 0 0 6 82 0 0 4 87 0 0 0 0 0 0 0 9 0 0 0 14 0 53 0 45 0 41 0 52 0 43 0 48 0 5f 0 52 0 45 0 53 0 55 0 4c 0 54 0 53 0 5f 0 54 0 52 0 45 0 45 0 31 0 0 17 84 0 0 0 8 0 0 0 0 0 0 0 1 0 0 0 f 0 0 0 4 0 0 0 4 0 0 0 8 0 0 0 c8 0 0 2 a6 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 4 0 0 17 84 0 0 0 2 0 0 0 0 0 0 0 0 0 0 6 78 0 0 4 28 0 0 0 8 0 0 0 0 0 0 33 34 0 0 0 5 0 0 53 fc 0 0 fc b1 0 0 84 3f 0 0 91 5 0 0 17 84 0 0 0 2 0 0 16 10 0 0 33 34 0 0 0 0 0 0 0 2 0 0 33 34 0 0 a7 62 0 0 de f1 0 0 16 10 0 0 0 1 0 0 0 2 0 0 16 10 ff ff ff ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 d 0 44 0 4f 0 43 0 55 0 4d 0 45 0 4e 0 54 0 41 0 54 0 49 0 4f 0 4e 0 0 e5 23 0 0 0 8 0 0 0 1 0 0 0 1 0 0 0 f 0 0 0 4 0 0 0 4 0 0 0 8 0 0 0 c8 0 0 1 47 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 4 0 0 e5 23 0 0 0 2 0 0 0 0 0 0 0 0 0 0 6 78 0 0 4 28 0 0 0 8 0 0 0 0 0 0 a7 62 0 0 0 3 0 0 12 bb 0 0 e5 23 0 0 3 ef 0 0 0 2 0 0 16 10 0 0 a7 62 0 0 0 0 0 0 0 2 0 0 33 34 0 0 a7 62 0 0 de f1 0 0 16 10 0 0 0 1 0 0 0 2 0 0 16 10 ff ff ff ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 d 0 44 0 49 0 41 0 47 0 52 0 41 0 4d 0 53 0 5f 0 54 0 52 0 45 0 45 0 0 84 3f 0 0 0 8 0 0 0 0 0 0 0 1 0 0 0 f 0 0 0 4 0 0 0 4 0 0 0 8 0 0 0 c8 0 0 2 a6 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 4 0 0 84 3f 0 0 0 2 0 0 0 0 0 0 0 0 0 0 6 78 0 0 4 28 0 0 0 8 0 0 0 0 0 0 33 34 0 0 0 5 0 0 53 fc 0 0 fc b1 0 0 84 3f 0 0 91 5 0 0 17 84 0 0 0 2 0 0 16 10 0 0 33 34 0 0 0 0 0 0 0 2 0 0 33 34 0 0 a7 62 0 0 de f1 0 0 16 10 0 0 0 1 0 0 0 2 0 0 16 10 ff ff ff ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 c 0 5a 0 4f 0 4f 0 4d 0 5f 0 43 0 4f 0 4e 0 54 0 52 0 4f 0 4c 0 0 12 bb 0 0 0 8 0 0 0 1 0 0 0 1 0 0 0 f 0 0 0 4 0 0 0 4 0 0 0 8 0 0 0 c8 0 0 1 47 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 4 0 0 12 bb 0 0 0 2 0 0 0 0 0 0 0 0 0 0 6 78 0 0 4 28 0 0 0 8 0 0 0 0 0 0 a7 62 0 0 0 3 0 0 12 bb 0 0 e5 23 0 0 3 ef 0 0 0 2 0 0 16 10 0 0 a7 62 0 0 0 0 0 0 0 2 0 0 33 34 0 0 a7 62 0 0 de f1 0 0 16 10 0 0 0 1 0 0 0 2 0 0 16 10 ff ff ff ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 f 0 45 0 58 0 54 0 45 0 4e 0 53 0 49 0 4f 0 4e 0 53 0 5f 0 54 0 52 0 45 0 45 0 0 91 5 0 0 0 8 0 0 0 0 0 0 0 1 0 0 0 f 0 0 0 4 0 0 0 4 0 0 0 8 0 0 0 c8 0 0 2 a6 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 4 0 0 91 5 0 0 0 2 0 0 0 0 0 0 0 0 0 0 6 78 0 0 4 28 0 0 0 8 0 0 0 0 0 0 33 34 0 0 0 5 0 0 53 fc 0 0 fc b1 0 0 84 3f 0 0 91 5 0 0 17 84 0 0 0 2 0 0 16 10 0 0 33 34 0 0 0 0 0 0 0 2 0 0 33 34 0 0 a7 62 0 0 de f1 0 0 16 10 0 0 0 1 0 0 0 2 0 0 16 10 ff ff ff ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 10 0 49 0 4e 0 48 0 45 0 52 0 49 0 54 0 41 0 4e 0 43 0 45 0 5f 0 54 0 52 0 45 0 45 0 0 fc b1 0 0 0 8 0 0 0 0 0 0 0 1 0 0 0 f 0 0 0 4 0 0 0 4 0 0 0 8 0 0 0 c8 0 0 2 a6 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 4 0 0 fc b1 0 0 0 2 0 0 0 0 0 0 0 0 0 0 6 78 0 0 4 28 0 0 0 8 0 0 0 0 0 0 33 34 0 0 0 5 0 0 53 fc 0 0 fc b1 0 0 84 3f 0 0 91 5 0 0 17 84 0 0 0 2 0 0 16 10 0 0 33 34 0 0 0 0 0 0 0 2 0 0 33 34 0 0 a7 62 0 0 de f1 0 0 16 10 0 0 0 1 0 0 0 2 0 0 16 10 ff ff ff ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 f 0 4d 0 45 0 53 0 53 0 41 0 47 0 45 0 53 0 5f 0 57 0 49 0 4e 0 44 0 4f 0 57 0 0 65 4c 0 0 0 2 0 0 0 0 0 0 0 1 0 0 0 f 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 c8 0 0 0 c8 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 0 0 0 65 4c 0 0 0 0 0 0 0 3c 0 0 0 3c 0 0 0 c8 0 0 0 c8 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 a 0 50 0 52 0 4f 0 50 0 45 0 52 0 54 0 49 0 45 0 53 0 0 3 ef 0 0 0 8 0 0 0 1 0 0 0 1 0 0 0 f 0 0 0 4 0 0 0 4 0 0 0 8 0 0 0 c8 0 0 1 47 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 4 0 0 3 ef 0 0 0 2 0 0 0 0 0 0 0 0 0 0 6 78 0 0 4 28 0 0 0 8 0 0 0 0 0 0 a7 62 0 0 0 3 0 0 12 bb 0 0 e5 23 0 0 3 ef 0 0 0 2 0 0 16 10 0 0 a7 62 0 0 0 0 0 0 0 2 0 0 33 34 0 0 a7 62 0 0 de f1 0 0 16 10 0 0 0 1 0 0 0 2 0 0 16 10 ff ff ff ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 10 0 43 0 4f 0 4e 0 54 0 41 0 49 0 4e 0 4d 0 45 0 4e 0 54 0 5f 0 54 0 52 0 45 0 45 0 0 53 fc 0 0 0 8 0 0 0 0 0 0 0 1 0 0 0 f 0 0 0 4 0 0 0 4 0 0 0 8 0 0 0 c8 0 0 2 a6 0 0 0 c8 0 0 0 c8 ff ff ff ff ff ff ff ff 0 0 1 2c 0 0 0 c8 0 0 0 0 0 0 0 1 0 0 0 4 0 0 53 fc 0 0 0 2 0 0 0 0 0 0 0 0 0 0 6 78 0 0 4 28 0 0 0 8 0 0 0 0 0 0 33 34 0 0 0 5 0 0 53 fc 0 0 fc b1 0 0 84 3f 0 0 91 5 0 0 17 84 0 0 0 2 0 0 16 10 0 0 33 34 0 0 0 0 0 0 0 2 0 0 33 34 0 0 a7 62 0 0 de f1 0 0 16 10 0 0 0 1 0 0 0 2 0 0 16 10 ff ff ff ff 0 0 0 0 0 0 0 0 0 0 0 0 0 0 4 63 0 0 0 0 0 0 c4 6b 0 0 0 0 1 0 0 4 63 0 0 0 1 0 0 de f1 0 0 0 0 2 0 0 4 63 0 0 0 0 0 0 16 10 0 0 0 0 2 0 0 4 64 0 0 33 34 0 0 0 5 0 0 4 65 0 0 0 10 0 43 0 4f 0 4e 0 54 0 41 0 49 0 4e 0 4d 0 45 0 4e 0 54 0 5f 0 54 0 52 0 45 0 45 0 0 4 65 0 0 0 10 0 49 0 4e 0 48 0 45 0 52 0 49 0 54 0 41 0 4e 0 43 0 45 0 5f 0 54 0 52 0 45 0 45 0 0 4 65 0 0 0 d 0 44 0 49 0 41 0 47 0 52 0 41 0 4d 0 53 0 5f 0 54 0 52 0 45 0 45 0 0 4 65 0 0 0 f 0 45 0 58 0 54 0 45 0 4e 0 53 0 49 0 4f 0 4e 0 53 0 5f 0 54 0 52 0 45 0 45 0 0 4 65 0 0 0 14 0 53 0 45 0 41 0 52 0 43 0 48 0 5f 0 52 0 45 0 53 0 55 0 4c 0 54 0 53 0 5f 0 54 0 52 0 45 0 45 0 31 0 0 1 91 0 0 2 55 0 0 0 0 0 0 4 64 0 0 a7 62 0 0 0 3 0 0 4 65 0 0 0 c 0 5a 0 4f 0 4f 0 4d 0 5f 0 43 0 4f 0 4e 0 54 0 52 0 4f 0 4c 0 0 4 65 0 0 0 d 0 44 0 4f 0 43 0 55 0 4d 0 45 0 4e 0 54 0 41 0 54 0 49 0 4f 0 4e 0 0 4 65 0 0 0 a 0 50 0 52 0 4f 0 50 0 45 0 52 0 54 0 49 0 45 0 53 0 0 1 91 0 0 1 2c 0 0 0 0 0 0 1 8 0 0 3 11 0 0 4 66 0 0 3 16 0 0 0 e8 0 0 0 0 0 0 2 66 0 0 3 11 0 0 2 66 0 0 3 11 0 0 0 3 0 0 0 0 0 0 0 7 0 0 0 0 0 0 0 1 0 0 0 0 0 0 0 5 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 f 0 4d 0 45 0 53 0 53 0 41 0 47 0 45 0 53 0 5f 0 57 0 49 0 4e 0 44 0 4f 0 57 </value>
 						<multiline xmi:value='false'/>
 					</mdElement>
 					<mdElement elementClass='StringProperty'>
@@ -19937,7 +19940,7 @@ The IVOAValueTypes package is imported from the profile.
 					<mdElement elementClass='StringProperty'>
 						<propertyID>INFO_PROPERTY</propertyID>
 						<propertyDescriptionID>INFO_PROPERTY_DESCRIPTION</propertyDescriptionID>
-						<value>2 71 51 4f 52 6f 72 6 36 62 11 ab 3d f5 47 c0 1e 5a f8 8f a4 f6 8b 51 41 1f 14 c1 5c 75 92 cd 14 35 89 0 28 ff ad d7 12 62 ca 2d 1b 2e d5 bb fb 4 f8 be 3 13 25 46 ee 8a 73 33 5b 20 5f 0 63 fe 68 dc b0 fd 3e b9 d6 f7 3f 81 5d c9 13 84 9c 93 a4 1f 12 e2 b9 27 2e 5e 8c a9 d 5c 15 69 7d e6 51 ba 80 3e 6b 8d 43 38 a dc 26 87 </value>
+						<value>5e 78 5d 50 5d 42 60 52 51 13 a2 b3 e2 9d c9 49 9 50 a3 e4 85 c6 c4 fd c5 f8 9c 71 b6 b8 3c 5f 5f e2 b4 30 dc 40 bb 1f e9 a7 8 d5 15 bb 2f 2c 12 e8 75 92 49 b3 6e 56 26 47 56 8d cd 3f aa 7f d4 93 d2 3b f7 ba 76 c db 7a a 1e 49 31 ec b1 f9 34 c3 3 d4 ed fd b7 a6 40 77 3c 5b f2 c0 89 a4 3c 88 b8 a2 b4 8f e1 97 93 99 0 9e f4 </value>
 						<multiline xmi:value='false'/>
 					</mdElement>
 					<mdElement elementClass='LIST_PROPERTY'>
@@ -19966,8 +19969,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Abstraction</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_787199_215</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_128804_222</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -20021,8 +20024,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>AcceptEventAction</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_970101_217</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_925939_224</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -20051,8 +20054,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Action</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_903011_219</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_866249_226</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -20064,8 +20067,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ActivityParameterNode</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_428941_220</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_889803_227</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -20104,8 +20107,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Actor</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_758990_221</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_791258_228</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SUPPRESS_CONTENT</propertyID>
 						<propertyDescriptionID>SUPPRESS_CONTENT_DESCRIPTION</propertyDescriptionID>
@@ -20139,8 +20142,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Artifact</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_390461_222</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_346772_229</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -20398,8 +20401,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Association</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_358029_223</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_202334_230</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -20465,8 +20468,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>AssociationClass</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_477533_224</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_789120_231</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -20525,8 +20528,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>CallBehaviorAction</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_527680_225</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_729249_232</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -20545,8 +20548,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>CallOperationAction</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_344743_226</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_491470_233</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -20558,8 +20561,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>CentralBufferNode</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_987527_227</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_65291_234</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -20591,8 +20594,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Class</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_445355_228</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_947653_235</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -20855,8 +20858,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Collaboration</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_741564_229</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_764192_236</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SUPPRESS_STRUCTURE</propertyID>
 						<propertyDescriptionID>SUPPRESS_STRUCTURE_DESCRIPTION</propertyDescriptionID>
@@ -20868,8 +20871,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>CollaborationUse</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_642565_230</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_460232_237</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_OBJECT_CLASS</propertyID>
 						<propertyDescriptionID>SHOW_OBJECT_CLASS_DESCRIPTION</propertyDescriptionID>
@@ -20886,8 +20889,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>CombinedFragment</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_175420_231</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_681215_238</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>USE_FILL_COLOR</propertyID>
 						<propertyDescriptionID>USE_FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -20899,8 +20902,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Comment</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_28351_232</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_968363_239</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>WRAP_WORDS</propertyID>
 						<propertyDescriptionID>WRAP_WORDS_DESCRIPTION</propertyDescriptionID>
@@ -20922,8 +20925,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>CommunicationPath</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_39157_233</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_934808_240</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -20982,8 +20985,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Component</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_179551_234</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_312110_241</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SUPPRESS_CONTENT</propertyID>
 						<propertyDescriptionID>SUPPRESS_CONTENT_DESCRIPTION</propertyDescriptionID>
@@ -21257,8 +21260,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Composite Structure Diagram</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_697630_235</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_445355_228</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_864342_242</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_947653_235</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SUPPRESS_CLASS_ATTRIBUTES</propertyID>
 						<propertyGroup>ATTRIBUTES</propertyGroup>
@@ -21277,8 +21280,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Composite Structure Diagram</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_295285_236</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_758990_221</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_636557_243</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_791258_228</parentPropertyManager>
 				</mdElement>
 				<mdElement elementClass='PropertyManagerByDiagram'>
 					<diagramType>Composite Structure Diagram</diagramType>
@@ -21286,8 +21289,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Composite Structure Diagram</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_785842_237</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_978004_238</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_876908_244</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_234660_245</parentPropertyManager>
 				</mdElement>
 				<mdElement elementClass='PropertyManagerByDiagram'>
 					<diagramType>Composite Structure Diagram</diagramType>
@@ -21295,8 +21298,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Composite Structure Diagram</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_193982_239</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_483700_240</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_391161_246</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_619468_247</parentPropertyManager>
 				</mdElement>
 				<mdElement elementClass='PropertyManagerByDiagram'>
 					<diagramType>Composite Structure Diagram</diagramType>
@@ -21304,8 +21307,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Composite Structure Diagram</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_994083_241</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_390461_222</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_393459_248</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_346772_229</parentPropertyManager>
 				</mdElement>
 				<mdElement elementClass='PropertyManagerByDiagram'>
 					<diagramType>Composite Structure Diagram</diagramType>
@@ -21313,8 +21316,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Composite Structure Diagram</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_732561_242</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_16223_243</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_450360_249</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_781391_250</parentPropertyManager>
 				</mdElement>
 				<mdElement elementClass='PropertyManagerByDiagram'>
 					<diagramType>Composite Structure Diagram</diagramType>
@@ -21322,8 +21325,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Composite Structure Diagram</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_162273_244</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_179551_234</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_451213_251</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_312110_241</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SUPPRESS_STRUCTURE</propertyID>
 						<propertyDescriptionID>SUPPRESS_STRUCTURE_DESCRIPTION</propertyDescriptionID>
@@ -21336,8 +21339,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Composite Structure Diagram</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_686296_245</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_60880_246</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_558229_252</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_128511_253</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SUPPRESS_STRUCTURE</propertyID>
 						<propertyDescriptionID>SUPPRESS_STRUCTURE_DESCRIPTION</propertyDescriptionID>
@@ -21350,8 +21353,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Composite Structure Diagram</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_989800_247</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_741564_229</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_700443_254</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_764192_236</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SUPPRESS_STRUCTURE</propertyID>
 						<propertyDescriptionID>SUPPRESS_STRUCTURE_DESCRIPTION</propertyDescriptionID>
@@ -21365,7 +21368,7 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByStereotype xmi:value='false'/>
 					<name>Composite Structure Diagram</name>
 					<propertyManagerID>_10_0_6550218_1119342895625_231187_350</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_538649_248</parentPropertyManager>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_792424_255</parentPropertyManager>
 					<mdElement elementClass='ChoiceProperty'>
 						<propertyID>LINK_LINE_STYLE</propertyID>
 						<propertyDescriptionID>LINK_LINE_STYLE_DESCRIPTION</propertyDescriptionID>
@@ -21379,8 +21382,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ConditionalNode</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_957257_249</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_806426_256</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -21397,8 +21400,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ConnectionPointReference</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_8453_250</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_612712_257</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -21420,8 +21423,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Connector</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_448290_251</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_370867_258</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -21485,8 +21488,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ConnectorEnd</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_427187_252</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_603235_259</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_ROLE_MULTIPLICITY</propertyID>
 						<propertyDescriptionID>SHOW_ROLE_MULTIPLICITY_DESCRIPTION</propertyDescriptionID>
@@ -21503,8 +21506,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Constraint</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_704827_253</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_154190_260</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_NAME</propertyID>
 						<propertyDescriptionID>SHOW_NAME_DESCRIPTION</propertyDescriptionID>
@@ -21528,8 +21531,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Containment</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_607650_254</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_64039_261</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ChoiceProperty'>
 						<propertyID>LINK_LINE_STYLE</propertyID>
 						<propertyDescriptionID>LINK_LINE_STYLE_DESCRIPTION</propertyDescriptionID>
@@ -21543,8 +21546,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ContentShape</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_751973_255</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_834337_262</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>WRAP_WORDS</propertyID>
 						<propertyDescriptionID>WRAP_WORDS_DESCRIPTION</propertyDescriptionID>
@@ -21561,8 +21564,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ControlFlow</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_407654_256</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_49019_263</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -21628,8 +21631,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>DataStoreNode</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_240929_257</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_158552_264</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -21656,8 +21659,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>DataType</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_323271_258</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_441347_265</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -21846,8 +21849,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>DecisionNode</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_385755_259</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_641149_266</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -21869,8 +21872,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Dependency</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_3757_260</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_670133_267</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -21938,8 +21941,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Deployment</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_769139_261</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_480443_268</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -21993,8 +21996,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Diagram</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_30411_262</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_646763_263</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_592650_269</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_560725_270</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>DIAGRAM_BACKGROUND_COLOR</propertyID>
 						<propertyDescriptionID>DIAGRAM_BACKGROUND_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -22141,8 +22144,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Diagram Shape</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_289507_264</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_590127_271</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_ABBREVIATED_TYPE</propertyID>
 						<propertyDescriptionID>SHOW_ABBREVIATED_TYPE_DESCRIPTION</propertyDescriptionID>
@@ -22204,8 +22207,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>DiagramInfo</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_20926_265</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_945541_272</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -22232,8 +22235,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>DurationConstraint</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_765131_266</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_115318_273</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_NAME</propertyID>
 						<propertyDescriptionID>SHOW_NAME_DESCRIPTION</propertyDescriptionID>
@@ -22245,8 +22248,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ElementImport</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_878154_267</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_204552_274</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -22300,8 +22303,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Enumeration</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_16223_243</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_781391_250</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -22605,8 +22608,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ExceptionHandler</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_191743_268</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_311266_275</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -22650,8 +22653,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ExpansionNode</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_179457_269</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_811256_276</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>AUTOSIZE</propertyID>
 						<propertyDescriptionID>AUTOSIZE_DESCRIPTION</propertyDescriptionID>
@@ -22678,8 +22681,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ExpansionRegion</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_864431_270</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_557888_277</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -22696,8 +22699,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Extend</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_183273_271</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_32009_278</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -22763,8 +22766,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Extension</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_898772_272</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_951908_279</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -22828,8 +22831,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ExtensionRole</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_588086_273</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_542860_280</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_ROLE_NAME</propertyID>
 						<propertyDescriptionID>SHOW_ROLE_NAME_DESCRIPTION</propertyDescriptionID>
@@ -22856,8 +22859,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Final State</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_269235_274</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_482551_281</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -22879,8 +22882,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>FinalNode</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_563046_275</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_69952_282</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_NAME</propertyID>
 						<propertyDescriptionID>SHOW_NAME_DESCRIPTION</propertyDescriptionID>
@@ -22902,8 +22905,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>FlowConnector</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_207910_276</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_617141_283</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -22925,8 +22928,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>FlowFinalNode</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_640029_277</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_777735_284</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_NAME</propertyID>
 						<propertyDescriptionID>SHOW_NAME_DESCRIPTION</propertyDescriptionID>
@@ -22948,8 +22951,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ForkJoinPseudostate</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_702574_278</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_884936_285</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -22978,8 +22981,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ForkNode</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_459558_279</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_818486_286</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ChoiceProperty'>
 						<propertyID>SYNCH_BAR_ORIENTATION</propertyID>
 						<propertyDescriptionID>SYNCH_BAR_ORIENTATION_DESCRIPTION</propertyDescriptionID>
@@ -22998,8 +23001,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Generalization</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_348828_280</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_962320_287</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -23055,8 +23058,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>GeneralizationSet</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_676414_281</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_313967_288</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>USE_FILL_COLOR</propertyID>
 						<propertyDescriptionID>USE_FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -23078,8 +23081,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ImageShape</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_154876_282</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_476583_289</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='FileProperty'>
 						<propertyID>IMAGE</propertyID>
 						<propertyDescriptionID>IMAGE_DESCRIPTION</propertyDescriptionID>
@@ -23096,8 +23099,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Implementation Diagram</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_760047_283</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_483700_240</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_238210_290</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_619468_247</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SUPPRESS_CLASS_OPERATIONS</propertyID>
 						<propertyGroup>OPERATIONS</propertyGroup>
@@ -23112,7 +23115,7 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByStereotype xmi:value='false'/>
 					<name>Implementation Diagram</name>
 					<propertyManagerID>_9_0_be00301_1102495986564_458307_303</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_804943_284</parentPropertyManager>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_908486_291</parentPropertyManager>
 					<mdElement elementClass='ChoiceProperty'>
 						<propertyID>LINK_LINE_STYLE</propertyID>
 						<propertyDescriptionID>LINK_LINE_STYLE_DESCRIPTION</propertyDescriptionID>
@@ -23128,7 +23131,7 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByStereotype xmi:value='false'/>
 					<name>Implementation Diagram</name>
 					<propertyManagerID>_9_0_be00301_1102495862296_461313_216</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_681791_285</parentPropertyManager>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_897963_292</parentPropertyManager>
 					<mdElement elementClass='ChoiceProperty'>
 						<propertyID>LINK_LINE_STYLE</propertyID>
 						<propertyDescriptionID>LINK_LINE_STYLE_DESCRIPTION</propertyDescriptionID>
@@ -23144,7 +23147,7 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByStereotype xmi:value='false'/>
 					<name>Implementation Diagram</name>
 					<propertyManagerID>_10_0_6550218_1119342802765_548934_66</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_609280_286</parentPropertyManager>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_375559_293</parentPropertyManager>
 					<mdElement elementClass='ChoiceProperty'>
 						<propertyID>LINK_LINE_STYLE</propertyID>
 						<propertyDescriptionID>LINK_LINE_STYLE_DESCRIPTION</propertyDescriptionID>
@@ -23160,7 +23163,7 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByStereotype xmi:value='false'/>
 					<name>Implementation Diagram</name>
 					<propertyManagerID>_10_0_6550218_1119343259984_972724_351</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_769139_261</parentPropertyManager>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_480443_268</parentPropertyManager>
 					<mdElement elementClass='ChoiceProperty'>
 						<propertyID>LINK_LINE_STYLE</propertyID>
 						<propertyDescriptionID>LINK_LINE_STYLE_DESCRIPTION</propertyDescriptionID>
@@ -23174,8 +23177,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Include</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_418072_287</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_418356_294</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -23236,8 +23239,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>InformationFlow</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_921704_288</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_899358_295</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -23281,8 +23284,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>InformationItem</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_59365_289</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_305510_296</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -23326,8 +23329,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>InitialNode</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_222055_290</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_821929_297</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_NAME</propertyID>
 						<propertyDescriptionID>SHOW_NAME_DESCRIPTION</propertyDescriptionID>
@@ -23344,8 +23347,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>InputPin</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_982421_291</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_510542_298</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>AUTOSIZE</propertyID>
 						<propertyDescriptionID>AUTOSIZE_DESCRIPTION</propertyDescriptionID>
@@ -23387,8 +23390,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>InstanceSpecification</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_638480_292</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_51500_299</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_OBJECT_CLASS</propertyID>
 						<propertyDescriptionID>SHOW_OBJECT_CLASS_DESCRIPTION</propertyDescriptionID>
@@ -23410,16 +23413,16 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>InteractionUse</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_792619_293</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_711676_300</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 				</mdElement>
 				<mdElement elementClass='ExtendableManager'>
 					<removable xmi:value='false'/>
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Interface</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_483700_240</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_619468_247</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -23682,8 +23685,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>InterfaceRealization</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_609280_286</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_375559_293</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -23737,8 +23740,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>InterruptibleActivityRegion</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_236755_294</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_637375_301</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -23755,8 +23758,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>JoinNode</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_489360_295</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_779504_302</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ChoiceProperty'>
 						<propertyID>SYNCH_BAR_ORIENTATION</propertyID>
 						<propertyDescriptionID>SYNCH_BAR_ORIENTATION_DESCRIPTION</propertyDescriptionID>
@@ -23775,8 +23778,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Lifeline</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_509841_296</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_42407_303</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -23798,8 +23801,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Lifeline(in Sequence Diagram)</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_855664_297</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_627154_304</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -23826,8 +23829,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Link</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_755404_298</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_281991_305</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -23881,16 +23884,16 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Link Attribute</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_370101_299</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_170004_306</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 				</mdElement>
 				<mdElement elementClass='ExtendableManager'>
 					<removable xmi:value='false'/>
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>LoopNode</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_292400_300</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_605682_307</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -23907,8 +23910,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Manifestation</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_821566_301</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_742159_308</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -23962,8 +23965,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>MergeNode</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_116025_302</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_526381_309</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -23985,8 +23988,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Message</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_252907_303</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_618215_310</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>USE_FILL_COLOR</propertyID>
 						<propertyDescriptionID>USE_FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -24021,8 +24024,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Message(in Sequence Diagram)</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_764951_304</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_58148_311</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>USE_FILL_COLOR</propertyID>
 						<propertyDescriptionID>USE_FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -24072,8 +24075,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Model</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_236062_305</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_863700_312</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -24104,8 +24107,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>N-ary Association</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_33039_306</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_953420_313</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>USE_FIXED_CONNECTION_POINTS</propertyID>
 						<propertyDescriptionID>USE_FIXED_CONNECTION_POINTS_DESCRIPTION</propertyDescriptionID>
@@ -24117,8 +24120,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Node</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_60880_246</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_128511_253</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -24393,8 +24396,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>NodeInstance</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_798079_307</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_446236_314</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='FontProperty'>
 						<propertyID>FONT</propertyID>
 						<propertyDescriptionID>FONT_DESCRIPTION</propertyDescriptionID>
@@ -24428,8 +24431,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Note</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_122537_308</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_473490_309</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_370641_315</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857562_758003_316</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_DOCUMENTATION_STEREOTYPES</propertyID>
 						<propertyDescriptionID>SHOW_DOCUMENTATION_STEREOTYPES_DESCRIPTION</propertyDescriptionID>
@@ -24456,8 +24459,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Note Anchor</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_845513_310</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_731622_317</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ChoiceProperty'>
 						<propertyID>LINK_LINE_STYLE</propertyID>
 						<propertyDescriptionID>LINK_LINE_STYLE_DESCRIPTION</propertyDescriptionID>
@@ -24468,8 +24471,8 @@ The IVOAValueTypes package is imported from the profile.
 				</mdElement>
 				<mdElement elementClass='PropertyManager'>
 					<name>Notes</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_473490_309</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_758003_316</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -24503,8 +24506,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ObjectFlow</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_994033_311</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_569991_318</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -24570,8 +24573,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>OpaqueAction</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_239125_312</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_912388_319</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -24595,8 +24598,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>OutputPin</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_472437_313</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_117149_320</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>AUTOSIZE</propertyID>
 						<propertyDescriptionID>AUTOSIZE_DESCRIPTION</propertyDescriptionID>
@@ -24638,8 +24641,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Package</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_188022_314</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_360823_321</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -24670,8 +24673,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>PackageImport</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_664051_315</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_923627_322</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -24725,8 +24728,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>PackageMerge</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_328973_316</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_148310_323</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -24780,8 +24783,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Part</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_960486_317</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_57383_324</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_OBJECT_CLASS</propertyID>
 						<propertyDescriptionID>SHOW_OBJECT_CLASS_DESCRIPTION</propertyDescriptionID>
@@ -24820,8 +24823,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Paths</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_221909_216</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_646763_263</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_543758_223</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_560725_270</parentPropertyManager>
 					<mdElement elementClass='NumberProperty'>
 						<propertyID>LINE_WIDTH</propertyID>
 						<propertyDescriptionID>LINE_WIDTH_DESCRIPTION</propertyDescriptionID>
@@ -24860,8 +24863,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Port</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_149792_318</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_380923_325</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_NAME</propertyID>
 						<propertyDescriptionID>SHOW_NAME_DESCRIPTION</propertyDescriptionID>
@@ -24883,8 +24886,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>PrimitiveType</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_285759_319</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_457605_326</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -25073,8 +25076,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ProfileApplication</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_53342_320</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_249241_327</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -25128,8 +25131,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Protocol Transition</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_520658_321</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_526362_328</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -25183,8 +25186,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Protocol TransitionToSelf</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_520077_322</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_355743_329</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_NAME</propertyID>
 						<propertyDescriptionID>SHOW_NAME_DESCRIPTION</propertyDescriptionID>
@@ -25204,8 +25207,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Pseudostate</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_609222_323</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_303059_330</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_NAME</propertyID>
 						<propertyDescriptionID>SHOW_NAME_DESCRIPTION</propertyDescriptionID>
@@ -25227,8 +25230,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Realization</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_681791_285</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_897963_292</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -25282,8 +25285,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>RectangularShape</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_917056_324</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_786950_331</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -25329,8 +25332,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Role</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_126518_325</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_747518_332</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_ROLE_NAME</propertyID>
 						<propertyDescriptionID>SHOW_ROLE_NAME_DESCRIPTION</propertyDescriptionID>
@@ -25362,8 +25365,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>RoleBinding</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_538649_248</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_792424_255</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -25417,8 +25420,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>SendSignalAction</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_31177_326</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_796576_333</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -25447,8 +25450,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Separator</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_974544_327</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_211570_334</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -25489,8 +25492,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>SequenceNode</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_878545_328</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_429065_335</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -25507,8 +25510,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Shapes</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_90786_218</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_646763_263</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_643369_225</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_560725_270</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>AUTOSIZE</propertyID>
 						<propertyDescriptionID>AUTOSIZE_DESCRIPTION</propertyDescriptionID>
@@ -25574,8 +25577,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Signal</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_978004_238</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_234660_245</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_FULL_TYPE</propertyID>
 						<propertyDescriptionID>SHOW_FULL_TYPE_DESCRIPTION</propertyDescriptionID>
@@ -25698,8 +25701,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>State</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_578592_329</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_361980_336</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SUPPRESS_STATE_ACTIONS</propertyID>
 						<propertyDescriptionID>SUPPRESS_STATE_ACTIONS_DESCRIPTION</propertyDescriptionID>
@@ -25711,8 +25714,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Stereotype</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_605214_330</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_73790_337</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_FULL_TYPE</propertyID>
 						<propertyDescriptionID>SHOW_FULL_TYPE_DESCRIPTION</propertyDescriptionID>
@@ -25840,16 +25843,16 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='true'/>
 					<name>Stereotypes</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_676196_331</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_646763_263</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_177382_338</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_560725_270</parentPropertyManager>
 				</mdElement>
 				<mdElement elementClass='ExtendableManager'>
 					<removable xmi:value='false'/>
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>StructuredActivityNode</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_457313_332</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_823360_339</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -25861,8 +25864,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Substitution</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_611666_333</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_241963_340</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -25916,8 +25919,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Swimlane</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_486804_334</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_779908_341</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -25934,7 +25937,7 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Symbol</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_646763_263</propertyManagerID>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_560725_270</propertyManagerID>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -25968,8 +25971,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>TemplateBinding</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_198790_335</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_228162_342</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -26023,8 +26026,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>TextBox</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_264426_336</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_666556_343</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>WRAP_WORDS</propertyID>
 						<propertyDescriptionID>WRAP_WORDS_DESCRIPTION</propertyDescriptionID>
@@ -26046,8 +26049,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>TimeConstraint</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_310686_337</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_44252_344</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_NAME</propertyID>
 						<propertyDescriptionID>SHOW_NAME_DESCRIPTION</propertyDescriptionID>
@@ -26064,8 +26067,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Transition</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_800929_338</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_453857_345</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -26124,8 +26127,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>TransitionToSelf</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_657836_339</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_730779_346</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_NAME</propertyID>
 						<propertyDescriptionID>SHOW_NAME_DESCRIPTION</propertyDescriptionID>
@@ -26145,8 +26148,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Tree</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_804407_340</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_289710_347</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='NumberProperty'>
 						<propertyID>LINE_WIDTH</propertyID>
 						<propertyDescriptionID>LINE_WIDTH_DESCRIPTION</propertyDescriptionID>
@@ -26161,8 +26164,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Usage</name>
-					<propertyManagerID>_12_1_213004e4_1307168022062_804943_284</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_221909_216</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857546_908486_291</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_543758_223</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>STEREOTYPE_COLOR</propertyID>
 						<propertyDescriptionID>STEREOTYPE_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -26217,8 +26220,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Use Case Diagram</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_872394_341</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_898772_272</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_448393_348</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_951908_279</parentPropertyManager>
 					<mdElement elementClass='ChoiceProperty'>
 						<propertyID>LINK_LINE_STYLE</propertyID>
 						<propertyDescriptionID>LINK_LINE_STYLE_DESCRIPTION</propertyDescriptionID>
@@ -26233,8 +26236,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Use Case Diagram</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_513857_342</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_348828_280</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_53617_349</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_962320_287</parentPropertyManager>
 					<mdElement elementClass='ChoiceProperty'>
 						<propertyID>LINK_LINE_STYLE</propertyID>
 						<propertyDescriptionID>LINK_LINE_STYLE_DESCRIPTION</propertyDescriptionID>
@@ -26249,8 +26252,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='false'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>Use Case Diagram</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_319040_343</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_769139_261</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_200165_350</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_480443_268</parentPropertyManager>
 					<mdElement elementClass='ChoiceProperty'>
 						<propertyID>LINK_LINE_STYLE</propertyID>
 						<propertyDescriptionID>LINK_LINE_STYLE_DESCRIPTION</propertyDescriptionID>
@@ -26266,7 +26269,7 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByStereotype xmi:value='false'/>
 					<name>Use Case Diagram</name>
 					<propertyManagerID>_10_0_6550218_1128424813453_41017_118</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022078_126518_325</parentPropertyManager>
+					<parentPropertyManager>_12_1_8e0028f_1307464857562_747518_332</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_ROLE_NAVIGABILITY</propertyID>
 						<propertyDescriptionID>SHOW_ROLE_NAVIGABILITY_DESCRIPTION</propertyDescriptionID>
@@ -26280,7 +26283,7 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByStereotype xmi:value='false'/>
 					<name>Use Case Diagram</name>
 					<propertyManagerID>_9_5_be00301_1123081756555_509881_481</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_681791_285</parentPropertyManager>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_897963_292</parentPropertyManager>
 					<mdElement elementClass='ChoiceProperty'>
 						<propertyID>LINK_LINE_STYLE</propertyID>
 						<propertyDescriptionID>LINK_LINE_STYLE_DESCRIPTION</propertyDescriptionID>
@@ -26296,7 +26299,7 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByStereotype xmi:value='false'/>
 					<name>Use Case Diagram</name>
 					<propertyManagerID>_9_5_be00301_1123081756555_231111_479</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_358029_223</parentPropertyManager>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_202334_230</parentPropertyManager>
 					<mdElement elementClass='ChoiceProperty'>
 						<propertyID>LINK_LINE_STYLE</propertyID>
 						<propertyDescriptionID>LINK_LINE_STYLE_DESCRIPTION</propertyDescriptionID>
@@ -26310,8 +26313,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>UseCase</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_601093_344</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_960402_351</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SUPPRESS_EXTENSIONS</propertyID>
 						<propertyGroup>EXTENSION_POINTS</propertyGroup>
@@ -26343,8 +26346,8 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByDiagram xmi:value='true'/>
 					<extendableByStereotype xmi:value='false'/>
 					<name>ValuePin</name>
-					<propertyManagerID>_12_1_213004e4_1307168022078_680521_345</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_90786_218</parentPropertyManager>
+					<propertyManagerID>_12_1_8e0028f_1307464857562_681435_352</propertyManagerID>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_643369_225</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>AUTOSIZE</propertyID>
 						<propertyDescriptionID>AUTOSIZE_DESCRIPTION</propertyDescriptionID>
@@ -26393,7 +26396,7 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByStereotype xmi:value='false'/>
 					<name>WSDL Diagram</name>
 					<propertyManagerID>_10_0_6550218_1128423106265_698137_119</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_179551_234</parentPropertyManager>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_312110_241</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SUPPRESS_STRUCTURE</propertyID>
 						<propertyDescriptionID>SUPPRESS_STRUCTURE_DESCRIPTION</propertyDescriptionID>
@@ -26407,7 +26410,7 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByStereotype xmi:value='false'/>
 					<name>assembly</name>
 					<propertyManagerID>_be00301_1097673649096_909053_118</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_3757_260</parentPropertyManager>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_670133_267</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_STEREOTYPE</propertyID>
 						<propertyDescriptionID>SHOW_STEREOTYPE_DESCRIPTION</propertyDescriptionID>
@@ -26421,7 +26424,7 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByStereotype xmi:value='false'/>
 					<name>boundary</name>
 					<propertyManagerID>_8bb027e_1075275142323_360673_84</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_445355_228</parentPropertyManager>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_947653_235</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<value xmi:value='-3287061'/>
@@ -26443,7 +26446,7 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByStereotype xmi:value='false'/>
 					<name>control</name>
 					<propertyManagerID>_8bb027e_1075279709410_950097_84</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_445355_228</parentPropertyManager>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_947653_235</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<value xmi:value='-19276'/>
@@ -26465,7 +26468,7 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByStereotype xmi:value='false'/>
 					<name>delegate</name>
 					<propertyManagerID>_be00301_1097673649096_573817_119</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_3757_260</parentPropertyManager>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_670133_267</parentPropertyManager>
 					<mdElement elementClass='BooleanProperty'>
 						<propertyID>SHOW_STEREOTYPE</propertyID>
 						<propertyDescriptionID>SHOW_STEREOTYPE_DESCRIPTION</propertyDescriptionID>
@@ -26479,7 +26482,7 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByStereotype xmi:value='false'/>
 					<name>entity</name>
 					<propertyManagerID>_8bb027e_1075279709410_444292_85</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_445355_228</parentPropertyManager>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_947653_235</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<value xmi:value='-6234956'/>
@@ -26502,7 +26505,7 @@ The IVOAValueTypes package is imported from the profile.
 					<extendableByStereotype xmi:value='false'/>
 					<name>subsystem</name>
 					<propertyManagerID>_10_0EAPbeta2_8ca0285_1123757536109_311188_213</propertyManagerID>
-					<parentPropertyManager>_12_1_213004e4_1307168022062_179551_234</parentPropertyManager>
+					<parentPropertyManager>_12_1_8e0028f_1307464857546_312110_241</parentPropertyManager>
 					<mdElement elementClass='ColorProperty'>
 						<propertyID>FILL_COLOR</propertyID>
 						<propertyDescriptionID>FILL_COLOR_DESCRIPTION</propertyDescriptionID>
@@ -26512,40 +26515,37 @@ The IVOAValueTypes package is imported from the profile.
 			</mdElement>
 		</mdElement>
 	</xmi:Extension>
-	<MagicDraw_Profile:DiagramInfo xmi:id='_12_1_8e0028f_1210843476984_217462_357' base_Diagram='_12_1_8e0028f_1210843476984_63133_345' Modification_date='5/15/08 11:24 AM' Author='lemson' Creation_date='5/15/08 11:24 AM'/>
-	<IVOA_Profile:skosconcept xmi:id='_12_1_2_213004e4_1207376794437_954916_1792' base_Property='_12_1_8e0028f_1175874156890_481760_321'>
-		<broadestSKOSConcept>http://purl.org/astronomy/vocab/SimulationObject#SimulationObject</broadestSKOSConcept>
-		<broadestSKOSConcept>http://purl.org/astronomy/vocab/AstroObject#AstroObject</broadestSKOSConcept>
-	</IVOA_Profile:skosconcept>
-	<MagicDraw_Profile:DiagramInfo xmi:id='_12_1_2_213004e4_1211275641093_434464_227' base_Diagram='_12_1_2_213004e4_1211275641093_949224_215' Modification_date='20/05/08 11:27' Author='Gerard Lemson' Creation_date='20/05/08 11:27'/>
-	<IVOA_Profile:skosconcept xmi:id='_12_1_2_213004e4_1207376833687_99125_1795' base_Property='_12_1_8e0028f_1175674349265_448235_342' broadestSKOSConcept='http://purl.org/astronomy/vocab/IvoaAlgorithm/#algorithm'/>
-	<IVOA_Profile:model xmi:id='_12_1_8e0028f_1209131204250_261929_211' base_Model='eee_1045467100313_135436_1' subject='' title='Simulation Database'>
+	<IVOA_Profile:skosconcept xmi:id='_12_1_213004e4_1274339702328_10583_252' base_Property='_12_1_213004e4_1274339670953_140031_248' broadestSKOSConcept='http://purl.org/astronomy/vocab/PropertyGroups#propertyGroup' vocabularyURI='http://vocabularies.referata.com/wiki/Category:VOT_ProjectGroup'/>
+	<IVOA_Profile:skosconcept xmi:id='_12_1_8e0028f_1285066939203_53573_352' base_Property='_12_1_8e0028f_1175790322468_364162_369' broadestSKOSConcept='http://purl.org/astronomy/vocab/ObjectIdentifiers#objectIdentifier'/>
+	<IVOA_Profile:attribute xmi:id='_12_1_bd102fc_1213975403562_942838_270' base_Property='_12_1_8e0028f_1213804207593_174840_597' maxLength='-1'/>
+	<IVOA_Profile:skosconcept xmi:id='_12_1_2_213004e4_1207376783343_619022_1791' base_Property='_12_1_1_8e0028f_1178788974093_492177_289' broadestSKOSConcept='http://purl.org/astronomy/vocab/DataObjectTypes#dataObjectType'/>
+	<IVOA_Profile:attribute xmi:id='_12_1_8e0028f_1210684040828_245943_852' base_Property='_12_1_2_213004e4_1193921153031_543879_268' maxLength='-1'/>
+	<IVOA_Profile:attribute xmi:id='_12_1_8e0028f_1208273173812_394916_387' base_Property='_12_1_1_8e0028f_1178788918250_721935_284' maxLength='32'/>
+	<IVOA_Profile:attribute xmi:id='_12_1_8e0028f_1208275063781_177068_407' base_Property='_14_0_8e0028f_1202821184437_301040_3025' maxLength='32'/>
+	<MagicDraw_Profile:DiagramInfo xmi:id='_12_1_2_213004e4_1207116688765_334711_164' base_Diagram='_12_1_2_213004e4_1207116688765_958077_152' Modification_date='02/04/08 08:11' Creation_date='02/04/08 08:11' Author='Gerard Lemson'/>
+	<MagicDraw_Profile:DiagramInfo xmi:id='_12_1_8e0028f_1173260091406_661024_260' base_Diagram='_12_1_8e0028f_1173260091406_888099_248' Modification_date='3/7/07 10:34 AM' Creation_date='3/7/07 10:34 AM' Author='lemson'/>
+	<IVOA_Profile:model xmi:id='_12_1_8e0028f_1209131204250_261929_211' base_Model='eee_1045467100313_135436_1' title='Simulation Database' subject=''>
 		<author>Gerard Lemson</author>
 		<author>Laurent Bourge</author>
 		<author>Rick Wagner</author>
 	</IVOA_Profile:model>
-	<IVOA_Profile:attribute xmi:id='_12_1_2_213004e4_1214825443187_599273_396' base_Property='_12_1_bd102fc_1206601562607_6509_183'/>
-	<IVOA_Profile:skosconcept xmi:id='_12_1_213004e4_1274289465578_878066_419' base_Property='_12_1_213004e4_1274289450156_784472_416'/>
-	<IVOA_Profile:skosconcept xmi:id='_12_1_8e0028f_1213803570375_787120_290' base_Property='_12_1_8e0028f_1213803555937_756421_288' broadestSKOSConcept='http://purl.org/astronomy/vocab/InputParameter#inputParameter'/>
-	<MagicDraw_Profile:DiagramInfo xmi:id='_12_1_8e0028f_1173260091406_661024_260' base_Diagram='_12_1_8e0028f_1173260091406_888099_248' Modification_date='3/7/07 10:34 AM' Author='lemson' Creation_date='3/7/07 10:34 AM'/>
-	<MagicDraw_Profile:DiagramInfo xmi:id='_12_1_8e0028f_1256802437453_734209_228' base_Diagram='_12_1_8e0028f_1256802437421_988932_216' Modification_date='10/29/09 8:47 AM' Author='lemson' Creation_date='10/29/09 8:47 AM'/>
-	<IVOA_Profile:attribute xmi:id='_12_1_bd102fc_1214579816680_547456_518' base_Property='_12_1_bd102fc_1206601454839_501438_173'/>
+	<MagicDraw_Profile:DiagramInfo xmi:id='_12_1_2_213004e4_1211275641093_434464_227' base_Diagram='_12_1_2_213004e4_1211275641093_949224_215' Modification_date='20/05/08 11:27' Creation_date='20/05/08 11:27' Author='Gerard Lemson'/>
 	<IVOA_Profile:skosconcept xmi:id='_12_1_2_213004e4_1207375959281_390598_1789' base_Property='_12_1_8e0028f_1173260227625_741084_441' broadestSKOSConcept='http://purl.org/astronomy/vocab/Property#property' vocabularyURI='http://vocabularies.referata.com/wiki/Category:VOT_Property'/>
-	<IVOA_Profile:attribute xmi:id='_12_1_8e0028f_1210674680781_968697_606' base_Property='_12_1_1_8e0028f_1178536325796_565844_252' maxLength='-1'/>
-	<MagicDraw_Profile:DiagramInfo xmi:id='_12_1_2_213004e4_1207116688765_334711_164' base_Diagram='_12_1_2_213004e4_1207116688765_958077_152' Modification_date='02/04/08 08:11' Author='Gerard Lemson' Creation_date='02/04/08 08:11'/>
-	<IVOA_Profile:attribute xmi:id='_12_1_bd102fc_1213975403562_942838_270' base_Property='_12_1_8e0028f_1213804207593_174840_597' maxLength='-1'/>
-	<IVOA_Profile:attribute xmi:id='_12_1_8e0028f_1210684040828_245943_852' base_Property='_12_1_2_213004e4_1193921153031_543879_268' maxLength='-1'/>
-	<IVOA_Profile:skosconcept xmi:id='_12_1_2_213004e4_1207376783343_619022_1791' base_Property='_12_1_1_8e0028f_1178788974093_492177_289' broadestSKOSConcept='http://purl.org/astronomy/vocab/DataObjectTypes#dataObjectType'/>
-	<IVOA_Profile:skosconcept xmi:id='_12_1_2_213004e4_1207378239156_660791_1800' base_Property='_12_1_2_213004e4_1207378230750_422787_1797' broadestSKOSConcept='http://purl.org/astronomy/vocab/IvoaAlgorithm/#physicalprocess' vocabularyURI='http://vocabularies.referata.com/wiki/Category:VOT_PhyscalProces'/>
-	<IVOA_Profile:skosconcept xmi:id='_12_1_8e0028f_1285066939203_53573_352' base_Property='_12_1_8e0028f_1175790322468_364162_369' broadestSKOSConcept='http://purl.org/astronomy/vocab/ObjectIdentifiers#objectIdentifier'/>
-	<IVOA_Profile:attribute xmi:id='_12_1_8e0028f_1208273173812_394916_387' base_Property='_12_1_1_8e0028f_1178788918250_721935_284' maxLength='32'/>
-	<IVOA_Profile:skosconcept xmi:id='_12_1_213004e4_1274339702328_10583_252' base_Property='_12_1_213004e4_1274339670953_140031_248' broadestSKOSConcept='http://purl.org/astronomy/vocab/PropertyGroups#propertyGroup' vocabularyURI='http://vocabularies.referata.com/wiki/Category:VOT_ProjectGroup'/>
 	<IVOA_Profile:attribute xmi:id='_12_1_8e0028f_1208275314593_775147_419' base_Property='_12_1_1_8e0028f_1178788927546_683715_286' maxLength='-1'/>
-	<IVOA_Profile:attribute xmi:id='_12_1_8e0028f_1208351395421_62102_407' base_Property='_12_1_8e0028f_1173262306046_676761_1298' maxLength='32'/>
-	<UML_Standard_Profile:metamodel xmi:id='_10_0_42c01ac_1131119230984_927120_4129' base_Model='_10_0_42c01ac_1131119215109_173353_4116'/>
-	<IVOA_Profile:modelelement xmi:id='_12_1_2_213004e4_1243272018046_164613_214' base_Element='_12_1_1_8e0028f_1178789094562_459260_296' utype='Reg:VOResource'/>
 	<IVOA_Profile:attribute xmi:id='_12_1_8e0028f_1210684020125_985619_848' base_Property='_14_0_8e0028f_1202994225718_41210_2238' maxLength='-1'/>
-	<IVOA_Profile:attribute xmi:id='_12_1_8e0028f_1210674809937_652516_613' base_Property='_14_0_8e0028f_1202835092843_646857_3306' maxLength='-1'/>
-	<IVOA_Profile:attribute xmi:id='_12_1_8e0028f_1208275063781_177068_407' base_Property='_14_0_8e0028f_1202821184437_301040_3025' maxLength='32'/>
+	<IVOA_Profile:attribute xmi:id='_12_1_8e0028f_1210674680781_968697_606' base_Property='_12_1_1_8e0028f_1178536325796_565844_252' maxLength='-1'/>
+	<IVOA_Profile:skosconcept xmi:id='_12_1_2_213004e4_1207376833687_99125_1795' base_Property='_12_1_8e0028f_1175674349265_448235_342' broadestSKOSConcept='http://purl.org/astronomy/vocab/IvoaAlgorithm/#algorithm'/>
+	<IVOA_Profile:skosconcept xmi:id='_12_1_2_213004e4_1207376794437_954916_1792' base_Property='_12_1_8e0028f_1175874156890_481760_321' broadestSKOSConcept='http://purl.org/astronomy/vocab/AstroObject#AstroObject'/>
 	<IVOA_Profile:skosconcept xmi:id='_12_1_2_213004e4_1207376820015_308014_1794' base_Property='_12_1_2_213004e4_1193927509421_457098_479' broadestSKOSConcept='http://purl.org/astronomy/vocab/PhysicalProcess/#PhysicalProcess' vocabularyURI='http://vocabularies.referata.com/wiki/Category:VOT_PhysicalProcess'/>
+	<IVOA_Profile:skosconcept xmi:id='_12_1_8e0028f_1213803570375_787120_290' base_Property='_12_1_8e0028f_1213803555937_756421_288' broadestSKOSConcept='http://purl.org/astronomy/vocab/InputParameter#inputParameter'/>
+	<MagicDraw_Profile:DiagramInfo xmi:id='_12_1_8e0028f_1256802437453_734209_228' base_Diagram='_12_1_8e0028f_1256802437421_988932_216' Modification_date='10/29/09 8:47 AM' Creation_date='10/29/09 8:47 AM' Author='lemson'/>
+	<UML_Standard_Profile:metamodel xmi:id='_10_0_42c01ac_1131119230984_927120_4129' base_Model='_10_0_42c01ac_1131119215109_173353_4116'/>
+	<IVOA_Profile:attribute xmi:id='_12_1_8e0028f_1210674809937_652516_613' base_Property='_14_0_8e0028f_1202835092843_646857_3306' maxLength='-1'/>
+	<MagicDraw_Profile:DiagramInfo xmi:id='_12_1_8e0028f_1210843476984_217462_357' base_Diagram='_12_1_8e0028f_1210843476984_63133_345' Modification_date='5/15/08 11:24 AM' Creation_date='5/15/08 11:24 AM' Author='lemson'/>
+	<IVOA_Profile:modelelement xmi:id='_12_1_2_213004e4_1243272018046_164613_214' base_Element='_12_1_1_8e0028f_1178789094562_459260_296' utype='Reg:VOResource'/>
+	<IVOA_Profile:attribute xmi:id='_12_1_8e0028f_1208351395421_62102_407' base_Property='_12_1_8e0028f_1173262306046_676761_1298' maxLength='32'/>
+	<IVOA_Profile:skosconcept xmi:id='_12_1_213004e4_1274289465578_878066_419' base_Property='_12_1_213004e4_1274289450156_784472_416'/>
+	<IVOA_Profile:attribute xmi:id='_12_1_2_213004e4_1214825443187_599273_396' base_Property='_12_1_bd102fc_1206601562607_6509_183'/>
+	<IVOA_Profile:attribute xmi:id='_12_1_bd102fc_1214579816680_547456_518' base_Property='_12_1_bd102fc_1206601454839_501438_173'/>
+	<IVOA_Profile:skosconcept xmi:id='_12_1_2_213004e4_1207378239156_660791_1800' base_Property='_12_1_2_213004e4_1207378230750_422787_1797' broadestSKOSConcept='http://purl.org/astronomy/vocab/IvoaAlgorithm/#physicalprocess' vocabularyURI='http://vocabularies.referata.com/wiki/Category:VOT_PhyscalProces'/>
 </xmi:XMI>
