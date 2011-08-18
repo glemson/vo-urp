@@ -633,24 +633,47 @@
 		<xslt2 in="${output}/${source_intermediate}" out="${output}/ddl/ddl-gen.log" style="${res}/intermediate2ddl.xsl">
 			<param name="vendor" expression="mssqlserver" />
 			<param name="project_name" expression="${project.name}" />
+			<param name="schema" expression="${tap.target_schema}" />
 		</xslt2>
-
+<!--
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/ddl/ddl-gen.log" style="${res}/intermediate2ddl_singletable.xsl">
+			<param name="vendor" expression="mssqlserver" />
+			<param name="project_name" expression="${project.name}" />
+			<param name="schema" expression="${tap.target_schema}" />
+		</xslt2>
+-->
 		<xslt2 in="${output}/${source_intermediate}" out="${output}/ddl/ddl-gen.log" style="${res}/intermediate2ddl.xsl">
 			<param name="vendor" expression="postgres" />
 			<param name="project_name" expression="${project.name}" />
+			<param name="schema" expression="${tap.target_schema}" />
 		</xslt2>
 
 		<xslt2 in="${output}/${source_intermediate}" out="${output}/ddl/ddl-gen.log" style="${res}/intermediate2ddl.xsl" >
 			<param name="vendor" expression="mysql" />
 			<param name="project_name" expression="${project.name}" />
+			<param name="schema" expression="${tap.target_schema}" />
 		</xslt2>
 		
 		<echo>run_intermediate2ddl : done.</echo>
 	</target>
 
+	<target name="run_intermediate2ddl_singletable">
+		<echo>run_intermediate2ddl_singletabale : starting generate DDL from file ${output}/${source_intermediate}</echo>
 
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/ddl/ddl-gen.log" style="${res}/intermediate2ddl_singletable.xsl">
+			<param name="vendor" expression="mssqlserver" />
+			<param name="project_name" expression="${project.name}" />
+			<param name="schema" expression="${tap.target_schema}" />
+		</xslt2>
+</target>
+<target name="rebuildDB">
+	<ant target="run_intermediate2ddl"/>
+    <!-- update DB if needed -->
+	<ant target="checkDB" />
 
-
+	<ant target="createDB" />
+</target>
+		
 	<!-- target run_intermediate2tap : generates TAP metadata VOTables from intermediate model -->
 	<target name="run_intermediate2tap">
 		<echo>run_intermediate2tap : starting generate TAP metadata VOTables from file ${output}/${source_intermediate}</echo>
@@ -712,6 +735,7 @@
 			<param name="model_package" expression="${model_package}" />
 			<param name="targetnamespace_root" expression="${targetnamespace_root}" />
 			<param name="persistence.xml" expression="${properties}/persistence.xml"/>
+			<param name="databaseSchema" expression="${tap.target_schema}" />
 		</xslt2>
 
 		<echo>run_intermediate2java : done.</echo>
