@@ -6,6 +6,7 @@
 
 <jsp:include page="../header.jsp" flush="false" />
 
+<c:set var="validationResult" value="${requestScope.validationResult}" ></c:set>
 <c:set var="error" value="${requestScope.error}" ></c:set>
 <c:set var="entity" value="${requestScope.newEntity}" ></c:set>
 
@@ -20,6 +21,23 @@
 <input type="submit" value="Insert">
 </form>
 <hr/>
+<c:if test="${validationResult != null}">
+Your uploaded document was not correct : <br/><br/>
+<table border="1" cellspacing="0" cellpadding="4" width="100%">
+  <tr class="main">
+    <th>Severity</th>
+    <th>line:column</th>
+    <th>message</th>
+  </tr>
+<c:forEach var="entry" begin="0" items="${validationResult.messages}">
+  <tr>
+    <td>${entry.severity}</td>
+    <td>${entry.lineNumber} : ${entry.columnNumber}</td>
+    <td>${entry.message}</td>
+  </tr>
+</c:forEach>
+</table>
+</c:if>
 <c:if test="${error != null}">
 Your uploaded document was not correct : <br/><br/>
 ${error}

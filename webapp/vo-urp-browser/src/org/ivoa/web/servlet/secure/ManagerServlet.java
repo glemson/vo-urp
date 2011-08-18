@@ -56,6 +56,10 @@ public final class ManagerServlet extends BaseServlet {
    */
   public static final String OUTPUT_ERROR = "error";
   /**
+   * TODO : Field Description
+   */
+  public static final String OUTPUT_VALIDATION_RESULT = "validationResult";
+  /**
    * Parameter name of the parameter indicating which of the actions available through this servlet should be
    * performed.
    */
@@ -108,6 +112,7 @@ public final class ManagerServlet extends BaseServlet {
     Map<String, Object> params = getParameters(request);
     final String        action = (String) params.get(INPUT_ACTION);
     String              error  = null;
+    ValidationResult    validationResult = null;
     String              status = "OK";
     Object              result = null;
 
@@ -124,7 +129,13 @@ public final class ManagerServlet extends BaseServlet {
           request.setAttribute(OUTPUT_NEWENTITY, result);
         }
       }
-    } catch (final Exception e) {
+    } catch(XmlBindException xe) {
+    	validationResult = xe.getValidationResult();
+        status = "ERROR";
+    }
+    catch (final Exception e) {
+    	if(e.getCause() != null && e.getCause() instanceof XmlBindException)
+        	validationResult = ((XmlBindException)e.getCause()).getValidationResult();
       error = e.getMessage();
       status = "ERROR";
     }
@@ -139,6 +150,9 @@ public final class ManagerServlet extends BaseServlet {
     if (error != null) {
       request.setAttribute(OUTPUT_ERROR, error);
     }
+    if (validationResult != null) {
+        request.setAttribute(OUTPUT_VALIDATION_RESULT, validationResult);
+      }
 
     time = ((System.nanoTime() - start) / 1000000L);
 
@@ -161,7 +175,9 @@ public final class ManagerServlet extends BaseServlet {
 
   /**
    * Insert an uploaded document into the databaase and return the corresponding object.<br>
-   * TODO implement the insert part
+   * TODO provide better error message if XML invalid. Same as in validation servelet.
+   * TODO Give better message in case a reference can not be resolved, or is doubly resolved in case
+   *    inconsistent ivoId/publisherDID pair is used..
    *
    * @param parameters
    * @param user
