@@ -154,7 +154,10 @@ public class Reference extends LogSupport implements Serializable {
       sb.append(" - ivoId: ").append(getIvoId());
     }
 
-    return sb.append("] ");
+    if (JavaUtils.isSet(getPublisherDID())) {
+      sb.append(" - publisherDID: ").append(getPublisherDID());
+    }
+   return sb.append("] ");
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

@@ -141,7 +141,7 @@ public final class ReferenceResolver extends SingletonSupport {
       if (log.isInfoEnabled()) {
         log.info("ReferenceResolver.resolve : exit : " + reference + " <=> " + res);
       }
-
+      
       return res;
     }
     return null;
