@@ -34,7 +34,7 @@
     <xsl:variable name="v4" select="replace($v3,   '4', 'FOUR')"/>
     <xsl:variable name="v5" select="replace($v4,   '5', 'FIVE')"/>
     <xsl:variable name="v6" select="replace($v5,   '-', '_')"/>
-    <xsl:value-of select="translate(upper-case($v6),' .','___N')"/>
+    <xsl:value-of select="translate(upper-case($v6),' .:*','___N')"/>
   </xsl:template>
 
 
