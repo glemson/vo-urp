@@ -11,8 +11,9 @@
   <sql classpathref="jdbc-drivers.class.path" 
        driver="${eclipselink.jdbc.driver}"
        url="${eclipselink.jdbc.url}"
-       userid="${eclipselink.jdbc.user}"
-       password="${eclipselink.jdbc.password}" />
+       userid="${eclipselink.jdbc.admin}"
+       password="${eclipselink.jdbc.adminpassword}" 
+/>
 
 </presetdef>
 
@@ -142,8 +143,8 @@
   <sql classpathref="jdbc-drivers.class.path" 
        driver="${eclipselink.jdbc.driver}"
        url="${tomcat.realm.url}"
-       userid="${tomcat.realm.dbuser}"
-       password="${tomcat.realm.password}" onerror="continue" src="${output}/ddl/${db.vendor}/admindb.sql"/>
+       userid="${tomcat.realm.admin}"
+       password="${tomcat.realm.adminpassword}" onerror="continue" src="${output}/ddl/${db.vendor}/admindb.sql"/>
 <!--         
   <doSql onerror="continue" src="${output}/ddl/${db.vendor}/admindb.sql" />
 -->
