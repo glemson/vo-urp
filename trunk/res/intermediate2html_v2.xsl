@@ -545,7 +545,7 @@ ensure all classes are here, but not those form any profile
           <xsl:with-param name="title" select="'Attributes'"/>
         </xsl:call-template>
         <xsl:apply-templates select="attribute">
-          <xsl:sort select="name"/>
+          <!-- <xsl:sort select="name"/> -->
         </xsl:apply-templates>
         </xsl:if>       
         
