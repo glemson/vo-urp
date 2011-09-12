@@ -505,6 +505,14 @@
         <include name="tap/*_votable.xml"/>
         <include name="tap/*_vodataservice.xml"/>
       </fileset>
+        <fileset dir="${project.output.dir}">
+          <include name="schema/**/*"/> 
+        </fileset>
+        <fileset dir="${project.output.dir}" >
+          <include name="html/*.html" />
+          <include name="html/*.png"/>
+          <include name="html/*.css"/>
+        </fileset>
     </war>
 
     <delete dir="${web-content}/WEB-INF/tags"/>
