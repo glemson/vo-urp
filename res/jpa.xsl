@@ -166,7 +166,7 @@ Currently only for JPA 2.0 impementation of eclipselink it seems as if nested at
       <xsl:when test="name($type) = 'primitiveType'">
         <xsl:choose>
           <xsl:when test="number(constraints/maxLength) = -1">
-    @javax.persistence.Basic( fetch = javax.persistence.FetchType.LAZY, optional = <xsl:apply-templates select="." mode="nullable"/> )
+    @javax.persistence.Basic( fetch = javax.persistence.FetchType.EAGER, optional = <xsl:apply-templates select="." mode="nullable"/> )
     @javax.persistence.Lob
     @javax.persistence.Column( name = "<xsl:apply-templates select="." mode="columnName"/>", nullable = <xsl:apply-templates select="." mode="nullable"/> )
           </xsl:when>
