@@ -1,8 +1,6 @@
 
 package org.ivoa.metamodel;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -20,7 +18,8 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="broadestSKOSConcept" type="{http://www.w3.org/2001/XMLSchema}anyURI" maxOccurs="unbounded"/>
+ *         &lt;element name="broadestSKOSConcept" type="{http://www.w3.org/2001/XMLSchema}anyURI"/>
+ *         &lt;element name="vocabularyURI" type="{http://www.w3.org/2001/XMLSchema}anyURI" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -31,41 +30,63 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "SKOSConcept", propOrder = {
-    "broadestSKOSConcept"
+    "broadestSKOSConcept",
+    "vocabularyURI"
 })
 public class SKOSConcept {
 
     @XmlElement(required = true)
     @XmlSchemaType(name = "anyURI")
-    protected List<String> broadestSKOSConcept;
+    protected String broadestSKOSConcept;
+    @XmlSchemaType(name = "anyURI")
+    protected String vocabularyURI;
 
     /**
      * Gets the value of the broadestSKOSConcept property.
      * 
-     * <p>
-     * This accessor method returns a reference to the live list,
-     * not a snapshot. Therefore any modification you make to the
-     * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the broadestSKOSConcept property.
-     * 
-     * <p>
-     * For example, to add a new item, do as follows:
-     * <pre>
-     *    getBroadestSKOSConcept().add(newItem);
-     * </pre>
-     * 
-     * 
-     * <p>
-     * Objects of the following type(s) are allowed in the list
-     * {@link String }
-     * 
-     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
      */
-    public List<String> getBroadestSKOSConcept() {
-        if (broadestSKOSConcept == null) {
-            broadestSKOSConcept = new ArrayList<String>();
-        }
-        return this.broadestSKOSConcept;
+    public String getBroadestSKOSConcept() {
+        return broadestSKOSConcept;
+    }
+
+    /**
+     * Sets the value of the broadestSKOSConcept property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setBroadestSKOSConcept(String value) {
+        this.broadestSKOSConcept = value;
+    }
+
+    /**
+     * Gets the value of the vocabularyURI property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getVocabularyURI() {
+        return vocabularyURI;
+    }
+
+    /**
+     * Sets the value of the vocabularyURI property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setVocabularyURI(String value) {
+        this.vocabularyURI = value;
     }
 
 }
