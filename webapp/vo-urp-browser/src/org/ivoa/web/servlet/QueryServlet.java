@@ -138,7 +138,7 @@ public class QueryServlet extends BaseServlet {
       // TODO this test must be refined, e.g. a WITH might be legal as a starting word
       // in principle we'll want proper ADQL parsing
       // alternatively also we can use a user that only is allowed reading the database
-      if (! q.getSql().startsWith("select") && ! q.getSql().startsWith("SELECT")) {
+      if (! q.getSql().trim().toLowerCase().startsWith("select")) {
         q.setError("SQL invalid : only SELECT statements are allowed !");
 
         return;
