@@ -514,12 +514,12 @@ This XSLT is tested to work on XMI generated with MagicDraw Community Edition v1
     <xsl:variable name="attribute" select="/xmi:XMI/IVOA_Profile:skosconcept[@base_Property = $xmiid]"/>
     <xsl:if test="$attribute">
       <xsl:element name="skosconcept" > 
+         <xsl:if test="$attribute/@broadestSKOSConcept">
+          <xsl:element name="broadestSKOSConcept"><xsl:value-of select="$attribute/@broadestSKOSConcept"/></xsl:element>
+        </xsl:if>
         <xsl:if test="$attribute/@vocabularyURI">
           <xsl:element name="vocabularyURI"><xsl:value-of select="$attribute/@vocabularyURI"/></xsl:element>
         </xsl:if>
-         <xsl:for-each select="$attribute/@broadestSKOSConcept">
-          <xsl:element name="broadestSKOSConcept"><xsl:value-of select="."/></xsl:element>
-        </xsl:for-each>
       </xsl:element>
     </xsl:if>
   </xsl:template>

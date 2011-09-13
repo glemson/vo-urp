@@ -429,6 +429,10 @@ DROP FOREIGN KEY fk_<xsl:value-of select="$tableName"/>_<xsl:value-of select="na
     <xsl:if test="$vendor != 'mysql'">
 ALTER TABLE <xsl:value-of select="$tableName"/> ADD CONSTRAINT pk_<xsl:value-of select="$tableName_ns"/>_<xsl:value-of select="$primaryKeyColumnName"/> PRIMARY KEY(<xsl:value-of select="$primaryKeyColumnName"/>);&cr;&cr;
 </xsl:if>
+
+    <xsl:if test="container">
+CREATE INDEX ix_<xsl:value-of select="$tableName_ns"/>___CONTAINER ON <xsl:value-of select="$tableName"/>(containerId);&cr;&cr;
+</xsl:if>
     
     <xsl:for-each select="reference[not(subsets)]">
 CREATE INDEX ix_<xsl:value-of select="$tableName_ns"/>_<xsl:value-of select="name"/> ON <xsl:value-of select="$tableName"/>(<xsl:apply-templates select="." mode="columnName"/>);&cr;&cr;

@@ -146,7 +146,9 @@ For object and data types these features are (where applicable) :
 <li>For attributes which have been assigned the &lt;&lt;skosconcept&gt;&gt; stereotype, 
 the URI is given identifying the "broadest" concept.
 Such attributes must be given a value, which itself identifies a SKOS concept in some vocabulary,
-and which must be narrower than the indicated broadest concept.</li>
+and which must be narrower than the indicated broadest concept. 
+If available, also a URI is given to a vocabulary that may contains
+such concepts.</li>
 </ul>
 </p>
 <p>
@@ -757,10 +759,21 @@ ensure all classes are here, but not those form any profile
     <xsl:value-of select="utype"/>
   </xsl:variable>
     <tr>
-        <td class="feature-detail" rowspan="4"><b>
+        <td>
+          <xsl:attribute name="class" select="'feature-detail'"/>
+          <xsl:attribute name="rowspan">
+        <xsl:choose>
+        <xsl:when test="skosconcept">
+          <xsl:value-of select="'5'"/>
+        </xsl:when>
+        <xsl:otherwise>
+          <xsl:value-of select="'4'"/>
+        </xsl:otherwise>
+        </xsl:choose> 
+          </xsl:attribute>        
         <a><xsl:attribute name="name" select="$utype"/></a>
         <a><xsl:attribute name="name" select="@xmiid"/></a>
-        <xsl:value-of select="name"/></b>
+        <b><xsl:value-of select="name"/></b>
         <xsl:if test="subsets">
         <xsl:variable name="prop" select="key('element',subsets)"/>
         <br/>{subsets <a><xsl:attribute name="href" select="concat('#',subsets)"/>
@@ -770,13 +783,23 @@ ensure all classes are here, but not those form any profile
         <td class="feature-heading">type</td>
         <td class="feature-detail" >
         <a><xsl:attribute name="href" select="concat('#',datatype/@xmiidref)"/> <xsl:apply-templates select="datatype/@xmiidref" mode="classifier"/></a>
-        <xsl:if test="skosconcept">
-        <br/><br/>&lt;&lt;skosconcept&gt;&gt;, value of this attribute must be narrower than the concept at 
+        </td>
+     </tr>
+     <xsl:if test="skosconcept">
+     <tr>
+        <td class="feature-heading">&lt;&lt;skosconcept&gt;&gt;</td>
+        <td class="feature-detail" >
+        Broadest SKOS concept:<br/> 
         <a><xsl:attribute name="href" select="skosconcept/broadestSKOSConcept"/><xsl:attribute name="target" select="'_blank'"/>
         <xsl:value-of select="skosconcept/broadestSKOSConcept"/></a>
+        <xsl:if test="skosconcept/vocabularyURI">
+        <br/>Vocabulary URI:<br/>  
+        <a><xsl:attribute name="href" select="skosconcept/vocabularyURI"/><xsl:attribute name="target" select="'_blank'"/>
+        <xsl:value-of select="skosconcept/vocabularyURI"/></a>
         </xsl:if>
         </td>
      </tr>
+     </xsl:if>
      <tr>
         <td class="feature-heading">utype(s)</td>
         <td class="feature-detail"><xsl:value-of select="$utype"/>
