@@ -78,7 +78,7 @@ http://www.objectsbydesign.com/projects/xmi.css
 <title>
 <xsl:value-of select="title"/>
 </title>
-    <link rel="stylesheet" href="http://ivoa.net/misc/ivoa_wg.css" type="text/css"/>
+    <link rel="stylesheet" href="http://vo-urp.googlecode.com/svn/trunk/css/ivoa_wg.css" type="text/css"/>
     <link rel="stylesheet" href="http://vo-urp.googlecode.com/svn/trunk/css/xmi.css" type="text/css"/>
 </head>
 <body>
