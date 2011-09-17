@@ -42,7 +42,7 @@ import org.ivoa.resource.ContactRole;
 import org.ivoa.meta.DataType;
 import org.ivoa.resource.Party;
 import org.ivoa.resource.experiment.Experiment;
-import org.ivoa.resource.experiment.GenericOutuptDataset;
+import org.ivoa.resource.experiment.GenericOutputDataset;
 import org.ivoa.resource.experiment.ParameterSetting;
 import org.ivoa.resource.experiment.OutputDataset;
 import org.ivoa.resource.experiment.Snapshot;
@@ -660,7 +660,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
     for (OutputDataObjectType rep : simulation.getProtocol().getOutputType()) {
       // for all
-      col = new GenericOutuptDataset(simulation);
+      col = new GenericOutputDataset(simulation);
       col.setObjectType(rep);
       col.setNumberOfObjects((long)num.intValue() * 113);
 
