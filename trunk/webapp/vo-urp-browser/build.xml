@@ -385,7 +385,8 @@
     <javac sourcepath="" srcdir="${sources}" destdir="${build.src}" listfiles="false"
            fork="true" verbose="false" encoding="UTF-8"
            debug="on" deprecation="on" optimize="on" casesensitive="true" 
-           source="1.5" target="1.5">
+           source="1.5" target="1.5"
+           includeantruntime="false" >
       
       <classpath refid="project.class.path" />
       
