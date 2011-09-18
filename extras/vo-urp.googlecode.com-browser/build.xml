@@ -11,8 +11,8 @@
 
 	<!-- loads config file -->
 	<property file="build.properties" />
-	<fail unless="vo-urp.path" message="Must specify vo-urp.path in build.properties !" />
-	<fail unless="vo-urp.project" message="Must specify vo-urp.project in build.properties !" />
+	<fail unless="vo-urp.path"    message="Must define property 'vo-urp.path' in build.properties !" />
+	<fail unless="vo-urp.project" message="Must define property 'vo-urp.project' in build.properties !" />
 
 	<property file="${vo-urp.project.path}/project.properties"/>
 
