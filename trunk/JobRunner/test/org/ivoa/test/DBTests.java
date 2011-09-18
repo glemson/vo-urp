@@ -66,7 +66,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
     log.warn("DBTests.testWRITE : enter");
 
     // Creates a Context :
-    final RootContext ctx = LocalLauncher.prepareMainJob("test", "user me", "E:/JobRunner/Jobs", 10, null);
+    final RootContext ctx = LocalLauncher.prepareMainJob("test", "user me", "E:/JobRunner/Jobs", null);
 
     LocalLauncher.prepareChildJob(ctx, "main", new String[]{FileManager.LEGACYAPPS + "/EyalsSAM/" + "EyalsSAM.exe"});
 
