@@ -35,22 +35,24 @@
 	-->
 	<property file="build.properties" />
 
+  <fail unless="input"                  message="Must define property 'input' in build.properties (indicating project directory) !"/>
+
 	
 	<!-- read pipeline configuration properties -->
 	<property file="${input}/project.properties"/>
-	<fail unless="project.name" message="Must define name for project [project.name] !" />
-	<fail unless="project.version" message="Must define project version [project.version] !" />
-	<fail unless="source" message="Must define the source data model file (xmi 2.1) [source] !" />
-	<fail unless="xmi2intermediate" message="Must define the basic xmi2intermediate xsl file!"/>
-	<fail unless="root_package" message="Must define the root package [root_package] !" />
-	<fail unless="model_package" message="Must define the model package [model_package] !" />
-	<fail unless="targetnamespace_root" message="Must define the target namespace root [targetnamespace_root] !" />
-	<fail unless="schemalocation_root" message="Must define the schema location root [schemalocation_root] !" />
+	<fail unless="project.name"           message="Must define property 'project.name' in ${input}/project.properties (name of this project) !" />
+	<fail unless="project.version"        message="Must define property 'project.version' in ${input}/project.properties !" />
+	<fail unless="source"                 message="Must define property 'source' in ${input}/project.properties (the source data model file as xmi 2.x) !" />
+	<fail unless="xmi2intermediate"       message="Must define property 'xmi2intermediate' in ${input}/project.properties (the basic xmi2intermediate xsl file) !"/>
+	<fail unless="root_package"           message="Must define property 'root_package' in ${input}/project.properties (the root package) !" />
+	<fail unless="model_package"          message="Must define property 'model_package' in ${input}/project.properties (the model package) !" />
+	<fail unless="targetnamespace_root"   message="Must define property 'targetnamespace_root' in ${input}/project.properties (the target namespace root) !" />
+	<fail unless="schemalocation_root"    message="Must define property 'schemalocation_root' in ${input}/project.properties (the schema location root) !" />
 
 	<!-- convert target switches to ant conditionnal properties -->
-	<fail unless="target.db.active" message="Must define if db targets should run [target.db.active] !" />
-	<fail unless="target.run.active" message="Must define if run target should run [target.run.active] !" />
-	<fail unless="target.weaving.active" message="Must define if weaving target should run [target.weaving.active] !" />
+	<fail unless="target.db.active"       message="Must define property 'target.db.active' in ${input}/project.properties (true if db targets should run) !" />
+	<fail unless="target.run.active"      message="Must define property 'target.run.active' in ${input}/project.properties (true if run target should run) !" />
+	<fail unless="target.weaving.active"  message="Must define property 'target.weaving.active' in ${input}/project.properties (true if weaving target should run) !" />
 
 	<condition property="has.test">
 		<isset property="sources.test"/>
@@ -264,6 +266,7 @@
 	<target name="about" depends="init" description="show information for public targets">
 		<echo>available ant targets : </echo>
 		<echo>-------------------------------------------------------------------------------</echo>
+		<echo>  - cleanAll      : CLEANS outputs </echo>
 		<echo>  - makeAll       : make all transformations (uml -> metaModel -> others) </echo>
 		<echo>  - forceMakeAll  : CLEANS outputs and then make all transformations (makeAll) </echo>
 		<echo>-------------------------------------------------------------------------------</echo>
@@ -284,6 +287,14 @@
 	<target name="forceMakeAll"  depends="init, cleanOutput, cleanJava" description="CLEANS outputs and make all transformations (forced)">
 		<ant target="makeAll" inheritAll="false" />
 		<echo>forceMakeAll : done.</echo>
+	</target>
+
+
+
+
+	<!-- main target : force to clean all generated products -->
+	<target name="cleanAll"  depends="init, cleanOutput, cleanJava" description="CLEANS outputs">
+		<echo>cleanAll : done.</echo>
 	</target>
 
 
@@ -666,7 +677,8 @@
 			<param name="schema" expression="${tap.target_schema}" />
 		</xslt2>
 </target>
-<target name="rebuildDB">
+
+<target name="rebuildDB" description="generate DDL, clean and create database structure">
 	<ant target="run_intermediate2ddl"/>
     <!-- update DB if needed -->
 	<ant target="checkDB" />
