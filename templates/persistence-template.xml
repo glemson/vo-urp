@@ -62,6 +62,9 @@
       <!-- debug : forces eclipselink to log exceptions before throwing them -->
       <property name="eclipselink.logging.exceptions" value="false"/>
 
+      <!-- enable SQL parameter binding visibility logging to override ER 329852 -->
+      <property name="eclipselink.logging.parameters" value="true"/>
+
       
       <!-- custom SessionLog implementation to use apache commons logging 1.1 API (so log4J) -->
       <property name="eclipselink.logging.logger" value="org.eclipse.persistence.logging.CommonsLoggingSessionLog"/>
