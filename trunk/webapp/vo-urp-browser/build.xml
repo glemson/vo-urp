@@ -12,10 +12,10 @@
   
   
   <!-- set global properties for this build -->
-  <fail unless="input" message="Must provide 'input' property, indicating project directory"/>
-  <fail unless="webapp.member.role" message="Must provide 'webapp.member.role' property"/>
-  <fail unless="webapp.admin.role" message="Must provide 'webapp.admin.role' property"/>
-  <fail unless="schemalocation_root" message="Must provide 'schemalocation_root' propert, indicating where schema files are to be found"/>	
+  <fail unless="input"                message="Must define property 'input' in build.properties (indicating project directory) !"/>
+  <fail unless="webapp.member.role"   message="Must define property 'webapp.member.role' in ${input}/project.properties (TODO) !"/>
+  <fail unless="webapp.admin.role"    message="Must define property 'webapp.admin.role' in ${input}/project.properties (TODO) !"/>
+  <fail unless="schemalocation_root"  message="Must define property 'schemalocation_root' in ${input}/project.properties (indicating where schema files are to be found) !"/>
 
   <!-- first load local config file -->
   <property file="build.properties"/>
@@ -155,7 +155,7 @@
   <!-- target importVO-URP : get libraries and properties from vo-urp project -->
   <target name="importVO-URP">
     <available property="vo-urp.base.check" file="${input}/dist/${base.library}" />
-    <fail unless="vo-urp.base.check" message="vo-urp project base library (${input}\dist\${base.library}) is not built !" />
+    <fail unless="vo-urp.base.check" message="vo-urp project base library ${input}/dist/${base.library} is not built !" />
 
     <!-- use weave archive or standard gen library -->
     <condition property="gen.library.used" value="${weave.library}">
@@ -166,7 +166,7 @@
       <available file="${input}/dist/${gen.library}" />
     </condition>
 
-    <fail unless="gen.library.used" message="vo-urp project gen library is not built !" />
+    <fail unless="gen.library.used" message="vo-urp project gen library ${input}/dist/${gen.library} is not built !" />
 
     <echo>-------------------------------------------------------------------------------</echo>
     <echo> Library used : ${base.library} - ${gen.library.used}</echo>
