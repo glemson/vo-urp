@@ -26,13 +26,14 @@
   <!-- Get jpa-config properties -->
   <property file="${properties}/jpa-config.properties" />
 
-  <fail unless="eclipselink.target-database" message="missing eclipselink.target-database in jpa-config.properties !" />
+  <fail unless="eclipselink.target-database"    message="Must define property 'eclipselink.target-database' in jpa-config.properties !" />
 
-  <fail unless="eclipselink.jdbc.driver" message="missing eclipselink.jdbc.driver in jpa-config.properties !" />
-  <fail unless="eclipselink.jdbc.url" message="missing eclipselink.target-database in jpa-config.properties !" />
+  <fail unless="eclipselink.jdbc.driver"        message="Must define property 'eclipselink.jdbc.driver' in jpa-config.properties !" />
+  <fail unless="eclipselink.jdbc.url"           message="Must define property 'eclipselink.jdbc.url' in jpa-config.properties !" />
 
-  <fail unless="eclipselink.jdbc.user" message="missing eclipselink.jdbc.user in jpa-config.properties !" />
-  <fail unless="eclipselink.jdbc.password" message="missing eclipselink.jdbc.password in jpa-config.properties !" />
+  <!-- eclipselink.jdbc.user only used at runtime (read only), but check if exist -->
+  <fail unless="eclipselink.jdbc.user"          message="Must define property 'eclipselink.jdbc.user' in jpa-config.properties !" />
+  <fail unless="eclipselink.jdbc.password"      message="Must define property 'eclipselink.jdbc.password' in jpa-config.properties !" />
   
   <!-- sets SQL script directory -->
   <condition property="ddl.directory" value="ddl/postgres/">
@@ -48,7 +49,7 @@
     <isset property="ddl.directory"/>
   </condition>
 
-  <fail unless="ddl.directory.set" message="unable to define ddl.directory property for the given vendor : ${eclipselink.target-database} !" />
+  <fail unless="ddl.directory.set" message="unable to define property 'ddl.directory' for the given vendor : ${eclipselink.target-database} !" />
 
   <!-- sets SQL separator for CREATE VIEW scrip -->
   <condition property="create.view.sep" value=";">
@@ -63,7 +64,7 @@
     <isset property="create.view.sep"/>
   </condition>
 
-  <fail unless="create.view.sep.set" message="unable to define create.view.sep property for the given vendor : ${eclipselink.target-database} !" />
+  <fail unless="create.view.sep.set" message="unable to define property 'create.view.sep' for the given vendor : ${eclipselink.target-database} !" />
 
 
   <echo>JDBC URL  : ${eclipselink.jdbc.url}</echo>
