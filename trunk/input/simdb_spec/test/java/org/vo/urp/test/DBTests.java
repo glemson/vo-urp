@@ -21,7 +21,6 @@ import org.ivoa.jpa.JPAFactory;
 import org.ivoa.jpa.JPAHelper;
 
 import org.ivoa.resource.experiment.Simulation;
-import org.ivoa.resource.experiment.Snapshot;
 import org.ivoa.resource.protocol.Simulator;
 
 
@@ -58,7 +57,6 @@ import org.ivoa.resource.protocol.ParameterGroup;
 import org.ivoa.resource.protocol.ParameterGroupMember;
 import org.ivoa.resource.protocol.Protocol;
 import org.ivoa.util.CollectionUtils;
-import org.ivoa.util.timer.AbstractTimer;
 import org.ivoa.util.timer.TimerFactory;
 import org.vo.urp.test.jaxb.XMLTests;
 
@@ -79,7 +77,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
   /** testLOAD_BATCH_WRITE jobs wait */
   private final static int WRITE_WAIT_SECONDS = 120;
   /** number of Snapshot tp create in testHUGESnapshotCollection() */
-  private final static int SNAPSHOT_LEN = 100 * 1000;
+  private final static int SNAPSHOT_LEN = 10 * 1000;
   /** XMLTests */
   private XMLTests xmlTest = new XMLTests();
   /** InspectorTests */
@@ -630,52 +628,47 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
     Quantity time, space;
 
-    /*
-     * To avoid performance problems due to collection size i.e. avoid fetch all collection items (out of memory),
-     * set the rank value manually (collection index position) to keep the collection ordered
-     */
-    final Snapshot snapshot = new Snapshot(simulation, num);
-    
-    simulation.getProtocol().getOutputType();
-
-    snapshot.setPublisherDID(simulation.getPublisherDID() + "_" + num);
-
-    time = new Quantity();
-
-    time.setValue(3d * num.intValue());
-    time.setUnit("Gyr");
-    snapshot.setTime(time);
-
-    space = new Quantity();
-
-    space.setValue(100.d);
-    space.setUnit("kpc");
-
-    snapshot.setSpatialSizePhysical(space);
-
-    OutputDataset col = null;
+    Snapshot snapshot = null;
     StatisticalSummary cha = null;
     Quantity n;
-    //Value v;
 
     for (OutputDataObjectType rep : simulation.getProtocol().getOutputType()) {
       // for all
-      col = new GenericOutputDataset(simulation);
-      col.setObjectType(rep);
-      col.setNumberOfObjects((long)num.intValue() * 113);
+
+      /*
+       * To avoid performance problems due to collection size i.e. avoid fetch all collection items (out of memory),
+       * set the rank value manually (collection index position) to keep the collection ordered
+       */
+      snapshot = new Snapshot(simulation, num);
+
+      snapshot.setPublisherDID(simulation.getPublisherDID() + "_" + num);
+
+      time = new Quantity();
+
+      time.setValue(3d * num.intValue());
+      time.setUnit("Gyr");
+      snapshot.setTime(time);
+
+      space = new Quantity();
+
+      space.setValue(100.d);
+      space.setUnit("kpc");
+
+      snapshot.setSpatialSizePhysical(space);
+
+      // snapshot must define also object type / number of objects:
+      snapshot.setObjectType(rep);
+      snapshot.setNumberOfObjects((long)num.intValue() * 113);
 
       for (Property prop : rep.getProperty()) {
-        cha = new StatisticalSummary(col);
+        cha = new StatisticalSummary(snapshot);
         cha.setStatistic(Statistic.MEAN);
         cha.setAxis(prop);
 
-        //v = new Value();
         n = new Quantity();
         n.setValue(1000 * Math.random());
 
-        //v.setAsQuantity(n);
         cha.setNumericValue(n);
-        
       }
     }
   }
@@ -718,8 +711,8 @@ public final class DBTests extends LogSupport implements ApplicationMain {
    * @param jf
    * @param xmlDocumentPath
    */
-  public void testLOAD_WRITE(final JPAFactory jf, final String partyXMLDocumentPath, final String xmlDocumentPath
-      , boolean writeSimulator) {
+  public void testLOAD_WRITE(final JPAFactory jf, final String partyXMLDocumentPath, final String xmlDocumentPath,
+      final boolean writeSimulator) {
     log.warn("DBTests.testLOAD_WRITE : enter");
 
     EntityManager em = null;
