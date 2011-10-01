@@ -369,10 +369,10 @@ public class BaseServlet extends HttpServlet {
     }
   }
   /**
-   * TODO : Method Description
+   * Redirect to the given URI
    *
-   * @param request 
-   * @param URI
+   * @param response http response object
+   * @param URI uri to redirect to
    *
    * @throws ServletException 
    */
