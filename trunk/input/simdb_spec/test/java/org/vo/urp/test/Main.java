@@ -43,7 +43,8 @@ public final class Main {
         new XMLTests().run(args);
 
         new DBTests().run(args);
-
+      } catch (Exception e) {
+        log.error("Fatal error occured: ", e);
       } finally {
         TimerFactory.getTimer("Test.main").addMilliSeconds(start, System.nanoTime());
 

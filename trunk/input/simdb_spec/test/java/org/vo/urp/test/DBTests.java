@@ -41,9 +41,7 @@ import org.ivoa.resource.ContactRole;
 import org.ivoa.meta.DataType;
 import org.ivoa.resource.Party;
 import org.ivoa.resource.experiment.Experiment;
-import org.ivoa.resource.experiment.GenericOutputDataset;
 import org.ivoa.resource.experiment.ParameterSetting;
-import org.ivoa.resource.experiment.OutputDataset;
 import org.ivoa.resource.experiment.Snapshot;
 import org.ivoa.resource.experiment.Statistic;
 import org.ivoa.resource.experiment.StatisticalSummary;
@@ -66,7 +64,7 @@ import org.vo.urp.test.jaxb.XMLTests;
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public final class DBTests extends LogSupport implements ApplicationMain {
-  //~ Members ----------------------------------------------------------------------------------------------------------
+  //~ Constants --------------------------------------------------------------------------------------------------------
 
   /** testLOAD_BATCH_WRITE iteration */
   private final static int WRITE_ITERATION = 10;
@@ -77,11 +75,8 @@ public final class DBTests extends LogSupport implements ApplicationMain {
   /** testLOAD_BATCH_WRITE jobs wait */
   private final static int WRITE_WAIT_SECONDS = 120;
   /** number of Snapshot tp create in testHUGESnapshotCollection() */
-  private final static int SNAPSHOT_LEN = 10 * 1000;
-  /** XMLTests */
-  private XMLTests xmlTest = new XMLTests();
-  /** InspectorTests */
-  private InspectorTests inspectorTest = new InspectorTests();
+  private final static int SNAPSHOT_LEN = /*100 */ 1 * 1000;
+
   /**
    * test Gadget2 protocol file
    */
@@ -102,6 +97,13 @@ public final class DBTests extends LogSupport implements ApplicationMain {
    * test VolkerSpringel file
    */
   public static final String PARTY_VOLKER_SPRINGEL = XMLTests.TEST_PATH + "VolkerSpringel" + XMLTests.XML_EXT;
+
+  //~ Members ----------------------------------------------------------------------------------------------------------
+  
+  /** XMLTests */
+  private XMLTests xmlTest = new XMLTests();
+  /** InspectorTests */
+  private InspectorTests inspectorTest = new InspectorTests();
 
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
@@ -729,8 +731,8 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
       if (partyXMLDocumentPath != null) {
         log.warn("DBTests.testLOAD_WRITE on party@ " + partyXMLDocumentPath);
-        final MetadataObject party = xmlTest
-            .testUnMashall(partyXMLDocumentPath);
+
+        final MetadataObject party = xmlTest.testUnMashall(partyXMLDocumentPath);
 
         log.error("DBTests.testLOAD_WRITE : partyFromParis after unmarshall : "
             + party.deepToString());
