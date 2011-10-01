@@ -26,6 +26,11 @@ public final class XMLTests extends LogSupport implements ApplicationMain {
    */
   public static final String XML_EXT = ".xml";
 
+  //~ Members ----------------------------------------------------------------------------------------------------------
+
+  /** ModelFactory */
+  private ModelFactory mf = ModelFactory.getInstance();
+
   //~ Constructors -----------------------------------------------------------------------------------------------------
   /**
    * Constructor
@@ -77,7 +82,7 @@ public final class XMLTests extends LogSupport implements ApplicationMain {
    * @param o object to process
    */
   public void testMarshall(final MetadataObject o) {
-    log.info("XMLTests.testMarshall : result = " + ModelFactory.getInstance().marshallObject(o, 4096));
+    log.info("XMLTests.testMarshall : result = " + mf.marshallObject(o, 4096));
   }
 
   /**
@@ -88,7 +93,7 @@ public final class XMLTests extends LogSupport implements ApplicationMain {
    */
   public void saveMarshall(final MetadataObject o, final String filePath) {
     // create an Unmarshaller
-    ModelFactory.getInstance().marshallObject(filePath, o);
+    mf.marshallObject(filePath, o);
   }
 
   /**
@@ -98,7 +103,11 @@ public final class XMLTests extends LogSupport implements ApplicationMain {
    * @return metadataObject complete java model
    */
   public MetadataObject testUnMashall(final String filePath) {
-    return ModelFactory.getInstance().unmarshallToObject(filePath);
+    // validate first:
+    if (mf.validate(filePath)) {
+      return mf.unmarshallToObject(filePath);
+    }
+    throw new IllegalArgumentException("The given xml document is not a valid document against xml schema (xsd) : '" + filePath + "' !");
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
