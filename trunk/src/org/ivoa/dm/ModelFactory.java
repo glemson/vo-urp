@@ -1,5 +1,10 @@
 package org.ivoa.dm;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
 
@@ -24,9 +29,12 @@ import org.ivoa.util.FileUtils;
 import org.ivoa.util.ReflectionUtils;
 import org.ivoa.util.SystemLogUtil;
 import org.ivoa.util.text.StringBuilderWriter;
+import org.ivoa.xml.validator.ErrorMessage;
+import org.ivoa.xml.validator.ValidationResult;
+import org.ivoa.xml.validator.XMLValidator;
 
 /**
- * MetadataElement factory  Manages creating new instances for generated classes
+ * MetadataElement factory Manages creating new instances for generated classes
  *
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
@@ -35,6 +43,10 @@ public final class ModelFactory extends SingletonSupport {
 
   /** JAXB : context path */
   public static final String JAXB_PATH = RuntimeConfiguration.get().getJAXBContextClasspath();
+
+  /** The location of a local file containing the schema.<br> */
+  public static final String SCHEMA_LOCATION = RuntimeConfiguration.get().getRootSchemaLocation();
+
   /**
    * singleton instance (java 5 memory model)
    * no good in webapp context once state must be preserved ?
@@ -44,6 +56,8 @@ public final class ModelFactory extends SingletonSupport {
   //~ Members ----------------------------------------------------------------------------------------------------------
   /** Jaxb factory corresponding to context */
   private JAXBFactory jf = null;
+  /** xml validator */
+  private XMLValidator validator;
 
   //~ Constructors -----------------------------------------------------------------------------------------------------
   /**
@@ -81,6 +95,9 @@ public final class ModelFactory extends SingletonSupport {
     if (jf == null) {
       jf = JAXBFactory.getInstance(JAXB_PATH);
     }
+    if (validator == null) {
+      validator = XMLValidator.getInstance(SCHEMA_LOCATION);
+    }
   }
 
   /**
@@ -113,6 +130,7 @@ public final class ModelFactory extends SingletonSupport {
   protected void clear() {
     // force GC :
     this.jf = null;
+    this.validator = null;
   }
 
   /**
@@ -284,15 +302,6 @@ public final class ModelFactory extends SingletonSupport {
   }
 
   /**
-   * Return the JAXBFactory for the data model
-   *
-   * @return JAXBFactory for the data model
-   */
-  private JAXBFactory getJaxbFactory() {
-    return jf;
-  }
-
-  /**
    * PUBLIC API :<br/>
    * Return JSON serialisation of the given object.<br>
    *
@@ -302,6 +311,77 @@ public final class ModelFactory extends SingletonSupport {
    */
   public String toJSON(final MetadataObject object) {
     return MetadataObject2JSON.toJSONString(object);
+  }
+
+  /**
+   * Validate the given XML document according to the schema
+   *
+   * @param filePath path to the XML document to validate
+   *
+   * @return true if the document is valid
+   */
+  public boolean validate(final String filePath) {
+    if (log.isInfoEnabled()) {
+      log.info("ModelFactory.validate : " + filePath);
+    }
+
+    boolean res = false;
+
+    final File file = FileUtils.getFile(filePath);
+
+    if (file != null) {
+      try {
+        final InputStream in = new BufferedInputStream(new FileInputStream(file));
+
+        final ValidationResult result = validateStream(in);
+
+        res = result.isValid();
+
+        if (!res) {
+          for (final ErrorMessage em : result.getMessages()) {
+            log.error(em.toString());
+          }
+        }
+      } catch (final FileNotFoundException fnfe) {
+        // already checked
+      }
+    }
+
+    if (log.isInfoEnabled()) {
+      log.info("ModelFactory.validate : " + res);
+    }
+
+    return res;
+  }
+
+  /**
+   * Validate the given XML stream according to the schema
+   *
+   * @param in inputstream used to get the XML document to validate
+   *
+   * @return ValidationResult container for validation messages
+   */
+  public ValidationResult validateStream(final InputStream in) {
+    final ValidationResult result = getValidator().validate(in);
+
+    return result;
+  }
+
+  /**
+   * Return the JAXBFactory for the data model
+   *
+   * @return JAXBFactory for the data model
+   */
+  private JAXBFactory getJaxbFactory() {
+    return jf;
+  }
+  /**
+   * Return the XMLValidator for the data model
+   *
+   * @return XMLValidator for the data model
+   */
+  private XMLValidator getValidator() {
+    return validator;
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

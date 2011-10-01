@@ -1,9 +1,6 @@
 package org.ivoa.dm;
 
-import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -15,17 +12,14 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.ivoa.bean.LogSupport;
-import org.ivoa.conf.RuntimeConfiguration;
 import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.MetadataRootEntityObject;
 import org.ivoa.dm.model.reference.ReferenceResolver;
 import org.ivoa.dm.model.visitor.PersistObjectPostProcessor;
 import org.ivoa.dm.model.visitor.PersistObjectPreProcessor;
+import org.ivoa.jaxb.XmlBindException;
 import org.ivoa.jpa.JPAFactory;
-import org.ivoa.util.FileUtils;
-import org.ivoa.xml.validator.ErrorMessage;
 import org.ivoa.xml.validator.ValidationResult;
-import org.ivoa.xml.validator.XMLValidator;
 
 /**
  * Facade Class to manage data model instance (xml documents & database representation)
@@ -33,18 +27,10 @@ import org.ivoa.xml.validator.XMLValidator;
  * @author Laurent Bourges (voparis) / Gerard Lemson (mpe)
  */
 public class DataModelManager extends LogSupport {
-  //~ Constants --------------------------------------------------------------------------------------------------------
-
-  /** The URL where the schema can be found.<br> */
-  public static final String SCHEMA_URL = RuntimeConfiguration.get().getRootSchemaURL();
-  /** The location of a local file containing the schema.<br> */
-  public static final String SCHEMA_LOCATION = RuntimeConfiguration.get().getRootSchemaLocation();
 
   //~ Members ----------------------------------------------------------------------------------------------------------
   /** TODO : Field Description */
   private String jpa_pu;
-  /** TODO : Field Description */
-  private XMLValidator validator;
   /** TODO : Field Description */
   private EntityManager currentEM;
 
@@ -56,14 +42,13 @@ public class DataModelManager extends LogSupport {
    */
   public DataModelManager(final String jpaPU) {
     this.jpa_pu = jpaPU;
-    this.validator = XMLValidator.getInstance(SCHEMA_LOCATION);
   }
 
   //~ Methods ----------------------------------------------------------------------------------------------------------
   /**
-   * TODO : Method Description
+   * Get the JPAFactory for the internal persistence unit
    *
-   * @return value TODO : Value Description
+   * @return JPAFactory instance
    */
   private JPAFactory getJPAFactory() {
     if (log.isInfoEnabled()) {
@@ -80,68 +65,37 @@ public class DataModelManager extends LogSupport {
   }
 
   /**
-   * TODO : Method Description
+   * PUBLIC API :<br/>
+   * Unmarshall an XML Document from the given reader to a MetadataObject instance
    *
-   * @param stream
-   *
-   * @return value TODO : Value Description
+   * @param stream input stream (points to an XML document)
+   * @return unmarshalled MetadataObject
+   * @throws XmlBindException if the xml unmarshall operation failed
    */
   private MetadataObject unmarshall(final InputStream stream) {
     return ModelFactory.getInstance().unmarshallToObject(new InputStreamReader(stream));
   }
 
   /**
-   * TODO : Method Description
+   * Validate the given XML document according to the schema
    *
-   * @param filePath
+   * @param filePath path to the XML document to validate
    *
-   * @return value TODO : Value Description
+   * @return true if the document is valid
    */
   public boolean validate(final String filePath) {
-    if (log.isInfoEnabled()) {
-      log.info("DataModelManager.validate : " + filePath);
-    }
-
-    boolean res = false;
-
-    final File file = FileUtils.getFile(filePath);
-
-    if (file != null) {
-      try {
-        final InputStream in = new BufferedInputStream(new FileInputStream(file));
-
-        final ValidationResult result = validateStream(in);
-
-        res = result.isValid();
-
-        if (!res) {
-          for (final ErrorMessage em : result.getMessages()) {
-            log.error(em.toString());
-          }
-        }
-      } catch (final FileNotFoundException fnfe) {
-        // already checked
-      }
-    }
-
-    if (log.isInfoEnabled()) {
-      log.info("DataModelManager.validate : " + res);
-    }
-
-    return res;
+    return ModelFactory.getInstance().validate(filePath);
   }
 
   /**
-   * TODO : Method Description
+   * Validate the given XML stream according to the schema
    *
-   * @param in
+   * @param in inputstream used to get the XML document to validate
    *
-   * @return value TODO : Value Description
+   * @return ValidationResult container for validation messages
    */
   public ValidationResult validateStream(final InputStream in) {
-    final ValidationResult result = validator.validate(in);
-
-    return result;
+    return ModelFactory.getInstance().validateStream(in);
   }
 
   /**
@@ -277,7 +231,7 @@ public class DataModelManager extends LogSupport {
   }
 
   /**
-   * For sharing the EntityManager between methods, store it on the DataModelManagar.<br/>
+   * For sharing the EntityManager between methods, store it on the DataModelManager.<br/>
    * TODO make sure this is thread safe !!!
    * @return EntityManager
    */
