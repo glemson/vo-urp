@@ -5,6 +5,7 @@ import org.ivoa.dm.ModelFactory;
 import org.ivoa.dm.model.MetadataObject;
 
 import org.ivoa.env.ApplicationMain;
+import org.ivoa.jaxb.XmlBindException;
 
 import org.ivoa.resource.protocol.InputParameter;
 import org.ivoa.resource.protocol.Simulator;
@@ -101,8 +102,10 @@ public final class XMLTests extends LogSupport implements ApplicationMain {
    *
    * @param filePath document to load
    * @return metadataObject complete java model
+   * @throws XmlBindException if the xml unmarshall operation failed
+   * @throws IllegalArgumentException if the xml document is not valid
    */
-  public MetadataObject testUnMashall(final String filePath) {
+  public MetadataObject testUnMashall(final String filePath) throws XmlBindException, IllegalArgumentException {
     // validate first:
     if (mf.validate(filePath)) {
       return mf.unmarshallToObject(filePath);
