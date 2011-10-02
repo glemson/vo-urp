@@ -136,6 +136,7 @@
     <echo> ${vo-urp.project} </echo>
     <echo></echo>
     <echo> Tomcat Home  : ${tomcat.home}</echo>
+    <echo> Tomcat bin   : ${tomcat.bin}</echo>
     <echo></echo>
     <echo>JDBC URL  : ${eclipselink.jdbc.url}</echo>
     <echo>JDBC USER : ${eclipselink.jdbc.user}</echo>
@@ -583,10 +584,10 @@
     <taskdef classname="org.apache.jasper.JspC" name="jasper">
       <classpath id="jspc.classpath">
         <pathelement location="${java.home}/../lib/tools.jar"/>
-        <fileset dir="${tomcat.home}/bin">
+        <fileset dir="${tomcat.bin}/bin">
           <include name="*.jar"/>
         </fileset>
-        <fileset dir="${tomcat.home}/lib">
+        <fileset dir="${tomcat.bin}/lib">
           <include name="*.jar"/>
         </fileset>
       </classpath>
@@ -625,11 +626,11 @@
         <fileset dir="${deploy.to}/${webapp.name}/WEB-INF/lib">
           <include name="*.jar"/>
         </fileset>
-        <pathelement location="${tomcat.home}/lib"/>
-        <fileset dir="${tomcat.home}/lib">
+        <pathelement location="${tomcat.bin}/lib"/>
+        <fileset dir="${tomcat.bin}/lib">
           <include name="*.jar"/>
         </fileset>
-        <fileset dir="${tomcat.home}/bin">
+        <fileset dir="${tomcat.bin}/bin">
           <include name="*.jar"/>
         </fileset>
       </classpath>
