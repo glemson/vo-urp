@@ -440,7 +440,7 @@ Optional
   <!-- the ant weave ant task cuases leaks in the ant jvm so use the java code directly -->
 
   <java classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeave"
-        dir="${build}" fork="true" failonerror="true" inputstring="">
+        dir="${build}" fork="true" failonerror="true">
 
     <arg line="-loglevel WARNING ${dist}/${build.gen.file} ${build.weaving}"/>
 
@@ -540,7 +540,7 @@ Optional
   -->
 
   <java classname="org.ivoa.jalopy.Formatter" dir="${libs}/jalopy/bin" 
-        fork="true" failonerror="true" inputstring="">
+        fork="true" failonerror="true">
     <jvmarg value="-Xms32m"/>
     <jvmarg value="-Xmx64m"/>
 
@@ -568,7 +568,7 @@ Optional
 <target name="formatBaseCode" depends="buildFormatter">
 
   <java classname="org.ivoa.jalopy.Formatter" dir="${sources}"
-        fork="true" failonerror="true" inputstring="">
+        fork="true" failonerror="true">
     <jvmarg value="-Xms32m"/>
     <jvmarg value="-Xmx64m"/>
 
@@ -596,7 +596,7 @@ Optional
 <target name="formatBaseCodeSkipJavaDoc" depends="buildFormatter">
 
   <java classname="org.ivoa.jalopy.Formatter" dir="${sources}"
-        fork="true" failonerror="true" inputstring="">
+        fork="true" failonerror="true">
     <jvmarg value="-Xms32m"/>
     <jvmarg value="-Xmx64m"/>
 
@@ -624,7 +624,7 @@ Optional
 <target name="formatWebAppCode" depends="buildFormatter">
 
   <java classname="org.ivoa.jalopy.Formatter" dir="${root}/webapp/vo-urp-browser/"
-        fork="true" failonerror="true" inputstring="">
+        fork="true" failonerror="true">
     <jvmarg value="-Xms32m"/>
     <jvmarg value="-Xmx64m"/>
 
@@ -673,7 +673,7 @@ Optional
 <target name="jalopyPrefs">
 
   <java classname="Preferences" dir="${libs}/jalopy"
-        fork="true" failonerror="true" inputstring="">
+        fork="true" failonerror="true">
     <jvmarg value="-Xms32m"/>
     <jvmarg value="-Xmx64m"/>
 
@@ -794,7 +794,7 @@ Optional
     </filterset>
   </copy>
 
-  <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true"  inputstring="">
+  <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true">
     <jvmarg value="-Xms384m"/>
     <jvmarg value="-Xmx384m"/>
     <jvmarg value="-XX:+UseParallelGC"/>
@@ -864,7 +864,7 @@ Optional
   </nbprofiledirect>
 
 
-  <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true"  inputstring="">
+  <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true">
 
     <jvmarg value="${profiler.info.jvmargs.agent}"/>
 
@@ -925,7 +925,7 @@ Optional
   </nbjpdastart>
 
 
-  <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true"  inputstring="">
+  <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true">
 
     <jvmarg value="-Xdebug"/>
     <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
