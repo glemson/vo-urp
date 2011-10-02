@@ -173,27 +173,65 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       close(em);
     }
 
-    final Long simId = testWRITE(jf);
-      // test the creation (batch) of a very big snapshot collection :
-      testHUGESnapshotCollection(jf, simId);
+    // TESTS:
+    Long simId = null;
+
+    try {
+      simId = testWRITE(jf);
+    } catch (RuntimeException re) {
+      log.error("DBTests: testWRITE() failed: ", re);
+    }
+
+    // test the creation (batch) of a very big snapshot collection :
+    if (simId != null) {
+      try {
+        testHUGESnapshotCollection(jf, simId);
+      } catch (RuntimeException re) {
+        log.error("DBTests: testHUGESnapshotCollection(simId = " + simId + ") failed: ", re);
+      }
+    }
 
     // Gerard : load XML -> JPA -> database test case :
 
     // Loads & write an xml instance :
+    try {
+      testLOAD_WRITE(jf, PARTY_FROM_PARIS, PROTOCOL_FILE_PDR, true);
+    } catch (RuntimeException re) {
+      log.error("DBTests: testLOAD_WRITE(PARTY_FROM_PARIS, PROTOCOL_FILE_PDR) failed: ", re);
+    }
 
-    //    testLOAD_WRITE(jf, PROTOCOL_FILE_GADGET2);
-    testLOAD_WRITE(jf, PARTY_FROM_PARIS, PROTOCOL_FILE_PDR, true);
-    testLOAD_WRITE(jf, null,PROTOCOL_FILE_HALOMAKER, true);
-    // do not write Gadget to console, as it has weird characters that can nto be dealt with nicely in eclipse console.
-    testLOAD_WRITE(jf, PARTY_VOLKER_SPRINGEL, PROTOCOL_FILE_GADGET2, false);
+    try {
+      testLOAD_WRITE(jf, null,PROTOCOL_FILE_HALOMAKER, true);
+    } catch (RuntimeException re) {
+      log.error("DBTests: testLOAD_WRITE(PROTOCOL_FILE_HALOMAKER) failed: ", re);
+    }
+    
+    try {
+      // do not write Gadget to console, as it has weird characters that can not be dealt with nicely in eclipse console.
+      testLOAD_WRITE(jf, PARTY_VOLKER_SPRINGEL, PROTOCOL_FILE_GADGET2, false);
+    } catch (RuntimeException re) {
+      log.error("DBTests: testLOAD_WRITE(PARTY_VOLKER_SPRINGEL, PROTOCOL_FILE_GADGET2) failed: ", re);
+    }
 
     // Batch writes :
-    testLOAD_BATCH_WRITE_SINGLE_TRANSACTION(jf, PROTOCOL_FILE_HALOMAKER);
+    try {
+      testLOAD_BATCH_WRITE_SINGLE_TRANSACTION(jf, PROTOCOL_FILE_HALOMAKER);
+    } catch (RuntimeException re) {
+      log.error("DBTests: testLOAD_BATCH_WRITE_SINGLE_TRANSACTION(PROTOCOL_FILE_HALOMAKER) failed: ", re);
+    }
 
-    // Batch writes : Laurent : In progress :
-//    testLOAD_THREADS_WRITE(jf, PROTOCOL_FILE_HALOMAKER);
+    // Concurrent Batch writes :
+    try {
+      testLOAD_THREADS_WRITE(jf, PROTOCOL_FILE_HALOMAKER);
+    } catch (RuntimeException re) {
+      log.error("DBTests: testLOAD_THREADS_WRITE(PROTOCOL_FILE_HALOMAKER) failed: ", re);
+    }
 
-    testSQLQuery(jf);
+    try {
+      testSQLQuery(jf);
+    } catch (RuntimeException re) {
+      log.error("DBTests: testSQLQuery() failed: ", re);
+    }
 
     log.warn("DBTests.testJPA : exit");
   }
@@ -711,10 +749,12 @@ public final class DBTests extends LogSupport implements ApplicationMain {
    * TODO : Method Description
    *
    * @param jf
+   * @param partyXMLDocumentPath
    * @param xmlDocumentPath
+   * @param doLogSimulator
    */
   public void testLOAD_WRITE(final JPAFactory jf, final String partyXMLDocumentPath, final String xmlDocumentPath,
-      final boolean writeSimulator) {
+      final boolean doLogSimulator) {
     log.warn("DBTests.testLOAD_WRITE : enter");
 
     EntityManager em = null;
@@ -734,33 +774,40 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
         final MetadataObject party = xmlTest.testUnMashall(partyXMLDocumentPath);
 
-        log.error("DBTests.testLOAD_WRITE : partyFromParis after unmarshall : "
-            + party.deepToString());
+        log.error("DBTests.testLOAD_WRITE : partyFromParis after unmarshall : " + party.deepToString());
 
-        em.persist(party);
-        em.getTransaction().commit();
-        em.getTransaction().begin();
+        // check if party already exists in database:
+        final MetadataObject res = JPAHelper.findItemByPublisherDID(em, Party.class, party.getPublisherDID());
 
+        if (res == null) {
+          em.persist(party);
+          em.getTransaction().commit();
+          em.getTransaction().begin();
+        }
       }
       
       log.warn("DBTests.testLOAD_WRITE on document@ "+xmlDocumentPath);
+
       final MetadataObject simulator = xmlTest.testUnMashall(xmlDocumentPath);
 
-      if(writeSimulator)
+      if(doLogSimulator) {
         log.error("DBTests.testLOAD_WRITE : Simulator after unmarshall : " + simulator.deepToString());
+      }
 
       em.persist(simulator);
 
-      if(writeSimulator)
+      if(doLogSimulator) {
         log.error("DBTests.testLOAD_WRITE : Simulator after persist : " + simulator.deepToString());
+      }
 
       // force transaction to be flushed in database :
       log.warn("DBTests.testLOAD_WRITE : flushing TX");
       em.flush();
       log.warn("DBTests.testLOAD_WRITE : TX flushed.");
 
-      if(writeSimulator)
+      if(doLogSimulator) {
         log.error("DBTests.testLOAD_WRITE : Simulator after flush : " + simulator.deepToString());
+      }
 
       // finally : commits transaction on snap database :
       log.warn("DBTests.testLOAD_WRITE : committing TX");
@@ -775,19 +822,19 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       xmlTest.saveMarshall(simulator, xmlDocumentPath.replace(XMLTests.XML_EXT, "-out" + XMLTests.XML_EXT));
 
       inspectorTest.test(simulator);
-    } catch (XmlBindException je) {
-      log.error("DBTests.testLOAD_WRITE: error parsing XML document : \n" + je.getMessage());
-      throw je;
+
+    } catch (XmlBindException xe) {
+      log.error("DBTests.testLOAD_WRITE: error parsing XML document : \n" + xe.getMessage());
+      throw xe;
     } catch (final RuntimeException re) {
       log.error("DBTests.testLOAD_WRITE : runtime failure : ", re);
 
       // if connection failure => em is null :
-      if (em.getTransaction().isActive()) {
+      if (em != null && em.getTransaction().isActive()) {
         log.warn("DBTests.testLOAD_WRITE : rollbacking TX ...");
         em.getTransaction().rollback();
         log.warn("DBTests.testLOAD_WRITE : TX rollbacked.");
       }
-
       throw re;
     } finally {
       close(em);
@@ -795,7 +842,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       // free resolver context (thread local) :
       ReferenceResolver.freeContext();
     }
-    if (id != null && writeSimulator) {
+    if (id != null) {
       final Protocol loadedObject = (Protocol) testREAD(jf, Protocol.class, id);
       xmlTest.saveMarshall(loadedObject, xmlDocumentPath.replace(XMLTests.XML_EXT, "-out-afterLoad" + XMLTests.XML_EXT));
     }
@@ -901,6 +948,8 @@ public final class DBTests extends LogSupport implements ApplicationMain {
   public void testSQLQuery(final JPAFactory jf) {
     log.warn("DBTests.testSQLQuery : enter");
 
+    final String TEST_SQL_QUERY = "select * from simdb.t_Resource";
+
     EntityManager em = null;
     // executeSelectingCall
 
@@ -912,12 +961,10 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       if (eem != null) {
         Session s = eem.getSession();
 
-        String sql = "select * from t_Resource";
-
-        log.error("DBTests.testSQLQuery : query : " + sql);
+        log.error("DBTests.testSQLQuery : query : " + TEST_SQL_QUERY);
 
         // Returns a List<Record implements Map> :
-        List<?> rows = s.executeSelectingCall(new SQLCall(sql));
+        List<?> rows = s.executeSelectingCall(new SQLCall(TEST_SQL_QUERY));
 
         log.error("DBTests.testSQLQuery : results : " + CollectionUtils.toString(rows));
       }
@@ -962,7 +1009,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
       ReferenceResolver.initContext(em);
 
-      final List<MetadataRootEntityObject> simList = new ArrayList<MetadataRootEntityObject>();
+      final List<MetadataRootEntityObject> simList = new ArrayList<MetadataRootEntityObject>(WRITE_ITERATION);
       for (int i = 0; i < WRITE_ITERATION; i++) {
         simList.add((MetadataRootEntityObject) xmlTest.testUnMashall(xmlDocumentPath));
       }
