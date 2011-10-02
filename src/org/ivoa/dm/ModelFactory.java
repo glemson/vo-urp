@@ -46,6 +46,9 @@ public final class ModelFactory extends SingletonSupport {
 
   /** The location of a local file containing the schema.<br> */
   public static final String SCHEMA_LOCATION = RuntimeConfiguration.get().getRootSchemaLocation();
+  
+  /** The URL where the schema can be found.<br> */
+  public static final String SCHEMA_URL = RuntimeConfiguration.get().getRootSchemaURL();
 
   /**
    * singleton instance (java 5 memory model)

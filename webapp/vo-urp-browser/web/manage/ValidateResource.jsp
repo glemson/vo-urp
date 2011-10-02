@@ -10,8 +10,8 @@
 <c:set var="result" value="${requestScope.validation}" ></c:set>
 
 <p>
-  This page checks whether an uploaded document is valid against the <%=RuntimeConfiguration.get().getProjectName()%> XML Schema under<br/>
-  <a href="<%= org.ivoa.dm.DataModelManager.SCHEMA_URL %>" target="_blank"><%=org.ivoa.dm.DataModelManager.SCHEMA_URL%></a>.
+  This page checks whether an uploaded document is valid against the <%= RuntimeConfiguration.get().getProjectName() %> XML Schema under<br/>
+  <a href="<%= RuntimeConfiguration.get().getRootSchemaURL() %>" target="_blank"><%= RuntimeConfiguration.get().getRootSchemaURL() %></a>.
 </p>
 
 <form method="POST" action="<%= request.getContextPath() %>/Validate.do" enctype="multipart/form-data">
