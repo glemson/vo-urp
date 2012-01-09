@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<p0:aSampStub xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns:p0="http://www.jmmc.fr/smprunDM/0.1">
+   <!--
+            A collection of smprunDM:/data/Metadata.
+          
+       Cardinality = 1..*.
+     -->
+   <metadata>
+      <!--A(n) string-->
+      <!--Cardinality : 1-->
+      <key>abcde</key>
+      <!--A(n) string-->
+      <!--Cardinality : 1-->
+      <value>abcde</value>
+   </metadata>
+   <!--
+            A collection of string.
+          
+       Cardinality = 1..*.
+     -->
+   <subscription>abcde</subscription>
+</p0:aSampStub>
