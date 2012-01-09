@@ -52,7 +52,7 @@ public abstract class MetadataElement extends LogSupport implements Serializable
    *
    * @return MetaModelFactory singleton or null if unavailable
    */
-  protected final MetaModelFactory getMetaModelFactory() {
+  public final MetaModelFactory getMetaModelFactory() {
     return MetaModelFactory.getInstance();
   }
 
