@@ -1,7 +1,6 @@
 package org.ivoa.dm;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -111,7 +110,7 @@ public final class MetaModelFactory extends SingletonSupport {
    *
    * @throws IllegalStateException if a problem occured
    */
-  public static final MetaModelFactory getInstance() {
+  public static MetaModelFactory getInstance() {
     if (instance == null) {
       instance = prepareInstance(new MetaModelFactory());
 
@@ -199,7 +198,7 @@ public final class MetaModelFactory extends SingletonSupport {
    *
    * @return JAXBFactory
    */
-  private final static JAXBFactory getJAXBFactory() {
+  private static JAXBFactory getJAXBFactory() {
     return JAXBFactory.getInstance(JAXB_PACKAGE);
   }
 
@@ -244,9 +243,12 @@ public final class MetaModelFactory extends SingletonSupport {
       ot.init();
 
       getObjectClassTypes().put(o.getName(), ot);
-      for(Attribute atr : o.getAttribute())
-    	  if(atr.getSkosconcept() != null)
-    		  skosConcepts.put(atr, o);
+      
+      for(Attribute attr : o.getAttribute()) {
+    	  if(attr.getSkosconcept() != null) {
+    		  skosConcepts.put(attr, o);
+        }
+      }
     }
 
     if (log.isInfoEnabled()) {
@@ -456,7 +458,7 @@ public final class MetaModelFactory extends SingletonSupport {
       throw new IllegalStateException("Unable to load the model : " + file);
     }
     // check packages :
-    if (model.getPackage().size() == 0) {
+    if (model.getPackage().isEmpty()) {
       throw new IllegalStateException("Unable to get any package from the loaded model : " + file);
     }
 
@@ -680,8 +682,13 @@ public final class MetaModelFactory extends SingletonSupport {
     return tap;
   }
 
-public Map<Attribute, ObjectType> getSkosConcepts() {
-	return skosConcepts;
-}
+  /**
+   * TODO : Method Description
+   *
+   * @return value TODO : Value Description
+   */
+  public Map<Attribute, ObjectType> getSkosConcepts() {
+    return skosConcepts;
+  }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

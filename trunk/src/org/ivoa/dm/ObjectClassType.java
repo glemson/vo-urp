@@ -38,7 +38,7 @@ public final class ObjectClassType extends ClassType {
   private boolean contained = false;
   /** all objectType references ordered by class hierarchy, keyed by name */
   private final Map<String, Reference> references = new LinkedHashMap<String, Reference>();
-  /** all objectType collections ordered by class hierarchy, keyed by name */
+  /** all collections ordered by class hierarchy, keyed by name */
   private final Map<String, Collection> collections = new LinkedHashMap<String, Collection>();
   /** all subclasses of this class, keyed by name */
   private final LinkedHashMap<String, ObjectClassType> subclasses = new LinkedHashMap<String, ObjectClassType>();

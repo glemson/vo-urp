@@ -80,25 +80,28 @@ public final class UnmarshallObjectProcessor extends MetaDataObjectVisitor {
     for (final Reference r : ct.getReferences().values()) {
       propertyName = r.getName();
       // this getProperty implies the lazy reference to be resolved now :
-      value = object.getProperty(propertyName);
+      object.getProperty(propertyName);
     }
-
-    java.util.Collection<? extends MetadataObject> col;
+    
+    java.util.Collection<?> col;
     // navigate through collections :
     for (final Collection c : ct.getCollections().values()) {
       propertyName = c.getName();
       value = object.getProperty(propertyName);
 
       if (value != null) {
-        col = (java.util.Collection<? extends MetadataObject>) value;
+        col = (java.util.Collection<?>) value;
 
-        if (col.size() > 0) {
+        if (!col.isEmpty()) {
+            
           int i = 1;
-          for (final MetadataObject item : col) {
-            if (item != null) {
+          for (final Object val : col) {
+            if (val instanceof MetadataObject) {
+              final MetadataObject item = (MetadataObject) val;
               checkContainer(item, i, object);
               i++;
             }
+            // nothing to on primitive objects.
           }
         }
       }

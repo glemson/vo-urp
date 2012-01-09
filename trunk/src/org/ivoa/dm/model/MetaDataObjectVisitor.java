@@ -1,7 +1,8 @@
 package org.ivoa.dm.model;
 
-import java.util.List;
 import org.ivoa.bean.Visitor;
+import org.ivoa.dm.MetaModelFactory;
+import org.ivoa.dm.ObjectClassType;
 import org.ivoa.util.JavaUtils;
 
 /**
@@ -56,17 +57,26 @@ public abstract class MetaDataObjectVisitor extends Visitor<MetadataObject> {
       this.process(element, argument);
     }
 
-    final java.util.Collection<org.ivoa.metamodel.Collection> collections = element.getClassMetaData().getCollectionList();
+    final ObjectClassType md = element.getClassMetaData();
+    final java.util.Collection<org.ivoa.metamodel.Collection> collections = md.getCollectionList();
 
     if (!JavaUtils.isEmpty(collections)) {
-      List<? extends MetadataObject> objects;
+      final MetaModelFactory mmf = element.getMetaModelFactory();
+      
+      java.util.Collection<?> objects;
       for (org.ivoa.metamodel.Collection collection : collections) {
-        objects = (List<? extends MetadataObject>) element.getProperty(collection.getName());
-
+        objects = (java.util.Collection<?>) element.getProperty(collection.getName());
+        
         if (!JavaUtils.isEmpty(objects)) {
-          for (final MetadataObject object : objects) {
-            // traverse collection elements :
-            object.accept(this, argument);
+          // Check that collection data type corresponds to an object Type (not primitive type):
+          if (mmf.getObjectClassType(collection.getDatatype().getName()) != null) {
+            for (final Object val : objects) {
+              if (val instanceof MetadataObject) {
+                final MetadataObject item = (MetadataObject) val;
+                // traverse collection elements :
+                item.accept(this, argument);
+              }
+            }
           }
         }
       }

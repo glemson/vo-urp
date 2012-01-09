@@ -147,20 +147,29 @@ public final class MetadataObject2JSON {
   @SuppressWarnings("unchecked")
   private static final void collections2JSON(final JSONObject json, final MetadataObject obj)
           throws JSONException {
-    ObjectClassType md = obj.getClassMetaData();
-    Map<String, Object> map = new HashMap<String, Object>();
+    final Map<String, Object> map = new HashMap<String, Object>();
 
     json.put(collections, map);
 
+    final ObjectClassType md = obj.getClassMetaData();
+    
     for (final org.ivoa.metamodel.Collection c : md.getCollectionList()) {
       JSONArray a = new JSONArray();
 
       map.put(c.getName(), a);
 
-      List<MetadataObject> col = (List<MetadataObject>) obj.getProperty(c.getName());
+      java.util.Collection<?> col = (java.util.Collection<?>) obj.getProperty(c.getName());
 
-      for (final MetadataObject child : col) {
-        a.put(toJSON(child));
+      for (final Object val : col) {
+        if (val != null) {
+          if (val instanceof MetadataObject) {
+            final MetadataObject child = (MetadataObject) val;
+            a.put(toJSON(child));
+          } else {
+            // primitive object:
+            a.put(val.toString());
+          }
+        }
       }
     }
   }
