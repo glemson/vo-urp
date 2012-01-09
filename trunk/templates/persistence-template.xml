@@ -26,7 +26,10 @@
         - drop-and-create-tables  – create DDL for all tables; drop all existing tables (see also eclipselink.create-ddl-jdbc-file-name and eclipselink.drop-ddl-jdbc-file-name).
                                     If you are using persistence in a Java SE environment and would like to create the DDL files without creating tables, 
                                     additionally define a Java system property INTERACT_WITH_DB and set its value to false.       
-      -->
+
+      <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+      <property name="eclipselink.ddl-generation.output-mode" value="sql-script"/>
+-->
       <property name="eclipselink.ddl-generation" value="none"/>
       <property name="eclipselink.ddl-generation.output-mode" value="none"/>
 
