@@ -12,7 +12,7 @@
     <b>Data Model serialization : </b>
     <a href="Show.do?entity=${requestScope.entity.name}&id=${item.id}&view=xml" title="view as XML"><img src="static/XML_blue.png"/></a>
     <a href="Show.do?entity=${requestScope.entity.name}&id=${item.id}&view=json" title="view as JSON"><img src="static/JSON_blue.png"/></a>
-    <a href="Show.do?entity=${requestScope.entity.name}&id=${item.id}&view=edit" title="Edit"><img src="static/Edit.png"/></a>
+    <%-- <a href="Show.do?entity=${requestScope.entity.name}&id=${item.id}&view=edit" title="Edit"><img src="static/Edit.png"/></a> --%>
   </p>
 </c:if>
 
@@ -82,9 +82,30 @@
   <tr>
     <th><span class="tooltipTrigger" title="&lt;h4&gt;${entry.name}&lt;/h4&gt;${entry.description}">${entry.name}</span></th>
     <td>
-      <x:getProperty item="${item}" name="${entry.name}" var="col">
-        <x:showCollection col="${col}"/>
-      </x:getProperty>
+      <x:getMeta name="${entry.datatype.name}" var="colMeta">
+        <x:getProperty item="${item}" name="${entry.name}" var="col">
+          <c:if test="${! empty col}">
+            <c:choose>
+              <c:when test="${! empty colMeta}">
+                <%-- collection of objects --%>
+                <x:showCollection col="${col}"/>
+              </c:when>
+              <c:otherwise>
+                <%-- collection of primitive --%>
+                
+                <table border="1" cellspacing="0" cellpadding="4" width="100%">
+              <%-- get data from collection : --%>
+                <c:forEach var="colItem" begin="0" items="${col}">
+              <%-- process value from the collection : --%>
+                  <tr><td>${colItem}</td></tr> 
+                </c:forEach>
+                </table>
+                
+              </c:otherwise>
+            </c:choose>
+          </c:if>
+        </x:getProperty>
+      </x:getMeta>
       </td>
   </tr>
 </c:forEach>

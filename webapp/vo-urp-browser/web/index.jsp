@@ -3,7 +3,7 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="x" %>
 <%@page import="org.ivoa.conf.RuntimeConfiguration" %>
 
-<c:set var="title" scope="request" value="SimDB Browser - Home" ></c:set>
+<% request.setAttribute("title", RuntimeConfiguration.get().getTitle()); %>
 <c:set var="noLink" scope="request" value="1" ></c:set>
 
 <jsp:include page="header.jsp" flush="false"/>

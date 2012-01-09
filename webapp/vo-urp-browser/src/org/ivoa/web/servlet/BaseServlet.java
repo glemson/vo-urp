@@ -345,10 +345,10 @@ public class BaseServlet extends HttpServlet {
   public void showError(final HttpServletRequest request, final HttpServletResponse response, final String msg)
                  throws ServletException {
     // avoid cyclic forward loop :
-    if (request.getAttribute(ERROR_MESSAGE) != null) {
-    request.setAttribute(ERROR_MESSAGE, msg);
-    doForward(request, response, ERROR_PAGE);
-  }
+    if (request.getAttribute(ERROR_MESSAGE) == null) {
+      request.setAttribute(ERROR_MESSAGE, msg);
+      doForward(request, response, ERROR_PAGE);
+    }
   }
 
   /**
