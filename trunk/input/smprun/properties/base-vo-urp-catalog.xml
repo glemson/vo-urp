@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+
+<!-- 
+    <rewriteSystem systemIdStartString="http://volute.googlecode.com/svn/trunk/projects/theory/snapdm/specification/xsd/"
+                   rewritePrefix="../build/xsd/" />
+ -->
+    <rewriteSystem systemIdStartString="http://www.jmmc.fr/smprunDM/0.1/"
+                   rewritePrefix="../build/xsd/" />
+
+  <nextCatalog catalog="../../../schema/vo-urp-catalog.xml"/>
+
+</catalog>
