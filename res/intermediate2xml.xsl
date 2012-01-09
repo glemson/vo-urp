@@ -202,14 +202,37 @@ but that would imply none of the contained elements could have comments.
                                              May have influence through subsetting of properties for example. -->
      <xsl:variable name="datatype" select="key('element',./datatype/@xmiidref)"/>
      <xsl:comment> 
-     A collection of <xsl:value-of select="$datatype/utype"/>.
-     Cardinality = <xsl:value-of select="multiplicity"/>.
+        <xsl:choose>
+          <xsl:when test="name($datatype) = 'primitiveType'">
+            A collection of <xsl:value-of select="$datatype/name"/>.
+          </xsl:when>
+          <xsl:when test="name($datatype) = 'objectType'">
+            A collection of <xsl:value-of select="$datatype/utype"/>.
+          </xsl:when>
+          <xsl:otherwise>
+              <!-- TODO: support enumeration / dataType collection -->
+               [NOT_SUPPORTED_COLLECTION = <xsl:value-of select="name($datatype)"/>].
+          </xsl:otherwise>
+        </xsl:choose>
+       Cardinality = <xsl:value-of select="multiplicity"/>.
      </xsl:comment>
-     <!--  TODO add all concrete subclasses -->
-     <xsl:apply-templates select="$datatype" mode="collectionContent">
-       <xsl:with-param name="collectionName" select="name"/>
-       <xsl:with-param name="rootId" select="datatype/@xmiidref"/>       
-     </xsl:apply-templates>
+     
+    <xsl:choose>
+        <xsl:when test="name($datatype) = 'primitiveType'">
+          <xsl:element name="{name}">    
+            <xsl:apply-templates select="$datatype"/>
+          </xsl:element>
+        </xsl:when>
+        <xsl:when test="name($datatype) = 'objectType'">
+          <!--  TODO add all concrete subclasses -->
+          <xsl:apply-templates select="$datatype" mode="collectionContent">
+            <xsl:with-param name="collectionName" select="name"/>
+            <xsl:with-param name="rootId" select="datatype/@xmiidref"/>       
+          </xsl:apply-templates>
+        </xsl:when>
+        <xsl:otherwise>
+        </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
   
   
@@ -220,6 +243,7 @@ but that would imply none of the contained elements could have comments.
                                              May have influence through subsetting of properties for example. -->
     <xsl:variable name="xmiid" select="@xmiid"/>
     <xsl:variable name="datatype" select="key('element',datatype/@xmiidref)"/>
+    
      <xsl:if test="not(@abstract='true')">
        <xsl:element name="{$collectionName}">
          <xsl:if test="not(@xmiid = $rootId)">

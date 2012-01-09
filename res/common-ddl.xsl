@@ -62,21 +62,21 @@
   </xsl:template>
 
   <!-- for now no special camelcase 2 '_' transformation -->
-  <xsl:template match="objectType" mode="tableName">
+  <xsl:template match="objectType|collection" mode="tableName">
     <xsl:variable name="tablename">
       <xsl:apply-templates select="." mode="tableName_noschema"/>
     </xsl:variable>
     <xsl:value-of select="concat($schemaPrefix,$tablename)"/>
   </xsl:template>
 
-  <xsl:template match="objectType" mode="tableName_noschema">
+  <xsl:template match="objectType|collection" mode="tableName_noschema">
     <xsl:value-of select="concat('t_',name)"/>
   </xsl:template>
 
 
 
   <!-- for now no special camelcase 2 '_' transformation -->
-  <xsl:template match="objectType" mode="viewName">
+  <xsl:template match="objectType|collection" mode="viewName">
     <xsl:variable name="viewname">
       <xsl:apply-templates select="." mode="viewName_noschema"/>
     </xsl:variable>
@@ -84,13 +84,13 @@
   </xsl:template>
 
   <!-- for now no special camelcase 2 '_' transformation -->
-  <xsl:template match="objectType" mode="viewName_noschema">
+  <xsl:template match="objectType|collection" mode="viewName_noschema">
     <xsl:value-of select="name"/>
   </xsl:template>
 
 <!-- name to usein viewname declarations.
 TODO remember why we introduced this ... -->
-  <xsl:template match="objectType" mode="viewName_declaration">
+  <xsl:template match="objectType|collection" mode="viewName_declaration">
     <xsl:variable name="viewname">
       <xsl:apply-templates select="." mode="viewName_noschema"/>
     </xsl:variable>
@@ -121,7 +121,7 @@ NOTE this template must be kept in synch with the <<match="attribute" mode="nest
 template in jpa.xsl 
 !!!!!
 -->
-  <xsl:template match="attribute" mode="columns">
+  <xsl:template match="attribute|collection" mode="columns">
     <xsl:param name="prefix"/>
     <xsl:param name="utypeprefix"/>
     <xsl:param name="nullable" select="'false'" />

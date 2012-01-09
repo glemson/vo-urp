@@ -964,6 +964,8 @@ package <xsl:value-of select="$path"/>;
         <xsl:with-param name="val" select="name"/>
       </xsl:call-template>
     </xsl:variable>
+    <xsl:variable name="datatype" select="key('element', datatype/@xmiidref)"/>
+    
     /**
     * Returns <xsl:value-of select="name"/> Collection
     * @return <xsl:value-of select="name"/> Collection
@@ -987,6 +989,8 @@ package <xsl:value-of select="$path"/>;
       if(this.<xsl:value-of select="name"/> == null) {
         this.<xsl:value-of select="name"/> = new ArrayList&lt;<xsl:value-of select="$type"/>&gt;();
       }
+
+    <xsl:if test="name($datatype) = 'objectType'">
       /* define the rank value (collection ordering position) if undefined */
       if (p<xsl:value-of select="$type"/>.getRank() == -1) {
         /* the call to size() method on lazy collection has the side effect
@@ -997,6 +1001,7 @@ package <xsl:value-of select="$path"/>;
         final int idx = this.<xsl:value-of select="name"/>.size();
         p<xsl:value-of select="$type"/>.setRank(idx);
       }
+    </xsl:if>
 
       this.<xsl:value-of select="name"/>.add(p<xsl:value-of select="$type"/>);
     }

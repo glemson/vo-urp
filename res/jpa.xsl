@@ -275,8 +275,22 @@ Currently only for JPA 2.0 impementation of eclipselink it seems as if nested at
     <xsl:variable name="type" select="key('element', datatype/@xmiidref)"/>
 
     <xsl:choose>
-      <xsl:when test="name($type) = 'primitiveType' or name($type) = 'enumeration' or name($type) = 'dataType'">
-//TODO    [NOT_SUPPORTED_COLLECTION]
+      <xsl:when test="name($type) = 'primitiveType'">
+          
+      <xsl:variable name="tableName">
+        <xsl:apply-templates select=".." mode="tableName"/><xsl:text>_</xsl:text><xsl:value-of select="name"/>
+      </xsl:variable>
+      <xsl:variable name="columns">
+        <xsl:apply-templates select="." mode="columns"/>
+      </xsl:variable> 
+     <xsl:for-each select="exsl:node-set($columns)/column">
+    @javax.persistence.ElementCollection
+    @javax.persistence.CollectionTable( name = "<xsl:value-of select="$tableName"/>", joinColumns = @javax.persistence.JoinColumn(name="containerId") )
+    @javax.persistence.Column( name = "<xsl:value-of select="name"/>" )
+     </xsl:for-each>   
+      </xsl:when>
+      <xsl:when test="name($type) = 'enumeration' or name($type) = 'dataType'">
+/* TODO: [NOT_SUPPORTED_COLLECTION = <xsl:value-of select="name($type)"/>] */
       </xsl:when>
       <xsl:otherwise>
     @javax.persistence.OrderBy( value = "rank" )

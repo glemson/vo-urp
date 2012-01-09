@@ -167,6 +167,9 @@ CREATE TABLE TargetObjectType (
         <!-- because of topologically sorted nodes, can define the foreign keys directly after the table definition -->
         <xsl:apply-templates select="." mode="createFKs"/>
         
+        <!-- collection of simple types (primitive, datatype, enumeration) -->
+        <xsl:apply-templates select="./collection" mode="createTable" />
+        
         &cr;&cr;&cr;
       </xsl:for-each>
     </xsl:result-document>
@@ -208,6 +211,13 @@ CREATE TABLE TargetObjectType (
 
       <xsl:for-each select="exsl:node-set($sortedObjectTypes)/node/objectType">   
         <xsl:sort select="position()" data-type="number" order="descending"/> 
+        
+        <!-- collection of simple types (primitive, datatype, enumeration) -->
+        <xsl:apply-templates select="./collection" mode="dropTable" />
+
+        <xsl:apply-templates select="." mode="dropFKs"/>
+        <xsl:apply-templates select="." mode="dropIndexes"/>
+
         <xsl:apply-templates select="." mode="dropTable"/>
 
       </xsl:for-each>
@@ -257,19 +267,100 @@ CREATE TABLE TargetObjectType (
 <xsl:apply-templates select="reference" />
 
 <xsl:apply-templates select="." mode="rootEntity"/>
+<xsl:text>);</xsl:text>&cr;
+
+  </xsl:template>
+
+  
+  
+  
+  <xsl:template match="collection" mode="createTable">
+    <!-- generate a relation table for simple types (primitive, datatype, enumeration) -->
+    <xsl:variable name="datatype" select="key('element',./datatype/@xmiidref)"/>
+    <xsl:choose>
+        <xsl:when test="name($datatype) = 'primitiveType'">
+
+        &rem;<xsl:text>------------------------------------------------------------------------------</xsl:text>&cr;
+        &rem;<xsl:text> Table representation of the collection </xsl:text><xsl:value-of select="../name"/>.<xsl:value-of select="name"/> of <xsl:value-of select="$datatype/name"/>.&cr;
+        &rem;<xsl:text> XMI-ID = </xsl:text><xsl:value-of select="@xmiid"/>&cr;
+        &rem;<xsl:text>------------------------------------------------------------------------------</xsl:text>&cr;
+        &rem;<xsl:value-of select="replace(description,'\n','  ')"/>&cr;
+        &rem;<xsl:text>------------------------------------------------------------------------------</xsl:text>&cr;
+
+    <xsl:variable name="tableName">
+      <xsl:apply-templates select=".." mode="tableName"/><xsl:text>_</xsl:text><xsl:value-of select="name"/>
+    </xsl:variable>
+    
+<xsl:text>CREATE TABLE </xsl:text><xsl:value-of select="$tableName"/><xsl:text> (</xsl:text>&cr;
+&bl;&bl;<xsl:text>containerId </xsl:text><xsl:value-of select="$IDDatatype"/><xsl:text> NOT NULL </xsl:text>&rem;<xsl:value-of select="../name"/>&cr;
+
+     <xsl:variable name="columns">
+        <xsl:apply-templates select="." mode="columns"/>
+     </xsl:variable> 
+     <xsl:for-each select="exsl:node-set($columns)/column">
+       <xsl:text>, </xsl:text><xsl:call-template name="safecolumnname"><xsl:with-param name="name" select="name"/></xsl:call-template>&bl;<xsl:value-of select="sqltype"/><xsl:if test="nullable = 'false'"> NOT NULL</xsl:if>&cr;
+     </xsl:for-each>   
 
 <xsl:text>);</xsl:text>&cr;
-  </xsl:template>
-  
+
+    <!-- generate a foreign key for each relation -->
+    <xsl:variable name="tableName_ns">
+      <xsl:apply-templates select=".." mode="tableName_noschema"/><xsl:text>_</xsl:text><xsl:value-of select="name"/>
+    </xsl:variable>
+    <xsl:variable name="otherTable">
+      <xsl:apply-templates select=".." mode="tableName"/>
+    </xsl:variable>
+
+CREATE INDEX ix_<xsl:value-of select="$tableName_ns"/>___CONTAINER ON <xsl:value-of select="$tableName"/>(containerId);&cr;&cr;
+
+<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> ADD CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_container&cr; 
+<xsl:text>    FOREIGN KEY (containerId) REFERENCES </xsl:text><xsl:value-of select="$otherTable"/>(<xsl:value-of select="$primaryKeyColumnName"/>);&cr;&cr;
+        </xsl:when>
+        <xsl:when test="name($datatype) = 'objectType'"/>
+        <xsl:otherwise>
+<!-- TODO: support enumeration / dataType collection -->
+&rem; [NOT_SUPPORTED_COLLECTION = <xsl:value-of select="name($datatype)"/>].&cr;
+        </xsl:otherwise>
+    </xsl:choose>
+  </xsl:template>  
 
 
 
   <xsl:template match="objectType" mode="dropTable">
-    <!-- generate a single table for the whole object hierarchy below the matched objectType -->
+    <!-- drop the table for the whole object hierarchy below the matched objectType -->
     <xsl:variable name="tableName">
       <xsl:apply-templates select="." mode="tableName"/>
     </xsl:variable>
 <xsl:text>DROP TABLE </xsl:text><xsl:value-of select="$tableName"/>;&cr;&cr;
+  </xsl:template>
+
+
+
+
+  <xsl:template match="collection" mode="dropTable">
+    <!-- drop the relation table for simple types (primitive, datatype, enumeration) -->
+    <xsl:variable name="datatype" select="key('element',./datatype/@xmiidref)"/>
+    <xsl:choose>
+        <xsl:when test="name($datatype) = 'primitiveType'">
+    <xsl:variable name="tableName">
+      <xsl:apply-templates select=".." mode="tableName"/><xsl:text>_</xsl:text><xsl:value-of select="name"/>
+    </xsl:variable>
+    <xsl:variable name="tableName_ns">
+      <xsl:apply-templates select=".." mode="tableName_noschema"/><xsl:text>_</xsl:text><xsl:value-of select="name"/>
+    </xsl:variable>
+
+<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> DROP CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_container;&cr;&cr;
+
+DROP INDEX ix_<xsl:value-of select="$tableName_ns"/>___CONTAINER;&cr;&cr;
+
+<xsl:text>DROP TABLE </xsl:text><xsl:value-of select="$tableName"/>;&cr;&cr;
+        </xsl:when>
+        <xsl:when test="name($datatype) = 'objectType'"/>
+        <xsl:otherwise>
+<!-- TODO: support enumeration / dataType collection -->
+&rem; [NOT_SUPPORTED_COLLECTION = <xsl:value-of select="name($datatype)"/>].&cr;
+        </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
 
@@ -450,8 +541,13 @@ CREATE INDEX ix_<xsl:value-of select="$tableName_ns"/>_<xsl:value-of select="nam
     <xsl:variable name="tableName_ns">
       <xsl:apply-templates select="." mode="tableName_noschema"/>
     </xsl:variable>
-    <xsl:for-each select="reference">
-DROP INDEX <xsl:value-of select="$tableName"/>.ix_<xsl:value-of select="$tableName_ns"/>_<xsl:value-of select="name"/> (<xsl:apply-templates select="." mode="columnName"/>);&cr;&cr;
+
+    <xsl:if test="container">
+DROP INDEX ix_<xsl:value-of select="$tableName_ns"/>___CONTAINER;&cr;&cr;
+</xsl:if>
+    
+    <xsl:for-each select="reference[not(subsets)]">
+DROP INDEX ix_<xsl:value-of select="$tableName_ns"/>_<xsl:value-of select="name"/>;&cr;&cr;
 </xsl:for-each>
   </xsl:template>  
   
