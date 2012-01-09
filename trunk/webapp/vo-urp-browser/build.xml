@@ -432,12 +432,6 @@
       <replacevalue>./xsd/</replacevalue>
     </replace>
 
-  	<!-- TODO this is wrong, hardcoded simdb/bologna whatever -->
-    <replace file="${build.src}/vo-urp-catalog.xml" encoding="UTF-8">
-      <replacetoken>../input/simdb/xsd/</replacetoken>
-      <replacevalue>./xsd/</replacevalue> 
-    </replace>
-
     <!-- create a tags folder to put tag files because subversion used 'tags' folders for subversion tags -->
     <mkdir dir="${web-content}/WEB-INF/tags"/>
     <copy todir="${web-content}/WEB-INF/tags" preservelastmodified="true" verbose="true">
@@ -482,6 +476,7 @@
         <include name="WEB-INF/tags/**/*.tag"/>
         <include name="index.html"/>
         <include name="*.jsp"/>
+        <include name="errors/*.jsp"/>
         <include name="list/*.jsp"/>
         <include name="page/*.jsp"/>
         <include name="secure/*.jsp"/>

@@ -127,6 +127,7 @@
 
     <servlet-mapping>
         <servlet-name>Log4JServlet</servlet-name>
+        <!-- TODO: admin -->
         <url-pattern>/Log4j.do</url-pattern>
     </servlet-mapping>
 
@@ -268,7 +269,6 @@
   <!-- Custom error pages -->
   <!-- ========================================================== -->
 
-<!--
   <error-page>
     <error-code>500</error-code>
     <location>/errors/error.jsp</location>
@@ -277,7 +277,6 @@
     <error-code>404</error-code>
     <location>/errors/error.jsp</location>
   </error-page>
--->
 
 
 </web-app>
