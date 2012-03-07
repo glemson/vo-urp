@@ -185,10 +185,19 @@ but that would imply none of the contained elements could have comments.
      <xsl:apply-templates select="$datatype" mode="comment"/>
      <xsl:comment>Cardinality : <xsl:value-of select="multiplicity"/></xsl:comment>
      <xsl:if test="skosconcept">
-     <xsl:comment>This attribute gets its values from the SKOS list of concepts in <xsl:value-of select="skosconcept/vocabularyURI"/>.</xsl:comment>
+     <xsl:comment>This attribute must have as value a SKOS concept narrower than <xsl:value-of select="skosconcept/broadestSKOSConcept"/>.
+     For example one obtained from the vocabulary at <xsl:value-of select="skosconcept/vocabularyURI"/>.</xsl:comment>
      </xsl:if>
      <xsl:element name="{$name}">    
+     <xsl:choose>
+     <xsl:when test="skosconcept">
+        <xsl:apply-templates select="$datatype" mode="skosconcept">
+        <xsl:with-param name="vocab" select="skosconcept/vocabularyURI"/>
+        </xsl:apply-templates>
+     </xsl:when>
+     <xsl:otherwise>
       <xsl:apply-templates select="$datatype"/>
+</xsl:otherwise>      </xsl:choose>
     </xsl:element>
   </xsl:template>
   
@@ -323,7 +332,10 @@ but that would imply none of the contained elements could have comments.
         </xsl:choose>
   </xsl:template>
   
-  
+  <xsl:template match="primitiveType" mode="skosconcept">
+    <xsl:param name="vocab"/>
+    <xsl:value-of select="concat($vocab,'/SomeConcept')"></xsl:value-of>
+  </xsl:template>
   
   <xsl:template match="primitiveType" mode="comment">
     <xsl:comment>A(n) <xsl:value-of select="name"/></xsl:comment>
