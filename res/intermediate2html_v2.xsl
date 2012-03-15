@@ -794,8 +794,11 @@ ensure all classes are here, but not those form any profile
         <xsl:value-of select="skosconcept/broadestSKOSConcept"/></a>
         <xsl:if test="skosconcept/vocabularyURI">
         <br/>Vocabulary URI:<br/>  
-        <a><xsl:attribute name="href" select="skosconcept/vocabularyURI"/><xsl:attribute name="target" select="'_blank'"/>
-        <xsl:value-of select="skosconcept/vocabularyURI"/></a>
+        <xsl:for-each select="skosconcept/vocabularyURI">
+        <xsl:if test="position() > 1"><br/></xsl:if>
+        <a><xsl:attribute name="href" select="."/><xsl:attribute name="target" select="'_blank'"/>
+        <xsl:value-of select="."/></a>
+        </xsl:for-each>
         </xsl:if>
         </td>
      </tr>

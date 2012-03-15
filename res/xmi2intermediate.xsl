@@ -575,6 +575,11 @@
 						<xsl:value-of select="$attribute/@vocabularyURI" />
 					</xsl:element>
 				</xsl:if>
+				<xsl:for-each select="$attribute/vocabularyURI">
+					<xsl:element name="vocabularyURI">
+						<xsl:value-of select="." />
+					</xsl:element>
+				</xsl:for-each>
 			</xsl:element>
 		</xsl:if>
 	</xsl:template>
