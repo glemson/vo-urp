@@ -19,6 +19,7 @@
 <property name="jalopyConvention_1.5c3" location="${libs}/jalopy/jalopy-java-laurent_1.5c3.xml" />
 <property name="jalopyConvention_1.5c3_skipJavaDoc" location="${libs}/jalopy/jalopy-java-laurent_1.5c3_skipJavaDoc.xml" />
 
+
 <!-- libraries for base module -->
 <fileset id="jarfiles" dir="${libs}">
   <!-- apache logging + Log4J -->
@@ -93,6 +94,48 @@
 
 
 <!-- targets -->
+
+
+<!-- target cleanJava : clean build files -->
+<target name="xjcGenCode" description="generates the java code from xml schemas">
+
+  <echo>Generating java code for intermediateModel.xsd</echo>
+  <java jar="${libs}/jaxb-xjc.jar" fork="true" failonerror="true">
+    <arg value="-no-header"/>
+    <arg value="-readOnly"/>
+
+    <arg value="-d"/>
+    <arg value="${sources}"/>
+
+    <arg value="-p"/>
+    <arg value="org.ivoa.metamodel"/>
+
+    <arg value="./xsd/intermediateModel.xsd"/>
+  </java>
+
+  <echo>Generating java code for VOTable-1.2.xsd</echo>
+  <java jar="${libs}/jaxb-xjc.jar" fork="true" failonerror="true">
+    <arg value="-no-header"/>
+    <arg value="-readOnly"/>
+
+    <!-- use simple mode as workaround to error: Property "Value" is already defined. (INFO/value) -->
+    <arg value="-extension"/>
+    <arg value="-b"/>
+    <arg value="./xjcConfig_votable.xml"/>
+    
+    <arg value="-d"/>
+    <arg value="${sources}"/>
+
+    <arg value="-p"/>
+    <arg value="org.ivoa.votable"/>
+
+    <arg value="./schema/VOTable-1.2.xsd"/>
+  </java>
+
+</target>
+
+
+
 
 <!-- target cleanJava : clean build files -->
 <target name="cleanJava" depends="cleanDist">
