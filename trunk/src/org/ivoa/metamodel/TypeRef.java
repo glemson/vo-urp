@@ -38,13 +38,13 @@ import javax.xml.bind.annotation.XmlType;
 public class TypeRef {
 
     protected String utype;
-    @XmlAttribute
+    @XmlAttribute(name = "name")
     protected String name;
-    @XmlAttribute
+    @XmlAttribute(name = "xmiidref")
     @XmlIDREF
     @XmlSchemaType(name = "IDREF")
     protected Object xmiidref;
-    @XmlAttribute
+    @XmlAttribute(name = "relation")
     protected String relation;
 
     /**

@@ -52,7 +52,7 @@ public abstract class Relation
     @XmlElement(required = true)
     protected String multiplicity;
     protected String subsets;
-    @XmlAttribute
+    @XmlAttribute(name = "xmiidref")
     @XmlIDREF
     @XmlSchemaType(name = "IDREF")
     protected Object xmiidref;

@@ -36,7 +36,7 @@ import javax.xml.bind.annotation.XmlType;
 public class PackageReference {
 
     protected String description;
-    @XmlAttribute
+    @XmlAttribute(name = "xmiidref")
     @XmlIDREF
     @XmlSchemaType(name = "IDREF")
     protected Object xmiidref;

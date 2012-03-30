@@ -50,7 +50,7 @@ public class ObjectType
     protected List<Attribute> attribute;
     protected List<Collection> collection;
     protected List<Reference> reference;
-    @XmlAttribute
+    @XmlAttribute(name = "entity")
     protected Boolean entity;
 
     /**
