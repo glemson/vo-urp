@@ -186,14 +186,12 @@ but that would imply none of the contained elements could have comments.
      <xsl:comment>Cardinality : <xsl:value-of select="multiplicity"/></xsl:comment>
      <xsl:if test="skosconcept">
      <xsl:comment>This attribute must have as value a SKOS concept narrower than <xsl:value-of select="skosconcept/broadestSKOSConcept"/>.
-     For example one obtained from the vocabulary at <xsl:value-of select="skosconcept/vocabularyURI"/>.</xsl:comment>
+     For example one obtained from the vocabulary(s) at [<xsl:for-each select="skosconcept/vocabularyURI"><xsl:value-of select="."/>&bl;</xsl:for-each>.</xsl:comment>
      </xsl:if>
      <xsl:element name="{$name}">    
      <xsl:choose>
      <xsl:when test="skosconcept">
-        <xsl:apply-templates select="$datatype" mode="skosconcept">
-        <xsl:with-param name="vocab" select="skosconcept/vocabularyURI"/>
-        </xsl:apply-templates>
+        <xsl:value-of select="skosconcept/broadestSKOSConcept"/>
      </xsl:when>
      <xsl:otherwise>
       <xsl:apply-templates select="$datatype"/>
@@ -330,11 +328,6 @@ but that would imply none of the contained elements could have comments.
           <xsl:when test="name = 'anyURI'">http://some.uri.somewhere/</xsl:when>
           <xsl:otherwise>abcdefg</xsl:otherwise>
         </xsl:choose>
-  </xsl:template>
-  
-  <xsl:template match="primitiveType" mode="skosconcept">
-    <xsl:param name="vocab"/>
-    <xsl:value-of select="concat($vocab,'/SomeConcept')"></xsl:value-of>
   </xsl:template>
   
   <xsl:template match="primitiveType" mode="comment">
