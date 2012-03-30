@@ -54,12 +54,12 @@ public abstract class Element {
     protected String name;
     protected String description;
     protected String utype;
-    @XmlAttribute
+    @XmlAttribute(name = "xmiid")
     @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
     @XmlID
     @XmlSchemaType(name = "ID")
     protected String xmiid;
-    @XmlAttribute
+    @XmlAttribute(name = "otherutype")
     protected String otherutype;
 
     /**
