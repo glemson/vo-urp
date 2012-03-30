@@ -96,13 +96,49 @@
 <!-- targets -->
 
 
-<!-- target cleanJava : clean build files -->
+<!-- target xjcVersion: get JAXB xjc information (2.2.2) -->
+<target name="xjcVersion" description="get JAXB xjc information">
+
+  <echo>XJC version:</echo>
+  <java jar="${libs}/jaxb-xjc.jar" fork="true" failonerror="true" />
+
+</target>
+
+
+<!-- target xjcGenCode : generates java code from xml schemas (intermediateModel.xsd, VOTable-1.2.xsd) -->
 <target name="xjcGenCode" description="generates the java code from xml schemas">
 
-  <echo>Generating java code for intermediateModel.xsd</echo>
+  <!-- define the JAXB specification used by the generated code: JRE 6.0 supports only JAXB 2.0 or 2.1 ! -->
+  <property name="jaxbTarget" value="2.1" />
+
+<!-- 
+JAXB compatibility: http://jaxb.java.net/2.2.5/docs/ch03.html#compiling-xml-schema
+7.2. Which JAXB RI is included in which JDK?
+
+This table captures the history of the JAXB RI integration into JDK. This is for information purposes only. 
+In particular, the JAXB RI in JDK is package renamed to avoid any conflict with the stand-alone JAXB RI distribution or with the jaxb2-reflection library. 
+You can use any version of these with any version of JDK without worrying about implementation conflicts.
+
+JDK6 first release - JDK6 u3
+	JAXB RI 2.0.3
+
+JDK6 u4
+	JAXB RI 2.1.3
+
+JDK6 u14
+	JAXB RI 2.1.10
+
+JDK7 first release
+	JAXB RI 2.2.4-1
+-->
+
+  <echo>Generating java code for intermediateModel.xsd (JAXB spec = ${jaxbTarget})</echo>
   <java jar="${libs}/jaxb-xjc.jar" fork="true" failonerror="true">
     <arg value="-no-header"/>
     <arg value="-readOnly"/>
+    
+    <arg value="-target"/>
+    <arg value="${jaxbTarget}"/>
 
     <arg value="-d"/>
     <arg value="${sources}"/>
@@ -113,10 +149,14 @@
     <arg value="./xsd/intermediateModel.xsd"/>
   </java>
 
-  <echo>Generating java code for VOTable-1.2.xsd</echo>
+  <echo>Generating java code for VOTable-1.2.xsd (JAXB spec = ${jaxbTarget})</echo>
   <java jar="${libs}/jaxb-xjc.jar" fork="true" failonerror="true">
+
     <arg value="-no-header"/>
     <arg value="-readOnly"/>
+    
+    <arg value="-target"/>
+    <arg value="${jaxbTarget}"/>
 
     <!-- use simple mode as workaround to error: Property "Value" is already defined. (INFO/value) -->
     <arg value="-extension"/>
