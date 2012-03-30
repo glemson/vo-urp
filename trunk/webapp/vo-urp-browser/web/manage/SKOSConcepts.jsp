@@ -12,13 +12,16 @@
 <table>
 <tr>
 <th>Attribute UTYPE</th><th>Broadest SKOS concept(s)</th>
-<th>Vocabulary</th>
+<th>Vocabulary(s)</th>
 </tr>
 <c:forEach var="sc" items="${skosconcepts}">
 <tr>
 <td><a href="./html/<%= RuntimeConfiguration.get().getProjectName() %>.html#${sc.key.utype}">${sc.key.utype}</a></td>
 <td><a href="${sc.key.skosconcept.broadestSKOSConcept}" target="_blank">${sc.key.skosconcept.broadestSKOSConcept}</a></td>
-<td><a href="${sc.key.skosconcept.vocabularyURI}" target="_blank">${sc.key.skosconcept.vocabularyURI}</a></td>
+<td>
+<c:forEach var="voc" items="${sc.key.skosconcept.vocabularyURI}">
+<a href="${voc}" target="_blank">${voc}</a></c:forEach>
+</td>
 </tr>
 </c:forEach>
 </table>

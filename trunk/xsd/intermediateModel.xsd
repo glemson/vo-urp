@@ -248,7 +248,7 @@
         </xsd:documentation>
       </xsd:annotation>
     </xsd:element>
-    <xsd:element name="vocabularyURI" type="xsd:anyURI" minOccurs="0"/>
+    <xsd:element name="vocabularyURI" type="xsd:anyURI" minOccurs="0" maxOccurs="unbounded"/>
   </xsd:sequence>
 </xsd:complexType>
 
