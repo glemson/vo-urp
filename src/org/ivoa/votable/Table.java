@@ -1,9 +1,9 @@
+
 package org.ivoa.votable;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -18,235 +18,283 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
- * Added in Version 1.2: INFO for diagnostics<p>Java class for Table complex type.</p>
- *  <p>The following schema fragment specifies the expected content contained within this class.<pre>
- * &lt;complexType name="Table">  &lt;complexContent>
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">      &lt;sequence>
- *         &lt;element name="DESCRIPTION" type="{http://www.ivoa.net/xml/VOTable/v1.2/beta}anyTEXT" minOccurs="0"/>
- *         &lt;element name="INFO" type="{http://www.ivoa.net/xml/VOTable/v1.2/beta}Info" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;choice maxOccurs="unbounded" minOccurs="0">
- *           &lt;element name="FIELD" type="{http://www.ivoa.net/xml/VOTable/v1.2/beta}Field"/>
- *           &lt;element name="PARAM" type="{http://www.ivoa.net/xml/VOTable/v1.2/beta}Param"/>
- *           &lt;element name="GROUP" type="{http://www.ivoa.net/xml/VOTable/v1.2/beta}Group"/>        &lt;/choice>
- *         &lt;element name="LINK" type="{http://www.ivoa.net/xml/VOTable/v1.2/beta}Link" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;sequence maxOccurs="unbounded" minOccurs="0">
- *           &lt;element name="DATA" type="{http://www.ivoa.net/xml/VOTable/v1.2/beta}Data"/>
- *           &lt;element name="INFO" type="{http://www.ivoa.net/xml/VOTable/v1.2/beta}Info" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;/sequence>      &lt;/sequence>
+ * 
+ *     Added in Version 1.2: INFO for diagnostics
+ *   
+ * 
+ * <p>Java class for Table complex type.
+ * 
+ * <p>The following schema fragment specifies the expected content contained within this class.
+ * 
+ * <pre>
+ * &lt;complexType name="Table">
+ *   &lt;complexContent>
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *       &lt;sequence>
+ *         &lt;element name="DESCRIPTION" type="{http://www.ivoa.net/xml/VOTable/v1.2}anyTEXT" minOccurs="0"/>
+ *         &lt;element name="INFO" type="{http://www.ivoa.net/xml/VOTable/v1.2}Info" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;choice maxOccurs="unbounded">
+ *           &lt;element name="FIELD" type="{http://www.ivoa.net/xml/VOTable/v1.2}Field"/>
+ *           &lt;element name="PARAM" type="{http://www.ivoa.net/xml/VOTable/v1.2}Param"/>
+ *           &lt;element name="GROUP" type="{http://www.ivoa.net/xml/VOTable/v1.2}Group"/>
+ *         &lt;/choice>
+ *         &lt;element name="LINK" type="{http://www.ivoa.net/xml/VOTable/v1.2}Link" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="DATA" type="{http://www.ivoa.net/xml/VOTable/v1.2}Data" minOccurs="0"/>
+ *         &lt;element name="INFO" type="{http://www.ivoa.net/xml/VOTable/v1.2}Info" maxOccurs="unbounded" minOccurs="0"/>
+ *       &lt;/sequence>
  *       &lt;attribute name="ID" type="{http://www.w3.org/2001/XMLSchema}ID" />
  *       &lt;attribute name="name" type="{http://www.w3.org/2001/XMLSchema}token" />
  *       &lt;attribute name="ref" type="{http://www.w3.org/2001/XMLSchema}IDREF" />
- *       &lt;attribute name="ucd" type="{http://www.ivoa.net/xml/VOTable/v1.2/beta}ucdType" />
+ *       &lt;attribute name="ucd" type="{http://www.ivoa.net/xml/VOTable/v1.2}ucdType" />
  *       &lt;attribute name="utype" type="{http://www.w3.org/2001/XMLSchema}string" />
- *       &lt;attribute name="nrows" type="{http://www.w3.org/2001/XMLSchema}nonNegativeInteger" />    &lt;/restriction>
- *   &lt;/complexContent>&lt;/complexType></pre></p>
+ *       &lt;attribute name="nrows" type="{http://www.w3.org/2001/XMLSchema}nonNegativeInteger" />
+ *     &lt;/restriction>
+ *   &lt;/complexContent>
+ * &lt;/complexType>
+ * </pre>
+ * 
+ * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "Table", propOrder =  {
-  "description", "infosAndDATASAndFIELDS"})
+@XmlType(name = "Table", propOrder = {
+    "description",
+    "infosAndFIELDSAndPARAMS"
+})
 public class Table {
-  //~ Members ----------------------------------------------------------------------------------------------------------
 
-  /**
-   * TODO : Field Description
-   */
-  @XmlElement(name = "DESCRIPTION")
-  protected AnyTEXT                                                                                                                                                                                                                                                                                                                                  description;
-  /**
-   * TODO : Field Description
-   */
-  @XmlElements({@XmlElement(name = "DATA", type = Data.class)
-    , @XmlElement(name = "PARAM", type = Param.class)
-    , @XmlElement(name = "GROUP", type = Group.class)
-    , @XmlElement(name = "LINK", type = Link.class)
-    , @XmlElement(name = "INFO", type = Info.class)
-    , @XmlElement(name = "FIELD", type = Field.class)
-  })
-  protected List<Object> infosAndDATASAndFIELDS;
-  /**
-   * TODO : Field Description
-   */
-  @XmlAttribute(name = "ID")
-  @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-  @XmlID
-  @XmlSchemaType(name = "ID")
-  protected String id;
-  /**
-   * TODO : Field Description
-   */
-  @XmlAttribute
-  @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-  @XmlSchemaType(name = "token")
-  protected String name;
-  /**
-   * TODO : Field Description
-   */
-  @XmlAttribute
-  @XmlIDREF
-  @XmlSchemaType(name = "IDREF")
-  protected Object ref;
-  /**
-   * TODO : Field Description
-   */
-  @XmlAttribute
-  @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
-  protected String ucd;
-  /**
-   * TODO : Field Description
-   */
-  @XmlAttribute
-  protected String utype;
-  /**
-   * TODO : Field Description
-   */
-  @XmlAttribute
-  @XmlSchemaType(name = "nonNegativeInteger")
-  protected BigInteger nrows;
+    @XmlElement(name = "DESCRIPTION")
+    protected AnyTEXT description;
+    @XmlElements({
+        @XmlElement(name = "LINK", type = Link.class),
+        @XmlElement(name = "FIELD", type = Field.class),
+        @XmlElement(name = "INFO", type = Info.class),
+        @XmlElement(name = "GROUP", type = Group.class),
+        @XmlElement(name = "DATA", type = Data.class),
+        @XmlElement(name = "PARAM", type = Param.class)
+    })
+    protected List<Object> infosAndFIELDSAndPARAMS;
+    @XmlAttribute(name = "ID")
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    @XmlID
+    @XmlSchemaType(name = "ID")
+    protected String id;
+    @XmlAttribute(name = "name")
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    @XmlSchemaType(name = "token")
+    protected String name;
+    @XmlAttribute(name = "ref")
+    @XmlIDREF
+    @XmlSchemaType(name = "IDREF")
+    protected Object ref;
+    @XmlAttribute(name = "ucd")
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    protected String ucd;
+    @XmlAttribute(name = "utype")
+    protected String utype;
+    @XmlAttribute(name = "nrows")
+    @XmlSchemaType(name = "nonNegativeInteger")
+    protected BigInteger nrows;
 
-  //~ Methods ----------------------------------------------------------------------------------------------------------
-
-  /**
-   * Gets the value of the description property.
-   *
-   * @return possible object is {@link AnyTEXT }
-   */
-  public AnyTEXT getDESCRIPTION() {
-    return description;
-  }
-
-  /**
-   * Sets the value of the description property.
-   *
-   * @param value allowed object is {@link AnyTEXT }
-   */
-  public void setDESCRIPTION(final AnyTEXT value) {
-    this.description = value;
-  }
-
-  /**
-   * Gets the value of the infosAndDATASAndFIELDS property.<p>This accessor method returns a reference to the
-   * live list, not a snapshot. Therefore any modification you make to the returned list will be present inside the
-   * JAXB object. This is why there is not a <CODE>set</CODE> method for the infosAndDATASAndFIELDS property.</p>
-   *  <p>For example, to add a new item, do as follows:<pre>   getINFOSAndDATASAndFIELDS().add(newItem);</pre></p>
-   *  <p>Objects of the following type(s) are allowed in the list {@link Data }{@link Param }{@link Group }{@link
-   * Link }{@link Info }{@link Field }</p>
-   *
-   * @return value TODO : Value Description
-   */
-  public List<Object> getINFOSAndDATASAndFIELDS() {
-    if (infosAndDATASAndFIELDS == null) {
-      infosAndDATASAndFIELDS = new ArrayList<Object>();
+    /**
+     * Gets the value of the description property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link AnyTEXT }
+     *     
+     */
+    public AnyTEXT getDESCRIPTION() {
+        return description;
     }
 
-    return this.infosAndDATASAndFIELDS;
-  }
+    /**
+     * Sets the value of the description property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link AnyTEXT }
+     *     
+     */
+    public void setDESCRIPTION(AnyTEXT value) {
+        this.description = value;
+    }
 
-  /**
-   * Gets the value of the id property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getID() {
-    return id;
-  }
+    /**
+     * Gets the value of the infosAndFIELDSAndPARAMS property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the infosAndFIELDSAndPARAMS property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getINFOSAndFIELDSAndPARAMS().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Link }
+     * {@link Field }
+     * {@link Info }
+     * {@link Group }
+     * {@link Data }
+     * {@link Param }
+     * 
+     * 
+     */
+    public List<Object> getINFOSAndFIELDSAndPARAMS() {
+        if (infosAndFIELDSAndPARAMS == null) {
+            infosAndFIELDSAndPARAMS = new ArrayList<Object>();
+        }
+        return this.infosAndFIELDSAndPARAMS;
+    }
 
-  /**
-   * Sets the value of the id property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setID(final String value) {
-    this.id = value;
-  }
+    /**
+     * Gets the value of the id property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getID() {
+        return id;
+    }
 
-  /**
-   * Gets the value of the name property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getName() {
-    return name;
-  }
+    /**
+     * Sets the value of the id property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setID(String value) {
+        this.id = value;
+    }
 
-  /**
-   * Sets the value of the name property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setName(final String value) {
-    this.name = value;
-  }
+    /**
+     * Gets the value of the name property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getName() {
+        return name;
+    }
 
-  /**
-   * Gets the value of the ref property.
-   *
-   * @return possible object is {@link Object }
-   */
-  public Object getRef() {
-    return ref;
-  }
+    /**
+     * Sets the value of the name property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setName(String value) {
+        this.name = value;
+    }
 
-  /**
-   * Sets the value of the ref property.
-   *
-   * @param value allowed object is {@link Object }
-   */
-  public void setRef(final Object value) {
-    this.ref = value;
-  }
+    /**
+     * Gets the value of the ref property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Object }
+     *     
+     */
+    public Object getRef() {
+        return ref;
+    }
 
-  /**
-   * Gets the value of the ucd property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getUcd() {
-    return ucd;
-  }
+    /**
+     * Sets the value of the ref property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Object }
+     *     
+     */
+    public void setRef(Object value) {
+        this.ref = value;
+    }
 
-  /**
-   * Sets the value of the ucd property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setUcd(final String value) {
-    this.ucd = value;
-  }
+    /**
+     * Gets the value of the ucd property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getUcd() {
+        return ucd;
+    }
 
-  /**
-   * Gets the value of the utype property.
-   *
-   * @return possible object is {@link String }
-   */
-  public String getUtype() {
-    return utype;
-  }
+    /**
+     * Sets the value of the ucd property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setUcd(String value) {
+        this.ucd = value;
+    }
 
-  /**
-   * Sets the value of the utype property.
-   *
-   * @param value allowed object is {@link String }
-   */
-  public void setUtype(final String value) {
-    this.utype = value;
-  }
+    /**
+     * Gets the value of the utype property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getUtype() {
+        return utype;
+    }
 
-  /**
-   * Gets the value of the nrows property.
-   *
-   * @return possible object is {@link BigInteger }
-   */
-  public BigInteger getNrows() {
-    return nrows;
-  }
+    /**
+     * Sets the value of the utype property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setUtype(String value) {
+        this.utype = value;
+    }
 
-  /**
-   * Sets the value of the nrows property.
-   *
-   * @param value allowed object is {@link BigInteger }
-   */
-  public void setNrows(final BigInteger value) {
-    this.nrows = value;
-  }
+    /**
+     * Gets the value of the nrows property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link BigInteger }
+     *     
+     */
+    public BigInteger getNrows() {
+        return nrows;
+    }
+
+    /**
+     * Sets the value of the nrows property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link BigInteger }
+     *     
+     */
+    public void setNrows(BigInteger value) {
+        this.nrows = value;
+    }
+
 }
-//~ End of file --------------------------------------------------------------------------------------------------------

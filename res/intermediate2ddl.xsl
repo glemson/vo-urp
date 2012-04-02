@@ -498,12 +498,24 @@ This is the root entity table for the referenced class
 
   <xsl:template match="objectType" mode="dropFKs">
     <!-- generate a foreign key for each relation -->
-    <xsl:variable name="tableName">
-      <xsl:apply-templates select="." mode="tableName"/>
+    <xsl:variable name="tableName_ns">
+      <xsl:apply-templates select="." mode="tableName_noschema"/>
     </xsl:variable>
-    <xsl:for-each select="reference">
-DROP FOREIGN KEY fk_<xsl:value-of select="$tableName"/>_<xsl:value-of select="name"/> (<xsl:apply-templates select="." mode="columnName"/>);&cr;&cr;
-</xsl:for-each>
+    <xsl:variable name="tableName">
+	    <xsl:apply-templates select="." mode="tableName"/>
+	</xsl:variable>
+    <xsl:variable name="fkPrefix">
+		<xsl:value-of select="concat('fk_',$tableName_ns)"/>
+    </xsl:variable>
+    <xsl:if test="container">
+<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> DROP CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_container&cr; 
+    </xsl:if>
+    <xsl:if test="extends">
+<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> DROP CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_extends&cr; 
+    </xsl:if>
+    <xsl:for-each select="reference[not(subsets)]">
+ALTER TABLE <xsl:value-of select="$tableName"/> DROP CONSTRAINT <xsl:value-of select="$fkPrefix"/>_<xsl:value-of select="name"/>;&cr;&cr;
+	</xsl:for-each>
   </xsl:template>
 
   
@@ -535,21 +547,28 @@ CREATE INDEX ix_<xsl:value-of select="$tableName_ns"/>_<xsl:value-of select="nam
 
   <xsl:template match="objectType" mode="dropIndexes">
     <!-- generate an index for each foreign key for a reference -->
-    <xsl:variable name="tableName">
-      <xsl:apply-templates select="." mode="tableName"/>
-    </xsl:variable>
     <xsl:variable name="tableName_ns">
       <xsl:apply-templates select="." mode="tableName_noschema"/>
     </xsl:variable>
+    <xsl:variable name="tableName">
+      <xsl:apply-templates select="." mode="tableName"/>
+    </xsl:variable>
+    <xsl:variable name="ixPrefix">
+    <xsl:choose>
+      <xsl:when test="$vendor = 'mssqlserver'"><xsl:value-of select="concat($tableName,'.ix_',$tableName_ns)"/></xsl:when>
+      <xsl:when test="$vendor = 'postgres'"><xsl:value-of select="concat($schemaPrefix,'ix_',$tableName_ns)"/></xsl:when>
+      <xsl:when test="$vendor = 'mysql'"><xsl:value-of select="concat($schemaPrefix,'ix_',$tableName_ns)"/></xsl:when>
+    </xsl:choose>
+	</xsl:variable>		
 
     <xsl:if test="container">
-DROP INDEX ix_<xsl:value-of select="$tableName_ns"/>___CONTAINER;&cr;&cr;
+DROP INDEX <xsl:value-of select="$ixPrefix"/>___CONTAINER;&cr;&cr;
 </xsl:if>
     
     <xsl:for-each select="reference[not(subsets)]">
-DROP INDEX ix_<xsl:value-of select="$tableName_ns"/>_<xsl:value-of select="name"/>;&cr;&cr;
+DROP INDEX <xsl:value-of select="$ixPrefix"/>_<xsl:value-of select="name"/>;&cr;&cr;
 </xsl:for-each>
-  </xsl:template>  
+  </xsl:template>
   
   
   
