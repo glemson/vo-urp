@@ -66,7 +66,7 @@ digraph GVmap {  <!-- name must not be too long. the cmap that is generated uses
   </xsl:if>
   <xsl:if test="//collection">
 <!--    edge [color="blue", arrowhead="open", arrowtail="diamond", headport="n", tailport="s"] --> 
-    edge [color="blue", arrowhead="open", arrowtail="diamond",dir="both"]
+    edge [color="blue", arrowhead="open", arrowtail="diamond",dir="both",fontsize="10"]
     <xsl:apply-templates select="//objectType/collection"/>
   </xsl:if>
   <xsl:if test="//reference">
@@ -210,7 +210,7 @@ digraph GVmap {  <!-- name must not be too long. the cmap that is generated uses
     </xsl:apply-templates>
     </xsl:variable>
 
-    <xsl:value-of select="$fromnode"/> -> <xsl:value-of select="$tonode"/> ;
+    <xsl:value-of select="$fromnode"/> -> <xsl:value-of select="$tonode"/> [headlabel="<xsl:value-of select="name"/>",labelfontsize=10] ;
   </xsl:template>
 
 <!-- 
