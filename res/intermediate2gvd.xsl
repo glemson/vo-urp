@@ -16,6 +16,7 @@ intermediate representation to a GraphViz dot file.
                 extension-element-prefixes="exsl"
                 xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   
+  <xsl:import href="common.xsl"/>
   
   <xsl:output method="text" encoding="UTF-8" indent="no" />
   
@@ -60,12 +61,12 @@ digraph GVmap {  <!-- name must not be too long. the cmap that is generated uses
 <!--   <xsl:apply-templates select="//objectType"/>  -->
   <xsl:if test="//extends">
 <!--    edge [color="red", arrowhead="empty", headport="s", tailport="n"] --> 
-    edge [color="red", arrowtail="empty", arrowhead="none"]
+    edge [color="red", arrowtail="none", arrowhead="empty"]
     <xsl:apply-templates select="//objectType/extends"/>
   </xsl:if>
   <xsl:if test="//collection">
 <!--    edge [color="blue", arrowhead="open", arrowtail="diamond", headport="n", tailport="s"] --> 
-    edge [color="blue", arrowhead="open", arrowtail="diamond"]
+    edge [color="blue", arrowhead="open", arrowtail="diamond",dir="both"]
     <xsl:apply-templates select="//objectType/collection"/>
   </xsl:if>
   <xsl:if test="//reference">
@@ -127,19 +128,19 @@ digraph GVmap {  <!-- name must not be too long. the cmap that is generated uses
   
   
   
-  
-  
-  
-  
-  
-  
   <xsl:template match="objectType">
     <xsl:variable name="color">
       <xsl:value-of select="concat('/set312/',index-of($packages,../@xmiid))"/> 
     </xsl:variable>
-    <xsl:value-of select="name"/> [
+    <xsl:variable name="nodename">
+        <xsl:apply-templates select="." mode="nodename"/>
+    </xsl:variable>
+    <xsl:variable name="label">
+        <xsl:apply-templates select="." mode="nodelabel"/>
+    </xsl:variable>
+	<xsl:value-of select="$nodename"/> [
     URL="#<xsl:value-of select="@xmiid"/>"
-    label = "{<xsl:value-of select="name"/><xsl:if test="attribute">|<xsl:apply-templates select="attribute"/></xsl:if>}"
+    label = "{<xsl:value-of select="$label"/><xsl:if test="attribute">|<xsl:apply-templates select="attribute"/></xsl:if>}"
     fillcolor="<xsl:value-of select="$color"/>"
     ] ;
   </xsl:template>
@@ -187,17 +188,50 @@ digraph GVmap {  <!-- name must not be too long. the cmap that is generated uses
 
 
   <xsl:template match="extends">
-    <xsl:value-of select="@name"/> -> <xsl:value-of select="../name"/> ;
+    <xsl:variable name="fromnode">
+        <xsl:apply-templates select=".." mode="nodename">
+    </xsl:apply-templates>
+    </xsl:variable>
+    <xsl:variable name="tonode">
+        <xsl:apply-templates select="key('element', @xmiidref)" mode="nodename">
+    </xsl:apply-templates>
+    </xsl:variable>
+    <xsl:value-of select="$fromnode"/> -> <xsl:value-of select="$tonode"/> ;
   </xsl:template>
 
 
-  <xsl:template match="collection">
-    <xsl:value-of select="../name"/> -> <xsl:value-of select="datatype/@name"/> ;
+  <xsl:template match="collection|reference">
+    <xsl:variable name="fromnode">
+        <xsl:apply-templates select=".." mode="nodename">
+    </xsl:apply-templates>
+    </xsl:variable>
+    <xsl:variable name="tonode">
+        <xsl:apply-templates select="key('element', datatype/@xmiidref)" mode="nodename">
+    </xsl:apply-templates>
+    </xsl:variable>
+
+    <xsl:value-of select="$fromnode"/> -> <xsl:value-of select="$tonode"/> ;
   </xsl:template>
 
-
+<!-- 
   <xsl:template match="reference">
     <xsl:value-of select="../name"/> -> <xsl:value-of select="datatype/@name"/> ;
+  </xsl:template>
+ -->
+
+  <xsl:template match="objectType" mode="nodename">
+    <xsl:call-template name="package-path">
+    <xsl:with-param name="packageid" select="../@xmiid"/>
+    <xsl:with-param name="delimiter" select="'_'"/>
+    <xsl:with-param name="suffix" select="name"/>
+    </xsl:call-template>
+  </xsl:template>
+  <xsl:template match="objectType" mode="nodelabel">
+    <xsl:call-template name="package-path">
+    <xsl:with-param name="packageid" select="../@xmiid"/>
+    <xsl:with-param name="delimiter" select="'/'"/>
+    <xsl:with-param name="suffix" select="name"/>
+    </xsl:call-template>
   </xsl:template>
 
 </xsl:stylesheet>
