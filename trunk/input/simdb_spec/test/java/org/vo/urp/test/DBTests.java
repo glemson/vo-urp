@@ -41,8 +41,8 @@ import org.ivoa.resource.ContactRole;
 import org.ivoa.meta.DataType;
 import org.ivoa.resource.Party;
 import org.ivoa.resource.experiment.Experiment;
+import org.ivoa.resource.experiment.OutputDataset;
 import org.ivoa.resource.experiment.ParameterSetting;
-import org.ivoa.resource.experiment.Snapshot;
 import org.ivoa.resource.experiment.Statistic;
 import org.ivoa.resource.experiment.StatisticalSummary;
 import org.ivoa.object.ObjectType;
@@ -668,7 +668,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
 
     Quantity time, space;
 
-    Snapshot snapshot = null;
+    OutputDataset snapshot = null;
     StatisticalSummary cha = null;
     Quantity n;
 
@@ -679,10 +679,10 @@ public final class DBTests extends LogSupport implements ApplicationMain {
        * To avoid performance problems due to collection size i.e. avoid fetch all collection items (out of memory),
        * set the rank value manually (collection index position) to keep the collection ordered
        */
-      snapshot = new Snapshot(simulation, num);
+      snapshot = new OutputDataset(simulation, num);
 
       snapshot.setPublisherDID(simulation.getPublisherDID() + "_" + num);
-
+/*
       time = new Quantity();
 
       time.setValue(3d * num.intValue());
@@ -695,7 +695,7 @@ public final class DBTests extends LogSupport implements ApplicationMain {
       space.setUnit("kpc");
 
       snapshot.setSpatialSizePhysical(space);
-
+*/
       // snapshot must define also object type / number of objects:
       snapshot.setObjectType(rep);
       snapshot.setNumberOfObjects((long)num.intValue() * 113);
