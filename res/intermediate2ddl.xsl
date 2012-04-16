@@ -508,10 +508,10 @@ This is the root entity table for the referenced class
 		<xsl:value-of select="concat('fk_',$tableName_ns)"/>
     </xsl:variable>
     <xsl:if test="container">
-<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> DROP CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_container&cr; 
+<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> DROP CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_container;&cr; 
     </xsl:if>
     <xsl:if test="extends">
-<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> DROP CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_extends&cr; 
+<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> DROP CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_extends;&cr; 
     </xsl:if>
     <xsl:for-each select="reference[not(subsets)]">
 ALTER TABLE <xsl:value-of select="$tableName"/> DROP CONSTRAINT <xsl:value-of select="$fkPrefix"/>_<xsl:value-of select="name"/>;&cr;&cr;
