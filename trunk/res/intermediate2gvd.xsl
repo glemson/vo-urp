@@ -210,7 +210,7 @@ digraph GVmap {  <!-- name must not be too long. the cmap that is generated uses
     </xsl:apply-templates>
     </xsl:variable>
 
-    <xsl:value-of select="$fromnode"/> -> <xsl:value-of select="$tonode"/> [headlabel="<xsl:value-of select="name"/>",labelfontsize=10] ;
+    <xsl:value-of select="$fromnode"/> -> <xsl:value-of select="$tonode"/> [headlabel="<xsl:value-of select="multiplicity"/>",label="<xsl:value-of select="name"/>",labelfontsize=10] ;
   </xsl:template>
 
 <!-- 
