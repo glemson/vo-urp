@@ -37,17 +37,21 @@
         <xsl:with-param name="count" select="'0'"/>
       </xsl:apply-templates>
     </xsl:variable>
+    <xsl:variable name="rootelname">
+          <xsl:apply-templates select="." mode="root-element-name"/>
+    </xsl:variable>
+    
   @XmlAccessorType( XmlAccessType.NONE )  
   @XmlType( name = "<xsl:value-of select="name"/>"<xsl:apply-templates select="." mode="propOrder"/>, namespace = "<xsl:value-of select="$namespace"/>")
     <xsl:choose>
       <xsl:when test="number($isContained) = 0 and not(@abstract = 'true')">
-    @XmlRootElement( name = "a<xsl:value-of select="name"/>", namespace = "<xsl:value-of select="$targetnamespace_root"/>")
+    @XmlRootElement( name = "<xsl:value-of select="$rootelname"/>", namespace = "<xsl:value-of select="$targetnamespace_root"/>")
       </xsl:when>
       <xsl:otherwise>
 <!-- always produce a JAXB annotation to be able to marshall fragments -->        
 <!-- GL 2009-05-12: do we really want this? Note that also DataType-s get this root element now.
 Ofcourse if we always use the schemas to validate XML documents this will still be prevented, but ... -->
-    @XmlRootElement( name = "<xsl:value-of select="name"/>", namespace = "<xsl:value-of select="$targetnamespace_root"/>")
+    @XmlRootElement( name = "<xsl:value-of select="$rootelname"/>", namespace = "<xsl:value-of select="$targetnamespace_root"/>")
       </xsl:otherwise>
     </xsl:choose>
   </xsl:template>
