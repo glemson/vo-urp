@@ -73,8 +73,10 @@
     </xsl:choose>
   </xsl:template>
   
-
-  <xsl:template match="objectType" mode="root-element-name">
+<!--  Do we potentially want to generate root elements even for dadaType-s?
+See similar comment in jaxb.xsl:  <xsl:template match="objectType|dataType" mode="JAXBAnnotation">
+ -->
+  <xsl:template match="objectType|dataType" mode="root-element-name">
       <xsl:variable name="firstletterisvowel" select="translate(substring(name,1,1),'AEIOU','11111')"/>
       <xsl:variable name="article">
         <xsl:choose>

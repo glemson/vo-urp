@@ -126,7 +126,7 @@
     
     <xsl:variable name="modelelement" select="/xmi:XMI/IVOA_Profile:modelelement[@base_Element = $xmiid]"/>
     <xsl:if test="/xmi:XMI/IVOA_Profile:modelelement[@base_Element = $xmiid]">
-    <xsl:message>Found other utype</xsl:message>
+<!--     <xsl:message>Found other utype</xsl:message>   -->
       <xsl:attribute name="otherutype" select="/xmi:XMI/IVOA_Profile:modelelement[@base_Element = $xmiid]/@utype"/>
     </xsl:if>
   </xsl:template>

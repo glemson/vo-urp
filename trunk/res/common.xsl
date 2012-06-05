@@ -148,9 +148,12 @@ The length is used to decide on which numerical type to use. It is interpreted a
       </xsl:when>
       <xsl:otherwise>
         <xsl:variable name="val">
+        <!--  
           <xsl:call-template name="upperFirst">
-            <xsl:with-param name="val" select="$type/name"/>
+            <xsl:with-param name="val" "/>
           </xsl:call-template>
+-->
+		<xsl:value-of select="$type/name"/>
         </xsl:variable>
         <xsl:value-of select="$val"/>
       </xsl:otherwise>
