@@ -603,6 +603,11 @@
   </xsd:complexType>
 
   <xsd:simpleType name="Multiplicity">
+    <xsd:annotation>
+      <xsd:documentation>
+       ALso called "Cardinality". 
+      </xsd:documentation>
+    </xsd:annotation>
     <xsd:restriction base="xsd:string">
       <xsd:enumeration value="1" />
       <xsd:enumeration value="0..1" />
@@ -612,6 +617,13 @@
   </xsd:simpleType>
 
   <xsd:complexType name="Constraints">
+    <xsd:annotation>
+      <xsd:documentation>
+        It is useful to be able to attach constraints to data model elements.
+        In general these can be complex and might require a language such as OCL (=Object Constraint Language).
+        Here we pre-define some simple constraints. 
+      </xsd:documentation>
+    </xsd:annotation>
     <xsd:choice minOccurs="0" maxOccurs="unbounded">
       <xsd:element name="minLength" type="xsd:int" />
       <xsd:element name="maxLength" type="xsd:int" />
