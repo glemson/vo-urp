@@ -43,7 +43,7 @@
   </xsd:annotation>
 
 <!-- +++++++++++++++++++ Begin of 'UTYPE section' +++++++++++++++++++ -->
-  <xsd:complexType name="ReferencableElement">
+  <xsd:complexType name="ReferencableElement" abstract="true">
     <xsd:annotation>
       <xsd:documentation>
         The base element of all explicitly referencable data model elements.
