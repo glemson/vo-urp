@@ -91,9 +91,9 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 
 <!-- 
 TODO fix this.
-SHould no longer depend o a utype declaration, but on an explicit abstraction with stereotype='identification'
+SHould no longer depend on a utype declaration, but on an explicit abstraction with stereotype='identification'
  -->
-  <xsl:template name="otherutype">
+  <xsl:template match="identification">
     <xsl:param name="xmiid" />
 <!-- 
     <xsl:variable name="modelelement" select="/xmi:XMI/IVOA_Profile:modelelement[@base_Element = $xmiid]" />
@@ -296,10 +296,23 @@ SHould no longer depend o a utype declaration, but on an explicit abstraction wi
         <xsl:apply-templates select="*[@xmi:type='uml:Generalization']" />
       </xsl:if>
       <!-- define "container" in post-processing of vo-urp.xml -->
-      <!-- <xsl:if test="//ownedMember/ownedAttribute[@xmi:type='uml:Property' and @association and @aggregation='composite' and @type = $xmiid]"> <xsl:variable name="idref" select="//ownedMember/ownedAttribute[@xmi:type='uml:Property' 
-        and @association and @aggregation='composite' and @type = $xmiid]/../@xmi:id" /> <xsl:variable name="relation" select="//ownedMember/ownedAttribute[@xmi:type='uml:Property' and @association and @aggregation='composite' 
-        and @type = $xmiid]/@name" /> <xsl:element name="container"> <xsl:attribute name="name" select="key('classid',$idref)/@name" /> <xsl:attribute name="xmiidref" select="$idref" /> <xsl:attribute name="relation" 
-        select="$relation" /> <xsl:element name="utype"> <xsl:value-of select="concat(@xmi:id,'_CONTAINER')"/> </xsl:element> </xsl:element> </xsl:if> -->
+      <xsl:if test="//ownedMember/ownedAttribute[@xmi:type='uml:Property' and @association and @aggregation='composite' and @type = $xmiid]"> 
+      <xsl:variable name="idref" select="//ownedMember/ownedAttribute[@xmi:type='uml:Property' 
+        and @association and @aggregation='composite' and @type = $xmiid]/@xmi:id" /> 
+      <xsl:element  name="container"> 
+        <xsl:element name="identifier">
+          <xsl:attribute name="id" select="concat(@xmi:id,'_CONTAINER')"/>
+          <xsl:element name="utype">
+            <xsl:value-of select="concat(@xmi:id,'_CONTAINER')"/>
+          </xsl:element>
+          </xsl:element> 
+          <xsl:element name="collectionref">
+            <xsl:call-template name="asElementRef">
+              <xsl:with-param name="xmiidref" select="$idref"/>
+            </xsl:call-template> 
+          </xsl:element>
+        </xsl:element> 
+        </xsl:if> 
       <!-- define "referrers" in post-processing of vo-urp.xml -->
       <!-- <xsl:for-each select="//ownedMember/ownedAttribute[@xmi:type='uml:Property' and @association and (not(@aggregation) or @aggregation='shared') and @type = $xmiid]"> <xsl:variable name="idref" 
         select="../@xmi:id" /> <xsl:variable name="relation" select="@name" /> <xsl:element name="referrer"> <xsl:attribute name="name" select="key('classid',$idref)/@name" /> <xsl:attribute name="xmiidref" select="$idref" 
@@ -356,6 +369,7 @@ SHould no longer depend o a utype declaration, but on an explicit abstraction wi
         <xsl:apply-templates select="*[@xmi:type='uml:Generalization']" />
       </xsl:if>
       <xsl:apply-templates select=".//*[@xmi:type='uml:Property' and not(@association)]" mode="attributes" />
+      <xsl:apply-templates select=".//*[@xmi:type='uml:Property' and @association and (not(@aggregation) or @aggregation='shared')]" mode="references" />
 
     </xsl:element>
     &cr;&cr;
@@ -448,7 +462,9 @@ SHould no longer depend o a utype declaration, but on an explicit abstraction wi
       <xsl:apply-templates select="." mode="properties" />
       <xsl:if test="subsettedProperty">
         <xsl:element name="subsets">
-          <xsl:value-of select="subsettedProperty/@xmi:idref" />
+          <xsl:call-template name="asElementRef">
+            <xsl:with-param name="xmiidref" select="subsettedProperty/@xmi:idref"/>
+          </xsl:call-template>
         </xsl:element>
       </xsl:if>
     </xsl:element>
@@ -462,7 +478,9 @@ SHould no longer depend o a utype declaration, but on an explicit abstraction wi
       <xsl:apply-templates select="." mode="properties" />
       <xsl:if test="subsettedProperty">
         <xsl:element name="subsets">
-          <xsl:value-of select="subsettedProperty/@xmi:idref" />
+          <xsl:call-template name="asElementRef">
+            <xsl:with-param name="xmiidref" select="subsettedProperty/@xmi:idref"/>
+          </xsl:call-template>
         </xsl:element>
       </xsl:if>
     </xsl:element>
@@ -480,10 +498,17 @@ SHould no longer depend o a utype declaration, but on an explicit abstraction wi
     <xsl:call-template name="description">
       <xsl:with-param name="ownedComment" select="ownedComment" />
     </xsl:call-template>
-    <xsl:call-template name="get-class-from-id">
+    <xsl:choose>
+    <xsl:when test="@type">
+      <xsl:call-template name="get-class-from-id">
       <xsl:with-param name="id" select="@type" />
     </xsl:call-template>
-    <xsl:element name="multiplicity">
+    </xsl:when>
+      <xsl:otherwise>
+      <xsl:message>NO type assigned to Property '<xsl:value-of select="../@name"/>::<xsl:value-of select="@name"/>'</xsl:message>
+      </xsl:otherwise>
+    </xsl:choose>
+      <xsl:element name="multiplicity">
       <xsl:call-template name="multiplicity">
         <xsl:with-param name="lower" select="lowerValue/@value" />
         <xsl:with-param name="upper" select="upperValue/@value" />
@@ -560,7 +585,7 @@ SHould no longer depend o a utype declaration, but on an explicit abstraction wi
     <xsl:param name="lower" />
     <xsl:param name="upper" />
     <xsl:choose>
-      <xsl:when test="not($lower) and (not($upper) or $upper = 1)">
+      <xsl:when test="not($lower) and (not($upper) or $upper = 1 or $upper=2)">
         <xsl:value-of select="'0..1'" />
       </xsl:when>
       <xsl:when test="$upper = 1 and $lower = 1">
@@ -683,9 +708,9 @@ SHould no longer depend o a utype declaration, but on an explicit abstraction wi
       </xsl:element>
  -->
     </xsl:element>
-     <xsl:call-template name="otherutype">
+     <xsl:apply-templates select="identification">
       <xsl:with-param name="xmiid" select="@xmi:id" />
-    </xsl:call-template>
+    </xsl:apply-templates>
   </xsl:template>
 
 
@@ -697,7 +722,21 @@ SHould no longer depend o a utype declaration, but on an explicit abstraction wi
     <xsl:variable name="model" select="/xmi:XMI/uml:Model/ownedMember[@xmi:type='uml:Model' and .//ownedMember[@xmi:id = $xmiidref]]" />
     <xsl:variable name="profile" select="/xmi:XMI/uml:Model/ownedMember[@xmi:type='uml:Profile' and .//ownedMember[@xmi:id = $xmiidref]]" />
 
-    <xsl:variable name="utypeprefix">
+    <xsl:variable name="modelutype">
+      <xsl:choose>
+        <xsl:when test="$profile">
+          <xsl:value-of select="/xmi:XMI/IVOA_Profile:modelelement[@base_Element = $profile/@xmi:id]/@utype"/>
+        </xsl:when>
+        <xsl:when test="$model">
+          <xsl:value-of select="/xmi:XMI/IVOA_Profile:modelelement[@base_Element = $model/@xmi:id]/@utype"/>
+        </xsl:when>
+        <xsl:otherwise>
+        <xsl:value-of select="''"/>
+        </xsl:otherwise>
+      </xsl:choose>
+    </xsl:variable>
+
+    <xsl:variable name="modelprefix">
       <xsl:choose>
         <xsl:when test="$profile">
           <xsl:value-of select="concat(/xmi:XMI/IVOA_Profile:modelimport[@base_Element = $profile/@xmi:id]/@prefix,':')"/>
@@ -710,17 +749,13 @@ SHould no longer depend o a utype declaration, but on an explicit abstraction wi
         </xsl:otherwise>
       </xsl:choose>
     </xsl:variable>
-
-    <xsl:if test="$model">
-      <xsl:attribute name="modelId" select="$model/@xmi:id"/>
-    </xsl:if>
-    <xsl:if test="$profile">
-      <xsl:attribute name="modelId" select="$profile/@xmi:id"/>
+    <xsl:if test="$modelutype != ''">
+      <xsl:element name="modelUtypeRef"><xsl:value-of select="$modelutype"/></xsl:element>
     </xsl:if>
     <xsl:choose>
       <xsl:when test="$utype">
       <xsl:element name="utyperef">
-        <xsl:value-of select="concat($utypeprefix,$utype)" />
+        <xsl:value-of select="concat($modelprefix,$utype)" />
       </xsl:element>
       </xsl:when>
       <xsl:otherwise>
@@ -738,32 +773,43 @@ SHould no longer depend o a utype declaration, but on an explicit abstraction wi
       <xsl:when test="$modelimport">
     <xsl:element  name="import">
       <xsl:apply-templates select="." mode="aselement"/>
+      <xsl:element name="name">
+        <xsl:value-of select="@name"/>
+      </xsl:element>
       <xsl:if test="$modelimport/@ivoId">
       <xsl:element name="ivoId"><xsl:value-of select="$modelimport/@ivoId"/>
       </xsl:element>
       </xsl:if>
       <xsl:element name="url"><xsl:value-of select="$modelimport/@url"/>
       </xsl:element>
+      <xsl:if test="$modelimport/@documentationURL">
+      <xsl:element name="documentationURL"><xsl:value-of select="$modelimport/@documentationURL"/>
+      </xsl:element>
+      </xsl:if>
       <xsl:element name="prefix"><xsl:value-of select="$modelimport/@prefix"/>
       </xsl:element>
       <xsl:for-each  select=".//ownedMember[@xmi:type='uml:Class']">
         <xsl:element name="objectType">
           <xsl:apply-templates select="." mode="aselement" />
+          <xsl:element name="name"><xsl:value-of select="@name"/></xsl:element>
         </xsl:element>
       </xsl:for-each>
       <xsl:for-each  select=".//ownedMember[@xmi:type='uml:DataType']">
         <xsl:element name="dataType">
           <xsl:apply-templates select="." mode="aselement" />
+          <xsl:element name="name"><xsl:value-of select="@name"/></xsl:element>
         </xsl:element>
       </xsl:for-each>
       <xsl:for-each  select=".//ownedMember[@xmi:type='uml:Enumeration']">
         <xsl:element name="enumeration">
           <xsl:apply-templates select="." mode="aselement" />
+          <xsl:element name="name"><xsl:value-of select="@name"/></xsl:element>
         </xsl:element>
       </xsl:for-each>
       <xsl:for-each  select=".//ownedMember[@xmi:type='uml:PrimitiveType']">
         <xsl:element name="primitiveType">
           <xsl:apply-templates select="." mode="aselement" />
+          <xsl:element name="name"><xsl:value-of select="@name"/></xsl:element>
         </xsl:element>
       </xsl:for-each>
     </xsl:element>
