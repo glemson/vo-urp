@@ -19,6 +19,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   <xsl:param name="lastModified" />
   <xsl:param name="lastModifiedText" />
 
+  <xsl:param name="utypesHavePrefix" select="'true'"/>
+
   <!-- xml index on xml:id -->
   <!-- problem with match="*" is that MagicDraw creates a <proxy> for Resource (for example) when it uses a stereotype and Resource shows then up twice with the same xmi:id. -->
   <xsl:key name="classid" match="*/uml:Model//*" use="@xmi:id" />
@@ -81,7 +83,6 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       <xsl:element name="lastModified">
         <xsl:value-of select="$lastModifiedText" />
       </xsl:element>
-      <xsl:apply-templates select="./*[@xmi:type='uml:Profile' and @name='IVOA_Profile']" mode="modelimport"/>
       <xsl:apply-templates select="./*[@xmi:type='uml:Model']" mode="modelimport"/>
       
       <xsl:apply-templates select="./*[@xmi:type='uml:Package']" />
@@ -91,7 +92,7 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 
 <!-- 
 TODO fix this.
-SHould no longer depend on a utype declaration, but on an explicit abstraction with stereotype='identification'
+Should no longer depend on a utype declaration, but on an explicit abstraction with stereotype='identification'
  -->
   <xsl:template match="identification">
     <xsl:param name="xmiid" />
@@ -142,34 +143,6 @@ SHould no longer depend on a utype declaration, but on an explicit abstraction w
     </xsl:if>
 
   </xsl:template>
-
-
-
-
-
-  <xsl:template match="*[@xmi:type='uml:Profile']">
-    <xsl:element name="profile">
-    <xsl:apply-templates select="." mode="aselement"/>
-      <xsl:element name="ivoId">
-        <xsl:value-of select="@name" />
-      </xsl:element>
-      <xsl:element name="url">
-        <xsl:value-of select="'TBD'" />
-      </xsl:element>
-      <xsl:element name="prefix">
-        <xsl:value-of select="'ivoa-prof'" />
-      </xsl:element>
-      <xsl:element name="utype">
-        <xsl:value-of select="'TBD'" />
-      </xsl:element>
-      <!-- <xsl:call-template name="description"> <xsl:with-param name="ownedComment" select="./ownedComment" /> </xsl:call-template> -->
-      <xsl:apply-templates select="./*[@xmi:type='uml:Package']" />
-    </xsl:element>
-  </xsl:template>
-
-
-
-
 
 
 
@@ -670,15 +643,12 @@ SHould no longer depend on a utype declaration, but on an explicit abstraction w
     <xsl:variable name="xmiid" select="@xmi:id"/>
     <xsl:variable name="utype" select="/xmi:XMI/IVOA_Profile:modelelement[@base_Element = $xmiid]/@utype" />
     <xsl:variable name="model" select="/xmi:XMI/uml:Model/ownedMember[@xmi:type='uml:Model' and .//ownedMember[@xmi:id = $xmiid]]" />
-    <xsl:variable name="profile" select="/xmi:XMI/uml:Model/ownedMember[@xmi:type='uml:Profile' and .//ownedMember[@xmi:id = $xmiid]]" />
 
-    <xsl:variable name="utypeprefix">
+<!-- only add prefix when utype definitions do not explicitly have a model prefix -->
+     <xsl:variable name="utypeprefix">
       <xsl:choose>
-        <xsl:when test="$profile">
-          <xsl:value-of select="concat(/xmi:XMI/IVOA_Profile:modelimport[@base_Element = $profile/@xmi:id]/@prefix,':')"/>
-        </xsl:when>
-        <xsl:when test="$model">
-          <xsl:value-of select="concat(/xmi:XMI/IVOA_Profile:modelimport[@base_Element = $model/@xmi:id]/@prefix,':')"/>
+        <xsl:when test="$model and not($utypesHavePrefix = 'true')">
+          <xsl:value-of select="concat(/xmi:XMI/IVOA_Profile:modelimport[@base_Element = $model/@xmi:id]/@utype,':')"/>
         </xsl:when>
         <xsl:otherwise>
         <xsl:value-of select="''"/>
@@ -720,13 +690,9 @@ SHould no longer depend on a utype declaration, but on an explicit abstraction w
     <xsl:variable name="utype" select="/xmi:XMI/IVOA_Profile:modelelement[@base_Element = $xmiidref]/@utype" />
     <xsl:attribute name="idref" select="$xmiidref"></xsl:attribute>
     <xsl:variable name="model" select="/xmi:XMI/uml:Model/ownedMember[@xmi:type='uml:Model' and .//ownedMember[@xmi:id = $xmiidref]]" />
-    <xsl:variable name="profile" select="/xmi:XMI/uml:Model/ownedMember[@xmi:type='uml:Profile' and .//ownedMember[@xmi:id = $xmiidref]]" />
 
     <xsl:variable name="modelutype">
       <xsl:choose>
-        <xsl:when test="$profile">
-          <xsl:value-of select="/xmi:XMI/IVOA_Profile:modelelement[@base_Element = $profile/@xmi:id]/@utype"/>
-        </xsl:when>
         <xsl:when test="$model">
           <xsl:value-of select="/xmi:XMI/IVOA_Profile:modelelement[@base_Element = $model/@xmi:id]/@utype"/>
         </xsl:when>
@@ -738,11 +704,8 @@ SHould no longer depend on a utype declaration, but on an explicit abstraction w
 
     <xsl:variable name="modelprefix">
       <xsl:choose>
-        <xsl:when test="$profile">
-          <xsl:value-of select="concat(/xmi:XMI/IVOA_Profile:modelimport[@base_Element = $profile/@xmi:id]/@prefix,':')"/>
-        </xsl:when>
-        <xsl:when test="$model">
-          <xsl:value-of select="concat(/xmi:XMI/IVOA_Profile:modelimport[@base_Element = $model/@xmi:id]/@prefix,':')"/>
+        <xsl:when test="$model and not($utypesHavePrefix = 'true')">
+          <xsl:value-of select="concat(/xmi:XMI/IVOA_Profile:modelimport[@base_Element = $model/@xmi:id]/@utype,':')"/>
         </xsl:when>
         <xsl:otherwise>
         <xsl:value-of select="''"/>
@@ -766,12 +729,14 @@ SHould no longer depend on a utype declaration, but on an explicit abstraction w
       </xsl:choose>
   </xsl:template>
 
-  <xsl:template match="ownedMember[@xmi:type='uml:Model' or @xmi:type='uml:Profile']" mode="modelimport">
+  <xsl:template match="ownedMember[@xmi:type='uml:Model']" mode="modelimport">
     <xsl:variable name="xmiid" select="@xmi:id"/>
     <xsl:variable name="modelimport" select="/xmi:XMI/IVOA_Profile:modelimport[@base_Element = $xmiid]" />
     <xsl:choose>
       <xsl:when test="$modelimport">
     <xsl:element  name="import">
+    <xsl:message>import url = <xsl:value-of select="$modelimport/@url"/></xsl:message>
+    <xsl:message>import doc url = <xsl:value-of select="$modelimport/@documentationURL"/></xsl:message>
       <xsl:apply-templates select="." mode="aselement"/>
       <xsl:element name="name">
         <xsl:value-of select="@name"/>
@@ -780,14 +745,8 @@ SHould no longer depend on a utype declaration, but on an explicit abstraction w
       <xsl:element name="ivoId"><xsl:value-of select="$modelimport/@ivoId"/>
       </xsl:element>
       </xsl:if>
-      <xsl:element name="url"><xsl:value-of select="$modelimport/@url"/>
-      </xsl:element>
-      <xsl:if test="$modelimport/@documentationURL">
-      <xsl:element name="documentationURL"><xsl:value-of select="$modelimport/@documentationURL"/>
-      </xsl:element>
-      </xsl:if>
-      <xsl:element name="prefix"><xsl:value-of select="$modelimport/@prefix"/>
-      </xsl:element>
+      <xsl:element name="url"><xsl:value-of select="$modelimport/@url"/></xsl:element>
+      <xsl:element name="documentationURL"><xsl:value-of select="$modelimport/@documentationURL"/></xsl:element>
       <xsl:for-each  select=".//ownedMember[@xmi:type='uml:Class']">
         <xsl:element name="objectType">
           <xsl:apply-templates select="." mode="aselement" />

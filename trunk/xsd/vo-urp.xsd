@@ -353,28 +353,28 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="objectType" type="ImportedType" minOccurs="0" maxOccurs="unbounded">
+          <xsd:element name="objectType" type="TypeProxy" minOccurs="0" maxOccurs="unbounded">
             <xsd:annotation>
               <xsd:documentation>
                 List of imported types representing external elements that are also used in the current model.
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="dataType" type="ImportedType" minOccurs="0" maxOccurs="unbounded">
+          <xsd:element name="dataType" type="TypeProxy" minOccurs="0" maxOccurs="unbounded">
             <xsd:annotation>
               <xsd:documentation>
                 List of imported types representing external elements that are also used in the current model.
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="enumeration" type="ImportedType" minOccurs="0" maxOccurs="unbounded">
+          <xsd:element name="enumeration" type="TypeProxy" minOccurs="0" maxOccurs="unbounded">
             <xsd:annotation>
               <xsd:documentation>
                 List of imported types representing external elements that are also used in the current model.
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="primitiveType" type="ImportedType" minOccurs="0" maxOccurs="unbounded">
+          <xsd:element name="primitiveType" type="TypeProxy" minOccurs="0" maxOccurs="unbounded">
             <xsd:annotation>
               <xsd:documentation>
                 List of imported types representing external elements that are also used in the current model.
@@ -386,7 +386,7 @@
     </xsd:complexContent>
   </xsd:complexType>
 
-  <xsd:complexType name="ImportedType">
+  <xsd:complexType name="TypeProxy">
     <xsd:annotation>
       <xsd:documentation>
         Represents an imported type.
