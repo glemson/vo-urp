@@ -28,6 +28,8 @@
   	<xsl:output method="xml" version="1.0" encoding="UTF-8"
 		indent="yes" />
 		
+    <xsl:param name="utypesHavePrefix" select="'true'" />
+		  
   <xsl:template match="/">
   	<xsl:apply-templates select="vo-urp:model"/>
   </xsl:template>
@@ -98,7 +100,7 @@
 
   <xsl:template match="package" mode="utype">
     <xsl:choose>
-      <xsl:when  test="../name() = 'vo-urp:model'">
+      <xsl:when  test="../name() = 'vo-urp:model' and $utypesHavePrefix = 'true'">
         <xsl:apply-templates select=".." mode="utype"/>&modelsep;<xsl:value-of select="concat(name,'/')"/>
       </xsl:when>
       <xsl:when  test="../name() = 'package'">
@@ -113,7 +115,17 @@
   </xsl:template>
 
   <xsl:template match="objectType|dataType|enumeration|primitiveType" mode="utype">
+    <xsl:choose>
+      <xsl:when  test="../name() = 'vo-urp:model'">
+        <xsl:apply-templates select=".." mode="utype"/>&modelsep;<xsl:value-of select="name"/>
+      </xsl:when>
+      <xsl:when  test="../name() = 'package'">
+        <xsl:apply-templates select=".." mode="utype"/><xsl:value-of select="name"/>
+      </xsl:when>
+    <xsl:otherwise>
     <xsl:apply-templates select=".." mode="utype"/><xsl:value-of select="name"/>
+    </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="reference|collection" mode="utype">
@@ -124,22 +136,17 @@
     <xsl:apply-templates select=".." mode="utype"/>&casep;<xsl:value-of select="value"/>
   </xsl:template>
   
-    <xsl:template match="extends" mode="utype">
+
+  <xsl:template match="extends" mode="utype">
     <xsl:apply-templates select=".." mode="utype"/>&casep;<xsl:value-of select="'EXTENDS'"/>
   </xsl:template>
 
-  <!-- this template assumes one can always select=".."
-  This breaks however for a node-set. Need an alternative solution there. -->
+  <xsl:template match="container" mode="utype">
+    <xsl:apply-templates select=".." mode="utype"/>&casep;<xsl:value-of select="'CONTAINER'"/>
+  </xsl:template>
+
   <xsl:template match="attribute" mode="utype">
-    <xsl:param name="prefix"/>
-    <xsl:choose> <!-- if we want to start assigning separate utype-s for "attributes of attributes" we may need to use the prefix, otherwise keep the "false" -->
-      <xsl:when test="../name() = 'dataType' and $prefix and false">
-        <xsl:value-of select="$prefix"/>&aasep;<xsl:value-of select="name"/>
-      </xsl:when>
-      <xsl:otherwise>
     <xsl:apply-templates select=".." mode="utype"/>&casep;<xsl:value-of select="name"/>
-      </xsl:otherwise>
-    </xsl:choose>
   </xsl:template>
   
 </xsl:stylesheet>
