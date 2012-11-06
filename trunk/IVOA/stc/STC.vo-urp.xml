@@ -7,15 +7,14 @@
   <description>This is the data model for describing Arnold Rots' STC world.</description>
   <title>STC Data Model ala VO-URP</title>
   <version>0.x</version>
-  <lastModified>2012-11-02 15:15:20</lastModified>
+  <lastModified>2012-11-06 14:22:51</lastModified>
   <import>
     <identifier id="_12_1_1dfa04c4_1351852150678_49289_216">
-      <utype>ivoa_prof</utype>
+      <utype>ivoa_1.0</utype>
     </identifier>
     <name>IVOA_Types</name>
     <url>http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.vo-urp.xml</url>
     <documentationURL>http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html</documentationURL>
-    <prefix/>
     <dataType>
       <identifier id="_12_1_8e0028f_1242146981265_564771_339">
         <utype>ivoa_1.0:stdtypes/Identity</utype>
@@ -130,7 +129,7 @@
           TODO : Missing description : please, update your UML model asap.
         </description>
           <datatype idref="_10_0_42c01ac_1131110104125_206884_2089">
-            <modelUtypeRef>ivoa_prof</modelUtypeRef>
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
             <utyperef>ivoa_1.0:stdtypes/anyURI</utyperef>
           </datatype>
           <multiplicity>1</multiplicity>
@@ -144,7 +143,7 @@
           TODO : Missing description : please, update your UML model asap.
         </description>
           <datatype idref="_10_0_42c01ac_1131110178359_108283_2197">
-            <modelUtypeRef>ivoa_prof</modelUtypeRef>
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
             <utyperef>ivoa_1.0:stdtypes/nonnegativeinteger</utyperef>
           </datatype>
           <multiplicity>0..1</multiplicity>
@@ -160,7 +159,7 @@ NB Really representys a reference to (an HDU in) a FITS file
 currently modelled as a Class, as this represents a FITS file, though possibly only  HDU in a FTS file.
 SHould add that structure explicitly in here and use VO-URP's referencing mechanism</description>
           <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-            <modelUtypeRef>ivoa_prof</modelUtypeRef>
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
             <utyperef>ivoa_1.0:stdtypes/string</utyperef>
           </datatype>
           <multiplicity>0..1</multiplicity>
@@ -184,7 +183,7 @@ SHould add that structure explicitly in here and use VO-URP's referencing mechan
           TODO : Missing description : please, update your UML model asap.
         </description>
           <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-            <modelUtypeRef>ivoa_prof</modelUtypeRef>
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
             <utyperef>ivoa_1.0:stdtypes/string</utyperef>
           </datatype>
           <multiplicity>0..1</multiplicity>
@@ -196,7 +195,7 @@ SHould add that structure explicitly in here and use VO-URP's referencing mechan
           <name>Value</name>
           <description>The column name for the coordinate value; comma-separated if multi-dimensional</description>
           <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-            <modelUtypeRef>ivoa_prof</modelUtypeRef>
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
             <utyperef>ivoa_1.0:stdtypes/string</utyperef>
           </datatype>
           <multiplicity>0..1</multiplicity>
@@ -208,7 +207,7 @@ SHould add that structure explicitly in here and use VO-URP's referencing mechan
           <name>Error</name>
           <description>The column name for the coordinate error; comma-separated if multi-dimensional</description>
           <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-            <modelUtypeRef>ivoa_prof</modelUtypeRef>
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
             <utyperef>ivoa_1.0:stdtypes/string</utyperef>
           </datatype>
           <multiplicity>0..1</multiplicity>
@@ -222,7 +221,7 @@ SHould add that structure explicitly in here and use VO-URP's referencing mechan
 
 TBD SHOULD have multiplicity 1</description>
           <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-            <modelUtypeRef>ivoa_prof</modelUtypeRef>
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
             <utyperef>ivoa_1.0:stdtypes/string</utyperef>
           </datatype>
           <multiplicity>0..1</multiplicity>
@@ -236,7 +235,7 @@ TBD SHOULD have multiplicity 1</description>
 
 TBD SHOULD have multiplicity 1</description>
           <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-            <modelUtypeRef>ivoa_prof</modelUtypeRef>
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
             <utyperef>ivoa_1.0:stdtypes/string</utyperef>
           </datatype>
           <multiplicity>0..1</multiplicity>
@@ -250,7 +249,7 @@ TBD SHOULD have multiplicity 1</description>
 
 TBD SHOULD have multiplicity 1</description>
           <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-            <modelUtypeRef>ivoa_prof</modelUtypeRef>
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
             <utyperef>ivoa_1.0:stdtypes/string</utyperef>
           </datatype>
           <multiplicity>0..1</multiplicity>
@@ -300,7 +299,7 @@ The attributes ID_type and IDREF_type allow the author to list attributes of typ
           TODO : Missing description : please, update your UML model asap.
         </description>
           <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-            <modelUtypeRef>ivoa_prof</modelUtypeRef>
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
             <utyperef>ivoa_1.0:stdtypes/string</utyperef>
           </datatype>
           <multiplicity>0..1</multiplicity>
@@ -314,7 +313,7 @@ The attributes ID_type and IDREF_type allow the author to list attributes of typ
           TODO : Missing description : please, update your UML model asap.
         </description>
           <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-            <modelUtypeRef>ivoa_prof</modelUtypeRef>
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
             <utyperef>ivoa_1.0:stdtypes/string</utyperef>
           </datatype>
           <multiplicity>0..1</multiplicity>
@@ -328,7 +327,7 @@ The attributes ID_type and IDREF_type allow the author to list attributes of typ
           TODO : Missing description : please, update your UML model asap.
         </description>
           <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-            <modelUtypeRef>ivoa_prof</modelUtypeRef>
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
             <utyperef>ivoa_1.0:stdtypes/string</utyperef>
           </datatype>
           <multiplicity>0..1</multiplicity>
@@ -340,7 +339,7 @@ The attributes ID_type and IDREF_type allow the author to list attributes of typ
           <name>href</name>
           <description>Mapping of the xlink:href attribute. note, xlkink:type is not mapped as it is a constant, 'simple'.</description>
           <datatype idref="_10_0_42c01ac_1131110104125_206884_2089">
-            <modelUtypeRef>ivoa_prof</modelUtypeRef>
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
             <utyperef>ivoa_1.0:stdtypes/anyURI</utyperef>
           </datatype>
           <multiplicity>0..1</multiplicity>
@@ -354,7 +353,7 @@ The attributes ID_type and IDREF_type allow the author to list attributes of typ
           TODO : Missing description : please, update your UML model asap.
         </description>
           <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-            <modelUtypeRef>ivoa_prof</modelUtypeRef>
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
             <utyperef>ivoa_1.0:stdtypes/string</utyperef>
           </datatype>
           <multiplicity>0..1</multiplicity>
@@ -368,7 +367,7 @@ The attributes ID_type and IDREF_type allow the author to list attributes of typ
           TODO : Missing description : please, update your UML model asap.
         </description>
           <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-            <modelUtypeRef>ivoa_prof</modelUtypeRef>
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
             <utyperef>ivoa_1.0:stdtypes/string</utyperef>
           </datatype>
           <multiplicity>0..1</multiplicity>
@@ -391,7 +390,7 @@ From STC schema it seems as if every type of value</description>
           <name>customValue</name>
           <description>Using string for anyType</description>
           <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-            <modelUtypeRef>ivoa_prof</modelUtypeRef>
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
             <utyperef>ivoa_1.0:stdtypes/string</utyperef>
           </datatype>
           <multiplicity>1</multiplicity>
@@ -1119,7 +1118,7 @@ NB can also be used as type for attributes defined from a ref to root elements o
             <description>Mapping of the extension of this type of the xsd:double.
 We do not inherit from primitives, instead add a value attribute of the corresponding type.</description>
             <datatype idref="_10_0_42c01ac_1131110143687_425384_2143">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/real</utyperef>
             </datatype>
             <multiplicity>1</multiplicity>
@@ -1198,7 +1197,7 @@ We do not inherit from primitives, instead add a value attribute of the correspo
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -1280,7 +1279,7 @@ We do not inherit from primitives, instead add a value attribute of the correspo
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -1375,7 +1374,7 @@ We do not inherit from primitives, instead add a value attribute of the correspo
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -1483,7 +1482,7 @@ We do not inherit from primitives, instead add a value attribute of the correspo
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -1656,7 +1655,7 @@ We do not inherit from primitives, instead add a value attribute of the correspo
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -1712,7 +1711,7 @@ We do not inherit from primitives, instead add a value attribute of the correspo
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -1768,7 +1767,7 @@ We do not inherit from primitives, instead add a value attribute of the correspo
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -1989,7 +1988,7 @@ TBD I suggest this type is to be used as a pattern rather than a reusable type.<
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131110198312_459596_2215">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/decimal</utyperef>
             </datatype>
             <multiplicity>1</multiplicity>
@@ -2034,7 +2033,7 @@ TBD I suggest this type is to be used as a pattern rather than a reusable type.<
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109993578_511245_1999">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/datetime</utyperef>
             </datatype>
             <multiplicity>1</multiplicity>
@@ -2069,7 +2068,7 @@ TBD I suggest this type is to be used as a pattern rather than a reusable type.<
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131110198312_459596_2215">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/decimal</utyperef>
             </datatype>
             <multiplicity>1</multiplicity>
@@ -2319,7 +2318,7 @@ TBD I suggest this type is to be used as a pattern rather than a reusable type.<
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131110143687_425384_2143">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/real</utyperef>
             </datatype>
             <multiplicity>1</multiplicity>
@@ -2544,7 +2543,7 @@ Single CError2, CResolution2, CSize2, CPixSize2 elements indicate definite value
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -2644,7 +2643,7 @@ Single CError2, CResolution2, CSize2, CPixSize2 elements indicate definite value
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -2674,7 +2673,7 @@ Single CError2, CResolution2, CSize2, CPixSize2 elements indicate definite value
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -2688,7 +2687,7 @@ Single CError2, CResolution2, CSize2, CPixSize2 elements indicate definite value
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -2731,7 +2730,7 @@ Single CError2, CResolution2, CSize2, CPixSize2 elements indicate definite value
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -2745,7 +2744,7 @@ Single CError2, CResolution2, CSize2, CPixSize2 elements indicate definite value
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -2759,7 +2758,7 @@ Single CError2, CResolution2, CSize2, CPixSize2 elements indicate definite value
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -2803,7 +2802,7 @@ Single CError2, CResolution2, CSize2, CPixSize2 elements indicate definite value
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -2985,7 +2984,7 @@ Single CError3, CResolution3, CSize3, CPixSize3 elements indicate definite value
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -3048,7 +3047,7 @@ Single CError3, CResolution3, CSize3, CPixSize3 elements indicate definite value
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -3111,7 +3110,7 @@ Single CError3, CResolution3, CSize3, CPixSize3 elements indicate definite value
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -3142,7 +3141,7 @@ Single CError3, CResolution3, CSize3, CPixSize3 elements indicate definite value
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -3156,7 +3155,7 @@ Single CError3, CResolution3, CSize3, CPixSize3 elements indicate definite value
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -3170,7 +3169,7 @@ Single CError3, CResolution3, CSize3, CPixSize3 elements indicate definite value
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -3401,7 +3400,7 @@ Single CError2, CResolution2, CSize2, CPixSize2 elements indicate definite value
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -3415,7 +3414,7 @@ Single CError2, CResolution2, CSize2, CPixSize2 elements indicate definite value
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -3569,7 +3568,7 @@ Single Error, Resolution, Size, PixSize elements indicate definite values; pairs
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -3583,7 +3582,7 @@ Single Error, Resolution, Size, PixSize elements indicate definite values; pairs
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>1</multiplicity>
@@ -3951,7 +3950,7 @@ Someone creates a region on purpose, they do not "just exist".</description>
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -4462,7 +4461,7 @@ Someone creates a region on purpose, they do not "just exist".</description>
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131110143687_425384_2143">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/real</utyperef>
             </datatype>
             <multiplicity>1</multiplicity>
@@ -4489,7 +4488,7 @@ Someone creates a region on purpose, they do not "just exist".</description>
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131110086312_275884_2071">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/boolean</utyperef>
             </datatype>
             <multiplicity>1</multiplicity>
@@ -4562,7 +4561,7 @@ Someone creates a region on purpose, they do not "just exist".</description>
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -4668,7 +4667,7 @@ see also elsewhere</description>
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -4764,7 +4763,7 @@ Define coordinate reference frame from scratch;basically a 1-D scaling</descript
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131110115640_104165_2107">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/integer</utyperef>
             </datatype>
             <multiplicity>1</multiplicity>
@@ -4778,7 +4777,7 @@ Define coordinate reference frame from scratch;basically a 1-D scaling</descript
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131110115640_104165_2107">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/integer</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -4792,7 +4791,7 @@ Define coordinate reference frame from scratch;basically a 1-D scaling</descript
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131110115640_104165_2107">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/integer</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -4825,7 +4824,7 @@ NB did not add ID attribute as this is a Class which carries an implicit identit
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </datatype>
             <multiplicity>1</multiplicity>
@@ -5183,7 +5182,7 @@ Coordinate reference frame: optional equinox with either a standard reference sy
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131110143687_425384_2143">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/real</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -5197,7 +5196,7 @@ Coordinate reference frame: optional equinox with either a standard reference sy
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131110143687_425384_2143">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/real</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
@@ -5417,6 +5416,58 @@ NB Mapped the sequence with maxOccurs unbounded to a collection with multiplicit
           </collection>
         </objectType>
 
+        <objectType>
+          <identifier id="_12_1_1dfa04c4_1352207525211_559038_215">
+            <utype>STC_1.x:ivoa/stc/coordsys/observatoryLocationType</utype>
+          </identifier>
+          <name>observatoryLocationType</name>
+          <description>Type for an observatory location</description>
+          <collection>
+            <identifier id="_12_1_1dfa04c4_1352207536968_640129_243">
+              <utype>STC_1.x:ivoa/stc/coordsys/observatoryLocationType.AstroCoordSystem</utype>
+            </identifier>
+            <name>AstroCoordSystem</name>
+            <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+            <datatype idref="_12_1_1dfa04c4_1352207536947_879612_240">
+              <utyperef>STC_1.x:ivoa/stc/coordsys/obsLocCoordSystem</utyperef>
+            </datatype>
+            <multiplicity>0..*</multiplicity>
+          </collection>
+        </objectType>
+
+        <objectType>
+          <identifier id="_12_1_1dfa04c4_1352207536947_879612_240">
+            <utype>STC_1.x:ivoa/stc/coordsys/obsLocCoordSystem</utype>
+          </identifier>
+          <name>obsLocCoordSystem</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <container>
+            <identifier id="_12_1_1dfa04c4_1352207536947_879612_240_CONTAINER">
+              <utype>STC_1.x:ivoa/stc/coordsys/obsLocCoordSystem.CONTAINER</utype>
+            </identifier>
+            <collectionref idref="_12_1_1dfa04c4_1352207536968_640129_243">
+              <utyperef>STC_1.x:ivoa/stc/coordsys/observatoryLocationType.AstroCoordSystem</utyperef>
+            </collectionref>
+          </container>
+          <reference>
+            <identifier id="_12_1_1dfa04c4_1352207607178_402036_318">
+              <utype>STC_1.x:ivoa/stc/coordsys/obsLocCoordSystem.coordSys</utype>
+            </identifier>
+            <name>coordSys</name>
+            <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+            <datatype idref="_12_1_1dfa04c4_1351496445410_972411_7235">
+              <utyperef>STC_1.x:ivoa/stc/coordsys/astroCoordSystemType</utyperef>
+            </datatype>
+            <multiplicity>1</multiplicity>
+          </reference>
+        </objectType>
+
 
         <!--
             Data types
@@ -5599,7 +5650,7 @@ We use an explicit attribute for this.</description>
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131110178359_108283_2197">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/nonnegativeinteger</utyperef>
             </datatype>
             <multiplicity>1</multiplicity>
@@ -5613,7 +5664,7 @@ We use an explicit attribute for this.</description>
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_10_0_42c01ac_1131110178359_108283_2197">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/nonnegativeinteger</utyperef>
             </datatype>
             <multiplicity>1</multiplicity>
@@ -6554,11 +6605,101 @@ String with value restriction:
               <utype>STC_1.x:ivoa/stc/coordsys/coordEquinoxType.EXTENDS</utype>
             </identifier>
             <type idref="_10_0_42c01ac_1131109909359_121421_1981">
-              <modelUtypeRef>ivoa_prof</modelUtypeRef>
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
               <utyperef>ivoa_1.0:stdtypes/string</utyperef>
             </type>
           </extends>
         </primitiveType>
+
+      </package>
+
+
+
+      <package>
+        <identifier id="_12_1_1dfa04c4_1352208030287_229131_556">
+          <utype>STC_1.x:ivoa/stc/area/</utype>
+        </identifier>
+        <name>area</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+
+        <!--
+            Data types
+          -->
+
+<dataType>
+          <identifier id="_12_1_1dfa04c4_1352208043551_345185_582">
+            <utype>STC_1.x:ivoa/stc/area/coordIntervalType</utype>
+          </identifier>
+          <name>coordIntervalType</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <extends>
+            <identifier id="_12_1_1dfa04c4_1352208060607_92818_619">
+              <utype>STC_1.x:ivoa/stc/area/coordIntervalType.EXTENDS</utype>
+            </identifier>
+            <type idref="_12_1_1dfa04c4_1351407162416_52728_1632">
+              <utyperef>STC_1.x:ivoa/stc/stcBaseType</utyperef>
+            </type>
+          </extends>
+          <attribute>
+            <identifier id="_12_1_1dfa04c4_1352208067213_491794_643">
+              <utype>STC_1.x:ivoa/stc/area/coordIntervalType.lo_include</utype>
+            </identifier>
+            <name>lo_include</name>
+            <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+            <datatype idref="_10_0_42c01ac_1131110086312_275884_2071">
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+              <utyperef>ivoa_1.0:stdtypes/boolean</utyperef>
+            </datatype>
+            <multiplicity>1</multiplicity>
+          </attribute>
+          <attribute>
+            <identifier id="_12_1_1dfa04c4_1352208096132_168371_648">
+              <utype>STC_1.x:ivoa/stc/area/coordIntervalType.hi_include</utype>
+            </identifier>
+            <name>hi_include</name>
+            <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+            <datatype idref="_10_0_42c01ac_1131110086312_275884_2071">
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+              <utyperef>ivoa_1.0:stdtypes/boolean</utyperef>
+            </datatype>
+            <multiplicity>0..1</multiplicity>
+          </attribute>
+          <attribute>
+            <identifier id="_12_1_1dfa04c4_1352208112989_607863_653">
+              <utype>STC_1.x:ivoa/stc/area/coordIntervalType.fill_factor</utype>
+            </identifier>
+            <name>fill_factor</name>
+            <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+            <datatype idref="_10_0_42c01ac_1131110143687_425384_2143">
+              <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+              <utyperef>ivoa_1.0:stdtypes/real</utyperef>
+            </datatype>
+            <multiplicity>0..1</multiplicity>
+          </attribute>
+          <reference>
+            <identifier id="_12_1_1dfa04c4_1352208151212_810649_686">
+              <utype>STC_1.x:ivoa/stc/area/coordIntervalType.frame_id</utype>
+            </identifier>
+            <name>frame_id</name>
+            <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+            <datatype idref="_12_1_1dfa04c4_1351489325812_154540_5448">
+              <utyperef>STC_1.x:ivoa/stc/coordsys/coordFrameType</utyperef>
+            </datatype>
+            <multiplicity>0..1</multiplicity>
+          </reference>
+        </dataType>
 
       </package>
 
