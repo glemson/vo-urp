@@ -4,10 +4,10 @@
     <utype>ivoa_1.0</utype>
   </identifier>
   <name>IVOATypes</name>
-  <description>This is the main reference data model containgin primitive types used in other data models.</description>
+  <description>This is the main reference data model containing primitive types used in other data models.</description>
   <title>IVOA Reference Types Data Model ala VO-URP</title>
   <version>0.x</version>
-  <lastModified>2012-11-02 11:49:07</lastModified>
+  <lastModified>2012-11-06 15:10:58</lastModified>
 
   <package>
     <identifier id="_12_1_1dfa04c4_1349943899446_25247_168">
