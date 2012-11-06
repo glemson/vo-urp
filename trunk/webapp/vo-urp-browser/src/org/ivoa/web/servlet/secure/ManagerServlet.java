@@ -238,10 +238,10 @@ public final class ManagerServlet extends BaseServlet {
       DiskFileItemFactory factory = new DiskFileItemFactory();
 
       // Set factory constraints
-      int yourMaxMemorySize = 1000000;
+      int yourMaxMemorySize = 10000000;
 
       //File yourTempDirectory = new File("c:/temp/upload/");
-      int yourMaxRequestSize = 1000000;
+      int yourMaxRequestSize = 10000000;
 
       factory.setSizeThreshold(yourMaxMemorySize);
 
