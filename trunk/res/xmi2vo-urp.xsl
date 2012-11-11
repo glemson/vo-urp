@@ -447,6 +447,7 @@ Should no longer depend on a utype declaration, but on an explicit abstraction w
 
 
   <xsl:template match="*[@xmi:type='uml:Property']" mode="collections">
+    <xsl:variable name="xmiid" select="@xmi:id"/>
     <xsl:element name="collection">
       <xsl:apply-templates select="." mode="properties" />
       <xsl:if test="subsettedProperty">
@@ -455,6 +456,12 @@ Should no longer depend on a utype declaration, but on an explicit abstraction w
             <xsl:with-param name="xmiidref" select="subsettedProperty/@xmi:idref"/>
           </xsl:call-template>
         </xsl:element>
+      </xsl:if>
+      <!-- check for isOrdered -->
+      <xsl:if test="/xmi:XMI/IVOA_Profile:composition[@base_Property=$xmiid]/@isOrdered">
+      <xsl:element name="isOrdered">
+        <xsl:value-of select="/xmi:XMI/IVOA_Profile:composition[@base_Property=$xmiid]/@isOrdered"/>
+      </xsl:element>
       </xsl:if>
     </xsl:element>
   </xsl:template>
