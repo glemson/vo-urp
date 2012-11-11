@@ -46,8 +46,10 @@ digraph GVmap {  <!-- name must not be too long. the cmap that is generated uses
 	  style=filled
 	]
 	subgraph cluster_packages {
-	  label="Packages"
-	  rankdir=LR
+	  label="Model"
+	  rankdir=TB
+      style=filled
+      fillcolor="<xsl:apply-templates select="." mode="color"/>"
 	  <xsl:apply-templates select="package" />
 	  <xsl:if test="//package[depends]">
 	      edge [color="black", arrowhead="open", arrowtail="none", style="dashed"]
@@ -55,13 +57,11 @@ digraph GVmap {  <!-- name must not be too long. the cmap that is generated uses
 	  </xsl:if>
 	}
 	
-	
-	
 	node [
 	shape=record
 	fontsize=8
 	style=filled] 
-  <xsl:apply-templates select="package" mode="types"/>
+	<xsl:apply-templates select="." mode="types"/>
 <!--   <xsl:apply-templates select="//objectType"/>  -->
   <xsl:if test="//extends">
 <!--    edge [color="red", arrowhead="empty", headport="s", tailport="n"] --> 
@@ -84,19 +84,16 @@ digraph GVmap {  <!-- name must not be too long. the cmap that is generated uses
   
 
   <xsl:template match="package">
-    <xsl:variable name="color">
-      <xsl:value-of select="concat('/set312/',index-of($packages,identifier/utype))"/> 
-    </xsl:variable>
     "<xsl:value-of select="identifier/utype"/>" [
     URL="#<xsl:value-of select="identifier/utype"/>"
     label = "<xsl:value-of select="name"/>"
-    fillcolor="<xsl:value-of select="$color"/>"
+    fillcolor="<xsl:apply-templates select="." mode="color"/>"
     ] ;
     <xsl:if test="package">
     subgraph cluster_<xsl:value-of select="name"/> {
-      label="<xsl:value-of select="name"/>"
+      label="Package: <xsl:value-of select="name"/>"
       style=filled
-      fillcolor="<xsl:value-of select="$color"/>"
+      fillcolor="<xsl:apply-templates select="." mode="color"/>"
       <xsl:apply-templates select="package"/>
     }
     </xsl:if>
@@ -110,12 +107,8 @@ digraph GVmap {  <!-- name must not be too long. the cmap that is generated uses
     </xsl:for-each>
   </xsl:template>
 
-
-
-
-  
   <!-- If the name starts with "cluster" than the nodes inside the package will be  -->
-  <xsl:template match="package" mode="types">
+  <xsl:template match="vo-urp:model|package" mode="types">
     <xsl:choose>
     <xsl:when test="$usesubgraph = 'T'">
     subgraph cluster_<xsl:value-of select="name"/> {
@@ -133,9 +126,6 @@ digraph GVmap {  <!-- name must not be too long. the cmap that is generated uses
   
   <!--  TBD deal with types directly under model -->
   <xsl:template match="objectType">
-    <xsl:variable name="color">
-      <xsl:value-of select="concat('/set312/',index-of($packages,../identifier/utype))"/> 
-    </xsl:variable>
     <xsl:variable name="nodename">
         <xsl:apply-templates select="." mode="nodename"/>
     </xsl:variable>
@@ -145,45 +135,47 @@ digraph GVmap {  <!-- name must not be too long. the cmap that is generated uses
 	<xsl:value-of select="$nodename"/> [
     URL="#<xsl:value-of select="identifier/utype"/>"
     label = "{<xsl:value-of select="$label"/><xsl:if test="attribute">|<xsl:apply-templates select="attribute"/></xsl:if>}"
-    fillcolor="<xsl:value-of select="$color"/>"
+    fillcolor="<xsl:apply-templates select="." mode="color"/>"
     ] ;
   </xsl:template>
 
 
+  <xsl:template match="objectType|dataType|enumeration|primitiveType" mode="color">
+    <xsl:apply-templates select=".." mode="color"/>
+  </xsl:template>
+
+  <xsl:template match="vo-urp:model" mode="color">
+    <xsl:value-of select="'/set312/1'"/>
+  </xsl:template>
+
+  <xsl:template match="package" mode="color">
+    <xsl:value-of select="concat('/set312/',index-of($packages,./identifier/utype)+1)"/> 
+  </xsl:template>
 
   <xsl:template match="dataType">
-    <xsl:variable name="color">
-      <xsl:value-of select="concat('/set312/',index-of($packages,../identifier/utype))"/> 
-    </xsl:variable>
     <xsl:value-of select="name"/> [
     URL="#<xsl:value-of select="identifier/utype"/>"
     label = "{&amp;lt;&amp;lt;datatype&amp;gt;&amp;gt;\l<xsl:value-of select="name"/><xsl:if test="attribute">|<xsl:apply-templates select="attribute"/></xsl:if>}"
-    fillcolor="<xsl:value-of select="$color"/>"
+    fillcolor="<xsl:apply-templates select="." mode="color"/>"
     ] ;
   </xsl:template>
 
 
 
   <xsl:template match="enumeration">
-    <xsl:variable name="color">
-      <xsl:value-of select="concat('/set312/',index-of($packages,../identifier/utype))"/> 
-    </xsl:variable>
     <xsl:value-of select="name"/> [
     URL="#<xsl:value-of select="identifier/utype"/>"
     label = "{&amp;lt;&amp;lt;enumeration&amp;gt;&amp;gt;\l<xsl:value-of select="name"/><xsl:if test="literal">|<xsl:apply-templates select="literal"/></xsl:if>}"
-    fillcolor="<xsl:value-of select="$color"/>"
+    fillcolor="<xsl:apply-templates select="." mode="color"/>"
     ] ;
   </xsl:template>
 
 
   <xsl:template match="primitiveType">
-    <xsl:variable name="color">
-      <xsl:value-of select="concat('/set312/',index-of($packages,../identifier/utype))"/> 
-    </xsl:variable>
     <xsl:value-of select="name"/> [
     URL="#<xsl:value-of select="identifier/utype"/>"
     label = "{&amp;lt;&amp;lt;primitive type&amp;gt;&amp;gt;\l<xsl:value-of select="name"/>}"
-    fillcolor="<xsl:value-of select="$color"/>"
+    fillcolor="<xsl:apply-templates select="." mode="color"/>"
     ] ;
   </xsl:template>
 
