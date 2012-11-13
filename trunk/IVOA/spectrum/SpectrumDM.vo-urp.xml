@@ -7,7 +7,7 @@
   <description>This is the data model for Photometric Calibration ... </description>
   <title>Spectrum-v1.01</title>
   <version>0.x</version>
-  <lastModified>2012-11-10 09:27:29</lastModified>
+  <lastModified>2012-11-13 15:59:29</lastModified>
   <import>
     <identifier id="_12_1_1dfa04c4_1352280071015_567597_517">
       <utype>ivoa_1.0</utype>
@@ -156,262 +156,6 @@
           TODO : Missing description : please, update your UML model asap.
         </description>
   </objectType>
-
-  <dataType abstract="true">
-    <identifier id="_12_1_1dfa04c4_1352530087408_772106_1140">
-      <utype>spec:paramType</utype>
-    </identifier>
-    <name>paramType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352529737249_809988_801">
-        <utype>spec:paramType.name</utype>
-      </identifier>
-      <name>name</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
-        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
-        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
-      </datatype>
-      <multiplicity>1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352529750721_892161_805">
-        <utype>spec:paramType.ucd</utype>
-      </identifier>
-      <name>ucd</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
-        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
-        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-  </dataType>
-
-  <dataType>
-    <identifier id="_12_1_1dfa04c4_1352530171375_946061_1263">
-      <utype>spec:doubleParamType</utype>
-    </identifier>
-    <name>doubleParamType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <extends>
-      <identifier id="_12_1_1dfa04c4_1352530199776_709629_1342">
-        <utype>spec:doubleParamType.EXTENDS</utype>
-      </identifier>
-      <type idref="_12_1_1dfa04c4_1352530087408_772106_1140">
-        <utyperef>spec:paramType</utyperef>
-      </type>
-    </extends>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352529925448_967354_1046">
-        <utype>spec:doubleParamType.value</utype>
-      </identifier>
-      <name>value</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352280071024_136938_525">
-        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
-        <utyperef>ivoa_1.0:stdtypes/real</utyperef>
-      </datatype>
-      <multiplicity>1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352530143766_914900_1261">
-        <utype>spec:doubleParamType.unit</utype>
-      </identifier>
-      <name>unit</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
-        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
-        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-  </dataType>
-
-  <dataType>
-    <identifier id="_12_1_1dfa04c4_1352530175100_546727_1283">
-      <utype>spec:textParamType</utype>
-    </identifier>
-    <name>textParamType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <extends>
-      <identifier id="_12_1_1dfa04c4_1352530202223_357252_1367">
-        <utype>spec:textParamType.EXTENDS</utype>
-      </identifier>
-      <type idref="_12_1_1dfa04c4_1352530087408_772106_1140">
-        <utyperef>spec:paramType</utyperef>
-      </type>
-    </extends>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352529796520_672307_897">
-        <utype>spec:textParamType.value</utype>
-      </identifier>
-      <name>value</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
-        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
-        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
-      </datatype>
-      <multiplicity>1</multiplicity>
-    </attribute>
-  </dataType>
-
-  <dataType>
-    <identifier id="_12_1_1dfa04c4_1352530181250_90805_1302">
-      <utype>spec:dateParamType</utype>
-    </identifier>
-    <name>dateParamType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <extends>
-      <identifier id="_12_1_1dfa04c4_1352530204641_393794_1392">
-        <utype>spec:dateParamType.EXTENDS</utype>
-      </identifier>
-      <type idref="_12_1_1dfa04c4_1352530087408_772106_1140">
-        <utyperef>spec:paramType</utyperef>
-      </type>
-    </extends>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352529821416_936248_945">
-        <utype>spec:dateParamType.value</utype>
-      </identifier>
-      <name>value</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352280071023_795723_522">
-        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
-        <utyperef>ivoa_1.0:stdtypes/datetime</utyperef>
-      </datatype>
-      <multiplicity>1</multiplicity>
-    </attribute>
-  </dataType>
-
-  <dataType>
-    <identifier id="_12_1_1dfa04c4_1352530186674_920_1321">
-      <utype>spec:positionParamType</utype>
-    </identifier>
-    <name>positionParamType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <extends>
-      <identifier id="_12_1_1dfa04c4_1352530207144_748999_1417">
-        <utype>spec:positionParamType.EXTENDS</utype>
-      </identifier>
-      <type idref="_12_1_1dfa04c4_1352530087408_772106_1140">
-        <utyperef>spec:paramType</utyperef>
-      </type>
-    </extends>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352529871688_592398_993">
-        <utype>spec:positionParamType.value1</utype>
-      </identifier>
-      <name>value1</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
-        <utyperef>spec:doubleParamType</utyperef>
-      </datatype>
-      <multiplicity>1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352529884905_511834_997">
-        <utype>spec:positionParamType.value2</utype>
-      </identifier>
-      <name>value2</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
-        <utyperef>spec:doubleParamType</utyperef>
-      </datatype>
-      <multiplicity>1</multiplicity>
-    </attribute>
-  </dataType>
-
-  <dataType>
-    <identifier id="_12_1_1dfa04c4_1352530264814_725112_1442">
-      <utype>spec:timeParamType</utype>
-    </identifier>
-    <name>timeParamType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <extends>
-      <identifier id="_12_1_1dfa04c4_1352530264833_377371_1444">
-        <utype>spec:timeParamType.EXTENDS</utype>
-      </identifier>
-      <type idref="_12_1_1dfa04c4_1352530087408_772106_1140">
-        <utyperef>spec:paramType</utyperef>
-      </type>
-    </extends>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352530281093_618148_1484">
-        <utype>spec:timeParamType.value</utype>
-      </identifier>
-      <name>value</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352280071023_795723_522">
-        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
-        <utyperef>ivoa_1.0:stdtypes/datetime</utyperef>
-      </datatype>
-      <multiplicity>1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352530301972_221547_1490">
-        <utype>spec:timeParamType.unit</utype>
-      </identifier>
-      <name>unit</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
-        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
-        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
-      </datatype>
-      <multiplicity>1</multiplicity>
-    </attribute>
-  </dataType>
-
-  <dataType>
-    <identifier id="_12_1_1dfa04c4_1352530317709_22414_1495">
-      <utype>spec:intParamType</utype>
-    </identifier>
-    <name>intParamType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <extends>
-      <identifier id="_12_1_1dfa04c4_1352530331247_953749_1514">
-        <utype>spec:intParamType.EXTENDS</utype>
-      </identifier>
-      <type idref="_12_1_1dfa04c4_1352530087408_772106_1140">
-        <utyperef>spec:paramType</utyperef>
-      </type>
-    </extends>
-  </dataType>
 
   <objectType>
     <identifier id="_12_1_1dfa04c4_1352530388149_715395_1560">
@@ -606,194 +350,6 @@
       <multiplicity>0..1</multiplicity>
     </attribute>
   </objectType>
-
-  <dataType>
-    <identifier id="_12_1_1dfa04c4_1352530584332_569288_1803">
-      <utype>spec:Group</utype>
-    </identifier>
-    <name>Group</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352529655488_261973_752">
-        <utype>spec:Group.id</utype>
-      </identifier>
-      <name>id</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
-        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
-        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352529659489_974768_754">
-        <utype>spec:Group.idref</utype>
-      </identifier>
-      <name>idref</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
-        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
-        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-  </dataType>
-
-  <dataType>
-    <identifier id="_12_1_1dfa04c4_1352530691511_747974_1886">
-      <utype>spec:sedBaseCoordType</utype>
-    </identifier>
-    <name>sedBaseCoordType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352530612179_875842_1827">
-        <utype>spec:sedBaseCoordType.id</utype>
-      </identifier>
-      <name>id</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530584332_569288_1803">
-        <utyperef>spec:Group</utyperef>
-      </datatype>
-      <multiplicity>1</multiplicity>
-    </attribute>
-  </dataType>
-
-  <dataType>
-    <identifier id="_12_1_1dfa04c4_1352530694414_58755_1905">
-      <utype>spec:sedCoordType</utype>
-    </identifier>
-    <name>sedCoordType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <extends>
-      <identifier id="_12_1_1dfa04c4_1352530702748_49185_1942">
-        <utype>spec:sedCoordType.EXTENDS</utype>
-      </identifier>
-      <type idref="_12_1_1dfa04c4_1352530691511_747974_1886">
-        <utyperef>spec:sedBaseCoordType</utyperef>
-      </type>
-    </extends>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352530780801_929553_1999">
-        <utype>spec:sedCoordType.Value</utype>
-      </identifier>
-      <name>Value</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
-        <utyperef>spec:doubleParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352530800265_786004_2003">
-        <utype>spec:sedCoordType.Accuracy</utype>
-      </identifier>
-      <name>Accuracy</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352533352534_462561_2984">
-        <utyperef>spec:accuracyType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352530813393_304988_2007">
-        <utype>spec:sedCoordType.Resolution</utype>
-      </identifier>
-      <name>Resolution</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
-        <utyperef>spec:doubleParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-  </dataType>
-
-  <dataType>
-    <identifier id="_12_1_1dfa04c4_1352530698065_233923_1923">
-      <utype>spec:sedQuantityType</utype>
-    </identifier>
-    <name>sedQuantityType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <extends>
-      <identifier id="_12_1_1dfa04c4_1352530709131_391558_1967">
-        <utype>spec:sedQuantityType.EXTENDS</utype>
-      </identifier>
-      <type idref="_12_1_1dfa04c4_1352530691511_747974_1886">
-        <utyperef>spec:sedBaseCoordType</utyperef>
-      </type>
-    </extends>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352530857113_382119_2011">
-        <utype>spec:sedQuantityType.Value</utype>
-      </identifier>
-      <name>Value</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
-        <utyperef>spec:doubleParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352530869857_960968_2015">
-        <utype>spec:sedQuantityType.Accuracy</utype>
-      </identifier>
-      <name>Accuracy</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352533352534_462561_2984">
-        <utyperef>spec:accuracyType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352530879338_178669_2019">
-        <utype>spec:sedQuantityType.Resolution</utype>
-      </identifier>
-      <name>Resolution</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
-        <utyperef>spec:doubleParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352530893257_619375_2023">
-        <utype>spec:sedQuantityType.Quality</utype>
-      </identifier>
-      <name>Quality</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530317709_22414_1495">
-        <utyperef>spec:intParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-  </dataType>
 
   <objectType>
     <identifier id="_12_1_1dfa04c4_1352531002752_691939_2036">
@@ -1580,6 +1136,986 @@
     </collection>
   </objectType>
 
+  <objectType>
+    <identifier id="_12_1_1dfa04c4_1352534734977_339323_3330">
+      <utype>spec:dataIDType</utype>
+    </identifier>
+    <name>dataIDType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352534745501_634795_3349">
+        <utype>spec:dataIDType.Title</utype>
+      </identifier>
+      <name>Title</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
+        <utyperef>spec:textParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352534759301_649462_3353">
+        <utype>spec:dataIDType.Creator</utype>
+      </identifier>
+      <name>Creator</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
+        <utyperef>spec:textParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352534774558_83105_3357">
+        <utype>spec:dataIDType.Collection</utype>
+      </identifier>
+      <name>Collection</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
+        <utyperef>spec:textParamType</utyperef>
+      </datatype>
+      <multiplicity>0..*</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352534790085_365900_3365">
+        <utype>spec:dataIDType.Date</utype>
+      </identifier>
+      <name>Date</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530181250_90805_1302">
+        <utyperef>spec:dateParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352534799325_260642_3369">
+        <utype>spec:dataIDType.Version</utype>
+      </identifier>
+      <name>Version</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
+        <utyperef>spec:textParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352534804630_180064_3373">
+        <utype>spec:dataIDType.Instrument</utype>
+      </identifier>
+      <name>Instrument</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
+        <utyperef>spec:textParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352534812349_747259_3377">
+        <utype>spec:dataIDType.CreationType</utype>
+      </identifier>
+      <name>CreationType</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
+        <utyperef>spec:textParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352534820158_291015_3381">
+        <utype>spec:dataIDType.Bandpass</utype>
+      </identifier>
+      <name>Bandpass</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
+        <utyperef>spec:textParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352534827325_634942_3385">
+        <utype>spec:dataIDType.CreatorDID</utype>
+      </identifier>
+      <name>CreatorDID</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
+        <utyperef>spec:textParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352534840317_122071_3389">
+        <utype>spec:dataIDType.Contributor</utype>
+      </identifier>
+      <name>Contributor</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
+        <utyperef>spec:textParamType</utyperef>
+      </datatype>
+      <multiplicity>0..*</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352534851948_39950_3395">
+        <utype>spec:dataIDType.Logo</utype>
+      </identifier>
+      <name>Logo</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
+        <utyperef>spec:textParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352534861517_886157_3399">
+        <utype>spec:dataIDType.DataSource</utype>
+      </identifier>
+      <name>DataSource</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
+        <utyperef>spec:textParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352534880820_905500_3403">
+        <utype>spec:dataIDType.id</utype>
+      </identifier>
+      <name>id</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530584332_569288_1803">
+        <utyperef>spec:Group</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+  </objectType>
+
+  <objectType>
+    <identifier id="_12_1_1dfa04c4_1352534909071_171413_3408">
+      <utype>spec:targetType</utype>
+    </identifier>
+    <name>targetType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352534916732_707489_3427">
+        <utype>spec:targetType.id</utype>
+      </identifier>
+      <name>id</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530584332_569288_1803">
+        <utyperef>spec:Group</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352535040851_485397_3431">
+        <utype>spec:targetType.Name</utype>
+      </identifier>
+      <name>Name</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
+        <utyperef>spec:textParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352535073036_603282_3435">
+        <utype>spec:targetType.Description</utype>
+      </identifier>
+      <name>Description</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
+        <utyperef>spec:textParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352535082892_837905_3439">
+        <utype>spec:targetType.TargetClass</utype>
+      </identifier>
+      <name>TargetClass</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
+        <utyperef>spec:textParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352535091011_161543_3443">
+        <utype>spec:targetType.SpectralClass</utype>
+      </identifier>
+      <name>SpectralClass</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
+        <utyperef>spec:textParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352535101132_149165_3447">
+        <utype>spec:targetType.Redshift</utype>
+      </identifier>
+      <name>Redshift</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
+        <utyperef>spec:doubleParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352535112971_409384_3451">
+        <utype>spec:targetType.Pos</utype>
+      </identifier>
+      <name>Pos</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530186674_920_1321">
+        <utyperef>spec:positionParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352535123747_815339_3455">
+        <utype>spec:targetType.VarAmpl</utype>
+      </identifier>
+      <name>VarAmpl</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
+        <utyperef>spec:doubleParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <collection>
+      <identifier id="_12_1_1dfa04c4_1352535300524_878601_3485">
+        <utype>spec:targetType.CustomParams</utype>
+      </identifier>
+      <name>CustomParams</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352535291739_42351_3462">
+        <utyperef>spec:CustomParameter</utyperef>
+      </datatype>
+      <multiplicity>0..*</multiplicity>
+    </collection>
+  </objectType>
+
+  <objectType>
+    <identifier id="_12_1_1dfa04c4_1352535291739_42351_3462">
+      <utype>spec:CustomParameter</utype>
+    </identifier>
+    <name>CustomParameter</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <container>
+      <identifier id="_12_1_1dfa04c4_1352535291739_42351_3462_CONTAINER">
+        <utype>spec:CustomParameter.CONTAINER</utype>
+      </identifier>
+      <collectionref idref="_12_1_1dfa04c4_1352535300524_878601_3485">
+        <utyperef>spec:targetType.CustomParams</utyperef>
+      </collectionref>
+    </container>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352535319338_185074_3536">
+        <utype>spec:CustomParameter.Param</utype>
+      </identifier>
+      <name>Param</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530087408_772106_1140">
+        <utyperef>spec:paramType</utyperef>
+      </datatype>
+      <multiplicity>1</multiplicity>
+    </attribute>
+  </objectType>
+
+  <objectType>
+    <identifier id="_12_1_1dfa04c4_1352535561970_168695_3605">
+      <utype>spec:coordFrameType</utype>
+    </identifier>
+    <name>coordFrameType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <container>
+      <identifier id="_12_1_1dfa04c4_1352535561970_168695_3605_CONTAINER">
+        <utype>spec:coordFrameType.CONTAINER</utype>
+      </identifier>
+      <collectionref idref="_12_1_1dfa04c4_1352535561991_408725_3608">
+        <utyperef>spec:coordSysType.</utyperef>
+      </collectionref>
+    </container>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352535611416_309426_3678">
+        <utype>spec:coordFrameType.Name</utype>
+      </identifier>
+      <name>Name</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
+        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352535629272_491266_3682">
+        <utype>spec:coordFrameType.ReferencePosition</utype>
+      </identifier>
+      <name>ReferencePosition</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
+        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352535640463_539705_3686">
+        <utype>spec:coordFrameType.id</utype>
+      </identifier>
+      <name>id</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
+        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352535656303_783722_3690">
+        <utype>spec:coordFrameType.ucd</utype>
+      </identifier>
+      <name>ucd</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
+        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+  </objectType>
+
+  <objectType>
+    <identifier id="_12_1_1dfa04c4_1352535675568_75831_3695">
+      <utype>spec:spectralFrameType</utype>
+    </identifier>
+    <name>spectralFrameType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <extends>
+      <identifier id="_12_1_1dfa04c4_1352535675591_197314_3697">
+        <utype>spec:spectralFrameType.EXTENDS</utype>
+      </identifier>
+      <type idref="_12_1_1dfa04c4_1352535561970_168695_3605">
+        <utyperef>spec:coordFrameType</utyperef>
+      </type>
+    </extends>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352535691351_322785_3738">
+        <utype>spec:spectralFrameType.Redshift</utype>
+      </identifier>
+      <name>Redshift</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
+        <utyperef>spec:doubleParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+  </objectType>
+
+  <objectType>
+    <identifier id="_12_1_1dfa04c4_1352535706512_583551_3743">
+      <utype>spec:timeFrameType</utype>
+    </identifier>
+    <name>timeFrameType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <extends>
+      <identifier id="_12_1_1dfa04c4_1352535706531_503982_3745">
+        <utype>spec:timeFrameType.EXTENDS</utype>
+      </identifier>
+      <type idref="_12_1_1dfa04c4_1352535561970_168695_3605">
+        <utyperef>spec:coordFrameType</utyperef>
+      </type>
+    </extends>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352535729839_149358_3786">
+        <utype>spec:timeFrameType.Zero</utype>
+      </identifier>
+      <name>Zero</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
+        <utyperef>spec:doubleParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+  </objectType>
+
+  <objectType>
+    <identifier id="_12_1_1dfa04c4_1352535747249_688740_3791">
+      <utype>spec:redshiftFrameType</utype>
+    </identifier>
+    <name>redshiftFrameType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <extends>
+      <identifier id="_12_1_1dfa04c4_1352535747270_840634_3793">
+        <utype>spec:redshiftFrameType.EXTENDS</utype>
+      </identifier>
+      <type idref="_12_1_1dfa04c4_1352535561970_168695_3605">
+        <utyperef>spec:coordFrameType</utyperef>
+      </type>
+    </extends>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352535759718_887608_3834">
+        <utype>spec:redshiftFrameType.DopplerDefinition</utype>
+      </identifier>
+      <name>DopplerDefinition</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
+        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+  </objectType>
+
+  <objectType>
+    <identifier id="_12_1_1dfa04c4_1352535784928_65901_3839">
+      <utype>spec:spaceFrameType</utype>
+    </identifier>
+    <name>spaceFrameType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <extends>
+      <identifier id="_12_1_1dfa04c4_1352535784949_580679_3841">
+        <utype>spec:spaceFrameType.EXTENDS</utype>
+      </identifier>
+      <type idref="_12_1_1dfa04c4_1352535561970_168695_3605">
+        <utyperef>spec:coordFrameType</utyperef>
+      </type>
+    </extends>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352535795798_816748_3882">
+        <utype>spec:spaceFrameType.Equinox</utype>
+      </identifier>
+      <name>Equinox</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
+        <utyperef>spec:doubleParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+  </objectType>
+
+  <dataType abstract="true">
+    <identifier id="_12_1_1dfa04c4_1352530087408_772106_1140">
+      <utype>spec:paramType</utype>
+    </identifier>
+    <name>paramType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352529737249_809988_801">
+        <utype>spec:paramType.name</utype>
+      </identifier>
+      <name>name</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
+        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+      </datatype>
+      <multiplicity>1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352529750721_892161_805">
+        <utype>spec:paramType.ucd</utype>
+      </identifier>
+      <name>ucd</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
+        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+  </dataType>
+
+  <dataType>
+    <identifier id="_12_1_1dfa04c4_1352530171375_946061_1263">
+      <utype>spec:doubleParamType</utype>
+    </identifier>
+    <name>doubleParamType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <extends>
+      <identifier id="_12_1_1dfa04c4_1352530199776_709629_1342">
+        <utype>spec:doubleParamType.EXTENDS</utype>
+      </identifier>
+      <type idref="_12_1_1dfa04c4_1352530087408_772106_1140">
+        <utyperef>spec:paramType</utyperef>
+      </type>
+    </extends>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352529925448_967354_1046">
+        <utype>spec:doubleParamType.value</utype>
+      </identifier>
+      <name>value</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352280071024_136938_525">
+        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+        <utyperef>ivoa_1.0:stdtypes/real</utyperef>
+      </datatype>
+      <multiplicity>1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352530143766_914900_1261">
+        <utype>spec:doubleParamType.unit</utype>
+      </identifier>
+      <name>unit</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
+        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+  </dataType>
+
+  <dataType>
+    <identifier id="_12_1_1dfa04c4_1352530175100_546727_1283">
+      <utype>spec:textParamType</utype>
+    </identifier>
+    <name>textParamType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <extends>
+      <identifier id="_12_1_1dfa04c4_1352530202223_357252_1367">
+        <utype>spec:textParamType.EXTENDS</utype>
+      </identifier>
+      <type idref="_12_1_1dfa04c4_1352530087408_772106_1140">
+        <utyperef>spec:paramType</utyperef>
+      </type>
+    </extends>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352529796520_672307_897">
+        <utype>spec:textParamType.value</utype>
+      </identifier>
+      <name>value</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
+        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+      </datatype>
+      <multiplicity>1</multiplicity>
+    </attribute>
+  </dataType>
+
+  <dataType>
+    <identifier id="_12_1_1dfa04c4_1352530181250_90805_1302">
+      <utype>spec:dateParamType</utype>
+    </identifier>
+    <name>dateParamType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <extends>
+      <identifier id="_12_1_1dfa04c4_1352530204641_393794_1392">
+        <utype>spec:dateParamType.EXTENDS</utype>
+      </identifier>
+      <type idref="_12_1_1dfa04c4_1352530087408_772106_1140">
+        <utyperef>spec:paramType</utyperef>
+      </type>
+    </extends>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352529821416_936248_945">
+        <utype>spec:dateParamType.value</utype>
+      </identifier>
+      <name>value</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352280071023_795723_522">
+        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+        <utyperef>ivoa_1.0:stdtypes/datetime</utyperef>
+      </datatype>
+      <multiplicity>1</multiplicity>
+    </attribute>
+  </dataType>
+
+  <dataType>
+    <identifier id="_12_1_1dfa04c4_1352530186674_920_1321">
+      <utype>spec:positionParamType</utype>
+    </identifier>
+    <name>positionParamType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <extends>
+      <identifier id="_12_1_1dfa04c4_1352530207144_748999_1417">
+        <utype>spec:positionParamType.EXTENDS</utype>
+      </identifier>
+      <type idref="_12_1_1dfa04c4_1352530087408_772106_1140">
+        <utyperef>spec:paramType</utyperef>
+      </type>
+    </extends>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352529871688_592398_993">
+        <utype>spec:positionParamType.value1</utype>
+      </identifier>
+      <name>value1</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
+        <utyperef>spec:doubleParamType</utyperef>
+      </datatype>
+      <multiplicity>1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352529884905_511834_997">
+        <utype>spec:positionParamType.value2</utype>
+      </identifier>
+      <name>value2</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
+        <utyperef>spec:doubleParamType</utyperef>
+      </datatype>
+      <multiplicity>1</multiplicity>
+    </attribute>
+  </dataType>
+
+  <dataType>
+    <identifier id="_12_1_1dfa04c4_1352530264814_725112_1442">
+      <utype>spec:timeParamType</utype>
+    </identifier>
+    <name>timeParamType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <extends>
+      <identifier id="_12_1_1dfa04c4_1352530264833_377371_1444">
+        <utype>spec:timeParamType.EXTENDS</utype>
+      </identifier>
+      <type idref="_12_1_1dfa04c4_1352530087408_772106_1140">
+        <utyperef>spec:paramType</utyperef>
+      </type>
+    </extends>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352530281093_618148_1484">
+        <utype>spec:timeParamType.value</utype>
+      </identifier>
+      <name>value</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352280071023_795723_522">
+        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+        <utyperef>ivoa_1.0:stdtypes/datetime</utyperef>
+      </datatype>
+      <multiplicity>1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352530301972_221547_1490">
+        <utype>spec:timeParamType.unit</utype>
+      </identifier>
+      <name>unit</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
+        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+      </datatype>
+      <multiplicity>1</multiplicity>
+    </attribute>
+  </dataType>
+
+  <dataType>
+    <identifier id="_12_1_1dfa04c4_1352530317709_22414_1495">
+      <utype>spec:intParamType</utype>
+    </identifier>
+    <name>intParamType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <extends>
+      <identifier id="_12_1_1dfa04c4_1352530331247_953749_1514">
+        <utype>spec:intParamType.EXTENDS</utype>
+      </identifier>
+      <type idref="_12_1_1dfa04c4_1352530087408_772106_1140">
+        <utyperef>spec:paramType</utyperef>
+      </type>
+    </extends>
+  </dataType>
+
+  <dataType>
+    <identifier id="_12_1_1dfa04c4_1352530584332_569288_1803">
+      <utype>spec:Group</utype>
+    </identifier>
+    <name>Group</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352529655488_261973_752">
+        <utype>spec:Group.id</utype>
+      </identifier>
+      <name>id</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
+        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352529659489_974768_754">
+        <utype>spec:Group.idref</utype>
+      </identifier>
+      <name>idref</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
+        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+  </dataType>
+
+  <dataType>
+    <identifier id="_12_1_1dfa04c4_1352530691511_747974_1886">
+      <utype>spec:sedBaseCoordType</utype>
+    </identifier>
+    <name>sedBaseCoordType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352530612179_875842_1827">
+        <utype>spec:sedBaseCoordType.id</utype>
+      </identifier>
+      <name>id</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530584332_569288_1803">
+        <utyperef>spec:Group</utyperef>
+      </datatype>
+      <multiplicity>1</multiplicity>
+    </attribute>
+  </dataType>
+
+  <dataType>
+    <identifier id="_12_1_1dfa04c4_1352530694414_58755_1905">
+      <utype>spec:sedCoordType</utype>
+    </identifier>
+    <name>sedCoordType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <extends>
+      <identifier id="_12_1_1dfa04c4_1352530702748_49185_1942">
+        <utype>spec:sedCoordType.EXTENDS</utype>
+      </identifier>
+      <type idref="_12_1_1dfa04c4_1352530691511_747974_1886">
+        <utyperef>spec:sedBaseCoordType</utyperef>
+      </type>
+    </extends>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352530780801_929553_1999">
+        <utype>spec:sedCoordType.Value</utype>
+      </identifier>
+      <name>Value</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
+        <utyperef>spec:doubleParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352530800265_786004_2003">
+        <utype>spec:sedCoordType.Accuracy</utype>
+      </identifier>
+      <name>Accuracy</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352533352534_462561_2984">
+        <utyperef>spec:accuracyType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352530813393_304988_2007">
+        <utype>spec:sedCoordType.Resolution</utype>
+      </identifier>
+      <name>Resolution</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
+        <utyperef>spec:doubleParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+  </dataType>
+
+  <dataType>
+    <identifier id="_12_1_1dfa04c4_1352530698065_233923_1923">
+      <utype>spec:sedQuantityType</utype>
+    </identifier>
+    <name>sedQuantityType</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <extends>
+      <identifier id="_12_1_1dfa04c4_1352530709131_391558_1967">
+        <utype>spec:sedQuantityType.EXTENDS</utype>
+      </identifier>
+      <type idref="_12_1_1dfa04c4_1352530691511_747974_1886">
+        <utyperef>spec:sedBaseCoordType</utyperef>
+      </type>
+    </extends>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352530857113_382119_2011">
+        <utype>spec:sedQuantityType.Value</utype>
+      </identifier>
+      <name>Value</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
+        <utyperef>spec:doubleParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352530869857_960968_2015">
+        <utype>spec:sedQuantityType.Accuracy</utype>
+      </identifier>
+      <name>Accuracy</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352533352534_462561_2984">
+        <utyperef>spec:accuracyType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352530879338_178669_2019">
+        <utype>spec:sedQuantityType.Resolution</utype>
+      </identifier>
+      <name>Resolution</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
+        <utyperef>spec:doubleParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+    <attribute>
+      <identifier id="_12_1_1dfa04c4_1352530893257_619375_2023">
+        <utype>spec:sedQuantityType.Quality</utype>
+      </identifier>
+      <name>Quality</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <datatype idref="_12_1_1dfa04c4_1352530317709_22414_1495">
+        <utyperef>spec:intParamType</utyperef>
+      </datatype>
+      <multiplicity>0..1</multiplicity>
+    </attribute>
+  </dataType>
+
   <dataType>
     <identifier id="_12_1_1dfa04c4_1352533352534_462561_2984">
       <utype>spec:accuracyType</utype>
@@ -2112,343 +2648,6 @@
     </attribute>
   </dataType>
 
-  <objectType>
-    <identifier id="_12_1_1dfa04c4_1352534734977_339323_3330">
-      <utype>spec:dataIDType</utype>
-    </identifier>
-    <name>dataIDType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352534745501_634795_3349">
-        <utype>spec:dataIDType.Title</utype>
-      </identifier>
-      <name>Title</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
-        <utyperef>spec:textParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352534759301_649462_3353">
-        <utype>spec:dataIDType.Creator</utype>
-      </identifier>
-      <name>Creator</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
-        <utyperef>spec:textParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352534774558_83105_3357">
-        <utype>spec:dataIDType.Collection</utype>
-      </identifier>
-      <name>Collection</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
-        <utyperef>spec:textParamType</utyperef>
-      </datatype>
-      <multiplicity>0..*</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352534790085_365900_3365">
-        <utype>spec:dataIDType.Date</utype>
-      </identifier>
-      <name>Date</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530181250_90805_1302">
-        <utyperef>spec:dateParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352534799325_260642_3369">
-        <utype>spec:dataIDType.Version</utype>
-      </identifier>
-      <name>Version</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
-        <utyperef>spec:textParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352534804630_180064_3373">
-        <utype>spec:dataIDType.Instrument</utype>
-      </identifier>
-      <name>Instrument</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
-        <utyperef>spec:textParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352534812349_747259_3377">
-        <utype>spec:dataIDType.CreationType</utype>
-      </identifier>
-      <name>CreationType</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
-        <utyperef>spec:textParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352534820158_291015_3381">
-        <utype>spec:dataIDType.Bandpass</utype>
-      </identifier>
-      <name>Bandpass</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
-        <utyperef>spec:textParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352534827325_634942_3385">
-        <utype>spec:dataIDType.CreatorDID</utype>
-      </identifier>
-      <name>CreatorDID</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
-        <utyperef>spec:textParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352534840317_122071_3389">
-        <utype>spec:dataIDType.Contributor</utype>
-      </identifier>
-      <name>Contributor</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
-        <utyperef>spec:textParamType</utyperef>
-      </datatype>
-      <multiplicity>0..*</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352534851948_39950_3395">
-        <utype>spec:dataIDType.Logo</utype>
-      </identifier>
-      <name>Logo</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
-        <utyperef>spec:textParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352534861517_886157_3399">
-        <utype>spec:dataIDType.DataSource</utype>
-      </identifier>
-      <name>DataSource</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
-        <utyperef>spec:textParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352534880820_905500_3403">
-        <utype>spec:dataIDType.id</utype>
-      </identifier>
-      <name>id</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530584332_569288_1803">
-        <utyperef>spec:Group</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-  </objectType>
-
-  <objectType>
-    <identifier id="_12_1_1dfa04c4_1352534909071_171413_3408">
-      <utype>spec:targetType</utype>
-    </identifier>
-    <name>targetType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352534916732_707489_3427">
-        <utype>spec:targetType.id</utype>
-      </identifier>
-      <name>id</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530584332_569288_1803">
-        <utyperef>spec:Group</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352535040851_485397_3431">
-        <utype>spec:targetType.Name</utype>
-      </identifier>
-      <name>Name</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
-        <utyperef>spec:textParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352535073036_603282_3435">
-        <utype>spec:targetType.Description</utype>
-      </identifier>
-      <name>Description</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
-        <utyperef>spec:textParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352535082892_837905_3439">
-        <utype>spec:targetType.TargetClass</utype>
-      </identifier>
-      <name>TargetClass</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
-        <utyperef>spec:textParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352535091011_161543_3443">
-        <utype>spec:targetType.SpectralClass</utype>
-      </identifier>
-      <name>SpectralClass</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530175100_546727_1283">
-        <utyperef>spec:textParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352535101132_149165_3447">
-        <utype>spec:targetType.Redshift</utype>
-      </identifier>
-      <name>Redshift</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
-        <utyperef>spec:doubleParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352535112971_409384_3451">
-        <utype>spec:targetType.Pos</utype>
-      </identifier>
-      <name>Pos</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530186674_920_1321">
-        <utyperef>spec:positionParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352535123747_815339_3455">
-        <utype>spec:targetType.VarAmpl</utype>
-      </identifier>
-      <name>VarAmpl</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
-        <utyperef>spec:doubleParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <collection>
-      <identifier id="_12_1_1dfa04c4_1352535300524_878601_3485">
-        <utype>spec:targetType.CustomParams</utype>
-      </identifier>
-      <name>CustomParams</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352535291739_42351_3462">
-        <utyperef>spec:CustomParameter</utyperef>
-      </datatype>
-      <multiplicity>0..*</multiplicity>
-    </collection>
-  </objectType>
-
-  <objectType>
-    <identifier id="_12_1_1dfa04c4_1352535291739_42351_3462">
-      <utype>spec:CustomParameter</utype>
-    </identifier>
-    <name>CustomParameter</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <container>
-      <identifier id="_12_1_1dfa04c4_1352535291739_42351_3462_CONTAINER">
-        <utype>spec:CustomParameter.CONTAINER</utype>
-      </identifier>
-      <collectionref idref="_12_1_1dfa04c4_1352535300524_878601_3485">
-        <utyperef>spec:targetType.CustomParams</utyperef>
-      </collectionref>
-    </container>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352535319338_185074_3536">
-        <utype>spec:CustomParameter.Param</utype>
-      </identifier>
-      <name>Param</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530087408_772106_1140">
-        <utyperef>spec:paramType</utyperef>
-      </datatype>
-      <multiplicity>1</multiplicity>
-    </attribute>
-  </objectType>
-
   <dataType>
     <identifier id="_12_1_1dfa04c4_1352535399547_754055_3542">
       <utype>spec:STCReference</utype>
@@ -2528,204 +2727,5 @@
       <multiplicity>0..1</multiplicity>
     </attribute>
   </dataType>
-
-  <objectType>
-    <identifier id="_12_1_1dfa04c4_1352535561970_168695_3605">
-      <utype>spec:coordFrameType</utype>
-    </identifier>
-    <name>coordFrameType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <container>
-      <identifier id="_12_1_1dfa04c4_1352535561970_168695_3605_CONTAINER">
-        <utype>spec:coordFrameType.CONTAINER</utype>
-      </identifier>
-      <collectionref idref="_12_1_1dfa04c4_1352535561991_408725_3608">
-        <utyperef>spec:coordSysType.</utyperef>
-      </collectionref>
-    </container>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352535611416_309426_3678">
-        <utype>spec:coordFrameType.Name</utype>
-      </identifier>
-      <name>Name</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
-        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
-        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352535629272_491266_3682">
-        <utype>spec:coordFrameType.ReferencePosition</utype>
-      </identifier>
-      <name>ReferencePosition</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
-        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
-        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352535640463_539705_3686">
-        <utype>spec:coordFrameType.id</utype>
-      </identifier>
-      <name>id</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
-        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
-        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352535656303_783722_3690">
-        <utype>spec:coordFrameType.ucd</utype>
-      </identifier>
-      <name>ucd</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
-        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
-        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-  </objectType>
-
-  <objectType>
-    <identifier id="_12_1_1dfa04c4_1352535675568_75831_3695">
-      <utype>spec:spectralFrameType</utype>
-    </identifier>
-    <name>spectralFrameType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <extends>
-      <identifier id="_12_1_1dfa04c4_1352535675591_197314_3697">
-        <utype>spec:spectralFrameType.EXTENDS</utype>
-      </identifier>
-      <type idref="_12_1_1dfa04c4_1352535561970_168695_3605">
-        <utyperef>spec:coordFrameType</utyperef>
-      </type>
-    </extends>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352535691351_322785_3738">
-        <utype>spec:spectralFrameType.Redshift</utype>
-      </identifier>
-      <name>Redshift</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
-        <utyperef>spec:doubleParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-  </objectType>
-
-  <objectType>
-    <identifier id="_12_1_1dfa04c4_1352535706512_583551_3743">
-      <utype>spec:timeFrameType</utype>
-    </identifier>
-    <name>timeFrameType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <extends>
-      <identifier id="_12_1_1dfa04c4_1352535706531_503982_3745">
-        <utype>spec:timeFrameType.EXTENDS</utype>
-      </identifier>
-      <type idref="_12_1_1dfa04c4_1352535561970_168695_3605">
-        <utyperef>spec:coordFrameType</utyperef>
-      </type>
-    </extends>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352535729839_149358_3786">
-        <utype>spec:timeFrameType.Zero</utype>
-      </identifier>
-      <name>Zero</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
-        <utyperef>spec:doubleParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-  </objectType>
-
-  <objectType>
-    <identifier id="_12_1_1dfa04c4_1352535747249_688740_3791">
-      <utype>spec:redshiftFrameType</utype>
-    </identifier>
-    <name>redshiftFrameType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <extends>
-      <identifier id="_12_1_1dfa04c4_1352535747270_840634_3793">
-        <utype>spec:redshiftFrameType.EXTENDS</utype>
-      </identifier>
-      <type idref="_12_1_1dfa04c4_1352535561970_168695_3605">
-        <utyperef>spec:coordFrameType</utyperef>
-      </type>
-    </extends>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352535759718_887608_3834">
-        <utype>spec:redshiftFrameType.DopplerDefinition</utype>
-      </identifier>
-      <name>DopplerDefinition</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352280071018_33260_518">
-        <modelUtypeRef>ivoa_1.0</modelUtypeRef>
-        <utyperef>ivoa_1.0:stdtypes/string</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-  </objectType>
-
-  <objectType>
-    <identifier id="_12_1_1dfa04c4_1352535784928_65901_3839">
-      <utype>spec:spaceFrameType</utype>
-    </identifier>
-    <name>spaceFrameType</name>
-    <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-    <extends>
-      <identifier id="_12_1_1dfa04c4_1352535784949_580679_3841">
-        <utype>spec:spaceFrameType.EXTENDS</utype>
-      </identifier>
-      <type idref="_12_1_1dfa04c4_1352535561970_168695_3605">
-        <utyperef>spec:coordFrameType</utyperef>
-      </type>
-    </extends>
-    <attribute>
-      <identifier id="_12_1_1dfa04c4_1352535795798_816748_3882">
-        <utype>spec:spaceFrameType.Equinox</utype>
-      </identifier>
-      <name>Equinox</name>
-      <description>
-          TODO : Missing description : please, update your UML model asap.
-        </description>
-      <datatype idref="_12_1_1dfa04c4_1352530171375_946061_1263">
-        <utyperef>spec:doubleParamType</utyperef>
-      </datatype>
-      <multiplicity>0..1</multiplicity>
-    </attribute>
-  </objectType>
 
 </vo-urp:model>
