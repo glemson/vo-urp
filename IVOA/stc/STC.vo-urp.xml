@@ -7,7 +7,7 @@
   <description>This is the data model for describing Arnold Rots' STC world.</description>
   <title>STC Data Model ala VO-URP</title>
   <version>0.x</version>
-  <lastModified>2012-11-11 07:19:04</lastModified>
+  <lastModified>2012-11-13 15:59:29</lastModified>
   <import>
     <identifier id="_12_1_1dfa04c4_1351852150678_49289_216">
       <utype>ivoa_1.0</utype>
@@ -107,12 +107,7 @@
       <description>
           TODO : Missing description : please, update your UML model asap.
         </description>
-
-      <!--
-            Classes
-          -->
-
-<objectType>
+      <objectType>
         <identifier id="_12_1_1dfa04c4_1351487668168_143780_4968">
           <utype>STC_1.x:ivoa/stc/fitsType</utype>
         </identifier>
@@ -256,12 +251,7 @@ TBD SHOULD have multiplicity 1</description>
         </attribute>
       </objectType>
 
-
-      <!--
-            Data types
-          -->
-
-<dataType abstract="true">
+      <dataType abstract="true">
         <identifier id="_12_1_1dfa04c4_1351407162416_52728_1632">
           <utype>STC_1.x:ivoa/stc/stcBaseType</utype>
         </identifier>
@@ -436,12 +426,7 @@ From STC schema it seems as if every type of value</description>
         </attribute>
       </dataType>
 
-
-      <!--
-            Enumerations
-          -->
-
-<enumeration>
+      <enumeration>
         <identifier id="_12_1_1dfa04c4_1351495943550_314013_7039">
           <utype>STC_1.x:ivoa/stc/redshiftFrameValue</utype>
         </identifier>
@@ -479,12 +464,7 @@ From STC schema it seems as if every type of value</description>
         <description>
           TODO : Missing description : please, update your UML model asap.
         </description>
-
-        <!--
-            Enumerations
-          -->
-
-<enumeration>
+        <enumeration>
           <identifier id="_12_1_1dfa04c4_1351408690599_475625_2091">
             <utype>STC_1.x:ivoa/stc/unit/angleUnitType</utype>
           </identifier>
@@ -982,11 +962,7 @@ From STC schema it seems as if every type of value</description>
 <depends idref="_12_1_1dfa04c4_1351414492137_939555_2691">
           <utyperef>STC_1.x:ivoa/stc/unit/</utyperef>
         </depends>
-        <!--
-            Data types
-          -->
-
-<dataType>
+        <dataType>
           <identifier id="_12_1_1dfa04c4_1351408041561_672332_1921">
             <utype>STC_1.x:ivoa/stc/quantity/double1Type</utype>
           </identifier>
@@ -1787,11 +1763,7 @@ We do not inherit from primitives, instead add a value attribute of the correspo
         <depends idref="_12_1_1dfa04c4_1351414524285_459253_2692">
           <utyperef>STC_1.x:ivoa/stc/quantity/</utyperef>
         </depends>
-        <!--
-            Data types
-          -->
-
-<dataType abstract="true">
+        <dataType abstract="true">
           <identifier id="_12_1_1dfa04c4_1351410028464_52357_2484">
             <utype>STC_1.x:ivoa/stc/time/AbsoluteTimeType</utype>
           </identifier>
@@ -2017,12 +1989,7 @@ TBD I suggest this type is to be used as a pattern rather than a reusable type.<
           </attribute>
         </dataType>
 
-
-        <!--
-            Enumerations
-          -->
-
-<enumeration>
+        <enumeration>
           <identifier id="_12_1_1dfa04c4_1351410249107_197724_2602">
             <utype>STC_1.x:ivoa/stc/time/relocatableOriginTime</utype>
           </identifier>
@@ -2182,11 +2149,7 @@ TBD I suggest this type is to be used as a pattern rather than a reusable type.<
         <depends idref="_12_1_1dfa04c4_1351414492137_939555_2691">
           <utyperef>STC_1.x:ivoa/stc/unit/</utyperef>
         </depends>
-        <!--
-            Data types
-          -->
-
-<dataType>
+        <dataType>
           <identifier id="_12_1_1dfa04c4_1351409450325_809406_2322">
             <utype>STC_1.x:ivoa/stc/pos/posAngleType</utype>
           </identifier>
@@ -2249,12 +2212,7 @@ TBD I suggest this type is to be used as a pattern rather than a reusable type.<
           </attribute>
         </dataType>
 
-
-        <!--
-            Enumerations
-          -->
-
-<enumeration>
+        <enumeration>
           <identifier id="_12_1_1dfa04c4_1351409270550_497897_2294">
             <utype>STC_1.x:ivoa/stc/pos/posAngleReferenceType</utype>
           </identifier>
@@ -2313,12 +2271,7 @@ TBD I suggest this type is to be used as a pattern rather than a reusable type.<
         <description>
           TODO : Missing description : please, update your UML model asap.
         </description>
-
-        <!--
-            Data types
-          -->
-
-<dataType>
+        <dataType>
           <identifier id="_12_1_1dfa04c4_1351486474851_789704_4292">
             <utype>STC_1.x:ivoa/stc/coordinate/posVector2CoordinateType</utype>
           </identifier>
@@ -3922,11 +3875,7 @@ Could be a referencable object on its own. Would have a name attribute and an ST
 <depends idref="_12_1_1dfa04c4_1351572819131_56308_270">
           <utyperef>STC_1.x:ivoa/stc/coordsys/</utyperef>
         </depends>
-        <!--
-            Classes
-          -->
-
-<objectType>
+        <objectType>
           <identifier id="_12_1_1dfa04c4_1351525065382_672790_8060">
             <utype>STC_1.x:ivoa/stc/region/regionType</utype>
           </identifier>
@@ -4448,12 +4397,7 @@ Someone creates a region on purpose, they do not "just exist".</description>
           </reference>
         </objectType>
 
-
-        <!--
-            Data types
-          -->
-
-<dataType>
+        <dataType>
           <identifier id="_12_1_1dfa04c4_1351525177936_161398_8084">
             <utype>STC_1.x:ivoa/stc/region/regionAreaType</utype>
           </identifier>
@@ -4535,12 +4479,7 @@ Someone creates a region on purpose, they do not "just exist".</description>
         <description>
           TODO : Missing description : please, update your UML model asap.
         </description>
-
-        <!--
-            Classes
-          -->
-
-<objectType>
+        <objectType>
           <identifier id="_12_1_1dfa04c4_1351489325812_154540_5448">
             <utype>STC_1.x:ivoa/stc/coordsys/coordFrameType</utype>
           </identifier>
@@ -5475,12 +5414,7 @@ NB Mapped the sequence with maxOccurs unbounded to a collection with multiplicit
           </reference>
         </objectType>
 
-
-        <!--
-            Data types
-          -->
-
-<dataType>
+        <dataType>
           <identifier id="_12_1_1dfa04c4_1351491896970_218298_6245">
             <utype>STC_1.x:ivoa/stc/coordsys/genericRefPosType</utype>
           </identifier>
@@ -5678,12 +5612,7 @@ We use an explicit attribute for this.</description>
           </attribute>
         </dataType>
 
-
-        <!--
-            Enumerations
-          -->
-
-<enumeration>
+        <enumeration>
           <identifier id="_12_1_1dfa04c4_1351494744206_410428_6722">
             <utype>STC_1.x:ivoa/stc/coordsys/SpaceRefFrame</utype>
           </identifier>
@@ -6594,12 +6523,7 @@ NB How should this be used?</description>
           </literal>
         </enumeration>
 
-
-        <!--
-            Primitive Types
-          -->
-
-<primitiveType>
+        <primitiveType>
           <identifier id="_12_1_1dfa04c4_1351490053336_39675_5690">
             <utype>STC_1.x:ivoa/stc/coordsys/coordEquinoxType</utype>
           </identifier>
@@ -6630,12 +6554,7 @@ String with value restriction:
         <description>
           TODO : Missing description : please, update your UML model asap.
         </description>
-
-        <!--
-            Data types
-          -->
-
-<dataType>
+        <dataType>
           <identifier id="_12_1_1dfa04c4_1352208043551_345185_582">
             <utype>STC_1.x:ivoa/stc/area/coordIntervalType</utype>
           </identifier>
