@@ -7,7 +7,7 @@
   <description>This is the data model for describing Arnold Rots' STC world.</description>
   <title>STC Data Model ala VO-URP</title>
   <version>0.x</version>
-  <lastModified>2012-11-06 14:22:51</lastModified>
+  <lastModified>2012-11-11 07:19:04</lastModified>
   <import>
     <identifier id="_12_1_1dfa04c4_1351852150678_49289_216">
       <utype>ivoa_1.0</utype>
@@ -433,121 +433,6 @@ From STC schema it seems as if every type of value</description>
             <utyperef>STC_1.x:ivoa/stc/quantity/double3Type</utyperef>
           </datatype>
           <multiplicity>0..1</multiplicity>
-        </attribute>
-      </dataType>
-
-      <dataType>
-        <identifier id="_12_1_1dfa04c4_1351523788799_555950_7744">
-          <utype>STC_1.x:ivoa/stc/orbitType</utype>
-        </identifier>
-        <name>orbitType</name>
-        <description>Orbit defined by six orbital elements and optional mean anomaly and period; note that the epoch of periapsis or of mean anomaly is provided by T, however, an coordinate epoch should be provided by paring this element with a time instant element</description>
-        <extends>
-          <identifier id="_12_1_1dfa04c4_1351523801552_30458_7763">
-            <utype>STC_1.x:ivoa/stc/orbitType.EXTENDS</utype>
-          </identifier>
-          <type idref="_12_1_1dfa04c4_1351407145426_921778_1613">
-            <utyperef>STC_1.x:ivoa/stc/coordinate/coordinateType</utyperef>
-          </type>
-        </extends>
-        <attribute>
-          <identifier id="_12_1_1dfa04c4_1351524382466_698680_7858">
-            <utype>STC_1.x:ivoa/stc/orbitType.a</utype>
-          </identifier>
-          <name>a</name>
-          <description>Semi-major axis for elliptical (closed) orbits (1&gt;e&gt;=0) only; for parabolic or hyperbolic orbits us periapsis distance q</description>
-          <datatype idref="_12_1_1dfa04c4_1351524069919_274501_7804">
-            <utyperef>STC_1.x:ivoa/stc/quantity/double1TypeWithUnit</utyperef>
-          </datatype>
-          <multiplicity>0..1</multiplicity>
-        </attribute>
-        <attribute>
-          <identifier id="_12_1_1dfa04c4_1351524405386_555068_7862">
-            <utype>STC_1.x:ivoa/stc/orbitType.q</utype>
-          </identifier>
-          <name>q</name>
-          <description>Periapsis distance; required (instead of a) for open orbits (e&gt;=1)</description>
-          <datatype idref="_12_1_1dfa04c4_1351524069919_274501_7804">
-            <utyperef>STC_1.x:ivoa/stc/quantity/double1TypeWithUnit</utyperef>
-          </datatype>
-          <multiplicity>0..1</multiplicity>
-        </attribute>
-        <attribute>
-          <identifier id="_12_1_1dfa04c4_1351523886534_644194_7788">
-            <utype>STC_1.x:ivoa/stc/orbitType.e</utype>
-          </identifier>
-          <name>e</name>
-          <description>Eccentricity</description>
-          <datatype idref="_12_1_1dfa04c4_1351408041561_672332_1921">
-            <utyperef>STC_1.x:ivoa/stc/quantity/double1Type</utyperef>
-          </datatype>
-          <multiplicity>0..1</multiplicity>
-        </attribute>
-        <attribute>
-          <identifier id="_12_1_1dfa04c4_1351523926869_929796_7793">
-            <utype>STC_1.x:ivoa/stc/orbitType.i</utype>
-          </identifier>
-          <name>i</name>
-          <description>Inclination</description>
-          <datatype idref="_12_1_1dfa04c4_1351524069919_274501_7804">
-            <utyperef>STC_1.x:ivoa/stc/quantity/double1TypeWithUnit</utyperef>
-          </datatype>
-          <multiplicity>0..1</multiplicity>
-        </attribute>
-        <attribute>
-          <identifier id="_12_1_1dfa04c4_1351524140500_451428_7830">
-            <utype>STC_1.x:ivoa/stc/orbitType.Node</utype>
-          </identifier>
-          <name>Node</name>
-          <description>Longitude of ascending node</description>
-          <datatype idref="_12_1_1dfa04c4_1351524069919_274501_7804">
-            <utyperef>STC_1.x:ivoa/stc/quantity/double1TypeWithUnit</utyperef>
-          </datatype>
-          <multiplicity>0..1</multiplicity>
-        </attribute>
-        <attribute>
-          <identifier id="_12_1_1dfa04c4_1351524188379_333119_7835">
-            <utype>STC_1.x:ivoa/stc/orbitType.Aop</utype>
-          </identifier>
-          <name>Aop</name>
-          <description>Argument of periapsis</description>
-          <datatype idref="_12_1_1dfa04c4_1351524069919_274501_7804">
-            <utyperef>STC_1.x:ivoa/stc/quantity/double1TypeWithUnit</utyperef>
-          </datatype>
-          <multiplicity>0..1</multiplicity>
-        </attribute>
-        <attribute>
-          <identifier id="_12_1_1dfa04c4_1351524212915_109821_7840">
-            <utype>STC_1.x:ivoa/stc/orbitType.M</utype>
-          </identifier>
-          <name>M</name>
-          <description>Mean anomaly at time T; if absent T will refer to pericenter</description>
-          <datatype idref="_12_1_1dfa04c4_1351524069919_274501_7804">
-            <utyperef>STC_1.x:ivoa/stc/quantity/double1TypeWithUnit</utyperef>
-          </datatype>
-          <multiplicity>0..1</multiplicity>
-        </attribute>
-        <attribute>
-          <identifier id="_12_1_1dfa04c4_1351524246836_463081_7845">
-            <utype>STC_1.x:ivoa/stc/orbitType.P</utype>
-          </identifier>
-          <name>P</name>
-          <description>Orbital period (redundant); for closed orbits only</description>
-          <datatype idref="_12_1_1dfa04c4_1351524069919_274501_7804">
-            <utyperef>STC_1.x:ivoa/stc/quantity/double1TypeWithUnit</utyperef>
-          </datatype>
-          <multiplicity>0..1</multiplicity>
-        </attribute>
-        <attribute>
-          <identifier id="_12_1_1dfa04c4_1351524338228_660393_7851">
-            <utype>STC_1.x:ivoa/stc/orbitType.T</utype>
-          </identifier>
-          <name>T</name>
-          <description>Epoch of M (mean anomaly, if present) or of periapsis (if M is absent</description>
-          <datatype idref="_12_1_1dfa04c4_1351409889625_755016_2452">
-            <utyperef>STC_1.x:ivoa/stc/time/astronTimeType</utyperef>
-          </datatype>
-          <multiplicity>1</multiplicity>
         </attribute>
       </dataType>
 
@@ -3798,7 +3683,7 @@ Single Error, Resolution, Size, PixSize elements indicate definite values; pairs
           TODO : Missing description : please, update your UML model asap.
         </description>
             <datatype idref="_12_1_1dfa04c4_1351523788799_555950_7744">
-              <utyperef>STC_1.x:ivoa/stc/orbitType</utyperef>
+              <utyperef>STC_1.x:ivoa/stc/coordinate/orbitType</utyperef>
             </datatype>
             <multiplicity>0..1</multiplicity>
           </attribute>
@@ -3902,6 +3787,121 @@ Could be a referencable object on its own. Would have a name attribute and an ST
           </reference>
         </dataType>
 
+        <dataType>
+          <identifier id="_12_1_1dfa04c4_1351523788799_555950_7744">
+            <utype>STC_1.x:ivoa/stc/coordinate/orbitType</utype>
+          </identifier>
+          <name>orbitType</name>
+          <description>Orbit defined by six orbital elements and optional mean anomaly and period; note that the epoch of periapsis or of mean anomaly is provided by T, however, an coordinate epoch should be provided by paring this element with a time instant element</description>
+          <extends>
+            <identifier id="_12_1_1dfa04c4_1351523801552_30458_7763">
+              <utype>STC_1.x:ivoa/stc/coordinate/orbitType.EXTENDS</utype>
+            </identifier>
+            <type idref="_12_1_1dfa04c4_1351407145426_921778_1613">
+              <utyperef>STC_1.x:ivoa/stc/coordinate/coordinateType</utyperef>
+            </type>
+          </extends>
+          <attribute>
+            <identifier id="_12_1_1dfa04c4_1351524382466_698680_7858">
+              <utype>STC_1.x:ivoa/stc/coordinate/orbitType.a</utype>
+            </identifier>
+            <name>a</name>
+            <description>Semi-major axis for elliptical (closed) orbits (1&gt;e&gt;=0) only; for parabolic or hyperbolic orbits us periapsis distance q</description>
+            <datatype idref="_12_1_1dfa04c4_1351524069919_274501_7804">
+              <utyperef>STC_1.x:ivoa/stc/quantity/double1TypeWithUnit</utyperef>
+            </datatype>
+            <multiplicity>0..1</multiplicity>
+          </attribute>
+          <attribute>
+            <identifier id="_12_1_1dfa04c4_1351524405386_555068_7862">
+              <utype>STC_1.x:ivoa/stc/coordinate/orbitType.q</utype>
+            </identifier>
+            <name>q</name>
+            <description>Periapsis distance; required (instead of a) for open orbits (e&gt;=1)</description>
+            <datatype idref="_12_1_1dfa04c4_1351524069919_274501_7804">
+              <utyperef>STC_1.x:ivoa/stc/quantity/double1TypeWithUnit</utyperef>
+            </datatype>
+            <multiplicity>0..1</multiplicity>
+          </attribute>
+          <attribute>
+            <identifier id="_12_1_1dfa04c4_1351523886534_644194_7788">
+              <utype>STC_1.x:ivoa/stc/coordinate/orbitType.e</utype>
+            </identifier>
+            <name>e</name>
+            <description>Eccentricity</description>
+            <datatype idref="_12_1_1dfa04c4_1351408041561_672332_1921">
+              <utyperef>STC_1.x:ivoa/stc/quantity/double1Type</utyperef>
+            </datatype>
+            <multiplicity>0..1</multiplicity>
+          </attribute>
+          <attribute>
+            <identifier id="_12_1_1dfa04c4_1351523926869_929796_7793">
+              <utype>STC_1.x:ivoa/stc/coordinate/orbitType.i</utype>
+            </identifier>
+            <name>i</name>
+            <description>Inclination</description>
+            <datatype idref="_12_1_1dfa04c4_1351524069919_274501_7804">
+              <utyperef>STC_1.x:ivoa/stc/quantity/double1TypeWithUnit</utyperef>
+            </datatype>
+            <multiplicity>0..1</multiplicity>
+          </attribute>
+          <attribute>
+            <identifier id="_12_1_1dfa04c4_1351524140500_451428_7830">
+              <utype>STC_1.x:ivoa/stc/coordinate/orbitType.Node</utype>
+            </identifier>
+            <name>Node</name>
+            <description>Longitude of ascending node</description>
+            <datatype idref="_12_1_1dfa04c4_1351524069919_274501_7804">
+              <utyperef>STC_1.x:ivoa/stc/quantity/double1TypeWithUnit</utyperef>
+            </datatype>
+            <multiplicity>0..1</multiplicity>
+          </attribute>
+          <attribute>
+            <identifier id="_12_1_1dfa04c4_1351524188379_333119_7835">
+              <utype>STC_1.x:ivoa/stc/coordinate/orbitType.Aop</utype>
+            </identifier>
+            <name>Aop</name>
+            <description>Argument of periapsis</description>
+            <datatype idref="_12_1_1dfa04c4_1351524069919_274501_7804">
+              <utyperef>STC_1.x:ivoa/stc/quantity/double1TypeWithUnit</utyperef>
+            </datatype>
+            <multiplicity>0..1</multiplicity>
+          </attribute>
+          <attribute>
+            <identifier id="_12_1_1dfa04c4_1351524212915_109821_7840">
+              <utype>STC_1.x:ivoa/stc/coordinate/orbitType.M</utype>
+            </identifier>
+            <name>M</name>
+            <description>Mean anomaly at time T; if absent T will refer to pericenter</description>
+            <datatype idref="_12_1_1dfa04c4_1351524069919_274501_7804">
+              <utyperef>STC_1.x:ivoa/stc/quantity/double1TypeWithUnit</utyperef>
+            </datatype>
+            <multiplicity>0..1</multiplicity>
+          </attribute>
+          <attribute>
+            <identifier id="_12_1_1dfa04c4_1351524246836_463081_7845">
+              <utype>STC_1.x:ivoa/stc/coordinate/orbitType.P</utype>
+            </identifier>
+            <name>P</name>
+            <description>Orbital period (redundant); for closed orbits only</description>
+            <datatype idref="_12_1_1dfa04c4_1351524069919_274501_7804">
+              <utyperef>STC_1.x:ivoa/stc/quantity/double1TypeWithUnit</utyperef>
+            </datatype>
+            <multiplicity>0..1</multiplicity>
+          </attribute>
+          <attribute>
+            <identifier id="_12_1_1dfa04c4_1351524338228_660393_7851">
+              <utype>STC_1.x:ivoa/stc/coordinate/orbitType.T</utype>
+            </identifier>
+            <name>T</name>
+            <description>Epoch of M (mean anomaly, if present) or of periapsis (if M is absent</description>
+            <datatype idref="_12_1_1dfa04c4_1351409889625_755016_2452">
+              <utyperef>STC_1.x:ivoa/stc/time/astronTimeType</utyperef>
+            </datatype>
+            <multiplicity>1</multiplicity>
+          </attribute>
+        </dataType>
+
       </package>
 
 
@@ -3915,6 +3915,13 @@ Could be a referencable object on its own. Would have a name attribute and an ST
           TODO : Missing description : please, update your UML model asap.
         </description>
 
+        <!--
+            Dependencies
+          -->
+
+<depends idref="_12_1_1dfa04c4_1351572819131_56308_270">
+          <utyperef>STC_1.x:ivoa/stc/coordsys/</utyperef>
+        </depends>
         <!--
             Classes
           -->
