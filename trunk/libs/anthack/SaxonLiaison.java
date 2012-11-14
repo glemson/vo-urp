@@ -27,6 +27,7 @@ public final class SaxonLiaison extends TraXLiaison {
   public static final SimpleDateFormat NDF = new SimpleDateFormat("yyyyMMddHHmmss");
   /** data format : YYYY-MM-DD HH24:mm:ss */
   public static final SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  public static final SimpleDateFormat XSDDF = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
   // member :
   private long xslLastModified = EMPTY;
@@ -74,6 +75,7 @@ public final class SaxonLiaison extends TraXLiaison {
 
         addParam("lastModifiedID", NDF.format(lastDate));
         addParam("lastModifiedText", SDF.format(lastDate));
+    addParam("lastModifiedXSDDatetime", XSDDF.format(lastDate));
 
         super.transform(infile, outfile);
     } finally {

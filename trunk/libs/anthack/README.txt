@@ -25,11 +25,11 @@ Then the XSLT is processed and SaxonLiaison published the following parameters :
 
   - lastModifiedDate = string format [yyyyMMddHHmmss]
   - lastModifiedText = string format [yyyy-MM-dd HH:mm:ss]
+  - lastModifiedXSDDatetime = string format [yyyy-MM-ddTHH:mm:ss]
 
 How to compile SaxonLiaison class:
 
 javac -g -source 1.5 -target 1.5 -cp "./libs/ant.jar:./libs/ant-trax.jar" SaxonLiaison.java 
-
 
 
 --- End of file ---
