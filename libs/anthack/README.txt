@@ -28,7 +28,7 @@ Then the XSLT is processed and SaxonLiaison published the following parameters :
 
 How to compile SaxonLiaison class:
 
-javac -cp "./libs/ant.jar:./libs/ant-trax.jar" SaxonLiaison.java 
+javac -g -source 1.5 -target 1.5 -cp "./libs/ant.jar:./libs/ant-trax.jar" SaxonLiaison.java 
 
 
 
