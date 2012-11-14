@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://vo-urp.googlecode.com/xsd/v0.9" targetNamespace="http://vo-urp.googlecode.com/xsd/v0.9" attributeFormDefault="unqualified"
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://vo-urp.googlecode.com/xsd/v0.9" 
+targetNamespace="http://vo-urp.googlecode.com/xsd/v0.9" attributeFormDefault="unqualified"
   elementFormDefault="unqualified">
 
   <xsd:annotation>
@@ -269,7 +270,7 @@
           <xsd:element name="version" type="xsd:string" minOccurs="1" />
           <xsd:element name="previousVersion" type="xsd:anyURI" minOccurs="0" />
           <!-- TBD next should be a datetime, but then need to generate that properly from XMI -->
-          <xsd:element name="lastModified" type="xsd:string" />
+          <xsd:element name="lastModified" type="xsd:dateTime" />
           <xsd:element name="import" type="ModelProxy" minOccurs="0" maxOccurs="unbounded">
             <xsd:annotation>
               <xsd:documentation>
@@ -289,7 +290,7 @@
               </xsd:documentation>
             </xsd:annotation>
           </xsd:element>
-          <xsd:element name="package" type="Package" minOccurs="1" maxOccurs="unbounded">
+          <xsd:element name="package" type="Package" minOccurs="0" maxOccurs="unbounded">
             <xsd:annotation>
               <xsd:documentation>
                 The collection of packages which contain the type definitions in the model.
@@ -876,7 +877,7 @@
         It is ok to create model proxy documents.
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:unique name="utypes">
+    <xsd:unique name="uniqueUtypes">
       <xsd:annotation>
         <xsd:documentation>
           Ensure that the utype-s in the model proxy are uniqeu..

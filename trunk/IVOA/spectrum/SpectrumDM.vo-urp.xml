@@ -7,7 +7,7 @@
   <description>This is the data model for Photometric Calibration ... </description>
   <title>Spectrum-v1.01</title>
   <version>0.x</version>
-  <lastModified>2012-11-13 15:59:29</lastModified>
+  <lastModified>2012-11-14T17:08:14</lastModified>
   <import>
     <identifier id="_12_1_1dfa04c4_1352280071015_567597_517">
       <utype>ivoa_1.0</utype>

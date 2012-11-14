@@ -1,0 +1,1050 @@
+<html xmlns:vo-urp="http://vo-urp.googlecode.com/xsd/v0.9">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Spectrum-v2.0</title>
+    <link rel="stylesheet" href="../ivoa_wg.css" type="text/css">
+    <link rel="stylesheet" href="../xmi.css" type="text/css">
+  </head>
+  <body>
+    <h1>Spectrum-v2.0</h1>
+    <h2><a id="contents" name="contents">Table of Contents</a></h2>
+    <div class="head">
+      <table class=".toc">
+        <tr>
+          <td>1.</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#model">model: SpectralDM</a></td>
+        </tr>
+        <tr>
+          <td>2.</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#packages">Packages and Types</a></td>
+        </tr>
+        <tr>
+          <td>2.1</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rootpackage">[root package]</a></td>
+        </tr>
+        <tr>
+          <td>2.1.1</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#spec_2.0:BaseSPS">objectType:BaseSPS</a></td>
+        </tr>
+        <tr>
+          <td>2.1.2</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#spec_2.0:Bounds">dataType:Bounds</a></td>
+        </tr>
+        <tr>
+          <td>2.1.3</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#spec_2.0:Coverage">dataType:Coverage</a></td>
+        </tr>
+        <tr>
+          <td>2.1.4</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#spec_2.0:Location">dataType:Location</a></td>
+        </tr>
+        <tr>
+          <td>2.1.5</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#spec_2.0:PhotometryFilter">objectType:PhotometryFilter</a></td>
+        </tr>
+        <tr>
+          <td>2.1.6</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#spec_2.0:PhotometryPoint">objectType:PhotometryPoint</a></td>
+        </tr>
+        <tr>
+          <td>2.1.7</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#spec_2.0:Quantity">dataType:Quantity</a></td>
+        </tr>
+        <tr>
+          <td>2.1.8</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#spec_2.0:Spectral">objectType:Spectral</a></td>
+        </tr>
+        <tr>
+          <td>3.</td>
+          <td>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="#utypes">UTYPE-s</a></td>
+        </tr>
+        <tr>
+          <td>4.</td>
+          <td>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="#modelimports">Imported Models</a></td>
+        </tr>
+        <tr>
+          <td>4.1</td>
+          <td>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="#ivoa_1.0">IVOA_Types</a></td>
+        </tr>
+      </table>
+    </div>
+    <hr>
+    <h1><a name="spec_2.0"></a><a name="model">1. Model: Spectrum-v2.0 (SpectralDM)</a></h1>
+    <table>
+      <tr>
+        <td align="right"><b>Authors</b></td>
+        <td> : </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td align="right"><b>Date</b></td>
+        <td> : </td>
+        <td>2012-11-14T17:08:14</td>
+      </tr>
+      <tr>
+        <td align="right"><b>Version</b></td>
+        <td> : </td>
+        <td>0.x</td>
+      </tr>
+      <tr>
+        <td align="right" valign="top"><b>Abstract</b></td>
+        <td valign="top"> : </td>
+        <td>This is the data model for Photometric Calibration ... </td>
+      </tr>
+      <tr>
+        <td align="right" valign="top"><b>Diagram</b></td>
+        <td valign="top"> : </td>
+        <td>The following diagram has been generated from the model using the <a href="http://www.graphviz.org/" target="_blank">GraphViz</a> tool.<br>
+          The classes and packages in the diagram can be clicked and are mapped to the descriptions of the corresponding element elsewhere
+          in the document. 
+          
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3"></td>
+      </tr>
+    </table><img src="SpectralDM.png" usemap="#GVmap"><map id="GVmap" name="GVmap">
+<area shape="rect" id="node2" href="#spec_2.0:Spectral" title="{Spectral}" alt="" coords="28,17,100,66"/>
+<area shape="rect" id="node3" href="#spec_2.0:BaseSPS" title="{BaseSPS|+fluxAxisLocation : \l}" alt="" coords="5,142,123,191"/>
+<area shape="rect" id="node4" href="#spec_2.0:PhotometryPoint" title="{PhotometryPoint|+flux : \l+fluxError : \l}" alt="" coords="137,12,241,71"/>
+<area shape="rect" id="node5" href="#spec_2.0:PhotometryFilter" title="{PhotometryFilter|+name : \l}" alt="" coords="148,142,252,191"/>
+<area shape="rect" id="node6" href="#spec_2.0:Quantity" title="{&lt;&lt;datatype&gt;&gt;\lQuantity|+value : \l+unit : \l}" alt="" coords="266,6,352,77"/>
+<area shape="rect" id="node7" href="#spec_2.0:Coverage" title="{&lt;&lt;datatype&gt;&gt;\lCoverage|+location : \l+bounds : \l}" alt="" coords="377,6,463,77"/>
+<area shape="rect" id="node8" href="#spec_2.0:Location" title="{&lt;&lt;datatype&gt;&gt;\lLocation|+value : \l+ucd : \l}" alt="" coords="487,6,573,77"/>
+<area shape="rect" id="node9" href="#spec_2.0:Bounds" title="{&lt;&lt;datatype&gt;&gt;\lBounds|+lower : \l+upper : \l}" alt="" coords="598,6,684,77"/>
+</map>
+
+    <hr>
+    <h1>2.<a name="packages">Model contents: Packages and Types</a></h1>
+    <p>
+      The following sub-sections present all packages in the model with their types.
+      The packages are listed here in alphabetical order.
+      Each sub-section contains a description of the package and a table containing its various features.
+      
+    </p>
+    <h3><a name="rootpackage"></a>2.1 [root package]
+    </h3>
+    <table border="1" cellspacing="2" width="100%">
+      <tr>
+        <td class="objecttype-title" width="20%">Model</td>
+        <td class="objecttype-name">spec_2.0</td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">Object types</td>
+        <td colspan="2" class="feature-detail"><a href="#spec_2.0:BaseSPS">BaseSPS</a> <a href="#spec_2.0:PhotometryFilter">PhotometryFilter</a> <a href="#spec_2.0:PhotometryPoint">PhotometryPoint</a> <a href="#spec_2.0:Spectral">Spectral</a> 
+        </td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">Data types</td>
+        <td colspan="2" class="feature-detail"><a href="#spec_2.0:Bounds">Bounds</a> <a href="#spec_2.0:Coverage">Coverage</a> <a href="#spec_2.0:Location">Location</a> <a href="#spec_2.0:Quantity">Quantity</a> 
+        </td>
+      </tr>
+    </table>
+    <h3><a name="spec_2.0:BaseSPS"></a>2.1.1 objectType: BaseSPS
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">spec_2.0:BaseSPS</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td class="info-title">Subclasses</td>
+                      <td class="feature-detail" colspan="3"><a href="#spec_2.0:PhotometryPoint">PhotometryPoint</a> 
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">container</td>
+                      <td colspan="3" class="feature-detail"><a href="#spec_2.0:Spectral">Spectral</a>.<a href="#spec_2.0:Spectral.sps">sps</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="spec_2.0:BaseSPS.fluxAxisLocation"></a><b>fluxAxisLocation</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#spec_2.0:Location">Location</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">spec_2.0:BaseSPS.fluxAxisLocation<br>[datatype is structured, utype can be extended]         
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="spec_2.0:Bounds"></a>2.1.2 dataType: Bounds
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">spec_2.0:Bounds</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="spec_2.0:Bounds.lower"></a><b>lower</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#spec_2.0:Location">Location</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">spec_2.0:Bounds.lower<br>[datatype is structured, utype can be extended]         
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="spec_2.0:Bounds.upper"></a><b>upper</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#spec_2.0:Location">Location</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">spec_2.0:Bounds.upper<br>[datatype is structured, utype can be extended]         
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="spec_2.0:Coverage"></a>2.1.3 dataType: Coverage
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">spec_2.0:Coverage</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="spec_2.0:Coverage.location"></a><b>location</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#spec_2.0:Location">Location</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">spec_2.0:Coverage.location<br>[datatype is structured, utype can be extended]         
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="spec_2.0:Coverage.bounds"></a><b>bounds</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#spec_2.0:Bounds">Bounds</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">spec_2.0:Coverage.bounds<br>[datatype is structured, utype can be extended]         
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="spec_2.0:Location"></a>2.1.4 dataType: Location
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">spec_2.0:Location</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="spec_2.0:Location.value"></a><b>value</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#spec_2.0:Quantity">Quantity</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">spec_2.0:Location.value<br>[datatype is structured, utype can be extended]         
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="5"><a name="spec_2.0:Location.ucd"></a><b>ucd</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">&lt;&lt;skosconcept&gt;&gt;</td>
+                      <td class="feature-detail">
+                        Broadest SKOS concept:<br><a href="[UCD]" target="_blank">[UCD]</a><br>Vocabulary URI:<br><a href="[UCD vocabulary URI]" target="_blank">[UCD vocabulary URI]</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">spec_2.0:Location.ucd</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="spec_2.0:PhotometryFilter"></a>2.1.5 objectType: PhotometryFilter
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">spec_2.0:PhotometryFilter</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="spec_2.0:PhotometryFilter.name"></a><b>name</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">spec_2.0:PhotometryFilter.name</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="spec_2.0:PhotometryPoint"></a>2.1.6 objectType: PhotometryPoint
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">spec_2.0:PhotometryPoint</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">extends</td>
+                      <td colspan="3" class="feature-detail"><a href="#spec_2.0:BaseSPS">BaseSPS</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="spec_2.0:PhotometryPoint.flux"></a><b>flux</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#spec_2.0:Quantity">Quantity</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">spec_2.0:PhotometryPoint.flux<br>[datatype is structured, utype can be extended]         
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="spec_2.0:PhotometryPoint.fluxError"></a><b>fluxError</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/real">real</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">spec_2.0:PhotometryPoint.fluxError</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">references</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="spec_2.0:PhotometryPoint.filter"></a><b>filter</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#spec_2.0:PhotometryFilter">PhotometryFilter</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">spec_2.0:PhotometryPoint.filter</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="spec_2.0:Quantity"></a>2.1.7 dataType: Quantity
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">spec_2.0:Quantity</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="spec_2.0:Quantity.value"></a><b>value</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/real">real</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">spec_2.0:Quantity.value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="spec_2.0:Quantity.unit"></a><b>unit</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">spec_2.0:Quantity.unit</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="spec_2.0:Spectral"></a>2.1.8 objectType: Spectral
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">spec_2.0:Spectral</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td colspan="3" class="info-title">collections</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="5"><a name="spec_2.0:Spectral.sps"></a><b>sps</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#spec_2.0:BaseSPS">BaseSPS</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">spec_2.0:Spectral.sps</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..*</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">isOrdered</td>
+                      <td class="feature-detail">false</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><hr>
+    <h1>3.<a name="utypes">UTYPEs</a></h1>  
+    The following table shows all UTYPEs for this data model.
+    It is ordered alphabetically and the UTYPEs are hyper-linked to the location
+    in the document where the actual element is fully defined.
+    
+    
+    <table style="border-style:solid;border-width:1px;" border="1" cellspacing="0" cellpadding="0">
+      <tr>
+        <td class="feature-heading">UTYPE</td>
+        <td class="feature-heading">feature type</td>
+        <td class="feature-heading">description</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0">spec_2.0</a></td>
+        <td class="feature-detail">vo-urp:model</td>
+        <td class="feature-detail">This is the data model for Photometric Calibration ... </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:BaseSPS">spec_2.0:BaseSPS</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:BaseSPS.fluxAxisLocation">spec_2.0:BaseSPS.fluxAxisLocation</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:Bounds">spec_2.0:Bounds</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:Bounds.lower">spec_2.0:Bounds.lower</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:Bounds.upper">spec_2.0:Bounds.upper</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:Coverage">spec_2.0:Coverage</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:Coverage.bounds">spec_2.0:Coverage.bounds</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:Coverage.location">spec_2.0:Coverage.location</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:Location">spec_2.0:Location</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:Location.ucd">spec_2.0:Location.ucd</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:Location.value">spec_2.0:Location.value</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:PhotometryFilter">spec_2.0:PhotometryFilter</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:PhotometryFilter.name">spec_2.0:PhotometryFilter.name</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:PhotometryPoint">spec_2.0:PhotometryPoint</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:PhotometryPoint.filter">spec_2.0:PhotometryPoint.filter</a></td>
+        <td class="feature-detail">reference</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:PhotometryPoint.flux">spec_2.0:PhotometryPoint.flux</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:PhotometryPoint.fluxError">spec_2.0:PhotometryPoint.fluxError</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:Quantity">spec_2.0:Quantity</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:Quantity.unit">spec_2.0:Quantity.unit</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:Quantity.value">spec_2.0:Quantity.value</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:Spectral">spec_2.0:Spectral</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#spec_2.0:Spectral.sps">spec_2.0:Spectral.sps</a></td>
+        <td class="feature-detail">collection</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+    </table>
+    <hr>
+    <h1>4.<a name="modelimports">Imported Models</a></h1>
+    <p>This section lists the external models imported by the current data model.
+      For each imported model we list URL, prefix used and the types that have been imported.
+      Of the imported types we only provide the name and utype.
+    </p>
+    <h2><a name="ivoa_1.0"></a>4.1 ivoa_1.0
+    </h2>
+    <table border="1" cellspacing="2" width="100%">
+      <tr>
+        <td class="objecttype-title" width="20%">Model</td>
+        <td class="objecttype-name">ivoa_1.0</td>
+      </tr>
+      <tr>
+        <td width="30%" class="info-title">url</td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.vo-urp.xml">http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.vo-urp.xml</a></td>
+      </tr>
+      <tr>
+        <td width="30%" class="info-title">documentation url</td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html">http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html</a></td>
+      </tr>
+      <tr>
+        <td colspan="2" class="info-title">Datatypes</td>
+      </tr>
+      <tr>
+        <td class="feature-heading" width="30%">name</td>
+        <td class="feature-heading" width="70%">utype</td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/Identity"></a>Identity
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/Identity">ivoa_1.0:stdtypes/Identity</a></td>
+      </tr>
+      <tr>
+        <td colspan="2" class="info-title">Primitive Types</td>
+      </tr>
+      <tr>
+        <td class="feature-heading" width="30%">name</td>
+        <td class="feature-heading" width="70%">utype</td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/anyURI"></a>anyURI
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/anyURI">ivoa_1.0:stdtypes/anyURI</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/boolean"></a>boolean
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/boolean">ivoa_1.0:stdtypes/boolean</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/complex"></a>complex
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/complex">ivoa_1.0:stdtypes/complex</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/datetime"></a>datetime
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/datetime">ivoa_1.0:stdtypes/datetime</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/decimal"></a>decimal
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/decimal">ivoa_1.0:stdtypes/decimal</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/duration"></a>duration
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/duration">ivoa_1.0:stdtypes/duration</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/integer"></a>integer
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/integer">ivoa_1.0:stdtypes/integer</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/nonnegativeinteger"></a>nonnegativeInteger
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/nonnegativeinteger">ivoa_1.0:stdtypes/nonnegativeinteger</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/rational"></a>rational
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/rational">ivoa_1.0:stdtypes/rational</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/real"></a>real
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/real">ivoa_1.0:stdtypes/real</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/string"></a>string
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/string">ivoa_1.0:stdtypes/string</a></td>
+      </tr>
+    </table>
+  </body>
+</html>

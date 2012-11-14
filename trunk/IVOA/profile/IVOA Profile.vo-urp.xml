@@ -7,7 +7,7 @@
   <description>This is the main reference data model containing primitive types used in other data models.</description>
   <title>IVOA Reference Types Data Model ala VO-URP</title>
   <version>0.x</version>
-  <lastModified>2012-11-06 15:12:19</lastModified>
+  <lastModified>2012-11-14T17:08:14</lastModified>
 
   <package>
     <identifier id="_12_1_1dfa04c4_1349943899446_25247_168">
@@ -17,12 +17,7 @@
     <description>
           TODO : Missing description : please, update your UML model asap.
         </description>
-
-    <!--
-            Data types
-          -->
-
-<dataType>
+    <dataType>
       <identifier id="_12_1_8e0028f_1242146981265_564771_339">
         <utype>ivoa_1.0:stdtypes/Identity</utype>
       </identifier>
@@ -78,12 +73,7 @@ It is supposed to be unique in the IVO context and should likely be constrained 
       </attribute>
     </dataType>
 
-
-    <!--
-            Primitive Types
-          -->
-
-<primitiveType>
+    <primitiveType>
       <identifier id="_10_0_42c01ac_1131110143687_425384_2143">
         <utype>ivoa_1.0:stdtypes/real</utype>
       </identifier>

@@ -7,7 +7,7 @@
   <description>This is the data model for describing a TAP_SCHEMA.</description>
   <title>TAP_SCHEMA Dat Model ala VO-URP</title>
   <version>0.x</version>
-  <lastModified>2012-11-06 13:41:36</lastModified>
+  <lastModified>2012-11-14T17:08:14</lastModified>
   <import>
     <identifier id="_12_1_1dfa04c4_1352203901356_512837_228">
       <utype>ivoa_1.0</utype>
@@ -103,12 +103,7 @@
       </identifier>
       <name>TAP_SCHEMA</name>
       <description>Package containing types describing TAP_SCHEMA</description>
-
-      <!--
-            Classes
-          -->
-
-<objectType>
+      <objectType>
         <identifier id="_12_1_1dfa04c4_1338117863614_67789_821">
           <utype>TAP:ivoa/TAP_SCHEMA/Schema</utype>
         </identifier>
@@ -585,12 +580,7 @@
         </reference>
       </objectType>
 
-
-      <!--
-            Data types
-          -->
-
-<dataType>
+      <dataType>
         <identifier id="_12_1_1dfa04c4_1349963242684_442824_398">
           <utype>TAP:ivoa/TAP_SCHEMA/ColumnType</utype>
         </identifier>
@@ -665,12 +655,7 @@
         </attribute>
       </dataType>
 
-
-      <!--
-            Enumerations
-          -->
-
-<enumeration>
+      <enumeration>
         <identifier id="_12_1_1dfa04c4_1349934408328_926662_986">
           <utype>TAP:ivoa/TAP_SCHEMA/TableType</utype>
         </identifier>
