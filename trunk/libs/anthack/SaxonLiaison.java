@@ -64,22 +64,24 @@ public final class SaxonLiaison extends TraXLiaison {
   public void transform(final File infile, final File outfile) throws Exception {
     final String oldProperty = System.setProperty(TRANSFORM_PROP, SAXON_FACTORY);
 
-    final long lastModified = computeLastModified(infile);
+    try {
+        final long lastModified = computeLastModified(infile);
 
-    addParam("lastModified", String.valueOf(lastModified));
+        addParam("lastModified", String.valueOf(lastModified));
 
-    final Date lastDate = new Date(lastModified);
-    System.out.println("lastModifiedDate : " + lastDate);
+        final Date lastDate = new Date(lastModified);
+        System.out.println("lastModifiedDate : " + lastDate);
 
-    addParam("lastModifiedID", NDF.format(lastDate));
-    addParam("lastModifiedText", SDF.format(lastDate));
+        addParam("lastModifiedID", NDF.format(lastDate));
+        addParam("lastModifiedText", SDF.format(lastDate));
 
-    super.transform(infile, outfile);
-
-    if (oldProperty == null) {
-      System.clearProperty(TRANSFORM_PROP);
-    } else {
-      System.setProperty(TRANSFORM_PROP, oldProperty);
+        super.transform(infile, outfile);
+    } finally {
+        if (oldProperty == null) {
+          System.clearProperty(TRANSFORM_PROP);
+        } else {
+          System.setProperty(TRANSFORM_PROP, oldProperty);
+        }
     }
   }
 
