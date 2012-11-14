@@ -32,14 +32,16 @@
       Get build properties (general).
 	  Should only contain the location of the directory where input properties and data model can be found.
 	-->
-	<property file="build.properties" />
+	<property file="build.properties"/>
+	
+    <fail unless="input"                  message="Must define property 'input' in build.properties (indicating project directory) !"/>
 
-  <fail unless="input"                  message="Must define property 'input' in build.properties (indicating project directory) !"/>
+	<property file="${input}/project.properties" />
 
 	
+	
 	<!-- read pipeline configuration properties -->
-	<property file="${input}/project.properties"/>
-	<fail unless="project.name"           message="Must define property 'project.name' in ${input}/project.properties (name of this project) !" />
+	<fail unless="project.name"           message="Must define property 'project.name' in ${props.file} (name of this project) !" />
 	<fail unless="project.version"        message="Must define property 'project.version' in ${input}/project.properties !" />
 	<fail unless="source"                 message="Must define property 'source' in ${input}/project.properties (the source data model file as xmi 2.x) !" />
 	<fail unless="xmi2intermediate"       message="Must define property 'xmi2intermediate' in ${input}/project.properties (the basic xmi2intermediate xsl file) !"/>
@@ -73,8 +75,10 @@
 	<!-- output files -->
 	<property name="source_checked" value="${project.name}_CHECK.xml" />
 	<property name="source_filtered" value="${project.name}_FILTER.xml" />
+	<!--
 	<property name="source_intermediate" value="${project.name}_INTERMEDIATE.xml" />
-
+	-->
+	<property name="source_intermediate" value="${project.name}.vo-urp.xml" />
 
 	<!-- vo-urp paths -->
 	<property name="root" location="." />
@@ -82,6 +86,7 @@
 	<property name="templates" location="./templates" />
 	<property name="libs" location="./libs" />
 	<property name="sources" location="./src" />
+	<property name="classes" location="./classes" />
 	
 
 	<!-- define and instantiate output directories -->
@@ -509,9 +514,85 @@
 			<property name="source_filtered" value="${source_intermediate}" />
 		</ant>
 	</target>
+<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+                                  VO-URP generation
+     +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	-->
+	  <target name="run_vo-urp">
+	  	<!-- run all vo-urp targets -->
+			<property name="source" value="${source}" />
+			<property name="source_filtered" value="${source_filtered}" />
+	 
+			<ant target="run_xmi2vo-urp" inheritAll="true"/>
+	  	    <ant target="run_vo-urp2html" inheritAll="true"/>
 
+		</target>
 
+	<!-- target run_xmi2vo-urp : transform the source model (xmi) to the vo-urp model 
+	then generate the utype-s-->
+	<target name="run_xmi2vo-urp"> 
+		<fail unless="xmi2vo-urp" message="Must define property 'xmi2vo-urp' in ${input}/project.properties (the basic xmi2vo-urp translaytion script) !"/>
+		<xslt2 in="${input}/${source}" out="${input}/TEMP_${source_intermediate}" style="${res}/${xmi2vo-urp}">
+			<param name="root_package" expression="${root_package}" />
+			<param name="model_package" expression="${model_package}" />
+		</xslt2>
 
+		<xslt2 in="${input}/TEMP_${source_intermediate}"
+			  out="${input}/${source_intermediate}" 
+			style="${res}/generate-utypes4vo-urp.xsl">
+		</xslt2>
+		
+		<delete file="${input}/TEMP_${source_intermediate}"/>
+	</target>
+
+	<target name="run_vo-urp2modelproxy">
+		<echo>run_vo-urp2html : starting generate HTML from file ${output}/${source_intermediate}</echo>
+	
+		<xslt2 in="${input}/${source_intermediate}" out="${input}/${project.name}.modelproxy.xml"
+			style="${res}/vo-urp2modelproxy.xsl">
+        </xslt2> 
+    </target>
+		
+	<target name="run_vo-urp2html" depends="run_vo-urp2gvd">
+		<echo>run_vo-urp2html : starting generate HTML from file ${output}/${source_intermediate}</echo>
+	
+		<xslt2 in="${input}/${source_intermediate}" out="${input}/${project.name}.html"
+			style="${res}/vo-urp2html.xsl">
+            <param name="project_name" expression="${project.name}"/>
+            <param name="graphviz_png" if="graphviz.path" expression="${graphviz.png}"/>
+            <param name="graphviz_map" if="graphviz.path" expression="${graphviz.map.placeholder}"/>
+          <param name="preamble" expression="${html.preamble}"/>
+        </xslt2> 
+<!--
+		<copy todir="${input}">
+            <fileset dir="css">
+                <include name="*.css" />
+            </fileset>
+        </copy>
+-->
+		<ant target="postGenerateHTML_vo-urp" />
+
+		<echo>run_vo-urp2html : done.</echo>  
+	</target>
+
+	<!-- target run_intermediate2gvd : generates Object Graphs (graphviz tool) from intermediate model -->
+    <!-- note : this target not included in the standard pipeline : run it manually -->
+	<target name="run_vo-urp2gvd" if="graphviz.path">
+		<echo>run_vo-urp2gvd : starting generate GraphViz from file ${output}/${source_intermediate}</echo>
+
+		<xslt2 in="${input}/${source_intermediate}" out="${input}/${project.name}.gvd" style="${res}/vo-urp2gvd.xsl" />
+
+    <exec executable="${graphviz.path}" dir="${input}" >
+        <arg value="-Tcmapx" />
+        <arg value="-o${graphviz.map}" />
+        <arg value="-Tpng"/>
+        <arg value="-o${graphviz.png}"/>
+        <arg value="${project.name}.gvd"/>
+    </exec>
+    <echo>run_vo-urp2gvd : done.</echo>
+
+		</target>
+	
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 	<!-- target xmi2intermediate : GenTool preprocessor generating according to ivoaDMMetamodel.xsd -->
 	<target name="xmi2intermediate">
@@ -604,7 +685,12 @@
       <replace file="${outputHTML}/${project.name}.html" token="${graphviz.map.placeholder}" value="${map}"/>
   </target>
 	
-
+	  <target name="postGenerateHTML_vo-urp"  if="graphviz.path" >
+	      <loadfile property="map" srcfile="${input}/${graphviz.map}"/>
+		
+	      <replace file="${input}/${project.name}.html" token="${graphviz.map.placeholder}" value="${map}"/>
+	  </target>
+		
 	<!-- target run_intermediate2rdf : generates a RDF instance from intermediate model -->
     <target name="run_intermediate2rdf" >
 		<echo>run_intermediate2rdf : starting generate RDF from file ${output}/${source_intermediate}</echo>
@@ -620,7 +706,7 @@
 	<!-- target run_intermediate2gvd : generates Object Graphs (graphviz tool) from intermediate model -->
     <!-- note : this target not included in the standard pipeline : run it manually -->
 	<target name="run_intermediate2gvd" if="graphviz.path">
-		<echo>run_intermediate2gvd : starting generate GraphViz from file ${output}/${source_intermediate}</echo>
+		<echo>run_vo-run_intermediate2gvd : starting generate GraphViz from file ${output}/${source_intermediate}</echo>
 
 		<xslt2 in="${output}/${source_intermediate}" out="${output}/html/${project.name}.gvd" style="${res}/intermediate2gvd.xsl" />
 

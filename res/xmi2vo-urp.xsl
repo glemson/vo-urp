@@ -18,7 +18,8 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 
   <xsl:param name="lastModified" />
   <xsl:param name="lastModifiedText" />
-
+  <xsl:param name="lastModifiedXSDDatetime"/>
+  
   <xsl:param name="utypesHavePrefix" select="'true'"/>
 
   <!-- xml index on xml:id -->
@@ -81,12 +82,15 @@ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 
       <xsl:apply-templates select="." mode="model.tags" />
       <xsl:element name="lastModified">
-        <xsl:value-of select="$lastModifiedText" />
+        <xsl:value-of select="$lastModifiedXSDDatetime" />
       </xsl:element>
       <xsl:apply-templates select="./*[@xmi:type='uml:Model']" mode="modelimport"/>
       
       <xsl:apply-templates select="./*[@xmi:type='uml:Package']" />
-      <xsl:apply-templates select="./ownedMember[@xmi:type='uml:Class' or @xmi:type='uml:DataType' or @xmi:type='uml:Enumeration']" />
+      <xsl:apply-templates select="./ownedMember[@xmi:type='uml:Class']"/>
+      <xsl:apply-templates select="./ownedMember[@xmi:type='uml:DataType']"/>
+      <xsl:apply-templates select="./ownedMember[@xmi:type='uml:Enumeration']" />
+      <xsl:apply-templates select="./ownedMember[@xmi:type='uml:PrimitiveType']" />
     </xsl:element>
   </xsl:template>
 
@@ -174,41 +178,10 @@ Should no longer depend on a utype declaration, but on an explicit abstraction w
 
           <xsl:apply-templates select="./*[@xmi:type='uml:Dependency']" />
         </xsl:if>
-        <xsl:if test="count(./*[@xmi:type='uml:Class']) > 0">
-          &cr;
-          <xsl:comment>
-            Classes
-          </xsl:comment>&cr;&cr;
-
           <xsl:apply-templates select="./*[@xmi:type='uml:Class']" />
-        </xsl:if>
-
-        <xsl:if test="count(./*[@xmi:type='uml:DataType']) > 0">
-          &cr;
-          <xsl:comment>
-            Data types
-          </xsl:comment>&cr;&cr;
-
           <xsl:apply-templates select="./*[@xmi:type='uml:DataType']" />
-        </xsl:if>
-
-        <xsl:if test="count(./*[@xmi:type='uml:Enumeration']) > 0">
-          &cr;
-          <xsl:comment>
-            Enumerations
-          </xsl:comment>&cr;&cr;
-
           <xsl:apply-templates select="./*[@xmi:type='uml:Enumeration']" />
-        </xsl:if>
-
-        <xsl:if test="count(./*[@xmi:type='uml:PrimitiveType']) > 0">
-          &cr;
-          <xsl:comment>
-            Primitive Types
-          </xsl:comment>&cr;&cr;
-
           <xsl:apply-templates select="./*[@xmi:type='uml:PrimitiveType']" />
-        </xsl:if>
 
         <xsl:apply-templates select="./*[@xmi:type='uml:Package']" />
 

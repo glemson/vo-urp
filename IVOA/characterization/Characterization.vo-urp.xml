@@ -7,7 +7,7 @@
   <description>This is the data model for describing a TAP_SCHEMA.</description>
   <title>Characterization Data Model ala VO-URP</title>
   <version>0.x</version>
-  <lastModified>2012-11-06 15:08:23</lastModified>
+  <lastModified>2012-11-14T17:08:14</lastModified>
   <import>
     <identifier id="_12_1_1dfa04c4_1351264621931_639628_1553">
       <utype>STC_1.x</utype>
@@ -139,12 +139,7 @@
       <description>
           TODO : Missing description : please, update your UML model asap.
         </description>
-
-      <!--
-            Classes
-          -->
-
-<objectType abstract="true">
+      <objectType abstract="true">
         <identifier id="_12_1_1dfa04c4_1351227235644_523232_714">
           <utype>IVOA:ivoa/char/CharacterisationType</utype>
         </identifier>
@@ -963,12 +958,7 @@
         </description>
       </objectType>
 
-
-      <!--
-            Data types
-          -->
-
-<dataType>
+      <dataType>
         <identifier id="_12_1_1dfa04c4_1351228325470_406924_1194">
           <utype>IVOA:ivoa/char/StatErrorType</utype>
         </identifier>
@@ -1317,12 +1307,7 @@
         </description>
       </dataType>
 
-
-      <!--
-            Enumerations
-          -->
-
-<enumeration>
+      <enumeration>
         <identifier id="_12_1_1dfa04c4_1351228796388_64079_1330">
           <utype>IVOA:ivoa/char/CalibrationStatus</utype>
         </identifier>

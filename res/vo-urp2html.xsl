@@ -14,7 +14,7 @@ We take over the style sheet from that source:
 http://www.objectsbydesign.com/projects/xmi.css
 -->
 <xsl:stylesheet version="2.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-xmlns:vo-urp="http://vo-urp.googlecode.com/xsd/v0.9">
+	xmlns:vo-urp="http://vo-urp.googlecode.com/xsd/v0.9">
   
   <xsl:import href="utype.xsl"/>
   <xsl:import href="common.xsl"/>
@@ -30,7 +30,6 @@ xmlns:vo-urp="http://vo-urp.googlecode.com/xsd/v0.9">
  <!-- Input parameters -->
   <xsl:param name="lastModifiedID"/>
   <xsl:param name="lastModifiedText"/>
-  <xsl:param name="root.url" select="'http://volute.googlecode.com/svn/trunk/projects/theory/snapdm/specification/'"/>
 
   <xsl:param name="project_name"/>
   <!-- 
@@ -48,7 +47,6 @@ xmlns:vo-urp="http://vo-urp.googlecode.com/xsd/v0.9">
   <xsl:variable name="contents_section_number" select="'2.'"/>
   <xsl:variable name="utypes_section_number" select="'3.'"/>
   <xsl:variable name="modelimports_section_number" select="'4.'"/>
-  <xsl:variable name="packages" select="//package/identifier/utype"/>
   
   <xsl:template match="/">
     <xsl:apply-templates select="vo-urp:model"/>
@@ -67,8 +65,12 @@ xmlns:vo-urp="http://vo-urp.googlecode.com/xsd/v0.9">
 <title>
 <xsl:value-of select="title"/>
 </title>
+    <link rel="stylesheet" href="../ivoa_wg.css" type="text/css"/>
+    <link rel="stylesheet" href="../xmi.css" type="text/css"/>
+<!--
     <link rel="stylesheet" href="http://vo-urp.googlecode.com/svn/trunk/IVOA/ivoa_wg.css" type="text/css"/>
     <link rel="stylesheet" href="http://vo-urp.googlecode.com/svn/trunk/IVOA/xmi.css" type="text/css"/>
+ -->
 </head>
 <body>
   
@@ -83,7 +85,7 @@ xmlns:vo-urp="http://vo-urp.googlecode.com/xsd/v0.9">
 <hr/>  
 <xsl:apply-templates select="." mode="contents"/>
 <hr/>  
-<xsl:apply-templates select="." mode="utypeslist"/>
+<xsl:apply-templates select="." mode="utypes"/>
 <xsl:if test="import">
   <xsl:apply-templates select="." mode="imports"/>
 </xsl:if>  
@@ -98,79 +100,69 @@ xmlns:vo-urp="http://vo-urp.googlecode.com/xsd/v0.9">
 <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->  
   
   <xsl:template match="vo-urp:model" mode="TOC">
+  <h1><xsl:value-of select="title"/></h1>
 <h2><a id="contents" name="contents">Table of Contents</a></h2>
 <div class="head">
 <table class=".toc">
-<tr><td><a href="#abstract">Abstract</a></td></tr>
-<tr><td><a href="#status">Status</a></td></tr>
-<tr><td><a href="#acknowledgments">Acknowledgements</a></td></tr>
-<tr><td><a href="#contents">Table of Contents</a></td></tr>
-<tr><td><xsl:value-of select="$model_section_number"/>
-&tab;
-<a href="#model">Model: <xsl:value-of select="title"/> (<xsl:value-of select="name"/>)</a>
-</td></tr>
-<xsl:if test="$graphviz_png">
-<tr><td><xsl:value-of select="concat($model_section_number,'1')"/>
-&tab;
-<a href="#diagram">Diagram</a></td></tr>
+<xsl:if test="$preamble != ''">
+<tr><td/><td>&tab;<a href="#abstract">Abstract</a></td></tr>
+<tr><td/><td>&tab;<a href="#status">Status</a></td></tr>
+<tr><td/><td>&tab;<a href="#acknowledgments">Acknowledgements</a></td></tr>
 </xsl:if>
-<tr><td>
-<xsl:value-of select="$contents_section_number"/>
-&tab;
-<a href="#packages">Model Contents: Packages and Types</a></td></tr>
-<xsl:variable name="offset">
-  <xsl:apply-templates select="." mode="section_number"/>
-</xsl:variable>
-<xsl:if test="$offset=1">
-<tr><td><xsl:apply-templates select="." mode="section_label"/>
-&tab;
-<a href="#roottypes"><xsl:value-of select="identifier/utype"/>: root types</a></td></tr>
-  <xsl:for-each select="objectType|dataType|enumeration/primitiveType">
+<tr>
+<td><xsl:value-of select="$model_section_number"/></td>
+<td>&tab;<a href="#model">model:&bl;<xsl:value-of select="name"/></a></td>
+</tr>
+<tr>
+<td><xsl:value-of select="$contents_section_number"/></td>
+<td>&tab;<a href="#packages">Packages and Types</a></td>
+</tr>
+<tr>
+<td><xsl:apply-templates select="." mode="section_label"/></td>
+<td>&tab;<a href="#rootpackage">[root package]</a></td>
+</tr>
+  <xsl:for-each select="objectType|dataType|enumeration|primitiveType">
     <xsl:sort select="name"/>
     <xsl:variable name="utype" select="identifier/utype"/>
     <xsl:variable name="section_label">
       <xsl:apply-templates select="." mode="section_label"/>
     </xsl:variable>
-<tr><td>
-     <xsl:value-of select="concat('&tab;&tab;',$section_label)" />
-&tab;
-<a href="#{$utype}"><xsl:value-of select="name"/></a></td></tr>
+<tr>
+<td><xsl:value-of select="$section_label" /></td>
+<td>&tab;<a href="#{$utype}"><xsl:value-of select="concat(name(),':',name)"/></a></td>
+</tr>
   </xsl:for-each>
 
-</xsl:if>
-<tr><td>
-<xsl:for-each select="$packages/../..">
+<xsl:for-each select="//package">
   <xsl:sort select="identifier/utype"/>
   <xsl:variable name="utype" select="identifier/utype"/>
   <xsl:variable name="section_label">
     <xsl:apply-templates select="." mode="section_label"/>
   </xsl:variable>
-<tr><td><xsl:value-of select="concat('&tab;',$section_label) "/>
-&tab;
-<a href="#{$utype}"><xsl:value-of select="$utype"/></a></td></tr>
-  <xsl:for-each select="objectType|dataType|enumeration/primitiveType">
+<tr>
+<td><xsl:value-of select="$section_label"/></td>
+<td>&tab;<a href="#{$utype}">package:&bl;<xsl:value-of select="name"/></a></td>
+</tr>
+  <xsl:for-each select="objectType|dataType|enumeration|primitiveType">
     <xsl:sort select="name"/>
     <xsl:variable name="utype" select="identifier/utype"/>
     <xsl:variable name="section_label">
       <xsl:apply-templates select="." mode="section_label"/>
     </xsl:variable>
-<tr><td>
-     <xsl:value-of select="concat('&tab;&tab;',$section_label)" />
-&tab;
-<a href="#{$utype}"><xsl:value-of select="name"/></a></td></tr>
+<tr>
+<td><xsl:value-of select="$section_label" /></td>
+<td>&tab;<a href="#{$utype}"><xsl:value-of select="concat(name(),': ',name)"/></a></td>
+</tr>
   </xsl:for-each>
 </xsl:for-each>
-</td></tr>
-<tr><td><xsl:value-of select="$utypes_section_number"/>
-&tab;
-<a href="#utypes">Utypes</a></td></tr>
+<tr><td><xsl:value-of select="$utypes_section_number"/></td><td>
+&tab;<a href="#utypes">UTYPE-s</a></td></tr>
 <xsl:if test="import">
-  <tr><td><xsl:value-of select="$modelimports_section_number"/>
-&tab;
-  <a href="#modelimports">Imported Models</a></td></tr>
-  <xsl:for-each select="import">
-  <tr><td>&tab;<xsl:value-of select="concat($modelimports_section_number,'.',position())"/>&tab;
-  <a><xsl:attribute name="href" select="concat('#',identifier/utype)"/><xsl:value-of select="name"/></a></td></tr>
+  <tr><td><xsl:value-of select="$modelimports_section_number"/></td><td>
+&tab;<a href="#modelimports">Imported Models</a></td></tr>
+<xsl:for-each select="import">
+  <tr><td><xsl:value-of select="concat($modelimports_section_number,position())"/></td><td>
+&tab;<a><xsl:attribute name="href" select="concat('#',identifier/utype)"/><xsl:value-of select="name"/></a></td></tr>
   </xsl:for-each>
 </xsl:if>
 
@@ -178,44 +170,31 @@ xmlns:vo-urp="http://vo-urp.googlecode.com/xsd/v0.9">
 </div>
 </xsl:template>  
   
-  <xsl:template match="vo-urp:model" mode="section_number">
-  <xsl:choose>
-    <xsl:when test="objectType|dataType|enumeration/primitiveType">
-      <xsl:value-of select="1"/>
-    </xsl:when>
-    <xsl:otherwise>
-      <xsl:value-of select="0"/>
-    </xsl:otherwise>
-  </xsl:choose>
-  </xsl:template>  
-  
+ 
   <xsl:template match="package" mode="section_label">
-    <xsl:variable name="offset">
-      <xsl:apply-templates select="/vo-urp:model" mode="section_number"/>
+    <xsl:variable name="rank">
+      <xsl:apply-templates select="." mode="rank"/>
     </xsl:variable>
-    <xsl:value-of select="concat($contents_section_number,index-of($packages,./identifier/utype)+$offset)"/> 
+    <xsl:value-of select="concat($contents_section_number,$rank+1) "/> 
   </xsl:template>  
   
-  <xsl:template match="objectType|dataType|enumeration/primitiveType" mode="section_label">
+  <xsl:template match="objectType|dataType|enumeration|primitiveType" mode="section_label">
     <xsl:variable name="prefix">
       <xsl:apply-templates select=".." mode="section_label"/>
     </xsl:variable>
     <xsl:variable name="rank">
-      <xsl:apply-templates select="." mode="type_rank"/>
+      <xsl:apply-templates select="." mode="rank"/>
     </xsl:variable>
     <xsl:value-of select="concat($prefix,'.',$rank)"/> 
   </xsl:template>  
  
   <xsl:template match="vo-urp:model" mode="section_label">
-    <xsl:variable name="offset">
-      <xsl:apply-templates select="." mode="section_number"/>
-    </xsl:variable>
-    <xsl:value-of select="concat($contents_section_number,$offset)"/> 
+    <xsl:value-of select="concat($contents_section_number,'1')"/> 
   </xsl:template> 
 
-    <xsl:template match="objectType|dataType|enumeration/primitiveType" mode="type_rank">
+    <xsl:template match="objectType|dataType|enumeration|primitiveType" mode="rank">
       <xsl:variable name="me" select="."/>
-      <xsl:for-each select="../(objectType|dataType|enumeration/primitiveType)">
+      <xsl:for-each select="../(objectType|dataType|enumeration|primitiveType)">
         <xsl:sort select="name"/>
         <xsl:if test=". = $me">
           <xsl:value-of select="position()"/>
@@ -223,6 +202,15 @@ xmlns:vo-urp="http://vo-urp.googlecode.com/xsd/v0.9">
       </xsl:for-each>
   </xsl:template> 
   
+    <xsl:template match="package" mode="rank">
+      <xsl:variable name="me" select="."/>
+      <xsl:for-each select="/vo-urp:model//package">
+        <xsl:sort select="identifier/utype"/>
+        <xsl:if test=". = $me">
+          <xsl:value-of select="position()"/>
+        </xsl:if>
+      </xsl:for-each>
+  </xsl:template> 
 
 <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->  
 <!--            END  Table of contents                       -->  
@@ -235,20 +223,31 @@ xmlns:vo-urp="http://vo-urp.googlecode.com/xsd/v0.9">
   <xsl:template match="vo-urp:model" mode="section">
   <xsl:variable name="utype" select="identifier/utype"/>
   <h1><a name="{$utype}"/><a name="model">1. Model: <xsl:value-of select="title"/> (<xsl:value-of select="name"/>)</a></h1>
-    <p><xsl:value-of select="description"/></p>
+  <table>
+  <tr><td align="right"><b>Authors</b></td><td>&bl;:&bl;</td><td> <xsl:for-each select="author"><xsl:if test="position()>1">,&bl;</xsl:if><xsl:value-of select="."/></xsl:for-each></td></tr>
+  <tr><td align="right"><b>Date</b></td><td>&bl;:&bl;</td><td><xsl:value-of select="lastModified"/></td></tr>
+  <tr><td align="right"><b>Version</b></td><td>&bl;:&bl;</td><td><xsl:value-of select="version"/></td></tr>
+  <xsl:if test="previousVersion">
+  <tr><td align="right">Previous version:</td><td>&bl;:&bl;</td><td><a><xsl:attribute name="href" select="previousVersion"/><xsl:value-of select="previousVersion"/></a></td></tr>
+  </xsl:if>
+  <tr><td align="right" valign="top"><b>Abstract</b></td><td valign="top">&bl;:&bl;</td><td><xsl:value-of select="description"/></td></tr>
 
     <xsl:if test="$graphviz_png">
-    <h3>1.1 <a name="diagram">Diagram</a></h3>
-    <p>The following diagram has been generated from the model using the <a href="http://www.graphviz.org/" target="_blank">GraphViz</a> tool.
+    <tr><td align="right"  valign="top"><b>Diagram</b></td><td valign="top">&bl;:&bl;</td>
+    <td>The following diagram has been generated from the model using the <a href="http://www.graphviz.org/" target="_blank">GraphViz</a> tool.<br/>
     The classes and packages in the diagram can be clicked and are mapped to the descriptions of the corresponding element elsewhere in the document. 
-    </p>  
-    <xsl:call-template name="graphviz"/>
+    </td></tr>
+    <tr><td colspan="3">
+    </td></tr>
     </xsl:if>
+  </table>
+      <xsl:if test="$graphviz_png">
+    <xsl:call-template name="graphviz"/>
+  </xsl:if>
   </xsl:template>
   
   
   <xsl:template name="graphviz">
-      <xsl:element name="hr"></xsl:element>
       <xsl:element name="img">
         <xsl:attribute name="src">
           <xsl:value-of select="$graphviz_png"/>
@@ -278,17 +277,27 @@ The following sub-sections present all packages in the model with their types.
 The packages are listed here in alphabetical order.
 Each sub-section contains a description of the package and a table containing its various features.
 </p>
-    <xsl:variable name="offset">
-     <xsl:apply-templates select="." mode="section_number"/>
-    </xsl:variable>
-    <xsl:if test="$offset = '1'">
-      <h3><a name="roottypes"/><xsl:apply-templates select="." mode="section_label"/>&bl;<xsl:value-of select="concat(identifier/utype,': root types')"/></h3>
-      
-      <xsl:apply-templates select="." mode="types"/>
+      <h3><a name="rootpackage"/><xsl:apply-templates select="." mode="section_label"/>&bl;[root package]</h3>
+          
+      <table border="1" cellspacing="2" width="100%">
+      <tr>
+        <td class="objecttype-title" width="20%">Model</td>
+        <td class="objecttype-name">
+          <xsl:value-of select="identifier/utype"/>
+        </td>
+      </tr>
+
+    <xsl:if test="package">
+      <xsl:apply-templates select="." mode="containedpackages"/>
     </xsl:if>
+    <xsl:apply-templates select="." mode="typerows"/>
+    </table>
+      
+    <xsl:apply-templates select="." mode="types"/>
     
-    <xsl:for-each select="$packages">
-      <xsl:apply-templates select="../.."/>
+    <xsl:for-each select="//package">
+      <xsl:sort select="identifier/utype"/>
+      <xsl:apply-templates select="."/>
     </xsl:for-each>
   </xsl:template>
 
@@ -397,17 +406,13 @@ Of the imported types we only provide the name and utype.</p>
   <xsl:variable name="utype" select="identifier/utype"/>
   
 <h3><a name="{$utype}"/> 
-    <xsl:apply-templates select="." mode="section_label"/>&bl;<xsl:value-of select="name"/></h3> 
-    <p><xsl:value-of select="description"/></p>
-  
-    <table border="1" cellspacing="2" width="100%">
-      <tr>
-        <td class="objecttype-title" width="20%">Package</td>
-        <td class="objecttype-name">
-          <xsl:value-of select="$utype"/>
-        </td>
-      </tr>
+    <xsl:apply-templates select="." mode="section_label"/>&bl;package:&bl;<xsl:value-of select="name"/></h3> 
 
+    <table border="1" cellspacing="2" width="100%">
+    <xsl:apply-templates select="." mode="utype"/>
+    <xsl:apply-templates select="." mode="description"/>
+
+    <xsl:apply-templates select="." mode="parent"/>
     <xsl:if test="depends">
         <xsl:apply-templates select="." mode="depends"/>
     </xsl:if>
@@ -429,21 +434,30 @@ Of the imported types we only provide the name and utype.</p>
   
 
   
+  <xsl:template match="package" mode="parent">
+        <tr>
+            <td width="20%" class="info-title">parent</td>
+            <td colspan="2" class="feature-detail">
+<a><xsl:attribute name="href" select="concat('#',../identifier/utype)"/><xsl:value-of select="../name"/></a>
+            </td>
+            </tr>
+  </xsl:template>
+
   <xsl:template match="package" mode="depends">
         <tr>
-            <td width="20%" class="info-title">Depends</td>
+            <td width="20%" class="info-title">depends</td>
             <td colspan="2" class="feature-detail">
             <xsl:for-each select="key('package',depends/utyperef)">
             <xsl:sort select="../name"/>
-<a><xsl:attribute name="href" select="concat('#',depends/utyperef)"/><xsl:value-of select="../name"/></a>&bl;
+<a><xsl:attribute name="href" select="concat('#',utype)"/><xsl:value-of select="../name"/></a>&bl;
             </xsl:for-each>
             </td>
             </tr>
   </xsl:template>
 
-  <xsl:template match="package" mode="containedpackages">
+  <xsl:template match="vo-urp:model|package" mode="containedpackages">
         <tr>
-            <td width="20%" class="info-title">Contained packages</td>
+            <td width="20%" class="info-title">child package(s)</td>
             <td colspan="2" class="feature-detail">
             <xsl:for-each select="package">
             <xsl:sort select="name"/>
@@ -541,28 +555,11 @@ Of the imported types we only provide the name and utype.</p>
   <xsl:template match="objectType|dataType" >
     <xsl:variable name="utype" select="identifier/utype"/>
 
-    <h3><a name="{$utype}"/><xsl:apply-templates select="." mode="section_label"/>&bl;<xsl:value-of select="name"/></h3>
-        <p><xsl:choose>
-            <xsl:when test="description">
-            <xsl:value-of select="description"/>
-          </xsl:when>
-          <xsl:otherwise>TBD</xsl:otherwise>
-        </xsl:choose>
-        </p>
-    <xsl:variable name="title">
-    <xsl:choose>
-    <xsl:when test="name() = 'objectType'">Object Type/Class</xsl:when>
-    <xsl:when test="name() = 'dataType'">Data Type</xsl:when>
-    </xsl:choose>
-    </xsl:variable>
+    <h3><a name="{$utype}"/><xsl:apply-templates select="." mode="section_label"/>&bl;<xsl:value-of select="concat(name(),': ',name)"/></h3>
     <div align="center">
     <table border="1" width="100%" cellspacing="2">
-      <tr>
-        <td class="objecttype-title" width="20%"><xsl:value-of select="$title"/></td>
-        <td class="objecttype-name">
-          <xsl:value-of select="$utype"/>
-        </td>
-      </tr>
+    <xsl:apply-templates select="." mode="utype"/>
+    <xsl:apply-templates select="." mode="description"/>
     <tr>
     <td colspan="2" >
     <table width="100%" cellpadding="0" cellspacing="0" border="0">
@@ -585,7 +582,7 @@ Of the imported types we only provide the name and utype.</p>
 
         <xsl:if test="attribute">
         <xsl:call-template name="feature-rows">
-          <xsl:with-param name="title" select="'Attributes'"/>
+          <xsl:with-param name="title" select="'attributes'"/>
         </xsl:call-template>
         <xsl:apply-templates select="attribute">
           <!-- <xsl:sort select="name"/> -->
@@ -594,7 +591,7 @@ Of the imported types we only provide the name and utype.</p>
         
         <xsl:if test="reference">
         <xsl:call-template name="feature-rows">
-          <xsl:with-param name="title" select="'References'"/>
+          <xsl:with-param name="title" select="'references'"/>
         </xsl:call-template>
         <xsl:apply-templates select="reference">
           <xsl:sort select="name"/>
@@ -603,7 +600,7 @@ Of the imported types we only provide the name and utype.</p>
 
         <xsl:if test="collection">
         <xsl:call-template name="feature-rows">
-          <xsl:with-param name="title" select="'Collections'"/>
+          <xsl:with-param name="title" select="'collections'"/>
         </xsl:call-template>
         <xsl:apply-templates select="collection">
           <xsl:sort select="name"/>
@@ -627,12 +624,14 @@ Of the imported types we only provide the name and utype.</p>
 
   <xsl:template match="objectType|dataType|enumeration|primitiveType" mode="package">
     <xsl:variable name="package" select="key('package',../identifier/utype)"/>
+  <xsl:if test="$package">
         <tr>
-            <td width="20%" class="info-title">Package</td>
+            <td width="20%" class="info-title">package</td>
             <td colspan="3" class="feature-detail">
-<a><xsl:attribute name="href" select="concat('#',$package//utype)"/><xsl:value-of select="$package/../name"/></a>
+<a><xsl:attribute name="href" select="concat('#',$package/utype)"/><xsl:value-of select="$package/../name"/></a>
             </td>
             </tr>
+            </xsl:if>
   </xsl:template>
 
 
@@ -645,7 +644,7 @@ Of the imported types we only provide the name and utype.</p>
             <td class="feature-detail" colspan="3">
        <xsl:for-each select="key('element',//extends[type/utyperef = $utype]/../identifier/utype)">
           <xsl:sort select="../name"/>
- <a><xsl:attribute name="href" select="concat('#',identifier/utype)"/><xsl:value-of select="../name"/></a>&bl;
+ <a><xsl:attribute name="href" select="concat('#',utype)"/><xsl:value-of select="../name"/></a>&bl;
         </xsl:for-each>
             </td>
           </tr>
@@ -674,7 +673,7 @@ Of the imported types we only provide the name and utype.</p>
   <xsl:template match="objectType|dataType|enumeration|primitiveType" mode="extends">
     <xsl:variable name="baseclass" select="key('element',extends/type/utyperef)"/>
         <tr>
-            <td width="20%" class="info-title">Base class</td>
+            <td width="20%" class="info-title">extends</td>
             <td colspan="3" class="feature-detail">
 <a><xsl:attribute name="href" select="concat('#',extends/type/utyperef)"/><xsl:value-of select="$baseclass/../name"/></a>
             </td>
@@ -686,7 +685,7 @@ Of the imported types we only provide the name and utype.</p>
     <xsl:variable name="collection" select="key('element',container/collectionref/utyperef)/.."/>
     <xsl:variable name="container" select="$collection/.."/>
         <tr>
-            <td width="20%" class="info-title">Container</td>
+            <td width="20%" class="info-title">container</td>
             <td colspan="3" class="feature-detail">
 <a><xsl:attribute name="href" select="concat('#',$container/identifier/utype)"/><xsl:value-of select="$container/name"/></a>.<a><xsl:attribute name="href" select="concat('#',$collection/identifier/utype)"/><xsl:value-of select="$collection/name"/></a>
             </td>
@@ -712,51 +711,42 @@ Of the imported types we only provide the name and utype.</p>
   </xsl:template>
 
 
+  <xsl:template match="*" mode="description">
+    <xsl:param name="colspan" select="'1'"/>
+        <tr><td  class="info-title">description</td><td class="feature-detail" colspan="{$colspan}">
+          <xsl:choose>
+            <xsl:when test="description">
+            <xsl:value-of select="description"/>
+          </xsl:when>
+          <xsl:otherwise>[TODO add description!]</xsl:otherwise>
+        </xsl:choose>
+      </td></tr>
+  </xsl:template>  
   
-  
+  <xsl:template match="*" mode="utype">
+    <xsl:param name="colspan" select="'1'"/>
+      <tr>
+        <td class="objecttype-title" width="20%">utype</td>
+        <td class="objecttype-name" colspan="{$colspan}">
+          <xsl:value-of select="identifier/utype"/>
+        </td>
+      </tr>
+  </xsl:template>  
   
   <xsl:template match="enumeration">
     <xsl:param name="section_number"/>
     <xsl:variable name="utype" select="identifier/utype"/>
-    <h3><a name="{$utype}"/><xsl:apply-templates select="." mode="section_label"/>&bl;<xsl:value-of select="name"/></h3>
-    <p>
-        <xsl:choose>
-            <xsl:when test="description">
-            <xsl:value-of select="description"/>
-          </xsl:when>
-          <xsl:otherwise>TBD</xsl:otherwise>
-        </xsl:choose>
-        </p>
+    <h3><a name="{$utype}"/><xsl:apply-templates select="." mode="section_label"/>&bl;<xsl:value-of select="concat(name(),': ',name)"/></h3>
     <table border="1" width="100%" cellspacing="2">
-      <tr>
-        <td class="objecttype-title" width="20%">Enumeration</td>
-        <td class="objecttype-name">
-          <xsl:value-of select="$utype"/>
-        </td>
-      </tr>
-    <tr>
-    <td colspan="2" >
-    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-
-    <tr>
-        <td colspan="2" bgcolor="#cacaca">
-        <table width="100%" border="0" cellpadding="3" cellspacing="1">
-
-<!-- 
-       <tr>
-            <td colspan="4" class="feature-detail">
-        <xsl:choose>
-            <xsl:when test="description">
-            <xsl:value-of select="description"/>
-          </xsl:when>
-          <xsl:otherwise>TBD</xsl:otherwise>
-        </xsl:choose>
-          </td></tr>
- -->
-        <xsl:apply-templates select="." mode="package"/>
-
+    <xsl:apply-templates select="." mode="utype">
+    <xsl:with-param name="colspan" select="'2'"/>
+    </xsl:apply-templates>
+    <xsl:apply-templates select="." mode="description">
+    <xsl:with-param name="colspan" select="'2'"/>
+    </xsl:apply-templates>
+    <xsl:apply-templates select="." mode="package"/>
         <tr>
-        <td colspan="3" class="info-title" align="center">Literals</td>
+        <td colspan="3" class="info-title" align="center">literals</td>
     </tr>
     <tr>
         <td class="feature-heading" width="25%">name</td>
@@ -764,50 +754,26 @@ Of the imported types we only provide the name and utype.</p>
         <td class="feature-heading" width="50%">value</td>
     </tr>
         <xsl:apply-templates select="literal"/>
+<!-- 
         </table>
         </td>
     </tr>
-    </table>
+     </table>
     </td>
     </tr>
-    </table>
+-->
+    </table >
     <br/>
   </xsl:template>
   
   
   <xsl:template match="primitiveType">
     <xsl:variable name="utype" select="identifier/utype"/>
-    <h3><a name="{$utype}"/><xsl:apply-templates select="." mode="section_label"/>&bl;<xsl:value-of select="name"/></h3>
-    <p>
-        <xsl:choose>
-            <xsl:when test="description">
-            <xsl:value-of select="description"/>
-          </xsl:when>
-          <xsl:otherwise>TBD</xsl:otherwise>
-        </xsl:choose>
-        </p>
-    <table border="1" width="100%" cellspacing="2">
-      <tr>
-        <td class="objecttype-title" width="20%">Primitive Type</td>
-        <td class="objecttype-name">
-          <xsl:value-of select="$utype"/>
-        </td>
-      </tr>
-    <tr>
-    <td colspan="2" >
-    <table width="100%" cellpadding="0" cellspacing="0" border="0">
-
-    <tr>
-        <td colspan="2" bgcolor="#cacaca">
-        <table width="100%" border="0" cellpadding="3" cellspacing="1">
-        <xsl:apply-templates select="." mode="package"/>
-
-        </table>
-        </td>
-    </tr>
-    </table>
-    </td>
-    </tr>
+    <h3><a name="{$utype}"/><xsl:apply-templates select="." mode="section_label"/>&bl;<xsl:value-of select="concat(name(),': ',name)"/></h3>
+   <table border="1" width="100%" cellspacing="2">
+    <xsl:apply-templates select="." mode="utype"/>
+    <xsl:apply-templates select="." mode="description"/>
+    <xsl:apply-templates select="." mode="package"/>
     </table>
     <br/>
   </xsl:template>
@@ -985,7 +951,7 @@ TBD check they are the same -->
 
 
 
-  <xsl:template match="vo-urp:model" mode="utypeslist">
+  <xsl:template match="vo-urp:model" mode="utypes">
   <h1><xsl:value-of select="$utypes_section_number"/> <a name="utypes">UTYPEs</a></h1>  
 The following table shows all UTYPEs for this data model.
 It is ordered alphabetically and the UTYPEs are hyper-linked to the location
@@ -996,21 +962,14 @@ in the document where the actual element is fully defined.
         <td class="feature-heading">feature type</td>
         <td class="feature-heading">description</td>
   </tr>  
-    <xsl:variable name="utype" select="identifier/utype"/>
-  <tr>
-    <td class="feature-detail"><a href="#{$utype}"><xsl:value-of select="$utype"/></a></td>
-    <td class="feature-detail">model</td>
-    <td class="feature-detail"><xsl:value-of select="description"/></td></tr>  
-  <xsl:apply-templates select="package" mode="utypeslist">
-      <xsl:sort select="name"/>
-  </xsl:apply-templates>
+  <xsl:apply-templates select="." mode="utypeslist"/>
   </table>
   </xsl:template>
 
 
 
 
-  <xsl:template match="package" mode="utypeslist">
+  <xsl:template match="package|vo-urp:model" mode="utypeslist">
   <xsl:variable name="utype_package" select="identifier/utype"/>
   <tr><td class="feature-detail"><a href="#{$utype_package}"><xsl:value-of select="$utype_package"/></a></td>
       <td class="feature-detail"><xsl:value-of select="name()"/></td>

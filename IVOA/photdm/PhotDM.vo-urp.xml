@@ -9,7 +9,7 @@
   <author>Gerard Lemson</author>
   <author>Laurent Bourges</author>
   <version>0.x</version>
-  <lastModified>2012-11-11 15:59:25</lastModified>
+  <lastModified>2012-11-14T17:08:14</lastModified>
   <import>
     <identifier id="_12_1_1dfa04c4_1352280071015_567597_517">
       <utype>ivoa_1.0</utype>
@@ -110,11 +110,7 @@
     <depends idref="_12_1_1dfa04c4_1349192397289_263111_827">
       <utyperef>phot:spectrum/</utyperef>
     </depends>
-    <!--
-            Classes
-          -->
-
-<objectType>
+    <objectType>
       <identifier id="_12_1_1dfa04c4_1348152514372_880643_458">
         <utype>phot:photometry/PhotometricSystem</utype>
       </identifier>
@@ -626,12 +622,7 @@ NB this description applies to the inherited access atttribute on TransmissionCu
       </extends>
     </objectType>
 
-
-    <!--
-            Enumerations
-          -->
-
-<enumeration>
+    <enumeration>
       <identifier id="_12_1_1dfa04c4_1348153161290_118755_1020">
         <utype>phot:photometry/ZeroPointType</utype>
       </identifier>
@@ -688,11 +679,7 @@ NB this description applies to the inherited access atttribute on TransmissionCu
 <depends idref="_12_1_1dfa04c4_1349192442161_957954_828">
       <utyperef>phot:quantity/</utyperef>
     </depends>
-    <!--
-            Classes
-          -->
-
-<objectType>
+    <objectType>
       <identifier id="_12_1_1dfa04c4_1348152724860_600998_627">
         <utype>phot:spectrum/SpectralAxis</utype>
       </identifier>
@@ -764,12 +751,7 @@ NB this description applies to the inherited access atttribute on TransmissionCu
       </attribute>
     </objectType>
 
-
-    <!--
-            Data types
-          -->
-
-<dataType>
+    <dataType>
       <identifier id="_12_1_1dfa04c4_1352271152726_169026_211">
         <utype>phot:spectrum/S_Bounds</utype>
       </identifier>
@@ -887,12 +869,7 @@ NB this description applies to the inherited access atttribute on TransmissionCu
     <description>
           TODO : Missing description : please, update your UML model asap.
         </description>
-
-    <!--
-            Data types
-          -->
-
-<dataType>
+    <dataType>
       <identifier id="_12_1_1dfa04c4_1348847615712_101605_1149">
         <utype>phot:quantity/Unit</utype>
       </identifier>
