@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<namespaceMapping>
+  <map>
+    <norm>http://www.ivoa.net/xml/SimDB/0.5-20090114</norm>
+    <denorm>http://www.ivoa.net/xml/SimDB/0.5-20090114</denorm>
+  </map>
+  <map>
+    <norm>http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb</norm>
+    <denorm>http://www.ivoa.net/xml/SimDB-dn/0.5-20090114/simdb</denorm>
+  </map>
+  <map>
+    <norm>http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/protocol</norm>
+    <denorm>http://www.ivoa.net/xml/SNAP/v0.1/simdb/protocol</denorm>
+  </map>
+  <map>
+    <norm>http://www.ivoa.net/xml/SimDB/0.5-20090114/simdb/object</norm>
+    <denorm>http://www.ivoa.net/xml/SimDB-dn/0.5-20090114/simdb/object</denorm>
+  </map>
+</namespaceMapping>

@@ -1,0 +1,1360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vo-urp:model xmlns:vo-urp="http://vo-urp.googlecode.com/xsd/v0.9">
+  <identifier id="eee_1045467100313_135436_1">
+    <utype>IVOA</utype>
+  </identifier>
+  <name>IVOA</name>
+  <description>This is the data model for describing a TAP_SCHEMA.</description>
+  <title>Characterization Data Model ala VO-URP</title>
+  <version>0.x</version>
+  <lastModified>2012-11-14T17:08:14</lastModified>
+  <import>
+    <identifier id="_12_1_1dfa04c4_1351264621931_639628_1553">
+      <utype>STC_1.x</utype>
+    </identifier>
+    <name>STC</name>
+    <url>http://vo-urp.googlecode.com/svn/trunk/IVOA/stc/STC.vo-urp.xml</url>
+    <documentationURL>http://vo-urp.googlecode.com/svn/trunk/IVOA/stc/STC.html</documentationURL>
+    <objectType>
+      <identifier id="_12_1_1dfa04c4_1351227407057_2387_872">
+        <utype>STC_1.x:ivoa/stc/coordsys/astroCoordSystemType</utype>
+      </identifier>
+      <name>astroCoordSystemType</name>
+    </objectType>
+    <objectType>
+      <identifier id="_12_1_1dfa04c4_1351227708497_742076_1030">
+        <utype>STC_1.x:ivoa/stc/coordsys/observatoryLocationType</utype>
+      </identifier>
+      <name>observatoryLocationType</name>
+    </objectType>
+    <dataType>
+      <identifier id="_12_1_1dfa04c4_1351358462491_50888_1157">
+        <utype>STC_1.x:ivoa/stc/area/coordIntervalType</utype>
+      </identifier>
+      <name>coordIntervalType</name>
+    </dataType>
+    <dataType>
+      <identifier id="_12_1_1dfa04c4_1352210274551_718387_1102">
+        <utype>STC_1.x:ivoa/stc/quantity/double1Type</utype>
+      </identifier>
+      <name>double1Type</name>
+    </dataType>
+  </import>
+  <import>
+    <identifier id="_12_1_1dfa04c4_1352207029182_537042_602">
+      <utype>ivoa_1.0</utype>
+    </identifier>
+    <name>IVOA_Types</name>
+    <url>http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.vo-urp.xml</url>
+    <documentationURL>http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html</documentationURL>
+    <dataType>
+      <identifier id="_12_1_1dfa04c4_1352207029194_351440_614">
+        <utype>ivoa_1.0:stdtypes/Identity</utype>
+      </identifier>
+      <name>Identity</name>
+    </dataType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352207029187_846715_603">
+        <utype>ivoa_1.0:stdtypes/string</utype>
+      </identifier>
+      <name>string</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352207029190_401813_604">
+        <utype>ivoa_1.0:stdtypes/duration</utype>
+      </identifier>
+      <name>duration</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352207029191_465712_605">
+        <utype>ivoa_1.0:stdtypes/complex</utype>
+      </identifier>
+      <name>complex</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352207029191_679440_606">
+        <utype>ivoa_1.0:stdtypes/integer</utype>
+      </identifier>
+      <name>integer</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352207029191_725516_607">
+        <utype>ivoa_1.0:stdtypes/datetime</utype>
+      </identifier>
+      <name>datetime</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352207029192_877491_608">
+        <utype>ivoa_1.0:stdtypes/decimal</utype>
+      </identifier>
+      <name>decimal</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352207029192_307172_609">
+        <utype>ivoa_1.0:stdtypes/rational</utype>
+      </identifier>
+      <name>rational</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352207029192_794013_610">
+        <utype>ivoa_1.0:stdtypes/real</utype>
+      </identifier>
+      <name>real</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352207029193_558823_611">
+        <utype>ivoa_1.0:stdtypes/nonnegativeinteger</utype>
+      </identifier>
+      <name>nonnegativeInteger</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352207029193_46337_612">
+        <utype>ivoa_1.0:stdtypes/boolean</utype>
+      </identifier>
+      <name>boolean</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352207029194_194161_613">
+        <utype>ivoa_1.0:stdtypes/anyURI</utype>
+      </identifier>
+      <name>anyURI</name>
+    </primitiveType>
+  </import>
+
+  <package>
+    <identifier id="_12_1_1dfa04c4_1349943899446_25247_168">
+      <utype>IVOA:ivoa/</utype>
+    </identifier>
+    <name>ivoa</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+
+
+    <package>
+      <identifier id="_12_1_1dfa04c4_1351225306176_86231_415">
+        <utype>IVOA:ivoa/char/</utype>
+      </identifier>
+      <name>char</name>
+      <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      <objectType abstract="true">
+        <identifier id="_12_1_1dfa04c4_1351227235644_523232_714">
+          <utype>IVOA:ivoa/char/CharacterisationType</utype>
+        </identifier>
+        <name>CharacterisationType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <collection>
+          <identifier id="_12_1_1dfa04c4_1351227261462_259355_757">
+            <utype>IVOA:ivoa/char/CharacterisationType.characterisationAxis</utype>
+          </identifier>
+          <name>characterisationAxis</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1351227244287_194374_734">
+            <utyperef>IVOA:ivoa/char/CharacterisationAxisType</utyperef>
+          </datatype>
+          <multiplicity>1..*</multiplicity>
+        </collection>
+      </objectType>
+
+      <objectType abstract="true">
+        <identifier id="_12_1_1dfa04c4_1351227244287_194374_734">
+          <utype>IVOA:ivoa/char/CharacterisationAxisType</utype>
+        </identifier>
+        <name>CharacterisationAxisType</name>
+        <description>describes an axis and its properties </description>
+        <container>
+          <identifier id="_12_1_1dfa04c4_1351227244287_194374_734_CONTAINER">
+            <utype>IVOA:ivoa/char/CharacterisationAxisType.CONTAINER</utype>
+          </identifier>
+          <collectionref idref="_12_1_1dfa04c4_1351227261462_259355_757">
+            <utyperef>IVOA:ivoa/char/CharacterisationType.characterisationAxis</utyperef>
+          </collectionref>
+        </container>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352207115300_890096_705">
+            <utype>IVOA:ivoa/char/CharacterisationAxisType.axisName</utype>
+          </identifier>
+          <name>axisName</name>
+          <description>A name representing the physical nature of the axis like Spatial, Spectral, Time, Velocity or any other free name for an axis</description>
+          <datatype idref="_12_1_1dfa04c4_1352207029187_846715_603">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352207170963_597764_710">
+            <utype>IVOA:ivoa/char/CharacterisationAxisType.ucd</utype>
+          </identifier>
+          <name>ucd</name>
+          <description>The physical meaning of the axis, Type: standard semantic tag defined in the UCD list.</description>
+          <datatype idref="_12_1_1dfa04c4_1352207029187_846715_603">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351227585350_353661_966">
+            <utype>IVOA:ivoa/char/CharacterisationAxisType.unit</utype>
+          </identifier>
+          <name>unit</name>
+          <description>default unit for the axis: Type: controlled unit vocabulary following the VOTable units definitions </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029187_846715_603">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351228755360_686873_1323">
+            <utype>IVOA:ivoa/char/CharacterisationAxisType.independentAxisType</utype>
+          </identifier>
+          <name>independentAxisType</name>
+          <description>Indicates wether the axis is independent or not from the other axes. The Observable axis has a false independentAxis "value" Type : boolean</description>
+          <datatype idref="_12_1_1dfa04c4_1352207029193_46337_612">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/boolean</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351228850489_79765_1357">
+            <utype>IVOA:ivoa/char/CharacterisationAxisType.calibrationStatus</utype>
+          </identifier>
+          <name>calibrationStatus</name>
+          <description>defines if and how the axis is calibrated: Possible String values: CALIBRATED, UNCALIBRATED, RELATIVE, NORMALIZED </description>
+          <datatype idref="_12_1_1dfa04c4_1351228796388_64079_1330">
+            <utyperef>IVOA:ivoa/char/CalibrationStatus</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351229147950_819171_1436">
+            <utype>IVOA:ivoa/char/CharacterisationAxisType.undersamplingStatus</utype>
+          </identifier>
+          <name>undersamplingStatus</name>
+          <description>A flag to mention wether the data are undersampled. Type: boolean</description>
+          <datatype idref="_12_1_1dfa04c4_1352207029193_46337_612">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/boolean</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351229183940_767097_1441">
+            <utype>IVOA:ivoa/char/CharacterisationAxisType.regularsamplingStatus</utype>
+          </identifier>
+          <name>regularsamplingStatus</name>
+          <description>A flag to mention wether the data are regularly sampled. Type : boolean </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029193_46337_612">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/boolean</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <collection>
+          <identifier id="_12_1_1dfa04c4_1351228419585_883758_1266">
+            <utype>IVOA:ivoa/char/CharacterisationAxisType.accuracy</utype>
+          </identifier>
+          <name>accuracy</name>
+          <description>Global accuracy description of the axis</description>
+          <datatype idref="_12_1_1dfa04c4_1351228105712_424180_1173">
+            <utyperef>IVOA:ivoa/char/AccuracyType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </collection>
+        <collection>
+          <identifier id="_12_1_1dfa04c4_1351230217141_423383_1498">
+            <utype>IVOA:ivoa/char/CharacterisationAxisType.coverage</utype>
+          </identifier>
+          <name>coverage</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1351227307872_639262_809">
+            <utyperef>IVOA:ivoa/char/CoverageType</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </collection>
+        <collection>
+          <identifier id="_12_1_1dfa04c4_1351355998416_666046_238">
+            <utype>IVOA:ivoa/char/CharacterisationAxisType.resolution</utype>
+          </identifier>
+          <name>resolution</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1351355947856_56077_195">
+            <utyperef>IVOA:ivoa/char/ResolutionType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </collection>
+        <collection>
+          <identifier id="_12_1_1dfa04c4_1351356009928_593473_291">
+            <utype>IVOA:ivoa/char/CharacterisationAxisType.samplingPrecision</utype>
+          </identifier>
+          <name>samplingPrecision</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1351355956233_8915_215">
+            <utyperef>IVOA:ivoa/char/SamplingPrecisionType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </collection>
+        <reference>
+          <identifier id="_12_1_1dfa04c4_1351227643850_332626_977">
+            <utype>IVOA:ivoa/char/CharacterisationAxisType.coordsystem</utype>
+          </identifier>
+          <name>coordsystem</name>
+          <description>Reference coordinate system for the axis</description>
+          <datatype idref="_12_1_1dfa04c4_1351227407057_2387_872">
+            <modelUtypeRef>STC_1.x</modelUtypeRef>
+            <utyperef>STC_1.x:ivoa/stc/coordsys/astroCoordSystemType</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </reference>
+        <reference>
+          <identifier id="_12_1_1dfa04c4_1351227747918_273197_1060">
+            <utype>IVOA:ivoa/char/CharacterisationAxisType.ObsyLoc</utype>
+          </identifier>
+          <name>ObsyLoc</name>
+          <description>Observatory location Type: a STC:observatoryLocationType or an xlink</description>
+          <datatype idref="_12_1_1dfa04c4_1351227708497_742076_1030">
+            <modelUtypeRef>STC_1.x</modelUtypeRef>
+            <utyperef>STC_1.x:ivoa/stc/coordsys/observatoryLocationType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </reference>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1351227307872_639262_809">
+          <utype>IVOA:ivoa/char/CoverageType</utype>
+        </identifier>
+        <name>CoverageType</name>
+        <description>How the observation is spanned along this axis</description>
+        <container>
+          <identifier id="_12_1_1dfa04c4_1351227307872_639262_809_CONTAINER">
+            <utype>IVOA:ivoa/char/CoverageType.CONTAINER</utype>
+          </identifier>
+          <collectionref idref="_12_1_1dfa04c4_1351230217141_423383_1498">
+            <utyperef>IVOA:ivoa/char/CharacterisationAxisType.coverage</utyperef>
+          </collectionref>
+        </container>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351227323426_648055_828">
+            <utype>IVOA:ivoa/char/CoverageType.unit</utype>
+          </identifier>
+          <name>unit</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029187_846715_603">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351230266999_960344_1550">
+            <utype>IVOA:ivoa/char/CoverageType.location</utype>
+          </identifier>
+          <name>location</name>
+          <description>Typical value on one axis</description>
+          <datatype idref="_12_1_1dfa04c4_1352206341907_392380_196">
+            <utyperef>IVOA:ivoa/char/LocationType</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352206570399_39358_237">
+            <utype>IVOA:ivoa/char/CoverageType.bounds</utype>
+          </identifier>
+          <name>bounds</name>
+          <description>the limits of the observation on this axis</description>
+          <datatype idref="_12_1_1dfa04c4_1352206547993_56496_219">
+            <utyperef>IVOA:ivoa/char/BoundsType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352206627775_813127_394">
+            <utype>IVOA:ivoa/char/CoverageType.support</utype>
+          </identifier>
+          <name>support</name>
+          <description>describes the area where measurements are effectively present and interpretable </description>
+          <datatype idref="_12_1_1dfa04c4_1352206602161_717420_376">
+            <utyperef>IVOA:ivoa/char/SupportType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352206665542_545283_418">
+            <utype>IVOA:ivoa/char/CoverageType.sensitivity</utype>
+          </identifier>
+          <name>sensitivity</name>
+          <description>encodes the variability of response along the axis </description>
+          <datatype idref="_12_1_1dfa04c4_1352206654400_55373_400">
+            <utyperef>IVOA:ivoa/char/SensitivityType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <reference>
+          <identifier id="_12_1_1dfa04c4_1351227423453_153252_898">
+            <utype>IVOA:ivoa/char/CoverageType.coordsystem</utype>
+          </identifier>
+          <name>coordsystem</name>
+          <description>redefinition of coordsystem</description>
+          <datatype idref="_12_1_1dfa04c4_1351227407057_2387_872">
+            <modelUtypeRef>STC_1.x</modelUtypeRef>
+            <utyperef>STC_1.x:ivoa/stc/coordsys/astroCoordSystemType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </reference>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1351228105712_424180_1173">
+          <utype>IVOA:ivoa/char/AccuracyType</utype>
+        </identifier>
+        <name>AccuracyType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <container>
+          <identifier id="_12_1_1dfa04c4_1351228105712_424180_1173_CONTAINER">
+            <utype>IVOA:ivoa/char/AccuracyType.CONTAINER</utype>
+          </identifier>
+          <collectionref idref="_12_1_1dfa04c4_1351228419585_883758_1266">
+            <utyperef>IVOA:ivoa/char/CharacterisationAxisType.accuracy</utyperef>
+          </collectionref>
+        </container>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351228437603_259756_1315">
+            <utype>IVOA:ivoa/char/AccuracyType.quality</utype>
+          </identifier>
+          <name>quality</name>
+          <description>A combination of flags attesting the data quality. Type: String</description>
+          <datatype idref="_12_1_1dfa04c4_1352207029187_846715_603">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351228356327_531159_1250">
+            <utype>IVOA:ivoa/char/AccuracyType.statError</utype>
+          </identifier>
+          <name>statError</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1351228325470_406924_1194">
+            <utyperef>IVOA:ivoa/char/StatErrorType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351228374891_9704_1254">
+            <utype>IVOA:ivoa/char/AccuracyType.sysError</utype>
+          </identifier>
+          <name>sysError</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1351228333286_723686_1213">
+            <utyperef>IVOA:ivoa/char/SysErrorType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351228392410_311908_1258">
+            <utype>IVOA:ivoa/char/AccuracyType.CustError</utype>
+          </identifier>
+          <name>CustError</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1351228342318_579186_1232">
+            <utyperef>IVOA:ivoa/char/ErrorType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1351355947856_56077_195">
+          <utype>IVOA:ivoa/char/ResolutionType</utype>
+        </identifier>
+        <name>ResolutionType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <container>
+          <identifier id="_12_1_1dfa04c4_1351355947856_56077_195_CONTAINER">
+            <utype>IVOA:ivoa/char/ResolutionType.CONTAINER</utype>
+          </identifier>
+          <collectionref idref="_12_1_1dfa04c4_1351355998416_666046_238">
+            <utyperef>IVOA:ivoa/char/CharacterisationAxisType.resolution</utyperef>
+          </collectionref>
+        </container>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352206748934_693209_442">
+            <utype>IVOA:ivoa/char/ResolutionType.unit</utype>
+          </identifier>
+          <name>unit</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029187_846715_603">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352206763878_582344_446">
+            <utype>IVOA:ivoa/char/ResolutionType.resolutionRefVal</utype>
+          </identifier>
+          <name>resolutionRefVal</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352206714927_266065_424">
+            <utyperef>IVOA:ivoa/char/ResolutionRefValType</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352206851582_328841_507">
+            <utype>IVOA:ivoa/char/ResolutionType.resolutionBounds</utype>
+          </identifier>
+          <name>resolutionBounds</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352206782919_706675_451">
+            <utyperef>IVOA:ivoa/char/ResolutionBoundsType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352206865997_880752_513">
+            <utype>IVOA:ivoa/char/ResolutionType.resolutionSupport</utype>
+          </identifier>
+          <name>resolutionSupport</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352206790158_188075_470">
+            <utyperef>IVOA:ivoa/char/ResolutionSupportType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352206878254_529792_517">
+            <utype>IVOA:ivoa/char/ResolutionType.resolutionVariability</utype>
+          </identifier>
+          <name>resolutionVariability</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352206802495_521677_489">
+            <utyperef>IVOA:ivoa/char/ResolutionVariabilityType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <reference>
+          <identifier id="_12_1_1dfa04c4_1352207256903_733383_729">
+            <utype>IVOA:ivoa/char/ResolutionType.coordSystem</utype>
+          </identifier>
+          <name>coordSystem</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1351227407057_2387_872">
+            <modelUtypeRef>STC_1.x</modelUtypeRef>
+            <utyperef>STC_1.x:ivoa/stc/coordsys/astroCoordSystemType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </reference>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1351355956233_8915_215">
+          <utype>IVOA:ivoa/char/SamplingPrecisionType</utype>
+        </identifier>
+        <name>SamplingPrecisionType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <container>
+          <identifier id="_12_1_1dfa04c4_1351355956233_8915_215_CONTAINER">
+            <utype>IVOA:ivoa/char/SamplingPrecisionType.CONTAINER</utype>
+          </identifier>
+          <collectionref idref="_12_1_1dfa04c4_1351356009928_593473_291">
+            <utyperef>IVOA:ivoa/char/CharacterisationAxisType.samplingPrecision</utyperef>
+          </collectionref>
+        </container>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352206912421_835735_521">
+            <utype>IVOA:ivoa/char/SamplingPrecisionType.unit</utype>
+          </identifier>
+          <name>unit</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029187_846715_603">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352206923581_432321_525">
+            <utype>IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionRefVal</utype>
+          </identifier>
+          <name>samplingPrecisionRefVal</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352206995789_471518_546">
+            <utyperef>IVOA:ivoa/char/SamplingPrecisionRefValType</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352206939061_430203_529">
+            <utype>IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionBounds</utype>
+          </identifier>
+          <name>samplingPrecisionBounds</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207010246_673190_565">
+            <utyperef>IVOA:ivoa/char/SamplingPrecisionBoundsType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352206952405_816501_535">
+            <utype>IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionSupport</utype>
+          </identifier>
+          <name>samplingPrecisionSupport</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207027829_330956_584">
+            <utyperef>IVOA:ivoa/char/SamplingPrecisionSupportType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352206975348_836602_541">
+            <utype>IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionVariability</utype>
+          </identifier>
+          <name>samplingPrecisionVariability</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207042638_888035_687">
+            <utyperef>IVOA:ivoa/char/SamplingPrecisionVariability</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <reference>
+          <identifier id="_12_1_1dfa04c4_1352207309509_475829_784">
+            <utype>IVOA:ivoa/char/SamplingPrecisionType.coordSystem</utype>
+          </identifier>
+          <name>coordSystem</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1351227407057_2387_872">
+            <modelUtypeRef>STC_1.x</modelUtypeRef>
+            <utyperef>STC_1.x:ivoa/stc/coordsys/astroCoordSystemType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </reference>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1351356070425_535034_389">
+          <utype>IVOA:ivoa/char/SpatialAxis</utype>
+        </identifier>
+        <name>SpatialAxis</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <extends>
+          <identifier id="_12_1_1dfa04c4_1351356070441_956412_391">
+            <utype>IVOA:ivoa/char/SpatialAxis.EXTENDS</utype>
+          </identifier>
+          <type idref="_12_1_1dfa04c4_1351227244287_194374_734">
+            <utyperef>IVOA:ivoa/char/CharacterisationAxisType</utyperef>
+          </type>
+        </extends>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351356921298_376365_864">
+            <utype>IVOA:ivoa/char/SpatialAxis.numbins1</utype>
+          </identifier>
+          <name>numbins1</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029193_558823_611">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/nonnegativeinteger</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351401950875_478182_1454">
+            <utype>IVOA:ivoa/char/SpatialAxis.numbins2</utype>
+          </identifier>
+          <name>numbins2</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029193_558823_611">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/nonnegativeinteger</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1351356163713_632_574">
+          <utype>IVOA:ivoa/char/Custom1DCharacterisationAxis</utype>
+        </identifier>
+        <name>Custom1DCharacterisationAxis</name>
+        <description>Introduced to model custom 1D axes.</description>
+        <extends>
+          <identifier id="_12_1_1dfa04c4_1351356163729_363636_576">
+            <utype>IVOA:ivoa/char/Custom1DCharacterisationAxis.EXTENDS</utype>
+          </identifier>
+          <type idref="_12_1_1dfa04c4_1351227244287_194374_734">
+            <utyperef>IVOA:ivoa/char/CharacterisationAxisType</utyperef>
+          </type>
+        </extends>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351227512046_434054_953">
+            <utype>IVOA:ivoa/char/Custom1DCharacterisationAxis.axisName</utype>
+          </identifier>
+          <name>axisName</name>
+          <description>A name representing the physical nature of the axis like Spatial, Spectral, Time, Velocity or any other free name for an axis</description>
+          <datatype idref="_12_1_1dfa04c4_1352207029187_846715_603">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351227528862_511872_957">
+            <utype>IVOA:ivoa/char/Custom1DCharacterisationAxis.ucd</utype>
+          </identifier>
+          <name>ucd</name>
+          <description>The physical meaning of the axis, Type: standard semantic tag defined in the UCD list. </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029187_846715_603">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+          <skosconcept>
+            <broadestSKOSConcept>UCD</broadestSKOSConcept>
+            <vocabularyURI>[UCD vocabulary]</vocabularyURI>
+          </skosconcept>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351357024195_208395_876">
+            <utype>IVOA:ivoa/char/Custom1DCharacterisationAxis.numBins</utype>
+          </identifier>
+          <name>numBins</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029193_558823_611">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/nonnegativeinteger</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1351356218906_865888_620">
+          <utype>IVOA:ivoa/char/SpectralAxisType</utype>
+        </identifier>
+        <name>SpectralAxisType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <extends>
+          <identifier id="_12_1_1dfa04c4_1351356218922_407740_622">
+            <utype>IVOA:ivoa/char/SpectralAxisType.EXTENDS</utype>
+          </identifier>
+          <type idref="_12_1_1dfa04c4_1351227244287_194374_734">
+            <utyperef>IVOA:ivoa/char/CharacterisationAxisType</utyperef>
+          </type>
+        </extends>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351356950735_555453_868">
+            <utype>IVOA:ivoa/char/SpectralAxisType.numbins</utype>
+          </identifier>
+          <name>numbins</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029193_558823_611">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/nonnegativeinteger</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1351356245286_368521_664">
+          <utype>IVOA:ivoa/char/TimeAxisType</utype>
+        </identifier>
+        <name>TimeAxisType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <extends>
+          <identifier id="_12_1_1dfa04c4_1351356245317_911146_666">
+            <utype>IVOA:ivoa/char/TimeAxisType.EXTENDS</utype>
+          </identifier>
+          <type idref="_12_1_1dfa04c4_1351227244287_194374_734">
+            <utyperef>IVOA:ivoa/char/CharacterisationAxisType</utyperef>
+          </type>
+        </extends>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351356997504_357630_872">
+            <utype>IVOA:ivoa/char/TimeAxisType.numbins</utype>
+          </identifier>
+          <name>numbins</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029193_558823_611">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/nonnegativeinteger</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1351401850430_845920_1407">
+          <utype>IVOA:ivoa/char/CompositeCharacterisationAxis</utype>
+        </identifier>
+        <name>CompositeCharacterisationAxis</name>
+        <description>INtroduced to model composite axes.</description>
+        <extends>
+          <identifier id="_12_1_1dfa04c4_1351401850461_754907_1409">
+            <utype>IVOA:ivoa/char/CompositeCharacterisationAxis.EXTENDS</utype>
+          </identifier>
+          <type idref="_12_1_1dfa04c4_1351227244287_194374_734">
+            <utyperef>IVOA:ivoa/char/CharacterisationAxisType</utyperef>
+          </type>
+        </extends>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351401878588_942284_1450">
+            <utype>IVOA:ivoa/char/CompositeCharacterisationAxis.dim</utype>
+          </identifier>
+          <name>dim</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029193_558823_611">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/nonnegativeinteger</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+        <collection>
+          <identifier id="_12_1_1dfa04c4_1351402026800_504216_1464">
+            <utype>IVOA:ivoa/char/CompositeCharacterisationAxis.childAxis</utype>
+          </identifier>
+          <name>childAxis</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1351402026769_474079_1461">
+            <utyperef>IVOA:ivoa/char/ComponentAxis</utyperef>
+          </datatype>
+          <multiplicity>1..*</multiplicity>
+        </collection>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1351402026769_474079_1461">
+          <utype>IVOA:ivoa/char/ComponentAxis</utype>
+        </identifier>
+        <name>ComponentAxis</name>
+        <description>INtrouced tom model aggregation of 1D axes to build a custom composite axis type.</description>
+        <container>
+          <identifier id="_12_1_1dfa04c4_1351402026769_474079_1461_CONTAINER">
+            <utype>IVOA:ivoa/char/ComponentAxis.CONTAINER</utype>
+          </identifier>
+          <collectionref idref="_12_1_1dfa04c4_1351402026800_504216_1464">
+            <utyperef>IVOA:ivoa/char/CompositeCharacterisationAxis.childAxis</utyperef>
+          </collectionref>
+        </container>
+        <reference>
+          <identifier id="_12_1_1dfa04c4_1351402039358_764561_1534">
+            <utype>IVOA:ivoa/char/ComponentAxis.axis</utype>
+          </identifier>
+          <name>axis</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1351356163713_632_574">
+            <utyperef>IVOA:ivoa/char/Custom1DCharacterisationAxis</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </reference>
+      </objectType>
+
+      <objectType abstract="true">
+        <identifier id="_12_1_1dfa04c4_1352209161425_142668_1059">
+          <utype>IVOA:ivoa/char/CharCoordinateType</utype>
+        </identifier>
+        <name>CharCoordinateType</name>
+        <description>A coordinate type to define n-D bounding boxes. To be overridden by any of the following possible substitution elements.</description>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352209118838_964229_1055">
+            <utype>IVOA:ivoa/char/CharCoordinateType.Name</utype>
+          </identifier>
+          <name>Name</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029187_846715_603">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1352209168152_432002_1079">
+          <utype>IVOA:ivoa/char/CharCoordAreaType</utype>
+        </identifier>
+        <name>CharCoordAreaType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      </objectType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1351228325470_406924_1194">
+          <utype>IVOA:ivoa/char/StatErrorType</utype>
+        </identifier>
+        <name>StatErrorType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <extends>
+          <identifier id="_12_1_1dfa04c4_1351356553964_254599_839">
+            <utype>IVOA:ivoa/char/StatErrorType.EXTENDS</utype>
+          </identifier>
+          <type idref="_12_1_1dfa04c4_1351228342318_579186_1232">
+            <utyperef>IVOA:ivoa/char/ErrorType</utyperef>
+          </type>
+        </extends>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1351228333286_723686_1213">
+          <utype>IVOA:ivoa/char/SysErrorType</utype>
+        </identifier>
+        <name>SysErrorType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <extends>
+          <identifier id="_12_1_1dfa04c4_1351356551078_239932_814">
+            <utype>IVOA:ivoa/char/SysErrorType.EXTENDS</utype>
+          </identifier>
+          <type idref="_12_1_1dfa04c4_1351228342318_579186_1232">
+            <utyperef>IVOA:ivoa/char/ErrorType</utyperef>
+          </type>
+        </extends>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1351228342318_579186_1232">
+          <utype>IVOA:ivoa/char/ErrorType</utype>
+        </identifier>
+        <name>ErrorType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351356478584_881228_758">
+            <utype>IVOA:ivoa/char/ErrorType.ErrorRefVal</utype>
+          </identifier>
+          <name>ErrorRefVal</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352208601106_707869_852">
+            <utyperef>IVOA:ivoa/char/ErrorRefValType</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351356495479_163547_762">
+            <utype>IVOA:ivoa/char/ErrorType.ErrorBounds</utype>
+          </identifier>
+          <name>ErrorBounds</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1351358116404_295902_1054">
+            <utyperef>IVOA:ivoa/char/ErrorBoundsType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351356508630_278554_766">
+            <utype>IVOA:ivoa/char/ErrorType.ErrorVariability</utype>
+          </identifier>
+          <name>ErrorVariability</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352208625555_519178_890">
+            <utyperef>IVOA:ivoa/char/ErrorVariabilityType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1351356527678_779513_771">
+          <utype>IVOA:ivoa/char/CustomError</utype>
+        </identifier>
+        <name>CustomError</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <extends>
+          <identifier id="_12_1_1dfa04c4_1351356527693_975736_773">
+            <utype>IVOA:ivoa/char/CustomError.EXTENDS</utype>
+          </identifier>
+          <type idref="_12_1_1dfa04c4_1351228342318_579186_1232">
+            <utyperef>IVOA:ivoa/char/ErrorType</utyperef>
+          </type>
+        </extends>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351356424359_706894_754">
+            <utype>IVOA:ivoa/char/CustomError.flavor</utype>
+          </identifier>
+          <name>flavor</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029187_846715_603">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1351358116404_295902_1054">
+          <utype>IVOA:ivoa/char/ErrorBoundsType</utype>
+        </identifier>
+        <name>ErrorBoundsType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351358568462_314486_1297">
+            <utype>IVOA:ivoa/char/ErrorBoundsType.errorLimits</utype>
+          </identifier>
+          <name>errorLimits</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1351358462491_50888_1157">
+            <modelUtypeRef>STC_1.x</modelUtypeRef>
+            <utyperef>STC_1.x:ivoa/stc/area/coordIntervalType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351358594280_744985_1299">
+            <utype>IVOA:ivoa/char/ErrorBoundsType.documentation</utype>
+          </identifier>
+          <name>documentation</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029187_846715_603">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1352206341907_392380_196">
+          <utype>IVOA:ivoa/char/LocationType</utype>
+        </identifier>
+        <name>LocationType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1352206547993_56496_219">
+          <utype>IVOA:ivoa/char/BoundsType</utype>
+        </identifier>
+        <name>BoundsType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1352206602161_717420_376">
+          <utype>IVOA:ivoa/char/SupportType</utype>
+        </identifier>
+        <name>SupportType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1352206654400_55373_400">
+          <utype>IVOA:ivoa/char/SensitivityType</utype>
+        </identifier>
+        <name>SensitivityType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1352206714927_266065_424">
+          <utype>IVOA:ivoa/char/ResolutionRefValType</utype>
+        </identifier>
+        <name>ResolutionRefValType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1352206782919_706675_451">
+          <utype>IVOA:ivoa/char/ResolutionBoundsType</utype>
+        </identifier>
+        <name>ResolutionBoundsType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1352206790158_188075_470">
+          <utype>IVOA:ivoa/char/ResolutionSupportType</utype>
+        </identifier>
+        <name>ResolutionSupportType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1352206802495_521677_489">
+          <utype>IVOA:ivoa/char/ResolutionVariabilityType</utype>
+        </identifier>
+        <name>ResolutionVariabilityType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1352206995789_471518_546">
+          <utype>IVOA:ivoa/char/SamplingPrecisionRefValType</utype>
+        </identifier>
+        <name>SamplingPrecisionRefValType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1352207010246_673190_565">
+          <utype>IVOA:ivoa/char/SamplingPrecisionBoundsType</utype>
+        </identifier>
+        <name>SamplingPrecisionBoundsType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1352207027829_330956_584">
+          <utype>IVOA:ivoa/char/SamplingPrecisionSupportType</utype>
+        </identifier>
+        <name>SamplingPrecisionSupportType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1352207042638_888035_687">
+          <utype>IVOA:ivoa/char/SamplingPrecisionVariability</utype>
+        </identifier>
+        <name>SamplingPrecisionVariability</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1352208601106_707869_852">
+          <utype>IVOA:ivoa/char/ErrorRefValType</utype>
+        </identifier>
+        <name>ErrorRefValType</name>
+        <description>Typical statistical error on the axis. Types: depend on the dimensionality 1D Error based on stc:double1Type 2D Errors based on stc:size2Type, double2Type or double1Type (error 2 radius) 3D Errors based on stc:size3Type, double3TYpe or double1Type (error 3 radius) </description>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352208923311_985426_1003">
+            <utype>IVOA:ivoa/char/ErrorRefValType.unit</utype>
+          </identifier>
+          <name>unit</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029187_846715_603">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352208967086_39032_1008">
+            <utype>IVOA:ivoa/char/ErrorRefValType.CError</utype>
+          </identifier>
+          <name>CError</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352210274551_718387_1102">
+            <modelUtypeRef>STC_1.x</modelUtypeRef>
+            <utyperef>STC_1.x:ivoa/stc/quantity/double1Type</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352209000614_221840_1012">
+            <utype>IVOA:ivoa/char/ErrorRefValType.documentation</utype>
+          </identifier>
+          <name>documentation</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352207029187_846715_603">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <reference>
+          <identifier id="_12_1_1dfa04c4_1352208918880_541181_1000">
+            <utype>IVOA:ivoa/char/ErrorRefValType.coordSystem</utype>
+          </identifier>
+          <name>coordSystem</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1351227407057_2387_872">
+            <modelUtypeRef>STC_1.x</modelUtypeRef>
+            <utyperef>STC_1.x:ivoa/stc/coordsys/astroCoordSystemType</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </reference>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1352208625555_519178_890">
+          <utype>IVOA:ivoa/char/ErrorVariabilityType</utype>
+        </identifier>
+        <name>ErrorVariabilityType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+      </dataType>
+
+      <enumeration>
+        <identifier id="_12_1_1dfa04c4_1351228796388_64079_1330">
+          <utype>IVOA:ivoa/char/CalibrationStatus</utype>
+        </identifier>
+        <name>CalibrationStatus</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <literal>
+          <identifier id="_12_1_1dfa04c4_1351228810568_240258_1349">
+            <utype>IVOA:ivoa/char/CalibrationStatus.CALIBRATED</utype>
+          </identifier>
+          <value>CALIBRATED</value>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        </literal>
+        <literal>
+          <identifier id="_12_1_1dfa04c4_1351228815716_584335_1351">
+            <utype>IVOA:ivoa/char/CalibrationStatus.UNCALIBRATED</utype>
+          </identifier>
+          <value>UNCALIBRATED</value>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        </literal>
+        <literal>
+          <identifier id="_12_1_1dfa04c4_1351228822456_183487_1353">
+            <utype>IVOA:ivoa/char/CalibrationStatus.RELATIVE</utype>
+          </identifier>
+          <value>RELATIVE</value>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        </literal>
+        <literal>
+          <identifier id="_12_1_1dfa04c4_1351228827151_45687_1355">
+            <utype>IVOA:ivoa/char/CalibrationStatus.NORMALIZED</utype>
+          </identifier>
+          <value>NORMALIZED</value>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        </literal>
+      </enumeration>
+
+    </package>
+
+  </package>
+
+</vo-urp:model>

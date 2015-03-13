@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vo-urp:model xmlns:vo-urp="http://vo-urp.googlecode.com/xsd/v0.9">
+  <identifier id="eee_1045467100313_135436_1">
+    <utype>ivoa_1.0</utype>
+  </identifier>
+  <name>IVOA Profile</name>
+  <description>This is the main reference data model containing primitive types used in other data models.</description>
+  <title>IVOA Reference Types Data Model ala VO-URP</title>
+  <version>0.x</version>
+  <lastModified>2012-11-14T17:08:14</lastModified>
+
+  <package>
+    <identifier id="_12_1_1dfa04c4_1349943899446_25247_168">
+      <utype>ivoa_1.0:stdtypes/</utype>
+    </identifier>
+    <name>stdtypes</name>
+    <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+    <dataType>
+      <identifier id="_12_1_8e0028f_1242146981265_564771_339">
+        <utype>ivoa_1.0:stdtypes/Identity</utype>
+      </identifier>
+      <name>Identity</name>
+      <description>This datatype represents an identifier for an object in the data model. It consists of 3 attributes that each are assumed to work in a particular context or representation of a data model instance.</description>
+      <attribute>
+        <identifier id="_12_1_8e0028f_1242146989390_57397_340">
+          <utype>ivoa_1.0:stdtypes/Identity.id</utype>
+        </identifier>
+        <name>id</name>
+        <description>The id attribute is assumed to represent an object in a database storing instances of the data model. </description>
+        <datatype idref="_10_0_42c01ac_1131110115640_104165_2107">
+          <utyperef>ivoa_1.0:stdtypes/integer</utyperef>
+        </datatype>
+        <multiplicity>0..1</multiplicity>
+      </attribute>
+      <attribute>
+        <identifier id="_12_1_8e0028f_1242147000906_183586_343">
+          <utype>ivoa_1.0:stdtypes/Identity.xmlId</utype>
+        </identifier>
+        <name>xmlId</name>
+        <description>This attribute is used to support identifing of and referring to an object in an XML document using the ID/IDREF mechanism.</description>
+        <datatype idref="_10_0_42c01ac_1131109909359_121421_1981">
+          <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+        </datatype>
+        <multiplicity>0..1</multiplicity>
+      </attribute>
+      <attribute>
+        <identifier id="_12_1_8e0028f_1242147012500_863176_346">
+          <utype>ivoa_1.0:stdtypes/Identity.ivoId</utype>
+        </identifier>
+        <name>ivoId</name>
+        <description>The ivoId attribute is assumed to represent an object in a database following the design of the data model and accessible through a standardised registration and discovery protocols.
+It is assumed to be unique within the IVOA and its format follows (a generalisation of) the IVO Resource Identifier standard (see http://www.ivoa.net/Documents/REC/Identifiers/Identifiers-20070302.html).
+Since the ivoId is assumed to represent the resource as registered in a standard database for the data model, it is assumed to be allocated by such a database service. This is in contrast to the use of the IVO Identifier in resource registries, where the id is assumed to be allocated by the publisher. We have the publisherDID attribute for that purpose. Also in contrast to that usage is the fact that each object in the model is assigned this identifier, not only the root resources.
+We suggest as algorithm for assigning these ivoId to use as root the ivoId of the registered database service, and to append to this a # then the UTYPE of the element and finally its id attribute, separetd from the UTYPE by a forward slash.</description>
+        <datatype idref="_10_0_42c01ac_1131110104125_206884_2089">
+          <utyperef>ivoa_1.0:stdtypes/anyURI</utyperef>
+        </datatype>
+        <multiplicity>0..1</multiplicity>
+      </attribute>
+      <attribute>
+        <identifier id="_12_1_213004e4_1274707857782_973500_432">
+          <utype>ivoa_1.0:stdtypes/Identity.publisherDID</utype>
+        </identifier>
+        <name>publisherDID</name>
+        <description>This attribute identifies an element in the context of the publisher. 
+It is supposed to be unique in the IVO context and should likely be constrained to have the publisher's authority IVO id. This may need to be rediscussed when protocols for accessing a database built around a data model are to be designed.</description>
+        <datatype idref="_10_0_42c01ac_1131110104125_206884_2089">
+          <utyperef>ivoa_1.0:stdtypes/anyURI</utyperef>
+        </datatype>
+        <multiplicity>0..1</multiplicity>
+      </attribute>
+    </dataType>
+
+    <primitiveType>
+      <identifier id="_10_0_42c01ac_1131110143687_425384_2143">
+        <utype>ivoa_1.0:stdtypes/real</utype>
+      </identifier>
+      <name>real</name>
+      <description>A real number (from R).</description>
+    </primitiveType>
+
+    <primitiveType>
+      <identifier id="_10_0_42c01ac_1131110131250_232724_2125">
+        <utype>ivoa_1.0:stdtypes/rational</utype>
+      </identifier>
+      <name>rational</name>
+      <description>A rational number from Q, represented by two integers, a numerator and a denominator. A native mapping to a serialisation context does in general not exists.</description>
+    </primitiveType>
+
+    <primitiveType>
+      <identifier id="_10_0_42c01ac_1131110198312_459596_2215">
+        <utype>ivoa_1.0:stdtypes/decimal</utype>
+      </identifier>
+      <name>decimal</name>
+      <description>Represents a decimal number with exact significance such as used to denote monetary values.</description>
+    </primitiveType>
+
+    <primitiveType>
+      <identifier id="_10_0_42c01ac_1131110104125_206884_2089">
+        <utype>ivoa_1.0:stdtypes/anyURI</utype>
+      </identifier>
+      <name>anyURI</name>
+      <description>Represents a URI in the same way as the datatype of the same nam in XML Schema is used.</description>
+    </primitiveType>
+
+    <primitiveType>
+      <identifier id="_10_0_42c01ac_1131110178359_108283_2197">
+        <utype>ivoa_1.0:stdtypes/nonnegativeInteger</utype>
+      </identifier>
+      <name>nonnegativeInteger</name>
+      <description>An integer number from N, therefore greater than or equal to 0.</description>
+    </primitiveType>
+
+    <primitiveType>
+      <identifier id="_10_0_42c01ac_1131110158312_61368_2161">
+        <utype>ivoa_1.0:stdtypes/complex</utype>
+      </identifier>
+      <name>complex</name>
+      <description>Represents a complex number, consisting of a real and imaginary component, both of which are reals. Note that in many contexts there is no native mapping for this type and it must be treated with a custom mapping.</description>
+    </primitiveType>
+
+    <primitiveType>
+      <identifier id="_10_0_42c01ac_1131109993578_511245_1999">
+        <utype>ivoa_1.0:stdtypes/datetime</utype>
+      </identifier>
+      <name>datetime</name>
+      <description>Represents a moment in time using a date+timestamp. Coordinate reference systems must be defined by the context serialisation.</description>
+    </primitiveType>
+
+    <primitiveType>
+      <identifier id="_10_0_42c01ac_1131110086312_275884_2071">
+        <utype>ivoa_1.0:stdtypes/boolean</utype>
+      </identifier>
+      <name>boolean</name>
+      <description>The standard boolean, having values true or false.</description>
+    </primitiveType>
+
+    <primitiveType>
+      <identifier id="_10_0_42c01ac_1131109909359_121421_1981">
+        <utype>ivoa_1.0:stdtypes/string</utype>
+      </identifier>
+      <name>string</name>
+      <description>A string, represented as an array of characters treated as a single, primitive value. Ala Java, a string can not be updated, that is any update leads to a different string. However in contrast to Java we assume that two strings that are identical in all their constitutent characters are the same.
+I.e. string has value type semantics.</description>
+    </primitiveType>
+
+    <primitiveType>
+      <identifier id="_10_0_42c01ac_1131110115640_104165_2107">
+        <utype>ivoa_1.0:stdtypes/integer</utype>
+      </identifier>
+      <name>integer</name>
+      <description>An integer number (from Z).</description>
+    </primitiveType>
+
+    <primitiveType>
+      <identifier id="_10_0_42c01ac_1131109996890_725032_2017">
+        <utype>ivoa_1.0:stdtypes/duration</utype>
+      </identifier>
+      <name>duration</name>
+      <description>Represents an interval of time from beginning to end. Is not equivalent to a simple real value indicating the number of seconds (for example). In general a custom mapping to a particular serialisation context must be provided.</description>
+    </primitiveType>
+
+  </package>
+
+</vo-urp:model>

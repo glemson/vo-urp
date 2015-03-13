@@ -1,0 +1,1990 @@
+<html xmlns:vo-urp="http://vo-urp.googlecode.com/xsd/v0.9">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>TAP_SCHEMA Dat Model ala VO-URP</title>
+    <link rel="stylesheet" href="../ivoa_wg.css" type="text/css">
+    <link rel="stylesheet" href="../xmi.css" type="text/css">
+  </head>
+  <body><br><hr>
+    <h1>TAP_SCHEMA Dat Model ala VO-URP</h1>
+    <h2><a id="contents" name="contents">Table of Contents</a></h2>
+    <div class="head">
+      <table class=".toc">
+        <tr>
+          <td></td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#abstract">Abstract</a></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#status">Status</a></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#acknowledgments">Acknowledgements</a></td>
+        </tr>
+        <tr>
+          <td>1.</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#model">model: TAP</a></td>
+        </tr>
+        <tr>
+          <td>2.</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#packages">Packages and Types</a></td>
+        </tr>
+        <tr>
+          <td>2.1</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rootpackage">[root package]</a></td>
+        </tr>
+        <tr>
+          <td>2.2</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#TAP:ivoa/">package: ivoa</a></td>
+        </tr>
+        <tr>
+          <td>2.3</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#TAP:ivoa/TAP_SCHEMA/">package: TAP_SCHEMA</a></td>
+        </tr>
+        <tr>
+          <td>2.3.1</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#TAP:ivoa/TAP_SCHEMA/Bounds">dataType: Bounds</a></td>
+        </tr>
+        <tr>
+          <td>2.3.2</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#TAP:ivoa/TAP_SCHEMA/Column">objectType: Column</a></td>
+        </tr>
+        <tr>
+          <td>2.3.3</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#TAP:ivoa/TAP_SCHEMA/ColumnType">dataType: ColumnType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.4</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#TAP:ivoa/TAP_SCHEMA/DatabaseObject">objectType: DatabaseObject</a></td>
+        </tr>
+        <tr>
+          <td>2.3.5</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#TAP:ivoa/TAP_SCHEMA/Index">objectType: Index</a></td>
+        </tr>
+        <tr>
+          <td>2.3.6</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#TAP:ivoa/TAP_SCHEMA/IndexColumn">objectType: IndexColumn</a></td>
+        </tr>
+        <tr>
+          <td>2.3.7</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#TAP:ivoa/TAP_SCHEMA/Key">objectType: Key</a></td>
+        </tr>
+        <tr>
+          <td>2.3.8</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#TAP:ivoa/TAP_SCHEMA/KeyColumn">objectType: KeyColumn</a></td>
+        </tr>
+        <tr>
+          <td>2.3.9</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#TAP:ivoa/TAP_SCHEMA/SQLType">enumeration: SQLType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.10</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#TAP:ivoa/TAP_SCHEMA/Schema">objectType: Schema</a></td>
+        </tr>
+        <tr>
+          <td>2.3.11</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#TAP:ivoa/TAP_SCHEMA/Table">objectType: Table</a></td>
+        </tr>
+        <tr>
+          <td>2.3.12</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#TAP:ivoa/TAP_SCHEMA/TableType">enumeration: TableType</a></td>
+        </tr>
+        <tr>
+          <td>3.</td>
+          <td>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="#utypes">UTYPE-s</a></td>
+        </tr>
+        <tr>
+          <td>4.</td>
+          <td>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="#modelimports">Imported Models</a></td>
+        </tr>
+        <tr>
+          <td>4.1</td>
+          <td>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="#ivoa_1.0">IVOA_Types</a></td>
+        </tr>
+      </table>
+    </div>
+    <hr>
+    <h1><a name="TAP"></a><a name="model">1. Model: TAP_SCHEMA Dat Model ala VO-URP (TAP)</a></h1>
+    <table>
+      <tr>
+        <td align="right"><b>Authors</b></td>
+        <td> : </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td align="right"><b>Date</b></td>
+        <td> : </td>
+        <td>2012-11-14T17:08:14</td>
+      </tr>
+      <tr>
+        <td align="right"><b>Version</b></td>
+        <td> : </td>
+        <td>0.x</td>
+      </tr>
+      <tr>
+        <td align="right" valign="top"><b>Abstract</b></td>
+        <td valign="top"> : </td>
+        <td>This is the data model for describing a TAP_SCHEMA.</td>
+      </tr>
+      <tr>
+        <td align="right" valign="top"><b>Diagram</b></td>
+        <td valign="top"> : </td>
+        <td>The following diagram has been generated from the model using the <a href="http://www.graphviz.org/" target="_blank">GraphViz</a> tool.<br>
+          The classes and packages in the diagram can be clicked and are mapped to the descriptions of the corresponding element elsewhere
+          in the document. 
+          
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3"></td>
+      </tr>
+    </table><img src="TAP.png" usemap="#GVmap"><map id="GVmap" name="GVmap">
+<area shape="rect" id="node2" href="#TAP:ivoa/" title="ivoa" alt="" coords="27,99,99,147"/>
+<area shape="rect" id="node4" href="#TAP:ivoa/TAP_SCHEMA/" title="TAP_SCHEMA" alt="" coords="123,99,268,147"/>
+<area shape="rect" id="node5" href="#TAP:ivoa/TAP_SCHEMA/Schema" title="{Schema}" alt="" coords="301,98,373,147"/>
+<area shape="rect" id="node6" href="#TAP:ivoa/TAP_SCHEMA/Table" title="{Table|+table_type : \l}" alt="" coords="426,271,512,321"/>
+<area shape="rect" id="node10" href="#TAP:ivoa/TAP_SCHEMA/DatabaseObject" title="{DatabaseObject|+name : \l+description : \l}" alt="" coords="575,796,668,855"/>
+<area shape="rect" id="node7" href="#TAP:ivoa/TAP_SCHEMA/Column" title="{Column|+unit : \l+ucd : \l+datatype : \l+principal : \l+std : \l+indexed : \l+rank : \l+bounds : \l}" alt="" coords="442,615,520,745"/>
+<area shape="rect" id="node8" href="#TAP:ivoa/TAP_SCHEMA/Key" title="{Key}" alt="" coords="549,386,621,435"/>
+<area shape="rect" id="node11" href="#TAP:ivoa/TAP_SCHEMA/Index" title="{Index}" alt="" coords="407,386,479,435"/>
+<area shape="rect" id="node9" href="#TAP:ivoa/TAP_SCHEMA/KeyColumn" title="{KeyColumn}" alt="" coords="544,501,621,550"/>
+<area shape="rect" id="node12" href="#TAP:ivoa/TAP_SCHEMA/IndexColumn" title="{IndexColumn|+rank : \l}" alt="" coords="405,501,488,550"/>
+<area shape="rect" id="node13" href="#TAP:ivoa/TAP_SCHEMA/ColumnType" title="{&lt;&lt;datatype&gt;&gt;\lColumnType|+datatype : \l+size : \l}" alt="" coords="398,87,484,158"/>
+<area shape="rect" id="node14" href="#TAP:ivoa/TAP_SCHEMA/Bounds" title="{&lt;&lt;datatype&gt;&gt;\lBounds|+lower : \l+upper : \l}" alt="" coords="509,87,595,158"/>
+<area shape="rect" id="node15" href="#TAP:ivoa/TAP_SCHEMA/TableType" title="{&lt;&lt;enumeration&gt;&gt;\lTableType|+table\l+view\l}" alt="" coords="620,87,724,158"/>
+<area shape="rect" id="node16" href="#TAP:ivoa/TAP_SCHEMA/SQLType" title="{&lt;&lt;enumeration&gt;&gt;\lSQLType|+INTEGER\l+SMALLINT\l+BIGINT\l+CHAR\l+VARCHAR\l+DECIMAL\l+BLOB\l+CLOB\l+REAL\l+FLOAT\l}" alt="" coords="748,39,852,206"/>
+</map>
+
+    <hr>
+    <h1>2.<a name="packages">Model contents: Packages and Types</a></h1>
+    <p>
+      The following sub-sections present all packages in the model with their types.
+      The packages are listed here in alphabetical order.
+      Each sub-section contains a description of the package and a table containing its various features.
+      
+    </p>
+    <h3><a name="rootpackage"></a>2.1 [root package]
+    </h3>
+    <table border="1" cellspacing="2" width="100%">
+      <tr>
+        <td class="objecttype-title" width="20%">Model</td>
+        <td class="objecttype-name">TAP</td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">child package(s)</td>
+        <td colspan="2" class="feature-detail"><a href="#TAP:ivoa/">ivoa</a> 
+        </td>
+      </tr>
+    </table>
+    <h3><a name="TAP:ivoa/"></a>2.2 package: ivoa
+    </h3>
+    <table border="1" cellspacing="2" width="100%">
+      <tr>
+        <td class="objecttype-title" width="20%">utype</td>
+        <td class="objecttype-name" colspan="1">TAP:ivoa/</td>
+      </tr>
+      <tr>
+        <td class="info-title">description</td>
+        <td class="feature-detail" colspan="1">Root package of all IVOA data models.</td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">parent</td>
+        <td colspan="2" class="feature-detail"><a href="#TAP">TAP</a></td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">child package(s)</td>
+        <td colspan="2" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/">TAP_SCHEMA</a> 
+        </td>
+      </tr>
+    </table>
+    <h3><a name="TAP:ivoa/TAP_SCHEMA/"></a>2.3 package: TAP_SCHEMA
+    </h3>
+    <table border="1" cellspacing="2" width="100%">
+      <tr>
+        <td class="objecttype-title" width="20%">utype</td>
+        <td class="objecttype-name" colspan="1">TAP:ivoa/TAP_SCHEMA/</td>
+      </tr>
+      <tr>
+        <td class="info-title">description</td>
+        <td class="feature-detail" colspan="1">Package containing types describing TAP_SCHEMA</td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">parent</td>
+        <td colspan="2" class="feature-detail"><a href="#TAP:ivoa/">ivoa</a></td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">Object types</td>
+        <td colspan="2" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Column">Column</a> <a href="#TAP:ivoa/TAP_SCHEMA/DatabaseObject">DatabaseObject</a> <a href="#TAP:ivoa/TAP_SCHEMA/Index">Index</a> <a href="#TAP:ivoa/TAP_SCHEMA/IndexColumn">IndexColumn</a> <a href="#TAP:ivoa/TAP_SCHEMA/Key">Key</a> <a href="#TAP:ivoa/TAP_SCHEMA/KeyColumn">KeyColumn</a> <a href="#TAP:ivoa/TAP_SCHEMA/Schema">Schema</a> <a href="#TAP:ivoa/TAP_SCHEMA/Table">Table</a> 
+        </td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">Data types</td>
+        <td colspan="2" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Bounds">Bounds</a> <a href="#TAP:ivoa/TAP_SCHEMA/ColumnType">ColumnType</a> 
+        </td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">Enumerations</td>
+        <td colspan="2" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/SQLType">SQLType</a> <a href="#TAP:ivoa/TAP_SCHEMA/TableType">TableType</a> 
+        </td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">Parent package</td>
+        <td colspan="2" class="feature-detail"><a href="#TAP:ivoa/">ivoa</a> 
+        </td>
+      </tr>
+    </table>
+    <h3><a name="TAP:ivoa/TAP_SCHEMA/Bounds"></a>2.3.1 dataType: Bounds
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">TAP:ivoa/TAP_SCHEMA/Bounds</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/">TAP_SCHEMA</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/Bounds.lower"></a><b>lower</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/real">real</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Bounds.lower</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/Bounds.upper"></a><b>upper</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/real">real</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Bounds.upper</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="TAP:ivoa/TAP_SCHEMA/Column"></a>2.3.2 objectType: Column
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">TAP:ivoa/TAP_SCHEMA/Column</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/">TAP_SCHEMA</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">extends</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/DatabaseObject">DatabaseObject</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">container</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Table">Table</a>.<a href="#TAP:ivoa/TAP_SCHEMA/Table.column">column</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/Column.unit"></a><b>unit</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Column.unit</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="5"><a name="TAP:ivoa/TAP_SCHEMA/Column.ucd"></a><b>ucd</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">&lt;&lt;skosconcept&gt;&gt;</td>
+                      <td class="feature-detail">
+                        Broadest SKOS concept:<br><a href="http://www.ivoa.net/Document/WD/vocabularies/vocabularies-1.0/UCD" target="_blank">http://www.ivoa.net/Document/WD/vocabularies/vocabularies-1.0/UCD</a><br>Vocabulary URI:<br><a href="http://www.ivoa.net/Document/WD/vocabularies/vocabularies-1.0/UCD" target="_blank">http://www.ivoa.net/Document/WD/vocabularies/vocabularies-1.0/UCD</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Column.ucd</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/Column.datatype"></a><b>datatype</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/ColumnType">ColumnType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Column.datatype<br>[datatype is structured, utype can be extended]         
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/Column.principal"></a><b>principal</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/boolean">boolean</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Column.principal</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/Column.std"></a><b>std</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/boolean">boolean</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Column.std</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/Column.indexed"></a><b>indexed</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/boolean">boolean</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Column.indexed</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/Column.rank"></a><b>rank</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/nonnegativeinteger">nonnegativeInteger</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Column.rank</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/Column.bounds"></a><b>bounds</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Bounds">Bounds</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Column.bounds<br>[datatype is structured, utype can be extended]         
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="TAP:ivoa/TAP_SCHEMA/ColumnType"></a>2.3.3 dataType: ColumnType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">TAP:ivoa/TAP_SCHEMA/ColumnType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/">TAP_SCHEMA</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/ColumnType.datatype"></a><b>datatype</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/SQLType">SQLType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/ColumnType.datatype</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/ColumnType.size"></a><b>size</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/nonnegativeinteger">nonnegativeInteger</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/ColumnType.size</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="TAP:ivoa/TAP_SCHEMA/DatabaseObject"></a>2.3.4 objectType: DatabaseObject
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">TAP:ivoa/TAP_SCHEMA/DatabaseObject</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/">TAP_SCHEMA</a></td>
+                    </tr>
+                    <tr>
+                      <td class="info-title">Subclasses</td>
+                      <td class="feature-detail" colspan="3"><a href="#TAP:ivoa/TAP_SCHEMA/Column">Column</a> <a href="#TAP:ivoa/TAP_SCHEMA/Key">Key</a> <a href="#TAP:ivoa/TAP_SCHEMA/Schema">Schema</a> <a href="#TAP:ivoa/TAP_SCHEMA/Table">Table</a> 
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/DatabaseObject.name"></a><b>name</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/DatabaseObject.name</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/DatabaseObject.description"></a><b>description</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/DatabaseObject.description</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="TAP:ivoa/TAP_SCHEMA/Index"></a>2.3.5 objectType: Index
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">TAP:ivoa/TAP_SCHEMA/Index</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/">TAP_SCHEMA</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">container</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Table">Table</a>.<a href="#TAP:ivoa/TAP_SCHEMA/Table.index">index</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">collections</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="5"><a name="TAP:ivoa/TAP_SCHEMA/Index.column"></a><b>column</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/IndexColumn">IndexColumn</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Index.column</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1..*</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">isOrdered</td>
+                      <td class="feature-detail">true</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="TAP:ivoa/TAP_SCHEMA/IndexColumn"></a>2.3.6 objectType: IndexColumn
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">TAP:ivoa/TAP_SCHEMA/IndexColumn</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/">TAP_SCHEMA</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">container</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Index">Index</a>.<a href="#TAP:ivoa/TAP_SCHEMA/Index.column">column</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/IndexColumn.rank"></a><b>rank</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/nonnegativeinteger">nonnegativeInteger</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/IndexColumn.rank</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">references</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/IndexColumn.column"></a><b>column</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Column">Column</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/IndexColumn.column</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="TAP:ivoa/TAP_SCHEMA/Key"></a>2.3.7 objectType: Key
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">TAP:ivoa/TAP_SCHEMA/Key</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/">TAP_SCHEMA</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">extends</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/DatabaseObject">DatabaseObject</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">container</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Table">Table</a>.<a href="#TAP:ivoa/TAP_SCHEMA/Table.foreignKey">foreignKey</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">references</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/Key.target_table"></a><b>target_table</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Table">Table</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Key.target_table</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">collections</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="5"><a name="TAP:ivoa/TAP_SCHEMA/Key.keyColumn"></a><b>keyColumn</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/KeyColumn">KeyColumn</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Key.keyColumn</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1..*</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">isOrdered</td>
+                      <td class="feature-detail">false</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="TAP:ivoa/TAP_SCHEMA/KeyColumn"></a>2.3.8 objectType: KeyColumn
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">TAP:ivoa/TAP_SCHEMA/KeyColumn</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/">TAP_SCHEMA</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">container</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Key">Key</a>.<a href="#TAP:ivoa/TAP_SCHEMA/Key.keyColumn">keyColumn</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">references</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/KeyColumn.from_column"></a><b>from_column</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Column">Column</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/KeyColumn.from_column</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/KeyColumn.target_column"></a><b>target_column</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Column">Column</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/KeyColumn.target_column</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="TAP:ivoa/TAP_SCHEMA/SQLType"></a>2.3.9 enumeration: SQLType
+    </h3>
+    <table border="1" width="100%" cellspacing="2">
+      <tr>
+        <td class="objecttype-title" width="20%">utype</td>
+        <td class="objecttype-name" colspan="2">TAP:ivoa/TAP_SCHEMA/SQLType</td>
+      </tr>
+      <tr>
+        <td class="info-title">description</td>
+        <td class="feature-detail" colspan="2">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">package</td>
+        <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/">TAP_SCHEMA</a></td>
+      </tr>
+      <tr>
+        <td colspan="3" class="info-title" align="center">literals</td>
+      </tr>
+      <tr>
+        <td class="feature-heading" width="25%">name</td>
+        <td class="feature-heading" width="25%">feature</td>
+        <td class="feature-heading" width="50%">value</td>
+      </tr>
+      <tr>
+        <td class="feature-detail" rowspan="2" valign="top"><a name="TAP:ivoa/TAP_SCHEMA/SQLType.INTEGER"></a>INTEGER
+        </td>
+        <td class="feature-heading">utype</td>
+        <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/SQLType.INTEGER</td>
+      </tr>
+      <tr>
+        <td class="feature-heading">description</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail" rowspan="2" valign="top"><a name="TAP:ivoa/TAP_SCHEMA/SQLType.SMALLINT"></a>SMALLINT
+        </td>
+        <td class="feature-heading">utype</td>
+        <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/SQLType.SMALLINT</td>
+      </tr>
+      <tr>
+        <td class="feature-heading">description</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail" rowspan="2" valign="top"><a name="TAP:ivoa/TAP_SCHEMA/SQLType.BIGINT"></a>BIGINT
+        </td>
+        <td class="feature-heading">utype</td>
+        <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/SQLType.BIGINT</td>
+      </tr>
+      <tr>
+        <td class="feature-heading">description</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail" rowspan="2" valign="top"><a name="TAP:ivoa/TAP_SCHEMA/SQLType.CHAR"></a>CHAR
+        </td>
+        <td class="feature-heading">utype</td>
+        <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/SQLType.CHAR</td>
+      </tr>
+      <tr>
+        <td class="feature-heading">description</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail" rowspan="2" valign="top"><a name="TAP:ivoa/TAP_SCHEMA/SQLType.VARCHAR"></a>VARCHAR
+        </td>
+        <td class="feature-heading">utype</td>
+        <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/SQLType.VARCHAR</td>
+      </tr>
+      <tr>
+        <td class="feature-heading">description</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail" rowspan="2" valign="top"><a name="TAP:ivoa/TAP_SCHEMA/SQLType.DECIMAL"></a>DECIMAL
+        </td>
+        <td class="feature-heading">utype</td>
+        <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/SQLType.DECIMAL</td>
+      </tr>
+      <tr>
+        <td class="feature-heading">description</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail" rowspan="2" valign="top"><a name="TAP:ivoa/TAP_SCHEMA/SQLType.BLOB"></a>BLOB
+        </td>
+        <td class="feature-heading">utype</td>
+        <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/SQLType.BLOB</td>
+      </tr>
+      <tr>
+        <td class="feature-heading">description</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail" rowspan="2" valign="top"><a name="TAP:ivoa/TAP_SCHEMA/SQLType.CLOB"></a>CLOB
+        </td>
+        <td class="feature-heading">utype</td>
+        <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/SQLType.CLOB</td>
+      </tr>
+      <tr>
+        <td class="feature-heading">description</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail" rowspan="2" valign="top"><a name="TAP:ivoa/TAP_SCHEMA/SQLType.REAL"></a>REAL
+        </td>
+        <td class="feature-heading">utype</td>
+        <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/SQLType.REAL</td>
+      </tr>
+      <tr>
+        <td class="feature-heading">description</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail" rowspan="2" valign="top"><a name="TAP:ivoa/TAP_SCHEMA/SQLType.FLOAT"></a>FLOAT
+        </td>
+        <td class="feature-heading">utype</td>
+        <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/SQLType.FLOAT</td>
+      </tr>
+      <tr>
+        <td class="feature-heading">description</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+    </table><br><h3><a name="TAP:ivoa/TAP_SCHEMA/Schema"></a>2.3.10 objectType: Schema
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">TAP:ivoa/TAP_SCHEMA/Schema</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/">TAP_SCHEMA</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">extends</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/DatabaseObject">DatabaseObject</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">collections</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="5"><a name="TAP:ivoa/TAP_SCHEMA/Schema.table"></a><b>table</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Table">Table</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Schema.table</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..*</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">isOrdered</td>
+                      <td class="feature-detail">false</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="TAP:ivoa/TAP_SCHEMA/Table"></a>2.3.11 objectType: Table
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">TAP:ivoa/TAP_SCHEMA/Table</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">Represents a table in a TAP_SCHEMA</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/">TAP_SCHEMA</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">extends</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/DatabaseObject">DatabaseObject</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">container</td>
+                      <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Schema">Schema</a>.<a href="#TAP:ivoa/TAP_SCHEMA/Schema.table">table</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="TAP:ivoa/TAP_SCHEMA/Table.table_type"></a><b>table_type</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/TableType">TableType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Table.table_type</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">collections</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="5"><a name="TAP:ivoa/TAP_SCHEMA/Table.column"></a><b>column</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Column">Column</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Table.column</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1..*</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">isOrdered</td>
+                      <td class="feature-detail">true</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="5"><a name="TAP:ivoa/TAP_SCHEMA/Table.foreignKey"></a><b>foreignKey</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Key">Key</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Table.foreignKey</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..*</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">isOrdered</td>
+                      <td class="feature-detail">false</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="5"><a name="TAP:ivoa/TAP_SCHEMA/Table.index"></a><b>index</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Index">Index</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/Table.index</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..*</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">isOrdered</td>
+                      <td class="feature-detail">false</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="TAP:ivoa/TAP_SCHEMA/TableType"></a>2.3.12 enumeration: TableType
+    </h3>
+    <table border="1" width="100%" cellspacing="2">
+      <tr>
+        <td class="objecttype-title" width="20%">utype</td>
+        <td class="objecttype-name" colspan="2">TAP:ivoa/TAP_SCHEMA/TableType</td>
+      </tr>
+      <tr>
+        <td class="info-title">description</td>
+        <td class="feature-detail" colspan="2">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">package</td>
+        <td colspan="3" class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/">TAP_SCHEMA</a></td>
+      </tr>
+      <tr>
+        <td colspan="3" class="info-title" align="center">literals</td>
+      </tr>
+      <tr>
+        <td class="feature-heading" width="25%">name</td>
+        <td class="feature-heading" width="25%">feature</td>
+        <td class="feature-heading" width="50%">value</td>
+      </tr>
+      <tr>
+        <td class="feature-detail" rowspan="2" valign="top"><a name="TAP:ivoa/TAP_SCHEMA/TableType.table"></a>table
+        </td>
+        <td class="feature-heading">utype</td>
+        <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/TableType.table</td>
+      </tr>
+      <tr>
+        <td class="feature-heading">description</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail" rowspan="2" valign="top"><a name="TAP:ivoa/TAP_SCHEMA/TableType.view"></a>view
+        </td>
+        <td class="feature-heading">utype</td>
+        <td class="feature-detail">TAP:ivoa/TAP_SCHEMA/TableType.view</td>
+      </tr>
+      <tr>
+        <td class="feature-heading">description</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+    </table><br><hr>
+    <h1>3.<a name="utypes">UTYPEs</a></h1>  
+    The following table shows all UTYPEs for this data model.
+    It is ordered alphabetically and the UTYPEs are hyper-linked to the location
+    in the document where the actual element is fully defined.
+    
+    
+    <table style="border-style:solid;border-width:1px;" border="1" cellspacing="0" cellpadding="0">
+      <tr>
+        <td class="feature-heading">UTYPE</td>
+        <td class="feature-heading">feature type</td>
+        <td class="feature-heading">description</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP">TAP</a></td>
+        <td class="feature-detail">vo-urp:model</td>
+        <td class="feature-detail">This is the data model for describing a TAP_SCHEMA.</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/">TAP:ivoa/</a></td>
+        <td class="feature-detail">package</td>
+        <td class="feature-detail">Root package of all IVOA data models.</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/">TAP:ivoa/TAP_SCHEMA/</a></td>
+        <td class="feature-detail">package</td>
+        <td class="feature-detail">Package containing types describing TAP_SCHEMA</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Bounds">TAP:ivoa/TAP_SCHEMA/Bounds</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Bounds.lower">TAP:ivoa/TAP_SCHEMA/Bounds.lower</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Bounds.upper">TAP:ivoa/TAP_SCHEMA/Bounds.upper</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Column">TAP:ivoa/TAP_SCHEMA/Column</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Column.bounds">TAP:ivoa/TAP_SCHEMA/Column.bounds</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Column.datatype">TAP:ivoa/TAP_SCHEMA/Column.datatype</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Column.indexed">TAP:ivoa/TAP_SCHEMA/Column.indexed</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Column.principal">TAP:ivoa/TAP_SCHEMA/Column.principal</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Column.rank">TAP:ivoa/TAP_SCHEMA/Column.rank</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Column.std">TAP:ivoa/TAP_SCHEMA/Column.std</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Column.ucd">TAP:ivoa/TAP_SCHEMA/Column.ucd</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Column.unit">TAP:ivoa/TAP_SCHEMA/Column.unit</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/ColumnType">TAP:ivoa/TAP_SCHEMA/ColumnType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/ColumnType.datatype">TAP:ivoa/TAP_SCHEMA/ColumnType.datatype</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/ColumnType.size">TAP:ivoa/TAP_SCHEMA/ColumnType.size</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/DatabaseObject">TAP:ivoa/TAP_SCHEMA/DatabaseObject</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/DatabaseObject.description">TAP:ivoa/TAP_SCHEMA/DatabaseObject.description</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/DatabaseObject.name">TAP:ivoa/TAP_SCHEMA/DatabaseObject.name</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Index">TAP:ivoa/TAP_SCHEMA/Index</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Index.column">TAP:ivoa/TAP_SCHEMA/Index.column</a></td>
+        <td class="feature-detail">collection</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/IndexColumn">TAP:ivoa/TAP_SCHEMA/IndexColumn</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/IndexColumn.column">TAP:ivoa/TAP_SCHEMA/IndexColumn.column</a></td>
+        <td class="feature-detail">reference</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/IndexColumn.rank">TAP:ivoa/TAP_SCHEMA/IndexColumn.rank</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Key">TAP:ivoa/TAP_SCHEMA/Key</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Key.keyColumn">TAP:ivoa/TAP_SCHEMA/Key.keyColumn</a></td>
+        <td class="feature-detail">collection</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Key.target_table">TAP:ivoa/TAP_SCHEMA/Key.target_table</a></td>
+        <td class="feature-detail">reference</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/KeyColumn">TAP:ivoa/TAP_SCHEMA/KeyColumn</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/KeyColumn.from_column">TAP:ivoa/TAP_SCHEMA/KeyColumn.from_column</a></td>
+        <td class="feature-detail">reference</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/KeyColumn.target_column">TAP:ivoa/TAP_SCHEMA/KeyColumn.target_column</a></td>
+        <td class="feature-detail">reference</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/SQLType">TAP:ivoa/TAP_SCHEMA/SQLType</a></td>
+        <td class="feature-detail">enumeration</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/SQLType.INTEGER">TAP:ivoa/TAP_SCHEMA/SQLType.INTEGER</a></td>
+        <td class="feature-detail">literal</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/SQLType.SMALLINT">TAP:ivoa/TAP_SCHEMA/SQLType.SMALLINT</a></td>
+        <td class="feature-detail">literal</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/SQLType.BIGINT">TAP:ivoa/TAP_SCHEMA/SQLType.BIGINT</a></td>
+        <td class="feature-detail">literal</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/SQLType.CHAR">TAP:ivoa/TAP_SCHEMA/SQLType.CHAR</a></td>
+        <td class="feature-detail">literal</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/SQLType.VARCHAR">TAP:ivoa/TAP_SCHEMA/SQLType.VARCHAR</a></td>
+        <td class="feature-detail">literal</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/SQLType.DECIMAL">TAP:ivoa/TAP_SCHEMA/SQLType.DECIMAL</a></td>
+        <td class="feature-detail">literal</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/SQLType.BLOB">TAP:ivoa/TAP_SCHEMA/SQLType.BLOB</a></td>
+        <td class="feature-detail">literal</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/SQLType.CLOB">TAP:ivoa/TAP_SCHEMA/SQLType.CLOB</a></td>
+        <td class="feature-detail">literal</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/SQLType.REAL">TAP:ivoa/TAP_SCHEMA/SQLType.REAL</a></td>
+        <td class="feature-detail">literal</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/SQLType.FLOAT">TAP:ivoa/TAP_SCHEMA/SQLType.FLOAT</a></td>
+        <td class="feature-detail">literal</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Schema">TAP:ivoa/TAP_SCHEMA/Schema</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Schema.table">TAP:ivoa/TAP_SCHEMA/Schema.table</a></td>
+        <td class="feature-detail">collection</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Table">TAP:ivoa/TAP_SCHEMA/Table</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">Represents a table in a TAP_SCHEMA</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Table.column">TAP:ivoa/TAP_SCHEMA/Table.column</a></td>
+        <td class="feature-detail">collection</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Table.foreignKey">TAP:ivoa/TAP_SCHEMA/Table.foreignKey</a></td>
+        <td class="feature-detail">collection</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Table.index">TAP:ivoa/TAP_SCHEMA/Table.index</a></td>
+        <td class="feature-detail">collection</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/Table.table_type">TAP:ivoa/TAP_SCHEMA/Table.table_type</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/TableType">TAP:ivoa/TAP_SCHEMA/TableType</a></td>
+        <td class="feature-detail">enumeration</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/TableType.table">TAP:ivoa/TAP_SCHEMA/TableType.table</a></td>
+        <td class="feature-detail">literal</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#TAP:ivoa/TAP_SCHEMA/TableType.view">TAP:ivoa/TAP_SCHEMA/TableType.view</a></td>
+        <td class="feature-detail">literal</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+    </table>
+    <hr>
+    <h1>4.<a name="modelimports">Imported Models</a></h1>
+    <p>This section lists the external models imported by the current data model.
+      For each imported model we list URL, prefix used and the types that have been imported.
+      Of the imported types we only provide the name and utype.
+    </p>
+    <h2><a name="ivoa_1.0"></a>4.1 ivoa_1.0
+    </h2>
+    <table border="1" cellspacing="2" width="100%">
+      <tr>
+        <td class="objecttype-title" width="20%">Model</td>
+        <td class="objecttype-name">ivoa_1.0</td>
+      </tr>
+      <tr>
+        <td width="30%" class="info-title">url</td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.vo-urp.xml">http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.vo-urp.xml</a></td>
+      </tr>
+      <tr>
+        <td width="30%" class="info-title">documentation url</td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html">http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html</a></td>
+      </tr>
+      <tr>
+        <td colspan="2" class="info-title">Datatypes</td>
+      </tr>
+      <tr>
+        <td class="feature-heading" width="30%">name</td>
+        <td class="feature-heading" width="70%">utype</td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/Identity"></a>Identity
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/Identity">ivoa_1.0:stdtypes/Identity</a></td>
+      </tr>
+      <tr>
+        <td colspan="2" class="info-title">Primitive Types</td>
+      </tr>
+      <tr>
+        <td class="feature-heading" width="30%">name</td>
+        <td class="feature-heading" width="70%">utype</td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/anyURI"></a>anyURI
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/anyURI">ivoa_1.0:stdtypes/anyURI</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/boolean"></a>boolean
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/boolean">ivoa_1.0:stdtypes/boolean</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/complex"></a>complex
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/complex">ivoa_1.0:stdtypes/complex</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/datetime"></a>datetime
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/datetime">ivoa_1.0:stdtypes/datetime</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/decimal"></a>decimal
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/decimal">ivoa_1.0:stdtypes/decimal</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/duration"></a>duration
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/duration">ivoa_1.0:stdtypes/duration</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/integer"></a>integer
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/integer">ivoa_1.0:stdtypes/integer</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/nonnegativeinteger"></a>nonnegativeInteger
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/nonnegativeinteger">ivoa_1.0:stdtypes/nonnegativeinteger</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/rational"></a>rational
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/rational">ivoa_1.0:stdtypes/rational</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/real"></a>real
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/real">ivoa_1.0:stdtypes/real</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/string"></a>string
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/string">ivoa_1.0:stdtypes/string</a></td>
+      </tr>
+    </table>
+  </body>
+</html>

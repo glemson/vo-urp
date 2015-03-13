@@ -1,0 +1,191 @@
+
+SELECT distinct(e.id) 
+FROM t_experiment e, t_result r, t_product p, 
+t_statisticalsummary ss0, t_field p0
+WHERE p0.name = 'x' AND ss0.numericvalue_value > 500.0 AND ss0.axisId = p0.Id AND ss0.containerId = p.id AND p.containerId = r.id AND r.containerId = e.id
+
+2
+16
+18
+20
+
+
+SELECT r.id
+FROM t_result r, t_product p, 
+t_statisticalsummary ss0, t_field p0
+WHERE p0.name = 'x' AND r.containerId = 20 AND ss0.numericvalue_value > 100.0::double precision AND ss0.axisId = p0.Id AND ss0.containerId = p.id AND p.containerId = r.id
+
+SELECT ss0.numericvalue_value, ss0.axisId, ss0.containerId
+FROM 
+t_statisticalsummary ss0
+WHERE ss0.numericvalue_value >= 900.0::double precision
+limit 10000
+
+SELECT ss0.id, ss1.id
+FROM 
+t_statisticalsummary ss0, t_field p0,
+t_statisticalsummary ss1, t_field p1,
+t_statisticalsummary ss2, t_field p2,
+t_statisticalsummary ss3, t_field p3
+WHERE 
+p0.name = 'x' AND ss0.numericvalue_value > 900.0::double precision AND ss0.axisId = p0.Id
+AND
+p1.name = 'y' AND ss1.numericvalue_value > 300.0::double precision AND ss1.axisId = p1.Id
+AND
+p2.name = 'z' AND ss2.numericvalue_value > 100.0::double precision AND ss2.axisId = p2.Id
+AND
+p3.name = 'vx' AND ss3.numericvalue_value > 300.0::double precision AND ss3.axisId = p3.Id
+AND
+ss0.containerId = ss1.containerId
+AND
+ss1.containerId = ss2.containerId
+AND
+ss2.containerId = ss3.containerId
+
+
+SELECT 
+  distinct(e.id) 
+FROM 
+  t_experiment e, 
+  t_result r, 
+  t_product p, 
+  t_statisticalsummary ss0, t_field p0,
+  t_statisticalsummary ss1, t_field p1,
+  t_statisticalsummary ss2, t_field p2,
+  t_statisticalsummary ss3, t_field p3
+WHERE 
+  p0.name = 'x' AND ss0.numericvalue_value > 900.0::double precision AND ss0.axisId = p0.Id
+AND
+  p1.name = 'y' AND ss1.numericvalue_value > 300.0::double precision AND ss1.axisId = p1.Id
+AND
+  p2.name = 'z' AND ss2.numericvalue_value > 100.0::double precision AND ss2.axisId = p2.Id
+AND
+  p3.name = 'vx' AND ss3.numericvalue_value > 300.0::double precision AND ss3.axisId = p3.Id
+AND
+  ss0.containerId = ss1.containerId
+AND
+  ss1.containerId = ss2.containerId
+AND
+  ss2.containerId = ss3.containerId
+AND 
+  ss0.containerId = p.id
+AND 
+  p.containerId = r.id 
+AND 
+  r.containerId = e.id
+LIMIT 10
+
+18s
+20
+
+
+SELECT 
+  distinct(e.id) 
+FROM 
+  t_experiment e, 
+  t_result r, 
+  t_product p, 
+  t_statisticalsummary ss0, t_field p0,
+  t_statisticalsummary ss1, t_field p1
+WHERE 
+  p0.name = 'x' AND ss0.numericvalue_value > 900.0::double precision AND ss0.axisId = p0.Id
+AND
+  p1.name = 'y' AND ss1.numericvalue_value > 300.0::double precision AND ss1.axisId = p1.Id
+AND
+  ss0.containerId = ss1.containerId
+AND 
+  ss0.containerId = p.id
+AND 
+  p.containerId = r.id 
+AND 
+  r.containerId = e.id
+LIMIT 10
+
+2.2seconds:
+2
+18
+20
+16
+
+
+
+
+
+
+
+
+SUPER STATS VIEW:
+
+SELECT 
+  experiment.protocolid as protocolId,
+  experiment.id as experimentId,
+  result.id as resultId,
+  product.id as productId, 
+  stats.id as statsId, 
+  stats.axisid as axisId, 
+  stats.numericvalue_value, 
+  stats.statistic
+
+FROM 
+  t_experiment experiment,
+  t_result result,
+  t_product product,
+  t_statisticalsummary stats
+
+WHERE
+  stats.containerId = product.id 
+AND
+  product.containerId = result.id 
+AND
+  result.containerId = experiment.id 
+  
+LIMIT 10
+
+
+
+SELECT 
+  distinct(ss0.experimentid) 
+FROM 
+  flat_stats ss0, field p0,
+  flat_stats ss1, field p1
+WHERE 
+  p0.name = 'x' AND ss0.numericvalue_value > 900.0::double precision AND ss0.axisId = p0.Id
+AND
+  p1.name = 'y' AND ss1.numericvalue_value > 300.0::double precision AND ss1.axisId = p1.Id
+AND
+  ss0.productid = ss1.productid
+LIMIT 10
+
+3.4seconds:
+2
+18
+20
+16
+
+
+
+SELECT 
+  distinct(ss0.experimentid) 
+FROM 
+  flat_stats ss0, field p0,
+  flat_stats ss1, field p1,
+  flat_stats ss2, field p2,
+  flat_stats ss3, field p3
+WHERE 
+  p0.name = 'x' AND ss0.numericvalue_value > 900.0::double precision AND ss0.axisId = p0.Id
+AND
+  p1.name = 'y' AND ss1.numericvalue_value > 300.0::double precision AND ss1.axisId = p1.Id
+AND
+  p2.name = 'z' AND ss2.numericvalue_value > 100.0::double precision AND ss2.axisId = p2.Id
+AND
+  p3.name = 'vx' AND ss3.numericvalue_value > 300.0::double precision AND ss3.axisId = p3.Id
+AND
+  ss0.productid = ss1.productid
+AND
+  ss1.productid = ss2.productid
+AND
+  ss2.productid = ss3.productid
+
+8.1s
+
+

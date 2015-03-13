@@ -1,0 +1,891 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://vo-urp.googlecode.com/xsd/v0.9" 
+targetNamespace="http://vo-urp.googlecode.com/xsd/v0.9" attributeFormDefault="unqualified"
+  elementFormDefault="unqualified">
+
+  <xsd:annotation>
+    <xsd:documentation>
+      This schema defines the "vo-urp meta model", a modeling language used to define the concepts
+      and structures that describe data models. It is proposed as the common language for
+      defining data models in the IVOA.
+      It aims to represent the UML profile defined ... [TBD ref to magicdraw uml profile].
+
+      The approach was inspired by Laurent Bourges' .._FOR_GEN.xml file generated
+      for use by Java code in ...[TBD ref?].
+
+      The current version is a successor to the "intermediate representation" embodied in intermediateModel.xsd originally
+      used in VO-URP and especially in the Simulation Data Model effort.
+      There this language was used as the schema for documents generated from the XMI in the first
+      step in the code generation pipeline. This representation of data models is much more
+      explicit than XMI and
+      reduces the number of modeling concepts, which greatly eases the writing
+      of post-processing XSLT scripts.
+      If could relatively easily be written by hand just as an XML schema,
+      or generated any other way [TBD example SimTAP?].
+
+      The current version aims to be more formal than its predeccessor, its main goal
+      is to allow a clean data model definition,
+      that allows reuse,
+      mapping, referencing through UTYPEs etc.
+      It adds some new features such as model import, tightens the definition of some others such as TypeRef.
+      Some features that were included in
+      intermediateModel.xsd for ease of processing (such as
+      referrers,
+      an embedded Profile) have been left out, or have been replaced with a better definition (such as container)
+      remain as they may be be
+      explicitly included in natural representations and hence may need to be an
+      explicit target for use in referencing by UTYPEs for example.
+
+      This version of the schema goes all out in
+      attempting to use
+      utype truly as data model element identifiers.
+      For this to work and put no particular constraints on UTYPE format, we cannot use a utype as an ID.
+      Instead we use them as a key.
+      Advantage of this
+      usage is that referencing remote and local elements can all be done in same way, using a "utyperef",
+      which then may have to be a kkeyref. Note that in that case the remote
+      element MUST be included
+      explicitly in the model,
+      otherwise it can not be referred to. But in that case the ID mechanism may be used again...
+    </xsd:documentation>
+  </xsd:annotation>
+
+  <!-- +++++++++++++++++++ Begin of 'UTYPE section' +++++++++++++++++++ -->
+
+  <xsd:simpleType name="UTYPE">
+    <xsd:annotation>
+      <xsd:documentation>
+        We introduce a separate simple type for expressing utypes, 
+        so that eventually we may add some syntax restrictions if so desired.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <!-- TBD add a restriction, e.g. a format -->
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="ReferencableElement" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        This is the base type for all types whose elements can be explicitly referenced.
+        To this end it has an identifier element that allows explicit and unique identification of these elements.
+        Generally these are also elements that can be represented explicitly in alternative serialisations of
+        a data model, such as a VOTable or a relational model.
+        For the VO context the identifier therefore contains the utype element, used to "point into a data model" by VO containers such as VOTable,
+        or as a construct allowing data model reuse. 
+
+        In spite of this type being a base class it is not abstract, which goes against data model design principle set forth
+        [TBD ref to VO-URP DM design rule "concrete classes are final"].
+        Also it is a common base class of parents and children in containment relationship, again going counter to
+        some possible design principles. 
+        Maybe languages for data model sneed not obey such design rules?
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="identifier" type="Identifier" minOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>
+            Identifier for the containing element.
+            Extracted as a separate type so that we can easily adapt to a different identifier design.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="identification" type="ConceptIdentification" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>
+            If the element can be seen to represent a concept in another model, this can be indicated by referencing that
+            concept using this 'identification' element.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+
+  </xsd:complexType>
+
+
+  <xsd:complexType name="Identifier">
+    <xsd:annotation>
+      <xsd:documentation>
+        Class representing the way we identify referencable elements in our data model language.
+        Here encapsulated in a separate class for ease of generalisation.
+        Current implementation must contain a utype. It is possible to add an ID attribute for ease of referencing 
+        between model elements inside a model. It is also allowed to add an arbitrary identifier
+        that reflects the way an element may be represented in an alternative representation of the model.
+        For example one might use an xmi:id attribute to reflect the source of an element in a UML diagram.
+        The type of that identifier is left completely open.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="utype" type="UTYPE" minOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>
+            UTYPE of the element.
+            Used to refer to the data model element identified by this identifier from external contexts.
+            This element MUST exist, and MUST be unique. To guarantee the latter various keys are defined as part of this schema.
+            The syntax rules for utype-s are not necessarily compatible with XML Schema syntax rules for ID types.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="altid" type="ExtIdentifier" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>
+            This child element can be used to store an identifier defined by an input model (e.g. XMI:ID).
+            TBD store the source of the identifier as well?
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="id" type="xsd:ID" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>
+          For use inside this document, e.g. through the idref in an ElementRef.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:complexType name="ExtIdentifier">
+    <xsd:annotation>
+      <xsd:documentation>
+        Alternative identifier, can be used to store an identifier defined by an input model (e.g. XMI:ID).
+        TBD store the source of the identifier as well?
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="source" type="xsd:anyURI" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>
+            This element allows one to indicate the context within which the id element has a meaning,
+            "where" one should go to look up the element using the id.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="id" type="xsd:string" minOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>
+            The identifier of this element in the external context.
+            Modelled as a string, could be "anyType".
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+
+  <xsd:complexType name="ElementRef">
+    <xsd:annotation>
+      <xsd:documentation>
+        Utility class allowing one to assign a particular ReferencableElement to an element in the model.
+        Corresponding to current implementation of Identifier a utyperef should be
+        used.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+    <xsd:element name="modelUtypeRef" type="xsd:string" minOccurs="0">
+      <xsd:annotation>
+        <xsd:documentation>
+          Utype identifying the model, possibly imported, to which the referenced element belongs.
+          NB 1: we assume prefixes are not used in utype references and definitions.
+          If they are we could do away with the
+          modelId, but would then need to parse the UTYPE string, i.e. go beyond XML.
+          NB 2: If this attribute is not used, the current model is assumed, rather than an external model.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:element>
+      <xsd:element name="utyperef" type="xsd:string" minOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>
+            UTYPE of the element that is being referenced.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="idref" type="xsd:IDREF" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>
+          Optionally a reference to an 'id' attribute of an identifier element.
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="ConceptIdentification">
+    <xsd:annotation>
+      <xsd:documentation>
+        Represents a similarity/equivalence/... of a concept in an external data model
+        to the concept represented by an element in the current on.
+        We DO here assume that the external
+        model is imported, hence we extend ElementRef., with a descrption
+        and enumeration value.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="ElementRef">
+        <xsd:sequence>
+          <xsd:element name="description" type="xsd:string" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>
+                Description explaining the relation between the current element and the one referenced through this
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="dependency" type="ElementDependency" minOccurs="0" maxOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>
+                Indicates what type of relationship exists between the model element in the current model and the remote one.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="ElementDependency">
+    <xsd:annotation>
+      <xsd:documentation>
+        Descriptor of a relation of a model element to an external one identified by its utyype.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="refines" />
+      <xsd:enumeration value="equivalent" />
+      <xsd:enumeration value="is-a" />
+      <xsd:enumeration value="specialises" />
+      <xsd:enumeration value="similar" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <!-- +++++++++++++++++++ End of 'UTYPE section' +++++++++++++++++++ -->
+
+
+  <!-- patch so JAXB understands that this element is an XmlRootElement -->
+  <xsd:complexType name="Model">
+    <xsd:complexContent>
+      <xsd:extension base="ReferencableElement">
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string" minOccurs="1" />
+          <xsd:element name="description" type="xsd:string" minOccurs="0" />
+          <xsd:element name="title" type="xsd:string" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="author" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element name="version" type="xsd:string" minOccurs="1" />
+          <xsd:element name="previousVersion" type="xsd:anyURI" minOccurs="0" />
+          <!-- TBD next should be a datetime, but then need to generate that properly from XMI -->
+          <xsd:element name="lastModified" type="xsd:dateTime" />
+          <xsd:element name="import" type="ModelProxy" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                An 'import' element indicates a dependency on an external, predefined data model.
+                Types from that model may be used for referencing, extension and assignment to
+                attributes.
+                Types from the external model MUST NOT be used for composition relationships.
+                'identification' relations to elements from that model may be used to indicate some kind of
+                equivalence between
+                elements in the current model and the external elements.
+              </xsd:documentation>
+              <xsd:documentation>
+                Every data model MUST include a version of the IVOA Profile data model to include the standard
+                primitive types and IVOA Identifier type. The definition here indicates
+                which version is being used
+                and identifies which of the types are reused.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="package" type="Package" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                The collection of packages which contain the type definitions in the model.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="objectType" type="ObjectType" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element name="dataType" type="DataType" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element name="enumeration" type="Enumeration" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element name="primitiveType" type="PrimitiveType" minOccurs="0" maxOccurs="unbounded" />
+          
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="ModelProxy">
+    <xsd:annotation>
+      <xsd:documentation>
+        A "proxy" for an external model. Currently we assume any elements used in that model are referenced by utype
+        only. We could create proxy elements in the model, but that shold
+        not be necessary.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="ReferencableElement">
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                Name by which imported model is use din the current model and its documentation.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="ivoId" type="xsd:anyURI" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                IVO Identifier of the model, assumed to have been registered in an IVOA Registry.
+                Currently not mandatory, as wwe don't have any models in a registry, but would like to
+                start using them.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="url" type="xsd:anyURI" minOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>
+                URL where the VO-URP model document can be downloaded.
+                Note, could likely be done through a registry once ivoId is known.
+                This is simpler and
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="documentationURL" type="xsd:anyURI" minOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>
+                URL where the documentation HTML file generated by VO-URP can be downloaded.
+                It is assumed that the utype-s of the imported types can be added onto the doc URL (with a # in between)
+                so that a direct link to the data model can be found.
+                TBD should a prefix be used???
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="objectType" type="TypeProxy" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                List of imported types representing external elements that are also used in the current model.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="dataType" type="TypeProxy" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                List of imported types representing external elements that are also used in the current model.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="enumeration" type="TypeProxy" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                List of imported types representing external elements that are also used in the current model.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="primitiveType" type="TypeProxy" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                List of imported types representing external elements that are also used in the current model.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="TypeProxy">
+    <xsd:annotation>
+      <xsd:documentation>
+        Represents an imported type.
+        May add things here beyond those from referencableelement
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="ReferencableElement">
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string"/>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="Package">
+    <xsd:complexContent>
+      <xsd:extension base="ReferencableElement">
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string" minOccurs="1" />
+          <xsd:element name="description" type="xsd:string" minOccurs="0" />
+          <xsd:element name="depends" type="PackageDependency" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element name="objectType" type="ObjectType" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element name="dataType" type="DataType" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element name="enumeration" type="Enumeration" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element name="primitiveType" type="PrimitiveType" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element name="package" type="Package" minOccurs="0" maxOccurs="unbounded">
+            <xsd:annotation>
+              <xsd:documentation>
+                Including a package inside a package goes against modeling principles set forth here
+                [TBD reference to VO-URP DM principle that say "class can not be contained in
+                itself"].
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="PackageDependency">
+    <xsd:annotation>
+      <xsd:documentation>
+        Indicates and describes the dependency of one package on another.
+        A package can use types from another package ONLY if there is an dependency relation, either direct, or
+        through a
+        dependency of a dependent package.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="ElementRef">
+        <xsd:sequence>
+          <xsd:element name="description" type="xsd:string" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                Describes the dependency relation.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="Type" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        Base class of all type definition elements.
+        Adds inheritance and indication of abstractness to Element.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="ReferencableElement">
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string" minOccurs="1" />
+          <xsd:element name="description" type="xsd:string" minOccurs="0" />
+          <xsd:element name="extends" type="TypeExtension" minOccurs="0" />
+        </xsd:sequence>
+        <xsd:attribute name="abstract" type="xsd:boolean" default="false" use="optional" />
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="TypeExtension">
+    <xsd:annotation>
+      <xsd:documentation>
+        Represents the way we model/support inheritance in our model.
+        Currently is a reference to a single Type.
+        Note that this type itself is referencable.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="ReferencableElement">
+        <xsd:sequence>
+          <xsd:element name="type" type="ElementRef" minOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>
+                Identifies the type that is extended.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="Container">
+    <xsd:complexContent>
+      <xsd:extension base="ReferencableElement">
+        <xsd:sequence>
+          <xsd:element name="collectionref" type="ElementRef" minOccurs="1">
+            <xsd:annotation>
+              <xsd:documentation>
+                Identifies the collection corresponding to this container.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="ObjectType">
+    <xsd:annotation>
+      <xsd:documentation>
+        TBD improve next description; make it less obscure; refer to ...
+        "A type with an identity". This in contrast to value types where the value identifies the instance.
+        Could be
+        called Class to correspond closer to UML counterpart, though ObjectType is somewhat more explicitl.
+        Using Class causes some problems in usage as it is often a reserved keyword.
+        TBD should we
+        include an explicit id attribute. Simplieifes it being referenced with UTYPE-s, but somewhat complex
+        how to define minOccirs rule. Should for each concrete class have exactly one in extension
+        hierarchy.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="Type">
+        <xsd:sequence>
+          <xsd:element name="container" type="Container" minOccurs="0" maxOccurs="1" />
+          <xsd:element name="attribute" type="Attribute" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element name="collection" type="Collection" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element name="reference" type="Reference" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="ValueType" abstract="true">
+    <xsd:annotation>
+      <xsd:documentation>
+        Base class of all valaue types, i.e. those types identified by their value, rather than a separate explicit identifier.
+        These are the types that can be assigned to Attribute-s.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="Type">
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+
+  <xsd:complexType name="PrimitiveType">
+    <xsd:annotation>
+      <xsd:documentation>
+        Atomic/simple type. Defined by a single value. Generally a built in type from the Profile,
+        or a subclass of these.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="ValueType">
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="DataType">
+    <xsd:complexContent>
+      <xsd:extension base="ValueType">
+        <xsd:sequence>
+          <xsd:element name="attribute" type="Attribute" minOccurs="0" maxOccurs="unbounded" />
+          <xsd:element name="reference" type="Reference" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="Enumeration">
+    <xsd:annotation>
+      <xsd:documentation>
+        A primitive type with a limited, discrete set of values.
+        May explicitly extend a PrimitiveType. Its values must be compatible with that type then.
+        TBD Should define what it
+        might mean for an enumeraiton to extend another enumeration.
+        Should it restrict the possible values further? Or should it add to the values? Or ...?
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="PrimitiveType">
+        <xsd:sequence>
+          <xsd:element name="literal" type="EnumLiteral" maxOccurs="unbounded" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="EnumLiteral">
+    <xsd:complexContent>
+      <xsd:extension base="ReferencableElement">
+        <xsd:sequence>
+          <xsd:element name="value" type="xsd:string" />
+          <xsd:element name="description" type="xsd:string" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="Attribute">
+    <xsd:annotation>
+      <xsd:documentation>
+        Basic component of an objecttype or datatype.
+        Its values must represent ValueTypes, i.e. MUST NOT be ObjectTypes.
+        Represent "simple" properties of its container type.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="ReferencableElement">
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string" minOccurs="1" />
+          <xsd:element name="description" type="xsd:string" minOccurs="0" />
+          <xsd:element name="datatype" type="ElementRef">
+            <xsd:annotation>
+              <xsd:documentation>
+                Must refer to a ValueType.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="multiplicity" type="Multiplicity" />
+          <!-- should next be on TypeReference? the constraints restrict the type after all. -->
+          <xsd:element name="constraints" type="Constraints" minOccurs="0" />
+          <xsd:element name="skosconcept" type="SKOSConcept" minOccurs="0" />
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+
+
+  <xsd:complexType name="SKOSConcept">
+    <xsd:annotation>
+      <xsd:documentation>
+        Type used to indicate on attributes that they take values representing a concept defined in
+        an identified SKOS vocabulary, and/or restricted by being narrower than an
+        identified "broadest" concept.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="broadestSKOSConcept" type="xsd:anyURI" minOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>
+            A URI identifiying a SKOS concept that corresponds to the concept in the model.
+            Values of a corresponding attributes must be URI-s identifiying objects that are narrower
+            than the identified concept.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="vocabularyURI" type="xsd:anyURI" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+  </xsd:complexType>
+
+
+
+  <xsd:complexType name="Relation" abstract="true">
+    <xsd:complexContent>
+      <xsd:extension base="ReferencableElement">
+        <xsd:sequence>
+          <xsd:element name="name" type="xsd:string" minOccurs="1" />
+          <xsd:element name="description" type="xsd:string" minOccurs="0" />
+          <xsd:element name="datatype" type="ElementRef">
+            <xsd:annotation>
+              <xsd:documentation>
+                Must refer to an ObjectType.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+          <xsd:element name="multiplicity" type="Multiplicity" />
+          <xsd:element name="subsets" type="ElementRef" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                Represents the UML subsetted property. Indicates that a particular relation refines the definition
+                of another relation. ONly a relation inherited form a base class can
+                be subsetted. Typical usage is
+                that the base class has a relation to a class A, and the subclass refines this to indicating that
+                the relation should be to a subclass of A.
+
+                The value should identify the subsetted property.
+                TBD IF we are going to use utype-s to refer to elements also inside this document, we should use an
+                appropriate keyref
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="Reference">
+    <xsd:complexContent>
+      <xsd:extension base="Relation">
+        <xsd:annotation>
+          <xsd:documentation>
+            Should have multiplicity 0..1 or 1
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:complexType name="Collection">
+    <xsd:annotation>
+      <xsd:documentation>
+        A collection implements a composition relation between the parent and child ObjectTypes.
+        It is a rule that an object type can only be the target of a single collection.
+        A
+        subclass can be assigned a target to a collection if a baseclass is already assiigned such a target, only if
+        this collection is explicitly 'subsetted'.
+        A collection is assumed to be a set, i.e.
+        a given object (as identified by its identifier!) cannot occur
+        multiple times in the collection.
+        The collection may be ordered, whichi implies that the order in whichi objects have been added
+        to
+        the collection is to be preserved. As clients can always do an explicit sort on any of the child objects' attributes,
+        it seems not necessary to add functionality for declaring a collection is
+        sorted on one or more attributes.
+        Through the uniqueInCollection constraint that can be assigned to attributes, a collection can impose the
+        constraint that different objects in the collection
+        must have distinct values of the attribute to which that constraint is assigned.
+        It would be better probably to add the capability to assign such constraints to this collection type.
+        This would
+        also give more flexibility in for example creating explicit (named) keys, or defining multi-attribute uniqueness constraints.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="Relation">
+        <xsd:sequence>
+          <xsd:element name="isOrdered" type="xsd:boolean" default="false" minOccurs="0">
+            <xsd:annotation>
+              <xsd:documentation>
+                If true, this collection preserves the ordering of object insertions.
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+      </xsd:extension>
+    </xsd:complexContent>
+  </xsd:complexType>
+
+  <xsd:simpleType name="Multiplicity">
+    <xsd:annotation>
+      <xsd:documentation>
+        ALso called "Cardinality".
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:string">
+      <xsd:enumeration value="1" />
+      <xsd:enumeration value="0..1" />
+      <xsd:enumeration value="0..*" />
+      <xsd:enumeration value="1..*" />
+    </xsd:restriction>
+  </xsd:simpleType>
+
+  <xsd:complexType name="Constraints">
+    <xsd:annotation>
+      <xsd:documentation>
+        It is useful to be able to attach constraints to data model elements.
+        In general these can be complex and might require a language such as OCL (=Object Constraint Language).
+        Here we pre-define some simple constraints.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="minLength" type="xsd:int" />
+      <xsd:element name="maxLength" type="xsd:int" />
+      <xsd:element name="length" type="xsd:int" />
+      <xsd:element name="uniqueGlobally" type="xsd:boolean" default="false">
+        <xsd:annotation>
+          <xsd:documentation>
+            Indicates that the attribute is part of a global uniqueness constraint,
+            the name of which is given by the value of the constraint.
+            This name allows multiple attributes to be
+            part of the same constraint.
+            TBD We may want to insist that attributes with a uniqeness constraints must be non-null.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="uniqueInCollection" type="xsd:boolean" default="false">
+        <xsd:annotation>
+          <xsd:documentation>
+            Indicates that the attribute is part of a uniqueness constraint that pertains to the context of the collection
+            the object is in only. The name of the constraint is given by
+            the value of the uniqueInCollection element.
+            This name allows multiple attributes to be part of the same constraint.
+            TBD We may want to insist that attributes with a uniqeness constraints
+            must be non-null.
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:choice>
+  </xsd:complexType>
+
+  <!-- Begin of element declarsion(s) -->
+  <xsd:element name="model" type="Model">
+    <xsd:key name="utypes">
+    <xsd:annotation>
+      <xsd:documentation>
+        This constraint ensures that all utype definitions in a model are unique!
+        This includes utypes on imported types on imported models!
+        IF we always include a model prefix (== utype of the model +':') in each utype, and if we assume such prefixes are unique within IVOA world,
+        this can be ensured. If not, the key-s and keyref-s must be updated to include the model's utype.
+        And the ElementRef elements may have to include the model utype as well.
+      </xsd:documentation>
+    </xsd:annotation>
+      <xsd:selector xpath=".//identifier" />
+      <xsd:field xpath="utype"></xsd:field>
+    </xsd:key>
+    <xsd:key name="typeUtypes">
+    <xsd:annotation>
+      <xsd:documentation>
+        This constraint ensures that all utype definition on types are unique. 
+        Can be used in keyref definitions to ensure that data type associtions on attributes, reference's data type-s etc exist.
+      </xsd:documentation>
+    </xsd:annotation>
+      <xsd:selector xpath=".//objectType/identifier | .//dataType/identifier | .//enumeration/identifier | .//primitiveType/identifier" />
+      <xsd:field xpath="utype"></xsd:field>
+    </xsd:key>
+    <xsd:key name="objectTypeUtypes">
+      <xsd:selector xpath=".//objectType/identifier" />
+      <xsd:field xpath="utype"></xsd:field>
+    </xsd:key>
+    <xsd:key name="valueTypeUtypes">
+      <xsd:selector xpath=".//dataType/identifier | .//enumeration/identifier | .//primitiveType/identifier" />
+      <xsd:field xpath="utype"></xsd:field>
+    </xsd:key>
+    <xsd:keyref name="utypeRef" refer="utypes">
+      <xsd:selector xpath=".//utyperef"/>
+      <xsd:field xpath="."></xsd:field>
+    </xsd:keyref>
+    <xsd:keyref name="referenceObjectTypeRef" refer="objectTypeUtypes">
+      <xsd:annotation>
+        <xsd:documentation>
+          Ensure that a reference points to an objectType.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:selector xpath=".//reference/datatype"/>
+      <xsd:field xpath="utyperef"></xsd:field>
+    </xsd:keyref>
+    <xsd:keyref name="collectionObjectTypeRef" refer="objectTypeUtypes">
+      <xsd:annotation>
+        <xsd:documentation>
+          Ensure that a collections 'contains' an objectType.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:selector xpath=".//collection/datatype"/>
+      <xsd:field xpath="utyperef"></xsd:field>
+    </xsd:keyref>
+    <xsd:keyref name="extendsTypeRef" refer="typeUtypes">
+      <xsd:selector xpath=".//extends/type"/>
+      <xsd:field xpath="utyperef"></xsd:field>
+    </xsd:keyref>
+    <xsd:keyref name="attributeDatatypeRef" refer="valueTypeUtypes">
+      <xsd:annotation>
+        <xsd:documentation>
+          Ensure that an attribute has a value type as data type.
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:selector xpath=".//attribute/datatype"/>
+      <xsd:field xpath="utyperef"></xsd:field>
+    </xsd:keyref>
+  </xsd:element>
+
+  <xsd:element name="modelProxy" type="ModelProxy">
+    <xsd:annotation>
+      <xsd:documentation>
+        It is ok to create model proxy documents.
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:unique name="uniqueUtypes">
+      <xsd:annotation>
+        <xsd:documentation>
+          Ensure that the utype-s in the model proxy are uniqeu..
+        </xsd:documentation>
+      </xsd:annotation>
+    
+      <xsd:selector xpath=".//identifier" />
+      <xsd:field xpath="utype"></xsd:field>
+    </xsd:unique>
+    </xsd:element>
+</xsd:schema>

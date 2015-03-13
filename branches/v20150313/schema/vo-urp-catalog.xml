@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+
+    <system systemId="http://vo-urp.googlecode.com/svn/trunk/xsd/base.xsd"
+            uri="../xsd/base.xsd"/>
+
+    <system systemId="http://vo-urp.googlecode.com/svn/trunk/xsd/intermediateModel.xsd"
+            uri="../xsd/intermediateModel.xsd"/>
+            
+    <!-- TODO the following item is only useful for web app -->
+    <rewriteSystem systemIdStartString="@schemalocation_root@"
+                   rewritePrefix="./xsd/" />
+
+    <nextCatalog catalog="ext-catalog.xml"/>
+
+</catalog>
+

@@ -1,0 +1,1 @@
+<%@ tag body-content="empty" isELIgnored="true" description="xml serialization of a SimDB element" pageEncoding="UTF-8" import="org.ivoa.dm.ModelFactory" %><%-- The list of normal or fragment attributes can be specified here: --%><%@ attribute name="item" required="true" type="org.ivoa.dm.model.MetadataObject" %><%= ModelFactory.getInstance().marshallObject(item, 2048) %>

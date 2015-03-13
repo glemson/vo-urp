@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="vo-urp.googlecode.com-browser-DEBUG" default="copyHere" basedir=".">
+
+	<description>
+    VO-URP/Browser build file
+  </description>
+
+
+	<!-- set global properties for this build -->
+
+	<!-- loads config file -->
+	<property file="build.properties" />
+	<fail unless="vo-urp.path"    message="Must define property 'vo-urp.path' in build.properties !" />
+	<fail unless="vo-urp.project" message="Must define property 'vo-urp.project' in build.properties !" />
+
+	<property file="${vo-urp.project.path}/project.properties"/>
+
+
+
+
+	<!-- path & files -->
+	<property name="root" location="." />
+
+	<property name="properties" location="./properties" />
+
+
+	<property name="gen.src" location="./gen/src" />
+	<property name="sources" location="./java/src" />
+	<property name="classes" location="./WEB-INF/classes" />
+	<property name="lib" location="./WEB-INF/lib" />
+	<property name="tags" location="./WEB-INF/tags" />
+
+	<property name="web-content" location="${vo-urp.web.path}" />
+
+	<property name="libs" location="${vo-urp.web.path}/lib" />
+
+	<property name="dist" location="${vo-urp.web.path}/dist" />
+
+
+	<!-- vo-urp project -->
+	<property name="vo-urp.project" location="${vo-urp.project.path}" />
+
+
+
+	<!-- target importVOURP : get libraries and properties from vo-urp project -->
+	<target name="importVOURP">
+		<ant target="importProperties" />
+		<ant target="importLibraries" />
+		<ant target="importGenSrc" />
+		<ant target="importWebApp" />
+	</target>
+
+
+
+
+	<!-- target importProperties : get properties from vo-urp project -->
+	<target name="importProperties">
+
+		<echo message="update vo-urp properties from ${vo-urp.project} ..." />
+
+		<copy todir="${sources}" preservelastmodified="true" verbose="true">
+			<fileset dir="${vo-urp.project.path}/properties">
+				<include name="*" />
+			</fileset>
+		</copy>
+
+		<copy todir="${classes}" preservelastmodified="true" verbose="true">
+			<fileset dir="${vo-urp.project.path}/properties">
+				<include name="*" />
+			</fileset>
+		</copy>
+
+
+		<mkdir dir="${tags}"/>
+		<copy todir="${tags}" preservelastmodified="true" verbose="true">
+			<fileset dir="${vo-urp.web.path}/WEB-INF/tagfiles">
+				<include name="**/*" />
+			</fileset>
+		</copy>
+		<echo message="update vo-urp properties : done." />
+	</target>
+
+
+	<target name="importGenSrc">
+		<echo message="update vo-urp properties from ${vo-urp.project} ..." />
+
+		<copy todir="${gen.src}" preservelastmodified="true" verbose="true">
+			<fileset dir="${vo-urp.project.path}/output/java/src">
+				<include name="**/*.java" />
+				<include name="**/jaxb.index" />
+			</fileset>
+		</copy>
+		<copy todir="${gen.src}" preservelastmodified="true" verbose="true">
+			<fileset dir="${vo-urp.project.path}/output/java">
+				<include name="META-INF/persistence.xml" />
+			</fileset>
+		</copy>
+
+
+		<copy todir="${gen.src}" preservelastmodified="true" verbose="true">
+			<fileset dir="${vo-urp.project.path}/output">
+				<include name="${project.name}_INTERMEDIATE.xml" />
+			</fileset>
+		</copy>
+		  <replace file="${gen.src}/${project.name}_INTERMEDIATE.xml" encoding="UTF-8">
+		    <replacetoken>&lt;model</replacetoken>
+		    <replacevalue>
+		      &lt;m:model xmlns:m="http://ivoa.org/theory/datamodel/generationmetadata/v0.1" 
+		                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		                  xsi:schemaLocation="http://ivoa.org/theory/datamodel/generationmetadata/v0.1 http://vo-urp.googlecode.com/svn/trunk/xsd/intermediateModel.xsd"</replacevalue>
+		  </replace>
+		  <replace file="${gen.src}/${project.name}_INTERMEDIATE.xml" encoding="UTF-8">
+		    <replacetoken>&lt;/model</replacetoken>
+		    <replacevalue>&lt;/m:model</replacevalue>
+		  </replace>
+
+		
+	</target>
+
+	<target name="importWebApp">
+
+		<echo message="update webapp for {vo-urp.project} ..." />
+
+		<copy todir="." preservelastmodified="true" verbose="true">
+			<fileset dir="${vo-urp.web.path}">
+				<include name="*.html"/>
+				<include name="*.jsp"/>
+				<include name="WEB-INF/web.xml"/>
+				<include name="list/**/*" />
+				<include name="manage/**/*" />
+				<include name="page/**/*" />
+				<include name="query/**/*" />
+				<include name="secure/**/*" />
+				<include name="show/**/*" />
+				<include name="static/**/*" />
+				<include name="tap/**/*" />
+				<!-- keep log4j different for webapp -->
+			</fileset>
+		</copy>
+		<mkdir dir="./WEB-INF/tags" />
+		<copy todir="./WEB-INF/tags" preservelastmodified="true" verbose="true">
+			<fileset dir="${web-content}/WEB-INF/tagfiles">
+				<include name="**/*.tag" />
+			</fileset>
+		</copy>
+
+	</target>
+	
+	<!-- target importLibraries : get libraries from vo-urp project -->
+	<target name="importLibraries">
+
+		<echo message="update vo-urp libraries from ${vo-urp.project} ..." />
+
+		<copy todir="${lib}" preservelastmodified="true" verbose="true">
+			<fileset dir="${vo-urp.path}/libs">
+				<exclude name="jalopy/**/*" />
+				<exclude name="ant/**/*" />
+				<exclude name="anthack/**/*" />
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+		<copy todir="${lib}" preservelastmodified="true" verbose="true">
+			<fileset dir="${vo-urp.web.lib.path}">
+				<include name="*.jar" />
+			</fileset>
+		</copy>
+		<echo message="update vo-urp libraries : done." />
+	</target>
+
+
+
+
+
+
+	<!-- Compile java files and jar them -->
+	<target name="copyHere" depends="importVOURP">
+
+	</target>
+
+
+
+
+
+</project>

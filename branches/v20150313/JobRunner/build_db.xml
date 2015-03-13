@@ -1,0 +1,117 @@
+<!-- 
+    build_db.xml file : specific targets for database management
+-->  
+
+
+<!-- presets -->
+
+<!-- Performs an SQL query with the database defined in jpa-config properties. -->
+<presetdef name="doSql">
+
+  <sql classpathref="jdbc-drivers.class.path" 
+       driver="${eclipselink.jdbc.driver}"
+       url="${eclipselink.jdbc.url}"
+       userid="${eclipselink.jdbc.user}"
+       password="${eclipselink.jdbc.password}" />
+
+</presetdef>
+
+  
+
+
+<!-- targets -->
+
+<!-- sets DB properties -->
+<target name="initForDB">
+  <!-- Get jpa-config properties -->
+  <property file="${properties}/jpa-config.properties" />
+
+  <fail unless="eclipselink.target-database"    message="Must define property 'eclipselink.target-database' in jpa-config.properties !" />
+
+  <fail unless="eclipselink.jdbc.driver"        message="Must define property 'eclipselink.jdbc.driver' in jpa-config.properties !" />
+  <fail unless="eclipselink.jdbc.url"           message="Must define property 'eclipselink.jdbc.url' in jpa-config.properties !" />
+
+  <!-- eclipselink.jdbc.user only used at runtime (read only), but check if exist -->
+  <fail unless="eclipselink.jdbc.user"          message="Must define property 'eclipselink.jdbc.user' in jpa-config.properties !" />
+  <fail unless="eclipselink.jdbc.password"      message="Must define property 'eclipselink.jdbc.password' in jpa-config.properties !" />
+  
+  <!-- sets SQL script directory -->
+  <condition property="ddl.directory" value="ddl/postgres/">
+    <equals arg1="${eclipselink.target-database}" arg2="PostgreSQL" trim="true"/>
+  </condition>
+
+  <condition property="ddl.directory" value="ddl/mssqlserver/">
+    <equals arg1="${eclipselink.target-database}" arg2="SQLServer" trim="true"/>
+  </condition>
+
+  <!--  no need to check for tap.ddl.directory -->
+  <condition property="ddl.directory.set">
+    <isset property="ddl.directory"/>
+  </condition>
+
+  <fail unless="ddl.directory.set" message="unable to define property 'ddl.directory' for the given vendor : ${eclipselink.target-database} !" />
+
+  <!-- sets SQL separator for CREATE VIEW scrip -->
+  <condition property="create.view.sep" value=";">
+    <equals arg1="${eclipselink.target-database}" arg2="PostgreSQL" trim="true"/>
+  </condition>
+
+  <condition property="create.view.sep" value="GO">
+    <equals arg1="${eclipselink.target-database}" arg2="SQLServer" trim="true"/>
+  </condition>
+
+  <condition property="create.view.sep.set">
+    <isset property="create.view.sep"/>
+  </condition>
+
+  <fail unless="create.view.sep.set" message="unable to define property 'create.view.sep' for the given vendor : ${eclipselink.target-database} !" />
+
+
+  <echo>JDBC URL  : ${eclipselink.jdbc.url}</echo>
+  <echo>JDBC USER : ${eclipselink.jdbc.user}</echo>
+  <echo>DDL HOME  : ${ddl.directory}</echo>
+
+</target>
+
+
+
+
+<!-- target checkDB : is database server alive ? -->
+<target name="checkDB" depends="initForDB">
+  <echo>checkDB : ${eclipselink.jdbc.url} ...</echo>
+<!-- 
+<echo>user : ${eclipselink.jdbc.user}</echo>
+<echo>password : ${eclipselink.jdbc.password}</echo>
+-->
+  <doSql onerror="abort" print="true">select 1</doSql>
+
+  <echo>checkDB : done.</echo>
+</target>
+
+
+
+
+<!-- target cleanDB : drops views then tables -->
+<target name="cleanDB" depends="initForDB">
+  <echo>cleanDB : drop tables ...</echo>
+
+  <echo>Executing ${ddl.directory}/${project.name}_dropTables.sql</echo>
+  <doSql autocommit="true" onerror="continue" src="${ddl.directory}/${project.name}_dropTables.sql" />
+  
+  <echo>cleanDB : done.</echo>
+</target>
+
+
+
+
+<!-- target createDB : creates tables then views -->
+<target name="createDB" depends="cleanDB">
+  <echo>createDB : create tables ...</echo>
+
+  <doSql onerror="abort" src="${ddl.directory}/${project.name}_createTables.sql" />
+
+  <echo>createDB : done.</echo>
+</target>
+
+
+<!-- end of build_db.xml -->  

@@ -1,0 +1,1209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmlns:xmi="http://schema.omg.org/spec/XMI/2.1" 
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+xmlns:Documentation_extensions="http:///schemas/Documentation_extensions/_lg-DoNn8EeCpY-pssWj3yw/0" 
+xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" 
+xmlns:uml="http://schema.omg.org/spec/UML/2.1.1" xmi:version="2.1" xsi:schemaLocation="http://www.eclipse.org/uml2/2.1.0/UML http://schema.omg.org/spec/UML/2.1.1 http:///schemas/Documentation_extensions/_lg-DoNn8EeCpY-pssWj3yw/0 ObservationCoreComponentsDM_Documentation_extensions_Profile.xmi#_lhH0p9n8EeCpY-pssWj3yw">
+  <uml:Model xmi:id="_lgh-wNn8EeCpY-pssWj3yw" name="ObservationCoreComponentsDM">
+    <ownedComment xmi:type="uml:Comment" xmi:id="_lgh-wdn8EeCpY-pssWj3yw">
+      <body>This is an updated version for the Observation Data model Core components.
+Goal: This modeling task aims at describing an Observation, with a set of structured  metadata representing :
+the observation content, the signal observed , the calibration status, quality assumptions, etc...
+These pieces of information are used in data discovery use-cases as stated in the Observation Core Components data model. See the IVOA standard document  available at: 
+http://www.ivoa.net/Documents/ObsCore/index.html
+ 
+The model includes revisions and clarifications discussed at the 
+Nara Interoprability meeting in December 2010 and iterations during
+ the standard final discussions  2010-2011.</body>
+    </ownedComment>
+    <ownedComment xmi:type="uml:Comment" xmi:id="_lgh-wtn8EeCpY-pssWj3yw">
+      <body/>
+    </ownedComment>
+    <packagedElement xmi:type="uml:Package" xmi:id="_lgh-w9n8EeCpY-pssWj3yw" name="CharacterisationDM">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_lgh-xNn8EeCpY-pssWj3yw">
+        <body>This class diagram covers all classes used in the context of the Observation Core components Model.
+The Characterisation classes, describing how the data span along the main physical axes, are used 
+here partly, and only the attributes relevant to this modeling effort are shown here.
+This is also the case for the DataID and Curation classes extended from the Spectrum/SSA data model.
+The classes describing the physical axes of an observation contains the metadata used as search criteria when building a query. 
+We re-use the Characterisation data model down to the Support level (level4) .</body>
+      </ownedComment>
+      <packageImport xmi:id="_lgh-xdn8EeCpY-pssWj3yw" visibility="private" importedPackage="_lgh_0dn8EeCpY-pssWj3yw"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh-xtn8EeCpY-pssWj3yw" name="Characterisation">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-x9n8EeCpY-pssWj3yw" name="axis" type="_lgh-y9n8EeCpY-pssWj3yw" isReadOnly="true" aggregation="composite" association="_lgh-ydn8EeCpY-pssWj3yw">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_lgh-yNn8EeCpY-pssWj3yw" value="*"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh-ydn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh-x9n8EeCpY-pssWj3yw _lgh-ytn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh-ytn8EeCpY-pssWj3yw" name="undefined" type="_lgh-xtn8EeCpY-pssWj3yw" association="_lgh-ydn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh-y9n8EeCpY-pssWj3yw" name="CharacterisationAxis" clientDependency="_lgh-5Nn8EeCpY-pssWj3yw">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh-zNn8EeCpY-pssWj3yw">
+          <body>A generic class for all physical axes relevant for an observation.</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-zdn8EeCpY-pssWj3yw" name="name" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-ztn8EeCpY-pssWj3yw" name="dim" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgh-z9n8EeCpY-pssWj3yw">
+            <body>Axis dimension : 2 for spatial , 1 for time, spectral , redshift, etc.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#Integer"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-0Nn8EeCpY-pssWj3yw" name="numbins" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#Integer"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-0dn8EeCpY-pssWj3yw" name="independent" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgh-0tn8EeCpY-pssWj3yw">
+            <body>This flag is set to FALSE if the axis depends on another physical axis.
+For examples flux axis in an image depends on the spatial and spectral axis and in not independent.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#Boolean"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-09n8EeCpY-pssWj3yw" name="calibStatus" type="_lgh_hNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgh-1Nn8EeCpY-pssWj3yw">
+            <body>Encodes the calibration status along any axis. For the spatial axis (astrometry). 
+Some observations only provide the raw pointing position (uncalibrated). 
+Some other may have a raw linear relationship between the pixel coordinates and the world coordinates (RAW).
+Some other are really accuratly calibrated..Possible values will be {} cf charac
+
+Describes the type of calibration operated on the Observable axis a special case of which is the Flux axis).
+Values must be in the following set , according to the Characterisation DM.:{}
+This fully conditions what the user will be able to do with the retrieved data and therefore is crucial.
+</body>
+          </ownedComment>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-1dn8EeCpY-pssWj3yw" name="undersampling" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#Boolean"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-1tn8EeCpY-pssWj3yw" name="regularsampling" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#Boolean"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-19n8EeCpY-pssWj3yw" name="coverage" type="_lgh-7dn8EeCpY-pssWj3yw" isReadOnly="true" aggregation="composite" association="_lgh-5dn8EeCpY-pssWj3yw"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-2Nn8EeCpY-pssWj3yw" name="resolution" type="_lgh_Bdn8EeCpY-pssWj3yw" isReadOnly="true" aggregation="composite" association="_lgh-59n8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh-2dn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-2tn8EeCpY-pssWj3yw" name="sampling" type="_lgh_Q9n8EeCpY-pssWj3yw" isReadOnly="true" aggregation="composite" association="_lgh-6dn8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh-29n8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-3Nn8EeCpY-pssWj3yw" name="accuracy" type="_lgh_dtn8EeCpY-pssWj3yw" isReadOnly="true" aggregation="composite" association="_lgh-69n8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh-3dn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-3tn8EeCpY-pssWj3yw" name="ucd" type="_lgh_mtn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgh-39n8EeCpY-pssWj3yw">
+            <body>This parameter specifies the physical quantity attached to this axis. It allows to distinguish position in sky from
+spatial frequencies (for u,v data), for instance , or frequency from wavelength along the spectral axis..</body>
+          </ownedComment>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-4Nn8EeCpY-pssWj3yw" name="unit" type="_lgh_mNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-4dn8EeCpY-pssWj3yw" name="coordSys" type="_lgh_oNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_lgh-4tn8EeCpY-pssWj3yw" name="ComputeWorldCoordinates">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgh-49n8EeCpY-pssWj3yw">
+            <body>This method allows to compute the World coordinates of the observed values along each axis. It provides RA,DEC positions along the SpatialAxis,  Wavelength along the Spectral axis, etc...</body>
+          </ownedComment>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_lgh-5Nn8EeCpY-pssWj3yw" name="Dependency" supplier="_lgiA4Nn8EeCpY-pssWj3yw" client="_lgh-y9n8EeCpY-pssWj3yw"/>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh-5dn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh-19n8EeCpY-pssWj3yw _lgh-5tn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh-5tn8EeCpY-pssWj3yw" name="undefined" type="_lgh-y9n8EeCpY-pssWj3yw" association="_lgh-5dn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh-59n8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh-2Nn8EeCpY-pssWj3yw _lgh-6Nn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh-6Nn8EeCpY-pssWj3yw" name="undefined" type="_lgh-y9n8EeCpY-pssWj3yw" association="_lgh-59n8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh-6dn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh-2tn8EeCpY-pssWj3yw _lgh-6tn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh-6tn8EeCpY-pssWj3yw" name="undefined" type="_lgh-y9n8EeCpY-pssWj3yw" association="_lgh-6dn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh-69n8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh-3Nn8EeCpY-pssWj3yw _lgh-7Nn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh-7Nn8EeCpY-pssWj3yw" name="undefined" type="_lgh-y9n8EeCpY-pssWj3yw" association="_lgh-69n8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh-7dn8EeCpY-pssWj3yw" name="Coverage">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh-7tn8EeCpY-pssWj3yw">
+          <body>A container to gather information about the region covered y one observation .</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-79n8EeCpY-pssWj3yw" name="location" type="_lgh_S9n8EeCpY-pssWj3yw" isReadOnly="true" aggregation="composite" association="_lgh--9n8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh-8Nn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-8dn8EeCpY-pssWj3yw" name="bounds" type="_lgh_VNn8EeCpY-pssWj3yw" isReadOnly="true" aggregation="composite" association="_lgh-_dn8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh-8tn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-89n8EeCpY-pssWj3yw" name="support" type="_lgh_Xdn8EeCpY-pssWj3yw" isReadOnly="true" aggregation="composite" association="_lgh-_9n8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh-9Nn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-9dn8EeCpY-pssWj3yw" name="variability" type="_lgh_btn8EeCpY-pssWj3yw" isReadOnly="true" aggregation="composite" association="_lgh_Adn8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh-9tn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh-99n8EeCpY-pssWj3yw" name="unit" type="_lgh_mNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh--Nn8EeCpY-pssWj3yw" name="coordSys" type="_lgh_oNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh--dn8EeCpY-pssWj3yw" name="location" type="_lgh_S9n8EeCpY-pssWj3yw" isReadOnly="true" association="_lgh_A9n8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh--tn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh--9n8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh-79n8EeCpY-pssWj3yw _lgh-_Nn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh-_Nn8EeCpY-pssWj3yw" name="undefined" type="_lgh-7dn8EeCpY-pssWj3yw" association="_lgh--9n8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh-_dn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh-8dn8EeCpY-pssWj3yw _lgh-_tn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh-_tn8EeCpY-pssWj3yw" name="undefined" type="_lgh-7dn8EeCpY-pssWj3yw" association="_lgh-_dn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh-_9n8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh-89n8EeCpY-pssWj3yw _lgh_ANn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_ANn8EeCpY-pssWj3yw" name="undefined" type="_lgh-7dn8EeCpY-pssWj3yw" association="_lgh-_9n8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh_Adn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh-9dn8EeCpY-pssWj3yw _lgh_Atn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_Atn8EeCpY-pssWj3yw" name="undefined" type="_lgh-7dn8EeCpY-pssWj3yw" association="_lgh_Adn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh_A9n8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh--dn8EeCpY-pssWj3yw _lgh_BNn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_BNn8EeCpY-pssWj3yw" name="undefined" type="_lgh-7dn8EeCpY-pssWj3yw" association="_lgh_A9n8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_Bdn8EeCpY-pssWj3yw" name="Resolution">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_Btn8EeCpY-pssWj3yw">
+          <body>Depending on the nature of the axis,  either the resolution value , that identifies the minimal distance between two elements along the axis, or the resolution power will be used ., e.g, along space and time a resolution value ( in arcsec or in s)</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_B9n8EeCpY-pssWj3yw" name="bounds" type="_lgh_v9n8EeCpY-pssWj3yw" isReadOnly="true" aggregation="composite" association="_lgh_Ftn8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh_CNn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Cdn8EeCpY-pssWj3yw" name="support" type="_lgh_Xdn8EeCpY-pssWj3yw" isReadOnly="true" aggregation="composite" association="_lgh_GNn8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh_Ctn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_C9n8EeCpY-pssWj3yw" name="variability" type="_lgh_c9n8EeCpY-pssWj3yw" isReadOnly="true" aggregation="composite" association="_lgh_Gtn8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh_DNn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Ddn8EeCpY-pssWj3yw" name="coordSys" type="_lgh_oNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Dtn8EeCpY-pssWj3yw" name="ucd" type="_lgh_mtn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_D9n8EeCpY-pssWj3yw" name="unit" type="_lgh_mNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_ENn8EeCpY-pssWj3yw" name="resolPower" type="_lgh_ttn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgh_HNn8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh_Edn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh_Etn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_E9n8EeCpY-pssWj3yw _lgh_Fdn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_E9n8EeCpY-pssWj3yw" name="refval" type="_lgh_stn8EeCpY-pssWj3yw" aggregation="composite" association="_lgh_Etn8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh_FNn8EeCpY-pssWj3yw"/>
+        </ownedEnd>
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_Fdn8EeCpY-pssWj3yw" type="_lgh_Bdn8EeCpY-pssWj3yw" association="_lgh_Etn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh_Ftn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_B9n8EeCpY-pssWj3yw _lgh_F9n8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_F9n8EeCpY-pssWj3yw" name="undefined" type="_lgh_Bdn8EeCpY-pssWj3yw" association="_lgh_Ftn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh_GNn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_Cdn8EeCpY-pssWj3yw _lgh_Gdn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_Gdn8EeCpY-pssWj3yw" name="undefined" type="_lgh_Bdn8EeCpY-pssWj3yw" association="_lgh_GNn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh_Gtn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_C9n8EeCpY-pssWj3yw _lgh_G9n8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_G9n8EeCpY-pssWj3yw" name="undefined" type="_lgh_Bdn8EeCpY-pssWj3yw" association="_lgh_Gtn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh_HNn8EeCpY-pssWj3yw" memberEnd="_lgh_ENn8EeCpY-pssWj3yw _lgh_Hdn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_Hdn8EeCpY-pssWj3yw" name="undefined" type="_lgh_Bdn8EeCpY-pssWj3yw" association="_lgh_HNn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_Htn8EeCpY-pssWj3yw" name="SpatialAxis">
+        <generalization xmi:type="uml:Generalization" xmi:id="_lgh_H9n8EeCpY-pssWj3yw" general="_lgh-y9n8EeCpY-pssWj3yw"/>
+        <generalization xmi:type="uml:Generalization" xmi:id="_lgh_INn8EeCpY-pssWj3yw" general="_lgh-y9n8EeCpY-pssWj3yw"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Idn8EeCpY-pssWj3yw" name="space mapping" type="_lgiAn9n8EeCpY-pssWj3yw" isReadOnly="true" association="_lgh_ydn8EeCpY-pssWj3yw"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_lgh_Itn8EeCpY-pssWj3yw" name="getSpatialWCS"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_I9n8EeCpY-pssWj3yw" name="SpectralAxis">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_JNn8EeCpY-pssWj3yw">
+          <body>On the spectral Axis, Ucd and Unit help to specify the nature of this axis . (em.wl; m) corresponds to a wavelength for an optical image for instance,  while  (em.energy; Kev ) suits for X-ray signals. see definition in the Spectrum DM.</body>
+        </ownedComment>
+        <generalization xmi:type="uml:Generalization" xmi:id="_lgh_Jdn8EeCpY-pssWj3yw" general="_lgh-y9n8EeCpY-pssWj3yw"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Jtn8EeCpY-pssWj3yw" name="mapping" type="_lgiAuNn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgh_y9n8EeCpY-pssWj3yw"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_J9n8EeCpY-pssWj3yw" name="ucd" type="_lgh_KNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <nestedClassifier xmi:type="uml:Enumeration" xmi:id="_lgh_KNn8EeCpY-pssWj3yw" name="spectralUCDType">
+          <ownedLiteral xmi:id="_lgh_Kdn8EeCpY-pssWj3yw" name="em.wl"/>
+          <ownedLiteral xmi:id="_lgh_Ktn8EeCpY-pssWj3yw" name="em.energy"/>
+          <ownedLiteral xmi:id="_lgh_K9n8EeCpY-pssWj3yw" name="em.velocity"/>
+          <ownedLiteral xmi:id="_lgh_LNn8EeCpY-pssWj3yw" name="em.freq"/>
+        </nestedClassifier>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_lgh_Ldn8EeCpY-pssWj3yw" name="getSpectralWCS"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_Ltn8EeCpY-pssWj3yw" name="TimeAxis">
+        <generalization xmi:type="uml:Generalization" xmi:id="_lgh_L9n8EeCpY-pssWj3yw" general="_lgh-y9n8EeCpY-pssWj3yw"/>
+        <generalization xmi:type="uml:Generalization" xmi:id="_lgh_MNn8EeCpY-pssWj3yw" general="_lgh-y9n8EeCpY-pssWj3yw"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Mdn8EeCpY-pssWj3yw" name="mapping" type="_lgiAwdn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgh_zdn8EeCpY-pssWj3yw"/>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_lgh_Mtn8EeCpY-pssWj3yw" name="getTemporalWCS"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_M9n8EeCpY-pssWj3yw" name="FluxAxis"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_NNn8EeCpY-pssWj3yw" name="ObservableAxis">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_Ndn8EeCpY-pssWj3yw">
+          <body>The UCD characterising the observable axis tells us the nature of the measured/simulated parameter : flux, counts, polarisation parameters ( Q Stokes, etc.), velocity, metallicity, etc ... The flux case is the usual one, but all other ucd corresponding to the observed quantity will be valid.</body>
+        </ownedComment>
+        <generalization xmi:type="uml:Generalization" xmi:id="_lgh_Ntn8EeCpY-pssWj3yw" general="_lgh-y9n8EeCpY-pssWj3yw"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_N9n8EeCpY-pssWj3yw" name="noiseType" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_ONn8EeCpY-pssWj3yw">
+            <body>A string to mention the type of noise used to interpret the observable quantity (flux, velocity, etc.). This refers to the statistical density of the noise statistics.
+Value in {GAUSSIAN, POISSON,WEIBUHL, OTHER}  . Depending on the statistics, noise parameters can be described in the noiseParameters attribute.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Odn8EeCpY-pssWj3yw" name="noiseParameters" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_Otn8EeCpY-pssWj3yw">
+            <body/>
+          </ownedComment>
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_lgh_O9n8EeCpY-pssWj3yw" value="3"/>
+        </ownedAttribute>
+        <ownedOperation xmi:type="uml:Operation" xmi:id="_lgh_PNn8EeCpY-pssWj3yw" name="getCalibrationParam">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_Pdn8EeCpY-pssWj3yw">
+            <body>Depending on the nature of this axis, this method retrieves the calibration function that maps recorded values into interpretable physical measurements. For instance: luminosity from counts, velocity from pixel values, etc... </body>
+          </ownedComment>
+        </ownedOperation>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_Ptn8EeCpY-pssWj3yw" name="PolarisationAxis">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_P9n8EeCpY-pssWj3yw">
+          <body>A specific axis to express the list of polarisation quantities in this observation. More details in the upcoming v2.0 of the Charactersiation  data model .</body>
+        </ownedComment>
+        <generalization xmi:type="uml:Generalization" xmi:id="_lgh_QNn8EeCpY-pssWj3yw" general="_lgh-y9n8EeCpY-pssWj3yw"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Qdn8EeCpY-pssWj3yw" name="mapping" type="_lgiAzdn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgh_z9n8EeCpY-pssWj3yw"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Qtn8EeCpY-pssWj3yw" name="stateList" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_Q9n8EeCpY-pssWj3yw" name="Sampling">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_RNn8EeCpY-pssWj3yw" name="unit" type="_lgh_mNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Rdn8EeCpY-pssWj3yw" name="coordSys" type="_lgh_oNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Rtn8EeCpY-pssWj3yw" name="fillFactor" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_R9n8EeCpY-pssWj3yw" name="refval" type="_lgh_qNn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgh_Sdn8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh_SNn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh_Sdn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_R9n8EeCpY-pssWj3yw _lgh_Stn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_Stn8EeCpY-pssWj3yw" name="undefined" type="_lgh_Q9n8EeCpY-pssWj3yw" association="_lgh_Sdn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_S9n8EeCpY-pssWj3yw" name="Location" clientDependency="_lgh_U9n8EeCpY-pssWj3yw">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_TNn8EeCpY-pssWj3yw">
+          <body>A central or reference position of the coordinates along this axis. </body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Tdn8EeCpY-pssWj3yw" name="coordSys" type="_lgh_oNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Ttn8EeCpY-pssWj3yw" name="ucd" type="_lgh_mtn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_T9n8EeCpY-pssWj3yw" name="unit" type="_lgh_mNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_UNn8EeCpY-pssWj3yw" name="documentation" type="_lgh_ptn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_Udn8EeCpY-pssWj3yw">
+            <body>A pointer to some description on the particular convention adopted for the </body>
+          </ownedComment>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Utn8EeCpY-pssWj3yw" name="coord" type="_lgh_vdn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_lgh_U9n8EeCpY-pssWj3yw" name="Dependency" supplier="_lgh_09n8EeCpY-pssWj3yw" client="_lgh_S9n8EeCpY-pssWj3yw"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_VNn8EeCpY-pssWj3yw" name="Bounds">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Vdn8EeCpY-pssWj3yw" name="coordSys" type="_lgh_oNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Vtn8EeCpY-pssWj3yw" name="ucd" type="_lgh_mtn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_V9n8EeCpY-pssWj3yw" name="unit" type="_lgh_mNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_WNn8EeCpY-pssWj3yw" name="documentation" type="_lgh_ptn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Wdn8EeCpY-pssWj3yw" name="extent" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Wtn8EeCpY-pssWj3yw" name="limits" type="_lgh_odn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_W9n8EeCpY-pssWj3yw" name="diameter" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_XNn8EeCpY-pssWj3yw">
+            <body>specific to ObsTAP. used to define the size of the greatest circle including the observation covered region. In degrees.</body>
+          </ownedComment>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_Xdn8EeCpY-pssWj3yw" name="Support">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_Xtn8EeCpY-pssWj3yw">
+          <body>A precise definition of the shape of the region of axis covered by the observation. On spatial axis , it is a 2D region of type AreaType ( an STC Region). The support on spectral axis (1D) is just an interval or a set of intervals.</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_X9n8EeCpY-pssWj3yw" name="coordSys" type="_lgh_oNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_YNn8EeCpY-pssWj3yw" name="ucd" type="_lgh_mtn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Ydn8EeCpY-pssWj3yw" name="unit" type="_lgh_mNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Ytn8EeCpY-pssWj3yw" name="documentation" type="_lgh_ptn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Y9n8EeCpY-pssWj3yw" name="Extent" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_ZNn8EeCpY-pssWj3yw" name="AreaType" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_Zdn8EeCpY-pssWj3yw" name="Area" type="_lgh_o9n8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_Ztn8EeCpY-pssWj3yw">
+            <body>The observation footprint defined as the spatial area where the signal was measured.</body>
+          </ownedComment>
+        </ownedAttribute>
+        <nestedClassifier xmi:type="uml:Class" xmi:id="_lgh_Z9n8EeCpY-pssWj3yw" name="Support_spect">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_aNn8EeCpY-pssWj3yw">
+            <body>The support on spectral axis (1D) is just an interval or a set of intervals.</body>
+          </ownedComment>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_adn8EeCpY-pssWj3yw" name="coordSys" type="_lgh_oNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_atn8EeCpY-pssWj3yw" name="ucd" type="_lgh_mtn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_a9n8EeCpY-pssWj3yw" name="unit" type="_lgh_mNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_bNn8EeCpY-pssWj3yw" name="documentation" type="_lgh_ptn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+          <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_bdn8EeCpY-pssWj3yw" name="Extent" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        </nestedClassifier>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_btn8EeCpY-pssWj3yw" name="Sensitivity">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_b9n8EeCpY-pssWj3yw" name="coordSys" type="_lgh_oNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_cNn8EeCpY-pssWj3yw" name="ucd" type="_lgh_mtn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_cdn8EeCpY-pssWj3yw" name="unit" type="_lgh_mNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_ctn8EeCpY-pssWj3yw" name="documentation" type="_lgh_ptn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_c9n8EeCpY-pssWj3yw" name="Variability">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_dNn8EeCpY-pssWj3yw" name="ucd" type="_lgh_mtn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_ddn8EeCpY-pssWj3yw" name="unit" type="_lgh_mNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_dtn8EeCpY-pssWj3yw" name="Accuracy">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_d9n8EeCpY-pssWj3yw" name="quality" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_eNn8EeCpY-pssWj3yw" name="sysError" type="_lgh_itn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgh_ftn8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh_edn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_etn8EeCpY-pssWj3yw" name="statError" type="_lgh_itn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgh_gNn8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh_e9n8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_fNn8EeCpY-pssWj3yw" name="Custerror" type="_lgh_itn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgh_gtn8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh_fdn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh_ftn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_eNn8EeCpY-pssWj3yw _lgh_f9n8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_f9n8EeCpY-pssWj3yw" name="undefined" type="_lgh_dtn8EeCpY-pssWj3yw" association="_lgh_ftn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh_gNn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_etn8EeCpY-pssWj3yw _lgh_gdn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_gdn8EeCpY-pssWj3yw" name="undefined" type="_lgh_dtn8EeCpY-pssWj3yw" association="_lgh_gNn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh_gtn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_fNn8EeCpY-pssWj3yw _lgh_g9n8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_g9n8EeCpY-pssWj3yw" name="undefined" type="_lgh_dtn8EeCpY-pssWj3yw" association="_lgh_gtn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_lgh_hNn8EeCpY-pssWj3yw" name="CalibrationStatus">
+        <ownedLiteral xmi:id="_lgh_hdn8EeCpY-pssWj3yw" name="relative"/>
+        <ownedLiteral xmi:id="_lgh_htn8EeCpY-pssWj3yw" name="normalized"/>
+        <ownedLiteral xmi:id="_lgh_h9n8EeCpY-pssWj3yw" name="calibrated"/>
+        <ownedLiteral xmi:id="_lgh_iNn8EeCpY-pssWj3yw" name="uncalibrated"/>
+        <ownedLiteral xmi:id="_lgh_idn8EeCpY-pssWj3yw" name="raw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_itn8EeCpY-pssWj3yw" name="Error">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_i9n8EeCpY-pssWj3yw">
+          <body>Accuracy. Error  is the place to store systematic or statistic error for mapping 
+observation coordinates to World coordinates.
+For example: 
+Accuracy.Error.errorFlavor='STAT'
+Accuracy.Error.errorRefval is the same representation as FITS WCS crder  </body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_jNn8EeCpY-pssWj3yw" name="errorFlavor" type="_lgh_nNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_jdn8EeCpY-pssWj3yw" name="refval" type="_lgh_k9n8EeCpY-pssWj3yw" isReadOnly="true" aggregation="composite" association="_lgh_kdn8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh_jtn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_j9n8EeCpY-pssWj3yw" name="ucd" type="_lgh_mtn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_kNn8EeCpY-pssWj3yw" name="unit" type="_lgh_mNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgh_kdn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_jdn8EeCpY-pssWj3yw _lgh_ktn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_ktn8EeCpY-pssWj3yw" name="undefined" type="_lgh_itn8EeCpY-pssWj3yw" association="_lgh_kdn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_k9n8EeCpY-pssWj3yw" name="ErrorRefVal">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_lNn8EeCpY-pssWj3yw" name="ucd" type="_lgh_mtn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_ldn8EeCpY-pssWj3yw" name="unit" type="_lgh_mNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_ltn8EeCpY-pssWj3yw" name="value" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_l9n8EeCpY-pssWj3yw">
+            <body>Here is an average or estimated value for the coordinate mapping along each Characterisation Axis.
+Along the spatial axis, this parameter gives an estimate of the astrometric statistical error 
+after the astrometric calibration phase. 
+</body>
+          </ownedComment>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_lgh_mNn8EeCpY-pssWj3yw" name="UnitExpression">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_mdn8EeCpY-pssWj3yw">
+          <body>A string representing a unit expresstion as defined in the IVOA Units syntax convention
+ to be published (2011)</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_lgh_mtn8EeCpY-pssWj3yw" name="UCDString">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_m9n8EeCpY-pssWj3yw">
+          <body>a string representing a UCD as defined in the IVOA .</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_lgh_nNn8EeCpY-pssWj3yw" name="ErrorFlavorType">
+        <ownedLiteral xmi:id="_lgh_ndn8EeCpY-pssWj3yw" name="Stat"/>
+        <ownedLiteral xmi:id="_lgh_ntn8EeCpY-pssWj3yw" name="Sys"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Package" xmi:id="_lgh_n9n8EeCpY-pssWj3yw" name="STC" visibility="package">
+        <packagedElement xmi:type="uml:Class" xmi:id="_lgh_oNn8EeCpY-pssWj3yw" name="AstroCoordSystem"/>
+        <packagedElement xmi:type="uml:Class" xmi:id="_lgh_odn8EeCpY-pssWj3yw" name="CoordInterval"/>
+        <packagedElement xmi:type="uml:Class" xmi:id="_lgh_otn8EeCpY-pssWj3yw" name="AstroCoord"/>
+        <packagedElement xmi:type="uml:Class" xmi:id="_lgh_o9n8EeCpY-pssWj3yw" name="AstroCoordArea"/>
+        <packagedElement xmi:type="uml:Class" xmi:id="_lgh_pNn8EeCpY-pssWj3yw" name="CResolution"/>
+        <packagedElement xmi:type="uml:Class" xmi:id="_lgh_pdn8EeCpY-pssWj3yw" name="ScalarInterval"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_lgh_ptn8EeCpY-pssWj3yw" name="URItype">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_p9n8EeCpY-pssWj3yw">
+          <body>A string type to describe a URI.</body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_qNn8EeCpY-pssWj3yw" name="SamplingRefval">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_qdn8EeCpY-pssWj3yw">
+          <body>A couple of reference values for the sampling properties along an axis: sampling period and sampling extent (bin size).</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_qtn8EeCpY-pssWj3yw" name="period" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_q9n8EeCpY-pssWj3yw" name="sampleExtent" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_rNn8EeCpY-pssWj3yw" name="ResolutionSupport">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_rdn8EeCpY-pssWj3yw" name="coordSys" type="_lgh_oNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_rtn8EeCpY-pssWj3yw" name="ucd" type="_lgh_mtn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_r9n8EeCpY-pssWj3yw" name="unit" type="_lgh_mNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_sNn8EeCpY-pssWj3yw" name="documentation" type="_lgh_ptn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_sdn8EeCpY-pssWj3yw" name="limits" type="_lgh_odn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_stn8EeCpY-pssWj3yw" name="ResolutionRefVal">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_s9n8EeCpY-pssWj3yw" name="value" type="_lgh_pNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_tNn8EeCpY-pssWj3yw">
+            <body>The value, coded using an STC CResolution element. </body>
+          </ownedComment>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_tdn8EeCpY-pssWj3yw" name="documentation" type="_lgh_ptn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_ttn8EeCpY-pssWj3yw" name="ResolvingPower">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_t9n8EeCpY-pssWj3yw">
+          <body>Resolving power as expressed for the spectral axis for instance.</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_uNn8EeCpY-pssWj3yw" name="unitless" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#Boolean"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_udn8EeCpY-pssWj3yw" name="ucd" type="_lgh_mtn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_utn8EeCpY-pssWj3yw" name="refVal" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_u9n8EeCpY-pssWj3yw" name="loLim" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_vNn8EeCpY-pssWj3yw" name="hiLim" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_lgh_vdn8EeCpY-pssWj3yw" name="CoordType">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_vtn8EeCpY-pssWj3yw">
+          <body>According to the axis nature, &lt;B&gt;coord&lt;/B&gt; will map various representations:
+it is a vector (RA,DEC) encoded in an STC Astrocoord structure along the spatial axis.
+It can be a Time stamp a la STC.
+1D axes will use only one coordinate,  </body>
+        </ownedComment>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_v9n8EeCpY-pssWj3yw" name="ResolutionBounds">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_wNn8EeCpY-pssWj3yw" name="coordSys" type="_lgh_oNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_wdn8EeCpY-pssWj3yw" name="unit" type="_lgh_mNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_wtn8EeCpY-pssWj3yw" name="documentation" type="_lgh_ptn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_w9n8EeCpY-pssWj3yw">
+            <body>A link to a documentation page describing the resolution  properties of this observation.</body>
+          </ownedComment>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_xNn8EeCpY-pssWj3yw" name="limits" type="_lgh_pdn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_xdn8EeCpY-pssWj3yw">
+            <body>Upper and lower limit of the spatial resolution estimate when it varies all over the field of view, or along the axis ( spectral, time). </body>
+          </ownedComment>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_xtn8EeCpY-pssWj3yw" name="ucd" type="_lgh_mtn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      </packagedElement>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_lgh_x9n8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_yNn8EeCpY-pssWj3yw _lgh_59n8EeCpY-pssWj3yw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_yNn8EeCpY-pssWj3yw" name="undefined" type="_lgh_3dn8EeCpY-pssWj3yw" association="_lgh_x9n8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_lgh_ydn8EeCpY-pssWj3yw" name="has a " memberEnd="_lgh_Idn8EeCpY-pssWj3yw _lgh_ytn8EeCpY-pssWj3yw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_ytn8EeCpY-pssWj3yw" name="undefined" type="_lgh_Htn8EeCpY-pssWj3yw" association="_lgh_ydn8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_lgh_y9n8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_Jtn8EeCpY-pssWj3yw _lgh_zNn8EeCpY-pssWj3yw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_zNn8EeCpY-pssWj3yw" name="undefined" type="_lgh_I9n8EeCpY-pssWj3yw" association="_lgh_y9n8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_lgh_zdn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_Mdn8EeCpY-pssWj3yw _lgh_ztn8EeCpY-pssWj3yw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_ztn8EeCpY-pssWj3yw" name="undefined" type="_lgh_Ltn8EeCpY-pssWj3yw" association="_lgh_zdn8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_lgh_z9n8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_Qdn8EeCpY-pssWj3yw _lgh_0Nn8EeCpY-pssWj3yw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_0Nn8EeCpY-pssWj3yw" name="axis" type="_lgh_Ptn8EeCpY-pssWj3yw" association="_lgh_z9n8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_lgh_0dn8EeCpY-pssWj3yw" name="SpaceTimeCoordinates">
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_0tn8EeCpY-pssWj3yw" name="Coordsystem"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_09n8EeCpY-pssWj3yw" name="AstroCoords"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_1Nn8EeCpY-pssWj3yw" name="AstroCoorArea"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_1dn8EeCpY-pssWj3yw" name="ScalarInterval"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_1tn8EeCpY-pssWj3yw" name="CoordInterval"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_19n8EeCpY-pssWj3yw" name="CResolution"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_2Nn8EeCpY-pssWj3yw" name="ObservationLocation "/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgh_2dn8EeCpY-pssWj3yw" name="ObservatoryLocation"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_lgh_2tn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_29n8EeCpY-pssWj3yw _lgiBAtn8EeCpY-pssWj3yw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_lgh_29n8EeCpY-pssWj3yw" name="undefined" type="_lgiA-dn8EeCpY-pssWj3yw" association="_lgh_2tn8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_lgh_3Nn8EeCpY-pssWj3yw" name="Photometry"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_lgh_3dn8EeCpY-pssWj3yw" name="Observation">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_3tn8EeCpY-pssWj3yw">
+        <body>This class gathers data management metadata for an observation. </body>
+      </ownedComment>
+      <packageImport xmi:id="_lgh_39n8EeCpY-pssWj3yw" visibility="private" importedPackage="_lgiAPNn8EeCpY-pssWj3yw"/>
+      <packageImport xmi:id="_lgh_4Nn8EeCpY-pssWj3yw" visibility="private" importedPackage="_lgh_3Nn8EeCpY-pssWj3yw"/>
+      <packageImport xmi:id="_lgh_4dn8EeCpY-pssWj3yw" visibility="private" importedPackage="_lgh-w9n8EeCpY-pssWj3yw"/>
+      <packageImport xmi:id="_lgh_4tn8EeCpY-pssWj3yw" visibility="private" importedPackage="_lgiBL9n8EeCpY-pssWj3yw"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_49n8EeCpY-pssWj3yw" name="dataProductType" clientDependency="_lgiABNn8EeCpY-pssWj3yw" type="_lgiA19n8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_5Nn8EeCpY-pssWj3yw">
+          <body>Describes the high level scientific classification of the data product being considered. A string that conveys a general idea of the content and organization of a dataset.</body>
+        </ownedComment>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_5dn8EeCpY-pssWj3yw" name="target" type="_lgiA-dn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgiABdn8EeCpY-pssWj3yw">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh_5tn8EeCpY-pssWj3yw"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_59n8EeCpY-pssWj3yw" name="characterisation" type="_lgh-xtn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgh_x9n8EeCpY-pssWj3yw">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh_6Nn8EeCpY-pssWj3yw"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_6dn8EeCpY-pssWj3yw" name="calibLevel" type="_lgiA5tn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_6tn8EeCpY-pssWj3yw">
+          <body>The calibration level concept conveys to the user information on how much data reduction/processing has been applied to the data.  It is up to the data providers to consider how to map their own internal classification to the suggested scale here.
+�	Level 0:  Raw instrumental data, in a proprietary or internal data-provider defined format, that needs instrument specific tools to be handled. 
+�	Level 1:  Instrumental data in a standard format (FITS, VOTable, SDFITS, ASDM, etc) which could be manipulated with standard astronomical packages.
+�	Level 2: Calibrated, science ready data with the instrument signature removed.
+�	Level 3: Enhanced data products like mosaics, resampled or drizzled images, or heavily processed survey fields.  Level 3 data products may represent the combination of data from multiple primary observations.</body>
+        </ownedComment>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_69n8EeCpY-pssWj3yw" name="waveband" clientDependency="_lgiACdn8EeCpY-pssWj3yw" type="_lgiBHNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_7Nn8EeCpY-pssWj3yw">
+          <body>A string  defined in the VOresource schema to name  the spectral domain to  which this observation belongs:   optical,  radio, XRay,  Gamma- ray, etc.. see  http://www.ivoa.net/Documents/latest/VODataService.html#cover for more info.</body>
+        </ownedComment>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_7dn8EeCpY-pssWj3yw" name="access" type="_lgiAF9n8EeCpY-pssWj3yw" isReadOnly="true" association="_lgiACtn8EeCpY-pssWj3yw">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh_7tn8EeCpY-pssWj3yw"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_79n8EeCpY-pssWj3yw" name="obsconfig" type="_lgiAUdn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgiADNn8EeCpY-pssWj3yw">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh_8Nn8EeCpY-pssWj3yw"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_8dn8EeCpY-pssWj3yw" name="dataID" type="_lgiA7Nn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgiADtn8EeCpY-pssWj3yw"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_8tn8EeCpY-pssWj3yw" name="curation" type="_lgiBBdn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgiAENn8EeCpY-pssWj3yw"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_89n8EeCpY-pssWj3yw" name="target" type="_lgiA-dn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgiAEtn8EeCpY-pssWj3yw">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh_9Nn8EeCpY-pssWj3yw"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_9dn8EeCpY-pssWj3yw" name="numberOfSegments" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_9tn8EeCpY-pssWj3yw">
+          <body>An integer value that counts the number of original observed fields used to build up an observation.
+In the case of associated observations, like "HST association" or  observation resulting of coadded images, this number codes the number of indivivual images.
+This also applies for multi-segment spectra, and can be generalised to any combined data cube.</body>
+        </ownedComment>
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#Integer"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_99n8EeCpY-pssWj3yw" name="proposal" type="_lgiAiNn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgiAFNn8EeCpY-pssWj3yw">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgh_-Nn8EeCpY-pssWj3yw"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgh_-dn8EeCpY-pssWj3yw" name="dataProductSubtype" clientDependency="_lgiAFtn8EeCpY-pssWj3yw" type="_lgiBJtn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh_-tn8EeCpY-pssWj3yw">
+          <body>Describes the high level scientific classification of the data product being considered. A string that conveys a general idea of the content and organization of a dataset.</body>
+        </ownedComment>
+      </ownedAttribute>
+      <nestedClassifier xmi:type="uml:Enumeration" xmi:id="_lgh_-9n8EeCpY-pssWj3yw" name="ProductType">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgh__Nn8EeCpY-pssWj3yw">
+          <body>A simple classification to categorize data products. See section 3.3.1 in the IVOA ObsCore document.</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="_lgh__dn8EeCpY-pssWj3yw" name="image"/>
+        <ownedLiteral xmi:id="_lgh__tn8EeCpY-pssWj3yw" name="cube"/>
+        <ownedLiteral xmi:id="_lgh__9n8EeCpY-pssWj3yw" name="spectrum"/>
+        <ownedLiteral xmi:id="_lgiAANn8EeCpY-pssWj3yw" name="sed"/>
+        <ownedLiteral xmi:id="_lgiAAdn8EeCpY-pssWj3yw" name="timeseries"/>
+        <ownedLiteral xmi:id="_lgiAAtn8EeCpY-pssWj3yw" name="visibility"/>
+        <ownedLiteral xmi:id="_lgiAA9n8EeCpY-pssWj3yw" name="event"/>
+      </nestedClassifier>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_lgiABNn8EeCpY-pssWj3yw" name="Dependency" supplier="_lgh-w9n8EeCpY-pssWj3yw" client="_lgh_49n8EeCpY-pssWj3yw"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_lgiABdn8EeCpY-pssWj3yw" memberEnd="_lgh_5dn8EeCpY-pssWj3yw _lgiABtn8EeCpY-pssWj3yw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_lgiABtn8EeCpY-pssWj3yw" name="undefined" type="_lgh_3dn8EeCpY-pssWj3yw" association="_lgiABdn8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_lgiAB9n8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgiACNn8EeCpY-pssWj3yw _lgiAltn8EeCpY-pssWj3yw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_lgiACNn8EeCpY-pssWj3yw" name="undefined" type="_lgiAk9n8EeCpY-pssWj3yw" association="_lgiAB9n8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_lgiACdn8EeCpY-pssWj3yw" name="access" supplier="_lgiBL9n8EeCpY-pssWj3yw" client="_lgh_69n8EeCpY-pssWj3yw"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_lgiACtn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_7dn8EeCpY-pssWj3yw _lgiAC9n8EeCpY-pssWj3yw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_lgiAC9n8EeCpY-pssWj3yw" name="undefined" type="_lgh_3dn8EeCpY-pssWj3yw" association="_lgiACtn8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_lgiADNn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_79n8EeCpY-pssWj3yw _lgiADdn8EeCpY-pssWj3yw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_lgiADdn8EeCpY-pssWj3yw" name="undefined" type="_lgh_3dn8EeCpY-pssWj3yw" association="_lgiADNn8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_lgiADtn8EeCpY-pssWj3yw" memberEnd="_lgh_8dn8EeCpY-pssWj3yw _lgiAD9n8EeCpY-pssWj3yw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_lgiAD9n8EeCpY-pssWj3yw" name="undefined" type="_lgh_3dn8EeCpY-pssWj3yw" association="_lgiADtn8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_lgiAENn8EeCpY-pssWj3yw" memberEnd="_lgh_8tn8EeCpY-pssWj3yw _lgiAEdn8EeCpY-pssWj3yw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_lgiAEdn8EeCpY-pssWj3yw" name="undefined" type="_lgh_3dn8EeCpY-pssWj3yw" association="_lgiAENn8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_lgiAEtn8EeCpY-pssWj3yw" name="tatat" memberEnd="_lgh_89n8EeCpY-pssWj3yw _lgiAE9n8EeCpY-pssWj3yw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_lgiAE9n8EeCpY-pssWj3yw" name="undefined" type="_lgh_3dn8EeCpY-pssWj3yw" association="_lgiAEtn8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_lgiAFNn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgh_99n8EeCpY-pssWj3yw _lgiAFdn8EeCpY-pssWj3yw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_lgiAFdn8EeCpY-pssWj3yw" name="undefined" type="_lgh_3dn8EeCpY-pssWj3yw" association="_lgiAFNn8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_lgiAFtn8EeCpY-pssWj3yw" name="Dependency" supplier="_lgh-w9n8EeCpY-pssWj3yw" client="_lgh_-dn8EeCpY-pssWj3yw"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_lgiAF9n8EeCpY-pssWj3yw" name="Access">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAGNn8EeCpY-pssWj3yw">
+        <body>This describes the parameters necessary to retrieve the data. This is used by the TAP protocol and allows direct retrieval for a common case where one data set is distributed as one file (non-complex data sets) .</body>
+      </ownedComment>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAGdn8EeCpY-pssWj3yw" name="reference" type="_lgh_ptn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAGtn8EeCpY-pssWj3yw" name="format" type="_lgiAJdn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAG9n8EeCpY-pssWj3yw">
+          <body>The access_format column contains a string indicating the content format of the data product if downloaded as a file.  
+it is a kind of Mime Type of data set. Check IVOA reserved keywords.</body>
+        </ownedComment>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAHNn8EeCpY-pssWj3yw" name="size" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAHdn8EeCpY-pssWj3yw">
+          <body>The estimated size of the data , in Kbytes. This helps informing the user on possible transfert time over the network and can be used to optimise data recovery at the client side .</body>
+        </ownedComment>
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#Integer"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAHtn8EeCpY-pssWj3yw" name="accessParams" type="_lgiAINn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAH9n8EeCpY-pssWj3yw">
+          <body>Parameters for the description of detailed and specific access modes to the observed data.
+</body>
+        </ownedComment>
+      </ownedAttribute>
+      <nestedClassifier xmi:type="uml:PrimitiveType" xmi:id="_lgiAINn8EeCpY-pssWj3yw" name="AccessParamType">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAIdn8EeCpY-pssWj3yw" name="extensionName" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAItn8EeCpY-pssWj3yw" name="extensionNumber" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#Integer"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAI9n8EeCpY-pssWj3yw" name="fieldName" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAJNn8EeCpY-pssWj3yw" name="cutOut" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+      </nestedClassifier>
+      <nestedClassifier xmi:type="uml:Enumeration" xmi:id="_lgiAJdn8EeCpY-pssWj3yw" name="FormatType">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAJtn8EeCpY-pssWj3yw">
+          <body>Valid strings are defined as MIME types and given in section 4.7 of the standard document.</body>
+        </ownedComment>
+        <ownedLiteral xmi:id="_lgiAJ9n8EeCpY-pssWj3yw" name="application/x-votable+xml"/>
+        <ownedLiteral xmi:id="_lgiAKNn8EeCpY-pssWj3yw" name="image/fits"/>
+        <ownedLiteral xmi:id="_lgiAKdn8EeCpY-pssWj3yw" name="image/jpeg"/>
+        <ownedLiteral xmi:id="_lgiAKtn8EeCpY-pssWj3yw" name="application/fits"/>
+        <ownedLiteral xmi:id="_lgiAK9n8EeCpY-pssWj3yw" name="application/x-fits-bintable"/>
+        <ownedLiteral xmi:id="_lgiALNn8EeCpY-pssWj3yw" name="application/x-fits-mef"/>
+        <ownedLiteral xmi:id="_lgiALdn8EeCpY-pssWj3yw" name="application/x-fits-uvfits"/>
+        <ownedLiteral xmi:id="_lgiALtn8EeCpY-pssWj3yw" name="application/x-fits-euro3d"/>
+        <ownedLiteral xmi:id="_lgiAL9n8EeCpY-pssWj3yw" name="application/x-fits-asdm"/>
+        <ownedLiteral xmi:id="_lgiAMNn8EeCpY-pssWj3yw" name="application/pdf"/>
+        <ownedLiteral xmi:id="_lgiAMdn8EeCpY-pssWj3yw" name="text/html"/>
+        <ownedLiteral xmi:id="_lgiAMtn8EeCpY-pssWj3yw" name="text/xml"/>
+        <ownedLiteral xmi:id="_lgiAM9n8EeCpY-pssWj3yw" name="text/plain"/>
+        <ownedLiteral xmi:id="_lgiANNn8EeCpY-pssWj3yw" name="text/csv"/>
+        <ownedLiteral xmi:id="_lgiANdn8EeCpY-pssWj3yw" name="text/tab-separated-values"/>
+        <ownedLiteral xmi:id="_lgiANtn8EeCpY-pssWj3yw" name="application/x-tar"/>
+        <ownedLiteral xmi:id="_lgiAN9n8EeCpY-pssWj3yw" name="application/zip"/>
+        <ownedLiteral xmi:id="_lgiAONn8EeCpY-pssWj3yw" name="application/x-directory"/>
+        <ownedLiteral xmi:id="_lgiAOdn8EeCpY-pssWj3yw" name="image/x-fits-gzip"/>
+        <ownedLiteral xmi:id="_lgiAOtn8EeCpY-pssWj3yw" name="image/x-fits-hcompress"/>
+        <ownedLiteral xmi:id="_lgiAO9n8EeCpY-pssWj3yw" name="application/x-tar-gzip"/>
+      </nestedClassifier>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_lgiAPNn8EeCpY-pssWj3yw" name="Provenance">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAPdn8EeCpY-pssWj3yw">
+        <body>This package is under development. ObsTAP uses-cases require only limited classes for this package.The full design of this package will be discussed later and presented in detail in an IVOA note.</body>
+      </ownedComment>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiAPtn8EeCpY-pssWj3yw" name="Protocol">
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAP9n8EeCpY-pssWj3yw" name="type" type="_lgiAQdn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiAQNn8EeCpY-pssWj3yw" name="SimulationProtocol "/>
+      <packagedElement xmi:type="uml:Enumeration" xmi:id="_lgiAQdn8EeCpY-pssWj3yw" name="ProtocolType">
+        <ownedLiteral xmi:id="_lgiAQtn8EeCpY-pssWj3yw" name="Simulation"/>
+        <ownedLiteral xmi:id="_lgiAQ9n8EeCpY-pssWj3yw" name="Observation"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiARNn8EeCpY-pssWj3yw" name="ObservingProtocol"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiARdn8EeCpY-pssWj3yw" name="AmbientConditions"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiARtn8EeCpY-pssWj3yw" name="Detector">
+        <generalization xmi:type="uml:Generalization" xmi:id="_lgiAR9n8EeCpY-pssWj3yw" general="_lgiAdtn8EeCpY-pssWj3yw"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiASNn8EeCpY-pssWj3yw" name="name" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiASdn8EeCpY-pssWj3yw" name="type" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgiAStn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgiAS9n8EeCpY-pssWj3yw _lgiAU9n8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgiAS9n8EeCpY-pssWj3yw" name="undefined" type="_lgiAUdn8EeCpY-pssWj3yw" association="_lgiAStn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiATNn8EeCpY-pssWj3yw" name="OpticalElement">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiATdn8EeCpY-pssWj3yw">
+          <body>Optical elements are defining single light path in complex instruments. Filters, polarimeters, are such optical elements.</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiATtn8EeCpY-pssWj3yw" name="Name" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgiAT9n8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgiAUNn8EeCpY-pssWj3yw _lgiAVdn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgiAUNn8EeCpY-pssWj3yw" name="undefined" type="_lgiAUdn8EeCpY-pssWj3yw" association="_lgiAT9n8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiAUdn8EeCpY-pssWj3yw" name="ObsConfig" clientDependency="_lgiAX9n8EeCpY-pssWj3yw _lgiAYNn8EeCpY-pssWj3yw">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAUtn8EeCpY-pssWj3yw">
+          <body>This is a place holder to point to all devices involved in the acquisition chain.</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAU9n8EeCpY-pssWj3yw" name="camera" type="_lgiARtn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgiAStn8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgiAVNn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAVdn8EeCpY-pssWj3yw" name="opticalElement" type="_lgiATNn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgiAT9n8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgiAVtn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAV9n8EeCpY-pssWj3yw" name="observingElement" type="_lgiAdtn8EeCpY-pssWj3yw" isReadOnly="true" aggregation="shared" association="_lgiAYdn8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgiAWNn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAWdn8EeCpY-pssWj3yw" name="facility" type="_lgiAb9n8EeCpY-pssWj3yw" isReadOnly="true" association="_lgiAY9n8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgiAWtn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAW9n8EeCpY-pssWj3yw" name="facility" type="_lgiAb9n8EeCpY-pssWj3yw" isReadOnly="true" aggregation="shared" association="_lgiAZdn8EeCpY-pssWj3yw">
+          <upperValue xmi:type="uml:LiteralUnlimitedNatural" xmi:id="_lgiAXNn8EeCpY-pssWj3yw" value="*"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAXdn8EeCpY-pssWj3yw" name="instrument" type="_lgiAi9n8EeCpY-pssWj3yw" isReadOnly="true" aggregation="shared" association="_lgiAZ9n8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgiAXtn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_lgiAX9n8EeCpY-pssWj3yw" name="Dependency" supplier="_lgiAb9n8EeCpY-pssWj3yw" client="_lgiAUdn8EeCpY-pssWj3yw"/>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_lgiAYNn8EeCpY-pssWj3yw" name="Dependency" supplier="_lgiAi9n8EeCpY-pssWj3yw" client="_lgiAUdn8EeCpY-pssWj3yw"/>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgiAYdn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgiAV9n8EeCpY-pssWj3yw _lgiAYtn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgiAYtn8EeCpY-pssWj3yw" name="undefined" type="_lgiAUdn8EeCpY-pssWj3yw" association="_lgiAYdn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgiAY9n8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgiAWdn8EeCpY-pssWj3yw _lgiAZNn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgiAZNn8EeCpY-pssWj3yw" name="undefined" type="_lgiAUdn8EeCpY-pssWj3yw" association="_lgiAY9n8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgiAZdn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgiAW9n8EeCpY-pssWj3yw _lgiAZtn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgiAZtn8EeCpY-pssWj3yw" name="undefined" type="_lgiAUdn8EeCpY-pssWj3yw" association="_lgiAZdn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgiAZ9n8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgiAXdn8EeCpY-pssWj3yw _lgiAaNn8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgiAaNn8EeCpY-pssWj3yw" name="undefined" type="_lgiAUdn8EeCpY-pssWj3yw" association="_lgiAZ9n8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgiAadn8EeCpY-pssWj3yw"/>
+        </ownedEnd>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiAatn8EeCpY-pssWj3yw" name="PI">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAa9n8EeCpY-pssWj3yw">
+          <body>Name and contact information to the Principal Investigator of the observation program .</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAbNn8EeCpY-pssWj3yw" name="Name" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAbdn8EeCpY-pssWj3yw">
+            <body>This is the name of the principal investigator leading the experiment which produces the current dataset.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAbtn8EeCpY-pssWj3yw" name="Contact" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiAb9n8EeCpY-pssWj3yw" name="Facility" clientDependency="_lgiAddn8EeCpY-pssWj3yw">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAcNn8EeCpY-pssWj3yw">
+          <body>The name of the telescope or facility  used for this observation. This can be used in all wavelengths .</body>
+        </ownedComment>
+        <generalization xmi:type="uml:Generalization" xmi:id="_lgiAcdn8EeCpY-pssWj3yw" general="_lgiAdtn8EeCpY-pssWj3yw"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiActn8EeCpY-pssWj3yw" name="name" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAc9n8EeCpY-pssWj3yw" name="location" type="_lgh_2dn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAdNn8EeCpY-pssWj3yw" name="type" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_lgiAddn8EeCpY-pssWj3yw" name="Dependency" supplier="_lgiAUdn8EeCpY-pssWj3yw" client="_lgiAb9n8EeCpY-pssWj3yw"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiAdtn8EeCpY-pssWj3yw" name="ObservingElement">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAd9n8EeCpY-pssWj3yw">
+          <body>Optical elements are defining single light path in complex instruments. Filters, polarimeters, are such optical elements.</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAeNn8EeCpY-pssWj3yw" name="name" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAedn8EeCpY-pssWj3yw">
+            <body>The name of the observing element on the path of light/ electromagnetic signal to be recorded.
+Could be used for telescope or facility name, any device involved in the acquisition process.
+applied for this observation.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAetn8EeCpY-pssWj3yw" name="type" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAe9n8EeCpY-pssWj3yw">
+            <body>Type of Observing elements used in the acquisition process.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAfNn8EeCpY-pssWj3yw" name="filter" type="_lgiAgNn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgiAftn8EeCpY-pssWj3yw">
+          <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgiAfdn8EeCpY-pssWj3yw"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Association" xmi:id="_lgiAftn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgiAfNn8EeCpY-pssWj3yw _lgiAf9n8EeCpY-pssWj3yw">
+        <ownedEnd xmi:type="uml:Property" xmi:id="_lgiAf9n8EeCpY-pssWj3yw" name="undefined" type="_lgiAdtn8EeCpY-pssWj3yw" association="_lgiAftn8EeCpY-pssWj3yw"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiAgNn8EeCpY-pssWj3yw" name="Filter">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAgdn8EeCpY-pssWj3yw">
+          <body>Instrumental characteristics of the Filter </body>
+        </ownedComment>
+        <generalization xmi:type="uml:Generalization" xmi:id="_lgiAgtn8EeCpY-pssWj3yw" general="_lgiAdtn8EeCpY-pssWj3yw"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAg9n8EeCpY-pssWj3yw" name="bandName" type="_lgiAh9n8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAhNn8EeCpY-pssWj3yw">
+            <body>The usual name of the filter as published by the archive or instrument PI. This is the usual band name used to *identify* the spectral range delimited by this filter. It is not an accurate neither standard key to the actual spectral response but is more like a rough indicator of the color. Examples are U,B,V, i, g, u , z ...</body>
+          </ownedComment>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAhdn8EeCpY-pssWj3yw" name="name" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAhtn8EeCpY-pssWj3yw">
+            <body> This is the name used in the instrument configuration to identify the filter. This can be used to point to photometric characteristics of the filter.</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+        <nestedClassifier xmi:type="uml:Enumeration" xmi:id="_lgiAh9n8EeCpY-pssWj3yw" name="FilterNameStringEnum"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiAiNn8EeCpY-pssWj3yw" name="Proposal">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAidn8EeCpY-pssWj3yw">
+          <body>A simple class to store metadata about the proposal for which an observation has been realised .</body>
+        </ownedComment>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAitn8EeCpY-pssWj3yw" name="identifier" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiAi9n8EeCpY-pssWj3yw" name="Instrument" clientDependency="_lgiAktn8EeCpY-pssWj3yw">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAjNn8EeCpY-pssWj3yw">
+          <body>.</body>
+        </ownedComment>
+        <generalization xmi:type="uml:Generalization" xmi:id="_lgiAjdn8EeCpY-pssWj3yw" general="_lgiAdtn8EeCpY-pssWj3yw"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAjtn8EeCpY-pssWj3yw" name="name" isUnique="false" isReadOnly="true">
+          <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAj9n8EeCpY-pssWj3yw">
+            <body>The name of the telescope used for this observation. This can be used in all wavelengths .</body>
+          </ownedComment>
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAkNn8EeCpY-pssWj3yw" name="Location" type="_lgiBMdn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+        <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAkdn8EeCpY-pssWj3yw" name="type" isUnique="false" isReadOnly="true">
+          <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+        </ownedAttribute>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Dependency" xmi:id="_lgiAktn8EeCpY-pssWj3yw" name="Dependency" supplier="_lgiAUdn8EeCpY-pssWj3yw" client="_lgiAi9n8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_lgiAk9n8EeCpY-pssWj3yw" name="Mapping" clientDependency="_lgiAntn8EeCpY-pssWj3yw">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAlNn8EeCpY-pssWj3yw">
+        <body>Generalised class: describes the coordinates mapping from the sampling grid (pixels position) 
+to real world coordinates. 
+Has diff. derivations for Spatial, Spectral, Time, Polarisation ...
+
+Here we code all parameters in arrays of dimension relative to the axis dimension.</body>
+      </ownedComment>
+      <elementImport xmi:id="_lgiAldn8EeCpY-pssWj3yw" visibility="private" importedElement="_lgiAz9n8EeCpY-pssWj3yw"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAltn8EeCpY-pssWj3yw" name="observation" type="_lgh_3dn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgiAB9n8EeCpY-pssWj3yw">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgiAl9n8EeCpY-pssWj3yw"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAmNn8EeCpY-pssWj3yw" name="coordinateName" isOrdered="true" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAmdn8EeCpY-pssWj3yw" name="projectionName1" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAmtn8EeCpY-pssWj3yw" name="crval" isOrdered="true" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAm9n8EeCpY-pssWj3yw" name="crpix" isOrdered="true" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAnNn8EeCpY-pssWj3yw" name="cdmatrix" isOrdered="true" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAndn8EeCpY-pssWj3yw" name="coordsys" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_lgiAntn8EeCpY-pssWj3yw" name="Dependency" supplier="_lgiAz9n8EeCpY-pssWj3yw" client="_lgiAk9n8EeCpY-pssWj3yw"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_lgiAn9n8EeCpY-pssWj3yw" name="SpatialMapping" clientDependency="_lgiAt9n8EeCpY-pssWj3yw">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAoNn8EeCpY-pssWj3yw">
+        <body>This stores the parameters necessary for the computation of
+ real world coordinates from the sampling grid along this axis and reverse. 
+This encapsulates the WCS parameters separately for each Characterisation axis.
+the main WCS coefficients as defined in the FITS standard, with one exception: 
+the ctype parameter is split into projection and coordinate name, in order to be more explicit. Here all parameters are explicit, but we can have a generalised class  with arrays of coeeficients . </body>
+      </ownedComment>
+      <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAodn8EeCpY-pssWj3yw">
+        <body>what if spatial is non homogeneous along the 2 axes?
+x= velocity
+y= distance 
+z = flux ?
+</body>
+      </ownedComment>
+      <generalization xmi:type="uml:Generalization" xmi:id="_lgiAotn8EeCpY-pssWj3yw" general="_lgiAk9n8EeCpY-pssWj3yw"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAo9n8EeCpY-pssWj3yw" name="coordinateName1" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiApNn8EeCpY-pssWj3yw" name="projectionName1" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiApdn8EeCpY-pssWj3yw" name="coordinateName2" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAptn8EeCpY-pssWj3yw" name="projectionName2" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAp9n8EeCpY-pssWj3yw" name="crval1" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAqNn8EeCpY-pssWj3yw" name="crval2" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAqdn8EeCpY-pssWj3yw" name="cdelt1" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAqtn8EeCpY-pssWj3yw" name="cdelt2" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAq9n8EeCpY-pssWj3yw" name="crpix1" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiArNn8EeCpY-pssWj3yw" name="crpix2" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiArdn8EeCpY-pssWj3yw" name="cd11" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiArtn8EeCpY-pssWj3yw" name="cd12" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAr9n8EeCpY-pssWj3yw" name="cd21" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAsNn8EeCpY-pssWj3yw" name="cd22" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAsdn8EeCpY-pssWj3yw" name="crder1" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAstn8EeCpY-pssWj3yw">
+          <body>Random error . Cf FITS standard document : A&amp;A 395 1061-1075, 2002.
+Accuracy is already tackled in CharacterisationAxis.Accurracy.Error.ErrorRefval
+ with CharacterisationAxis.Accurracy.Error.errorFlavor= 'stat'</body>
+        </ownedComment>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAs9n8EeCpY-pssWj3yw" name="crder2" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAtNn8EeCpY-pssWj3yw" name="csyer1" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiAtdn8EeCpY-pssWj3yw">
+          <body> Systematic error .Cf FITS standard document : A&amp;A 395 1061-1075, 2002</body>
+        </ownedComment>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAttn8EeCpY-pssWj3yw" name="csyer2" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_lgiAt9n8EeCpY-pssWj3yw" name="Dependency" supplier="_lgiAz9n8EeCpY-pssWj3yw" client="_lgiAn9n8EeCpY-pssWj3yw"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_lgiAuNn8EeCpY-pssWj3yw" name="SpectralMapping" clientDependency="_lgiAwNn8EeCpY-pssWj3yw">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAudn8EeCpY-pssWj3yw" name="sysobs " isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAutn8EeCpY-pssWj3yw" name="specsys" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAu9n8EeCpY-pssWj3yw" name="crval" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAvNn8EeCpY-pssWj3yw" name="cdelt" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAvdn8EeCpY-pssWj3yw" name="crpix" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAvtn8EeCpY-pssWj3yw" name="crder" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAv9n8EeCpY-pssWj3yw" name="csyer" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_lgiAwNn8EeCpY-pssWj3yw" name="Dependency" supplier="_lgiAz9n8EeCpY-pssWj3yw" client="_lgiAuNn8EeCpY-pssWj3yw"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_lgiAwdn8EeCpY-pssWj3yw" name="TemporalMapping" clientDependency="_lgiAyNn8EeCpY-pssWj3yw">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAwtn8EeCpY-pssWj3yw" name="fITS_WCS" type="_lgiAz9n8EeCpY-pssWj3yw" isReadOnly="true" association="_lgiAy9n8EeCpY-pssWj3yw">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgiAw9n8EeCpY-pssWj3yw"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAxNn8EeCpY-pssWj3yw" name="ctype" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAxdn8EeCpY-pssWj3yw" name="cunit" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAxtn8EeCpY-pssWj3yw" name="crder" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAx9n8EeCpY-pssWj3yw" name="csyer" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_lgiAyNn8EeCpY-pssWj3yw" name="Dependency" supplier="_lgiAz9n8EeCpY-pssWj3yw" client="_lgiAwdn8EeCpY-pssWj3yw"/>
+    <packagedElement xmi:type="uml:Association" xmi:id="_lgiAydn8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgiAytn8EeCpY-pssWj3yw _lgiA0dn8EeCpY-pssWj3yw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_lgiAytn8EeCpY-pssWj3yw" name="undefined" type="_lgiAz9n8EeCpY-pssWj3yw" association="_lgiAydn8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Association" xmi:id="_lgiAy9n8EeCpY-pssWj3yw" name="undefined" memberEnd="_lgiAwtn8EeCpY-pssWj3yw _lgiAzNn8EeCpY-pssWj3yw">
+      <ownedEnd xmi:type="uml:Property" xmi:id="_lgiAzNn8EeCpY-pssWj3yw" name="undefined" type="_lgiAwdn8EeCpY-pssWj3yw" association="_lgiAy9n8EeCpY-pssWj3yw"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_lgiAzdn8EeCpY-pssWj3yw" name="PolarisationMapping">
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiAztn8EeCpY-pssWj3yw" name="ctype" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_lgiAz9n8EeCpY-pssWj3yw" name="FITS_WCS" clientDependency="_lgiA09n8EeCpY-pssWj3yw">
+      <generalization xmi:type="uml:Generalization" xmi:id="_lgiA0Nn8EeCpY-pssWj3yw" general="_lgiAk9n8EeCpY-pssWj3yw"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiA0dn8EeCpY-pssWj3yw" name="temporalMapping" type="_lgiAwdn8EeCpY-pssWj3yw" isReadOnly="true" association="_lgiAydn8EeCpY-pssWj3yw">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgiA0tn8EeCpY-pssWj3yw"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_lgiA09n8EeCpY-pssWj3yw" name="Dependency" supplier="_lgiAk9n8EeCpY-pssWj3yw" client="_lgiAz9n8EeCpY-pssWj3yw"/>
+    <packagedElement xmi:type="uml:UseCase" xmi:id="_lgiA1Nn8EeCpY-pssWj3yw" name="Data retrieval UseCases ">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_lgiA1dn8EeCpY-pssWj3yw">
+        <body>Uses-cases for data retrieval from various archives, covering all regimes and data kinds have been collected and structured by the IVOA uptake commitee ,(2009) under the guidance of David Schade.</body>
+      </ownedComment>
+      <ownedComment xmi:type="uml:Comment" xmi:id="_lgiA1tn8EeCpY-pssWj3yw">
+        <body> Check the documents available at :
+http://www.ivoa.net/cgi-bin/twiki/bin/view/IVOA/CoreObsDM</body>
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Enumeration" xmi:id="_lgiA19n8EeCpY-pssWj3yw" name="ProductType">
+      <ownedLiteral xmi:id="_lgiA2Nn8EeCpY-pssWj3yw" name="Image"/>
+      <ownedLiteral xmi:id="_lgiA2dn8EeCpY-pssWj3yw" name="Spectrum"/>
+      <ownedLiteral xmi:id="_lgiA2tn8EeCpY-pssWj3yw" name="TimeSeries"/>
+      <ownedLiteral xmi:id="_lgiA29n8EeCpY-pssWj3yw" name="Cube"/>
+      <ownedLiteral xmi:id="_lgiA3Nn8EeCpY-pssWj3yw" name="EventList"/>
+      <ownedLiteral xmi:id="_lgiA3dn8EeCpY-pssWj3yw" name="Visibility"/>
+      <ownedLiteral xmi:id="_lgiA3tn8EeCpY-pssWj3yw" name="SED"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_lgiA39n8EeCpY-pssWj3yw" name="STC_Types" visibility="package">
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiA4Nn8EeCpY-pssWj3yw" name="AstroCoordSystemType"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiA4dn8EeCpY-pssWj3yw" name="CoordIntervalType"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiA4tn8EeCpY-pssWj3yw" name="AstroCoordType"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiA49n8EeCpY-pssWj3yw" name="AstroCoordAreaType"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiA5Nn8EeCpY-pssWj3yw" name="CResolutionType"/>
+      <packagedElement xmi:type="uml:Class" xmi:id="_lgiA5dn8EeCpY-pssWj3yw" name="ScalarIntervalType"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Enumeration" xmi:id="_lgiA5tn8EeCpY-pssWj3yw" name="CalibrationLevelType">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_lgiA59n8EeCpY-pssWj3yw">
+        <body>Type of calibration operated on a data product:
+we classify the various possibilities as:
+\item Level 0: Raw instrumental data, in a proprietary or internal data-provider defined format, that needs instrument specific tools to be handled.
+\item Level 1: Instrumental data in a standard format (FITS, VOTable, SDFITS, ASDM, etc) which could be manipulated with standard astronomical packages.
+\item Level 2: Calibrated, science ready data with the instrument signature removed.
+\item Level 3: Enhanced data products like mosaics, resampled or drizzled images, or heavily processed survey fields. Level 3 data products may represent the combination of data from multiple primary obse</body>
+      </ownedComment>
+      <ownedLiteral xmi:id="_lgiA6Nn8EeCpY-pssWj3yw" name="0=raw, proprietary format"/>
+      <ownedLiteral xmi:id="_lgiA6dn8EeCpY-pssWj3yw" name="1=simply Cabibrated "/>
+      <ownedLiteral xmi:id="_lgiA6tn8EeCpY-pssWj3yw" name="2=fully calibrated"/>
+      <ownedLiteral xmi:id="_lgiA69n8EeCpY-pssWj3yw" name="3=combined,  highly calibrated"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_lgiA7Nn8EeCpY-pssWj3yw" name="DataID">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_lgiA7dn8EeCpY-pssWj3yw">
+        <body>see main definitions in the Spectrum DM.</body>
+      </ownedComment>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiA7tn8EeCpY-pssWj3yw" name="title" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiA79n8EeCpY-pssWj3yw">
+          <body>A free text format to explain what is in the observed data.</body>
+        </ownedComment>
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiA8Nn8EeCpY-pssWj3yw" name="creator" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiA8dn8EeCpY-pssWj3yw">
+          <body>This parameter gives the name of the institution which created the dataset.</body>
+        </ownedComment>
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiA8tn8EeCpY-pssWj3yw" name="observationID" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiA89n8EeCpY-pssWj3yw">
+          <body>This atrributes defines a unique identifier for an observation. In the case 
+where multiple data products are available for an observation (e.g. with 
+different calibration levels), the attribute will be the same for each data 
+product comprising the observation.</body>
+        </ownedComment>
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiA9Nn8EeCpY-pssWj3yw" name="creatorDiD" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiA9dn8EeCpY-pssWj3yw" name="date" type="_lgiBJNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiA9tn8EeCpY-pssWj3yw">
+          <body>Creation date , given by the creator of the data set .</body>
+        </ownedComment>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiA99n8EeCpY-pssWj3yw" name="collection" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiA-Nn8EeCpY-pssWj3yw">
+          <body>The name of the data collection this data belongs to.
+This parameter gives the name of the collection the observation stems from. 
+This string may contain: 
+\item a Survey names e.g. SDSS, POSSI, ....
+\item a data collection name and version 
+For instance, IRIS which corresponds to a common reprocessing of original datasets,
+of the IRAS data collection. 
+</body>
+        </ownedComment>
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Class" xmi:id="_lgiA-dn8EeCpY-pssWj3yw" name="Target" clientDependency="_lgiBBNn8EeCpY-pssWj3yw">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_lgiA-tn8EeCpY-pssWj3yw">
+        <body>Includes all attributes of the Target class defined by Spectrum DM.</body>
+      </ownedComment>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiA-9n8EeCpY-pssWj3yw" name="Name" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiA_Nn8EeCpY-pssWj3yw" name="description" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiA_dn8EeCpY-pssWj3yw" name="Class" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiA_tn8EeCpY-pssWj3yw">
+          <body>This parameter indicates the type of object that was pointed for this observation. It is a string with possible values defined in a special vocabulary set to be defined : list of object classes (or types) used by the SIMBAD database, f.i., other  IVOA controled vocabulary. 
+A simple set can be defined for this data model version  :
+{STAR, GALAXY, QUASAR, RADIO SOURCE, LINER, GLOB.CLUSTER, DARK, OTHER}. 
+This will be  enriched later in coordination with the IVOA Semantic group. </body>
+        </ownedComment>
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiA_9n8EeCpY-pssWj3yw" name="Redshift" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiBANn8EeCpY-pssWj3yw" name="SpectralClass" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiBAdn8EeCpY-pssWj3yw" name="VarAmpl" type="_lgiBMNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true"/>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiBAtn8EeCpY-pssWj3yw" name="pos" type="_lgh_09n8EeCpY-pssWj3yw" isReadOnly="true" association="_lgh_2tn8EeCpY-pssWj3yw">
+        <lowerValue xmi:type="uml:LiteralInteger" xmi:id="_lgiBA9n8EeCpY-pssWj3yw"/>
+      </ownedAttribute>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Dependency" xmi:id="_lgiBBNn8EeCpY-pssWj3yw" name="Dependency" supplier="_lgh_09n8EeCpY-pssWj3yw" client="_lgiA-dn8EeCpY-pssWj3yw"/>
+    <packagedElement xmi:type="uml:Class" xmi:id="_lgiBBdn8EeCpY-pssWj3yw" name="Curation">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_lgiBBtn8EeCpY-pssWj3yw">
+        <body>This class will re-use the VOResource description of Curation.</body>
+      </ownedComment>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiBB9n8EeCpY-pssWj3yw" name="publisherDID" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiBCNn8EeCpY-pssWj3yw">
+          <body>Data set ID given by the Publisher of the data .
+The publisherDID field contains the IVOA dataset identifier for the published
+ data product. 
+This value must be unique within the namespace controlled by the dataset 
+publisher (data center). 
+The value will also be globally unique since each publisher has a unique 
+IVOA registered publisher ID.  </body>
+        </ownedComment>
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiBCdn8EeCpY-pssWj3yw" name="contact" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiBCtn8EeCpY-pssWj3yw">
+          <body>Contact information in order to join the publisher of the dataset.</body>
+        </ownedComment>
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiBC9n8EeCpY-pssWj3yw" name="releaseDate" type="_lgiBJNn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiBDNn8EeCpY-pssWj3yw">
+          <body>Date used by the publisher to identify when he /she published or will publish this version of the data set.</body>
+        </ownedComment>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiBDdn8EeCpY-pssWj3yw" name="publisherID" type="_lgiBGtn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiBDtn8EeCpY-pssWj3yw">
+          <body>The IVOA identifier for this publisher. This has not to be confused with the Dataset IVOA ID given by the publisher, stored in publisher_did
+</body>
+        </ownedComment>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiBD9n8EeCpY-pssWj3yw" name="publisherName" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiBENn8EeCpY-pssWj3yw">
+          <body>It is the name of the institute,or organisation publishing the data. </body>
+        </ownedComment>
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiBEdn8EeCpY-pssWj3yw" name="version" isUnique="false" isReadOnly="true">
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiBEtn8EeCpY-pssWj3yw" name="rights" type="_lgiBFtn8EeCpY-pssWj3yw" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiBE9n8EeCpY-pssWj3yw">
+          <body>This parameter allows to distinguish between public datasets from proprietary or reserved ones.
+Possible values are : ( see VODataService? or VOresource)</body>
+        </ownedComment>
+      </ownedAttribute>
+      <ownedAttribute xmi:type="uml:Property" xmi:id="_lgiBFNn8EeCpY-pssWj3yw" name="reference" isUnique="false" isReadOnly="true">
+        <ownedComment xmi:type="uml:Comment" xmi:id="_lgiBFdn8EeCpY-pssWj3yw">
+          <body>the  bibliographic reference describing the data collection and pointing to a describing publiication .</body>
+        </ownedComment>
+        <type xmi:type="uml:PrimitiveType" href="http://schema.omg.org/spec/UML/2.1.1/uml.xml#String"/>
+      </ownedAttribute>
+      <nestedClassifier xmi:type="uml:Enumeration" xmi:id="_lgiBFtn8EeCpY-pssWj3yw" name="EnumRights">
+        <ownedLiteral xmi:id="_lgiBF9n8EeCpY-pssWj3yw" name="Public"/>
+        <ownedLiteral xmi:id="_lgiBGNn8EeCpY-pssWj3yw" name="Reserved"/>
+        <ownedLiteral xmi:id="_lgiBGdn8EeCpY-pssWj3yw" name="Proprietary"/>
+      </nestedClassifier>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_lgiBGtn8EeCpY-pssWj3yw" name="IVOA_ID_Type">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_lgiBG9n8EeCpY-pssWj3yw">
+        <body>String  identifier as defined in the IVOA</body>
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Enumeration" xmi:id="_lgiBHNn8EeCpY-pssWj3yw" name="WaveDomainType">
+      <ownedLiteral xmi:id="_lgiBHdn8EeCpY-pssWj3yw" name="RADIO"/>
+      <ownedLiteral xmi:id="_lgiBHtn8EeCpY-pssWj3yw" name="MILLIMETER"/>
+      <ownedLiteral xmi:id="_lgiBH9n8EeCpY-pssWj3yw" name="OPTICAL"/>
+      <ownedLiteral xmi:id="_lgiBINn8EeCpY-pssWj3yw" name="UV"/>
+      <ownedLiteral xmi:id="_lgiBIdn8EeCpY-pssWj3yw" name="IR"/>
+      <ownedLiteral xmi:id="_lgiBItn8EeCpY-pssWj3yw" name="X-RAY"/>
+      <ownedLiteral xmi:id="_lgiBI9n8EeCpY-pssWj3yw" name="GAMMA-RAY"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_lgiBJNn8EeCpY-pssWj3yw" name="DateISOTime">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_lgiBJdn8EeCpY-pssWj3yw">
+        <body>Date in specified in ISO time format.</body>
+      </ownedComment>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Enumeration" xmi:id="_lgiBJtn8EeCpY-pssWj3yw" name="ProductSubtype">
+      <ownedComment xmi:type="uml:Comment" xmi:id="_lgiBJ9n8EeCpY-pssWj3yw">
+        <body>A string to describe the science content of the data products.  
+This comes in addition to the data product type. It strongly depends on the data collection and may be defined by the data provider.
+</body>
+      </ownedComment>
+      <ownedLiteral xmi:id="_lgiBKNn8EeCpY-pssWj3yw" name="image"/>
+      <ownedLiteral xmi:id="_lgiBKdn8EeCpY-pssWj3yw" name="cube"/>
+      <ownedLiteral xmi:id="_lgiBKtn8EeCpY-pssWj3yw" name="spectrum"/>
+      <ownedLiteral xmi:id="_lgiBK9n8EeCpY-pssWj3yw" name="sed"/>
+      <ownedLiteral xmi:id="_lgiBLNn8EeCpY-pssWj3yw" name="timeseries"/>
+      <ownedLiteral xmi:id="_lgiBLdn8EeCpY-pssWj3yw" name="visibility"/>
+      <ownedLiteral xmi:id="_lgiBLtn8EeCpY-pssWj3yw" name="event"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Package" xmi:id="_lgiBL9n8EeCpY-pssWj3yw" name="Spectrum"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_lgiBMNn8EeCpY-pssWj3yw" name="float"/>
+    <packagedElement xmi:type="uml:PrimitiveType" xmi:id="_lgiBMdn8EeCpY-pssWj3yw" name="undefined"/>
+    <profileApplication xmi:type="uml:ProfileApplication" xmi:applyingPackage="_lgh-wNn8EeCpY-pssWj3yw" xmi:id="_lpJvQNn8EeCpY-pssWj3yw">
+      <eAnnotations xmi:id="_lpTgQNn8EeCpY-pssWj3yw" source="http://www.eclipse.org/uml2/2.0.0/UML">
+        <references xmi:type="ecore:EPackage" href="ObservationCoreComponentsDM_Documentation_extensions_Profile.xmi#_lhH0p9n8EeCpY-pssWj3yw"/>
+      </eAnnotations>
+      <appliedProfile xmi:type="uml:Profile" xmi:applyingPackage="_lpJvQNn8EeCpY-pssWj3yw" href="ObservationCoreComponentsDM_Documentation_extensions_Profile.xmi#_lhH0oNn8EeCpY-pssWj3yw"/>
+    </profileApplication>
+  </uml:Model>
+  <Documentation_extensions:ModelElement xmi:id="_lpTgQdn8EeCpY-pssWj3yw" base_NamedElement="_lgh_btn8EeCpY-pssWj3yw" noanalysis="true" base_Class="_lgh_btn8EeCpY-pssWj3yw"/>
+  <Documentation_extensions:ModelElement xmi:id="_lpdRQNn8EeCpY-pssWj3yw" base_NamedElement="_lgh_c9n8EeCpY-pssWj3yw" noanalysis="true" base_Class="_lgh_c9n8EeCpY-pssWj3yw"/>
+  <Documentation_extensions:ModelElement xmi:id="_lpdRQdn8EeCpY-pssWj3yw" base_NamedElement="_lgh_n9n8EeCpY-pssWj3yw" noanalysis="true" base_Package="_lgh_n9n8EeCpY-pssWj3yw"/>
+  <Documentation_extensions:ModelElement xmi:id="_lpdRQtn8EeCpY-pssWj3yw" base_NamedElement="_lgh_49n8EeCpY-pssWj3yw" analysis="true" base_Property="_lgh_49n8EeCpY-pssWj3yw"/>
+  <Documentation_extensions:ModelElement xmi:id="_lpdRQ9n8EeCpY-pssWj3yw" base_NamedElement="_lgh_69n8EeCpY-pssWj3yw" analysis="true" base_Property="_lgh_69n8EeCpY-pssWj3yw"/>
+  <Documentation_extensions:ModelElement xmi:id="_lpdRRNn8EeCpY-pssWj3yw" base_NamedElement="_lgh_-dn8EeCpY-pssWj3yw" analysis="true" base_Property="_lgh_-dn8EeCpY-pssWj3yw"/>
+  <Documentation_extensions:ModelElement xmi:id="_lpdRRdn8EeCpY-pssWj3yw" base_NamedElement="_lgiAINn8EeCpY-pssWj3yw" noanalysis="true" base_PrimitiveType="_lgiAINn8EeCpY-pssWj3yw"/>
+  <Documentation_extensions:ModelElement xmi:id="_lpdRRtn8EeCpY-pssWj3yw" base_NamedElement="_lgiAHtn8EeCpY-pssWj3yw" noanalysis="true" base_Property="_lgiAHtn8EeCpY-pssWj3yw"/>
+  <Documentation_extensions:ModelElement xmi:id="_lpdRR9n8EeCpY-pssWj3yw" base_NamedElement="_lgiAPtn8EeCpY-pssWj3yw" analysis="true" base_Class="_lgiAPtn8EeCpY-pssWj3yw"/>
+  <Documentation_extensions:ModelElement xmi:id="_lpdRSNn8EeCpY-pssWj3yw" base_NamedElement="_lgiAQNn8EeCpY-pssWj3yw" analysis="true" base_Class="_lgiAQNn8EeCpY-pssWj3yw"/>
+  <Documentation_extensions:ModelElement xmi:id="_lpdRSdn8EeCpY-pssWj3yw" base_NamedElement="_lgiAQdn8EeCpY-pssWj3yw" analysis="true" base_Enumeration="_lgiAQdn8EeCpY-pssWj3yw"/>
+  <Documentation_extensions:ModelElement xmi:id="_lpdRStn8EeCpY-pssWj3yw" base_NamedElement="_lgiARNn8EeCpY-pssWj3yw" analysis="true" base_Class="_lgiARNn8EeCpY-pssWj3yw"/>
+  <Documentation_extensions:ModelElement xmi:id="_lpdRS9n8EeCpY-pssWj3yw" base_NamedElement="_lgiAatn8EeCpY-pssWj3yw" noanalysis="true" base_Class="_lgiAatn8EeCpY-pssWj3yw"/>
+</xmi:XMI>

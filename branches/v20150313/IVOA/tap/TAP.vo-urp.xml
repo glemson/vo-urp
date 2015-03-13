@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vo-urp:model xmlns:vo-urp="http://vo-urp.googlecode.com/xsd/v0.9">
+  <identifier id="eee_1045467100313_135436_1">
+    <utype>TAP</utype>
+  </identifier>
+  <name>TAP</name>
+  <description>This is the data model for describing a TAP_SCHEMA.</description>
+  <title>TAP_SCHEMA Dat Model ala VO-URP</title>
+  <version>0.x</version>
+  <lastModified>2012-11-14T17:08:14</lastModified>
+  <import>
+    <identifier id="_12_1_1dfa04c4_1352203901356_512837_228">
+      <utype>ivoa_1.0</utype>
+    </identifier>
+    <name>IVOA_Types</name>
+    <url>http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.vo-urp.xml</url>
+    <documentationURL>http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html</documentationURL>
+    <dataType>
+      <identifier id="_12_1_1dfa04c4_1352203901371_716616_240">
+        <utype>ivoa_1.0:stdtypes/Identity</utype>
+      </identifier>
+      <name>Identity</name>
+    </dataType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352203901364_557823_229">
+        <utype>ivoa_1.0:stdtypes/string</utype>
+      </identifier>
+      <name>string</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352203901369_225720_230">
+        <utype>ivoa_1.0:stdtypes/duration</utype>
+      </identifier>
+      <name>duration</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352203901369_569476_231">
+        <utype>ivoa_1.0:stdtypes/complex</utype>
+      </identifier>
+      <name>complex</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352203901369_335318_232">
+        <utype>ivoa_1.0:stdtypes/integer</utype>
+      </identifier>
+      <name>integer</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352203901370_865789_233">
+        <utype>ivoa_1.0:stdtypes/datetime</utype>
+      </identifier>
+      <name>datetime</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352203901370_780300_234">
+        <utype>ivoa_1.0:stdtypes/decimal</utype>
+      </identifier>
+      <name>decimal</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352203901371_32830_235">
+        <utype>ivoa_1.0:stdtypes/rational</utype>
+      </identifier>
+      <name>rational</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352203901371_896288_236">
+        <utype>ivoa_1.0:stdtypes/real</utype>
+      </identifier>
+      <name>real</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352203901371_26196_237">
+        <utype>ivoa_1.0:stdtypes/nonnegativeinteger</utype>
+      </identifier>
+      <name>nonnegativeInteger</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352203901371_876694_238">
+        <utype>ivoa_1.0:stdtypes/boolean</utype>
+      </identifier>
+      <name>boolean</name>
+    </primitiveType>
+    <primitiveType>
+      <identifier id="_12_1_1dfa04c4_1352203901371_161532_239">
+        <utype>ivoa_1.0:stdtypes/anyURI</utype>
+      </identifier>
+      <name>anyURI</name>
+    </primitiveType>
+  </import>
+
+  <package>
+    <identifier id="_12_1_1dfa04c4_1349943899446_25247_168">
+      <utype>TAP:ivoa/</utype>
+    </identifier>
+    <name>ivoa</name>
+    <description>Root package of all IVOA data models.</description>
+
+
+    <package>
+      <identifier id="_12_1_1dfa04c4_1338117847390_608441_799">
+        <utype>TAP:ivoa/TAP_SCHEMA/</utype>
+      </identifier>
+      <name>TAP_SCHEMA</name>
+      <description>Package containing types describing TAP_SCHEMA</description>
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1338117863614_67789_821">
+          <utype>TAP:ivoa/TAP_SCHEMA/Schema</utype>
+        </identifier>
+        <name>Schema</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <extends>
+          <identifier id="_12_1_1dfa04c4_1349934319641_186756_933">
+            <utype>TAP:ivoa/TAP_SCHEMA/Schema.EXTENDS</utype>
+          </identifier>
+          <type idref="_12_1_1dfa04c4_1349934092637_129667_830">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/DatabaseObject</utyperef>
+          </type>
+        </extends>
+        <collection>
+          <identifier id="_12_1_1dfa04c4_1338117883376_539821_846">
+            <utype>TAP:ivoa/TAP_SCHEMA/Schema.table</utype>
+          </identifier>
+          <name>table</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1338117883357_182995_843">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/Table</utyperef>
+          </datatype>
+          <multiplicity>0..*</multiplicity>
+        </collection>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1338117883357_182995_843">
+          <utype>TAP:ivoa/TAP_SCHEMA/Table</utype>
+        </identifier>
+        <name>Table</name>
+        <description>Represents a table in a TAP_SCHEMA</description>
+        <extends>
+          <identifier id="_12_1_1dfa04c4_1349934316475_485099_908">
+            <utype>TAP:ivoa/TAP_SCHEMA/Table.EXTENDS</utype>
+          </identifier>
+          <type idref="_12_1_1dfa04c4_1349934092637_129667_830">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/DatabaseObject</utyperef>
+          </type>
+        </extends>
+        <container>
+          <identifier id="_12_1_1dfa04c4_1338117883357_182995_843_CONTAINER">
+            <utype>TAP:ivoa/TAP_SCHEMA/Table.CONTAINER</utype>
+          </identifier>
+          <collectionref idref="_12_1_1dfa04c4_1338117883376_539821_846">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/Schema.table</utyperef>
+          </collectionref>
+        </container>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1349934400668_224464_982">
+            <utype>TAP:ivoa/TAP_SCHEMA/Table.table_type</utype>
+          </identifier>
+          <name>table_type</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1349934408328_926662_986">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/TableType</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+        <collection>
+          <identifier id="_12_1_1dfa04c4_1338117889176_173806_918">
+            <utype>TAP:ivoa/TAP_SCHEMA/Table.column</utype>
+          </identifier>
+          <name>column</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1338117889157_666237_915">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/Column</utyperef>
+          </datatype>
+          <multiplicity>1..*</multiplicity>
+          <isOrdered>true</isOrdered>
+        </collection>
+        <collection>
+          <identifier id="_12_1_1dfa04c4_1349933582420_689499_434">
+            <utype>TAP:ivoa/TAP_SCHEMA/Table.foreignKey</utype>
+          </identifier>
+          <name>foreignKey</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1349933582391_188826_431">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/Key</utyperef>
+          </datatype>
+          <multiplicity>0..*</multiplicity>
+        </collection>
+        <collection>
+          <identifier id="_12_1_1dfa04c4_1349936135375_658103_1290">
+            <utype>TAP:ivoa/TAP_SCHEMA/Table.index</utype>
+          </identifier>
+          <name>index</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1349936135360_757911_1287">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/Index</utyperef>
+          </datatype>
+          <multiplicity>0..*</multiplicity>
+        </collection>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1338117889157_666237_915">
+          <utype>TAP:ivoa/TAP_SCHEMA/Column</utype>
+        </identifier>
+        <name>Column</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <extends>
+          <identifier id="_12_1_1dfa04c4_1349934313604_944893_883">
+            <utype>TAP:ivoa/TAP_SCHEMA/Column.EXTENDS</utype>
+          </identifier>
+          <type idref="_12_1_1dfa04c4_1349934092637_129667_830">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/DatabaseObject</utyperef>
+          </type>
+        </extends>
+        <container>
+          <identifier id="_12_1_1dfa04c4_1338117889157_666237_915_CONTAINER">
+            <utype>TAP:ivoa/TAP_SCHEMA/Column.CONTAINER</utype>
+          </identifier>
+          <collectionref idref="_12_1_1dfa04c4_1338117889176_173806_918">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/Table.column</utyperef>
+          </collectionref>
+        </container>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1349934643248_140187_1059">
+            <utype>TAP:ivoa/TAP_SCHEMA/Column.unit</utype>
+          </identifier>
+          <name>unit</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352203901364_557823_229">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1349934257990_123196_873">
+            <utype>TAP:ivoa/TAP_SCHEMA/Column.ucd</utype>
+          </identifier>
+          <name>ucd</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352203901364_557823_229">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+          <skosconcept>
+            <broadestSKOSConcept>http://www.ivoa.net/Document/WD/vocabularies/vocabularies-1.0/UCD</broadestSKOSConcept>
+            <vocabularyURI>http://www.ivoa.net/Document/WD/vocabularies/vocabularies-1.0/UCD</vocabularyURI>
+          </skosconcept>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1349934603375_177761_1051">
+            <utype>TAP:ivoa/TAP_SCHEMA/Column.datatype</utype>
+          </identifier>
+          <name>datatype</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1349963242684_442824_398">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/ColumnType</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1349934668583_776819_1063">
+            <utype>TAP:ivoa/TAP_SCHEMA/Column.principal</utype>
+          </identifier>
+          <name>principal</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352203901371_876694_238">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/boolean</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1349934695056_898974_1068">
+            <utype>TAP:ivoa/TAP_SCHEMA/Column.std</utype>
+          </identifier>
+          <name>std</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352203901371_876694_238">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/boolean</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1349934714806_477791_1073">
+            <utype>TAP:ivoa/TAP_SCHEMA/Column.indexed</utype>
+          </identifier>
+          <name>indexed</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352203901371_876694_238">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/boolean</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1349937543660_756374_1506">
+            <utype>TAP:ivoa/TAP_SCHEMA/Column.rank</utype>
+          </identifier>
+          <name>rank</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352203901371_26196_237">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/nonnegativeinteger</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+          <constraints>
+            <uniqueInCollection>
+            true
+          </uniqueInCollection>
+          </constraints>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1351073595363_385712_619">
+            <utype>TAP:ivoa/TAP_SCHEMA/Column.bounds</utype>
+          </identifier>
+          <name>bounds</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352204175035_500393_486">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/Bounds</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1349933582391_188826_431">
+          <utype>TAP:ivoa/TAP_SCHEMA/Key</utype>
+        </identifier>
+        <name>Key</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <extends>
+          <identifier id="_12_1_1dfa04c4_1349934323479_970746_958">
+            <utype>TAP:ivoa/TAP_SCHEMA/Key.EXTENDS</utype>
+          </identifier>
+          <type idref="_12_1_1dfa04c4_1349934092637_129667_830">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/DatabaseObject</utyperef>
+          </type>
+        </extends>
+        <container>
+          <identifier id="_12_1_1dfa04c4_1349933582391_188826_431_CONTAINER">
+            <utype>TAP:ivoa/TAP_SCHEMA/Key.CONTAINER</utype>
+          </identifier>
+          <collectionref idref="_12_1_1dfa04c4_1349933582420_689499_434">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/Table.foreignKey</utyperef>
+          </collectionref>
+        </container>
+        <collection>
+          <identifier id="_12_1_1dfa04c4_1349933640658_508125_566">
+            <utype>TAP:ivoa/TAP_SCHEMA/Key.keyColumn</utype>
+          </identifier>
+          <name>keyColumn</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1349933640651_966873_563">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/KeyColumn</utyperef>
+          </datatype>
+          <multiplicity>1..*</multiplicity>
+        </collection>
+        <reference>
+          <identifier id="_12_1_1dfa04c4_1349933652942_342334_636">
+            <utype>TAP:ivoa/TAP_SCHEMA/Key.target_table</utype>
+          </identifier>
+          <name>target_table</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1338117883357_182995_843">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/Table</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </reference>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1349933640651_966873_563">
+          <utype>TAP:ivoa/TAP_SCHEMA/KeyColumn</utype>
+        </identifier>
+        <name>KeyColumn</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <container>
+          <identifier id="_12_1_1dfa04c4_1349933640651_966873_563_CONTAINER">
+            <utype>TAP:ivoa/TAP_SCHEMA/KeyColumn.CONTAINER</utype>
+          </identifier>
+          <collectionref idref="_12_1_1dfa04c4_1349933640658_508125_566">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/Key.keyColumn</utyperef>
+          </collectionref>
+        </container>
+        <reference>
+          <identifier id="_12_1_1dfa04c4_1349934037226_500771_723">
+            <utype>TAP:ivoa/TAP_SCHEMA/KeyColumn.from_column</utype>
+          </identifier>
+          <name>from_column</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1338117889157_666237_915">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/Column</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </reference>
+        <reference>
+          <identifier id="_12_1_1dfa04c4_1349934039675_915376_776">
+            <utype>TAP:ivoa/TAP_SCHEMA/KeyColumn.target_column</utype>
+          </identifier>
+          <name>target_column</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1338117889157_666237_915">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/Column</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </reference>
+      </objectType>
+
+      <objectType abstract="true">
+        <identifier id="_12_1_1dfa04c4_1349934092637_129667_830">
+          <utype>TAP:ivoa/TAP_SCHEMA/DatabaseObject</utype>
+        </identifier>
+        <name>DatabaseObject</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1349934107379_994031_849">
+            <utype>TAP:ivoa/TAP_SCHEMA/DatabaseObject.name</utype>
+          </identifier>
+          <name>name</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352203901364_557823_229">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+          <constraints>
+            <uniqueInCollection>
+            true
+          </uniqueInCollection>
+          </constraints>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1349934137004_936410_856">
+            <utype>TAP:ivoa/TAP_SCHEMA/DatabaseObject.description</utype>
+          </identifier>
+          <name>description</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352203901364_557823_229">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/string</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+          <constraints>
+            <maxLength>-1</maxLength>
+          </constraints>
+        </attribute>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1349936135360_757911_1287">
+          <utype>TAP:ivoa/TAP_SCHEMA/Index</utype>
+        </identifier>
+        <name>Index</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <container>
+          <identifier id="_12_1_1dfa04c4_1349936135360_757911_1287_CONTAINER">
+            <utype>TAP:ivoa/TAP_SCHEMA/Index.CONTAINER</utype>
+          </identifier>
+          <collectionref idref="_12_1_1dfa04c4_1349936135375_658103_1290">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/Table.index</utyperef>
+          </collectionref>
+        </container>
+        <collection>
+          <identifier id="_12_1_1dfa04c4_1349936165171_118629_1364">
+            <utype>TAP:ivoa/TAP_SCHEMA/Index.column</utype>
+          </identifier>
+          <name>column</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1349936165140_198735_1361">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/IndexColumn</utyperef>
+          </datatype>
+          <multiplicity>1..*</multiplicity>
+          <isOrdered>true</isOrdered>
+        </collection>
+      </objectType>
+
+      <objectType>
+        <identifier id="_12_1_1dfa04c4_1349936165140_198735_1361">
+          <utype>TAP:ivoa/TAP_SCHEMA/IndexColumn</utype>
+        </identifier>
+        <name>IndexColumn</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <container>
+          <identifier id="_12_1_1dfa04c4_1349936165140_198735_1361_CONTAINER">
+            <utype>TAP:ivoa/TAP_SCHEMA/IndexColumn.CONTAINER</utype>
+          </identifier>
+          <collectionref idref="_12_1_1dfa04c4_1349936165171_118629_1364">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/Index.column</utyperef>
+          </collectionref>
+        </container>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1349936176996_624916_1430">
+            <utype>TAP:ivoa/TAP_SCHEMA/IndexColumn.rank</utype>
+          </identifier>
+          <name>rank</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352203901371_26196_237">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/nonnegativeinteger</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+          <constraints>
+            <uniqueInCollection>
+            true
+          </uniqueInCollection>
+          </constraints>
+        </attribute>
+        <reference>
+          <identifier id="_12_1_1dfa04c4_1349936249349_460388_1441">
+            <utype>TAP:ivoa/TAP_SCHEMA/IndexColumn.column</utype>
+          </identifier>
+          <name>column</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1338117889157_666237_915">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/Column</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </reference>
+      </objectType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1349963242684_442824_398">
+          <utype>TAP:ivoa/TAP_SCHEMA/ColumnType</utype>
+        </identifier>
+        <name>ColumnType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1349963253308_78768_419">
+            <utype>TAP:ivoa/TAP_SCHEMA/ColumnType.datatype</utype>
+          </identifier>
+          <name>datatype</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1349934530679_323443_1012">
+            <utyperef>TAP:ivoa/TAP_SCHEMA/SQLType</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1349963266474_224500_423">
+            <utype>TAP:ivoa/TAP_SCHEMA/ColumnType.size</utype>
+          </identifier>
+          <name>size</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352203901371_26196_237">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/nonnegativeinteger</utyperef>
+          </datatype>
+          <multiplicity>0..1</multiplicity>
+        </attribute>
+      </dataType>
+
+      <dataType>
+        <identifier id="_12_1_1dfa04c4_1352204175035_500393_486">
+          <utype>TAP:ivoa/TAP_SCHEMA/Bounds</utype>
+        </identifier>
+        <name>Bounds</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352204193128_26234_510">
+            <utype>TAP:ivoa/TAP_SCHEMA/Bounds.lower</utype>
+          </identifier>
+          <name>lower</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352203901371_896288_236">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/real</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+        <attribute>
+          <identifier id="_12_1_1dfa04c4_1352204207097_444527_514">
+            <utype>TAP:ivoa/TAP_SCHEMA/Bounds.upper</utype>
+          </identifier>
+          <name>upper</name>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+          <datatype idref="_12_1_1dfa04c4_1352203901371_896288_236">
+            <modelUtypeRef>ivoa_1.0</modelUtypeRef>
+            <utyperef>ivoa_1.0:stdtypes/real</utyperef>
+          </datatype>
+          <multiplicity>1</multiplicity>
+        </attribute>
+      </dataType>
+
+      <enumeration>
+        <identifier id="_12_1_1dfa04c4_1349934408328_926662_986">
+          <utype>TAP:ivoa/TAP_SCHEMA/TableType</utype>
+        </identifier>
+        <name>TableType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <literal>
+          <identifier id="_12_1_1dfa04c4_1349934441665_299891_1005">
+            <utype>TAP:ivoa/TAP_SCHEMA/TableType.table</utype>
+          </identifier>
+          <value>table</value>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        </literal>
+        <literal>
+          <identifier id="_12_1_1dfa04c4_1349934445674_367542_1007">
+            <utype>TAP:ivoa/TAP_SCHEMA/TableType.view</utype>
+          </identifier>
+          <value>view</value>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        </literal>
+      </enumeration>
+
+      <enumeration>
+        <identifier id="_12_1_1dfa04c4_1349934530679_323443_1012">
+          <utype>TAP:ivoa/TAP_SCHEMA/SQLType</utype>
+        </identifier>
+        <name>SQLType</name>
+        <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        <literal>
+          <identifier id="_12_1_1dfa04c4_1349934545015_795901_1031">
+            <utype>TAP:ivoa/TAP_SCHEMA/SQLType.INTEGER</utype>
+          </identifier>
+          <value>INTEGER</value>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        </literal>
+        <literal>
+          <identifier id="_12_1_1dfa04c4_1349934551146_254697_1033">
+            <utype>TAP:ivoa/TAP_SCHEMA/SQLType.SMALLINT</utype>
+          </identifier>
+          <value>SMALLINT</value>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        </literal>
+        <literal>
+          <identifier id="_12_1_1dfa04c4_1349934556356_657198_1035">
+            <utype>TAP:ivoa/TAP_SCHEMA/SQLType.BIGINT</utype>
+          </identifier>
+          <value>BIGINT</value>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        </literal>
+        <literal>
+          <identifier id="_12_1_1dfa04c4_1349934562893_410555_1037">
+            <utype>TAP:ivoa/TAP_SCHEMA/SQLType.CHAR</utype>
+          </identifier>
+          <value>CHAR</value>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        </literal>
+        <literal>
+          <identifier id="_12_1_1dfa04c4_1349934567760_859773_1039">
+            <utype>TAP:ivoa/TAP_SCHEMA/SQLType.VARCHAR</utype>
+          </identifier>
+          <value>VARCHAR</value>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        </literal>
+        <literal>
+          <identifier id="_12_1_1dfa04c4_1349934577931_904543_1041">
+            <utype>TAP:ivoa/TAP_SCHEMA/SQLType.DECIMAL</utype>
+          </identifier>
+          <value>DECIMAL</value>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        </literal>
+        <literal>
+          <identifier id="_12_1_1dfa04c4_1349934583391_966176_1043">
+            <utype>TAP:ivoa/TAP_SCHEMA/SQLType.BLOB</utype>
+          </identifier>
+          <value>BLOB</value>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        </literal>
+        <literal>
+          <identifier id="_12_1_1dfa04c4_1349934587104_234337_1045">
+            <utype>TAP:ivoa/TAP_SCHEMA/SQLType.CLOB</utype>
+          </identifier>
+          <value>CLOB</value>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        </literal>
+        <literal>
+          <identifier id="_12_1_1dfa04c4_1349934590879_155776_1047">
+            <utype>TAP:ivoa/TAP_SCHEMA/SQLType.REAL</utype>
+          </identifier>
+          <value>REAL</value>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        </literal>
+        <literal>
+          <identifier id="_12_1_1dfa04c4_1349934594061_459558_1049">
+            <utype>TAP:ivoa/TAP_SCHEMA/SQLType.FLOAT</utype>
+          </identifier>
+          <value>FLOAT</value>
+          <description>
+          TODO : Missing description : please, update your UML model asap.
+        </description>
+        </literal>
+      </enumeration>
+
+    </package>
+
+  </package>
+
+</vo-urp:model>

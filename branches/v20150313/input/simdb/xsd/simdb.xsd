@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:vo-urp="http://vo-urp.googlecode.com/"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb"
+            xmlns:base="http://www.ivoa.net/xml/dm/base/v0.1"
+            xmlns:p6="http://www.ivoa.net/xml/SimDB/0.7-20090417/basic"
+            targetNamespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/simdb">
+   <xsd:annotation>
+      <xsd:documentation>Generated from UML-&gt;XMI-&gt;intermediate-&gt;XSD.</xsd:documentation>
+   </xsd:annotation>
+   <xsd:import namespace="http://www.ivoa.net/xml/SimDB/0.7-20090417/basic"
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/basic.xsd"/>
+   <xsd:import namespace="http://www.ivoa.net/xml/dm/base/v0.1"
+               schemaLocation="http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/base.xsd"/>
+   <xsd:complexType name="Resource" abstract="true">
+      <xsd:annotation>
+         <xsd:documentation>This is a thin copy of the Registry Resource model's Resource that borrowes some of its elements. 
+It *is not* a Registry Resource though.
+In particular we want to refine the content model here.
+Using a restriction of the res:Resource leads to problems, as we'd like to extend the Resource at the same time.
+Hence we create a new type.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_1_8e0028f_1178789094562_459260_296</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataRootEntityObject">
+            <xsd:sequence>
+               <xsd:element name="name" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:documentation>For Protocol :
+The name by which this simulator is commonly known. 
+Ex: Gadget, Flash
+
+For Project :
+the name of the project
+
+For Experiment :
+the name of this experiment
+</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_14_0_8e0028f_1202994215578_466351_2236</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="description" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:documentation>A description of this resource.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_14_0_8e0028f_1202994225718_41210_2238</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="referenceURL" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>a URL to the publication describing the experiment</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_14_0_8e0028f_1202820901406_132212_2887</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="created" type="xsd:dateTime">
+                  <xsd:annotation>
+                     <xsd:documentation>The UTC date and time this resource metadata description was created.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_bd102fc_1207069813179_860162_204</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="updated" type="xsd:dateTime" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>The UTC date this resource metadata description was last updated.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_bd102fc_1207069842179_310189_209</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="status" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:documentation>a tag indicating whether this resource is believed to be still actively maintained.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_bd102fc_1207069870715_18336_214</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="contact" type="Contact" maxOccurs="unbounded"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="Contact">
+      <xsd:annotation>
+         <xsd:documentation>Information that can be used for contacting someone
+</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_bd102fc_1206601369187_165113_153</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="name" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:documentation>the name or title of the contact person.
+
+This can be a person's name, e.g. "John P. Jones" or a group, "Archive Support Team".</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_bd102fc_1206601454839_501438_173</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="address" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>the contact mailing address
+
+All components of the mailing address are given in one string, e.g. "3700 San Martin Drive, Baltimore, MD 21218 USA".</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_bd102fc_1206601501647_3817_178</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="email" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>the contact email address</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_bd102fc_1206601562607_6509_183</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="telephone" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>the contact telephone number
+
+Complete international dialing codes should be given, e.g. "+1-410-338-1234".</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_bd102fc_1206601595223_756513_188</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="role" type="ContactRole">
+                  <xsd:annotation>
+                     <xsd:documentation>The role this party plays in the Resource</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1224853332062_719679_435</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="Project">
+      <xsd:annotation>
+         <xsd:documentation>A collection of SimDB experiments that have been executed together and are registered in an IVOA registry as a single Resource.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_2_8e0028f_1191338785390_934381_291</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="Resource">
+            <xsd:sequence>
+               <xsd:element name="resource" type="ProjectResource" maxOccurs="unbounded"/>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:complexType name="ProjectResource">
+      <xsd:annotation>
+         <xsd:documentation>Associative class between a Project and its constitutent SimDB/Resource-s.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_14_0_8e0028f_1202820710484_502833_2761</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:complexContent>
+         <xsd:extension base="base:MetadataObject">
+            <xsd:sequence>
+               <xsd:element name="description" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:documentation>Describes the rolw of the referenced resource in this project.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1240399758078_203716_683</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="resource" type="base:Reference">
+                  <xsd:annotation>
+                     <xsd:documentation>Reference to another SimDB/Resource that is included in the containing project.</xsd:documentation>
+                     <xsd:appinfo>
+                        <vo-urp:identifier>_12_1_8e0028f_1224855169437_868401_705</vo-urp:identifier>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:extension>
+      </xsd:complexContent>
+   </xsd:complexType>
+
+   <xsd:simpleType name="ContactRole">
+      <xsd:annotation>
+         <xsd:documentation>Contains different roles a party can play in a resource.</xsd:documentation>
+         <xsd:appinfo>
+            <vo-urp:identifier>_12_1_8e0028f_1210681081343_459631_731</vo-urp:identifier>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:restriction base="xsd:string">
+         <xsd:enumeration value="owner">
+            <xsd:annotation>
+               <xsd:documentation>Represents an owner of a resource.</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="creator">
+            <xsd:annotation>
+               <xsd:documentation>Created the resource</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="publisher">
+            <xsd:annotation>
+               <xsd:documentation>Represents a publisher of a resource</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+         <xsd:enumeration value="contributor">
+            <xsd:annotation>
+               <xsd:documentation>A general contributor to the creation of the resource</xsd:documentation>
+            </xsd:annotation>
+         </xsd:enumeration>
+      </xsd:restriction>
+   </xsd:simpleType>
+
+</xsd:schema>

@@ -1,0 +1,15 @@
+TODO :
+
+TODO:
+- data model updates (quantity, valuetype subclasses in db, default value, reordering of collections/references in code, objecttype->class, ...)
+Note (SimDB)
+(de)normalisation
+XSLT scripts translating back/firth normalised <-> denormalised representations
+all xml schemas in local bundle
+ facade for dealing with the persistent storage
+facade for XML (un)marshalling
+look and feel of web site (tables somewhat ugly )
+tables scrolling ...
+resolve publisherDIDs, does it work?
+use uniqueness constraints ...
+relations refining other relations ????

@@ -1,0 +1,1029 @@
+<!-- 
+    build_java.xml file : specific targets for java code
+-->  
+
+	<condition property="target.javadoc.do">
+		<equals arg1="${target.javadoc.active}" arg2="true" trim="true" />
+	</condition>
+
+	<condition property="target.test.javadoc.do">
+    <and>
+      <equals arg1="${target.javadoc.active}" arg2="true" trim="true" />
+      <isset property="has.test"/>
+    </and>
+	</condition>
+
+
+<!-- jalopy code formatter configuration -->
+<property name="jalopyConvention" location="${libs}/jalopy/jalopy-java-laurent.xml" />
+<property name="jalopyConvention_1.5c3" location="${libs}/jalopy/jalopy-java-laurent_1.5c3.xml" />
+<property name="jalopyConvention_1.5c3_skipJavaDoc" location="${libs}/jalopy/jalopy-java-laurent_1.5c3_skipJavaDoc.xml" />
+
+
+<!-- libraries for base module -->
+<fileset id="jarfiles" dir="${libs}">
+  <!-- apache logging + Log4J -->
+  <include name="commons-logging-1.1.1.jar"/>
+  <include name="log4j-1.2.16.jar"/>
+
+  <!-- JAXB 2.2.3 reference implementation -->
+  <include name="jaxb-api.jar" />
+  <include name="jaxb-impl.jar" />
+  <!-- XJC includes (xml) catalog resolver : com.sun.org.apache.xml.internal.resolver -->
+  <include name="jaxb-xjc.jar" />
+  <!-- JAXB 2.2 RI dependencies -->
+  <include name="activation.jar" />
+  <include name="jsr173_1.0_api.jar" />
+
+  <!-- eclipselink (2.2.0) JPA 2.0 reference implementation -->
+  <include name="eclipselink.jar" />
+  <include name="javax.persistence_2.0.3.jar" />
+
+  <!-- saxon9 for runtime XSLT processing -->
+  <include name="saxon9.jar" />
+  <include name="saxon9-s9api.jar" />
+</fileset>
+
+
+<!-- classpath for base module -->
+<path id="project.class.path">
+  <fileset refid="jarfiles"/>
+</path>
+
+<!-- class paths for generated classes -->
+<path id="infrastructure.class.path">
+  <pathelement location="${dist}/${build.src.file}" />
+</path>
+
+<!-- class paths for runtime -->
+<path id="runtime.class.path">
+  <pathelement location="${dist}/${build.src.file}" />
+
+  <!-- weaved classes (faster) -->
+  <pathelement location="${dist}/${build.gen.weave.file}" />
+
+  <!-- standard classes -->
+  <pathelement location="${dist}/${build.gen.file}" />
+
+  <!-- JDBC driver -->
+  <path refid="jdbc-drivers.class.path" />
+
+  <!-- properties at last to add / because it is a directory -->
+  <pathelement path="${properties}" />
+</path>
+
+
+<!-- up to date checks -->
+
+<!-- checks if build is necessary : java source code & libraries -->
+<uptodate property="build.base.notRequired">
+  <srcfiles dir= "${root}" includes="build.properties"/>
+  <srcfiles dir= "${sources}" includes="**/*"/>
+  <srcfiles dir= "${libs}" includes="**/*.jar"/>
+  <mapper type="merge" to="${dist}/${build.src.file}"/>
+</uptodate>  
+
+<!-- checks if formatter build is necessary : formatter code & libraries -->
+<uptodate property="build.formatter.notRequired">
+  <srcfiles dir= "${libs}/jalopy/src" includes="**/*.java"/>
+  <srcfiles dir= "${libs}/jalopy/lib" includes="**/*.jar"/>
+  <mapper type="merge" to="${libs}/jalopy/bin/org/ivoa/jalopy/**/*.class"/>
+</uptodate>
+
+
+
+
+<!-- targets -->
+
+
+<!-- target xjcVersion: get JAXB xjc information (2.2.2) -->
+<target name="xjcVersion" description="get JAXB xjc information">
+
+  <echo>XJC version:</echo>
+  <java jar="${libs}/jaxb-xjc.jar" fork="true" failonerror="true" />
+
+</target>
+
+
+<!-- target xjcGenCode : generates java code from xml schemas (intermediateModel.xsd, VOTable-1.2.xsd) -->
+<target name="xjcGenCode" description="generates the java code from xml schemas">
+
+  <!-- define the JAXB specification used by the generated code: JRE 6.0 supports only JAXB 2.0 or 2.1 ! -->
+  <property name="jaxbTarget" value="2.1" />
+
+<!-- 
+JAXB compatibility: http://jaxb.java.net/2.2.5/docs/ch03.html#compiling-xml-schema
+7.2. Which JAXB RI is included in which JDK?
+
+This table captures the history of the JAXB RI integration into JDK. This is for information purposes only. 
+In particular, the JAXB RI in JDK is package renamed to avoid any conflict with the stand-alone JAXB RI distribution or with the jaxb2-reflection library. 
+You can use any version of these with any version of JDK without worrying about implementation conflicts.
+
+JDK6 first release - JDK6 u3
+	JAXB RI 2.0.3
+
+JDK6 u4
+	JAXB RI 2.1.3
+
+JDK6 u14
+	JAXB RI 2.1.10
+
+JDK7 first release
+	JAXB RI 2.2.4-1
+-->
+
+  <echo>Generating java code for intermediateModel.xsd (JAXB spec = ${jaxbTarget})</echo>
+  <java jar="${libs}/jaxb-xjc.jar" fork="true" failonerror="true">
+    <arg value="-no-header"/>
+    <arg value="-readOnly"/>
+    
+    <arg value="-target"/>
+    <arg value="${jaxbTarget}"/>
+
+    <arg value="-d"/>
+    <arg value="${sources}"/>
+
+    <arg value="-p"/>
+    <arg value="org.ivoa.metamodel"/>
+
+    <arg value="./xsd/intermediateModel.xsd"/>
+  </java>
+
+  <echo>Generating java code for VOTable-1.2.xsd (JAXB spec = ${jaxbTarget})</echo>
+  <java jar="${libs}/jaxb-xjc.jar" fork="true" failonerror="true">
+
+    <arg value="-no-header"/>
+    <arg value="-readOnly"/>
+    
+    <arg value="-target"/>
+    <arg value="${jaxbTarget}"/>
+
+    <!-- use simple mode as workaround to error: Property "Value" is already defined. (INFO/value) -->
+    <arg value="-extension"/>
+    <arg value="-b"/>
+    <arg value="./xjcConfig_votable.xml"/>
+    
+    <arg value="-d"/>
+    <arg value="${sources}"/>
+
+    <arg value="-p"/>
+    <arg value="org.ivoa.votable"/>
+
+    <arg value="./schema/VOTable-1.2.xsd"/>
+  </java>
+
+</target>
+
+
+
+
+<!-- target cleanJava : clean build files -->
+<target name="cleanJava" depends="cleanDist">
+  <echo>cleaning directory : ${build} ...</echo>
+  
+  <delete includeemptydirs="false" verbose="true">
+    <fileset dir="${build}">
+      <exclude name="*.jdbc" />
+    </fileset>
+  </delete>
+  
+  <echo>cleaned directory : ${build} : done.</echo>
+</target>
+
+
+
+
+<!-- target cleanDist : clean build files -->
+<target name="cleanDist">
+  <echo>cleaning directory : ${dist} ...</echo>
+  
+  <delete includeemptydirs="false" verbose="true">
+    <fileset dir="${dist}">
+      <exclude name="doc/**/*" />
+    </fileset>
+  </delete>
+  
+  <echo>cleaned directory : ${dist} : done.</echo>
+</target>
+
+
+
+
+<!-- target copyLibs : copy base & jdbc libraries to dist folder -->
+<target name="copyLibs">
+  <copy todir="${dist}/lib">
+    <fileset refid="jarfiles"/>
+  </copy>
+  <copy todir="${dist}/lib/jdbc">
+    <fileset refid="jdbcfiles"/>
+  </copy>
+</target>
+
+
+
+
+<!-- compiles java files and jar them and compiles MetaModel generated by JAXB 2.1 -->
+<target name="compile" depends="cleanJava, copyLibs">
+  <echo>compile VO-URP infrastructure support classes ...</echo>
+  <echo>compile from : ${sources}</echo>
+  <echo>compile to   : ${build.src}</echo>
+
+  <mkdir dir="${build.src}"/>
+  
+  <javac sourcepath="" srcdir="${sources}" destdir="${build.src}" listfiles="false" 
+         fork="true" verbose="false" encoding="UTF-8"
+         debug="on" deprecation="on" optimize="on" casesensitive="true" 
+         source="1.5" target="1.5"
+         includeantruntime="false" >
+    
+    <classpath refid="project.class.path" />
+    
+    <include name="**/*.java"/>
+  </javac> 
+  
+  <pathconvert pathsep=" " property="jar.classpath">
+    <path refid="project.class.path"/>
+    <map from="${libs}" to="lib"/>
+  </pathconvert>
+  
+  <echo>JAR classpath = ${jar.classpath}</echo>
+  
+  <pathconvert property="jar.classpath.flat" dirsep="/">    
+    <path refid="project.class.path"/>
+  </pathconvert>
+
+  <!-- write a flattened classpath -->
+  <echo file="${dist}/${build.src.file}.classpath">module.classpath=${jar.classpath.flat}</echo>
+  <echo >module.classpath=${jar.classpath.flat}</echo>
+  
+  <copy tofile="${properties}/runtime.properties" filtering="true" verbose="true" overwrite="true">
+    <fileset file="${templates}/runtime-template.properties"/>
+    <filterset>
+      <!--
+         Filters for copying runtime.properties
+         Check that file for the full list of required properties
+      -->
+      <filter token="project.name" value="${project.name}"/>
+      <filter token="project.title" value="${project.title}"/>
+      <filter token="project.version" value="${project.version}"/>
+      <filter token="intermediate.model.file" value="${source_intermediate}"/>
+      <filter token="base.package" value="${root_package}."/>
+      <filter token="jpa.persistence.unit" value="${jpa.persistence.unit}"/>
+      <!-- TODO fix next, should not have literal in there -->
+      <filter token="jaxb.package" value="org.ivoa.metamodel"/>
+      <!-- TODO next can not be given as a property, must be generated from the model -->
+      <filter token="jaxb.classpath" value="${jaxb.classpath}"/>
+      <filter token="root.schema.url" value="${schemalocation_root}${project.name}_root.xsd"/>
+      <filter token="root.schema.location" value="./xsd/${project.name}_root.xsd"/>
+      <filter token="project.contact" value="${project.contact}"/>
+
+      <filter token="tap.metadata.xml.file" value=""/>
+      <filter token="tap.metadata.votable.file" value=""/>
+
+      <filter token="mode.test" value="${mode.test}"/>
+      <filter token="service.ivoid" value="${service.ivoid}"/>
+    </filterset>
+  </copy>
+
+  <concat destfile="${properties}/runtime.properties" append="true">
+    <filelist dir="${output}/java" files="jaxb.context.classpath"/>
+  </concat>
+  
+  <jar jarfile="${dist}/${build.src.file}" compress="true" roundup="true">
+    <fileset dir="${build.src}" />
+    <fileset dir="${properties}" >
+      <include name="project.properties"/>
+      <include name="runtime.properties"/>
+    </fileset>
+    <fileset dir="${sources}">
+      <include name="**/jaxb.index" />
+    </fileset>
+    
+    <manifest>
+      <attribute name="Built-By" value="${project.authors}"/>
+      <attribute name="Built-Date" value="${build.date}"/>
+      
+      <attribute name="Build-Jdk" value="${java.vm.version}"/>
+      <attribute name="Build-Os" value="${os.name} ${os.version} - ${os.arch}"/>
+      
+      <attribute name="Class-Path" value="${jar.classpath}"/>
+      
+      <section name="Common">
+        <attribute name="Specification-Title" value="${vo-urp.title}"/>
+        <attribute name="Specification-Version" value="${vo-urp.version}"/>
+        <attribute name="Specification-Vendor" value="${vo-urp.vendor}"/>
+        <attribute name="Implementation-Title" value="${vo-urp.title}"/>
+        <attribute name="Implementation-Version" value="${vo-urp.version} - ${build.date}"/> 
+      </section>        
+    </manifest>
+    
+  </jar>
+  
+  <echo>compile VO-URP infrastructure support classes : done.</echo>
+</target>
+
+
+
+
+<!-- target makeOutput : compiles generated java code and javadoc : -->
+<target name="makeOutput" depends="format, compile, compileOutput, weaving, compileTest, makeJavaDoc"
+        description="makes all java products">
+  <echo>makeOutput : done.</echo>
+</target>
+
+
+
+
+<!-- Compile generated java files -->
+<target name="compileOutput" depends="copyLibs">
+  <echo>compile ${project.name} generated classes ...</echo>
+  <echo>compile from : ${sources.gen}/src</echo>
+  <echo>compile to   : ${build.gen}</echo>
+  
+  <mkdir dir="${build.gen}"/>
+
+  <!-- jar includes intermediate model instance -->
+  <copy verbose="true" todir="${build.gen}" preservelastmodified="true">
+    <fileset file="${output}/${source_intermediate}" />
+  </copy>
+
+  <!-- adds namespace to intermediateModel instance with m: prefix -->
+
+  <!-- TODO : find a way to inject the intermediate.model.xmlns property instead of hard coded values -->
+
+  <replace file="${build.gen}/${source_intermediate}" encoding="UTF-8">
+    <replacetoken>&lt;model</replacetoken>
+    <replacevalue>
+      &lt;m:model xmlns:m="http://ivoa.org/theory/datamodel/generationmetadata/v0.1" 
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                  xsi:schemaLocation="http://ivoa.org/theory/datamodel/generationmetadata/v0.1 http://vo-urp.googlecode.com/svn/trunk/xsd/intermediateModel.xsd"</replacevalue>
+  </replace>
+  <replace file="${build.gen}/${source_intermediate}" encoding="UTF-8">
+    <replacetoken>&lt;/model</replacetoken>
+    <replacevalue>&lt;/m:model</replacevalue>
+  </replace>
+  
+  <javac sourcepath="" srcdir="${sources.gen}/src" destdir="${build.gen}" listfiles="false" 
+         fork="true" verbose="false" encoding="UTF-8"
+         debug="on" deprecation="on" optimize="on" casesensitive="true" 
+         source="1.5" target="1.5"
+         includeantruntime="false" >
+    
+    <classpath refid="infrastructure.class.path" />
+    
+    <include name="**/*.java"/>
+  </javac>
+
+  <jar jarfile="${dist}/${build.gen.file}" compress="true" roundup="true">
+    <fileset dir="${build.gen}" />
+    <fileset dir="${build.src}">
+      <!-- include JPA annotated classes -->
+      <include name="org/ivoa/dm/model/Identity*" />
+      <include name="org/ivoa/dm/model/MetadataObject*" />
+      <include name="org/ivoa/dm/model/MetadataRootEntityObject*" />
+      <include name="org/ivoa/tap/**" />
+    </fileset>
+    <fileset dir="${outputJava}">
+      <include name="META-INF/persistence.xml" />
+    </fileset>
+    <fileset dir="${outputJava}/src">
+      <include name="**/jaxb.index" />
+    </fileset>
+
+    <manifest>
+      <attribute name="Built-By" value="${project.authors}"/>
+      <attribute name="Built-Date" value="${build.date}"/>
+      
+      <attribute name="Build-Jdk" value="${java.vm.version}"/>
+      <attribute name="Build-Os" value="${os.name} ${os.version} - ${os.arch}"/>
+
+      <section name="Common">
+        <attribute name="Specification-Title" value="${project.title}"/>
+        <attribute name="Specification-Version" value="${project.version}"/>
+        <attribute name="Specification-Vendor" value="${project.vendor}"/>
+        <attribute name="Implementation-Title" value="${project.title}"/>
+        <attribute name="Implementation-Version" value="${project.version} - ${build.date}"/> 
+      </section>        
+    </manifest>
+    
+  </jar>
+
+  <!-- remove JPA annotated classes in base Jar -->
+  <pathconvert pathsep=" " property="jar.classpath">
+    <path refid="project.class.path"/>
+    <map from="${libs}" to="lib"/>
+  </pathconvert>
+  
+  <pathconvert property="jar.classpath.flat" dirsep="/">    
+    <path refid="project.class.path"/>
+  </pathconvert>
+
+  <!-- write a flattened classpath -->
+  <echo file="${dist}/${build.src.file}.classpath">module.classpath=${jar.classpath.flat}</echo>
+
+  <delete file="${dist}/${build.src.file}"/>
+  
+  <jar jarfile="${dist}/${build.src.file}" compress="true" roundup="true">
+    <fileset dir="${build.src}">
+      <!-- exclude JPA annotated classes -->
+      <exclude name="org/ivoa/dm/model/Identity*" />
+      <exclude name="org/ivoa/dm/model/MetadataObject*" />
+      <exclude name="org/ivoa/dm/model/MetadataRootEntityObject*" />
+      <exclude name="org/ivoa/tap/**" />
+    </fileset>
+    <fileset dir="${properties}">
+      <include name="project.properties"/>
+      <include name="runtime.properties"/>
+    </fileset>
+    <fileset dir="${sources}">
+      <include name="**/jaxb.index" />
+    </fileset>
+    
+    <manifest>
+      <attribute name="Built-By" value="${project.authors}"/>
+      <attribute name="Built-Date" value="${build.date}"/>
+      
+      <attribute name="Build-Jdk" value="${java.vm.version}"/>
+      <attribute name="Build-Os" value="${os.name} ${os.version} - ${os.arch}"/>
+      
+      <attribute name="Class-Path" value="${jar.classpath}"/>
+      
+      <section name="Common">
+        <attribute name="Specification-Title" value="${base.title}"/>
+        <attribute name="Specification-Version" value="${project.version}"/>
+        <attribute name="Specification-Vendor" value="${project.vendor}"/>
+        <attribute name="Implementation-Title" value="${base.title}"/>
+        <attribute name="Implementation-Version" value="${project.version} - ${build.date}"/> 
+      </section>        
+    </manifest>
+    
+  </jar>
+  
+  <!-- remove to avoid classes in svn -->
+  <delete dir="${build.src}"/>
+  <delete dir="${build.gen}"/>
+  
+  <echo>compile ${project.name} generated classes : done.</echo>
+</target>
+
+
+
+
+<!--
+EclipseLink weave Ant Task Attributes
+Attribute	Description	Default	Required or Optional
+
+- source
+Specifies the location of the Java source files to weave: either a directory or a JAR file.
+If the persistence.xml file is not in this location, you must specify the location of the persistence.xml using the persistenceinfo attribute.
+
+Required
+
+- target
+Specifies the output location: either a directory or a JAR file.
+
+Required
+
+- persistenceinfo
+Specifies the location of the persistence.xml file if it is not in the same location as the source.
+
+Optional
+
+- log
+Specifies a logging file.
+See Logging.
+Optional
+loglevel
+Specifies the amount and detail of log output.
+Valid java.util.logging.Level values are the following:
+OFF
+SEVERE
+WARNING
+INFO
+CONFIG
+FINE
+FINER
+FINEST
+For more information, see Logging.
+Level.OFF
+Optional
+-->
+<target name="weaving" if="target.weaving.do">
+  <mkdir dir="${build.weaving}"/>
+
+  <delete includeemptydirs="true" verbose="false" failonerror="false">
+    <fileset dir="${build.weaving}"/>
+  </delete>
+
+  <echo>weaving jpa classes ...</echo>
+  <echo>from      : ${dist}/${build.gen.file}</echo>
+  <echo>to        : ${dist}/${build.gen.weave.file}</echo>
+  <echo>classpath : ${dist}/${build.src.file}</echo>
+
+  <!-- the ant weave ant task cuases leaks in the ant jvm so use the java code directly -->
+
+  <java classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeave"
+        dir="${build}" fork="true" failonerror="true">
+
+    <arg line="-loglevel WARNING ${dist}/${build.gen.file} ${build.weaving}"/>
+
+    <classpath>
+      <fileset refid="jarfiles"/>
+      <pathelement location="${dist}/${build.src.file}" />
+      <pathelement path="${properties}" />
+    </classpath>
+
+  </java>
+
+  <jar jarfile="${dist}/${build.gen.weave.file}" compress="true" roundup="true" manifest="${build.weaving}/META-INF/MANIFEST.MF">
+    <fileset dir="${build.weaving}" />
+  </jar>
+
+  <delete includeemptydirs="true" verbose="false" failonerror="no">
+    <fileset dir="${build.weaving}"/>
+  </delete>
+
+</target>
+
+
+
+
+<!-- target makeJavaDoc : creates javadoc from source code -->
+<target name="makeJavaDoc" if="target.javadoc.do">
+  <echo>making generated Java classes javadoc ...</echo>
+  
+  <mkdir dir="${javadoc}"/>
+  
+  <javadoc  additionalparam="-notimestamp"
+            destdir="${javadoc}"
+            access="private" 
+            author="true"
+            encoding="UTF-8"
+            source="1.5"
+            use="true"
+            windowtitle="${source} : ${project.title}">
+    
+    <classpath>
+      <path refid="project.class.path" />
+    </classpath>
+    
+    <fileset dir="${sources}">
+      <include name="**/*.java"/>
+    </fileset>
+    <fileset dir="${sources.gen}/src">
+      <include name="**/*.java"/>
+    </fileset>
+  
+  </javadoc>
+  <ant target="makeJavaDocForTest"/>
+  <echo>generated Java classes javadoc : done.</echo>
+</target>
+
+
+<target name="makeJavaDocForTest" if="target.test.javadoc.do">
+  <javadoc  additionalparam="-notimestamp"
+            destdir="${javadoc}"
+            access="private" 
+            author="true"
+            encoding="UTF-8"
+            source="1.5"
+            use="true"
+            windowtitle="${source} : ${project.title}">
+    
+    <classpath>
+      <path refid="runtime.class.path" />
+      <path refid="project.class.path" />
+    </classpath>
+    
+    <fileset dir="${test}">
+      <include name="**/*.java"/>
+    </fileset>
+  
+  </javadoc>
+
+</target>
+
+
+
+
+<!-- target format : formats all generated java sources -->
+<target name="format" depends="buildFormatter">
+  <!-- 
+      Invokes Jalopy as follows:
+
+      - All formatted files will have unix fileformat (\n)
+      - Load your code convention from the given url
+      - Override the convention to use loglevel "info"
+      - Override the convention to use 2 threads
+      - The import optimization feature will work (if enabled in the active
+        convention), because a classpath reference is specified
+
+        Don't forget to setup an include pattern as Jalopy truly expects
+        valid Java source files as input!
+  -->
+
+  <java classname="org.ivoa.jalopy.Formatter" dir="${libs}/jalopy/bin" 
+        fork="true" failonerror="true">
+    <jvmarg value="-Xms32m"/>
+    <jvmarg value="-Xmx64m"/>
+
+    <arg value="${sources.gen}/src"/>
+    <arg value="${jalopyConvention}"/>
+    
+    <classpath>
+      <pathelement location="${libs}/log4j-1.2.16.jar" />
+      <pathelement location="${libs}/jalopy/bin"/>
+      <!-- use gerard patched 1.5.b1 version (enum problem present) -->
+      <pathelement location="${libs}/jalopy/lib/jalopy-1.5b1.jar"/>
+    </classpath>
+    
+   </java>
+
+</target>
+
+
+
+
+<!-- 
+    target formatBaseCode : formats all java sources (infrastructure) :
+    Only use it with caution (gerard, laurent)
+-->
+<target name="formatBaseCode" depends="buildFormatter">
+
+  <java classname="org.ivoa.jalopy.Formatter" dir="${sources}"
+        fork="true" failonerror="true">
+    <jvmarg value="-Xms32m"/>
+    <jvmarg value="-Xmx64m"/>
+
+    <arg value="${sources}"/>
+    <arg value="${jalopyConvention_1.5c3}"/>
+
+    <classpath>
+      <pathelement location="${libs}/log4j-1.2.16.jar" />
+      <pathelement location="${libs}/jalopy/bin"/>
+      <!-- use standard 1.5.c3 version (no enum problem present) -->
+      <pathelement location="${libs}/jalopy/lib/jalopy.jar"/>
+    </classpath>
+
+   </java>
+
+</target>
+
+
+
+
+<!--
+    target formatBaseCodeSkipJavaDoc : formats all java sources (infrastructure) :
+    Only use it with caution (gerard, laurent) but do not parse JavaDoc
+-->
+<target name="formatBaseCodeSkipJavaDoc" depends="buildFormatter">
+
+  <java classname="org.ivoa.jalopy.Formatter" dir="${sources}"
+        fork="true" failonerror="true">
+    <jvmarg value="-Xms32m"/>
+    <jvmarg value="-Xmx64m"/>
+
+    <arg value="${sources}"/>
+    <arg value="${jalopyConvention_1.5c3_skipJavaDoc}"/>
+
+    <classpath>
+      <pathelement location="${libs}/log4j-1.2.16.jar" />
+      <pathelement location="${libs}/jalopy/bin"/>
+      <!-- use standard 1.5.c3 version (no enum problem present) -->
+      <pathelement location="${libs}/jalopy/lib/jalopy.jar"/>
+    </classpath>
+
+   </java>
+
+</target>
+
+
+
+
+<!--
+    target formatWebAppCode : formats all java sources (web app) :
+    Only use it with caution (gerard, laurent)
+-->
+<target name="formatWebAppCode" depends="buildFormatter">
+
+  <java classname="org.ivoa.jalopy.Formatter" dir="${root}/webapp/vo-urp-browser/"
+        fork="true" failonerror="true">
+    <jvmarg value="-Xms32m"/>
+    <jvmarg value="-Xmx64m"/>
+
+    <arg value="${root}/webapp/vo-urp-browser/src"/>
+    <arg value="${jalopyConvention_1.5c3}"/>
+
+    <classpath>
+      <pathelement location="${libs}/log4j-1.2.16.jar" />
+      <pathelement location="${libs}/jalopy/bin"/>
+      <!-- use standard 1.5.c3 version (no enum problem present) -->
+      <pathelement location="${libs}/jalopy/lib/jalopy.jar"/>
+    </classpath>
+
+   </java>
+
+</target>
+
+
+
+
+<target name="buildFormatter" unless="build.formatter.notRequired">
+  <!--
+      Note : formatting causes problems with annotations for enumerations but allows people to read code ...
+      Workaround : compile first then formats for read only purposes.
+  -->
+    <mkdir dir="${libs}/jalopy/bin"/>
+    <javac sourcepath="" srcdir="${libs}/jalopy/src" destdir="${libs}/jalopy/bin" listfiles="false"
+         fork="true" verbose="false" encoding="UTF-8"
+         debug="on" deprecation="on" optimize="on" casesensitive="true"
+         source="1.5" target="1.5"
+         includeantruntime="false" >
+
+        <classpath>
+          <pathelement location="${libs}/jalopy/lib/jalopy-1.5b1.jar"/>
+          <pathelement location="${libs}/log4j-1.2.16.jar" />
+        </classpath>
+
+        <include name="**/*.java"/>
+    </javac>
+</target>
+
+
+
+
+<!-- target jalopyPreferences : launches jalopy preferences application  -->
+<target name="jalopyPrefs">
+
+  <java classname="Preferences" dir="${libs}/jalopy"
+        fork="true" failonerror="true">
+    <jvmarg value="-Xms32m"/>
+    <jvmarg value="-Xmx64m"/>
+
+    <classpath>
+      <pathelement location="${libs}/log4j-1.2.16.jar" />
+      <!-- use standard 1.5.c3 version (no enum problem present) -->
+      <pathelement location="${libs}/jalopy/lib/jalopy.jar"/>
+    </classpath>
+
+   </java>
+
+</target>
+
+
+
+
+<!-- Compile Unit Tests -->
+<target name="compileTest" depends="copyLibs" if="target.run.do">
+
+  <echo>compile tests ...</echo>
+  <echo>compile from : ${test}</echo>
+  <echo>compile to   : ${build.test}</echo>
+  
+  <mkdir dir="${build.test}"/>
+  
+  <javac sourcepath="" srcdir="${test}" destdir="${build.test}" listfiles="false" 
+         fork="true" verbose="false" encoding="UTF-8"
+         debug="on" deprecation="on" optimize="on" casesensitive="true" 
+         source="1.5" target="1.5"
+         includeantruntime="false" >
+    
+    <classpath refid="runtime.class.path" />
+    
+    <include name="**/*.java"/>
+  </javac>
+
+  <pathconvert pathsep=" " property="jar.test.classpath">
+    <path refid="runtime.class.path"/>
+    <map from="${dist}/" to=""/>
+    <map from="${libs}" to="lib"/>
+    <map from="${properties}" to="../properties/"/>
+  </pathconvert>
+
+  <!-- copy generated xsd schemas in build/xsd -->
+  <!-- this folder is used by test classpath to find root schemas -->
+  <mkdir dir="${build.xsd}"/>
+
+  <copy verbose="true" todir="${build.xsd}" preservelastmodified="true">
+    <fileset dir="${output.xsd}">
+      <include name="**/*.xsd" />
+    </fileset>
+  </copy>
+
+  <jar jarfile="${dist}/${build.test.file}" compress="true" roundup="true">
+    <fileset dir="${build.test}" />
+
+    <manifest>
+      <attribute name="Built-By" value="${project.authors}"/>
+      <attribute name="Built-Date" value="${build.date}"/>
+      
+      <attribute name="Build-Jdk" value="${java.vm.version}"/>
+      <attribute name="Build-Os" value="${os.name} ${os.version} - ${os.arch}"/>
+      
+      <!-- last / is used to consider property directory correctly : properties/ to load configuration files -->
+      <attribute name="Main-Class" value="${test.class}"/>
+
+      <!-- the build folder is used in classpath to find root schemas like ./xsd/Model_root.xsd -->
+      <attribute name="Class-Path" value="${jar.test.classpath} ../build/"/>
+
+      <section name="Common">
+        <attribute name="Specification-Title" value="${project.title}"/>
+        <attribute name="Specification-Version" value="${project.version}"/>
+        <attribute name="Specification-Vendor" value="${project.vendor}"/>
+        <attribute name="Implementation-Title" value="${project.title}"/>
+        <attribute name="Implementation-Version" value="${project.version} - ${build.date}"/> 
+      </section>        
+    </manifest>
+    
+  </jar>
+  
+  <!-- remove to avoid classes in svn -->
+  <delete dir="${build.test}"/>
+  
+  <echo>compile tests : done.</echo>
+</target>
+
+
+
+
+<!-- target run : launches test application  -->
+<target name="run" if="target.run.do" description="run unit tests ...">
+  <echo message="running ${project.title} ..."/>
+
+  <pathconvert property="log.file.path" dirsep="/">
+    <path location="${build}"/>
+  </pathconvert>
+
+  <property name="log.file" value="${log.file.path}/${project.name}.log"/>
+
+  <!-- removes all existing log files if possible -->
+  <delete verbose="true" failonerror="false">
+    <fileset dir="${log.file.path}">
+      <include name="${project.name}.log"/>
+      <include name="${project.name}.log.*"/>
+    </fileset>
+  </delete>
+
+  <!-- indicates if the file is still present = something is running -->
+  <available property="log.file.locked" file="${log.file}" />
+
+	<fail if="log.file.locked" message="Another program is still running using the log.file : ${log.file} !" />
+  
+  <copy tofile="${properties}/log4j.xml" filtering="true" verbose="true" overwrite="true">
+    <fileset file="${templates}/log4j-template.xml" />
+    <filterset>
+      <filter token="log.file" value="${log.file}" />
+      <filter token="project.name" value="${project.name}" />
+    </filterset>
+  </copy>
+
+  <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true">
+    <jvmarg value="-Xms384m"/>
+    <jvmarg value="-Xmx384m"/>
+    <jvmarg value="-XX:+UseParallelGC"/>
+    <jvmarg value="-XX:NewRatio=2"/>
+    <jvmarg value="-XX:-UseAdaptiveSizePolicy"/>
+
+    <jvmarg value="-XX:+HeapDumpOnOutOfMemoryError"/>
+    <jvmarg value="-XX:+PerfBypassFileSystemCheck"/>
+
+<!-- -->
+    <jvmarg value="-verbose:gc"/>
+    <jvmarg value="-XX:+PrintGCDetails"/>
+    <jvmarg value="-XX:+PrintGCTimeStamps"/>
+    <jvmarg value="-XX:+TraceClassUnloading"/>
+    <jvmarg value="-XX:+PrintTenuringDistribution"/>
+<!-- -->
+
+    <arg value="${jpa.persistence.unit}"/>
+   </java>  
+
+  <echo message="run ${project.title} : terminated."/>
+</target>
+
+
+
+
+<!-- target profile : profiles test application with the NetBeans IDE -->
+<target name="profile" description="profile unit tests ...">
+  <fail unless="netbeans.home">This target can only run inside the NetBeans IDE.</fail>
+
+  <echo message="profiling ${project.title} ..."/>
+
+  <pathconvert property="log.file.path" dirsep="/">
+    <path location="${build}"/>
+  </pathconvert>
+
+  <property name="log.file" value="${log.file.path}/${project.name}.log"/>
+
+  <!-- removes all existing log files if possible -->
+  <delete verbose="true" failonerror="false">
+    <fileset dir="${log.file.path}">
+      <include name="${project.name}.log"/>
+      <include name="${project.name}.log.*"/>
+    </fileset>
+  </delete>
+
+  <!-- indicates if the file is still present = something is running -->
+  <available property="log.file.locked" file="${log.file}" />
+
+	<fail if="log.file.locked" message="Another program is still running using the log.file : ${log.file} !" />
+
+  <copy tofile="${properties}/log4j.xml" filtering="true" verbose="true" overwrite="true">
+    <fileset file="${templates}/log4j-template.xml" />
+    <filterset>
+      <filter token="log.file" value="${log.file}" />
+      <filter token="project.name" value="${project.name}" />
+    </filterset>
+  </copy>
+
+
+  <nbprofiledirect>
+    <classpath>
+       <path refid="runtime.class.path" />
+       <path refid="project.class.path" />
+      <pathelement location="${dist}/${build.test.file}" />
+    </classpath>
+  </nbprofiledirect>
+
+
+  <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true">
+
+    <jvmarg value="${profiler.info.jvmargs.agent}"/>
+
+    <jvmarg value="-Xms384m"/>
+    <jvmarg value="-Xmx384m"/>
+    <jvmarg value="-XX:+UseParallelGC"/>
+    <jvmarg value="-XX:NewRatio=2"/>
+    <jvmarg value="-XX:-UseAdaptiveSizePolicy"/>
+
+    <arg value="${jpa.persistence.unit}"/>
+   </java>
+
+  <echo message="profile ${project.title} : terminated."/>
+</target>
+
+
+
+
+<!-- target profile : profiles test application with the NetBeans IDE -->
+<target name="debug" description="profile unit tests ...">
+  <fail unless="netbeans.home">This target can only run inside the NetBeans IDE.</fail>
+
+  <echo message="debugging ${project.title} ..."/>
+
+  <pathconvert property="log.file.path" dirsep="/">
+    <path location="${build}"/>
+  </pathconvert>
+
+  <property name="log.file" value="${log.file.path}/${project.name}.log"/>
+
+  <!-- removes all existing log files if possible -->
+  <delete verbose="true" failonerror="false">
+    <fileset dir="${log.file.path}">
+      <include name="${project.name}.log"/>
+      <include name="${project.name}.log.*"/>
+    </fileset>
+  </delete>
+
+  <!-- indicates if the file is still present = something is running -->
+  <available property="log.file.locked" file="${log.file}" />
+
+	<fail if="log.file.locked" message="Another program is still running using the log.file : ${log.file} !" />
+
+  <copy tofile="${properties}/log4j.xml" filtering="true" verbose="true" overwrite="true">
+    <fileset file="${templates}/log4j-template.xml" />
+    <filterset>
+      <filter token="log.file" value="${log.file}" />
+      <filter token="project.name" value="${project.name}" />
+    </filterset>
+  </copy>
+
+
+  <nbjpdastart addressproperty="jpda.address" name="Virtual Observatory UML Representation Pipeline" transport="dt_socket">
+    <classpath>
+       <path refid="runtime.class.path" />
+       <path refid="project.class.path" />
+    </classpath>
+  </nbjpdastart>
+
+
+  <java jar="${dist}/${build.test.file}" dir="${build}" fork="true" failonerror="true">
+
+    <jvmarg value="-Xdebug"/>
+    <jvmarg value="-Xrunjdwp:transport=dt_socket,address=${jpda.address}"/>
+
+    <jvmarg value="-Xms384m"/>
+    <jvmarg value="-Xmx384m"/>
+    <jvmarg value="-XX:+UseParallelGC"/>
+    <jvmarg value="-XX:NewRatio=2"/>
+    <jvmarg value="-XX:-UseAdaptiveSizePolicy"/>
+
+    <arg value="${jpa.persistence.unit}"/>
+   </java>
+
+  <echo message="run ${project.title} : terminated."/>
+</target>
+
+
+<!-- end of build_java.xml -->  

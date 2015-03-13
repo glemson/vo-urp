@@ -1,0 +1,94 @@
+<!--
+body {
+  background-color: #e1ddd9;
+  font-family: Verdana, Arial, Helvetica, SunSans-Regular, Sans-Serif;
+  color:#564b47;  
+  text-align: center;
+  margin:  0px;
+  padding: 0px;
+}
+
+#header {
+  background-color: #fff;	
+}
+
+#layout {
+  margin: 1% 2% 1% 2%;
+}
+
+#content { 
+  width: 100%;
+  padding: 4px;
+  text-align: left;
+  background-color: #fff;	
+  overflow: auto;
+}
+
+h1.banner {
+font-family: Georgia,"Times New Roman",Times,serif;
+font-style: italic;
+font-size: 2.2em;
+text-align: center;
+color: #cb1804;
+background-color: #e1ddd9;
+}
+
+p, h1, pre {
+margin: 0px; 
+margin-top: 10px; 
+padding: 5px; 
+}
+
+h1 {
+font-size: 1.2em;
+text-align: center;
+color: #564b47;
+color:white;
+background-color: #90897a;
+}
+
+a { 
+color: #FF6500;
+font-size: 1em;
+background-color:transparent;
+text-decoration: none; 
+} 
+
+img {
+  border: 0px;
+  vertical-align: middle;
+}
+
+
+td {
+	vertical-align:top;
+}
+
+tr.main {
+text-align: center;
+color: #564b47;
+color:white;
+background-color: #90897a;
+}
+
+input.number
+{
+	width:50px;
+	text-align: right;
+	}
+
+
+select.dropdown
+{
+	width:125px;
+	text-align: right;
+	}
+
+
+
+tr:hover>th{ background-color:#B9CFFF; }
+tr:hover>td{ background-color:#B9CFFF; }
+
+.error { color:red; font-weight:bold;}
+.center {text-align:center;}
+-->

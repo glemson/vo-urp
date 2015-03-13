@@ -1,0 +1,3730 @@
+<html xmlns:vo-urp="http://vo-urp.googlecode.com/xsd/v0.9">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Characterization Data Model ala VO-URP</title>
+    <link rel="stylesheet" href="../ivoa_wg.css" type="text/css">
+    <link rel="stylesheet" href="../xmi.css" type="text/css">
+  </head>
+  <body><br><hr>
+    <h1>Characterization Data Model ala VO-URP</h1>
+    <h2><a id="contents" name="contents">Table of Contents</a></h2>
+    <div class="head">
+      <table class=".toc">
+        <tr>
+          <td></td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#abstract">Abstract</a></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#status">Status</a></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#acknowledgments">Acknowledgements</a></td>
+        </tr>
+        <tr>
+          <td>1.</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#model">model: IVOA</a></td>
+        </tr>
+        <tr>
+          <td>2.</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#packages">Packages and Types</a></td>
+        </tr>
+        <tr>
+          <td>2.1</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rootpackage">[root package]</a></td>
+        </tr>
+        <tr>
+          <td>2.2</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/">package: ivoa</a></td>
+        </tr>
+        <tr>
+          <td>2.3</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/">package: char</a></td>
+        </tr>
+        <tr>
+          <td>2.3.1</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/AccuracyType">objectType: AccuracyType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.2</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/BoundsType">dataType: BoundsType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.3</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/CalibrationStatus">enumeration: CalibrationStatus</a></td>
+        </tr>
+        <tr>
+          <td>2.3.4</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/CharCoordAreaType">objectType: CharCoordAreaType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.5</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/CharCoordinateType">objectType: CharCoordinateType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.6</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/CharacterisationAxisType">objectType: CharacterisationAxisType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.7</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/CharacterisationType">objectType: CharacterisationType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.8</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/ComponentAxis">objectType: ComponentAxis</a></td>
+        </tr>
+        <tr>
+          <td>2.3.9</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/CompositeCharacterisationAxis">objectType: CompositeCharacterisationAxis</a></td>
+        </tr>
+        <tr>
+          <td>2.3.10</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/CoverageType">objectType: CoverageType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.11</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/Custom1DCharacterisationAxis">objectType: Custom1DCharacterisationAxis</a></td>
+        </tr>
+        <tr>
+          <td>2.3.12</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/CustomError">dataType: CustomError</a></td>
+        </tr>
+        <tr>
+          <td>2.3.13</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/ErrorBoundsType">dataType: ErrorBoundsType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.14</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/ErrorRefValType">dataType: ErrorRefValType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.15</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/ErrorType">dataType: ErrorType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.16</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/ErrorVariabilityType">dataType: ErrorVariabilityType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.17</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/LocationType">dataType: LocationType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.18</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/ResolutionBoundsType">dataType: ResolutionBoundsType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.19</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/ResolutionRefValType">dataType: ResolutionRefValType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.20</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/ResolutionSupportType">dataType: ResolutionSupportType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.21</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/ResolutionType">objectType: ResolutionType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.22</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/ResolutionVariabilityType">dataType: ResolutionVariabilityType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.23</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/SamplingPrecisionBoundsType">dataType: SamplingPrecisionBoundsType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.24</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/SamplingPrecisionRefValType">dataType: SamplingPrecisionRefValType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.25</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/SamplingPrecisionSupportType">dataType: SamplingPrecisionSupportType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.26</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/SamplingPrecisionType">objectType: SamplingPrecisionType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.27</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/SamplingPrecisionVariability">dataType: SamplingPrecisionVariability</a></td>
+        </tr>
+        <tr>
+          <td>2.3.28</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/SensitivityType">dataType: SensitivityType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.29</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/SpatialAxis">objectType: SpatialAxis</a></td>
+        </tr>
+        <tr>
+          <td>2.3.30</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/SpectralAxisType">objectType: SpectralAxisType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.31</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/StatErrorType">dataType: StatErrorType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.32</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/SupportType">dataType: SupportType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.33</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/SysErrorType">dataType: SysErrorType</a></td>
+        </tr>
+        <tr>
+          <td>2.3.34</td>
+          <td>&nbsp;&nbsp;&nbsp;&nbsp;<a href="#IVOA:ivoa/char/TimeAxisType">objectType: TimeAxisType</a></td>
+        </tr>
+        <tr>
+          <td>3.</td>
+          <td>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="#utypes">UTYPE-s</a></td>
+        </tr>
+        <tr>
+          <td>4.</td>
+          <td>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="#modelimports">Imported Models</a></td>
+        </tr>
+        <tr>
+          <td>4.1</td>
+          <td>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="#STC_1.x">STC</a></td>
+        </tr>
+        <tr>
+          <td>4.2</td>
+          <td>
+            &nbsp;&nbsp;&nbsp;&nbsp;<a href="#ivoa_1.0">IVOA_Types</a></td>
+        </tr>
+      </table>
+    </div>
+    <hr>
+    <h1><a name="IVOA"></a><a name="model">1. Model: Characterization Data Model ala VO-URP (IVOA)</a></h1>
+    <table>
+      <tr>
+        <td align="right"><b>Authors</b></td>
+        <td> : </td>
+        <td></td>
+      </tr>
+      <tr>
+        <td align="right"><b>Date</b></td>
+        <td> : </td>
+        <td>2012-11-14T17:08:14</td>
+      </tr>
+      <tr>
+        <td align="right"><b>Version</b></td>
+        <td> : </td>
+        <td>0.x</td>
+      </tr>
+      <tr>
+        <td align="right" valign="top"><b>Abstract</b></td>
+        <td valign="top"> : </td>
+        <td>This is the data model for describing a TAP_SCHEMA.</td>
+      </tr>
+      <tr>
+        <td align="right" valign="top"><b>Diagram</b></td>
+        <td valign="top"> : </td>
+        <td>The following diagram has been generated from the model using the <a href="http://www.graphviz.org/" target="_blank">GraphViz</a> tool.<br>
+          The classes and packages in the diagram can be clicked and are mapped to the descriptions of the corresponding element elsewhere
+          in the document. 
+          
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3"></td>
+      </tr>
+    </table><img src="Characterization.png" usemap="#GVmap"><map id="GVmap" name="GVmap">
+<area shape="rect" id="node2" href="#IVOA:ivoa/" title="ivoa" alt="" coords="67,99,139,147"/>
+<area shape="rect" id="node4" href="#IVOA:ivoa/char/" title="char" alt="" coords="176,99,248,147"/>
+<area shape="rect" id="node5" href="#IVOA:ivoa/char/CharacterisationType" title="{CharacterisationType}" alt="" coords="69,393,192,442"/>
+<area shape="rect" id="node6" href="#IVOA:ivoa/char/CharacterisationAxisType" title="{CharacterisationAxisType|+axisName : \l+ucd : \l+unit : \l+independentAxisType : \l+calibrationStatus : \l+undersamplingStatus : \l+regularsamplingStatus : \l}" alt="" coords="304,518,448,637"/>
+<area shape="rect" id="node7" href="#IVOA:ivoa/char/CoverageType" title="{CoverageType|+unit : \l+location : \l+bounds : \l+support : \l+sensitivity : \l}" alt="" coords="5,702,96,797"/>
+<area shape="rect" id="node8" href="#IVOA:ivoa/char/AccuracyType" title="{AccuracyType|+quality : \l+statError : \l+sysError : \l+CustError : \l}" alt="" coords="120,708,211,791"/>
+<area shape="rect" id="node9" href="#IVOA:ivoa/char/ResolutionType" title="{ResolutionType|+unit : \l+resolutionRefVal : \l+resolutionBounds : \l+resolutionSupport : \l+resolutionVariability : \l}" alt="" coords="235,702,365,797"/>
+<area shape="rect" id="node10" href="#IVOA:ivoa/char/SamplingPrecisionType" title="{SamplingPrecisionType|+unit : \l+samplingPrecisionRefVal : \l+samplingPrecisionBounds : \l+samplingPrecisionSupport : \l+samplingPrecisionVariability : \l}" alt="" coords="390,702,559,797"/>
+<area shape="rect" id="node11" href="#IVOA:ivoa/char/SpatialAxis" title="{SpatialAxis|+numbins1 : \l+numbins2 : \l}" alt="" coords="218,388,299,447"/>
+<area shape="rect" id="node12" href="#IVOA:ivoa/char/Custom1DCharacterisationAxis" title="{Custom1DCharacterisationAxis|+axisName : \l+ucd : \l+numBins : \l}" alt="" coords="375,382,543,453"/>
+<area shape="rect" id="node13" href="#IVOA:ivoa/char/SpectralAxisType" title="{SpectralAxisType|+numbins : \l}" alt="" coords="567,393,672,442"/>
+<area shape="rect" id="node14" href="#IVOA:ivoa/char/TimeAxisType" title="{TimeAxisType|+numbins : \l}" alt="" coords="697,393,791,442"/>
+<area shape="rect" id="node15" href="#IVOA:ivoa/char/CompositeCharacterisationAxis" title="{CompositeCharacterisationAxis|+dim : \l}" alt="" coords="295,98,464,147"/>
+<area shape="rect" id="node16" href="#IVOA:ivoa/char/ComponentAxis" title="{ComponentAxis}" alt="" coords="392,251,491,301"/>
+<area shape="rect" id="node17" href="#IVOA:ivoa/char/CharCoordinateType" title="{CharCoordinateType|+Name : \l}" alt="" coords="489,98,609,147"/>
+<area shape="rect" id="node18" href="#IVOA:ivoa/char/CharCoordAreaType" title="{CharCoordAreaType}" alt="" coords="634,98,752,147"/>
+<area shape="rect" id="node19" href="#IVOA:ivoa/char/StatErrorType" title="{&lt;&lt;datatype&gt;&gt;\lStatErrorType}" alt="" coords="777,98,868,147"/>
+<area shape="rect" id="node21" href="#IVOA:ivoa/char/ErrorType" title="{&lt;&lt;datatype&gt;&gt;\lErrorType|+ErrorRefVal : \l+ErrorBounds : \l+ErrorVariability : \l}" alt="" coords="881,235,991,317"/>
+<area shape="rect" id="node20" href="#IVOA:ivoa/char/SysErrorType" title="{&lt;&lt;datatype&gt;&gt;\lSysErrorType}" alt="" coords="893,98,979,147"/>
+<area shape="rect" id="node22" href="#IVOA:ivoa/char/CustomError" title="{&lt;&lt;datatype&gt;&gt;\lCustomError|+flavor : \l}" alt="" coords="1003,93,1089,152"/>
+<area shape="rect" id="node23" href="#IVOA:ivoa/char/ErrorBoundsType" title="{&lt;&lt;datatype&gt;&gt;\lErrorBoundsType|+errorLimits : \l+documentation : \l}" alt="" coords="1115,87,1221,158"/>
+<area shape="rect" id="node24" href="#IVOA:ivoa/char/LocationType" title="{&lt;&lt;datatype&gt;&gt;\lLocationType}" alt="" coords="1246,98,1335,147"/>
+<area shape="rect" id="node25" href="#IVOA:ivoa/char/BoundsType" title="{&lt;&lt;datatype&gt;&gt;\lBoundsType}" alt="" coords="1359,98,1445,147"/>
+<area shape="rect" id="node26" href="#IVOA:ivoa/char/SupportType" title="{&lt;&lt;datatype&gt;&gt;\lSupportType}" alt="" coords="1470,98,1556,147"/>
+<area shape="rect" id="node27" href="#IVOA:ivoa/char/SensitivityType" title="{&lt;&lt;datatype&gt;&gt;\lSensitivityType}" alt="" coords="1581,98,1677,147"/>
+<area shape="rect" id="node28" href="#IVOA:ivoa/char/ResolutionRefValType" title="{&lt;&lt;datatype&gt;&gt;\lResolutionRefValType}" alt="" coords="1702,98,1828,147"/>
+<area shape="rect" id="node29" href="#IVOA:ivoa/char/ResolutionBoundsType" title="{&lt;&lt;datatype&gt;&gt;\lResolutionBoundsType}" alt="" coords="1853,98,1981,147"/>
+<area shape="rect" id="node30" href="#IVOA:ivoa/char/ResolutionSupportType" title="{&lt;&lt;datatype&gt;&gt;\lResolutionSupportType}" alt="" coords="2006,98,2137,147"/>
+<area shape="rect" id="node31" href="#IVOA:ivoa/char/ResolutionVariabilityType" title="{&lt;&lt;datatype&gt;&gt;\lResolutionVariabilityType}" alt="" coords="2163,98,2307,147"/>
+<area shape="rect" id="node32" href="#IVOA:ivoa/char/SamplingPrecisionRefValType" title="{&lt;&lt;datatype&gt;&gt;\lSamplingPrecisionRefValType}" alt="" coords="2331,98,2493,147"/>
+<area shape="rect" id="node33" href="#IVOA:ivoa/char/SamplingPrecisionBoundsType" title="{&lt;&lt;datatype&gt;&gt;\lSamplingPrecisionBoundsType}" alt="" coords="2517,98,2683,147"/>
+<area shape="rect" id="node34" href="#IVOA:ivoa/char/SamplingPrecisionSupportType" title="{&lt;&lt;datatype&gt;&gt;\lSamplingPrecisionSupportType}" alt="" coords="2707,98,2875,147"/>
+<area shape="rect" id="node35" href="#IVOA:ivoa/char/SamplingPrecisionVariability" title="{&lt;&lt;datatype&gt;&gt;\lSamplingPrecisionVariability}" alt="" coords="2899,98,3053,147"/>
+<area shape="rect" id="node36" href="#IVOA:ivoa/char/ErrorRefValType" title="{&lt;&lt;datatype&gt;&gt;\lErrorRefValType|+unit : \l+CError : \l+documentation : \l}" alt="" coords="3077,81,3184,164"/>
+<area shape="rect" id="node37" href="#IVOA:ivoa/char/ErrorVariabilityType" title="{&lt;&lt;datatype&gt;&gt;\lErrorVariabilityType}" alt="" coords="3208,98,3328,147"/>
+<area shape="rect" id="node38" href="#IVOA:ivoa/char/CalibrationStatus" title="{&lt;&lt;enumeration&gt;&gt;\lCalibrationStatus|+CALIBRATED\l+UNCALIBRATED\l+RELATIVE\l+NORMALIZED\l}" alt="" coords="3352,75,3467,170"/>
+</map>
+
+    <hr>
+    <h1>2.<a name="packages">Model contents: Packages and Types</a></h1>
+    <p>
+      The following sub-sections present all packages in the model with their types.
+      The packages are listed here in alphabetical order.
+      Each sub-section contains a description of the package and a table containing its various features.
+      
+    </p>
+    <h3><a name="rootpackage"></a>2.1 [root package]
+    </h3>
+    <table border="1" cellspacing="2" width="100%">
+      <tr>
+        <td class="objecttype-title" width="20%">Model</td>
+        <td class="objecttype-name">IVOA</td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">child package(s)</td>
+        <td colspan="2" class="feature-detail"><a href="#IVOA:ivoa/">ivoa</a> 
+        </td>
+      </tr>
+    </table>
+    <h3><a name="IVOA:ivoa/"></a>2.2 package: ivoa
+    </h3>
+    <table border="1" cellspacing="2" width="100%">
+      <tr>
+        <td class="objecttype-title" width="20%">utype</td>
+        <td class="objecttype-name" colspan="1">IVOA:ivoa/</td>
+      </tr>
+      <tr>
+        <td class="info-title">description</td>
+        <td class="feature-detail" colspan="1">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">parent</td>
+        <td colspan="2" class="feature-detail"><a href="#IVOA">IVOA</a></td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">child package(s)</td>
+        <td colspan="2" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a> 
+        </td>
+      </tr>
+    </table>
+    <h3><a name="IVOA:ivoa/char/"></a>2.3 package: char
+    </h3>
+    <table border="1" cellspacing="2" width="100%">
+      <tr>
+        <td class="objecttype-title" width="20%">utype</td>
+        <td class="objecttype-name" colspan="1">IVOA:ivoa/char/</td>
+      </tr>
+      <tr>
+        <td class="info-title">description</td>
+        <td class="feature-detail" colspan="1">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">parent</td>
+        <td colspan="2" class="feature-detail"><a href="#IVOA:ivoa/">ivoa</a></td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">Object types</td>
+        <td colspan="2" class="feature-detail"><a href="#IVOA:ivoa/char/AccuracyType">AccuracyType</a> <a href="#IVOA:ivoa/char/CharCoordAreaType">CharCoordAreaType</a> <a href="#IVOA:ivoa/char/CharCoordinateType">CharCoordinateType</a> <a href="#IVOA:ivoa/char/CharacterisationAxisType">CharacterisationAxisType</a> <a href="#IVOA:ivoa/char/CharacterisationType">CharacterisationType</a> <a href="#IVOA:ivoa/char/ComponentAxis">ComponentAxis</a> <a href="#IVOA:ivoa/char/CompositeCharacterisationAxis">CompositeCharacterisationAxis</a> <a href="#IVOA:ivoa/char/CoverageType">CoverageType</a> <a href="#IVOA:ivoa/char/Custom1DCharacterisationAxis">Custom1DCharacterisationAxis</a> <a href="#IVOA:ivoa/char/ResolutionType">ResolutionType</a> <a href="#IVOA:ivoa/char/SamplingPrecisionType">SamplingPrecisionType</a> <a href="#IVOA:ivoa/char/SpatialAxis">SpatialAxis</a> <a href="#IVOA:ivoa/char/SpectralAxisType">SpectralAxisType</a> <a href="#IVOA:ivoa/char/TimeAxisType">TimeAxisType</a> 
+        </td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">Data types</td>
+        <td colspan="2" class="feature-detail"><a href="#IVOA:ivoa/char/BoundsType">BoundsType</a> <a href="#IVOA:ivoa/char/CustomError">CustomError</a> <a href="#IVOA:ivoa/char/ErrorBoundsType">ErrorBoundsType</a> <a href="#IVOA:ivoa/char/ErrorRefValType">ErrorRefValType</a> <a href="#IVOA:ivoa/char/ErrorType">ErrorType</a> <a href="#IVOA:ivoa/char/ErrorVariabilityType">ErrorVariabilityType</a> <a href="#IVOA:ivoa/char/LocationType">LocationType</a> <a href="#IVOA:ivoa/char/ResolutionBoundsType">ResolutionBoundsType</a> <a href="#IVOA:ivoa/char/ResolutionRefValType">ResolutionRefValType</a> <a href="#IVOA:ivoa/char/ResolutionSupportType">ResolutionSupportType</a> <a href="#IVOA:ivoa/char/ResolutionVariabilityType">ResolutionVariabilityType</a> <a href="#IVOA:ivoa/char/SamplingPrecisionBoundsType">SamplingPrecisionBoundsType</a> <a href="#IVOA:ivoa/char/SamplingPrecisionRefValType">SamplingPrecisionRefValType</a> <a href="#IVOA:ivoa/char/SamplingPrecisionSupportType">SamplingPrecisionSupportType</a> <a href="#IVOA:ivoa/char/SamplingPrecisionVariability">SamplingPrecisionVariability</a> <a href="#IVOA:ivoa/char/SensitivityType">SensitivityType</a> <a href="#IVOA:ivoa/char/StatErrorType">StatErrorType</a> <a href="#IVOA:ivoa/char/SupportType">SupportType</a> <a href="#IVOA:ivoa/char/SysErrorType">SysErrorType</a> 
+        </td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">Enumerations</td>
+        <td colspan="2" class="feature-detail"><a href="#IVOA:ivoa/char/CalibrationStatus">CalibrationStatus</a> 
+        </td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">Parent package</td>
+        <td colspan="2" class="feature-detail"><a href="#IVOA:ivoa/">ivoa</a> 
+        </td>
+      </tr>
+    </table>
+    <h3><a name="IVOA:ivoa/char/AccuracyType"></a>2.3.1 objectType: AccuracyType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/AccuracyType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">container</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType">CharacterisationAxisType</a>.<a href="#IVOA:ivoa/char/CharacterisationAxisType.accuracy">accuracy</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/AccuracyType.quality"></a><b>quality</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/AccuracyType.quality</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">A combination of flags attesting the data quality. Type: String</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/AccuracyType.statError"></a><b>statError</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/StatErrorType">StatErrorType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/AccuracyType.statError</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/AccuracyType.sysError"></a><b>sysError</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/SysErrorType">SysErrorType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/AccuracyType.sysError</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/AccuracyType.CustError"></a><b>CustError</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorType">ErrorType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/AccuracyType.CustError<br>[datatype is structured, utype can be extended]         
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/BoundsType"></a>2.3.2 dataType: BoundsType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/BoundsType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/CalibrationStatus"></a>2.3.3 enumeration: CalibrationStatus
+    </h3>
+    <table border="1" width="100%" cellspacing="2">
+      <tr>
+        <td class="objecttype-title" width="20%">utype</td>
+        <td class="objecttype-name" colspan="2">IVOA:ivoa/char/CalibrationStatus</td>
+      </tr>
+      <tr>
+        <td class="info-title">description</td>
+        <td class="feature-detail" colspan="2">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td width="20%" class="info-title">package</td>
+        <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+      </tr>
+      <tr>
+        <td colspan="3" class="info-title" align="center">literals</td>
+      </tr>
+      <tr>
+        <td class="feature-heading" width="25%">name</td>
+        <td class="feature-heading" width="25%">feature</td>
+        <td class="feature-heading" width="50%">value</td>
+      </tr>
+      <tr>
+        <td class="feature-detail" rowspan="2" valign="top"><a name="IVOA:ivoa/char/CalibrationStatus.CALIBRATED"></a>CALIBRATED
+        </td>
+        <td class="feature-heading">utype</td>
+        <td class="feature-detail">IVOA:ivoa/char/CalibrationStatus.CALIBRATED</td>
+      </tr>
+      <tr>
+        <td class="feature-heading">description</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail" rowspan="2" valign="top"><a name="IVOA:ivoa/char/CalibrationStatus.UNCALIBRATED"></a>UNCALIBRATED
+        </td>
+        <td class="feature-heading">utype</td>
+        <td class="feature-detail">IVOA:ivoa/char/CalibrationStatus.UNCALIBRATED</td>
+      </tr>
+      <tr>
+        <td class="feature-heading">description</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail" rowspan="2" valign="top"><a name="IVOA:ivoa/char/CalibrationStatus.RELATIVE"></a>RELATIVE
+        </td>
+        <td class="feature-heading">utype</td>
+        <td class="feature-detail">IVOA:ivoa/char/CalibrationStatus.RELATIVE</td>
+      </tr>
+      <tr>
+        <td class="feature-heading">description</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail" rowspan="2" valign="top"><a name="IVOA:ivoa/char/CalibrationStatus.NORMALIZED"></a>NORMALIZED
+        </td>
+        <td class="feature-heading">utype</td>
+        <td class="feature-detail">IVOA:ivoa/char/CalibrationStatus.NORMALIZED</td>
+      </tr>
+      <tr>
+        <td class="feature-heading">description</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+    </table><br><h3><a name="IVOA:ivoa/char/CharCoordAreaType"></a>2.3.4 objectType: CharCoordAreaType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/CharCoordAreaType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/CharCoordinateType"></a>2.3.5 objectType: CharCoordinateType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/CharCoordinateType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">A coordinate type to define n-D bounding boxes. To be overridden by any of the following possible substitution elements.</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CharCoordinateType.Name"></a><b>Name</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CharCoordinateType.Name</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/CharacterisationAxisType"></a>2.3.6 objectType: CharacterisationAxisType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/CharacterisationAxisType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">describes an axis and its properties </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td class="info-title">Subclasses</td>
+                      <td class="feature-detail" colspan="3"><a href="#IVOA:ivoa/char/CompositeCharacterisationAxis">CompositeCharacterisationAxis</a> <a href="#IVOA:ivoa/char/Custom1DCharacterisationAxis">Custom1DCharacterisationAxis</a> <a href="#IVOA:ivoa/char/SpatialAxis">SpatialAxis</a> <a href="#IVOA:ivoa/char/SpectralAxisType">SpectralAxisType</a> <a href="#IVOA:ivoa/char/TimeAxisType">TimeAxisType</a> 
+                      </td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">container</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationType">CharacterisationType</a>.<a href="#IVOA:ivoa/char/CharacterisationType.characterisationAxis">characterisationAxis</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CharacterisationAxisType.axisName"></a><b>axisName</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CharacterisationAxisType.axisName</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">A name representing the physical nature of the axis like Spatial, Spectral, Time, Velocity or any other free name for an axis</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CharacterisationAxisType.ucd"></a><b>ucd</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CharacterisationAxisType.ucd</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">The physical meaning of the axis, Type: standard semantic tag defined in the UCD list.</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CharacterisationAxisType.unit"></a><b>unit</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CharacterisationAxisType.unit</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">default unit for the axis: Type: controlled unit vocabulary following the VOTable units definitions </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CharacterisationAxisType.independentAxisType"></a><b>independentAxisType</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/boolean">boolean</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CharacterisationAxisType.independentAxisType</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">Indicates wether the axis is independent or not from the other axes. The Observable axis has a false independentAxis "value"
+                        Type : boolean
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CharacterisationAxisType.calibrationStatus"></a><b>calibrationStatus</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/CalibrationStatus">CalibrationStatus</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CharacterisationAxisType.calibrationStatus</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">defines if and how the axis is calibrated: Possible String values: CALIBRATED, UNCALIBRATED, RELATIVE, NORMALIZED </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CharacterisationAxisType.undersamplingStatus"></a><b>undersamplingStatus</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/boolean">boolean</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CharacterisationAxisType.undersamplingStatus</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">A flag to mention wether the data are undersampled. Type: boolean</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CharacterisationAxisType.regularsamplingStatus"></a><b>regularsamplingStatus</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/boolean">boolean</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CharacterisationAxisType.regularsamplingStatus</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">A flag to mention wether the data are regularly sampled. Type : boolean </td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">references</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CharacterisationAxisType.ObsyLoc"></a><b>ObsyLoc</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#STC_1.x:ivoa/stc/coordsys/observatoryLocationType">observatoryLocationType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CharacterisationAxisType.ObsyLoc</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">Observatory location Type: a STC:observatoryLocationType or an xlink</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CharacterisationAxisType.coordsystem"></a><b>coordsystem</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#STC_1.x:ivoa/stc/coordsys/astroCoordSystemType">astroCoordSystemType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CharacterisationAxisType.coordsystem</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">Reference coordinate system for the axis</td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">collections</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="5"><a name="IVOA:ivoa/char/CharacterisationAxisType.accuracy"></a><b>accuracy</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/AccuracyType">AccuracyType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CharacterisationAxisType.accuracy</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">isOrdered</td>
+                      <td class="feature-detail">false</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">Global accuracy description of the axis</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="5"><a name="IVOA:ivoa/char/CharacterisationAxisType.coverage"></a><b>coverage</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/CoverageType">CoverageType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CharacterisationAxisType.coverage</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">isOrdered</td>
+                      <td class="feature-detail">false</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="5"><a name="IVOA:ivoa/char/CharacterisationAxisType.resolution"></a><b>resolution</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/ResolutionType">ResolutionType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CharacterisationAxisType.resolution</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">isOrdered</td>
+                      <td class="feature-detail">false</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="5"><a name="IVOA:ivoa/char/CharacterisationAxisType.samplingPrecision"></a><b>samplingPrecision</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/SamplingPrecisionType">SamplingPrecisionType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CharacterisationAxisType.samplingPrecision</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">isOrdered</td>
+                      <td class="feature-detail">false</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/CharacterisationType"></a>2.3.7 objectType: CharacterisationType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/CharacterisationType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">collections</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="5"><a name="IVOA:ivoa/char/CharacterisationType.characterisationAxis"></a><b>characterisationAxis</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType">CharacterisationAxisType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CharacterisationType.characterisationAxis</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1..*</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">isOrdered</td>
+                      <td class="feature-detail">false</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/ComponentAxis"></a>2.3.8 objectType: ComponentAxis
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/ComponentAxis</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">INtrouced tom model aggregation of 1D axes to build a custom composite axis type.</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">container</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/CompositeCharacterisationAxis">CompositeCharacterisationAxis</a>.<a href="#IVOA:ivoa/char/CompositeCharacterisationAxis.childAxis">childAxis</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">references</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/ComponentAxis.axis"></a><b>axis</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/Custom1DCharacterisationAxis">Custom1DCharacterisationAxis</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/ComponentAxis.axis</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/CompositeCharacterisationAxis"></a>2.3.9 objectType: CompositeCharacterisationAxis
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/CompositeCharacterisationAxis</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">INtroduced to model composite axes.</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">extends</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType">CharacterisationAxisType</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CompositeCharacterisationAxis.dim"></a><b>dim</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/nonnegativeinteger">nonnegativeInteger</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CompositeCharacterisationAxis.dim</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">collections</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="5"><a name="IVOA:ivoa/char/CompositeCharacterisationAxis.childAxis"></a><b>childAxis</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/ComponentAxis">ComponentAxis</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CompositeCharacterisationAxis.childAxis</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1..*</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">isOrdered</td>
+                      <td class="feature-detail">false</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/CoverageType"></a>2.3.10 objectType: CoverageType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/CoverageType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">How the observation is spanned along this axis</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">container</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType">CharacterisationAxisType</a>.<a href="#IVOA:ivoa/char/CharacterisationAxisType.coverage">coverage</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CoverageType.unit"></a><b>unit</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CoverageType.unit</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CoverageType.location"></a><b>location</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/LocationType">LocationType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CoverageType.location</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">Typical value on one axis</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CoverageType.bounds"></a><b>bounds</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/BoundsType">BoundsType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CoverageType.bounds</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">the limits of the observation on this axis</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CoverageType.support"></a><b>support</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/SupportType">SupportType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CoverageType.support</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">describes the area where measurements are effectively present and interpretable </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CoverageType.sensitivity"></a><b>sensitivity</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/SensitivityType">SensitivityType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CoverageType.sensitivity</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">encodes the variability of response along the axis </td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">references</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CoverageType.coordsystem"></a><b>coordsystem</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#STC_1.x:ivoa/stc/coordsys/astroCoordSystemType">astroCoordSystemType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CoverageType.coordsystem</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">redefinition of coordsystem</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/Custom1DCharacterisationAxis"></a>2.3.11 objectType: Custom1DCharacterisationAxis
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/Custom1DCharacterisationAxis</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">Introduced to model custom 1D axes.</td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">extends</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType">CharacterisationAxisType</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/Custom1DCharacterisationAxis.axisName"></a><b>axisName</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/Custom1DCharacterisationAxis.axisName</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">A name representing the physical nature of the axis like Spatial, Spectral, Time, Velocity or any other free name for an axis</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="5"><a name="IVOA:ivoa/char/Custom1DCharacterisationAxis.ucd"></a><b>ucd</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">&lt;&lt;skosconcept&gt;&gt;</td>
+                      <td class="feature-detail">
+                        Broadest SKOS concept:<br><a href="UCD" target="_blank">UCD</a><br>Vocabulary URI:<br><a href="[UCD vocabulary]" target="_blank">[UCD vocabulary]</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/Custom1DCharacterisationAxis.ucd</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">The physical meaning of the axis, Type: standard semantic tag defined in the UCD list. </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/Custom1DCharacterisationAxis.numBins"></a><b>numBins</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/nonnegativeinteger">nonnegativeInteger</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/Custom1DCharacterisationAxis.numBins</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/CustomError"></a>2.3.12 dataType: CustomError
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/CustomError</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">extends</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/ErrorType">ErrorType</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/CustomError.flavor"></a><b>flavor</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/CustomError.flavor</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/ErrorBoundsType"></a>2.3.13 dataType: ErrorBoundsType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/ErrorBoundsType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/ErrorBoundsType.errorLimits"></a><b>errorLimits</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#STC_1.x:ivoa/stc/area/coordIntervalType">coordIntervalType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/ErrorBoundsType.errorLimits</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/ErrorBoundsType.documentation"></a><b>documentation</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/ErrorBoundsType.documentation</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/ErrorRefValType"></a>2.3.14 dataType: ErrorRefValType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/ErrorRefValType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">Typical statistical error on the axis. Types: depend on the dimensionality 1D Error based on stc:double1Type 2D Errors based
+            on stc:size2Type, double2Type or double1Type (error 2 radius) 3D Errors based on stc:size3Type, double3TYpe or double1Type
+            (error 3 radius) 
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/ErrorRefValType.unit"></a><b>unit</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/ErrorRefValType.unit</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/ErrorRefValType.CError"></a><b>CError</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#STC_1.x:ivoa/stc/quantity/double1Type">double1Type</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/ErrorRefValType.CError</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/ErrorRefValType.documentation"></a><b>documentation</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/ErrorRefValType.documentation</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">references</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/ErrorRefValType.coordSystem"></a><b>coordSystem</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#STC_1.x:ivoa/stc/coordsys/astroCoordSystemType">astroCoordSystemType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/ErrorRefValType.coordSystem</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/ErrorType"></a>2.3.15 dataType: ErrorType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/ErrorType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td class="info-title">Subclasses</td>
+                      <td class="feature-detail" colspan="3"><a href="#IVOA:ivoa/char/CustomError">CustomError</a> <a href="#IVOA:ivoa/char/StatErrorType">StatErrorType</a> <a href="#IVOA:ivoa/char/SysErrorType">SysErrorType</a> 
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/ErrorType.ErrorRefVal"></a><b>ErrorRefVal</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorRefValType">ErrorRefValType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/ErrorType.ErrorRefVal<br>[datatype is structured, utype can be extended]         
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/ErrorType.ErrorBounds"></a><b>ErrorBounds</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorBoundsType">ErrorBoundsType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/ErrorType.ErrorBounds<br>[datatype is structured, utype can be extended]         
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/ErrorType.ErrorVariability"></a><b>ErrorVariability</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorVariabilityType">ErrorVariabilityType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/ErrorType.ErrorVariability</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/ErrorVariabilityType"></a>2.3.16 dataType: ErrorVariabilityType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/ErrorVariabilityType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/LocationType"></a>2.3.17 dataType: LocationType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/LocationType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/ResolutionBoundsType"></a>2.3.18 dataType: ResolutionBoundsType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/ResolutionBoundsType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/ResolutionRefValType"></a>2.3.19 dataType: ResolutionRefValType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/ResolutionRefValType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/ResolutionSupportType"></a>2.3.20 dataType: ResolutionSupportType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/ResolutionSupportType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/ResolutionType"></a>2.3.21 objectType: ResolutionType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/ResolutionType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">container</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType">CharacterisationAxisType</a>.<a href="#IVOA:ivoa/char/CharacterisationAxisType.resolution">resolution</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/ResolutionType.unit"></a><b>unit</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/ResolutionType.unit</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/ResolutionType.resolutionRefVal"></a><b>resolutionRefVal</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/ResolutionRefValType">ResolutionRefValType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/ResolutionType.resolutionRefVal</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/ResolutionType.resolutionBounds"></a><b>resolutionBounds</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/ResolutionBoundsType">ResolutionBoundsType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/ResolutionType.resolutionBounds</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/ResolutionType.resolutionSupport"></a><b>resolutionSupport</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/ResolutionSupportType">ResolutionSupportType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/ResolutionType.resolutionSupport</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/ResolutionType.resolutionVariability"></a><b>resolutionVariability</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/ResolutionVariabilityType">ResolutionVariabilityType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/ResolutionType.resolutionVariability</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">references</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/ResolutionType.coordSystem"></a><b>coordSystem</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#STC_1.x:ivoa/stc/coordsys/astroCoordSystemType">astroCoordSystemType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/ResolutionType.coordSystem</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/ResolutionVariabilityType"></a>2.3.22 dataType: ResolutionVariabilityType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/ResolutionVariabilityType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/SamplingPrecisionBoundsType"></a>2.3.23 dataType: SamplingPrecisionBoundsType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/SamplingPrecisionBoundsType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/SamplingPrecisionRefValType"></a>2.3.24 dataType: SamplingPrecisionRefValType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/SamplingPrecisionRefValType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/SamplingPrecisionSupportType"></a>2.3.25 dataType: SamplingPrecisionSupportType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/SamplingPrecisionSupportType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/SamplingPrecisionType"></a>2.3.26 objectType: SamplingPrecisionType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/SamplingPrecisionType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">container</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType">CharacterisationAxisType</a>.<a href="#IVOA:ivoa/char/CharacterisationAxisType.samplingPrecision">samplingPrecision</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/SamplingPrecisionType.unit"></a><b>unit</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/string">string</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/SamplingPrecisionType.unit</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionRefVal"></a><b>samplingPrecisionRefVal</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/SamplingPrecisionRefValType">SamplingPrecisionRefValType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionRefVal</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionBounds"></a><b>samplingPrecisionBounds</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/SamplingPrecisionBoundsType">SamplingPrecisionBoundsType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionBounds</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionSupport"></a><b>samplingPrecisionSupport</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/SamplingPrecisionSupportType">SamplingPrecisionSupportType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionSupport</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionVariability"></a><b>samplingPrecisionVariability</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#IVOA:ivoa/char/SamplingPrecisionVariability">SamplingPrecisionVariability</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionVariability</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">references</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/SamplingPrecisionType.coordSystem"></a><b>coordSystem</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#STC_1.x:ivoa/stc/coordsys/astroCoordSystemType">astroCoordSystemType</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/SamplingPrecisionType.coordSystem</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">0..1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/SamplingPrecisionVariability"></a>2.3.27 dataType: SamplingPrecisionVariability
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/SamplingPrecisionVariability</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/SensitivityType"></a>2.3.28 dataType: SensitivityType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/SensitivityType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/SpatialAxis"></a>2.3.29 objectType: SpatialAxis
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/SpatialAxis</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">extends</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType">CharacterisationAxisType</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/SpatialAxis.numbins1"></a><b>numbins1</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/nonnegativeinteger">nonnegativeInteger</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/SpatialAxis.numbins1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/SpatialAxis.numbins2"></a><b>numbins2</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/nonnegativeinteger">nonnegativeInteger</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/SpatialAxis.numbins2</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/SpectralAxisType"></a>2.3.30 objectType: SpectralAxisType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/SpectralAxisType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">extends</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType">CharacterisationAxisType</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/SpectralAxisType.numbins"></a><b>numbins</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/nonnegativeinteger">nonnegativeInteger</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/SpectralAxisType.numbins</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/StatErrorType"></a>2.3.31 dataType: StatErrorType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/StatErrorType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">extends</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/ErrorType">ErrorType</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/SupportType"></a>2.3.32 dataType: SupportType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/SupportType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/SysErrorType"></a>2.3.33 dataType: SysErrorType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/SysErrorType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">extends</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/ErrorType">ErrorType</a></td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><h3><a name="IVOA:ivoa/char/TimeAxisType"></a>2.3.34 objectType: TimeAxisType
+    </h3>
+    <div align="center">
+      <table border="1" width="100%" cellspacing="2">
+        <tr>
+          <td class="objecttype-title" width="20%">utype</td>
+          <td class="objecttype-name" colspan="1">IVOA:ivoa/char/TimeAxisType</td>
+        </tr>
+        <tr>
+          <td class="info-title">description</td>
+          <td class="feature-detail" colspan="1">
+            TODO : Missing description : please, update your UML model asap.
+            
+          </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <table width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td colspan="2" bgcolor="#cacaca">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1">
+                    <tr>
+                      <td width="20%" class="info-title">package</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/">char</a></td>
+                    </tr>
+                    <tr>
+                      <td width="20%" class="info-title">extends</td>
+                      <td colspan="3" class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType">CharacterisationAxisType</a></td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="info-title">attributes</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading" width="20%">name</td>
+                      <td class="feature-heading" width="10%">feature</td>
+                      <td class="feature-heading" width="70%">value</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-detail" valign="top" rowspan="4"><a name="IVOA:ivoa/char/TimeAxisType.numbins"></a><b>numbins</b></td>
+                      <td class="feature-heading">type</td>
+                      <td class="feature-detail"><a href="#ivoa_1.0:stdtypes/nonnegativeinteger">nonnegativeInteger</a></td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">utype(s)</td>
+                      <td class="feature-detail">IVOA:ivoa/char/TimeAxisType.numbins</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">cardinality</td>
+                      <td class="feature-detail">1</td>
+                    </tr>
+                    <tr>
+                      <td class="feature-heading">description</td>
+                      <td class="feature-detail">
+                        TODO : Missing description : please, update your UML model asap.
+                        
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    </div><br><hr>
+    <h1>3.<a name="utypes">UTYPEs</a></h1>  
+    The following table shows all UTYPEs for this data model.
+    It is ordered alphabetically and the UTYPEs are hyper-linked to the location
+    in the document where the actual element is fully defined.
+    
+    
+    <table style="border-style:solid;border-width:1px;" border="1" cellspacing="0" cellpadding="0">
+      <tr>
+        <td class="feature-heading">UTYPE</td>
+        <td class="feature-heading">feature type</td>
+        <td class="feature-heading">description</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA">IVOA</a></td>
+        <td class="feature-detail">vo-urp:model</td>
+        <td class="feature-detail">This is the data model for describing a TAP_SCHEMA.</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/">IVOA:ivoa/</a></td>
+        <td class="feature-detail">package</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/">IVOA:ivoa/char/</a></td>
+        <td class="feature-detail">package</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/AccuracyType">IVOA:ivoa/char/AccuracyType</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/AccuracyType.CustError">IVOA:ivoa/char/AccuracyType.CustError</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/AccuracyType.quality">IVOA:ivoa/char/AccuracyType.quality</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">A combination of flags attesting the data quality. Type: String</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/AccuracyType.statError">IVOA:ivoa/char/AccuracyType.statError</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/AccuracyType.sysError">IVOA:ivoa/char/AccuracyType.sysError</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/BoundsType">IVOA:ivoa/char/BoundsType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CalibrationStatus">IVOA:ivoa/char/CalibrationStatus</a></td>
+        <td class="feature-detail">enumeration</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CalibrationStatus.CALIBRATED">IVOA:ivoa/char/CalibrationStatus.CALIBRATED</a></td>
+        <td class="feature-detail">literal</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CalibrationStatus.UNCALIBRATED">IVOA:ivoa/char/CalibrationStatus.UNCALIBRATED</a></td>
+        <td class="feature-detail">literal</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CalibrationStatus.RELATIVE">IVOA:ivoa/char/CalibrationStatus.RELATIVE</a></td>
+        <td class="feature-detail">literal</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CalibrationStatus.NORMALIZED">IVOA:ivoa/char/CalibrationStatus.NORMALIZED</a></td>
+        <td class="feature-detail">literal</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharCoordAreaType">IVOA:ivoa/char/CharCoordAreaType</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharCoordinateType">IVOA:ivoa/char/CharCoordinateType</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">A coordinate type to define n-D bounding boxes. To be overridden by any of the following possible substitution elements.</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharCoordinateType.Name">IVOA:ivoa/char/CharCoordinateType.Name</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType">IVOA:ivoa/char/CharacterisationAxisType</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">describes an axis and its properties </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType.ObsyLoc">IVOA:ivoa/char/CharacterisationAxisType.ObsyLoc</a></td>
+        <td class="feature-detail">reference</td>
+        <td class="feature-detail">Observatory location Type: a STC:observatoryLocationType or an xlink</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType.accuracy">IVOA:ivoa/char/CharacterisationAxisType.accuracy</a></td>
+        <td class="feature-detail">collection</td>
+        <td class="feature-detail">Global accuracy description of the axis</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType.axisName">IVOA:ivoa/char/CharacterisationAxisType.axisName</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">A name representing the physical nature of the axis like Spatial, Spectral, Time, Velocity or any other free name for an axis</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType.calibrationStatus">IVOA:ivoa/char/CharacterisationAxisType.calibrationStatus</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">defines if and how the axis is calibrated: Possible String values: CALIBRATED, UNCALIBRATED, RELATIVE, NORMALIZED </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType.coordsystem">IVOA:ivoa/char/CharacterisationAxisType.coordsystem</a></td>
+        <td class="feature-detail">reference</td>
+        <td class="feature-detail">Reference coordinate system for the axis</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType.coverage">IVOA:ivoa/char/CharacterisationAxisType.coverage</a></td>
+        <td class="feature-detail">collection</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType.independentAxisType">IVOA:ivoa/char/CharacterisationAxisType.independentAxisType</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">Indicates wether the axis is independent or not from the other axes. The Observable axis has a false independentAxis "value"
+          Type : boolean
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType.regularsamplingStatus">IVOA:ivoa/char/CharacterisationAxisType.regularsamplingStatus</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">A flag to mention wether the data are regularly sampled. Type : boolean </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType.resolution">IVOA:ivoa/char/CharacterisationAxisType.resolution</a></td>
+        <td class="feature-detail">collection</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType.samplingPrecision">IVOA:ivoa/char/CharacterisationAxisType.samplingPrecision</a></td>
+        <td class="feature-detail">collection</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType.ucd">IVOA:ivoa/char/CharacterisationAxisType.ucd</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">The physical meaning of the axis, Type: standard semantic tag defined in the UCD list.</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType.undersamplingStatus">IVOA:ivoa/char/CharacterisationAxisType.undersamplingStatus</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">A flag to mention wether the data are undersampled. Type: boolean</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationAxisType.unit">IVOA:ivoa/char/CharacterisationAxisType.unit</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">default unit for the axis: Type: controlled unit vocabulary following the VOTable units definitions </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationType">IVOA:ivoa/char/CharacterisationType</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CharacterisationType.characterisationAxis">IVOA:ivoa/char/CharacterisationType.characterisationAxis</a></td>
+        <td class="feature-detail">collection</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ComponentAxis">IVOA:ivoa/char/ComponentAxis</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">INtrouced tom model aggregation of 1D axes to build a custom composite axis type.</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ComponentAxis.axis">IVOA:ivoa/char/ComponentAxis.axis</a></td>
+        <td class="feature-detail">reference</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CompositeCharacterisationAxis">IVOA:ivoa/char/CompositeCharacterisationAxis</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">INtroduced to model composite axes.</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CompositeCharacterisationAxis.childAxis">IVOA:ivoa/char/CompositeCharacterisationAxis.childAxis</a></td>
+        <td class="feature-detail">collection</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CompositeCharacterisationAxis.dim">IVOA:ivoa/char/CompositeCharacterisationAxis.dim</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CoverageType">IVOA:ivoa/char/CoverageType</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">How the observation is spanned along this axis</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CoverageType.bounds">IVOA:ivoa/char/CoverageType.bounds</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">the limits of the observation on this axis</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CoverageType.coordsystem">IVOA:ivoa/char/CoverageType.coordsystem</a></td>
+        <td class="feature-detail">reference</td>
+        <td class="feature-detail">redefinition of coordsystem</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CoverageType.location">IVOA:ivoa/char/CoverageType.location</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">Typical value on one axis</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CoverageType.sensitivity">IVOA:ivoa/char/CoverageType.sensitivity</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">encodes the variability of response along the axis </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CoverageType.support">IVOA:ivoa/char/CoverageType.support</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">describes the area where measurements are effectively present and interpretable </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CoverageType.unit">IVOA:ivoa/char/CoverageType.unit</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/Custom1DCharacterisationAxis">IVOA:ivoa/char/Custom1DCharacterisationAxis</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">Introduced to model custom 1D axes.</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/Custom1DCharacterisationAxis.axisName">IVOA:ivoa/char/Custom1DCharacterisationAxis.axisName</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">A name representing the physical nature of the axis like Spatial, Spectral, Time, Velocity or any other free name for an axis</td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/Custom1DCharacterisationAxis.numBins">IVOA:ivoa/char/Custom1DCharacterisationAxis.numBins</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/Custom1DCharacterisationAxis.ucd">IVOA:ivoa/char/Custom1DCharacterisationAxis.ucd</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">The physical meaning of the axis, Type: standard semantic tag defined in the UCD list. </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CustomError">IVOA:ivoa/char/CustomError</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/CustomError.flavor">IVOA:ivoa/char/CustomError.flavor</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorBoundsType">IVOA:ivoa/char/ErrorBoundsType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorBoundsType.documentation">IVOA:ivoa/char/ErrorBoundsType.documentation</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorBoundsType.errorLimits">IVOA:ivoa/char/ErrorBoundsType.errorLimits</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorRefValType">IVOA:ivoa/char/ErrorRefValType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">Typical statistical error on the axis. Types: depend on the dimensionality 1D Error based on stc:double1Type 2D Errors based
+          on stc:size2Type, double2Type or double1Type (error 2 radius) 3D Errors based on stc:size3Type, double3TYpe or double1Type
+          (error 3 radius) 
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorRefValType.CError">IVOA:ivoa/char/ErrorRefValType.CError</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorRefValType.coordSystem">IVOA:ivoa/char/ErrorRefValType.coordSystem</a></td>
+        <td class="feature-detail">reference</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorRefValType.documentation">IVOA:ivoa/char/ErrorRefValType.documentation</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorRefValType.unit">IVOA:ivoa/char/ErrorRefValType.unit</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorType">IVOA:ivoa/char/ErrorType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorType.ErrorBounds">IVOA:ivoa/char/ErrorType.ErrorBounds</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorType.ErrorRefVal">IVOA:ivoa/char/ErrorType.ErrorRefVal</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorType.ErrorVariability">IVOA:ivoa/char/ErrorType.ErrorVariability</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ErrorVariabilityType">IVOA:ivoa/char/ErrorVariabilityType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/LocationType">IVOA:ivoa/char/LocationType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ResolutionBoundsType">IVOA:ivoa/char/ResolutionBoundsType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ResolutionRefValType">IVOA:ivoa/char/ResolutionRefValType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ResolutionSupportType">IVOA:ivoa/char/ResolutionSupportType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ResolutionType">IVOA:ivoa/char/ResolutionType</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ResolutionType.coordSystem">IVOA:ivoa/char/ResolutionType.coordSystem</a></td>
+        <td class="feature-detail">reference</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ResolutionType.resolutionBounds">IVOA:ivoa/char/ResolutionType.resolutionBounds</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ResolutionType.resolutionRefVal">IVOA:ivoa/char/ResolutionType.resolutionRefVal</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ResolutionType.resolutionSupport">IVOA:ivoa/char/ResolutionType.resolutionSupport</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ResolutionType.resolutionVariability">IVOA:ivoa/char/ResolutionType.resolutionVariability</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ResolutionType.unit">IVOA:ivoa/char/ResolutionType.unit</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/ResolutionVariabilityType">IVOA:ivoa/char/ResolutionVariabilityType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SamplingPrecisionBoundsType">IVOA:ivoa/char/SamplingPrecisionBoundsType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SamplingPrecisionRefValType">IVOA:ivoa/char/SamplingPrecisionRefValType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SamplingPrecisionSupportType">IVOA:ivoa/char/SamplingPrecisionSupportType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SamplingPrecisionType">IVOA:ivoa/char/SamplingPrecisionType</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SamplingPrecisionType.coordSystem">IVOA:ivoa/char/SamplingPrecisionType.coordSystem</a></td>
+        <td class="feature-detail">reference</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionBounds">IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionBounds</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionRefVal">IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionRefVal</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionSupport">IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionSupport</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionVariability">IVOA:ivoa/char/SamplingPrecisionType.samplingPrecisionVariability</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SamplingPrecisionType.unit">IVOA:ivoa/char/SamplingPrecisionType.unit</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SamplingPrecisionVariability">IVOA:ivoa/char/SamplingPrecisionVariability</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SensitivityType">IVOA:ivoa/char/SensitivityType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SpatialAxis">IVOA:ivoa/char/SpatialAxis</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SpatialAxis.numbins1">IVOA:ivoa/char/SpatialAxis.numbins1</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SpatialAxis.numbins2">IVOA:ivoa/char/SpatialAxis.numbins2</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SpectralAxisType">IVOA:ivoa/char/SpectralAxisType</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SpectralAxisType.numbins">IVOA:ivoa/char/SpectralAxisType.numbins</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/StatErrorType">IVOA:ivoa/char/StatErrorType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SupportType">IVOA:ivoa/char/SupportType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/SysErrorType">IVOA:ivoa/char/SysErrorType</a></td>
+        <td class="feature-detail">dataType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/TimeAxisType">IVOA:ivoa/char/TimeAxisType</a></td>
+        <td class="feature-detail">objectType</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+      <tr>
+        <td class="feature-detail"><a href="#IVOA:ivoa/char/TimeAxisType.numbins">IVOA:ivoa/char/TimeAxisType.numbins</a></td>
+        <td class="feature-detail">attribute</td>
+        <td class="feature-detail">
+          TODO : Missing description : please, update your UML model asap.
+          
+        </td>
+      </tr>
+    </table>
+    <hr>
+    <h1>4.<a name="modelimports">Imported Models</a></h1>
+    <p>This section lists the external models imported by the current data model.
+      For each imported model we list URL, prefix used and the types that have been imported.
+      Of the imported types we only provide the name and utype.
+    </p>
+    <h2><a name="ivoa_1.0"></a>4.1 ivoa_1.0
+    </h2>
+    <table border="1" cellspacing="2" width="100%">
+      <tr>
+        <td class="objecttype-title" width="20%">Model</td>
+        <td class="objecttype-name">ivoa_1.0</td>
+      </tr>
+      <tr>
+        <td width="30%" class="info-title">url</td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.vo-urp.xml">http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.vo-urp.xml</a></td>
+      </tr>
+      <tr>
+        <td width="30%" class="info-title">documentation url</td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html">http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html</a></td>
+      </tr>
+      <tr>
+        <td colspan="2" class="info-title">Datatypes</td>
+      </tr>
+      <tr>
+        <td class="feature-heading" width="30%">name</td>
+        <td class="feature-heading" width="70%">utype</td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/Identity"></a>Identity
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/Identity">ivoa_1.0:stdtypes/Identity</a></td>
+      </tr>
+      <tr>
+        <td colspan="2" class="info-title">Primitive Types</td>
+      </tr>
+      <tr>
+        <td class="feature-heading" width="30%">name</td>
+        <td class="feature-heading" width="70%">utype</td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/anyURI"></a>anyURI
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/anyURI">ivoa_1.0:stdtypes/anyURI</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/boolean"></a>boolean
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/boolean">ivoa_1.0:stdtypes/boolean</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/complex"></a>complex
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/complex">ivoa_1.0:stdtypes/complex</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/datetime"></a>datetime
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/datetime">ivoa_1.0:stdtypes/datetime</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/decimal"></a>decimal
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/decimal">ivoa_1.0:stdtypes/decimal</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/duration"></a>duration
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/duration">ivoa_1.0:stdtypes/duration</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/integer"></a>integer
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/integer">ivoa_1.0:stdtypes/integer</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/nonnegativeinteger"></a>nonnegativeInteger
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/nonnegativeinteger">ivoa_1.0:stdtypes/nonnegativeinteger</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/rational"></a>rational
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/rational">ivoa_1.0:stdtypes/rational</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/real"></a>real
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/real">ivoa_1.0:stdtypes/real</a></td>
+      </tr>
+      <tr>
+        <td><a name="ivoa_1.0:stdtypes/string"></a>string
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/profile/IVOA%20Profile.html#ivoa_1.0:stdtypes/string">ivoa_1.0:stdtypes/string</a></td>
+      </tr>
+    </table>
+    <h2><a name="STC_1.x"></a>4.1 STC_1.x
+    </h2>
+    <table border="1" cellspacing="2" width="100%">
+      <tr>
+        <td class="objecttype-title" width="20%">Model</td>
+        <td class="objecttype-name">STC_1.x</td>
+      </tr>
+      <tr>
+        <td width="30%" class="info-title">url</td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/stc/STC.vo-urp.xml">http://vo-urp.googlecode.com/svn/trunk/IVOA/stc/STC.vo-urp.xml</a></td>
+      </tr>
+      <tr>
+        <td width="30%" class="info-title">documentation url</td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/stc/STC.html">http://vo-urp.googlecode.com/svn/trunk/IVOA/stc/STC.html</a></td>
+      </tr>
+      <tr>
+        <td colspan="2" class="info-title">Object Types</td>
+      </tr>
+      <tr>
+        <td class="feature-heading" width="30%">name</td>
+        <td class="feature-heading" width="70%">utype</td>
+      </tr>
+      <tr>
+        <td><a name="STC_1.x:ivoa/stc/coordsys/astroCoordSystemType"></a>astroCoordSystemType
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/stc/STC.html#STC_1.x:ivoa/stc/coordsys/astroCoordSystemType">STC_1.x:ivoa/stc/coordsys/astroCoordSystemType</a></td>
+      </tr>
+      <tr>
+        <td><a name="STC_1.x:ivoa/stc/coordsys/observatoryLocationType"></a>observatoryLocationType
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/stc/STC.html#STC_1.x:ivoa/stc/coordsys/observatoryLocationType">STC_1.x:ivoa/stc/coordsys/observatoryLocationType</a></td>
+      </tr>
+      <tr>
+        <td colspan="2" class="info-title">Datatypes</td>
+      </tr>
+      <tr>
+        <td class="feature-heading" width="30%">name</td>
+        <td class="feature-heading" width="70%">utype</td>
+      </tr>
+      <tr>
+        <td><a name="STC_1.x:ivoa/stc/area/coordIntervalType"></a>coordIntervalType
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/stc/STC.html#STC_1.x:ivoa/stc/area/coordIntervalType">STC_1.x:ivoa/stc/area/coordIntervalType</a></td>
+      </tr>
+      <tr>
+        <td><a name="STC_1.x:ivoa/stc/quantity/double1Type"></a>double1Type
+        </td>
+        <td><a href="http://vo-urp.googlecode.com/svn/trunk/IVOA/stc/STC.html#STC_1.x:ivoa/stc/quantity/double1Type">STC_1.x:ivoa/stc/quantity/double1Type</a></td>
+      </tr>
+    </table>
+  </body>
+</html>

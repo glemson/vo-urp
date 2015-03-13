@@ -1,0 +1,15 @@
+This branch: Trunk
+Owner: Gerard Lemson
+
+Version Control Policy for the VO-URP Project
+
+1) Every branch has an owner, and the owner decide who can make changes to
+the branch, and what kind of changes they can make. The trunk is an
+important branch, so the owner should be a somewhat cautious individual
+(probably the project owner).
+
+2) No one checks in broken code to a branch they're sharing with others,
+unless they negotiate with them first.
+
+3) Personal branches are like personal desks, and users can maintain them
+in any way they want.

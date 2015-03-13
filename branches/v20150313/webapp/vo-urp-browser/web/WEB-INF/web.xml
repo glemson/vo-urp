@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="2.4" xmlns="http://java.sun.com/xml/ns/j2ee" 
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+  
+  <!-- ========================================================== -->
+  <!-- General -->
+  <!-- ========================================================== -->
+  
+    <description>Simple Web Browser for VO-URP database</description>
+    <display-name>VO-URP Browser</display-name>
+
+
+  <!-- ========================================================== -->
+  <!-- Context Parameters -->
+  <!-- ========================================================== -->
+
+    <!-- Log4J settings -->
+    <context-param>
+        <!--
+            Preferred repository selector : "preferred" because
+            if one is already installed, this choice is ignored.
+        -->
+        <param-name>log4j-selector</param-name>
+        <param-value>org.apache.log4j.selector.ContextClassLoaderSelector</param-value>
+    </context-param>
+
+    <context-param>
+        <!--
+            relative path to config file within current webapp
+        -->
+        <param-name>log4j-config</param-name>
+        <param-value>WEB-INF/classes/log4j.xml</param-value>
+    </context-param>
+
+
+  <!-- ========================================================== -->
+  <!-- Filters -->
+  <!-- ========================================================== -->
+
+  <filter>
+    <filter-name>TimerFilter</filter-name>
+    <filter-class>org.ivoa.web.filter.TimerFilter</filter-class>
+  </filter>
+
+
+  <filter-mapping>
+      <filter-name>TimerFilter</filter-name>
+      <url-pattern>*.do</url-pattern>
+      <dispatcher>REQUEST</dispatcher>
+  </filter-mapping>
+
+
+  <!-- ========================================================== -->
+  <!-- Listeners -->
+  <!-- ========================================================== -->
+
+    <listener>
+        <listener-class>org.ivoa.service.ApplicationManager</listener-class>
+    </listener>
+
+    <listener>
+        <listener-class>org.ivoa.service.SessionMonitor</listener-class>
+    </listener>
+
+    <listener>
+        <description>RequestListener for managing EntityManager with request scope</description>
+        <listener-class>org.ivoa.web.servlet.JPARequestListener</listener-class>
+    </listener>
+
+
+  <!-- ========================================================== -->
+  <!-- Servlets -->
+  <!-- ========================================================== -->
+
+    <servlet>
+        <description>Log4j configuration Servlet</description>
+        <servlet-name>Log4JServlet</servlet-name>
+        <servlet-class>org.apache.log4j.servlet.ConfigurationServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>FindServlet</servlet-name>
+        <servlet-class>org.ivoa.web.servlet.FindServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
+    </servlet>
+  
+    <servlet>
+        <servlet-name>SKOSServlet</servlet-name>
+        <servlet-class>org.ivoa.web.servlet.SKOSServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>ListServlet</servlet-name>
+        <servlet-class>org.ivoa.web.servlet.ListServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>ValidationServlet</servlet-name>
+        <servlet-class>org.ivoa.web.servlet.ValidationServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>ManagerServlet</servlet-name>
+        <servlet-class>org.ivoa.web.servlet.secure.ManagerServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
+    </servlet>
+
+    <servlet>
+        <servlet-name>QueryServlet</servlet-name>
+        <servlet-class>org.ivoa.web.servlet.QueryServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
+    </servlet>
+  
+    <servlet>
+        <servlet-name>TAPServlet</servlet-name>
+        <servlet-class>org.ivoa.web.servlet.TAPServlet</servlet-class>
+        <load-on-startup>10</load-on-startup>
+    </servlet>
+
+
+    <!-- servlet mappings -->
+
+    <servlet-mapping>
+        <servlet-name>Log4JServlet</servlet-name>
+        <!-- TODO: admin -->
+        <url-pattern>/Log4j.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>FindServlet</servlet-name>
+        <url-pattern>/Show.do</url-pattern>
+    </servlet-mapping>
+  
+    <servlet-mapping>
+        <servlet-name>SKOSServlet</servlet-name>
+        <url-pattern>/SKOS.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ListServlet</servlet-name>
+        <url-pattern>/List.do</url-pattern>
+    </servlet-mapping>
+  
+    <servlet-mapping>
+        <servlet-name>ValidationServlet</servlet-name>
+        <url-pattern>/Validate.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ManagerServlet</servlet-name>
+        <url-pattern>/secure/Manager.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>QueryServlet</servlet-name>
+        <url-pattern>/Query.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>TAPServlet</servlet-name>
+        <url-pattern>/Tap.do/sync</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>TAPServlet</servlet-name>
+        <url-pattern>/Tap.do/async</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>TAPServlet</servlet-name>
+        <url-pattern>/Tap.do/*</url-pattern>
+    </servlet-mapping>
+
+
+  <!-- ========================================================== -->
+  <!-- Session -->
+  <!-- ========================================================== -->
+
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+  
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+
+  <!-- ========================================================== -->
+  <!-- Security -->
+  <!-- ========================================================== -->
+
+    <!-- Define referenced roles -->
+    <security-role>
+        <role-name>@project.name@-member</role-name>
+    </security-role>
+
+    <security-role>
+        <role-name>@project.name@-admin</role-name>
+    </security-role>
+
+
+    <!-- Define a constraint to restrict access to /secure/* -->
+    <security-constraint>
+
+        <display-name>Security constraint for the /secure folder allowing users to upload resources</display-name>
+
+        <web-resource-collection>
+            <web-resource-name>Protected Area = Administration Web Interface</web-resource-name>
+            <description>Accessible by authorised users</description>
+            <url-pattern>/secure/*</url-pattern>
+        </web-resource-collection>
+
+        <auth-constraint>
+        <!-- Only administrator can access this area -->
+            <description>These are the roles who have access</description>
+            <role-name>@webapp.member.role@</role-name>
+        </auth-constraint>
+
+    </security-constraint>
+
+    <security-constraint>
+
+        <display-name>
+        Security constraint for the /admin folder allowing users to administrate the web site
+        e.g. change loggin setting, manage users
+        </display-name>
+
+        <web-resource-collection>
+            <web-resource-name>Protected Area = Administration Web Interface</web-resource-name>
+            <description>Accessible by authorised users</description>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+
+        <auth-constraint>
+        <!-- Only administrator can access this area -->
+            <description>These are the roles who have access</description>
+            <role-name>@webapp.admin.role@</role-name>
+        </auth-constraint>
+
+    </security-constraint>
+  <!-- ========================================================== -->
+  <!-- BASIC authentication -->
+  <!-- ========================================================== -->
+    <login-config>
+        <auth-method>BASIC</auth-method>
+    </login-config>
+
+  <!-- ========================================================== -->
+  <!-- FORM based authentication -->
+  <!-- ========================================================== -->
+<!-- 
+    <login-config>
+        <auth-method>FORM</auth-method>
+
+        <form-login-config>
+            <form-login-page>/login.jsp</form-login-page>
+            <form-error-page>/fail_login.jsp</form-error-page>
+        </form-login-config>
+
+    </login-config>
+ -->
+
+  <!-- ========================================================== -->
+  <!-- Custom error pages -->
+  <!-- ========================================================== -->
+
+  <error-page>
+    <error-code>500</error-code>
+    <location>/errors/error.jsp</location>
+  </error-page>
+  <error-page>
+    <error-code>404</error-code>
+    <location>/errors/error.jsp</location>
+  </error-page>
+
+
+</web-app>
