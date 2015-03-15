@@ -1,0 +1,110 @@
+# Development tasks #
+
+- Laurent :
+> vo-urp = javadoc + refactoring + dead / test code refactoring + memory leak tests to add
+
+
+- Gerard :
+> volute = **SimDB DM + note : important**
+
+
+
+
+# Functionalities #
+
+> - XML Schemas : the XSD may be different and I think we should have two options :
+> > - use official googleCode XSD release : add a version 0.5 / 0.6 ...
+> > - use the last generated XSD (internal - dev) for our tests / developments
+
+
+> The first one will be useful for STD compliance (research users);
+> the second one for dev compliance (you, rick, me & benjamin ...)
+
+> 3 tasks :
+> > - manage manually the folder : http://vo-urp.googlecode.com/svn/trunk/input/simdb/xsd/
+> > - propose in the validator to choose between STD (+version) or DEV to use the internal schemas (local URL = simple FileServlet mapping in the web.xml)
+
+
+> - Download the schemas : create a simple web page to list these files (FileServlet + directory listing) in tomcat or apache ?
+
+
+
+
+# TODO List coming from a skype talk on 20/06/2009 #
+
+- Issue No 6 :
+
+> Laurent Bourgès :
+> 0. javadoc / warning fixes
+> 0. dynamic logger's level support
+
+
+  1. use interfaces for public API (root objects, DataModelManager ...)
+  1. singletonsupport generalization
+
+> 2. threadlocal support / cleaner
+> 2. stringbuffer local optimisation
+
+> 3. Visitor for toString + processExport refs
+
+> 4. SimDBHelper for collection and several utility methods (findInCollection ...) as I did in pdrDB
+
+> 5. add voparis job engine (usfeul for TAP)
+
+
+> Gerard Lemson :
+> 0. add unit (default) into Field entity + a semantic reference for unit thesaurus
+> 0. Quantity.unit will be not used in the first SimDB : only for later purpose : add this constraint in the documentation (uml, note ...)
+
+  1. ValidValue = add a double value to the string value
+  1. Quantity re-design : rename to Literal to support both string and numerical values :
+> > + ValueLiteral
+> > |- StringLiteral  (string)
+> > |- NumericLiteral (double)
+
+
+
+# TODO 2009-11-12 #
+  * Get TAP implementation from Pat (other?) (LB, GL)
+    * check metadata extraction, compare to Franz's ADQL Interpreter (GL)
+  * Laurent's JobRunner (LB)
+    * merge with Pat's UWS implementation (AstroGrid's?) (LB)
+      * add external/legacy applications
+      * add persistent queue
+      * get UWS support
+    * user management (combined with VO-URP webapp, separate module?) (LB) X
+    * file management
+      * use job id (unguessable) for directory
+      * show jobs by querying job table, linking to archive
+      * file store limit and/or clean up functions (cron?) (LB, GL)
+    * queue
+      * maximum number of jobs in queue per user
+      * clean up queue, move finished jobs to jobs/user table (LB)
+    * check use cases (Eyal, Klaus) (GL)
+    * plugin concept for applications iso custom servlets.
+> > > Use UWS pattern from Pat, Spring? (LB, GL)
+    * use remote server for job execution iso JobRunner web app.
+    * 
+  * TAP only web interface, i.e. no browsing part, may be useful for really large databases. (LB, GL)
+  * Use cases:
+    * implement ObsTAP use case, maybe on ROSAT images (GL) X
+    * check that SimDB specification works with VO-URP (GL) X
+    * support Benjamin and Franck on PDR use case (LB,GL) X
+  * incorporate XSLT generation changes from SimDB specification into VO-URP (GL) X
+    * html generation
+      * graphviz map
+      * utypes
+  * complete TAP metadata generation following TAP spec (GL) X
+  * user management for upload of xml (LB)
+  * flexible support for custom pages (LB)
+  * multiple models in one context (LB)
+  * 
+
+
+
+# Details #
+
+Add your content here.  Format your content with:
+  * Text in **bold** or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages

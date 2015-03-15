@@ -1,0 +1,33 @@
+# Introduction #
+
+Add your content here.
+
+
+# Details #
+
+Add your content here.  Format your content with:
+  * Text in **bold** or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
+
+
+
+# Inheriting attribute data types #
+Example: SimDB.Literal base class of `DoubleLiteral` and `StringLiteral`.
+How do we support usage of the base class in particular for Database mapping?
+
+Example from [SimDB](http://volute.googlecode.com/svn/trunk/projects/theory/snapdm/specification/html/SimDB.png). We'd like to be able to define parametersetting having a value atrtirbute of type Literal, and have subclasses of literal for string and numeric parameters.
+
+What we would need is something like a constarint on parametersetting.value that fixes its type to be the one described by the parameter.datatype value.
+Can this be actually treated using a constraint? A typical pattern ?
+
+# Constraints #
+We need support for constraints, in particular some typical patterns need support and may be given this in the UML Profile without too much problems.
+
+One typeical pattern is that a reference frmo a child class should go to a
+child of a referenced instance of the  referrers parent.
+
+Example form SimDB:
+parametersetting should reference an inputparameter of the protocol that is referred by the parametersetting's containing Experiment.
+In the interpretation where the experiment and the protocol are the actual entities one can argue that the parametersetting's perametter reference is a refinement of the experiment's protocol reference.
+

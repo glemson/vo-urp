@@ -1,0 +1,103 @@
+# Introduction #
+Laurent is visiting Garching, Aug 8-16 to work on VO-URP.
+First brainstorming on status and required work.
+
+
+# VO-URP TBDs #
+
+  * UML profile
+    * Constraints: refinement of container references. Simple subset of OCL?
+      * For attributes declared uniqueInCollection, create a namedQuery or a simple method for a lookup. For example for the SimDB:Protocol.parameter collection create a simple method based on the SimDB:InputParameter.name attribute.
+    * Data vs Metadata.
+> > > In metadata one could describe where the data is stored.
+> > > E.g. table name, column names for attributes..
+> > > Or generate a table with a foreign key to metadata table (halos to snapshot/simulation).
+    * Custom metadata not represented in the public model but desired in a local implementation. Use some sterotype? Use case: extra identifiers, properties on PDR resources and components. One way: do not generate these custom attributes (streotype?) in views.
+Or: DO generate them in views, but also add views without them, for example for publishing to VO. Alternative would be that the second set of views is written by the implementors as custom views for implementing something like SimDB/TAP.
+
+  * Generated entities:
+    * XML schema:
+      * multiple resources per document possible
+      * fragments? (Rick likes that)
+    * Database
+      * configurable?
+      * other name for DTYPE ;)
+      * ..
+  * Infrastructure code
+    * Facade for the system to be used in applications...
+      * LB: 3 parts:
+        * datamodelmanager, manages persist/retrieve
+        * queryfacade: IIdentity/IMetadatObject/I...
+        * transientobjectmanager (active/not-active,...): (un)marshall/register/flush etc
+    * IDs and references , again ! Example: problem with publisherDID resolver ..., need to use xmlid AND publisherDID for ...
+
+  * support IVOA features
+    * TAP
+      * (a)sync
+      * all metadata
+    * REST
+      * get resource based on ID
+    * Denormalisation of Resources for more user-friendly registration.
+> > > Using XSLT, e.g. in SimDB.
+> > > Idea: register XSLT scripts for a resources. Readonly, or readwrite.
+
+  * Browser
+    * sort resources by create time desc
+    * Editing resources online
+    * Pre-cooked but free ADQL queries. fix select and 1 from, rest free??
+> > > Use case: allow querying of HydroCluster FOFs, link result to SMac/Splotch...
+    * Query builder? (e.g. SpagoBI, others?)
+    * Look and feel
+      * Make tables behave nicer on vo-urp browser (CSS issue)
+
+  * Views:
+    * Support a "view framework", more generically views of the resources or parts of resources in a model. Custom JPA queries, JSP pages.
+    * Related: custom pages in vo-urp-browser.
+> > > Extend controller?
+> > > New cotrollers?
+> > > Embed vo-urp browser insode other web application? Vice versa.
+    * Denormalisation of Resources for more user-friendly registration.
+> > > Using XSLT, e.g. in SimDB.
+> > > Idea: register XSLT scripts for a resources. Readonly, or readwrite.
+    * Use cases for Views
+      * PDR
+      * denormalisation
+      * hydrosims
+      * ...
+
+
+
+  * Testing
+    * unit tests
+
+  * Documentation
+    * Start writing documentation of whole system on the wiki.
+> > > Including implementation choises etc. Goal is that new developers can get up to speed as well as users of the system...
+
+
+# More SimDB TBDs #
+  * SimDB: Quantity, Unit, Field redesign...
+  * Denormalisation of SimDB data model for user friendly registration.
+
+> > Using XSLT, e.g. in SimDB.
+  * Clean up
+    * Get rid of non-specification directories in volute/simdb
+  * Versioning of codes (metadata objects in general?). On one hand issue for SimDB, but may have generic solution.
+> > Possibly an issue when multiple instances mirror (part of) each others resources.
+  * Generate template instance XML documents.
+> > Generate a default simulation for a given simulator.
+
+
+# Other things to do while Laurent is in Garching #
+  * batch queue
+  * help configure gavosun1/2
+  * 
+
+
+
+# Details #
+
+Add your content here.  Format your content with:
+  * Text in **bold** or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages

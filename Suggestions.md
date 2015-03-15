@@ -1,0 +1,81 @@
+# Suggestions #
+
+Here we list suggestions for VO-URP.
+
+[2010-02-21](JK.md):
+
+A way to handle the following scenario in xml schema.
+
+
+
+&lt;xs:simpleType name="IdentifierURI"&gt;
+
+
+
+> 
+
+&lt;xs:restriction base="xs:anyURI"&gt;
+
+
+
+> 
+
+&lt;xs:pattern value="............"/&gt;
+
+
+
+> 
+
+&lt;/xs:restriction&gt;
+
+
+
+
+
+&lt;xs:simpleType&gt;
+
+
+
+And identifierURI is used as a type like
+
+- 
+
+&lt;xs:element name="identifier" type="vr:IdentifierURI"&gt;
+
+
+
+
+&lt;/xs:element&gt;
+
+
+
+
+
+
+
+[2009-06-09](GL.md):
+
+For attributes declared uniqueInCollection, create a namedQuery
+or a simple method for a lookup. For example for the SimDB:Protocol.parameter collection create a simple method based on the SimDB:InputParameter.name attribute.
+
+For unique attributes, create a named query.
+
+
+[2009-06-11](GL.md):
+
+Show objects of type anyURI as hyperlinks (if they start with http, ftp, file).
+
+
+[2006-06-19](GL.md):
+
+At beginning of a persist, within the transaction, retrieve the current
+timestamp from the database and use it to set the appropriate
+dbInserttimestamp and dbUpdatetimestamp on all metadatarootentitytobject-s.
+(dbInserttimestamp and dbOwner only if this is an insert: how do we know?
+status object? form non-existsence of Long id ?
+
+This is related to how we do our flushing/persisiting to the DB.
+Currently we have various parts of code that ultimately go back to the JPA code to perform the persists. Maybe this should be wrapped in a method on DataModelManager for example.
+This method could take care of starting/committing transaction and persisting all objects that are part of the unit of work. Also knowing which elements must be inserted, which updated and setting variables accordingly.
+
+This may require a "transientobjectmanager", a cache manager that knows of al objects in a transaction, of all objects that have been modified, deleted, created etc.

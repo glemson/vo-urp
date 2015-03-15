@@ -1,0 +1,34 @@
+IN PROGRESS!
+# Introduction #
+Here we describe how one can use the VO-URP infrastructure to create a database etc for one's own data model.
+
+
+# Steps #
+
+## Preliminary ##
+Have ant installed.
+Have a copy of the community edition of MagicDraw.
+For the moment this should be 12.1, as the infrastructure is designed for its XMI version.
+We are working on supporting version 16.5 and its corresponding later XMI version [add XMI version number here](TODO.md).
+Nice (...) feature of VO-URP is that it will work with any UML editor as long as one can translate it to our "intermediate representation".
+For MD 16.5 a first attempt is made to do so with the xmi2intermediate\_16.5.xsl file.
+
+## Check out ##
+Connect to subversion repository and check out the complete trunk.
+
+## UML model. ##
+
+Create an appropriately named copy of ehe ./input/template.
+E.g. ./input/mymodel
+Rename the UML model inside (template\_DM.xml), e.g. to MyModel.xml.
+Edit the model, taking into account design rules described HERE [add link](TODO.md).
+
+## Configuration ##
+
+To get the model compiled and available as a web application requires some configuration.
+
+
+Add your content here.  Format your content with:
+  * Text in **bold** or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
