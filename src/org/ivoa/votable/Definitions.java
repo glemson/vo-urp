@@ -41,8 +41,8 @@ import javax.xml.bind.annotation.XmlType;
 public class Definitions {
 
     @XmlElements({
-        @XmlElement(name = "PARAM", type = Param.class),
-        @XmlElement(name = "COOSYS", type = CoordinateSystem.class)
+        @XmlElement(name = "COOSYS", type = CoordinateSystem.class),
+        @XmlElement(name = "PARAM", type = Param.class)
     })
     protected List<Object> coosysAndPARAMS;
 
@@ -64,8 +64,8 @@ public class Definitions {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Param }
      * {@link CoordinateSystem }
+     * {@link Param }
      * 
      * 
      */

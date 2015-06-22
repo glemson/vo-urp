@@ -44,9 +44,9 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 @XmlSeeAlso({
     Profile.class,
     Package.class,
-    Type.class,
     Attribute.class,
     Relation.class,
+    Type.class,
     Model.class
 })
 public abstract class Element {

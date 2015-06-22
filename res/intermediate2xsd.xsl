@@ -44,6 +44,8 @@
 
   <xsl:variable name="metadataObjectType" select="concat($base-prefix,':MetadataObject')"/>
   <xsl:variable name="metadataRootEntityObjectType" select="concat($base-prefix,':MetadataRootEntityObject')"/>
+  <xsl:variable name="globalRootElementType" select="concat($base-prefix,':MetadataRootEntities')"/>
+  
   
   
   
@@ -86,6 +88,9 @@ Should do a tranformation if the nameis not suite for this (spaces etc).
       <xsd:schema>
         <xsl:namespace name="">
           <xsl:value-of select="$targetschema"/>
+        </xsl:namespace>
+        <xsl:namespace name="base">
+          <xsl:value-of select="'http://www.ivoa.net/xml/dm/base/v0.1'"/>
         </xsl:namespace>
         <xsl:attribute name="targetNamespace">
           <xsl:value-of select="$targetschema"/>
@@ -141,6 +146,11 @@ Should do a tranformation if the nameis not suite for this (spaces etc).
           </xsl:if>
         </xsl:for-each>
 </xsd:sequence></xsd:complexType>
+        </xsd:element>
+        
+      <xsd:element>
+        <xsl:attribute name="name" select="'root'"/>
+        <xsl:attribute name="type" select="$globalRootElementType"/>
         </xsd:element>
       </xsd:schema>
     </xsl:result-document>

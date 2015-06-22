@@ -11,7 +11,6 @@ if not exists (select * from dbo.sysobjects
   create table user_roles (username varchar(128) not null, rolename varchar(128) not null);
 
 
-
 -- data :
 insert into roles 
  select '@webapp.member.role@' 

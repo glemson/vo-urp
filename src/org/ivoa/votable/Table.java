@@ -65,12 +65,12 @@ public class Table {
     @XmlElement(name = "DESCRIPTION")
     protected AnyTEXT description;
     @XmlElements({
-        @XmlElement(name = "LINK", type = Link.class),
-        @XmlElement(name = "FIELD", type = Field.class),
         @XmlElement(name = "INFO", type = Info.class),
-        @XmlElement(name = "GROUP", type = Group.class),
+        @XmlElement(name = "PARAM", type = Param.class),
+        @XmlElement(name = "LINK", type = Link.class),
         @XmlElement(name = "DATA", type = Data.class),
-        @XmlElement(name = "PARAM", type = Param.class)
+        @XmlElement(name = "GROUP", type = Group.class),
+        @XmlElement(name = "FIELD", type = Field.class)
     })
     protected List<Object> infosAndFIELDSAndPARAMS;
     @XmlAttribute(name = "ID")
@@ -137,12 +137,12 @@ public class Table {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Link }
-     * {@link Field }
      * {@link Info }
-     * {@link Group }
-     * {@link Data }
      * {@link Param }
+     * {@link Link }
+     * {@link Data }
+     * {@link Group }
+     * {@link Field }
      * 
      * 
      */

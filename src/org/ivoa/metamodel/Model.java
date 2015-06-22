@@ -21,6 +21,8 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;extension base="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Element">
  *       &lt;sequence>
  *         &lt;element name="lastModifiedDate" type="{http://www.w3.org/2001/XMLSchema}long"/>
+ *         &lt;element name="created" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *         &lt;element name="version" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="author" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="profile" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Profile" maxOccurs="unbounded" minOccurs="0"/>
@@ -36,6 +38,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "lastModifiedDate",
+    "created",
+    "version",
     "author",
     "title",
     "profile",
@@ -47,6 +51,10 @@ public class Model
 {
 
     protected long lastModifiedDate;
+    @XmlElement(required = true)
+    protected String created;
+    @XmlElement(required = true)
+    protected String version;
     protected List<String> author;
     protected String title;
     protected List<Profile> profile;
@@ -67,6 +75,54 @@ public class Model
      */
     public void setLastModifiedDate(long value) {
         this.lastModifiedDate = value;
+    }
+
+    /**
+     * Gets the value of the created property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getCreated() {
+        return created;
+    }
+
+    /**
+     * Sets the value of the created property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setCreated(String value) {
+        this.created = value;
+    }
+
+    /**
+     * Gets the value of the version property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link String }
+     *     
+     */
+    public String getVersion() {
+        return version;
+    }
+
+    /**
+     * Sets the value of the version property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link String }
+     *     
+     */
+    public void setVersion(String value) {
+        this.version = value;
     }
 
     /**

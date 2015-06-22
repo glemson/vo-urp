@@ -300,7 +300,7 @@
     
     <echo message="cleaning directory : ${dist} ..." />
     
-    <delete includeemptydirs="false" verbose="true">
+    <delete includeemptydirs="false" verbose="false">
       <fileset dir="${dist}" includes="**/*"/>
     </delete>
     
@@ -360,7 +360,8 @@
               access="private" 
               author="true"
               use="false"
-              windowtitle="${title} ${version}" >
+              windowtitle="${title} ${version}" 
+				    	verbose="false">
       
       <classpath refid="project.class.path"/>
       

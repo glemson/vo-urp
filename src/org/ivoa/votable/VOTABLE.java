@@ -66,11 +66,11 @@ public class VOTABLE {
     @XmlElement(name = "DEFINITIONS")
     protected Definitions definitions;
     @XmlElements({
-        @XmlElement(name = "RESOURCE", required = true, type = Resource.class),
-        @XmlElement(name = "PARAM", required = true, type = Param.class),
-        @XmlElement(name = "INFO", required = true, type = Info.class),
         @XmlElement(name = "GROUP", required = true, type = Group.class),
-        @XmlElement(name = "COOSYS", required = true, type = CoordinateSystem.class)
+        @XmlElement(name = "INFO", required = true, type = Info.class),
+        @XmlElement(name = "COOSYS", required = true, type = CoordinateSystem.class),
+        @XmlElement(name = "RESOURCE", required = true, type = Resource.class),
+        @XmlElement(name = "PARAM", required = true, type = Param.class)
     })
     protected List<Object> coosysAndGROUPSAndPARAMS;
     @XmlAttribute(name = "ID")
@@ -148,11 +148,11 @@ public class VOTABLE {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
+     * {@link Group }
+     * {@link Info }
+     * {@link CoordinateSystem }
      * {@link Resource }
      * {@link Param }
-     * {@link Info }
-     * {@link Group }
-     * {@link CoordinateSystem }
      * 
      * 
      */

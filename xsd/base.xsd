@@ -128,6 +128,12 @@
   </xsd:complexType>
 
 
+  <xsd:complexType name="MetadataRootEntities">
+    <xsd:sequence>
+      <xsd:element name="entity" type="MetadataRootEntityObject" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
 
   <xsd:complexType name="Reference">
     <xsd:annotation>

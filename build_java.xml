@@ -149,6 +149,23 @@ JDK7 first release
     <arg value="./xsd/intermediateModel.xsd"/>
   </java>
 
+<!-- Only used once for generating Root class -->
+  <echo>Generating java code for base.xsd (JAXB spec = ${jaxbTarget})</echo>
+  <java jar="${libs}/jaxb-xjc.jar" fork="true" failonerror="true">
+    <arg value="-no-header"/>
+    <arg value="-readOnly"/>
+    
+    <arg value="-target"/>
+    <arg value="${jaxbTarget}"/>
+
+    <arg value="-d"/>
+    <arg value="${sources}"/>
+
+    <arg value="-p"/>
+    <arg value="org.ivoa.dm.model.gen"/>
+
+    <arg value="./xsd/base.xsd"/>
+  </java>
   <echo>Generating java code for VOTable-1.2.xsd (JAXB spec = ${jaxbTarget})</echo>
   <java jar="${libs}/jaxb-xjc.jar" fork="true" failonerror="true">
 
@@ -561,7 +578,8 @@ Optional
             encoding="UTF-8"
             source="1.5"
             use="true"
-            windowtitle="${source} : ${project.title}">
+            windowtitle="${source} : ${project.title}"
+            verbose="false">
     
     <classpath>
       <path refid="project.class.path" />
@@ -588,7 +606,8 @@ Optional
             encoding="UTF-8"
             source="1.5"
             use="true"
-            windowtitle="${source} : ${project.title}">
+            windowtitle="${source} : ${project.title}"
+            verbose="false">
     
     <classpath>
       <path refid="runtime.class.path" />

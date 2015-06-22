@@ -16,6 +16,28 @@
 
 </presetdef>
 
+<presetdef name="doSqlLoadCLOB">
+
+  <sql classpathref="jdbc-drivers.class.path" 
+       driver="${eclipselink.jdbc.driver}"
+       url="${eclipselink.jdbc.url}"
+       userid="${eclipselink.jdbc.admin}"
+       password="${eclipselink.jdbc.adminpassword}" />
+
+</presetdef>
+
+<presetdef name="doSqlReadCLOB">
+
+  <sql classpathref="jdbc-drivers.class.path" 
+       driver="${eclipselink.jdbc.driver}"
+       url="${eclipselink.jdbc.url}"
+       userid="${eclipselink.jdbc.admin}"
+       password="${eclipselink.jdbc.adminpassword}" />
+
+</presetdef>
+
+
+
 <!-- Performs an SQL query with the tomcat roles database defined in ${input}/project.properties -->
 <presetdef name="doSqlTomcatRoles">
 
@@ -26,8 +48,6 @@
        password="${tomcat.realm.adminpassword}" />
 
 </presetdef>
-
-
 
 
 <!-- targets -->
@@ -127,17 +147,17 @@
 </target>
 
 
-
-
-<!-- target cleanDB : drops views then tables -->
 <target name="cleanDB" depends="initForDB" if="target.db.do">
   <echo>cleanDB : drop views then tables ...</echo>
 
-  <echo>Executing ${ddl.directory}/${project.name}_dropViews.sql</echo>
-  <doSql autocommit="true" onerror="continue" src="${ddl.directory}/${project.name}_dropViews.sql" />
+  <!-- First retrieve the drop scripts from the database.
+  This ensures the proper scripts get called. -->
 
-  <echo>Executing ${ddl.directory}/${project.name}_dropTables.sql</echo>
-  <doSql autocommit="true" onerror="continue" src="${ddl.directory}/${project.name}_dropTables.sql" />
+  <echo>Executing ${ddl.directory}/backup/dropViews.sql</echo>
+  <doSql autocommit="true" onerror="continue" src="${ddl.directory}/backup/dropViews.sql" />
+
+  <echo>Executing ${ddl.directory}/backup/dropTables.sql</echo>
+  <doSql autocommit="true" onerror="continue" src="${ddl.directory}/backup/dropTables.sql" />
 
   <echo>Executing ${tap.ddl.directory}/${project.name}_drop_tap_schema.sql</echo>
   <doSql autocommit="true" onerror="continue" src="${tap.ddl.directory}/${project.name}_drop_tap_schema.sql" delimiter="${create.view.sep}"/>
@@ -148,12 +168,13 @@
 
 
 <!-- target createDB : creates tables then views -->
-<target name="createDB" depends="cleanDB" if="target.db.do" description="CLEAN first and create database tables / views and TAP_SCHEMA">
+<target name="createDB" if="target.db.do"  depends="initForDB" description="CLEAN first and create database tables / views and TAP_SCHEMA">
   <echo>Creating tables then views to ${eclipselink.jdbc.url} ...</echo>
 
 	
-  <doSql onerror="abort" src="${ddl.directory}/${project.name}_createTables.sql" />
-  <doSql onerror="abort" src="${ddl.directory}/${project.name}_createViews.sql" delimiter="${create.view.sep}"/>
+  <doSql onerror="abort" src="./scripts/ddl/${db.vendor}/model.admindb.sql" />
+  <doSql onerror="abort" src="${ddl.directory}/createTables.sql" />
+  <doSql onerror="abort" src="${ddl.directory}/createViews.sql" delimiter="${create.view.sep}"/>
   <doSql onerror="abort" src="${tap.ddl.directory}/${project.name}_create_tap_schema.sql" delimiter="${create.view.sep}"/>
 
   <!-- web user rights -->
@@ -168,13 +189,56 @@
 				<filter token="webapp.admin.password" value="${webapp.admin.password}" />
 			</filterset>
 	</copy>
-
-  <echo>Writing admin '${webapp.admin.user}' and roles to ${tomcat.realm.url} ...</echo>
-
-  <doSqlTomcatRoles onerror="abort" src="${output}/ddl/${db.vendor}/admindb.sql" />
-
-  <echo>createDB done.</echo>
 </target>
 
+<!-- copy generated files into meta table -->
+<target name="insertDDLs" depends="initForDB">
+
+  <java classname="AdminDBHandler" dir="${libs}/admindb/bin" fork="true" 
+  		failonerror="true"  >
+    <jvmarg value="-Xms32m"/>
+    <jvmarg value="-Xmx64m"/>
+
+    <arg value="I"/>
+    <arg value="${eclipselink.jdbc.driver}"/>
+    <arg value="${eclipselink.jdbc.url}"/>
+    <arg value="${eclipselink.jdbc.admin}"/>
+    <arg value="${eclipselink.jdbc.adminpassword}"/>
+    <arg value="${output}/${source_intermediate}"/>
+    <arg value="${ddl.directory}"/>
+    
+    <classpath>
+      <pathelement location="${libs}/log4j-1.2.16.jar" />
+      <fileset dir="${libs}/jdbc/"><include name="*.jar"/></fileset>
+      <pathelement location="${libs}/admindb/bin/"/>
+      <!-- use gerard patched 1.5.b1 version (enum problem present) -->
+    </classpath>
+    
+   </java>
+</target>
+
+<target name="retrieveDDLs" depends="initForDB">
+
+  <java classname="AdminDBHandler" dir="${libs}/admindb/bin" fork="true" 
+  		failonerror="true"  >
+    <jvmarg value="-Xms32m"/>
+    <jvmarg value="-Xmx64m"/>
+
+    <arg value="L"/>
+    <arg value="${eclipselink.jdbc.driver}"/>
+    <arg value="${eclipselink.jdbc.url}"/>
+    <arg value="${eclipselink.jdbc.admin}"/>
+    <arg value="${eclipselink.jdbc.adminpassword}"/>
+    <arg value="${ddl.directory}/backup"/>
+    
+    <classpath>
+      <pathelement location="${libs}/log4j-1.2.16.jar" />
+      <fileset dir="${libs}/jdbc/"><include name="*.jar"/></fileset>
+      <pathelement location="${libs}/admindb/bin/"/>
+      <!-- use gerard patched 1.5.b1 version (enum problem present) -->
+    </classpath>
+    
+   </java>
+</target>
 
 <!-- end of build_db.xml -->  

@@ -42,10 +42,10 @@ import javax.xml.bind.annotation.XmlType;
 public class Constraints {
 
     @XmlElementRefs({
-        @XmlElementRef(name = "uniqueGlobally", type = JAXBElement.class),
-        @XmlElementRef(name = "maxLength", type = JAXBElement.class),
-        @XmlElementRef(name = "minLength", type = JAXBElement.class),
         @XmlElementRef(name = "length", type = JAXBElement.class),
+        @XmlElementRef(name = "maxLength", type = JAXBElement.class),
+        @XmlElementRef(name = "uniqueGlobally", type = JAXBElement.class),
+        @XmlElementRef(name = "minLength", type = JAXBElement.class),
         @XmlElementRef(name = "uniqueInCollection", type = JAXBElement.class)
     })
     protected List<JAXBElement<? extends Serializable>> minLengthOrMaxLengthOrLength;
@@ -68,11 +68,11 @@ public class Constraints {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link JAXBElement }{@code <}{@link Integer }{@code >}
      * {@link JAXBElement }{@code <}{@link Boolean }{@code >}
      * {@link JAXBElement }{@code <}{@link Integer }{@code >}
-     * {@link JAXBElement }{@code <}{@link Boolean }{@code >}
      * {@link JAXBElement }{@code <}{@link Integer }{@code >}
+     * {@link JAXBElement }{@code <}{@link Integer }{@code >}
+     * {@link JAXBElement }{@code <}{@link Boolean }{@code >}
      * 
      * 
      */

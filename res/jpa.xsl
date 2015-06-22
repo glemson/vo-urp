@@ -201,7 +201,7 @@ Currently only for JPA 2.0 impementation of eclipselink it seems as if nested at
         </xsl:choose>
      </xsl:when>
       <xsl:otherwise>
-      <xsl:message> ++++++++  ERROR  +++++++  <xsl:value-of select="name($type)"/> is not supported</xsl:message>
+      <xsl:message> ++++++++  ERROR  +++++++ on attribute <xsl:value-of select="name"/> <xsl:value-of select="name($type)"/> is not supported.</xsl:message>
 // TODO    [NOT_SUPPORTED_ATTRIBUTE]
       </xsl:otherwise>
     </xsl:choose>

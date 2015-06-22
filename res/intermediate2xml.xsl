@@ -124,7 +124,7 @@ but that would imply none of the contained elements could have comments.
   
  
 
-  <xsl:template  match="objectType">
+  <xsl:template match="objectType">
     <xsl:param name="contextObjectId" select="@xmiid"/> <!-- the object for which the XML doc is actually created. 
                                              May have influence through subsetting of properties for example. -->
     <xsl:if test="$ISDEBUG">

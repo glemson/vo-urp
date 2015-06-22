@@ -12,6 +12,12 @@
 <!-- possible values: postgres, mssqlserver, mysql, sql92 (default) -->  
   <xsl:param name="vendor"/>
   <xsl:param name="schemaPrefix"/>
+<!--  
+  <xsl:variable name="backupSchema" 
+     select="concat('backup',format-dateTime(current-dateTime(), '[Y,4][M,2][D,2][H][m][s]'))"/>
+-->
+  <xsl:variable name="backupSchema" 
+     select="concat('backup',//model/created)"/>
 
 <!-- Define parameters/variables that can be reused in this script an in others using it (JPA) -->
   <!-- next two might also be parameters, or obtained from a config file -->
@@ -28,15 +34,6 @@
   
   <xsl:variable name="primaryKeyColumnName" select="'ID'"/>
   <!-- Auto Generated Primary Key -->
-  <xsl:variable name="IDGentype">
-    <xsl:choose>
-      <xsl:when test="$vendor = 'mssqlserver'">BIGINT IDENTITY NOT NULL</xsl:when>
-      <xsl:when test="$vendor = 'postgres'">SERIAL8</xsl:when>
-      <xsl:when test="$vendor = 'mysql'">BIGINT PRIMARY KEY auto_increment NOT NULL</xsl:when>
-      <xsl:otherwise>NUMERIC(18)</xsl:otherwise><!-- use SQL92 standard -->
-    </xsl:choose>
-  </xsl:variable>
-  
   <!-- Base Type for Primary Key references -->
   <xsl:variable name="IDDatatype">
     <xsl:choose>
@@ -46,6 +43,34 @@
       <xsl:otherwise>NUMERIC(18)</xsl:otherwise><!-- use SQL92 standard -->
     </xsl:choose>
   </xsl:variable>
+  <xsl:variable name="IDNonGentype">
+    <xsl:choose>
+      <xsl:when test="$vendor = 'mssqlserver'"><xsl:value-of select="$IDDatatype"/> NOT NULL</xsl:when>
+      <xsl:when test="$vendor = 'postgres'"><xsl:value-of select="$IDDatatype"/> NOT NULL</xsl:when>
+      <xsl:when test="$vendor = 'mysql'"><xsl:value-of select="$IDDatatype"/> PRIMARY KEY NOT NULL</xsl:when>
+      <xsl:otherwise>NUMERIC(18)</xsl:otherwise><!-- use SQL92 standard -->
+    </xsl:choose>
+  </xsl:variable>
+  <xsl:variable name="IDGentype">
+    <xsl:choose>
+      <xsl:when test="$vendor = 'mssqlserver'"><xsl:value-of select="$IDDatatype"/> IDENTITY NOT NULL</xsl:when>
+      <xsl:when test="$vendor = 'postgres'">SERIAL8</xsl:when>
+      <xsl:when test="$vendor = 'mysql'"><xsl:value-of select="$IDDatatype"/> PRIMARY KEY auto_increment NOT NULL</xsl:when>
+      <xsl:otherwise>NUMERIC(18)</xsl:otherwise><!-- use SQL92 standard -->
+    </xsl:choose>
+  </xsl:variable>
+  
+
+  <xsl:variable name="commit_statement">
+    <xsl:choose>
+      <xsl:when test="$vendor = 'mssqlserver'">GO</xsl:when>
+      <xsl:when test="$vendor = 'postgres'">;</xsl:when>
+      <xsl:when test="$vendor = 'mysql'">;</xsl:when>
+      <xsl:otherwise>;s</xsl:otherwise><!-- use SQL92 standard -->
+    </xsl:choose>
+  </xsl:variable>
+
+
 
   <xsl:variable name="containerColumnName" select="'containerId'"/>
 
@@ -63,10 +88,19 @@
 
   <!-- for now no special camelcase 2 '_' transformation -->
   <xsl:template match="objectType|collection" mode="tableName">
+    <xsl:param name="backup" select="'false'"/>
+
     <xsl:variable name="tablename">
       <xsl:apply-templates select="." mode="tableName_noschema"/>
     </xsl:variable>
-    <xsl:value-of select="concat($schemaPrefix,$tablename)"/>
+    <xsl:choose>
+      <xsl:when test="$backup = 'false'">
+		    <xsl:value-of select="concat($schemaPrefix,$tablename)"/>
+      </xsl:when>
+      <xsl:otherwise>
+		    <xsl:value-of select="concat($backupSchema,'.',$tablename)"/>
+      </xsl:otherwise>
+    </xsl:choose>
   </xsl:template>
 
   <xsl:template match="objectType|collection" mode="tableName_noschema">
@@ -80,7 +114,17 @@
     <xsl:variable name="viewname">
       <xsl:apply-templates select="." mode="viewName_noschema"/>
     </xsl:variable>
-    <xsl:value-of select="concat($schemaPrefix,$viewname)"/>
+    <xsl:choose>
+      <xsl:when test="$vendor = 'mssqlserver'">
+    <xsl:value-of select="concat($schemaPrefix,'[',$viewname,']')"/>
+      </xsl:when>
+      <xsl:when test="$vendor = 'postgres'">
+          <xsl:value-of select="concat($schemaPrefix,'&quot;',$viewname,'&quot;')"/>
+      </xsl:when>
+      <xsl:otherwise>
+          <xsl:value-of select="concat($schemaPrefix,$viewname)"/>
+      </xsl:otherwise>
+      </xsl:choose>
   </xsl:template>
 
   <!-- for now no special camelcase 2 '_' transformation -->
@@ -346,6 +390,18 @@ template in jpa.xsl
   </xsl:template>
 
 
+  <xsl:template name="call-procedure">
+    <xsl:param name="name"/>
+    <xsl:choose>
+      <xsl:when test="$vendor = 'mssqlserver'">
+     IF OBJECT_ID ( '<xsl:value-of select="$name"/>', 'P' ) IS NOT NULL 
+       exec <xsl:value-of select="$name"/>
+     GO  
+      </xsl:when>
+      <xsl:when test="$vendor = 'postgres'">
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
 
   
 </xsl:stylesheet>

@@ -24,10 +24,10 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _ConstraintsMaxLength_QNAME = new QName("", "maxLength");
     private final static QName _ConstraintsMinLength_QNAME = new QName("", "minLength");
-    private final static QName _ConstraintsUniqueGlobally_QNAME = new QName("", "uniqueGlobally");
     private final static QName _ConstraintsLength_QNAME = new QName("", "length");
+    private final static QName _ConstraintsUniqueGlobally_QNAME = new QName("", "uniqueGlobally");
+    private final static QName _ConstraintsMaxLength_QNAME = new QName("", "maxLength");
     private final static QName _ConstraintsUniqueInCollection_QNAME = new QName("", "uniqueInCollection");
 
     /**
@@ -70,19 +70,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Collection }
+     * Create an instance of {@link Attribute }
      * 
      */
-    public Collection createCollection() {
-        return new Collection();
-    }
-
-    /**
-     * Create an instance of {@link DataType }
-     * 
-     */
-    public DataType createDataType() {
-        return new DataType();
+    public Attribute createAttribute() {
+        return new Attribute();
     }
 
     /**
@@ -94,11 +86,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link PrimitiveType }
+     * Create an instance of {@link Reference }
      * 
      */
-    public PrimitiveType createPrimitiveType() {
-        return new PrimitiveType();
+    public Reference createReference() {
+        return new Reference();
     }
 
     /**
@@ -110,19 +102,35 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link PackageReference }
-     * 
-     */
-    public PackageReference createPackageReference() {
-        return new PackageReference();
-    }
-
-    /**
      * Create an instance of {@link Constraints }
      * 
      */
     public Constraints createConstraints() {
         return new Constraints();
+    }
+
+    /**
+     * Create an instance of {@link DataType }
+     * 
+     */
+    public DataType createDataType() {
+        return new DataType();
+    }
+
+    /**
+     * Create an instance of {@link Collection }
+     * 
+     */
+    public Collection createCollection() {
+        return new Collection();
+    }
+
+    /**
+     * Create an instance of {@link PrimitiveType }
+     * 
+     */
+    public PrimitiveType createPrimitiveType() {
+        return new PrimitiveType();
     }
 
     /**
@@ -134,19 +142,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Attribute }
+     * Create an instance of {@link PackageReference }
      * 
      */
-    public Attribute createAttribute() {
-        return new Attribute();
-    }
-
-    /**
-     * Create an instance of {@link Reference }
-     * 
-     */
-    public Reference createReference() {
-        return new Reference();
+    public PackageReference createPackageReference() {
+        return new PackageReference();
     }
 
     /**
@@ -161,18 +161,18 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link Integer }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "maxLength", scope = Constraints.class)
-    public JAXBElement<Integer> createConstraintsMaxLength(Integer value) {
-        return new JAXBElement<Integer>(_ConstraintsMaxLength_QNAME, Integer.class, Constraints.class, value);
+    @XmlElementDecl(namespace = "", name = "minLength", scope = Constraints.class)
+    public JAXBElement<Integer> createConstraintsMinLength(Integer value) {
+        return new JAXBElement<Integer>(_ConstraintsMinLength_QNAME, Integer.class, Constraints.class, value);
     }
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link Integer }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "minLength", scope = Constraints.class)
-    public JAXBElement<Integer> createConstraintsMinLength(Integer value) {
-        return new JAXBElement<Integer>(_ConstraintsMinLength_QNAME, Integer.class, Constraints.class, value);
+    @XmlElementDecl(namespace = "", name = "length", scope = Constraints.class)
+    public JAXBElement<Integer> createConstraintsLength(Integer value) {
+        return new JAXBElement<Integer>(_ConstraintsLength_QNAME, Integer.class, Constraints.class, value);
     }
 
     /**
@@ -188,9 +188,9 @@ public class ObjectFactory {
      * Create an instance of {@link JAXBElement }{@code <}{@link Integer }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "", name = "length", scope = Constraints.class)
-    public JAXBElement<Integer> createConstraintsLength(Integer value) {
-        return new JAXBElement<Integer>(_ConstraintsLength_QNAME, Integer.class, Constraints.class, value);
+    @XmlElementDecl(namespace = "", name = "maxLength", scope = Constraints.class)
+    public JAXBElement<Integer> createConstraintsMaxLength(Integer value) {
+        return new JAXBElement<Integer>(_ConstraintsMaxLength_QNAME, Integer.class, Constraints.class, value);
     }
 
     /**

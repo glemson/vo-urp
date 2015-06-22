@@ -18,6 +18,8 @@ import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.ivoa.conf.RuntimeConfiguration;
 import org.ivoa.dm.DataModelManager;
 import org.ivoa.dm.model.MetadataObject;
+import org.ivoa.dm.model.MetadataRootEntities;
+import org.ivoa.dm.model.MetadataRootEntityObject;
 import org.ivoa.jaxb.XmlBindException;
 import org.ivoa.util.FileUtils;
 import org.ivoa.web.servlet.BaseServlet;
@@ -174,8 +176,8 @@ public final class ManagerServlet extends BaseServlet {
   }
 
   /**
-   * Insert an uploaded document into the databaase and return the corresponding object.<br>
-   * TODO provide better error message if XML invalid. Same as in validation servelet.
+   * Insert an uploaded document into the database and return the corresponding object.<br>
+   * TODO provide better error message if XML invalid. Same as in validation servlet.
    * TODO Give better message in case a reference can not be resolved, or is doubly resolved in case
    *    inconsistent ivoId/publisherDID pair is used..
    *
@@ -186,7 +188,7 @@ public final class ManagerServlet extends BaseServlet {
    *
    * @throws Exception
    */
-  private MetadataObject handleInsert(final Map<String, Object> parameters, final String user)
+  private List<MetadataRootEntityObject> handleInsert(final Map<String, Object> parameters, final String user)
                                throws Exception {
     InputStream in = null;
 
@@ -203,7 +205,7 @@ public final class ManagerServlet extends BaseServlet {
       FileUtils.closeStream(in);
       
       in = infile.getInputStream();
-      MetadataObject result = dataModelManager.load(in, user);
+      List<MetadataRootEntityObject> result = dataModelManager.load(in, user);
 
       return result;
     } catch (final Throwable t) {

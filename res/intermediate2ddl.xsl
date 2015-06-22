@@ -140,17 +140,19 @@ CREATE TABLE TargetObjectType (
 
         
 <!-- CREATE TABLES -->
-    <xsl:variable name="file" select="concat($vendor,'/',$project_name,'_createTables.sql')"/>
+    <xsl:variable name="file" select="concat($vendor,'/createTables.sql')"/>
     <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
     <xsl:result-document href="{$file}">
+      <xsl:value-of select="'-- createTables.sql'"/>&cr;&cr;
       <xsl:value-of select="$header"/>&cr;&cr;
 
-    <xsl:if test="string-length(normalize-space($schema)) > 0">
+     <xsl:if test="string-length(normalize-space($schema)) > 0">
     <xsl:message>Found a DB schema: <xsl:value-of select="$schema"/>|<xsl:value-of select="$schemaPrefix"/></xsl:message>
-    <xsl:text>CREATE SCHEMA </xsl:text><xsl:value-of select="normalize-space($schema)"/>
-    <xsl:text>;</xsl:text>&cr;
+    <xsl:call-template name="create-schema">
+      <xsl:with-param name="name" select="normalize-space($schema)"/>
+    </xsl:call-template>  
     </xsl:if>
- 
+
       <xsl:for-each select="exsl:node-set($sortedObjectTypes)/node/objectType">   
         <xsl:sort select="position()" data-type="number" order="ascending"/> 
 
@@ -174,11 +176,105 @@ CREATE TABLE TargetObjectType (
       </xsl:for-each>
     </xsl:result-document>
 
-    
-<!-- CREATE VIEWS -->
-    <xsl:variable name="file" select="concat($vendor,'/',$project_name,'_createViews.sql')"/>
+    <xsl:variable name="file" select="concat($vendor,'/dropTables.sql')"/>
     <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
     <xsl:result-document href="{$file}">
+      <xsl:value-of select="'-- dropTables.sql'"/>&cr;&cr;
+      <xsl:value-of select="$header"/>&cr;&cr;
+
+      <xsl:for-each select="exsl:node-set($sortedObjectTypes)/node/objectType">   
+        <xsl:sort select="position()" data-type="number" order="descending"/> 
+        
+  <xsl:apply-templates select="." mode="start-table-exists-test"/>
+
+        <!-- collection of simple types (primitive, datatype, enumeration) -->
+
+<!--
+        <xsl:apply-templates select="./collection" mode="dropTable" />
+        <xsl:apply-templates select="." mode="dropFKs"/>
+        <xsl:apply-templates select="." mode="dropIndexes"/>
+  -->
+        <xsl:apply-templates select="." mode="dropTable"/>
+
+<xsl:call-template name="end-test"/>
+
+      </xsl:for-each>
+      
+      <xsl:if test="string-length(normalize-space($schema)) > 0">
+    <xsl:call-template name="drop-schema">
+      <xsl:with-param name="name" select="normalize-space($schema)"/>
+    </xsl:call-template>  
+    <xsl:text></xsl:text>&cr;
+    </xsl:if>
+
+    </xsl:result-document>
+
+    <!-- BACKUP TABLES -->
+    <xsl:variable name="file" select="concat($vendor,'/backupTables.sql')"/>
+    <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
+    <xsl:result-document href="{$file}">
+      <xsl:value-of select="'-- backupTables.sql'"/>&cr;&cr;
+      <xsl:value-of select="$header"/>&cr;&cr;
+
+    <xsl:call-template name="create-schema">
+      <xsl:with-param name="name" select="$backupSchema"/>
+    </xsl:call-template>
+    
+<!-- 
+    &cr;&cr;<xsl:value-of select="$commit_statement"/>&cr;&cr;
+ -->
+      <xsl:for-each select="exsl:node-set($sortedObjectTypes)/node/objectType">   
+        <xsl:sort select="position()" data-type="number" order="ascending"/> 
+
+  <xsl:apply-templates select="." mode="start-table-exists-test"/>
+        <xsl:apply-templates select="." mode="backupTable"/>
+  <xsl:call-template name="end-test"/>
+        <!-- collection of simple types (primitive, datatype, enumeration) -->
+<!-- 
+        <xsl:apply-templates select="./collection" mode="backupTable" />
+ -->        
+        &cr;&cr;
+      </xsl:for-each>
+      &cr;
+
+    </xsl:result-document>
+
+    <xsl:variable name="file" select="concat($vendor,'/dropBackupTables.sql')"/>
+    <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
+    <xsl:result-document href="{$file}">
+      <xsl:value-of select="'-- dropBackupTables.sql'"/>&cr;&cr;
+      <xsl:value-of select="$header"/>&cr;&cr;
+      <xsl:for-each select="exsl:node-set($sortedObjectTypes)/node/objectType">   
+        <xsl:sort select="position()" data-type="number" order="descending"/> 
+        <xsl:apply-templates select="." mode="dropBackupTable"/>
+      </xsl:for-each>
+      &cr;
+    <xsl:text>DROP SCHEMA </xsl:text><xsl:value-of select="$backupSchema"/>
+
+    </xsl:result-document>
+    
+    <!-- MIGRATE TABLES by filling them from backup -->
+    <xsl:variable name="file" select="concat($vendor,'/migrateTables.sql')"/>
+    <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
+    <xsl:result-document href="{$file}">
+      <xsl:value-of select="'-- migrateTables.sql'"/>&cr;&cr;
+      <xsl:value-of select="$header"/>&cr;&cr;
+
+      <xsl:for-each select="exsl:node-set($sortedObjectTypes)/node/objectType">   
+        <xsl:sort select="position()" data-type="number" order="ascending"/> 
+
+  <xsl:apply-templates select="." mode="start-table-exists-test"/>
+            <xsl:apply-templates select="." mode="migrateTable"/>
+  <xsl:call-template name="end-test"/>
+        &cr;&cr;
+      </xsl:for-each>
+    </xsl:result-document>
+<!--  ============================= -->
+<!-- CREATE VIEWS -->
+    <xsl:variable name="file" select="concat($vendor,'/createViews.sql')"/>
+    <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
+    <xsl:result-document href="{$file}">
+      <xsl:value-of select="'-- createViews.sql'"/>&cr;&cr;
       <xsl:value-of select="$header"/>
 
       <xsl:for-each select="exsl:node-set($sortedObjectTypes)/node/objectType">   
@@ -186,54 +282,29 @@ CREATE TABLE TargetObjectType (
         <xsl:apply-templates select="." mode="createView"/>
 
       </xsl:for-each>
+
     </xsl:result-document>
 
 
-<!-- DROP VIEWS -->
-    <xsl:variable name="file" select="concat($vendor,'/',$project_name,'_dropViews.sql')"/>
+    <xsl:variable name="file" select="concat($vendor,'/dropViews.sql')"/>
     <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
     <xsl:result-document href="{$file}">
+      <xsl:value-of select="'-- dropViews.sql'"/>&cr;&cr;
       <xsl:value-of select="$header"/>
-
       <xsl:for-each select="exsl:node-set($sortedObjectTypes)/node/objectType">   
         <xsl:sort select="position()" data-type="number" order="descending"/> 
+    
+  <xsl:apply-templates select="." mode="start-table-exists-test">
+    <xsl:with-param name="asView" select="'true'"/>
+  </xsl:apply-templates>
+
         <xsl:apply-templates select="." mode="dropView"/>
-
+<xsl:call-template name="end-test"/>
       </xsl:for-each>
     </xsl:result-document>
 
-
-<!--  DROP TABLES -->
-    <xsl:variable name="file" select="concat($vendor,'/',$project_name,'_dropTables.sql')"/>
-    <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
-    <xsl:result-document href="{$file}">
-      <xsl:value-of select="$header"/>
-
-      <xsl:for-each select="exsl:node-set($sortedObjectTypes)/node/objectType">   
-        <xsl:sort select="position()" data-type="number" order="descending"/> 
-        
-        <!-- collection of simple types (primitive, datatype, enumeration) -->
-        <xsl:apply-templates select="./collection" mode="dropTable" />
-
-        <xsl:apply-templates select="." mode="dropFKs"/>
-        <xsl:apply-templates select="." mode="dropIndexes"/>
-
-        <xsl:apply-templates select="." mode="dropTable"/>
-
-      </xsl:for-each>
-      
-          <xsl:if test="string-length(normalize-space($schema)) > 0">
-    <xsl:message>Found a DB schema: <xsl:value-of select="$schema"/>|<xsl:value-of select="$schemaPrefix"/></xsl:message>
-    <xsl:text>DROP SCHEMA </xsl:text><xsl:value-of select="normalize-space($schema)"/>
-    <xsl:text>;</xsl:text>&cr;
-    </xsl:if>
-      
-    </xsl:result-document>
 
   </xsl:template>  
-
-
-
 
   <xsl:template match="objectType" mode="createTable">
     <!-- generate a single table for the whole object hierarchy below the matched objectType -->
@@ -249,7 +320,7 @@ CREATE TABLE TargetObjectType (
     <xsl:value-of select="$IDGentype"/>
   </xsl:when>
   <xsl:otherwise>
-    <xsl:value-of select="$IDDatatype"/>&bl;<xsl:text>NOT NULL</xsl:text>
+    <xsl:value-of select="$IDNonGentype"/>
   </xsl:otherwise>
 </xsl:choose>
 &cr; 
@@ -271,7 +342,105 @@ CREATE TABLE TargetObjectType (
 
   </xsl:template>
 
-  
+  <xsl:template match="objectType" mode="backupTable">
+    <!-- generate a single table for the whole object hierarchy below the matched objectType -->
+    <xsl:variable name="tableName">
+      <xsl:apply-templates select="." mode="tableName"/>
+    </xsl:variable>
+    
+    <xsl:variable name="tmp_tableName">
+      <xsl:apply-templates select="." mode="tableName">
+        <xsl:with-param name="backup" select="'true'"/>
+      </xsl:apply-templates>
+    </xsl:variable>
+    
+<xsl:text>CREATE TABLE </xsl:text><xsl:value-of select="$tmp_tableName"/><xsl:text> (</xsl:text>&cr;
+&bl;&bl;<xsl:value-of select="$primaryKeyColumnName"/>&bl;
+    <xsl:value-of select="$IDDatatype"/>&bl;<xsl:text>NOT NULL</xsl:text>
+&cr; 
+<xsl:if test="not(extends)">
+  <xsl:apply-templates select="." mode="discriminatorColumnDeclaration"/>
+  <xsl:text>, OPTLOCK INTEGER</xsl:text>&cr;  
+  <xsl:text>, </xsl:text><xsl:value-of select="$publisherDIDColumnName"/> <xsl:text> VARCHAR(</xsl:text><xsl:value-of select="$publisherDIDColumnLength"/>)&cr;  
+</xsl:if>
+<xsl:apply-templates select="." mode="container"/>
+<xsl:apply-templates select="attribute" />
+<xsl:apply-templates select="reference" />
+
+<xsl:apply-templates select="." mode="rootEntity"/>
+<xsl:text>)</xsl:text>&cr;
+
+<xsl:text>INSERT INTO </xsl:text><xsl:value-of select="$tmp_tableName"/><xsl:text> SELECT * FROM </xsl:text><xsl:value-of select="$tableName"/>&cr;&cr;
+
+  </xsl:template>
+
+  <xsl:template match="objectType" mode="migrateTable">
+    <!-- generate a single table for the whole object hierarchy below the matched objectType -->
+    <xsl:variable name="tableName">
+      <xsl:apply-templates select="." mode="tableName"/>
+    </xsl:variable>
+    
+    <xsl:variable name="tmp_tableName">
+      <xsl:apply-templates select="." mode="tableName">
+        <xsl:with-param name="backup" select="'true'"/>
+      </xsl:apply-templates>
+    </xsl:variable>
+    
+  <xsl:if test="not(extends)">
+<xsl:if test="$vendor='mssqlserver'">
+SET IDENTITY_INSERT <xsl:value-of select="$tableName"/> ON&cr;
+</xsl:if>    
+    </xsl:if>
+<xsl:text>INSERT INTO </xsl:text><xsl:value-of select="$tableName"/> <xsl:text>(</xsl:text>&cr;
+&bl;&bl;<xsl:value-of select="$primaryKeyColumnName"/>&cr;
+<xsl:if test="not(extends)">
+  <xsl:text>,  </xsl:text><xsl:value-of select="$discriminatorColumnName"/>
+  <xsl:text>, OPTLOCK </xsl:text>&cr;  
+  <xsl:text>, </xsl:text><xsl:value-of select="$publisherDIDColumnName"/>&cr;  
+</xsl:if>
+<xsl:apply-templates select="." mode="container_select"/>
+        <xsl:for-each select="attribute">
+          <xsl:variable name="columns">
+            <xsl:apply-templates select="." mode="columns"/>
+          </xsl:variable> 
+          <xsl:for-each select="exsl:node-set($columns)/column">
+            <xsl:text>  ,      </xsl:text><xsl:apply-templates select="name" mode="safecolumnname"/>&cr;
+          </xsl:for-each>   
+        </xsl:for-each>
+        <xsl:for-each select="reference[not(subsets)]">
+          <xsl:text>  ,      </xsl:text><xsl:apply-templates select="." mode="columnName"/>&cr;
+        </xsl:for-each>        
+
+<xsl:apply-templates select="." mode="rootEntity_select"/>
+<xsl:text>)</xsl:text>&cr;
+<xsl:text> SELECT </xsl:text>&cr;
+&bl;&bl;<xsl:value-of select="$primaryKeyColumnName"/>&cr;
+<xsl:if test="not(extends)">
+  <xsl:text>,  </xsl:text><xsl:value-of select="$discriminatorColumnName"/>
+  <xsl:text>, OPTLOCK </xsl:text>&cr;  
+  <xsl:text>, </xsl:text><xsl:value-of select="$publisherDIDColumnName"/>&cr;  
+</xsl:if>
+<xsl:apply-templates select="." mode="container_select"/>
+        <xsl:for-each select="attribute">
+          <xsl:variable name="columns">
+            <xsl:apply-templates select="." mode="columns"/>
+          </xsl:variable> 
+          <xsl:for-each select="exsl:node-set($columns)/column">
+            <xsl:text>  ,      </xsl:text><xsl:apply-templates select="name" mode="safecolumnname"/>&cr;
+          </xsl:for-each>   
+        </xsl:for-each>
+        <xsl:for-each select="reference[not(subsets)]">
+          <xsl:text>  ,      </xsl:text><xsl:apply-templates select="." mode="columnName"/>&cr;
+        </xsl:for-each>        
+<xsl:apply-templates select="." mode="rootEntity_select"/>
+<xsl:text> FROM </xsl:text><xsl:value-of select="$tmp_tableName"/>&cr;&cr;
+
+  <xsl:if test="not(extends)">
+<xsl:if test="$vendor='mssqlserver'">
+SET IDENTITY_INSERT <xsl:value-of select="$tableName"/> OFF&cr;
+</xsl:if>    
+</xsl:if>  
+  </xsl:template>
   
   
   <xsl:template match="collection" mode="createTable">
@@ -279,6 +448,9 @@ CREATE TABLE TargetObjectType (
     <xsl:variable name="datatype" select="key('element',./datatype/@xmiidref)"/>
     <xsl:choose>
         <xsl:when test="name($datatype) = 'primitiveType'">
+<xsl:message>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</xsl:message>
+<xsl:message>Generating a table for a primitivetype in collection <xsl:value-of select="name"/></xsl:message>
+<xsl:message>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</xsl:message>
 
         &rem;<xsl:text>------------------------------------------------------------------------------</xsl:text>&cr;
         &rem;<xsl:text> Table representation of the collection </xsl:text><xsl:value-of select="../name"/>.<xsl:value-of select="name"/> of <xsl:value-of select="$datatype/name"/>.&cr;
@@ -331,9 +503,18 @@ CREATE INDEX ix_<xsl:value-of select="$tableName_ns"/>___CONTAINER ON <xsl:value
     <xsl:variable name="tableName">
       <xsl:apply-templates select="." mode="tableName"/>
     </xsl:variable>
-<xsl:text>DROP TABLE </xsl:text><xsl:value-of select="$tableName"/>;&cr;&cr;
+<xsl:text>DROP TABLE </xsl:text><xsl:value-of select="$tableName"/>&cr;&cr;
   </xsl:template>
 
+  <xsl:template match="objectType" mode="dropBackupTable">
+    <!-- drop the table for the whole object hierarchy below the matched objectType -->
+    <xsl:variable name="tableName">
+      <xsl:apply-templates select="." mode="tableName">
+        <xsl:with-param name="backup" select="'true'"/>
+      </xsl:apply-templates>
+    </xsl:variable>
+<xsl:text>DROP TABLE </xsl:text><xsl:value-of select="$tableName"/>&cr;&cr;
+  </xsl:template>
 
 
 
@@ -353,7 +534,8 @@ CREATE INDEX ix_<xsl:value-of select="$tableName_ns"/>___CONTAINER ON <xsl:value
 
 DROP INDEX ix_<xsl:value-of select="$tableName_ns"/>___CONTAINER;&cr;&cr;
 
-<xsl:text>DROP TABLE </xsl:text><xsl:value-of select="$tableName"/>;&cr;&cr;
+<xsl:text>DROP TABLE </xsl:text><xsl:value-of select="$tableName"/>&cr;
+&cr;
         </xsl:when>
         <xsl:when test="name($datatype) = 'objectType'"/>
         <xsl:otherwise>
@@ -442,7 +624,7 @@ DROP INDEX ix_<xsl:value-of select="$tableName_ns"/>___CONTAINER;&cr;&cr;
     <xsl:variable name="decl_viewName">
     <xsl:apply-templates select="." mode="viewName_declaration"/>
     </xsl:variable>
-<xsl:text>DROP VIEW </xsl:text><xsl:value-of select="$decl_viewName"/>;&cr;&cr;
+<xsl:text>DROP VIEW </xsl:text><xsl:value-of select="$decl_viewName"/>&cr;
   </xsl:template>
 
 
@@ -508,13 +690,13 @@ This is the root entity table for the referenced class
 		<xsl:value-of select="concat('fk_',$tableName_ns)"/>
     </xsl:variable>
     <xsl:if test="container">
-<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> DROP CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_container;&cr; 
+<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> DROP CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_container&cr; 
     </xsl:if>
     <xsl:if test="extends">
-<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> DROP CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_extends;&cr; 
+<xsl:text>ALTER TABLE </xsl:text><xsl:value-of select="$tableName"/> DROP CONSTRAINT fk_<xsl:value-of select="$tableName_ns"/>_extends&cr; 
     </xsl:if>
     <xsl:for-each select="reference[not(subsets)]">
-ALTER TABLE <xsl:value-of select="$tableName"/> DROP CONSTRAINT <xsl:value-of select="$fkPrefix"/>_<xsl:value-of select="name"/>;&cr;&cr;
+ALTER TABLE <xsl:value-of select="$tableName"/> DROP CONSTRAINT <xsl:value-of select="$fkPrefix"/>_<xsl:value-of select="name"/>&cr;&cr;
 	</xsl:for-each>
   </xsl:template>
 
@@ -562,11 +744,11 @@ CREATE INDEX ix_<xsl:value-of select="$tableName_ns"/>_<xsl:value-of select="nam
 	</xsl:variable>		
 
     <xsl:if test="container">
-DROP INDEX <xsl:value-of select="$ixPrefix"/>___CONTAINER;&cr;&cr;
+DROP INDEX <xsl:value-of select="$ixPrefix"/>___CONTAINER&cr;&cr;
 </xsl:if>
     
     <xsl:for-each select="reference[not(subsets)]">
-DROP INDEX <xsl:value-of select="$ixPrefix"/>_<xsl:value-of select="name"/>;&cr;&cr;
+DROP INDEX <xsl:value-of select="$ixPrefix"/>_<xsl:value-of select="name"/>&cr;&cr;
 </xsl:for-each>
   </xsl:template>
   
@@ -583,6 +765,15 @@ DROP INDEX <xsl:value-of select="$ixPrefix"/>_<xsl:value-of select="name"/>;&cr;
       <xsl:text>, rank INTEGER NOT NULL </xsl:text>&cr;      
     </xsl:if>
   </xsl:template>
+
+  <xsl:template match="objectType" mode="container_select">
+    <xsl:variable name="xmiid" select="@xmiid"/>
+    <xsl:if test="container">
+      <xsl:text>, containerId  </xsl:text>&cr;
+      <xsl:text>, rank </xsl:text>&cr;      
+    </xsl:if>
+  </xsl:template>
+
   
   <!-- IF this is a root entity class, add user columnsdetermine whether there is a class that contains this class.
   If so generate a containerID column.
@@ -596,7 +787,15 @@ DROP INDEX <xsl:value-of select="$ixPrefix"/>_<xsl:value-of select="name"/>;&cr;
     </xsl:if>
   </xsl:template>
   
-  
+  <xsl:template match="objectType" mode="rootEntity_select">
+    <xsl:if test="@entity='true' and not(extends)">
+      <xsl:text>, creationUser </xsl:text>&cr;
+      <xsl:text>, modificationUser </xsl:text>&cr;      
+      <xsl:text>, creationDate </xsl:text>&cr;
+      <xsl:text>, modificationDate </xsl:text>&cr;      
+    </xsl:if>
+  </xsl:template>
+    
 
   
   <xsl:template match="attribute">
@@ -712,6 +911,74 @@ DROP INDEX <xsl:value-of select="$ixPrefix"/>_<xsl:value-of select="name"/>;&cr;
 <!-- Discriminator column templates -->
   <xsl:template match="objectType" mode="discriminatorColumnDeclaration">, <xsl:value-of select="$discriminatorColumnName"/>&bl;<xsl:value-of select="$discriminatorColumnType"/>&cr;
   </xsl:template>
+
+
+
+
+  <xsl:template name="create-schema">
+    <xsl:param name="name"/>
+    <xsl:choose>
+      <xsl:when test="$vendor = 'mssqlserver'">
+IF NOT EXISTS (SELECT 1 FROM sys.schemas WHERE name = '<xsl:value-of select="$name"/>')
+BEGIN
+    EXEC sp_executesql N'CREATE SCHEMA <xsl:value-of select="$name"/>'
+END
+      </xsl:when>
+      <xsl:when test="$vendor = 'postgres'">
+      CREATE SCHEMA IF NOT EXISTS schema_name  <xsl:value-of select="@name"/> 
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="drop-schema">
+    <xsl:param name="name"/>
+    <xsl:choose>
+      <xsl:when test="$vendor = 'mssqlserver'">
+IF EXISTS (SELECT 1 FROM sys.schemas WHERE name = '<xsl:value-of select="$name"/>')
+BEGIN
+    EXEC sp_executesql N'DROP SCHEMA <xsl:value-of select="$name"/>'
+END
+      </xsl:when>
+      <xsl:when test="$vendor = 'postgres'">
+      DROP SCHEMA IF EXISTS schema_name  <xsl:value-of select="@name"/> 
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+
+  <xsl:template match="objectType" mode="start-table-exists-test">
+    <xsl:param name="asView"/>
+      <xsl:variable name="name">
+        <xsl:choose>
+          <xsl:when test="$asView='true'">
+      <xsl:apply-templates select="." mode="viewName_noschema"/>
+          </xsl:when>
+          <xsl:otherwise>
+      <xsl:apply-templates select="." mode="tableName_noschema"/>
+          </xsl:otherwise>
+        </xsl:choose>
+    </xsl:variable>
+
+    <xsl:choose>
+      <xsl:when test="$vendor = 'mssqlserver'">
+IF EXISTS (SELECT 1 FROM information_schema.tables 
+            WHERE table_name = '<xsl:value-of select="$name"/>'
+              <xsl:if test="$schema">AND table_schema = '<xsl:value-of select="$schema"/>'</xsl:if>)
+      BEGIN
+      </xsl:when>
+    </xsl:choose>
+  </xsl:template>
+
+  <xsl:template name="end-test">
+    <xsl:choose>
+      <xsl:when test="$vendor = 'mssqlserver'">
+      END
+      </xsl:when>
+    </xsl:choose>
+    
+  </xsl:template>
+
+
 
       
 </xsl:stylesheet>

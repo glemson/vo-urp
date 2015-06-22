@@ -19,6 +19,7 @@
 		indent="yes" />
 
 	<xsl:param name="lastModified" />
+	<xsl:param name="modelversion" />
 
 	<!-- xml index on xml:id -->
 	<!-- problem with match="*" is that MagicDraw creates a <proxy> for Resource 
@@ -31,6 +32,8 @@
 	<xsl:variable name="xmi_namespace" select="'http://schema.omg.org/spec/XMI/2.1'" />
 	<xsl:variable name="uml_namespace" select="'http://schema.omg.org/spec/UML/2.0'" />
 
+  <xsl:variable name="modelTimestamp" 
+     select="format-dateTime(current-dateTime(), '[Y,4][M,2][D,2][H][m][s]')"/>
 
 
 
@@ -89,6 +92,12 @@
 
 			<xsl:element name="lastModifiedDate">
 				<xsl:value-of select="$lastModified" />
+			</xsl:element>
+			<xsl:element name="created">
+				<xsl:value-of select="$modelTimestamp" />
+			</xsl:element>
+			<xsl:element name="version">
+				<xsl:value-of select="$modelversion" />
 			</xsl:element>
 			<xsl:apply-templates select="." mode="model.tags" />
 			<xsl:apply-templates

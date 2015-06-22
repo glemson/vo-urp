@@ -189,6 +189,10 @@ public final class XMLValidator extends SingletonSupport {
           new ErrorMessage(ErrorMessage.SEVERITY.FATAL, se.getLineNumber(), se.getColumnNumber(), se.getMessage()));
     }
   }
+  
+  public static void main(String[] args) {
+//	  XMLValidator v = new XMLValidator()
+  }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------
 

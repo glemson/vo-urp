@@ -61,6 +61,9 @@
 	<condition property="target.db.do">
 		<equals arg1="${target.db.active}" arg2="true" trim="true" />
 	</condition>
+	<condition property="target.db.backup.do">
+		<equals arg1="${target.db.backup.active}" arg2="true" trim="true" />
+	</condition>
 	<condition property="target.run.do">
 		<and>
 			<equals arg1="${target.run.active}" arg2="true" trim="true" />
@@ -158,8 +161,7 @@
 
 	</presetdef>
 
-
-
+	<taskdef resource="net/sf/antcontrib/antlib.xml"/>
 
 	<!-- targets -->
 
@@ -379,10 +381,7 @@
 		</ant>
 
         <!-- update DB if needed -->
-		<ant target="checkDB" />
-
-		<ant target="createDB" />
-
+		<ant target="setupDB" />
 
         <!-- build web app -->
 		<ant target="buildWeb" />
@@ -391,8 +390,38 @@
 		<ant target="run" />
 	</target>
 
+ 
+	<target name="setupDB" if="target.db.do" depends="retrieveDDLs,initForDB" description="Setup database, perform migration if requested">
 
-
+ 		<!-- copy files from ddl-s to backup, in case there are no files in the DB yet. So at least some files will be there when drop is called -->
+  	<if>
+  		<equals arg1="${target.db.backup.active}" arg2="true"/>
+  		<then>
+    		<echo>Perform backup</echo>
+  		  <doSql autocommit="true" onerror="continue" src="${ddl.directory}/backup/backupTables.sql" />
+  			<ant target="cleanDB"/>
+  			<ant target="createDB"/>
+ 	  	  <doSql autocommit="false" onerror="continue" errorproperty="migrateerror" src="${ddl.directory}/backup/migrateTables.sql" />
+ 	  		<if>
+ 	    		<isset property="migrateerror"/>
+ 	  			<then>
+ 	  				<echo>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</echo>
+ 	  				<echo>Error while migrating: fix migration script and run by hand</echo>
+ 	  				<echo>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</echo>
+ 	  			</then>
+  			<else>
+  	  	  <doSql autocommit="true" onerror="continue" src="${ddl.directory}/backup/dropBackupTables.sql" />
+  			</else>
+ 	  		</if>	
+  		</then>
+  		<else>
+  		  <echo>No backup required</echo>
+  			<ant target="cleanDB"/>
+  			<ant target="createDB"/>
+      </else>
+  	</if>
+		<ant target="insertDDLs"/>
+  </target>
 
 	<!-- target buildJava : makes both java libraries and the vo-urp browser web application -->
 	<target name="buildJava" description="build both java libraries and the web application">
@@ -601,6 +630,7 @@
 		<xslt2 in="${source}" out="${output}/${source_filtered}" style="${res}/${xmi2intermediate}">
 			<param name="root_package" expression="${root_package}" />
 			<param name="model_package" expression="${model_package}" />
+			<param name="modelversion" expression="${project.version}"/>
 		</xslt2>
 
 		<echo>xmi2intermediate : done.</echo> 
@@ -731,6 +761,17 @@
 			<param name="project_name" expression="${project.name}" />
 			<param name="schema" expression="${tap.target_schema}" />
 		</xslt2>
+
+		<mkdir dir="${output}/ddl/mssqlserver/backup/" />
+		<copy todir="${output}/ddl/mssqlserver/backup">
+      <fileset dir="${output}/ddl/mssqlserver">
+        <include name="dropTables.sql" />
+        <include name="dropViews.sql" />
+        <include name="backupTables.sql" />
+        <include name="migrateTables.sql" />
+        <include name="dropBackupTables.sql" />
+      </fileset>
+    </copy>
 <!--
 		<xslt2 in="${output}/${source_intermediate}" out="${output}/ddl/ddl-gen.log" style="${res}/intermediate2ddl_singletable.xsl">
 			<param name="vendor" expression="mssqlserver" />
@@ -753,24 +794,16 @@
 		<echo>run_intermediate2ddl : done.</echo>
 	</target>
 
-	<target name="run_intermediate2ddl_singletable">
-		<echo>run_intermediate2ddl_singletabale : starting generate DDL from file ${output}/${source_intermediate}</echo>
-
-		<xslt2 in="${output}/${source_intermediate}" out="${output}/ddl/ddl-gen.log" style="${res}/intermediate2ddl_singletable.xsl">
-			<param name="vendor" expression="mssqlserver" />
-			<param name="project_name" expression="${project.name}" />
-			<param name="schema" expression="${tap.target_schema}" />
-		</xslt2>
-</target>
 
 <target name="rebuildDB" description="generate DDL, clean and create database structure">
 	<ant target="run_intermediate2ddl"/>
     <!-- update DB if needed -->
-	<ant target="checkDB" />
+	<ant target="setupDB" />
 
-	<ant target="createDB" />
 </target>
-		
+
+			
+	
 	<!-- target run_intermediate2tap : generates TAP metadata VOTables from intermediate model -->
 	<target name="run_intermediate2tap">
 		<echo>run_intermediate2tap : starting generate TAP metadata VOTables from file ${output}/${source_intermediate}</echo>

@@ -94,46 +94,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Field }
-     * 
-     */
-    public Field createField() {
-        return new Field();
-    }
-
-    /**
-     * Create an instance of {@link Option }
-     * 
-     */
-    public Option createOption() {
-        return new Option();
-    }
-
-    /**
-     * Create an instance of {@link Table }
-     * 
-     */
-    public Table createTable() {
-        return new Table();
-    }
-
-    /**
-     * Create an instance of {@link Data }
-     * 
-     */
-    public Data createData() {
-        return new Data();
-    }
-
-    /**
-     * Create an instance of {@link FieldRef }
-     * 
-     */
-    public FieldRef createFieldRef() {
-        return new FieldRef();
-    }
-
-    /**
      * Create an instance of {@link Max }
      * 
      */
@@ -142,51 +102,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link TableData }
-     * 
-     */
-    public TableData createTableData() {
-        return new TableData();
-    }
-
-    /**
-     * Create an instance of {@link Min }
-     * 
-     */
-    public Min createMin() {
-        return new Min();
-    }
-
-    /**
-     * Create an instance of {@link FITS }
-     * 
-     */
-    public FITS createFITS() {
-        return new FITS();
-    }
-
-    /**
      * Create an instance of {@link Values }
      * 
      */
     public Values createValues() {
         return new Values();
-    }
-
-    /**
-     * Create an instance of {@link Tr }
-     * 
-     */
-    public Tr createTr() {
-        return new Tr();
-    }
-
-    /**
-     * Create an instance of {@link Binary }
-     * 
-     */
-    public Binary createBinary() {
-        return new Binary();
     }
 
     /**
@@ -206,11 +126,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Link }
+     * Create an instance of {@link Field }
      * 
      */
-    public Link createLink() {
-        return new Link();
+    public Field createField() {
+        return new Field();
     }
 
     /**
@@ -219,6 +139,86 @@ public class ObjectFactory {
      */
     public Stream createStream() {
         return new Stream();
+    }
+
+    /**
+     * Create an instance of {@link TableData }
+     * 
+     */
+    public TableData createTableData() {
+        return new TableData();
+    }
+
+    /**
+     * Create an instance of {@link Tr }
+     * 
+     */
+    public Tr createTr() {
+        return new Tr();
+    }
+
+    /**
+     * Create an instance of {@link FITS }
+     * 
+     */
+    public FITS createFITS() {
+        return new FITS();
+    }
+
+    /**
+     * Create an instance of {@link FieldRef }
+     * 
+     */
+    public FieldRef createFieldRef() {
+        return new FieldRef();
+    }
+
+    /**
+     * Create an instance of {@link Table }
+     * 
+     */
+    public Table createTable() {
+        return new Table();
+    }
+
+    /**
+     * Create an instance of {@link Data }
+     * 
+     */
+    public Data createData() {
+        return new Data();
+    }
+
+    /**
+     * Create an instance of {@link Min }
+     * 
+     */
+    public Min createMin() {
+        return new Min();
+    }
+
+    /**
+     * Create an instance of {@link Option }
+     * 
+     */
+    public Option createOption() {
+        return new Option();
+    }
+
+    /**
+     * Create an instance of {@link Binary }
+     * 
+     */
+    public Binary createBinary() {
+        return new Binary();
+    }
+
+    /**
+     * Create an instance of {@link Link }
+     * 
+     */
+    public Link createLink() {
+        return new Link();
     }
 
 }
