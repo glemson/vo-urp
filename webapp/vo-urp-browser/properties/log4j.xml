@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<!--
+  Log4J configuration file for the VO-URP Browser (web application)
+-->
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+  
+  <!-- Appenders : begin -->
+  <!-- display -->
+  <appender name="display" class="org.apache.log4j.ConsoleAppender">
+    <param name="Threshold" value="debug"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d %p [%t] - %m%n"/>
+    </layout>
+  </appender>
+
+  <!-- C:/apache-tomcat-7.0.57/logs/GenomeMD.log -->
+  <appender name="fileRoot" class="org.apache.log4j.RollingFileAppender">
+    <param name="File" value="C:/apache-tomcat-7.0.57/logs/GenomeMD.log"/>
+    <param name="MaxFileSize" value="10000KB"/>
+    <param name="MaxBackupIndex" value="5"/>
+    <layout class="org.apache.log4j.PatternLayout">
+      <param name="ConversionPattern" value="%d %p [%t] - %m%n"/>
+    </layout>
+  </appender>
+  <!-- Appenders : end -->
+
+    
+  <!-- Loggers : begin -->
+  <logger name="org.ivoa">
+    <level value="warn"/>
+    <appender-ref ref="display" />
+    <appender-ref ref="fileRoot" />
+  </logger>
+
+  <logger name="org.ivoa.base">
+    <level value="warn"/>
+  </logger>
+
+  <logger name="org.ivoa.dev">
+    <level value="warn"/>
+  </logger>
+
+  <logger name="org.eclipse.persistence">
+    <level value="warn"/>
+    <appender-ref ref="display" />
+    <appender-ref ref="fileRoot" />
+  </logger>
+  <!-- Loggers : end -->
+
+</log4j:configuration>

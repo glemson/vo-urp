@@ -110,7 +110,6 @@ Should do a tranformation if the nameis not suite for this (spaces etc).
           </xsl:call-template>
         </xsl:for-each>
         <xsl:call-template name="import-rootnamespaces"/>
-        
         <xsl:for-each select=".//objectType[not(extends)]">
           <xsl:variable name="isContained">
             <xsl:apply-templates select="." mode="testrootelements">
@@ -121,6 +120,28 @@ Should do a tranformation if the nameis not suite for this (spaces etc).
             <xsl:apply-templates select="." mode="rootelements"/>
           </xsl:if>
         </xsl:for-each>
+
+        <xsd:element >
+        <xsl:attribute name="name"><xsl:value-of select="concat($project_name,'_elements')"/></xsl:attribute>
+        <xsd:annotation>
+        <xsd:documentation>root element for loading multiple root objects in one go.
+        STILL needs support from java code</xsd:documentation>
+        </xsd:annotation>
+        <xsd:complexType><xsd:sequence>
+        <xsl:for-each select=".//objectType[not(extends)]">
+          <xsl:variable name="isContained">
+            <xsl:apply-templates select="." mode="testrootelements">
+              <xsl:with-param name="count" select="'0'"/>
+            </xsl:apply-templates>
+          </xsl:variable>
+          <xsl:if test="number($isContained) = 0">
+            <xsl:apply-templates select="." mode="rootelements">
+            <xsl:with-param name="asroot" select="'true'"/>
+            </xsl:apply-templates>
+          </xsl:if>
+        </xsl:for-each>
+</xsd:sequence></xsd:complexType>
+        </xsd:element>
       </xsd:schema>
     </xsl:result-document>
   </xsl:template>  
@@ -391,6 +412,7 @@ Should do a tranformation if the nameis not suite for this (spaces etc).
     
   
   <xsl:template match="objectType" mode="rootelements">
+  <xsl:param name="asroot" select="'false'"/>
     <xsl:variable name="xmiid" select="@xmiid"/>
     <xsl:if test="not(@abstract='true')">
       <xsl:variable name="prefix">
@@ -403,6 +425,10 @@ Should do a tranformation if the nameis not suite for this (spaces etc).
           <xsl:apply-templates select="." mode="root-element-name"/>
         </xsl:attribute>
         <xsl:attribute name="type" select="concat($prefix,':',name)"/>
+        <xsl:if test="$asroot = 'true'">
+        <xsl:attribute name="minOccurs">0</xsl:attribute>
+        <xsl:attribute name="maxOccurs">unbounded</xsl:attribute>
+        </xsl:if>
         <xsd:annotation>
           <xsd:documentation>
             Root element representing a(n) <xsl:value-of select="name"/>.

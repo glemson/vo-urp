@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
@@ -16,6 +18,8 @@ import org.ivoa.bean.SingletonSupport;
 import org.ivoa.conf.RuntimeConfiguration;
 import org.ivoa.dm.model.MetadataElement;
 import org.ivoa.dm.model.MetadataObject;
+import org.ivoa.dm.model.MetadataRootEntities;
+import org.ivoa.dm.model.MetadataRootEntityObject;
 import org.ivoa.dm.model.visitor.MarshallObjectPostProcessor;
 import org.ivoa.dm.model.visitor.MarshallObjectPreProcessor;
 import org.ivoa.dm.model.visitor.MarshallReferencePostProcessor;
@@ -194,6 +198,43 @@ public final class ModelFactory extends SingletonSupport {
 
   /**
    * PUBLIC API :<br/>
+   * Marshall a MetadataObject instance to an XML Document
+   *
+   * @param filePath absolute File path to save
+   * @param source MetadataObject to marshall as an XML document
+   * @throws XmlBindException if the xml marshall operation failed
+   */
+  public void marshallObject(final String filePath, final MetadataRootEntities source) throws XmlBindException {
+    if (source == null) {
+      if (log.isInfoEnabled()) {
+        log.info("ModelFactory.marshallObject : empty source !");
+      }
+      return;
+    }
+
+    if (log.isInfoEnabled()) {
+      log.info("ModelFactory.marshallObject : saving : " + filePath);
+    }
+
+    Writer writer = null;
+    try {
+      writer = FileUtils.openFile(filePath);
+
+      marshallObject(source, writer);
+
+      if (log.isDebugEnabled()) {
+        log.debug(SystemLogUtil.LOG_LINE_SEPARATOR);
+        log.debug("ModelFactory.marshallObject : file saved : " + filePath);
+        log.debug(SystemLogUtil.LOG_LINE_SEPARATOR);
+      }
+    } catch (final RuntimeException re) {
+      log.error("ModelFactory.marshallObject : runtime failure : ", re);
+    } finally {
+      FileUtils.closeFile(writer);
+    }
+  }
+  /**
+   * PUBLIC API :<br/>
    * Marshall a MetadataObject instance to a String (xml)
    *
    * @param source MetadataObject to marshall as an XML document
@@ -253,7 +294,7 @@ public final class ModelFactory extends SingletonSupport {
    * @return value unmarshalled MetadataObject
    * @throws XmlBindException if the xml unmarshall operation failed
    */
-  public MetadataObject unmarshallToObject(final String filePath) throws XmlBindException {
+  public List<MetadataRootEntityObject> unmarshallToObject(final String filePath) throws XmlBindException {
     if (log.isInfoEnabled()) {
       log.info("ModelFactory.unmarshallToObject : loading : " + filePath);
     }
@@ -277,7 +318,7 @@ public final class ModelFactory extends SingletonSupport {
    * @return value unmarshalled MetadataObject
    * @throws XmlBindException if the xml unmarshall operation failed
    */
-  public MetadataObject unmarshallToObject(final Reader r) throws XmlBindException {
+  public List<MetadataRootEntityObject> unmarshallToObject(final Reader r) throws XmlBindException {
     try {
       // create an Unmarshaller
       final Unmarshaller u = getJaxbFactory().createUnMarshaller();
@@ -287,18 +328,29 @@ public final class ModelFactory extends SingletonSupport {
 
       // unmarshal an instance document into a tree of Java content
       // objects composed of classes from the VO-URP generated root package.
-      // TODO TBD should this be a MetadataRootEntiityObject. In current design it alwasy should be, but should we make this restriction here or put this burden on the user?
-      final MetadataObject object = (MetadataObject) u.unmarshal(r);
+      // TODO TBD should this be a MetadataRootEntityObject. In current design it always should be, 
+      // but should we make this restriction here or put this burden on the user?
+      final Object object = u.unmarshal(r);
 
-      // object can not be null here so unmarshall References and set containerId on collections :
-
-      object.accept(UnmarshallObjectProcessor.getInstance());
-
+      ArrayList<MetadataRootEntityObject> objects = new ArrayList<MetadataRootEntityObject>();
+      if(object instanceof MetadataRootEntityObject)
+      {
+    	  ((MetadataRootEntityObject)object).accept(UnmarshallObjectProcessor.getInstance());
+    	  objects.add((MetadataRootEntityObject)object);
+      } else if(object instanceof MetadataRootEntities){
+    	  MetadataRootEntities root = (MetadataRootEntities)object;
+    	  for(MetadataRootEntityObject o : root.getEntity())
+    	  {
+        	  o.accept(UnmarshallObjectProcessor.getInstance());
+        	  objects.add(o);
+    	  }
+      }
       if (log.isInfoEnabled()) {
-        log.info("ModelFactory.unmarshallToObject : item loaded : " + object.deepToString());
+    	  for(MetadataObject o : objects)
+    		  log.info("ModelFactory.unmarshallToObject : item loaded : " + o.deepToString());
       }
 
-      return object;
+      return objects;
     } catch (final JAXBException je) {
       throw new XmlBindException("ModelFactory.unmarshallToObject : JAXB Failure", je);
     }
@@ -385,6 +437,38 @@ public final class ModelFactory extends SingletonSupport {
    */
   private XMLValidator getValidator() {
     return validator;
+  }
+
+/**
+   * Marshall an XML Document from a MetadataObject to a Writer
+   *
+   * @param source MetadataObject to marshall as an XML document
+   * @param writer writer to use
+   * @throws XmlBindException if the xml marshall operation failed
+   */
+  private void marshallObject(final MetadataRootEntities source, final Writer writer) throws XmlBindException {
+    if (source != null) {
+      try {
+    	  for(MetadataRootEntityObject o: source.getEntity()){
+    		  o.accept(MarshallObjectPreProcessor.getInstance());
+    		  o.accept(MarshallReferencePreProcessor.getInstance());
+    	  }
+        // create an Unmarshaller
+        final Marshaller m = getJaxbFactory().createMarshaller();
+
+        // marshal a tree of Java content objects composed of classes
+        // from the VO-URP-generated root package into an instance document.
+        m.marshal(source, writer);
+  	  for(MetadataRootEntityObject o: source.getEntity()){
+          o.accept(MarshallObjectPostProcessor.getInstance());
+          o.accept(MarshallReferencePostProcessor.getInstance());
+	  }
+
+
+      } catch (final JAXBException je) {
+        throw new XmlBindException("ModelFactory.marshallObject : JAXB Failure", je);
+      }
+    }
   }
 }
 //~ End of file --------------------------------------------------------------------------------------------------------

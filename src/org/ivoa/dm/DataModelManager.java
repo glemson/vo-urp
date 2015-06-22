@@ -13,6 +13,7 @@ import javax.persistence.EntityManager;
 
 import org.ivoa.bean.LogSupport;
 import org.ivoa.dm.model.MetadataObject;
+import org.ivoa.dm.model.MetadataRootEntities;
 import org.ivoa.dm.model.MetadataRootEntityObject;
 import org.ivoa.dm.model.reference.ReferenceResolver;
 import org.ivoa.dm.model.visitor.PersistObjectPostProcessor;
@@ -72,7 +73,7 @@ public class DataModelManager extends LogSupport {
    * @return unmarshalled MetadataObject
    * @throws XmlBindException if the xml unmarshall operation failed
    */
-  private MetadataObject unmarshall(final InputStream stream) {
+  private List<MetadataRootEntityObject> unmarshall(final InputStream stream) {
     return ModelFactory.getInstance().unmarshallToObject(new InputStreamReader(stream));
   }
 
@@ -106,7 +107,7 @@ public class DataModelManager extends LogSupport {
    *
    * @return value TODO : Value Description
    */
-  public MetadataObject load(final String filePath, final String userName) {
+  public List<MetadataRootEntityObject> load(final String filePath, final String userName) {
     if (log.isInfoEnabled()) {
       log.info("DataModelManager.load : " + filePath);
     }
@@ -132,9 +133,9 @@ public class DataModelManager extends LogSupport {
    *
    * @return value TODO : Value Description
    */
-  public MetadataObject load(final InputStream stream, final String userName) {
+  public List<MetadataRootEntityObject> load(final InputStream stream, final String userName) {
     EntityManager em = null;
-    MetadataObject o = null;
+    List<MetadataRootEntityObject> objects = null;
     Long id = null;
 
     try {
@@ -143,16 +144,10 @@ public class DataModelManager extends LogSupport {
       // sets EntityManager to ReferenceResolver Context :
       ReferenceResolver.initContext(em);
 
-      o = unmarshall(stream);
-
-      if (!(o instanceof MetadataRootEntityObject)) {// TODO enforce this ...
-        throw new RuntimeException("Can only load root entity objects");
-      }
-      List<MetadataRootEntityObject> l = new ArrayList<MetadataRootEntityObject>();
-      l.add((MetadataRootEntityObject) o);
+      objects = unmarshall(stream);
 
       // TODO do something about the userName, maybe get from (threadlocal) context?
-      persist(l, userName);
+      persist(objects, userName);
 
     } catch (final RuntimeException re) {
       log.error("DataModelManager.load : runtime failure : ", re);
@@ -178,7 +173,7 @@ public class DataModelManager extends LogSupport {
       log.info("DataModelManager.load : exit : " + id);
     }
 
-    return o;
+    return objects;
   }
 
   /**

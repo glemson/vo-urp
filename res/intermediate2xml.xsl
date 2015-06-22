@@ -124,17 +124,26 @@ but that would imply none of the contained elements could have comments.
   
  
 
-  <xsl:template match="objectType">
+  <xsl:template  match="objectType">
     <xsl:param name="contextObjectId" select="@xmiid"/> <!-- the object for which the XML doc is actually created. 
                                              May have influence through subsetting of properties for example. -->
     <xsl:if test="$ISDEBUG">
       <xsl:message>In content for <xsl:value-of select="name"/></xsl:message>
     </xsl:if>
-    <xsl:if test="extends">
+    <xsl:choose>
+    <xsl:when test="extends">
       <xsl:apply-templates select="key('element',extends/@xmiidref)">
         <xsl:with-param name="contextObjectId" select="$contextObjectId"/>
       </xsl:apply-templates>
-    </xsl:if>
+    </xsl:when>
+    <xsl:otherwise>
+
+      <xsl:element name="identity">
+      <xsl:attribute name="publisherDID"/>
+      </xsl:element>
+
+    </xsl:otherwise>
+    </xsl:choose>
        <xsl:apply-templates select="attribute">
         <xsl:with-param name="contextObjectId" select="$contextObjectId"/>
       </xsl:apply-templates>
