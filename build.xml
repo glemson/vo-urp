@@ -5,7 +5,7 @@
 <!ENTITY buildDB SYSTEM "./build_db.xml">
 ]>
 
-<project name="VO-URP-builder Virtual Observatory UML Representation Pipeline" default="about" basedir=".">
+<project name="VO-URP-builder - GitHub" default="about" basedir=".">
 
 	<description>
     This build file can be considered as the transformer tool for any Data Model in XMI format to other documents : 
