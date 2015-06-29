@@ -769,7 +769,23 @@ Optional
 </target>
 
 
+<target name="buildAdminHandler" >
+  <!--
+      Note : formatting causes problems with annotations for enumerations but allows people to read code ...
+      Workaround : compile first then formats for read only purposes.
+  -->
+    <mkdir dir="${libs}/admindb/bin"/>
+    <javac sourcepath="" srcdir="${libs}/admindb/src" destdir="${libs}/admindb/bin" listfiles="false"
+         fork="true" verbose="false" encoding="UTF-8"
+         debug="on" deprecation="on" optimize="on" casesensitive="true"
+         source="1.5" target="1.5"
+         includeantruntime="false" >
 
+        <include name="**/*.java"/>
+    </javac>
+
+
+</target>
 
 <!-- target jalopyPreferences : launches jalopy preferences application  -->
 <target name="jalopyPrefs">
