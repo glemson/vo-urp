@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Context path="/simDB-browser">
+<Context path="/@project.name@-browser" docBase="@doc.base@" workDir="work/@project.name@">
 
 <!-- Uncomment this to disable session persistence across Tomcat restarts -->
 <Manager pathname="" />
 
-<Realm className="org.apache.catalina.realm.JDBCRealm" debug="0"
-      driverName="@eclipselink.jdbc.driver@"
-      connectionURL="@tomcat.realm.url@"
-      connectionName="@tomcat.realm.dbuser@"
-      connectionPassword="@tomcat.realm.password@"
-      userTable="users" userNameCol="username" userCredCol="password"
+<Realm className="org.apache.catalina.realm.JDBCRealm" debug="0" digest="MD5"
+      driverName="@admindb.driver@"
+      connectionURL="@admindb.url@"
+      connectionName="@admindb.user@"
+      connectionPassword="@admindb.password@"
+      userTable="users" userNameCol="username" userCredCol="md5password"
       userRoleTable="user_roles" roleNameCol="rolename" />
 
 </Context>

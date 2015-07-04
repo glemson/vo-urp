@@ -20,6 +20,8 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 
+
+
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
@@ -91,6 +93,41 @@ public class AdminDBHandler {
 	    offset = 5;
 	}
 
+	private void createTables() throws SQLException, IOException {
+		String sql = getCreateTableSQL();
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.execute();
+	}
+
+	private String getCreateTableSQL(){
+		if(url.indexOf("sqlserver") >= 0)
+			return MSSQL_create();
+		else 
+			throw new IllegalStateException("Only MS SQLServer supported for now");
+	}
+	
+	private String MSSQL_create(){
+		return  " if  not exists (select * from dbo.sysobjects "+
+				"	where id = object_id(N'[_Models]')) "+
+				"CREATE TABLE [dbo].[_Models]( "+
+				"	[created] [datetime] NULL DEFAULT (getdate()),"+
+				"     modelCreated varchar(20),"+
+				"	[modelVersion] [varchar](128) NULL,"+
+				"	[modelXML] [text] NULL,"+
+				"	[createTables] [text] NULL,"+
+				"	[createViews] [text] NULL,"+
+				"	[dropTables] [text] NULL,"+
+				"	[dropViews] [text] NULL,"+
+				"	[backupTables] [text] NULL,"+
+				"	[dropBackupTables] [text] NULL,"+
+				"	[migrateTables] [text] NULL"+
+				") ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]";
+
+	}
+	private String Postgres_create(){
+		throw new IllegalStateException("No create tables for postgres defined yet");
+	}
+	
 	private void insert(String[] args) throws SQLException, IOException {
 		if(args.length != offset+2){
 			printUsage4I();
@@ -115,6 +152,9 @@ public class AdminDBHandler {
 		String modelCreated = xml.created;
 		String version = xml.version;
 		connect();
+
+		createTables();
+		
 		String sql = " insert into _Models (modelCreated, modelVersion, modelXML,createTables, createViews, dropTables, "
 		+" dropViews, backupTables, dropBackupTables, migrateTables) VALUES (?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement stmt = connection.prepareStatement(sql);
@@ -168,7 +208,7 @@ public class AdminDBHandler {
 	    String version = args[offset++];
 		String outDir = args[offset++];
 		connect();
-		String sql = " select modelVersion, createTables, createViews, backupTables, migrateTables from _MigrationScripts where modelVersion=?";
+		String sql = " select modelVersion, createTables, createViews, backupTables, migrateTables from _Models where modelVersion=?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		
 		int count = 1;
@@ -203,9 +243,14 @@ public class AdminDBHandler {
 		}
 		String workFolder = args[offset++];
 		connect();
-		String sql = " select top 1 backupTables, migrateTables, dropBackupTables, dropTables, dropViews from _Models order by created desc";
+
+		String sql = " if  exists (select * from dbo.sysobjects "+
+				"	where id = object_id(N'[_Models]'))"
+				+ " select top 1 backupTables, migrateTables, dropBackupTables, dropTables, dropViews from _Models order by created desc";
 		PreparedStatement stmt = connection.prepareStatement(sql);
-		ResultSet rs = stmt.executeQuery();
+		stmt.execute();
+		ResultSet rs = stmt.getResultSet();
+		if(rs == null) return;
 
 		File dir = new File(workFolder);
 		dir.mkdirs();

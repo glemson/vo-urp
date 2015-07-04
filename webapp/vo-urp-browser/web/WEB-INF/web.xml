@@ -196,7 +196,11 @@
 
     <!-- Define referenced roles -->
     <security-role>
-        <role-name>@project.name@-member</role-name>
+        <role-name>@project.name@-reader</role-name>
+    </security-role>
+
+    <security-role>
+        <role-name>@project.name@-writer</role-name>
     </security-role>
 
     <security-role>
@@ -218,7 +222,7 @@
         <auth-constraint>
         <!-- Only administrator can access this area -->
             <description>These are the roles who have access</description>
-            <role-name>@webapp.member.role@</role-name>
+            <role-name>VO-URP-member-role</role-name>
         </auth-constraint>
 
     </security-constraint>
@@ -239,7 +243,7 @@
         <auth-constraint>
         <!-- Only administrator can access this area -->
             <description>These are the roles who have access</description>
-            <role-name>@webapp.admin.role@</role-name>
+            <role-name>VO-URP-admin</role-name>
         </auth-constraint>
 
     </security-constraint>

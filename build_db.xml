@@ -6,46 +6,45 @@
 <!-- presets -->
 
 <!-- Performs an SQL query with the database defined in jpa-config.properties. -->
-<presetdef name="doSql">
+<presetdef name="doSqlTarget">
 
   <sql classpathref="jdbc-drivers.class.path" 
-       driver="${eclipselink.jdbc.driver}"
-       url="${eclipselink.jdbc.url}"
-       userid="${eclipselink.jdbc.admin}"
-       password="${eclipselink.jdbc.adminpassword}" />
+       driver="${targetdb.driver}"
+       url="${targetdb.url}"
+       userid="${targetdb.admin}"
+       password="${targetdb.adminpassword}" />
 
 </presetdef>
 
-<presetdef name="doSqlLoadCLOB">
-
-  <sql classpathref="jdbc-drivers.class.path" 
-       driver="${eclipselink.jdbc.driver}"
-       url="${eclipselink.jdbc.url}"
-       userid="${eclipselink.jdbc.admin}"
-       password="${eclipselink.jdbc.adminpassword}" />
-
-</presetdef>
-
-<presetdef name="doSqlReadCLOB">
-
-  <sql classpathref="jdbc-drivers.class.path" 
-       driver="${eclipselink.jdbc.driver}"
-       url="${eclipselink.jdbc.url}"
-       userid="${eclipselink.jdbc.admin}"
-       password="${eclipselink.jdbc.adminpassword}" />
+<presetdef name="doSqlAdminLoadCLOB">
+  <sql classpathref="jdbc-drivers.class.path"
+       driver="${admindb.driver}"
+       url="${admindb.url}"
+       userid="${admindb.admin}"
+       password="${admindb.adminpassword}" />
 
 </presetdef>
 
+<presetdef name="doSqlAdminReadCLOB">
+
+  <sql classpathref="jdbc-drivers.class.path" 
+       driver="${admindb.driver}"
+       url="${admindb.url}"
+       userid="${admindb.admin}"
+       password="${admindb.adminpassword}" />
+
+</presetdef>
 
 
-<!-- Performs an SQL query with the tomcat roles database defined in ${input}/project.properties -->
-<presetdef name="doSqlTomcatRoles">
+
+<!-- Performs an SQL query with the admin roles database defined in ${input}/project.properties -->
+<presetdef name="doSqlAdmindb">
 
   <sql classpathref="jdbc-drivers.class.path"
-       driver="${eclipselink.jdbc.driver}"
-       url="${tomcat.realm.url}"
-       userid="${tomcat.realm.admin}"
-       password="${tomcat.realm.adminpassword}" />
+       driver="${admindb.driver}"
+       url="${admindb.url}"
+       userid="${admindb.admin}"
+       password="${admindb.adminpassword}" />
 
 </presetdef>
 
@@ -59,42 +58,38 @@
 
   <fail unless="eclipselink.target-database"    message="Must define property 'eclipselink.target-database' in jpa-config.properties !" />
 
-  <fail unless="eclipselink.jdbc.driver"        message="Must define property 'eclipselink.jdbc.driver' in jpa-config.properties !" />
-  <fail unless="eclipselink.jdbc.url"           message="Must define property 'eclipselink.jdbc.url' in jpa-config.properties !" />
+  <fail unless="targetdb.driver"        message="Must define property 'eclipselink.jdbc.driver' in jpa-config.properties !" />
+  <fail unless="targetdb.url"           message="Must define property 'eclipselink.jdbc.url' in jpa-config.properties !" />
 
   <!-- eclipselink.jdbc.user only used at runtime (read only), but check if exist -->
-  <fail unless="eclipselink.jdbc.user"          message="Must define property 'eclipselink.jdbc.user' in jpa-config.properties !" />
-  <fail unless="eclipselink.jdbc.password"      message="Must define property 'eclipselink.jdbc.password' in jpa-config.properties !" />
+  <fail unless="targetdb.user"          message="Must define property 'eclipselink.jdbc.user' in jpa-config.properties !" />
+  <fail unless="targetdb.password"      message="Must define property 'eclipselink.jdbc.password' in jpa-config.properties !" />
 
   <!-- eclipselink.jdbc.admin used to create/drop tables -->
-  <fail unless="eclipselink.jdbc.admin"         message="Must define property 'eclipselink.jdbc.admin' in jpa-config.properties !" />
-  <fail unless="eclipselink.jdbc.adminpassword" message="Must define property 'eclipselink.jdbc.adminpassword' in jpa-config.properties !" />
+  <fail unless="targetdb.admin"         message="Must define property 'eclipselink.jdbc.admin' in jpa-config.properties !" />
+  <fail unless="targetdb.adminpassword" message="Must define property 'eclipselink.jdbc.adminpassword' in jpa-config.properties !" />
 
   <!-- tomcat role database -->
   <!-- TODO: use eclipselink.* values if tomcat.* values not defined (BUG GERARD) -->
 
-  <fail unless="tomcat.realm.url"               message="Must define property 'tomcat.realm.url' in ${input}/project.properties !" />
+  <fail unless="admindb.url"               message="Must define property 'admindb.url' in ${input}/project.properties !" />
 
-  <!-- tomcat.realm.dbuser only used at runtime (read only), but check if exist -->
-  <fail unless="tomcat.realm.dbuser"            message="Must define property 'tomcat.realm.dbuser' in ${input}/project.properties !" />
-  <fail unless="tomcat.realm.password"          message="Must define property 'tomcat.realm.password' in ${input}/project.properties !" />
+  <!-- admindb.user only used at runtime (read only), but check if exist -->
+  <fail unless="admindb.user"            message="Must define property 'admindb.user' in ${input}/project.properties !" />
+  <fail unless="admindb.password"          message="Must define property 'admindb.password' in ${input}/project.properties !" />
 
   <!-- eclipselink.jdbc.admin used to create/drop tables -->
-  <fail unless="tomcat.realm.admin"             message="Must define property 'tomcat.realm.admin' in ${input}/project.properties !" />
-  <fail unless="tomcat.realm.adminpassword"     message="Must define property 'tomcat.realm.adminpassword' in ${input}/project.properties !" />
-
-  <!-- Web login/password -->
-  <fail unless="webapp.admin.user"              message="Must define property 'webapp.admin.user' in ${input}/project.properties !" />
-  <fail unless="webapp.admin.password"          message="Must define property 'webapp.admin.password' in ${input}/project.properties !" />
+  <fail unless="admindb.admin"             message="Must define property 'admindb.admin' in ${input}/project.properties !" />
+  <fail unless="admindb.adminpassword"     message="Must define property 'admindb.adminpassword' in ${input}/project.properties !" />
 
 
   
   <!-- sets SQL script directory -->
   <condition property="db.vendor" value="postgres/">
-    <equals arg1="${eclipselink.target-database}" arg2="PostgreSQL" trim="true"/>
+    <equals arg1="${jpa.database}" arg2="PostgreSQL" trim="true"/>
   </condition>
   <condition property="db.vendor" value="mssqlserver">
-    <equals arg1="${eclipselink.target-database}" arg2="SQLServer" trim="true"/>
+    <equals arg1="${jpa.database}" arg2="SQLServer" trim="true"/>
   </condition>
 
   <property name="ddl.directory" value="${output}/ddl/${db.vendor}/"/>
@@ -127,23 +122,27 @@
   <echo>JDBC USER : ${eclipselink.jdbc.admin}</echo>
   <echo>DDL HOME  : ${ddl.directory}</echo>
 
-</target>
 
+
+</target>
 
 
 
 <!-- target checkDB : is database server alive ? -->
 <target name="checkDB" depends="initForDB" if="target.db.do" description="check databse properties">
-  <echo>checkDB : ${eclipselink.jdbc.url} ...</echo>
-  <echo>admin   : ${eclipselink.jdbc.admin}</echo>
+  <echo>check target DB : ${targetdb.url} ...</echo>
+  <echo>admin   : ${targetdb.admin}</echo>
   
-  <doSql onerror="abort" print="true">select 1</doSql>
-  <echo>checkDB : ${tomcat.realm.url} ...</echo>
-  <echo>admin   : ${tomcat.realm.admin}</echo>
+  <doSqlTarget onerror="abort" print="true">select 1</doSqlTarget>
 
-  <doSqlTomcatRoles onerror="abort" print="true">select 1</doSqlTomcatRoles>
+  <echo>check adminDB</echo>
+  <echo>url : ${admindb.url} ...</echo>
+  <echo>driver   : ${admindb.driver}</echo>
+  <echo>admin   : ${admindb.admin}</echo>
+  <echo>admin.p   : ${admindb.adminpassword}</echo>
 
-  <echo>checkDB : done.</echo>
+  <doSqlAdmindb onerror="abort" print="true">select 1</doSqlAdmindb>
+
 </target>
 
 
@@ -154,13 +153,13 @@
   This ensures the proper scripts get called. -->
 
   <echo>Executing ${ddl.directory}/backup/dropViews.sql</echo>
-  <doSql autocommit="true" onerror="continue" src="${ddl.directory}/backup/dropViews.sql" />
+  <doSqlTarget autocommit="true" onerror="continue" src="${ddl.directory}/backup/dropViews.sql" />
 
   <echo>Executing ${ddl.directory}/backup/dropTables.sql</echo>
-  <doSql autocommit="true" onerror="continue" src="${ddl.directory}/backup/dropTables.sql" />
+  <doSqlTarget autocommit="true" onerror="continue" src="${ddl.directory}/backup/dropTables.sql" />
 
   <echo>Executing ${tap.ddl.directory}/${project.name}_drop_tap_schema.sql</echo>
-  <doSql autocommit="true" onerror="continue" src="${tap.ddl.directory}/${project.name}_drop_tap_schema.sql" delimiter="${create.view.sep}"/>
+  <doSqlTarget autocommit="true" onerror="continue" src="${tap.ddl.directory}/${project.name}_drop_tap_schema.sql" delimiter="${create.view.sep}"/>
   
   <echo>cleanDB : done.</echo>
 </target>
@@ -169,26 +168,14 @@
 
 <!-- target createDB : creates tables then views -->
 <target name="createDB" if="target.db.do"  depends="initForDB" description="CLEAN first and create database tables / views and TAP_SCHEMA">
-  <echo>Creating tables then views to ${eclipselink.jdbc.url} ...</echo>
-
-	
-  <doSql onerror="abort" src="./scripts/ddl/${db.vendor}/model.admindb.sql" />
-  <doSql onerror="abort" src="${ddl.directory}/createTables.sql" />
-  <doSql onerror="abort" src="${ddl.directory}/createViews.sql" delimiter="${create.view.sep}"/>
-  <doSql onerror="abort" src="${tap.ddl.directory}/${project.name}_create_tap_schema.sql" delimiter="${create.view.sep}"/>
+  <echo>Creating tables then views to ${targetdb.url} ...</echo>
 
   <!-- web user rights -->
-  <copy verbose="true" todir="${output}/ddl" preservelastmodified="true" filtering="true">
-		<fileset dir="./webapp/vo-urp-browser/ddl/">
-		  <include name="*/admindb.sql"/> 
-		</fileset>
-		<filterset>
-				<filter token="webapp.member.role" value="${webapp.member.role}" />
-				<filter token="webapp.admin.role" value="${webapp.admin.role}" />
-				<filter token="webapp.admin.user" value="${webapp.admin.user}" />
-				<filter token="webapp.admin.password" value="${webapp.admin.password}" />
-			</filterset>
-	</copy>
+  <doSqlAdmindb src="./webapp/vo-urp-browser/ddl/${db.vendor}/admindb.sql"/> 
+  <doSqlTarget onerror="abort" src="${ddl.directory}/createTables.sql" />
+  <doSqlTarget onerror="abort" src="${ddl.directory}/createViews.sql" delimiter="${create.view.sep}"/>
+  <doSqlTarget onerror="abort" src="${tap.ddl.directory}/${project.name}_create_tap_schema.sql" delimiter="${create.view.sep}"/>
+
 </target>
 
 <!-- copy generated files into meta table -->
@@ -200,10 +187,10 @@
     <jvmarg value="-Xmx64m"/>
 
     <arg value="I"/>
-    <arg value="${eclipselink.jdbc.driver}"/>
-    <arg value="${eclipselink.jdbc.url}"/>
-    <arg value="${eclipselink.jdbc.admin}"/>
-    <arg value="${eclipselink.jdbc.adminpassword}"/>
+    <arg value="${admindb.driver}"/>
+    <arg value="${admindb.url}"/>
+    <arg value="${admindb.admin}"/>
+    <arg value="${admindb.adminpassword}"/>
     <arg value="${output}/${source_intermediate}"/>
     <arg value="${ddl.directory}"/>
     
@@ -225,10 +212,10 @@
     <jvmarg value="-Xmx64m"/>
 
     <arg value="L"/>
-    <arg value="${eclipselink.jdbc.driver}"/>
-    <arg value="${eclipselink.jdbc.url}"/>
-    <arg value="${eclipselink.jdbc.admin}"/>
-    <arg value="${eclipselink.jdbc.adminpassword}"/>
+    <arg value="${admindb.driver}"/>
+    <arg value="${admindb.url}"/>
+    <arg value="${admindb.admin}"/>
+    <arg value="${admindb.adminpassword}"/>
     <arg value="${ddl.directory}/backup"/>
     
     <classpath>

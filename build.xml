@@ -28,6 +28,10 @@
     <property name="vo-urp.vendor" value="Gerard Lemson, Laurent Bourges"/>
     <property name="vo-urp.version" value="0.x"/>
 	
+  <tstamp>
+	  <format property="build.date.extension" pattern="yyyyMMddHHmmss" />
+	</tstamp>
+
 	<!--
       Get build properties (general).
 	  Should only contain the location of the directory where input properties and data model can be found.
@@ -206,6 +210,7 @@
 
 		<echo> target.run.active    : ${target.run.active} </echo>
 		<echo>-------------------------------------------------------------------------------</echo>
+		
 	  
 	  <!-- up to date checks -->
 
@@ -380,10 +385,11 @@
 			</propertyset>
 		</ant>
 
-        <!-- update DB if needed -->
+
+  	<!-- update DB if needed -->
 		<ant target="setupDB" />
 
-        <!-- build web app -->
+    <!-- build web app -->
 		<ant target="buildWeb" />
 
     <!-- run test cases if needed -->
@@ -398,10 +404,10 @@
   		<equals arg1="${target.db.backup.active}" arg2="true"/>
   		<then>
     		<echo>Perform backup</echo>
-  		  <doSql autocommit="true" onerror="continue" src="${ddl.directory}/backup/backupTables.sql" />
+  		  <doSqlTarget autocommit="true" onerror="continue" src="${ddl.directory}/backup/backupTables.sql" />
   			<ant target="cleanDB"/>
   			<ant target="createDB"/>
- 	  	  <doSql autocommit="false" onerror="continue" errorproperty="migrateerror" src="${ddl.directory}/backup/migrateTables.sql" />
+ 	  	  <doSqlTarget autocommit="false" onerror="continue" errorproperty="migrateerror" src="${ddl.directory}/backup/migrateTables.sql" />
  	  		<if>
  	    		<isset property="migrateerror"/>
  	  			<then>
@@ -410,7 +416,7 @@
  	  				<echo>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</echo>
  	  			</then>
   			<else>
-  	  	  <doSql autocommit="true" onerror="continue" src="${ddl.directory}/backup/dropBackupTables.sql" />
+  	  	  <doSqlTarget autocommit="true" onerror="continue" src="${ddl.directory}/backup/dropBackupTables.sql" />
   			</else>
  	  		</if>	
   		</then>
@@ -439,6 +445,7 @@
 			<property name="schemalocation_root" value="${schemalocation_root}"/>
     	<property name="webapp.member.role" value="${webapp.member.role}"/>
     	<property name="webapp.admin.role" value="${webapp.admin.role}"/>
+			<property name="build.date.extension" value="${build.date.extension}"/>
 		</ant>	
 	</target> 
 	
@@ -853,13 +860,24 @@
 		<copy tofile="${properties}/persistence.xml" filtering="true" verbose="true" overwrite="true">
 			<fileset file="${templates}/persistence-template.xml" />
 			<filterset>
-	<!-- 
-	   Filters for copying persistence.xml
-	   Check that file for the full list of required properties
-	-->
 				<filter token="jpa.persistence.unit" value="${jpa.persistence.unit}" />
 			</filterset>
 		</copy> 
+		
+		<copy tofile="${properties}/jpa-config.properties" filtering="true" verbose="true" overwrite="true">
+			<fileset file="${templates}/jpa-config.properties.template" />
+			<filterset>
+				<filter token="jpa.database" value="${jpa.database}" />
+				<filter token="targetdb.driver" value="${targetdb.driver}" />
+				<filter token="targetdb.url" value="${targetdb.url}" />
+				<filter token="targetdb.user" value="${targetdb.user}" />
+				<filter token="targetdb.password" value="${targetdb.password}" />
+				<filter token="targetdb.admin" value="${targetdb.admin}" />
+				<filter token="targetdb.adminpassword" value="${targetdb.adminpassword}" />
+			</filterset>
+		</copy> 
+
+		
 		<xslt2 in="${output}/${source_intermediate}" out="${sources.gen}/java-gen.log" style="${res}/intermediate2java.xsl">
 			<param name="root_package" expression="${root_package}" />
 			<param name="model_package" expression="${model_package}" />

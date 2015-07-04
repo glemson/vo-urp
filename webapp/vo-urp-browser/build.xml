@@ -10,19 +10,19 @@
       - JAXB 2.1 library must be present in the JVM (1.6) or in web server libraries (tomcat/lib)
   </description>
   
+  <!-- first load local config file -->
+	<property file="${input}/project.properties" />
   
   <!-- set global properties for this build -->
   <fail unless="input"                message="Must define property 'input' in build.properties (indicating project directory) !"/>
-  <fail unless="webapp.member.role"   message="Must define property 'webapp.member.role' in ${input}/project.properties (TODO) !"/>
+  <fail unless="webapp.reader.role"   message="Must define property 'webapp.reader.role' in ${input}/project.properties (TODO) !"/>
+  <fail unless="webapp.writer.role"   message="Must define property 'webapp.writer.role' in ${input}/project.properties (TODO) !"/>
   <fail unless="webapp.admin.role"    message="Must define property 'webapp.admin.role' in ${input}/project.properties (TODO) !"/>
   <fail unless="schemalocation_root"  message="Must define property 'schemalocation_root' in ${input}/project.properties (indicating where schema files are to be found) !"/>
-
+  <fail unless="build.date.extension" message="Must define property 'build.date.extension'"/>
+	
   <!-- first load local config file -->
   <property file="build.properties"/>
-
-  <!-- Get jpa-config properties to substitute values in META-INF/context.xml -->
-  <property file="${properties}/jpa-config.properties" />
-
 	
   <!-- path & files -->
   <property name="projectHome" location="../.."/>
@@ -46,7 +46,11 @@
   <property name="build.meta" location="${build}/META-INF"/>
   <property name="build.src" location="${build}/src"/>
   
-  
+  <!-- tomcat webapps folder -->
+	<condition property="deploy.to" else="${tomcat.deploy}" value="${tomcat.deploy}/${build.date.extension}">
+    <isset property="use.date.extension"/>
+  </condition>
+
   <!-- properties from vo-urp project -->
   <property name="vo-urp.project" location="${vo-urp.project.path}"/>
   <property file="${input}/project.properties"/>
@@ -68,13 +72,16 @@
 	
   <!-- global filter definitions -->
   <filter token="project.name" value="${project.name}"/>
-  <filter token="eclipselink.jdbc.driver" value="${eclipselink.jdbc.driver}"/>
+<!--
+	<filter token="eclipselink.jdbc.driver" value="${eclipselink.jdbc.driver}"/>
   <filter token="eclipselink.jdbc.url" value="${eclipselink.jdbc.url}"/>
   <filter token="eclipselink.jdbc.user" value="${eclipselink.jdbc.user}"/>
   <filter token="eclipselink.jdbc.password" value="${eclipselink.jdbc.password}"/>
-	<filter token="webapp.member.role" value="${webapp.member.role}"/>
+-->
+  <filter token="webapp.reader.role" value="${webapp.reader.role}"/>
+  <filter token="webapp.writer.role" value="${webapp.writer.role}"/>
 	<filter token="webapp.admin.role" value="${webapp.admin.role}"/>
-
+  
   
   <!-- classpath -->
   <path id="project.class.path">
@@ -137,9 +144,10 @@
     <echo></echo>
     <echo> Tomcat Home  : ${tomcat.home}</echo>
     <echo> Tomcat bin   : ${tomcat.bin}</echo>
+    <echo> Tomcat Deploy  : ${tomcat.deploy}</echo>
     <echo></echo>
-    <echo>JDBC URL  : ${eclipselink.jdbc.url}</echo>
-    <echo>JDBC USER : ${eclipselink.jdbc.user}</echo>
+    <echo>JDBC URL  : ${targetdburl}</echo>
+    <echo>JDBC USER : ${targetdb.user}</echo>
     <echo>-------------------------------------------------------------------------------</echo>
     
     <!-- check vo-urp build.xml file -->
@@ -465,13 +473,18 @@
     <mkdir dir="${build.meta}"/>
     <copy todir="${build.meta}" file="${web-content}/META-INF/context.xml" filtering="true" overwrite="true">
     		<filterset>
-    				<filter token="tomcat.realm.url" value="${tomcat.realm.url}" />
-    				<filter token="tomcat.realm.dbuser" value="${tomcat.realm.dbuser}" />
-    				<filter token="tomcat.realm.password" value="${tomcat.realm.password}" />
+  				<filter token="admindb.driver" value="${admindb.driver}" />
+    				<filter token="admindb.url" value="${admindb.url}" />
+    				<filter token="admindb.user" value="${admindb.user}" />
+    				<filter token="admindb.password" value="${admindb.password}" />
+ 	  			  <filter token="project.name" value="${project.name}"/>
+  				  <filter token="doc.base" value="${deploy.to}/${webapp.name}"/>
     			</filterset>
     	</copy>
+  	<!-- make copy with special name to be used in conf/Catalina/localhost -->
+    <copy tofile="${build.meta}/${project.name}-browser.xml" file="${build.meta}/context.xml" filtering="false" overwrite="true"/>
 
-    <!-- make web application archive -->
+  	<!-- make web application archive -->
     <war destfile="${dist}/${build.war.file}" webxml="${build}/web.xml" compress="true" roundup="true">
       <fileset dir="${web-content}">
         <include name="WEB-INF/tags/**/*.tag"/>
@@ -536,9 +549,9 @@
   <!-- deploys war archive in tomcat if present -->
   <target name="useTomcat" if="tomcat.check">
 
-    <!-- tomcat webapps folder -->
-    <property name="deploy.to" value="${tomcat.home}/webapps"/>
 
+  	<mkdir dir="${deploy.to}"/>
+  	
     <!-- removes log file if possible -->
     <delete file="${log.file}" verbose="true"  failonerror="false" />
 
