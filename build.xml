@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
- 
+
 <!DOCTYPE project [
 <!ENTITY buildJava SYSTEM "./build_java.xml">
 <!ENTITY buildDB SYSTEM "./build_db.xml">
@@ -24,12 +24,12 @@
 
 
 	<!-- set global properties for this build -->
-    <property name="vo-urp.title" value="VO-URP"/> 
-    <property name="vo-urp.vendor" value="Gerard Lemson, Laurent Bourges"/>
-    <property name="vo-urp.version" value="0.x"/>
-	
-  <tstamp>
-	  <format property="build.date.extension" pattern="yyyyMMddHHmmss" />
+	<property name="vo-urp.title" value="VO-URP"/>
+	<property name="vo-urp.vendor" value="Gerard Lemson, Laurent Bourges"/>
+	<property name="vo-urp.version" value="0.x"/>
+
+	<tstamp>
+		<format property="build.date.extension" pattern="yyyyMMddHHmmss" />
 	</tstamp>
 
 	<!--
@@ -37,13 +37,13 @@
 	  Should only contain the location of the directory where input properties and data model can be found.
 	-->
 	<property file="build.properties"/>
-	
-    <fail unless="input"                  message="Must define property 'input' in build.properties (indicating project directory) !"/>
+
+	<fail unless="input"                  message="Must define property 'input' in build.properties (indicating project directory) !"/>
 
 	<property file="${input}/project.properties" />
 
-	
-	
+
+
 	<!-- read pipeline configuration properties -->
 	<fail unless="project.name"           message="Must define property 'project.name' in ${props.file} (name of this project) !" />
 	<fail unless="project.version"        message="Must define property 'project.version' in ${input}/project.properties !" />
@@ -94,7 +94,7 @@
 	<property name="libs" location="./libs" />
 	<property name="sources" location="./src" />
 	<property name="classes" location="./classes" />
-	
+
 
 	<!-- define and instantiate output directories -->
 	<property name="output" location="${input}/output"/>
@@ -115,36 +115,36 @@
 	<property name="build.xsd" location="${build}/xsd" />
 	<property name="test" location="${input}/${sources.test}"/>
 
-	<!-- preamble file, may be set in project.properties --> 
-    <property name="html.preamble.file" value="output/html/preamble.html"/>
-    <property name="html.preamble" location="${input}/${html.preamble.file}"/>
-	
-    <property name="webapp.member.role" value="${project.name}-member"/>
+	<!-- preamble file, may be set in project.properties -->
+	<property name="html.preamble.file" value="output/html/preamble.html"/>
+	<property name="html.preamble" location="${input}/${html.preamble.file}"/>
+
+	<property name="webapp.member.role" value="${project.name}-member"/>
 	<property name="webapp.admin.role" value="${project.name}-admin"/>
-  
 
-	
+
+
 	<!-- graphviz properties -->
-  <available property="graphviz.check" file="${graphviz.path}" />
+	<available property="graphviz.check" file="${graphviz.path}" />
 
-  <property name="graphviz.png" value="${project.name}.png"/>
-  <property name="graphviz.map" value="${project.name}.cmap"/>
-  <!-- <property name="graphviz.map" value="${project.name}.cmap"/> -->
-  <property name="graphviz.map.placeholder" value="___GRAPHVIZ_MAP___"/>
+	<property name="graphviz.png" value="${project.name}.png"/>
+	<property name="graphviz.map" value="${project.name}.cmap"/>
+	<!-- <property name="graphviz.map" value="${project.name}.cmap"/> -->
+	<property name="graphviz.map.placeholder" value="___GRAPHVIZ_MAP___"/>
 
-	
-	
-    <!-- JDBC drivers -->
-    <fileset id="jdbcfiles" dir="${libs}/jdbc">
-      <!-- postgres 8.x driver -->
-      <include name="postgresql-8.3-603.jdbc3.jar"/>
-      <!-- sql server 2005 driver -->
-      <include name="sqljdbc-2005-1.2.jar"/>
-    </fileset>
+
+
+	<!-- JDBC drivers -->
+	<fileset id="jdbcfiles" dir="${libs}/jdbc">
+		<!-- postgres 8.x driver -->
+		<include name="postgresql-8.3-603.jdbc3.jar"/>
+		<!-- sql server 2005 driver -->
+		<include name="sqljdbc-2005-1.2.jar"/>
+	</fileset>
 
 	<!-- class path for JDBC drivers -->
 	<path id="jdbc-drivers.class.path">
-        <fileset refid="jdbcfiles"/>
+		<fileset refid="jdbcfiles"/>
 	</path>
 
 	<!-- adds README.txt to default excludes -->
@@ -152,7 +152,7 @@
 
 
 
-	
+
 	<!-- presets -->
 
 	<!-- Performs an XSL translation of an XML file using the Saxon processor. -->
@@ -171,25 +171,25 @@
 
 	<!-- target init : timestamp -->
 	<target name="init">
-        
-        <!-- define and instantiate output directories -->
-        <mkdir dir="${output}"/>
-        <mkdir dir="${build}"/>
-        <mkdir dir="${dist}"/>
-        <mkdir dir="${properties}"/>
-        <mkdir dir="${dist.lib}"/>
-        <mkdir dir="${javadoc}"/>
-        <mkdir dir="${outputJava}"/>
-        <mkdir dir="${build}"/>
-        <mkdir dir="${build.src}"/>
-        <mkdir dir="${build.gen}"/>
-        <mkdir dir="${build.weaving}"/>
-	  
-	      <mkdir dir="${libs}/jalopy/bin"/>
 
-        <tstamp>
-            <format property="build.date" pattern="dd/MM/yyyy HH:mm:ss" />
-        </tstamp>
+		<!-- define and instantiate output directories -->
+		<mkdir dir="${output}"/>
+		<mkdir dir="${build}"/>
+		<mkdir dir="${dist}"/>
+		<mkdir dir="${properties}"/>
+		<mkdir dir="${dist.lib}"/>
+		<mkdir dir="${javadoc}"/>
+		<mkdir dir="${outputJava}"/>
+		<mkdir dir="${build}"/>
+		<mkdir dir="${build.src}"/>
+		<mkdir dir="${build.gen}"/>
+		<mkdir dir="${build.weaving}"/>
+
+		<mkdir dir="${libs}/jalopy/bin"/>
+
+		<tstamp>
+			<format property="build.date" pattern="dd/MM/yyyy HH:mm:ss" />
+		</tstamp>
 
 		<echo>-------------------------------------------------------------------------------</echo>
 		<echo>  ${project.vendor} </echo>
@@ -210,69 +210,69 @@
 
 		<echo> target.run.active    : ${target.run.active} </echo>
 		<echo>-------------------------------------------------------------------------------</echo>
-		
-	  
-	  <!-- up to date checks -->
 
-	  <!-- checks if input & xslt are modified compare to intermediate document -->
-	  <uptodate property="intermediate.notRequired">
-	    <srcfiles dir="${input}" includes="${source}" />
-	    <srcfiles dir="${res}" includes="xmiCheck.xsl" />
-	    <srcfiles dir="${res}" includes="xmiFilter.xsl" />
-	    <srcfiles dir="${res}" includes="${xmi2intermediate}" />
-	    <mapper type="merge" to="${output}/${source_intermediate}" />
-	  </uptodate>
 
-	  <!-- checks if intermediate & xslt documents are modified compare to xsd-gen.log -->
-	  <uptodate property="xsd.notRequired">
-	    <srcfiles dir="${output}" includes="${source_intermediate}" />
-	    <srcfiles dir="${res}" includes="intermediate2xsd.xsl" />
-	    <srcfiles dir="${res}" includes="common.xsl" />
-	    <srcfiles dir="${res}" includes="common-xsd.xsl" />
-	    <mapper type="merge" to="${output}/schema/xsd-gen.log" />
-	  </uptodate>
+		<!-- up to date checks -->
 
-	  <!-- checks if intermediate & xslt documents are modified compare to ddl-gen.log -->
-	  <uptodate property="ddl.notRequired">
-	    <srcfiles dir="${output}" includes="${source_intermediate}" />
-	    <srcfiles dir="${res}" includes="intermediate2ddl.xsl" />
-	    <srcfiles dir="${res}" includes="common-ddl.xsl" />
-	    <srcfiles dir="${res}" includes="utype.xsl" />
-	    <mapper type="merge" to="${output}/ddl/ddl-gen.log" />
-	  </uptodate>
+		<!-- checks if input & xslt are modified compare to intermediate document -->
+		<uptodate property="intermediate.notRequired">
+			<srcfiles dir="${input}" includes="${source}" />
+			<srcfiles dir="${res}" includes="xmiCheck.xsl" />
+			<srcfiles dir="${res}" includes="xmiFilter.xsl" />
+			<srcfiles dir="${res}" includes="${xmi2intermediate}" />
+			<mapper type="merge" to="${output}/${source_intermediate}" />
+		</uptodate>
 
-	  <!-- checks if intermediate & xslt documents are modified compare to tap-gen.log -->
-	  <uptodate property="tap.notRequired">
-	    <srcfiles dir="${output}" includes="${source_intermediate}" />
-	    <srcfiles dir="${res}" includes="intermediate2tap.xsl" />
-	    <srcfiles dir="${res}" includes="intermediate2ddl.xsl" />
-	    <srcfiles dir="${res}" includes="common-ddl.xsl" />
-	    <srcfiles dir="${res}" includes="utype.xsl" />
-	    <mapper type="merge" to="${output}/tap/tap-gen.log" />
-	  </uptodate>
+		<!-- checks if intermediate & xslt documents are modified compare to xsd-gen.log -->
+		<uptodate property="xsd.notRequired">
+			<srcfiles dir="${output}" includes="${source_intermediate}" />
+			<srcfiles dir="${res}" includes="intermediate2xsd.xsl" />
+			<srcfiles dir="${res}" includes="common.xsl" />
+			<srcfiles dir="${res}" includes="common-xsd.xsl" />
+			<mapper type="merge" to="${output}/schema/xsd-gen.log" />
+		</uptodate>
 
-	  <!-- checks if intermediate & xslt documents are modified compare to  java-gen.log -->
-	  <uptodate property="java.notRequired">
-	    <srcfiles dir="${output}" includes="${source_intermediate}" />
-	    <srcfiles dir="${res}" includes="intermediate2java.xsl" />
-	    <srcfiles dir="${res}" includes="common.xsl" />
-	    <srcfiles dir="${res}" includes="common-ddl.xsl" />
-	    <srcfiles dir="${res}" includes="common-xsd.xsl" />
-	    <srcfiles dir="${res}" includes="jpa.xsl" />
-	    <srcfiles dir="${res}" includes="jaxb.xsl" />
-	    <srcfiles dir="${templates}" includes="persistence-template.xml" />
+		<!-- checks if intermediate & xslt documents are modified compare to ddl-gen.log -->
+		<uptodate property="ddl.notRequired">
+			<srcfiles dir="${output}" includes="${source_intermediate}" />
+			<srcfiles dir="${res}" includes="intermediate2ddl.xsl" />
+			<srcfiles dir="${res}" includes="common-ddl.xsl" />
+			<srcfiles dir="${res}" includes="utype.xsl" />
+			<mapper type="merge" to="${output}/ddl/ddl-gen.log" />
+		</uptodate>
 
-	    <!-- check if src/ java code has changed -->
-	    <srcfiles dir="${sources}" includes="**/*" />
+		<!-- checks if intermediate & xslt documents are modified compare to tap-gen.log -->
+		<uptodate property="tap.notRequired">
+			<srcfiles dir="${output}" includes="${source_intermediate}" />
+			<srcfiles dir="${res}" includes="intermediate2tap.xsl" />
+			<srcfiles dir="${res}" includes="intermediate2ddl.xsl" />
+			<srcfiles dir="${res}" includes="common-ddl.xsl" />
+			<srcfiles dir="${res}" includes="utype.xsl" />
+			<mapper type="merge" to="${output}/tap/tap-gen.log" />
+		</uptodate>
 
-	    <srcfiles dir="${output}" includes="${source_intermediate}" />
-	    <mapper type="merge" to="${sources.gen}/java-gen.log" />
-	  </uptodate>	  
+		<!-- checks if intermediate & xslt documents are modified compare to  java-gen.log -->
+		<uptodate property="java.notRequired">
+			<srcfiles dir="${output}" includes="${source_intermediate}" />
+			<srcfiles dir="${res}" includes="intermediate2java.xsl" />
+			<srcfiles dir="${res}" includes="common.xsl" />
+			<srcfiles dir="${res}" includes="common-ddl.xsl" />
+			<srcfiles dir="${res}" includes="common-xsd.xsl" />
+			<srcfiles dir="${res}" includes="jpa.xsl" />
+			<srcfiles dir="${res}" includes="jaxb.xsl" />
+			<srcfiles dir="${templates}" includes="persistence-template.xml" />
+
+			<!-- check if src/ java code has changed -->
+			<srcfiles dir="${sources}" includes="**/*" />
+
+			<srcfiles dir="${output}" includes="${source_intermediate}" />
+			<mapper type="merge" to="${sources.gen}/java-gen.log" />
+		</uptodate>
 	</target>
 
 
-	
-	
+
+
 	<!-- target about : -->
 	<target name="about" depends="init" description="show information for public targets">
 		<echo>available ant targets : </echo>
@@ -282,9 +282,9 @@
 		<echo>  - forceMakeAll  : CLEANS outputs and then make all transformations (makeAll) </echo>
 		<echo>-------------------------------------------------------------------------------</echo>
 	</target>
-	
-	
-	
+
+
+
 
 	<!-- main target : generates all documents -->
 	<target name="makeAll" depends="init, process" description="make all transformations">
@@ -346,7 +346,7 @@
 
 
 	<!-- target process : xslt pipeline + DB + test cases -->
-  <target name="process">
+	<target name="process">
 		<property name="source" value="${source}" />
 		<property name="source_filtered" value="${source_filtered}" />
 
@@ -386,70 +386,75 @@
 		</ant>
 
 
-  	<!-- update DB if needed -->
-		<ant target="setupDB" />
+		<!-- update DB if needed -->
+		<if>
+			<equals arg1="${target.db.active}" arg2="true"/>
+			<then>
+				<ant target="DB-setup" />
+			</then>
+		</if>
 
-    <!-- build web app -->
+		<!-- build web app -->
 		<ant target="buildWeb" />
 
-    <!-- run test cases if needed -->
+		<!-- run test cases if needed -->
 		<ant target="run" />
 	</target>
 
- 
-	<target name="setupDB" if="target.db.do" depends="retrieveDDLs,initForDB" description="Setup database, perform migration if requested">
 
- 		<!-- copy files from ddl-s to backup, in case there are no files in the DB yet. So at least some files will be there when drop is called -->
-  	<if>
-  		<equals arg1="${target.db.backup.active}" arg2="true"/>
-  		<then>
-    		<echo>Perform backup</echo>
-  		  <doSqlTarget autocommit="true" onerror="continue" src="${ddl.directory}/backup/backupTables.sql" />
-  			<ant target="cleanDB"/>
-  			<ant target="createDB"/>
- 	  	  <doSqlTarget autocommit="false" onerror="continue" errorproperty="migrateerror" src="${ddl.directory}/backup/migrateTables.sql" />
- 	  		<if>
- 	    		<isset property="migrateerror"/>
- 	  			<then>
- 	  				<echo>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</echo>
- 	  				<echo>Error while migrating: fix migration script and run by hand</echo>
- 	  				<echo>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</echo>
- 	  			</then>
-  			<else>
-  	  	  <doSqlTarget autocommit="true" onerror="continue" src="${ddl.directory}/backup/dropBackupTables.sql" />
-  			</else>
- 	  		</if>	
-  		</then>
-  		<else>
-  		  <echo>No backup required</echo>
-  			<ant target="cleanDB"/>
-  			<ant target="createDB"/>
-      </else>
-  	</if>
-		<ant target="insertDDLs"/>
-  </target>
+	<target name="DB-setup" depends="DB-retrieveDDLs,DB-initFor" description="Setup database, perform migration if requested">
+
+		<!-- copy files from ddl-s to backup, in case there are no files in the DB yet. So at least some 
+ 		files will be there when drop is called. That may cause problems -->
+		<if>
+			<equals arg1="${target.db.backup.active}" arg2="true"/>
+			<then>
+				<echo>Perform backup</echo>
+				<doSqlTarget autocommit="true" onerror="continue" src="${ddl.directory}/backup/backupTables.sql" />
+				<ant target="DB-clean"/>
+				<ant target="DB-create"/>
+				<doSqlTarget autocommit="false" onerror="continue" errorproperty="migrateerror" src="${ddl.directory}/backup/migrateTables.sql" />
+				<if>
+					<isset property="migrateerror"/>
+					<then>
+						<echo>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</echo>
+						<echo>Error while migrating: fix migration script and run by hand</echo>
+						<echo>!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</echo>
+					</then>
+					<else>
+						<doSqlTarget autocommit="true" onerror="continue" src="${ddl.directory}/backup/dropBackupTables.sql" />
+					</else>
+				</if>
+			</then>
+			<else>
+				<echo>No backup required</echo>
+				<ant target="DB-clean"/>
+				<ant target="DB-create"/>
+			</else>
+		</if>
+	</target>
 
 	<!-- target buildJava : makes both java libraries and the vo-urp browser web application -->
 	<target name="buildJava" description="build both java libraries and the web application">
 		<ant target="makeOutput" />
-    <ant target="buildWeb" />
+		<ant target="buildWeb" />
 	</target>
 
 
 
 
-  <!-- target buildWeb : makes the vo-urp browser web application -->
+	<!-- target buildWeb : makes the vo-urp browser web application -->
 	<target name="buildWeb" description="build web application only">
 		<ant antfile="webapp/vo-urp-browser/build.xml" target="deployTomcat" inheritAll="false">
-	 		<property name="input" location="${input}"/>
+			<property name="input" location="${input}"/>
 			<property name="schemalocation_root" value="${schemalocation_root}"/>
-    	<property name="webapp.member.role" value="${webapp.member.role}"/>
-    	<property name="webapp.admin.role" value="${webapp.admin.role}"/>
+			<property name="webapp.member.role" value="${webapp.member.role}"/>
+			<property name="webapp.admin.role" value="${webapp.admin.role}"/>
 			<property name="build.date.extension" value="${build.date.extension}"/>
-		</ant>	
-	</target> 
-	
-	
+		</ant>
+	</target>
+
+
 
 
 	<!-- target processXMI2Intermediate : check the XMI model, filter it and generate the intermediate model -->
@@ -525,23 +530,23 @@
 
 
 
-  <target name="generateAll">
+	<target name="generateAll">
 		<property name="source" value="${source}" />
 		<property name="source_filtered" value="${source_filtered}" />
- 
+
 		<ant target="run_xmi2intermediate" inheritAll="true"/>
 
 		<ant target="run_intermediate2ddl" inheritAll="true"/>
-  	    <ant target="run_intermediate2gvd" inheritAll="true"/>
-  	    <ant target="run_intermediate2html" inheritAll="true"/>
+		<ant target="run_intermediate2gvd" inheritAll="true"/>
+		<ant target="run_intermediate2html" inheritAll="true"/>
 		<ant target="run_intermediate2java" inheritAll="true"/>
-<!--		<ant target="run_intermediate2rdf" inheritAll="true"/>  --> 
+		<!--		<ant target="run_intermediate2rdf" inheritAll="true"/>  -->
 		<ant target="run_intermediate2tap" inheritAll="true"/>
 		<ant target="run_intermediate2xml" inheritAll="true"/>
 		<ant target="run_intermediate2xsd" inheritAll="true"/>
 
 	</target>
-	
+
 
 	<!-- target run_xmi2intermediate : transform the source model (xmi) to the intermediate model -->
 	<target name="run_xmi2intermediate">
@@ -550,22 +555,22 @@
 			<property name="source_filtered" value="${source_intermediate}" />
 		</ant>
 	</target>
-<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
+	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ 
                                   VO-URP generation
      +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++	-->
-	  <target name="run_vo-urp">
-	  	<!-- run all vo-urp targets -->
-			<property name="source" value="${source}" />
-			<property name="source_filtered" value="${source_filtered}" />
-	 
-			<ant target="run_xmi2vo-urp" inheritAll="true"/>
-	  	    <ant target="run_vo-urp2html" inheritAll="true"/>
+	<target name="run_vo-urp">
+		<!-- run all vo-urp targets -->
+		<property name="source" value="${source}" />
+		<property name="source_filtered" value="${source_filtered}" />
 
-		</target>
+		<ant target="run_xmi2vo-urp" inheritAll="true"/>
+		<ant target="run_vo-urp2html" inheritAll="true"/>
+
+	</target>
 
 	<!-- target run_xmi2vo-urp : transform the source model (xmi) to the vo-urp model 
 	then generate the utype-s-->
-	<target name="run_xmi2vo-urp"> 
+	<target name="run_xmi2vo-urp">
 		<fail unless="xmi2vo-urp" message="Must define property 'xmi2vo-urp' in ${input}/project.properties (the basic xmi2vo-urp translaytion script) !"/>
 		<xslt2 in="${input}/${source}" out="${input}/TEMP_${source_intermediate}" style="${res}/${xmi2vo-urp}">
 			<param name="root_package" expression="${root_package}" />
@@ -576,29 +581,29 @@
 			  out="${input}/${source_intermediate}" 
 			style="${res}/generate-utypes4vo-urp.xsl">
 		</xslt2>
-		
+
 		<delete file="${input}/TEMP_${source_intermediate}"/>
 	</target>
 
 	<target name="run_vo-urp2modelproxy">
 		<echo>run_vo-urp2html : starting generate HTML from file ${output}/${source_intermediate}</echo>
-	
+
 		<xslt2 in="${input}/${source_intermediate}" out="${input}/${project.name}.modelproxy.xml"
 			style="${res}/vo-urp2modelproxy.xsl">
-        </xslt2> 
-    </target>
-		
+		</xslt2>
+	</target>
+
 	<target name="run_vo-urp2html" depends="run_vo-urp2gvd">
 		<echo>run_vo-urp2html : starting generate HTML from file ${output}/${source_intermediate}</echo>
-	
+
 		<xslt2 in="${input}/${source_intermediate}" out="${input}/${project.name}.html"
 			style="${res}/vo-urp2html.xsl">
-            <param name="project_name" expression="${project.name}"/>
-            <param name="graphviz_png" if="graphviz.path" expression="${graphviz.png}"/>
-            <param name="graphviz_map" if="graphviz.path" expression="${graphviz.map.placeholder}"/>
-          <param name="preamble" expression="${html.preamble}"/>
-        </xslt2> 
-<!--
+			<param name="project_name" expression="${project.name}"/>
+			<param name="graphviz_png" if="graphviz.path" expression="${graphviz.png}"/>
+			<param name="graphviz_map" if="graphviz.path" expression="${graphviz.map.placeholder}"/>
+			<param name="preamble" expression="${html.preamble}"/>
+		</xslt2>
+		<!--
 		<copy todir="${input}">
             <fileset dir="css">
                 <include name="*.css" />
@@ -607,27 +612,27 @@
 -->
 		<ant target="postGenerateHTML_vo-urp" />
 
-		<echo>run_vo-urp2html : done.</echo>  
+		<echo>run_vo-urp2html : done.</echo>
 	</target>
 
 	<!-- target run_intermediate2gvd : generates Object Graphs (graphviz tool) from intermediate model -->
-    <!-- note : this target not included in the standard pipeline : run it manually -->
+	<!-- note : this target not included in the standard pipeline : run it manually -->
 	<target name="run_vo-urp2gvd" if="graphviz.path">
 		<echo>run_vo-urp2gvd : starting generate GraphViz from file ${output}/${source_intermediate}</echo>
 
 		<xslt2 in="${input}/${source_intermediate}" out="${input}/${project.name}.gvd" style="${res}/vo-urp2gvd.xsl" />
 
-    <exec executable="${graphviz.path}" dir="${input}" >
-        <arg value="-Tcmapx" />
-        <arg value="-o${graphviz.map}" />
-        <arg value="-Tpng"/>
-        <arg value="-o${graphviz.png}"/>
-        <arg value="${project.name}.gvd"/>
-    </exec>
-    <echo>run_vo-urp2gvd : done.</echo>
+		<exec executable="${graphviz.path}" dir="${input}" >
+			<arg value="-Tcmapx" />
+			<arg value="-o${graphviz.map}" />
+			<arg value="-Tpng"/>
+			<arg value="-o${graphviz.png}"/>
+			<arg value="${project.name}.gvd"/>
+		</exec>
+		<echo>run_vo-urp2gvd : done.</echo>
 
-		</target>
-	
+	</target>
+
 	<!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 
 	<!-- target xmi2intermediate : GenTool preprocessor generating according to ivoaDMMetamodel.xsd -->
@@ -640,7 +645,7 @@
 			<param name="modelversion" expression="${project.version}"/>
 		</xslt2>
 
-		<echo>xmi2intermediate : done.</echo> 
+		<echo>xmi2intermediate : done.</echo>
 	</target>
 
 
@@ -671,18 +676,18 @@
 	<target name="run_intermediate2xml">
 		<echo>run_intermediate2xml : starting generate XML sample documents from file ${output}/${source_intermediate}</echo>
 
-        <xslt2 in="${output}/${source_intermediate}" out="${output}/xml-samples/xml-gen.log" style="${res}/intermediate2xml.xsl">
+		<xslt2 in="${output}/${source_intermediate}" out="${output}/xml-samples/xml-gen.log" style="${res}/intermediate2xml.xsl">
 			<param name="targetnamespace_root" expression="${targetnamespace_root}" />
 		</xslt2>
 
 		<echo>run_intermediate2xml : done.</echo>
-    </target>
+	</target>
 
 
 
 
 	<!-- target run_readSKOS : generates SKOS vocabularie and trasforms them -->
-    <!-- note : this target not included in the standard pipeline : run it manually -->
+	<!-- note : this target not included in the standard pipeline : run it manually -->
 	<target name="run_readSKOS">
 		<echo>run_intermediateSKOS2simpleSKOS : starting generate Simple SKOS files from SKOS URIs in ${output}/${source_intermediate}</echo>
 
@@ -697,39 +702,39 @@
 	<!-- target run_intermediate2html : generates HTML Documentation from intermediate model -->
 	<target name="run_intermediate2html" depends="run_intermediate2gvd">
 		<echo>run_intermediate2html : starting generate HTML from file ${output}/${source_intermediate}</echo>
-	
+
 		<xslt2 in="${output}/${source_intermediate}" out="${output}/html/${project.name}.html"
 			style="${res}/intermediate2html_v2.xsl">
-            <param name="project_name" expression="${project.name}"/>
-            <param name="graphviz_png" if="graphviz.path" expression="${graphviz.png}"/>
-            <param name="graphviz_map" if="graphviz.path" expression="${graphviz.map.placeholder}"/>
-          <param name="preamble" expression="${html.preamble}"/>
-        </xslt2> 
-        <copy todir="${output}/html">
-            <fileset dir="css">
-                <include name="*.css" />
-            </fileset>
-        </copy>
+			<param name="project_name" expression="${project.name}"/>
+			<param name="graphviz_png" if="graphviz.path" expression="${graphviz.png}"/>
+			<param name="graphviz_map" if="graphviz.path" expression="${graphviz.map.placeholder}"/>
+			<param name="preamble" expression="${html.preamble}"/>
+		</xslt2>
+		<copy todir="${output}/html">
+			<fileset dir="css">
+				<include name="*.css" />
+			</fileset>
+		</copy>
 
 		<ant target="postGenerateHTML" />
 
-		<echo>run_intermediate2html : done.</echo>  
+		<echo>run_intermediate2html : done.</echo>
 	</target>
 
-  <target name="postGenerateHTML"  if="graphviz.path" >
-      <loadfile property="map" srcfile="${outputHTML}/${graphviz.map}"/>
-	
-      <replace file="${outputHTML}/${project.name}.html" token="${graphviz.map.placeholder}" value="${map}"/>
-  </target>
-	
-	  <target name="postGenerateHTML_vo-urp"  if="graphviz.path" >
-	      <loadfile property="map" srcfile="${input}/${graphviz.map}"/>
-		
-	      <replace file="${input}/${project.name}.html" token="${graphviz.map.placeholder}" value="${map}"/>
-	  </target>
-		
+	<target name="postGenerateHTML"  if="graphviz.path" >
+		<loadfile property="map" srcfile="${outputHTML}/${graphviz.map}"/>
+
+		<replace file="${outputHTML}/${project.name}.html" token="${graphviz.map.placeholder}" value="${map}"/>
+	</target>
+
+	<target name="postGenerateHTML_vo-urp"  if="graphviz.path" >
+		<loadfile property="map" srcfile="${input}/${graphviz.map}"/>
+
+		<replace file="${input}/${project.name}.html" token="${graphviz.map.placeholder}" value="${map}"/>
+	</target>
+
 	<!-- target run_intermediate2rdf : generates a RDF instance from intermediate model -->
-    <target name="run_intermediate2rdf" >
+	<target name="run_intermediate2rdf" >
 		<echo>run_intermediate2rdf : starting generate RDF from file ${output}/${source_intermediate}</echo>
 
 		<xslt2 in="${output}/${source_intermediate}" out="${output}/rdf/{project.name}.rdf" style="${res}/intermediate2rdf.xsl"/>
@@ -741,23 +746,23 @@
 
 
 	<!-- target run_intermediate2gvd : generates Object Graphs (graphviz tool) from intermediate model -->
-    <!-- note : this target not included in the standard pipeline : run it manually -->
+	<!-- note : this target not included in the standard pipeline : run it manually -->
 	<target name="run_intermediate2gvd" if="graphviz.path">
 		<echo>run_vo-run_intermediate2gvd : starting generate GraphViz from file ${output}/${source_intermediate}</echo>
 
 		<xslt2 in="${output}/${source_intermediate}" out="${output}/html/${project.name}.gvd" style="${res}/intermediate2gvd.xsl" />
 
-    <exec executable="${graphviz.path}" dir="${outputHTML}" >
-        <arg value="-Tcmapx" />
-        <arg value="-o${graphviz.map}" />
-        <arg value="-Tpng"/>
-        <arg value="-o${graphviz.png}"/>
-        <arg value="${project.name}.gvd"/>
-    </exec>
-    <echo>run_intermediate2gvd : done.</echo>
+		<exec executable="${graphviz.path}" dir="${outputHTML}" >
+			<arg value="-Tcmapx" />
+			<arg value="-o${graphviz.map}" />
+			<arg value="-Tpng"/>
+			<arg value="-o${graphviz.png}"/>
+			<arg value="${project.name}.gvd"/>
+		</exec>
+		<echo>run_intermediate2gvd : done.</echo>
 
-		</target>
-	
+	</target>
+
 
 	<!-- target run_intermediate2ddl : generates DDL script from intermediate model -->
 	<target name="run_intermediate2ddl">
@@ -771,15 +776,15 @@
 
 		<mkdir dir="${output}/ddl/mssqlserver/backup/" />
 		<copy todir="${output}/ddl/mssqlserver/backup">
-      <fileset dir="${output}/ddl/mssqlserver">
-        <include name="dropTables.sql" />
-        <include name="dropViews.sql" />
-        <include name="backupTables.sql" />
-        <include name="migrateTables.sql" />
-        <include name="dropBackupTables.sql" />
-      </fileset>
-    </copy>
-<!--
+			<fileset dir="${output}/ddl/mssqlserver">
+				<include name="dropTables.sql" />
+				<include name="dropViews.sql" />
+				<include name="backupTables.sql" />
+				<include name="migrateTables.sql" />
+				<include name="dropBackupTables.sql" />
+			</fileset>
+		</copy>
+		<!--
 		<xslt2 in="${output}/${source_intermediate}" out="${output}/ddl/ddl-gen.log" style="${res}/intermediate2ddl_singletable.xsl">
 			<param name="vendor" expression="mssqlserver" />
 			<param name="project_name" expression="${project.name}" />
@@ -797,20 +802,19 @@
 			<param name="project_name" expression="${project.name}" />
 			<param name="schema" expression="${tap.target_schema}" />
 		</xslt2>
-		
+
 		<echo>run_intermediate2ddl : done.</echo>
 	</target>
 
 
-<target name="rebuildDB" description="generate DDL, clean and create database structure">
-	<ant target="run_intermediate2ddl"/>
-    <!-- update DB if needed -->
-	<ant target="setupDB" />
+	<target name="DB-rebuild" description="generate DDL, clean and create database structure">
+		<ant target="run_intermediate2ddl"/>
+		<!-- update DB if needed -->
+		<ant target="DB-setup" />
+	</target>
 
-</target>
 
-			
-	
+
 	<!-- target run_intermediate2tap : generates TAP metadata VOTables from intermediate model -->
 	<target name="run_intermediate2tap">
 		<echo>run_intermediate2tap : starting generate TAP metadata VOTables from file ${output}/${source_intermediate}</echo>
@@ -862,8 +866,8 @@
 			<filterset>
 				<filter token="jpa.persistence.unit" value="${jpa.persistence.unit}" />
 			</filterset>
-		</copy> 
-		
+		</copy>
+
 		<copy tofile="${properties}/jpa-config.properties" filtering="true" verbose="true" overwrite="true">
 			<fileset file="${templates}/jpa-config.properties.template" />
 			<filterset>
@@ -875,9 +879,9 @@
 				<filter token="targetdb.admin" value="${targetdb.admin}" />
 				<filter token="targetdb.adminpassword" value="${targetdb.adminpassword}" />
 			</filterset>
-		</copy> 
+		</copy>
 
-		
+
 		<xslt2 in="${output}/${source_intermediate}" out="${sources.gen}/java-gen.log" style="${res}/intermediate2java.xsl">
 			<param name="root_package" expression="${root_package}" />
 			<param name="model_package" expression="${model_package}" />
@@ -902,14 +906,14 @@
 
 
     <!-- target echo : echos properties -->
-    <target name="echo" depends="init">
-      <echoproperties />
-    </target>
+	<target name="echo" depends="init">
+		<echoproperties />
+	</target>
 
 
-    <target name="doNothing" >
-      <echo>Doing nothing ......................................</echo>
-    </target>
-	
-	
+	<target name="doNothing" >
+		<echo>Doing nothing ......................................</echo>
+	</target>
+
+
 </project>

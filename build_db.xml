@@ -52,7 +52,7 @@
 <!-- targets -->
 
 <!-- sets DB properties -->
-<target name="initForDB">
+<target name="DB-initFor">
   <!-- Get jpa-config properties -->
   <property file="${properties}/jpa-config.properties" />
 
@@ -129,7 +129,7 @@
 
 
 <!-- target checkDB : is database server alive ? -->
-<target name="checkDB" depends="initForDB" if="target.db.do" description="check databse properties">
+<target name="DB-check" depends="DB-initFor" description="check databse properties">
   <echo>check target DB : ${targetdb.url} ...</echo>
   <echo>admin   : ${targetdb.admin}</echo>
   
@@ -146,7 +146,7 @@
 </target>
 
 
-<target name="cleanDB" depends="initForDB" if="target.db.do">
+<target name="DB-clean" depends="DB-initFor" >
   <echo>cleanDB : drop views then tables ...</echo>
 
   <!-- First retrieve the drop scripts from the database.
@@ -167,7 +167,7 @@
 
 
 <!-- target createDB : creates tables then views -->
-<target name="createDB" if="target.db.do"  depends="initForDB" description="CLEAN first and create database tables / views and TAP_SCHEMA">
+<target name="DB-create"  depends="DB-initFor" description="CLEAN first and create database tables / views and TAP_SCHEMA">
   <echo>Creating tables then views to ${targetdb.url} ...</echo>
 
   <!-- web user rights -->
@@ -179,7 +179,7 @@
 </target>
 
 <!-- copy generated files into meta table -->
-<target name="insertDDLs" depends="initForDB">
+<target name="DB-insertDDLs" depends="DB-initFor">
 
   <java classname="AdminDBHandler" dir="${libs}/admindb/bin" fork="true" 
   		failonerror="true"  >
@@ -204,7 +204,7 @@
    </java>
 </target>
 
-<target name="retrieveDDLs" depends="initForDB">
+<target name="DB-retrieveDDLs" depends="DB-initFor">
 
   <java classname="AdminDBHandler" dir="${libs}/admindb/bin" fork="true" 
   		failonerror="true"  >

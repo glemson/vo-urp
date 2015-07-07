@@ -111,7 +111,7 @@ public class AdminDBHandler {
 				"	where id = object_id(N'[_Models]')) "+
 				"CREATE TABLE [dbo].[_Models]( "+
 				"	[created] [datetime] NULL DEFAULT (getdate()),"+
-				"     modelCreated varchar(20),"+
+				"     modelCreated varchar(20) not null unique,"+
 				"	[modelVersion] [varchar](128) NULL,"+
 				"	[modelXML] [text] NULL,"+
 				"	[createTables] [text] NULL,"+
@@ -121,8 +121,15 @@ public class AdminDBHandler {
 				"	[backupTables] [text] NULL,"+
 				"	[dropBackupTables] [text] NULL,"+
 				"	[migrateTables] [text] NULL"+
-				") ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]";
+				") ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]\n\n" +
+				"if  not exists (select * from dbo.sysobjects "+
+				"		where id = object_id(N'[_CurrentModel]'))"+
+				"	create table dbo._CurrentModel ("+
+				"	    created datetime NULL DEFAULT (getdate()),"+
+				"	     modelCreated varchar(20)"+
+				"	)";
 
+		
 	}
 	private String Postgres_create(){
 		throw new IllegalStateException("No create tables for postgres defined yet");
