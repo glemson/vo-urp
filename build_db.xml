@@ -176,6 +176,7 @@
   <doSqlTarget onerror="abort" src="${ddl.directory}/createViews.sql" delimiter="${create.view.sep}"/>
   <doSqlTarget onerror="abort" src="${tap.ddl.directory}/${project.name}_create_tap_schema.sql" delimiter="${create.view.sep}"/>
 
+  <ant target="DB-insertDDLs"/>
 </target>
 
 <!-- copy generated files into meta table -->

@@ -268,7 +268,35 @@ public class AdminDBHandler {
 		}
 		rs.close();
 	}
-	
+
+	private void replaceCurrentWith(String[] args) {
+		if(args.length != offset+2){
+			printUsage4Replace();
+			return;
+		}
+		String workFolder = args[offset++];
+		String modelCreated = args[offset++];
+		connect();
+
+		String sql = " if  exists (select * from dbo.sysobjects "+
+				"	where id = object_id(N'[_Models]'))"
+				+ " select backupTables, migrateTables, dropBackupTables, dropTables, dropViews from _Models where modelCreated =?";
+		PreparedStatement stmt = connection.prepareStatement(sql);
+		stmt.setString(1, modelCreated);
+		stmt.execute();
+		ResultSet rs = stmt.getResultSet();
+		if(rs == null) return;
+
+		File dir = new File(workFolder);
+		dir.mkdirs();
+
+		if(rs.next()){
+			for(int i = 1; i <=5; i++)
+				write(rs, i,dir);
+		}
+		rs.close();
+	}
+
 	private void write(ResultSet rs , int index, File dir) throws SQLException, IOException{
 		InputStream in = rs.getAsciiStream(index);
 		ResultSetMetaData rsmd = rs.getMetaData();
