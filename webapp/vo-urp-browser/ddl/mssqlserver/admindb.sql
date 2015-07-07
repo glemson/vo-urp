@@ -1,6 +1,6 @@
 if not exists (select * from dbo.sysobjects
 	where id = object_id(N'[users]'))
-  create table users (username varchar(128) not null, password varchar(128) not null, createDate datetime default current_timestamp);
+  create table users (username varchar(128) not null, password varchar(128) , md5password varchar(128), createDate datetime default current_timestamp);
 
 if not exists (select * from dbo.sysobjects
 	where id = object_id(N'[roles]'))
