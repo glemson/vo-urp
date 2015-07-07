@@ -12,7 +12,12 @@
   
   <!-- first load local config file -->
 	<property file="${input}/project.properties" />
-  
+	<condition property="target.javadoc.do">
+    <and>
+      <equals arg1="${target.javadoc.active}" arg2="true" trim="true" />
+      <isset property="has.test"/>
+    </and>
+	</condition>
   <!-- set global properties for this build -->
   <fail unless="input"                message="Must define property 'input' in build.properties (indicating project directory) !"/>
   <fail unless="webapp.reader.role"   message="Must define property 'webapp.reader.role' in ${input}/project.properties (TODO) !"/>
@@ -359,7 +364,7 @@
   
 
   <!-- target makeDoc : creates javadoc from source code -->
-  <target name="makeDoc">
+  <target name="makeDoc" if="target.javadoc.do">
     
     <echo message="making ${title} javadoc ..."/>
     
