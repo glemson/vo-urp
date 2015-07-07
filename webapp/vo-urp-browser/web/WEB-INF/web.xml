@@ -222,7 +222,7 @@
         <auth-constraint>
         <!-- Only administrator can access this area -->
             <description>These are the roles who have access</description>
-            <role-name>VO-URP-member-role</role-name>
+            <role-name>@project.name@-writer</role-name>
         </auth-constraint>
 
     </security-constraint>
@@ -243,7 +243,7 @@
         <auth-constraint>
         <!-- Only administrator can access this area -->
             <description>These are the roles who have access</description>
-            <role-name>VO-URP-admin</role-name>
+            <role-name>@project.name@-admin</role-name>
         </auth-constraint>
 
     </security-constraint>
