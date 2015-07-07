@@ -1,5 +1,0 @@
-#pname='/store2/Legacy/Apps/SeSAM/gnuplot/'
-call '/store2/Legacy/Apps/SeSAM/gnuplot/cold_mf.gp'
-call '/store2/Legacy/Apps/SeSAM/gnuplot/madau.gp'
-call '/store2/Legacy/Apps/SeSAM/gnuplot/gsmf.gp'
-call '/store2/Legacy/Apps/SeSAM/gnuplot/ssfr.gp'
