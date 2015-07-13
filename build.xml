@@ -473,7 +473,9 @@
 	<target name="processIntermediate2XSD" unless="xsd.notRequired">
 		<ant target="run_intermediate2xsd" />
 		<ant target="run_intermediate2html" />
+<!--		
 		<ant target="run_intermediate2xml" />
+-->
 	</target>
 
 

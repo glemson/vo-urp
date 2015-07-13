@@ -55,7 +55,7 @@ public class AdminDBHandler {
 				printUsage();
 		} catch(ArrayIndexOutOfBoundsException e)
 		{
-//			printUsage();
+			printUsage();
 		}
 	}
 
@@ -67,6 +67,9 @@ public class AdminDBHandler {
 	}
 	private static void printUsage4R(){
 		System.out.print("usage: java org.ivoa.jpa.AdminDBHandler 'R' driver url user password version workfolder");
+	}
+	private static void printUsage4Replace(){
+		System.out.print("usage: java org.ivoa.jpa.AdminDBHandler 'RP' driver url user password version workfolder modelCreated");
 	}
 	private static void printUsage4L(){
 		System.out.print("usage: java org.ivoa.jpa.AdminDBHandler 'L' driver url user password workfolder");
@@ -269,7 +272,7 @@ public class AdminDBHandler {
 		rs.close();
 	}
 
-	private void replaceCurrentWith(String[] args) {
+	private void replaceCurrentWith(String[] args) throws Exception{
 		if(args.length != offset+2){
 			printUsage4Replace();
 			return;
@@ -298,14 +301,17 @@ public class AdminDBHandler {
 	}
 
 	private void write(ResultSet rs , int index, File dir) throws SQLException, IOException{
-		InputStream in = rs.getAsciiStream(index);
+		
+		// NB in sqljdbc41.jar drivers, MUST NOT do anything with result set after call to rs.getAsciiStream
+		// will close the stream for example when metadata is queried!!!
 		ResultSetMetaData rsmd = rs.getMetaData();
 		String f = dir.getAbsolutePath()+"/"+rsmd.getColumnName(index)+".sql";
+
 		FileOutputStream mtos = new FileOutputStream(f);
-
 		byte[] bytes = new byte[1024];
-
 		int len = 0;
+		InputStream in = rs.getAsciiStream(index);
+
 		while((len = in.read(bytes)) >=0)
 			mtos.write(bytes, 0, len);
 			

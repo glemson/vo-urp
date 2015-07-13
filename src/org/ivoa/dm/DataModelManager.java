@@ -7,10 +7,13 @@ import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.eclipse.persistence.config.HintValues;
+import org.eclipse.persistence.config.QueryHints;
 import org.ivoa.bean.LogSupport;
 import org.ivoa.dm.model.MetadataObject;
 import org.ivoa.dm.model.MetadataRootEntities;
@@ -184,7 +187,7 @@ public class DataModelManager extends LogSupport {
    * @param objects
    * @param username
    */
-  public void persist(final List<MetadataRootEntityObject> objects, final String username) {
+  public void persist(final Collection<MetadataRootEntityObject> objects, final String username) {
     EntityManager em = null;
     try {
       em = getCurrentEM();
@@ -201,7 +204,7 @@ public class DataModelManager extends LogSupport {
         o.accept(preProcessor);
       }
       for (MetadataRootEntityObject o : objects) {
-        em.persist(o);
+    	em.persist(o); // TODO if we would keep life cycle state on o, may call remove instead of persist
       }
       final PersistObjectPostProcessor postProcessor = PersistObjectPostProcessor.getInstance();
       for (MetadataRootEntityObject o : objects) {
@@ -225,6 +228,17 @@ public class DataModelManager extends LogSupport {
     }
   }
 
+  public List<MetadataObject> queryJPA(String query){
+		EntityManager em = getCurrentEM();
+		List list = em.createQuery(query).setHint(QueryHints.REFRESH,
+		        HintValues.TRUE).getResultList();
+		ArrayList<MetadataObject> r = new ArrayList<MetadataObject>();
+		for(Object o : list)
+			r.add((MetadataObject)o);
+		return r;
+
+  }
+  
   /**
    * For sharing the EntityManager between methods, store it on the DataModelManager.<br/>
    * TODO make sure this is thread safe !!!
