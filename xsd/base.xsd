@@ -237,5 +237,5 @@ Instead we try an approach based on views/representations of the model -->
     </xsd:attribute>
   </xsd:complexType>
 
-
+  <xsd:element name="root" type="MetadataRootEntities"/>
 </xsd:schema>
