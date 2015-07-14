@@ -1,1 +1,0 @@
-This directory contains sample projects, each in its own sub directory.

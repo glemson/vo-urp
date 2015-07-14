@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
-
-    <rewriteSystem systemIdStartString="http://www.ivoa.net/xml/VOResource/v1.0/"
-                   rewritePrefix="../build/xsd/" />
-
-  <nextCatalog catalog="../../../schema/vo-urp-catalog.xml"/>
-
-</catalog>
