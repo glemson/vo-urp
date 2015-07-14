@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="Collection">
  *   &lt;complexContent>
- *     &lt;extension base="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Relation">
+ *     &lt;extension base="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}Relation">
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>

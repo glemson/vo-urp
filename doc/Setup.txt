@@ -1,0 +1,20 @@
+install:
+
+- java jdk, set JAVA_HOME to it
+- ant
+- tomcat
+- a database server(assuming SQLServer)
+
+check out vo-urp from GitHub
+
+create a separate folder for your project, referred to as <project> from now on
+copy a template project.properties file, e.g. TSE's version
+
+update its contents:
+
+give location of tomcat installation
+
+create at least 1 database, though better two. 
+1st for data (<datadb> from now on) 2nd for admin usage (<admindb> form now on)
+
+create users for these databases.

@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="PrimitiveType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}ValueType">
+ *     &lt;extension base="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}ValueType">
  *     &lt;/extension>
  *   &lt;/complexContent>
  * &lt;/complexType>

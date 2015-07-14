@@ -22,7 +22,7 @@
 </c:forEach>
 </ul>
 
-  <h3><a href="./html/<%= RuntimeConfiguration.get().getProjectName() %>.html"">Documentation</a></h3>
+  <h3><a href="./html/<%= RuntimeConfiguration.get().getProjectName() %>.html" target="_blank"">Documentation</a></h3>
   Browse documentation of the data model.
   <h3><a href="./SKOS.do">SKOS Concepts</a></h3>
   Browse SKOS vocabularies used in the model.

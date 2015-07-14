@@ -15,12 +15,12 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="Attribute">
  *   &lt;complexContent>
- *     &lt;extension base="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Element">
+ *     &lt;extension base="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}Element">
  *       &lt;sequence>
- *         &lt;element name="datatype" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}TypeRef"/>
- *         &lt;element name="multiplicity" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Multiplicity"/>
- *         &lt;element name="constraints" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Constraints" minOccurs="0"/>
- *         &lt;element name="skosconcept" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}SKOSConcept" minOccurs="0"/>
+ *         &lt;element name="datatype" type="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}TypeRef"/>
+ *         &lt;element name="multiplicity" type="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}Multiplicity"/>
+ *         &lt;element name="constraints" type="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}Constraints" minOccurs="0"/>
+ *         &lt;element name="skosconcept" type="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}SKOSConcept" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>

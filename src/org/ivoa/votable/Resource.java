@@ -83,12 +83,12 @@ public class Resource {
     protected AnyTEXT description;
     @XmlElements({
         @XmlElement(name = "COOSYS", type = CoordinateSystem.class),
-        @XmlElement(name = "LINK", type = Link.class),
-        @XmlElement(name = "RESOURCE", type = Resource.class),
-        @XmlElement(name = "GROUP", type = Group.class),
         @XmlElement(name = "PARAM", type = Param.class),
-        @XmlElement(name = "INFO", type = Info.class),
-        @XmlElement(name = "TABLE", type = Table.class)
+        @XmlElement(name = "GROUP", type = Group.class),
+        @XmlElement(name = "TABLE", type = Table.class),
+        @XmlElement(name = "RESOURCE", type = Resource.class),
+        @XmlElement(name = "LINK", type = Link.class),
+        @XmlElement(name = "INFO", type = Info.class)
     })
     protected List<Object> infosAndCOOSYSAndGROUPS;
     @XmlAnyElement
@@ -153,12 +153,12 @@ public class Resource {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link CoordinateSystem }
-     * {@link Link }
-     * {@link Resource }
-     * {@link Group }
      * {@link Param }
-     * {@link Info }
+     * {@link Group }
      * {@link Table }
+     * {@link Resource }
+     * {@link Link }
+     * {@link Info }
      * 
      * 
      */

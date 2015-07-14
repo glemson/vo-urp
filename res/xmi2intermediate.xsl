@@ -28,7 +28,7 @@
 	<xsl:key name="classid" match="*/uml:Model//*" use="@xmi:id" />
 
 	<xsl:variable name="dmmd_namespace"
-		select="'http://ivoa.org/theory/datamodel/generationmetadata/v0.1'" />
+		select="'https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1'" />
 	<xsl:variable name="xmi_namespace" select="'http://schema.omg.org/spec/XMI/2.1'" />
 	<xsl:variable name="uml_namespace" select="'http://schema.omg.org/spec/UML/2.0'" />
 

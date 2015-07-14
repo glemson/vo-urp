@@ -44,7 +44,7 @@ public final class MetaModelFactory extends SingletonSupport {
   /** configuration test flag */
   public static final boolean isTest = Configuration.getInstance().isTest();
   /** meta model path  TODO use RuntimeConfiguration */
-  public static final String MODEL_NAMESPACE = "http://ivoa.org/theory/datamodel/generationmetadata/v0.1";
+  public static final String MODEL_NAMESPACE = "https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1";
   /** model path TODO do we need this? Elsewhere we already use the path explicitly */
   public static final String BASE_PACKAGE;
 

@@ -17,9 +17,9 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="Type">
  *   &lt;complexContent>
- *     &lt;extension base="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Element">
+ *     &lt;extension base="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}Element">
  *       &lt;sequence>
- *         &lt;element name="extends" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}TypeRef" minOccurs="0"/>
+ *         &lt;element name="extends" type="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}TypeRef" minOccurs="0"/>
  *       &lt;/sequence>
  *       &lt;attribute name="abstract" type="{http://www.w3.org/2001/XMLSchema}boolean" default="false" />
  *     &lt;/extension>

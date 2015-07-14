@@ -18,15 +18,15 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType>
  *   &lt;complexContent>
- *     &lt;extension base="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Element">
+ *     &lt;extension base="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}Element">
  *       &lt;sequence>
  *         &lt;element name="lastModifiedDate" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="created" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="version" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *         &lt;element name="author" type="{http://www.w3.org/2001/XMLSchema}string" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="title" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="profile" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Profile" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="package" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Package" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="profile" type="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}Profile" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="package" type="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}Package" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>

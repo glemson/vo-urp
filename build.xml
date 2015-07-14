@@ -42,7 +42,8 @@
 
 	<property file="${input}/project.properties" />
 
-
+	<!-- do not change -->
+  <property name="model_package" value="org.ivoa.dm.model"/>
 
 	<!-- read pipeline configuration properties -->
 	<fail unless="project.name"           message="Must define property 'project.name' in ${props.file} (name of this project) !" />
@@ -50,7 +51,6 @@
 	<fail unless="source"                 message="Must define property 'source' in ${input}/project.properties (the source data model file as xmi 2.x) !" />
 	<fail unless="xmi2intermediate"       message="Must define property 'xmi2intermediate' in ${input}/project.properties (the basic xmi2intermediate xsl file) !"/>
 	<fail unless="root_package"           message="Must define property 'root_package' in ${input}/project.properties (the root package) !" />
-	<fail unless="model_package"          message="Must define property 'model_package' in ${input}/project.properties (the model package) !" />
 	<fail unless="targetnamespace_root"   message="Must define property 'targetnamespace_root' in ${input}/project.properties (the target namespace root) !" />
 	<fail unless="schemalocation_root"    message="Must define property 'schemalocation_root' in ${input}/project.properties (the schema location root) !" />
 

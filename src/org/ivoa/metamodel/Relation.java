@@ -19,10 +19,10 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="Relation">
  *   &lt;complexContent>
- *     &lt;extension base="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Element">
+ *     &lt;extension base="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}Element">
  *       &lt;sequence>
- *         &lt;element name="datatype" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}TypeRef"/>
- *         &lt;element name="multiplicity" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Multiplicity"/>
+ *         &lt;element name="datatype" type="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}TypeRef"/>
+ *         &lt;element name="multiplicity" type="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}Multiplicity"/>
  *         &lt;element name="subsets" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *       &lt;/sequence>
  *       &lt;attribute name="xmiidref" type="{http://www.w3.org/2001/XMLSchema}IDREF" />

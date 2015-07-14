@@ -366,14 +366,12 @@ JDK7 first release
 
   <!-- adds namespace to intermediateModel instance with m: prefix -->
 
-  <!-- TODO : find a way to inject the intermediate.model.xmlns property instead of hard coded values -->
-
   <replace file="${build.gen}/${source_intermediate}" encoding="UTF-8">
     <replacetoken>&lt;model</replacetoken>
     <replacevalue>
-      &lt;m:model xmlns:m="http://ivoa.org/theory/datamodel/generationmetadata/v0.1" 
+      &lt;m:model xmlns:m="https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1" 
                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-                  xsi:schemaLocation="http://ivoa.org/theory/datamodel/generationmetadata/v0.1 http://vo-urp.googlecode.com/svn/trunk/xsd/intermediateModel.xsd"</replacevalue>
+                  xsi:schemaLocation="https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1 https://github.com/glemson/vo-urp/raw/master/xsd/intermediateModel.xsd"</replacevalue>
   </replace>
   <replace file="${build.gen}/${source_intermediate}" encoding="UTF-8">
     <replacetoken>&lt;/model</replacetoken>

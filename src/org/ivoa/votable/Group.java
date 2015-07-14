@@ -57,9 +57,9 @@ public class Group {
     protected AnyTEXT description;
     @XmlElements({
         @XmlElement(name = "FIELDref", type = FieldRef.class),
-        @XmlElement(name = "PARAMref", type = ParamRef.class),
+        @XmlElement(name = "GROUP", type = Group.class),
         @XmlElement(name = "PARAM", type = Param.class),
-        @XmlElement(name = "GROUP", type = Group.class)
+        @XmlElement(name = "PARAMref", type = ParamRef.class)
     })
     protected List<Object> fielDrevesAndPARAMrevesAndPARAMS;
     @XmlAttribute(name = "ID")
@@ -124,9 +124,9 @@ public class Group {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link FieldRef }
-     * {@link ParamRef }
-     * {@link Param }
      * {@link Group }
+     * {@link Param }
+     * {@link ParamRef }
      * 
      * 
      */

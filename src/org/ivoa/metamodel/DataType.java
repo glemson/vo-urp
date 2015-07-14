@@ -16,9 +16,9 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="DataType">
  *   &lt;complexContent>
- *     &lt;extension base="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}ValueType">
+ *     &lt;extension base="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}ValueType">
  *       &lt;sequence>
- *         &lt;element name="attribute" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Attribute" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="attribute" type="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}Attribute" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>

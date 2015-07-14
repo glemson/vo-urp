@@ -17,14 +17,14 @@ import javax.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="Package">
  *   &lt;complexContent>
- *     &lt;extension base="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Element">
+ *     &lt;extension base="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}Element">
  *       &lt;sequence>
- *         &lt;element name="depends" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}PackageReference" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="objectType" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}ObjectType" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="dataType" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}DataType" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="enumeration" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Enumeration" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="primitiveType" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}PrimitiveType" maxOccurs="unbounded" minOccurs="0"/>
- *         &lt;element name="package" type="{http://ivoa.org/theory/datamodel/generationmetadata/v0.1}Package" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="depends" type="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}PackageReference" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="objectType" type="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}ObjectType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="dataType" type="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}DataType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="enumeration" type="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}Enumeration" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="primitiveType" type="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}PrimitiveType" maxOccurs="unbounded" minOccurs="0"/>
+ *         &lt;element name="package" type="{https://github.com/glemson/vo-urp/xsd/vo-urp/v0.1}Package" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/extension>
  *   &lt;/complexContent>
