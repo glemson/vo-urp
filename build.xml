@@ -43,7 +43,9 @@
 	<property file="${input}/project.properties" />
 
 	<!-- do not change -->
+	<property name="xmi2intermediate" value="xmi2intermediate.xsl"/>
   <property name="model_package" value="org.ivoa.dm.model"/>
+	<property name="build.src.file" value="vo-urp-src.jar"/>
 
 	<!-- read pipeline configuration properties -->
 	<fail unless="project.name"           message="Must define property 'project.name' in ${props.file} (name of this project) !" />

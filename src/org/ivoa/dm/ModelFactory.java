@@ -449,20 +449,22 @@ public final class ModelFactory extends SingletonSupport {
   private void marshallObject(final MetadataRootEntities source, final Writer writer) throws XmlBindException {
     if (source != null) {
       try {
-    	  for(MetadataRootEntityObject o: source.getEntity()){
+    	  // NB first pre-process all objects to set all states to "toBeMarshalled"
+    	  for(MetadataRootEntityObject o: source.getEntity())
     		  o.accept(MarshallObjectPreProcessor.getInstance());
+    	  for(MetadataRootEntityObject o: source.getEntity())
     		  o.accept(MarshallReferencePreProcessor.getInstance());
-    	  }
         // create an Unmarshaller
         final Marshaller m = getJaxbFactory().createMarshaller();
 
         // marshal a tree of Java content objects composed of classes
         // from the VO-URP-generated root package into an instance document.
         m.marshal(source, writer);
-  	  for(MetadataRootEntityObject o: source.getEntity()){
+        
+  	  for(MetadataRootEntityObject o: source.getEntity())
           o.accept(MarshallObjectPostProcessor.getInstance());
+  	  for(MetadataRootEntityObject o: source.getEntity())
           o.accept(MarshallReferencePostProcessor.getInstance());
-	  }
 
 
       } catch (final JAXBException je) {
