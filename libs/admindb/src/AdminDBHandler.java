@@ -164,7 +164,7 @@ public class AdminDBHandler {
 		connect();
 
 		createTables();
-		
+		// TODO check that test works
 		String sql = " if not exists (select modelCreated from _Models where modelCreated = ?) begin insert into _Models (modelCreated, modelVersion, modelXML,createTables, createViews, dropTables, "
 		+" dropViews, backupTables, dropBackupTables, migrateTables) VALUES (?,?,?,?,?,?,?,?,?,?) end";
 		PreparedStatement stmt = connection.prepareStatement(sql);
