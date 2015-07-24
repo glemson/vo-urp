@@ -56,7 +56,7 @@
   <!-- Get jpa-config properties -->
   <property file="${properties}/jpa-config.properties" />
 
-  <fail unless="jpa.database    message="Must define property 'jpa.database' in project.properties !" />
+  <fail unless="jpa.database"    message="Must define property 'jpa.database' in project.properties !" />
 
   <fail unless="targetdb.driver"        message="Must define property 'targetdb.driver' in project.properties !" />
   <fail unless="targetdb.url"           message="Must define property 'targetdb.url' in project.properties !" />
