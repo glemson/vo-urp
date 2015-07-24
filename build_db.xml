@@ -56,18 +56,18 @@
   <!-- Get jpa-config properties -->
   <property file="${properties}/jpa-config.properties" />
 
-  <fail unless="eclipselink.target-database"    message="Must define property 'eclipselink.target-database' in jpa-config.properties !" />
+  <fail unless="jpa.database    message="Must define property 'jpa.database' in project.properties !" />
 
-  <fail unless="targetdb.driver"        message="Must define property 'eclipselink.jdbc.driver' in jpa-config.properties !" />
-  <fail unless="targetdb.url"           message="Must define property 'eclipselink.jdbc.url' in jpa-config.properties !" />
+  <fail unless="targetdb.driver"        message="Must define property 'targetdb.driver' in project.properties !" />
+  <fail unless="targetdb.url"           message="Must define property 'targetdb.url' in project.properties !" />
 
   <!-- eclipselink.jdbc.user only used at runtime (read only), but check if exist -->
-  <fail unless="targetdb.user"          message="Must define property 'eclipselink.jdbc.user' in jpa-config.properties !" />
-  <fail unless="targetdb.password"      message="Must define property 'eclipselink.jdbc.password' in jpa-config.properties !" />
+  <fail unless="targetdb.user"          message="Must define property 'targetdb.user' in project.properties !" />
+  <fail unless="targetdb.password"      message="Must define property 'targetdb.password' in project.properties !" />
 
   <!-- eclipselink.jdbc.admin used to create/drop tables -->
-  <fail unless="targetdb.admin"         message="Must define property 'eclipselink.jdbc.admin' in jpa-config.properties !" />
-  <fail unless="targetdb.adminpassword" message="Must define property 'eclipselink.jdbc.adminpassword' in jpa-config.properties !" />
+  <fail unless="targetdb.admin"         message="Must define property 'targetdb.admin' in project.properties !" />
+  <fail unless="targetdb.adminpassword" message="Must define property 'targetdb.adminpassword' in project.properties !" />
 
   <!-- tomcat role database -->
   <!-- TODO: use eclipselink.* values if tomcat.* values not defined (BUG GERARD) -->
@@ -100,22 +100,22 @@
     <isset property="ddl.directory"/>
   </condition>
 
-  <fail unless="ddl.directory.set" message="unable to define property 'ddl.directory' for the given vendor : ${eclipselink.target-database} !" />
+  <fail unless="ddl.directory.set" message="unable to define property 'ddl.directory' for the given vendor : ${jpa.database} !" />
 
   <!-- sets SQL separator for CREATE VIEW scrip -->
   <condition property="create.view.sep" value=";">
-    <equals arg1="${eclipselink.target-database}" arg2="PostgreSQL" trim="true"/>
+    <equals arg1="${jpa.database}" arg2="PostgreSQL" trim="true"/>
   </condition>
 
   <condition property="create.view.sep" value="GO">
-    <equals arg1="${eclipselink.target-database}" arg2="SQLServer" trim="true"/>
+    <equals arg1="${jpa.database}" arg2="SQLServer" trim="true"/>
   </condition>
 
   <condition property="create.view.sep.set">
     <isset property="create.view.sep"/>
   </condition>
 
-  <fail unless="create.view.sep.set" message="unable to define property 'create.view.sep' for the given vendor : ${eclipselink.target-database} !" />
+  <fail unless="create.view.sep.set" message="unable to define property 'create.view.sep' for the given vendor : ${jpa.database} !" />
 
 
   <echo>JDBC URL  : ${eclipselink.jdbc.url}</echo>
