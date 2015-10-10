@@ -119,6 +119,7 @@ public class AdminDBHandler {
 				"	[modelXML] [text] NULL,"+
 				"	[createTables] [text] NULL,"+
 				"	[createViews] [text] NULL,"+
+				"	[truncateTables] [text] NULL,"+
 				"	[dropTables] [text] NULL,"+
 				"	[dropViews] [text] NULL,"+
 				"	[backupTables] [text] NULL,"+
@@ -149,6 +150,7 @@ public class AdminDBHandler {
 		
 		String createTables = ddlsFolder+"/createTables.sql";//args[offset++];
 		String createViews = ddlsFolder+"/createViews.sql";//args[offset++];
+		String truncateTables = ddlsFolder+"/truncateTables.sql";//args[offset++];
 		String dropTables = ddlsFolder+"/dropTables.sql";//args[offset++];
 		String dropViews = ddlsFolder+"/dropViews.sql";//args[offset++];
 		String backupTables = ddlsFolder+"/backupTables.sql";//args[offset++];
@@ -165,8 +167,9 @@ public class AdminDBHandler {
 
 		createTables();
 		// TODO check that test works
-		String sql = " if not exists (select modelCreated from _Models where modelCreated = ?) begin insert into _Models (modelCreated, modelVersion, modelXML,createTables, createViews, dropTables, "
-		+" dropViews, backupTables, dropBackupTables, migrateTables) VALUES (?,?,?,?,?,?,?,?,?,?) end";
+		String sql = " if not exists (select modelCreated from _Models where modelCreated = ?) begin insert into _Models "
+		+" (modelCreated, modelVersion, modelXML,createTables, createViews, truncateTables, dropTables, "
+		+" dropViews, backupTables, dropBackupTables, migrateTables) VALUES (?,?,?,?,?,?,?,?,?,?,?) end";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		
 		int count = 1;
@@ -183,6 +186,9 @@ public class AdminDBHandler {
 		File cv = new File(createViews);
 		FileInputStream cvis = new FileInputStream(cv);
 		stmt.setAsciiStream(count++, cvis, (int) cv.length());
+		File tt = new File(truncateTables);
+		FileInputStream ttis = new FileInputStream(tt);
+		stmt.setAsciiStream(count++, ttis, (int) tt.length());
 		File dt = new File(dropTables);
 		FileInputStream dtis = new FileInputStream(dt);
 		stmt.setAsciiStream(count++, dtis, (int) dt.length());
@@ -205,6 +211,7 @@ public class AdminDBHandler {
 		ctis.close();
 		cvis.close();
 		btis.close();
+		ttis.close();
 		dtis.close();
 		dvis.close();
 		dbtis.close();
@@ -219,7 +226,7 @@ public class AdminDBHandler {
 	    String version = args[offset++];
 		String outDir = args[offset++];
 		connect();
-		String sql = " select modelVersion, createTables, createViews, backupTables, migrateTables from _Models where modelVersion=?";
+		String sql = " select modelVersion, createTables, createViews, truncate, backupTables, migrateTables from _Models where modelVersion=?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		
 		int count = 1;
@@ -231,8 +238,8 @@ public class AdminDBHandler {
 		byte[] bytes = new byte[1024];
 		File od = new File(outDir);
 		od.mkdirs();
-		String[] names= new String[]{"createTables.sql", "createViews.sql", "backupTables.sql","migrateTables.sql"};
-		for(int i = 0; i < 4; i++)
+		String[] names= new String[]{"createTables.sql", "createViews.sql", "truncateTables.sql","backupTables.sql","migrateTables.sql"};
+		for(int i = 0; i < names.length; i++)
 		{
 			FileOutputStream os = new FileOutputStream(od.getAbsolutePath()+"/"+names[i]);
 			InputStream in = rs.getAsciiStream(i+2);
@@ -257,7 +264,7 @@ public class AdminDBHandler {
 
 		String sql = " if  exists (select * from dbo.sysobjects "+
 				"	where id = object_id(N'[_Models]'))"
-				+ " select top 1 backupTables, migrateTables, dropBackupTables, dropTables, dropViews from _Models order by created desc";
+				+ " select top 1 backupTables, migrateTables, dropBackupTables, truncateTables, dropTables, dropViews from _Models order by created desc";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.execute();
 		ResultSet rs = stmt.getResultSet();
@@ -267,7 +274,7 @@ public class AdminDBHandler {
 		dir.mkdirs();
 
 		if(rs.next()){
-			for(int i = 1; i <=5; i++)
+			for(int i = 1; i <=6; i++)
 				write(rs, i,dir);
 		}
 		rs.close();
@@ -284,7 +291,7 @@ public class AdminDBHandler {
 
 		String sql = " if  exists (select * from dbo.sysobjects "+
 				"	where id = object_id(N'[_Models]'))"
-				+ " select backupTables, migrateTables, dropBackupTables, dropTables, dropViews from _Models where modelCreated =?";
+				+ " select backupTables, migrateTables, dropBackupTables, dropTables, dropViews, truncateTables from _Models where modelCreated =?";
 		PreparedStatement stmt = connection.prepareStatement(sql);
 		stmt.setString(1, modelCreated);
 		stmt.execute();
@@ -295,7 +302,7 @@ public class AdminDBHandler {
 		dir.mkdirs();
 
 		if(rs.next()){
-			for(int i = 1; i <=5; i++)
+			for(int i = 1; i <=6; i++)
 				write(rs, i,dir);
 		}
 		rs.close();

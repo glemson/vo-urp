@@ -184,20 +184,9 @@ CREATE TABLE TargetObjectType (
 
       <xsl:for-each select="exsl:node-set($sortedObjectTypes)/node/objectType">   
         <xsl:sort select="position()" data-type="number" order="descending"/> 
-        
-  <xsl:apply-templates select="." mode="start-table-exists-test"/>
-
-        <!-- collection of simple types (primitive, datatype, enumeration) -->
-
-<!--
-        <xsl:apply-templates select="./collection" mode="dropTable" />
-        <xsl:apply-templates select="." mode="dropFKs"/>
-        <xsl:apply-templates select="." mode="dropIndexes"/>
-  -->
+        <xsl:apply-templates select="." mode="start-table-exists-test"/>
         <xsl:apply-templates select="." mode="dropTable"/>
-
-<xsl:call-template name="end-test"/>
-
+        <xsl:call-template name="end-test"/>
       </xsl:for-each>
       
       <xsl:if test="string-length(normalize-space($schema)) > 0">
@@ -207,6 +196,20 @@ CREATE TABLE TargetObjectType (
     <xsl:text></xsl:text>&cr;
     </xsl:if>
 
+    </xsl:result-document>
+
+    <xsl:variable name="file" select="concat($vendor,'/truncateTables.sql')"/>
+    <xsl:message >Opening file <xsl:value-of select="$file"/></xsl:message>
+    <xsl:result-document href="{$file}" >
+      <xsl:value-of select="'-- truncateables.sql'"/>&cr;&cr;
+      <xsl:value-of select="$header"/>&cr;&cr;
+
+      <xsl:for-each select="exsl:node-set($sortedObjectTypes)/node/objectType">   
+        <xsl:sort select="position()" data-type="number" order="descending"/> 
+        <xsl:apply-templates select="." mode="start-table-exists-test"/>
+        <xsl:apply-templates select="." mode="truncateTable"/>
+        <xsl:call-template name="end-test"/>
+      </xsl:for-each>
     </xsl:result-document>
 
     <!-- BACKUP TABLES -->
@@ -504,6 +507,14 @@ CREATE INDEX ix_<xsl:value-of select="$tableName_ns"/>___CONTAINER ON <xsl:value
       <xsl:apply-templates select="." mode="tableName"/>
     </xsl:variable>
 <xsl:text>DROP TABLE </xsl:text><xsl:value-of select="$tableName"/>&cr;&cr;
+  </xsl:template>
+
+  <xsl:template match="objectType" mode="truncateTable">
+    <!-- truncate the table for the whole object hierarchy below the matched objectType -->
+    <xsl:variable name="tableName">
+      <xsl:apply-templates select="." mode="tableName"/>
+    </xsl:variable>
+<xsl:text>TRUNCATE TABLE </xsl:text><xsl:value-of select="$tableName"/>&cr;&cr;
   </xsl:template>
 
   <xsl:template match="objectType" mode="dropBackupTable">
@@ -970,12 +981,7 @@ IF EXISTS (SELECT 1 FROM information_schema.tables
   </xsl:template>
 
   <xsl:template name="end-test">
-    <xsl:choose>
-      <xsl:when test="$vendor = 'mssqlserver'">
-      END
-      </xsl:when>
-    </xsl:choose>
-    
+    <xsl:if test="$vendor = 'mssqlserver'">END</xsl:if>
   </xsl:template>
 
 

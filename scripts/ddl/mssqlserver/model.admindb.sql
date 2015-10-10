@@ -8,6 +8,7 @@ CREATE TABLE [dbo].[_Models](
 	[modelXML] [text] NULL,
 	[createTables] [text] NULL,
 	[createViews] [text] NULL,
+	[truncateTables] [text] NULL,
 	[dropTables] [text] NULL,
 	[dropViews] [text] NULL,
 	[backupTables] [text] NULL,
