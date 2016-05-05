@@ -514,7 +514,7 @@ CREATE INDEX ix_<xsl:value-of select="$tableName_ns"/>___CONTAINER ON <xsl:value
     <xsl:variable name="tableName">
       <xsl:apply-templates select="." mode="tableName"/>
     </xsl:variable>
-<xsl:text>TRUNCATE TABLE </xsl:text><xsl:value-of select="$tableName"/>&cr;&cr;
+<xsl:text>DELETE FROM </xsl:text><xsl:value-of select="$tableName"/>&cr;&cr;
   </xsl:template>
 
   <xsl:template match="objectType" mode="dropBackupTable">

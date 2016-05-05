@@ -16,9 +16,9 @@
     </layout>
   </appender>
 
-  <!-- C:/apache-tomcat-7.0.57/logs/TSEMD.log -->
+  <!-- C:/apache-tomcat-7.0.57/logs/SciServerMD.log -->
   <appender name="fileRoot" class="org.apache.log4j.RollingFileAppender">
-    <param name="File" value="C:/apache-tomcat-7.0.57/logs/TSEMD.log"/>
+    <param name="File" value="C:/apache-tomcat-7.0.57/logs/SciServerMD.log"/>
     <param name="MaxFileSize" value="10000KB"/>
     <param name="MaxBackupIndex" value="5"/>
     <layout class="org.apache.log4j.PatternLayout">

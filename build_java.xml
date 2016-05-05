@@ -2,6 +2,9 @@
     build_java.xml file : specific targets for java code
 -->  
 
+
+
+
 	<condition property="target.javadoc.do">
 		<equals arg1="${target.javadoc.active}" arg2="true" trim="true" />
 	</condition>
@@ -250,8 +253,7 @@ JDK7 first release
   <javac sourcepath="" srcdir="${sources}" destdir="${build.src}" listfiles="false" 
          fork="true" verbose="false" encoding="UTF-8"
          debug="on" deprecation="on" optimize="on" casesensitive="true" 
-         source="1.5" target="1.5"
-         includeantruntime="false" >
+          includeantruntime="false" >
     
     <classpath refid="project.class.path" />
     
@@ -381,7 +383,6 @@ JDK7 first release
   <javac sourcepath="" srcdir="${sources.gen}/src" destdir="${build.gen}" listfiles="false" 
          fork="true" verbose="false" encoding="UTF-8"
          debug="on" deprecation="on" optimize="on" casesensitive="true" 
-         source="1.5" target="1.5"
          includeantruntime="false" >
     
     <classpath refid="infrastructure.class.path" />
@@ -754,8 +755,7 @@ Optional
     <javac sourcepath="" srcdir="${libs}/jalopy/src" destdir="${libs}/jalopy/bin" listfiles="false"
          fork="true" verbose="false" encoding="UTF-8"
          debug="on" deprecation="on" optimize="on" casesensitive="true"
-         source="1.5" target="1.5"
-         includeantruntime="false" >
+        includeantruntime="false" >
 
         <classpath>
           <pathelement location="${libs}/jalopy/lib/jalopy-1.5b1.jar"/>
@@ -776,7 +776,6 @@ Optional
     <javac sourcepath="" srcdir="${libs}/admindb/src" destdir="${libs}/admindb/bin" listfiles="false"
          fork="true" verbose="false" encoding="UTF-8"
          debug="on" deprecation="on" optimize="on" casesensitive="true"
-         source="1.5" target="1.5"
          includeantruntime="false" >
 
         <include name="**/*.java"/>
@@ -818,7 +817,6 @@ Optional
   <javac sourcepath="" srcdir="${test}" destdir="${build.test}" listfiles="false" 
          fork="true" verbose="false" encoding="UTF-8"
          debug="on" deprecation="on" optimize="on" casesensitive="true" 
-         source="1.5" target="1.5"
          includeantruntime="false" >
     
     <classpath refid="runtime.class.path" />

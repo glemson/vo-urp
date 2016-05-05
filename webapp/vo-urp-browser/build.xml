@@ -400,7 +400,6 @@
     <javac sourcepath="" srcdir="${sources}" destdir="${build.src}" listfiles="false"
            fork="true" verbose="false" encoding="UTF-8"
            debug="on" deprecation="on" optimize="on" casesensitive="true" 
-           source="1.5" target="1.5"
            includeantruntime="false" >
       
       <classpath refid="project.class.path" />
@@ -632,8 +631,7 @@
            srcdir="${deploy.to}/${webapp.name}/WEB-INF/src"
            destdir="${deploy.to}/${webapp.name}/WEB-INF/classes"
            listfiles="false" fork="true" verbose="false" encoding="UTF-8"
-           debug="on" deprecation="on" optimize="on" casesensitive="true" 
-           source="1.5" target="1.5">
+           debug="on" deprecation="on" optimize="on" casesensitive="true">
 
       <classpath>
         <pathelement location="${deploy.to}/${webapp.name}/WEB-INF/classes"/>

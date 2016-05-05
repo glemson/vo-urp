@@ -39,7 +39,7 @@
 	<property file="build.properties"/>
 
 	<fail unless="input"                  message="Must define property 'input' in build.properties (indicating project directory) !"/>
-
+<echo>input = ${input}</echo>
 	<property file="${input}/project.properties" />
 
 	<!-- do not change -->
@@ -345,7 +345,29 @@
 	</target>
 
 
+	<!-- create and compile Java code. Useful for quick testing. -->
+	<target name="runJava">
+		<property name="source" value="${source}" />
+		<property name="source_filtered" value="${source_filtered}" />
 
+		<ant target="processXMI2Intermediate" inheritAll="false">
+			<propertyset>
+				<propertyref prefix="source" />
+				<propertyref prefix="source_filtered" />
+			</propertyset>
+		</ant>
+
+		<ant target="processIntermediate2Java" inheritAll="false">
+			<propertyset>
+				<propertyref prefix="source" />
+				<propertyref prefix="source_filtered" />
+			</propertyset>
+		</ant>
+		
+		<!-- build web app -->
+		<ant target="buildWeb" />
+
+  </target>
 
 	<!-- target process : xslt pipeline + DB + test cases -->
 	<target name="process">

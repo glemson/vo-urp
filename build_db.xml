@@ -163,7 +163,7 @@
   <echo>cleanDB : done.</echo>
 </target>
 
-<target name="DB-truncate" depends="DB-retrieveDDLs" >
+<target name="DB-truncate" depends="DB-retrieveDDLs" description="Empty all tables in the database">
   <echo>DB-truncate : truncate all model tables ...</echo>
 
   <echo>Executing ${ddl.directory}/backup/truncateTables.sql</echo>
