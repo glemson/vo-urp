@@ -271,7 +271,9 @@
 
 <xsd:complexType name="Reference">
   <xsd:complexContent>
-    <xsd:extension base="Relation"/>
+    <xsd:extension base="Relation">
+      <xsd:attribute name="isOwned" type="xsd:boolean" use="optional" default="false"/>
+    </xsd:extension>
   </xsd:complexContent>
 </xsd:complexType>
 
